@@ -11,9 +11,15 @@
 # testing
 /coverage
 
+#PRD
+SepetIQ-PRD.md
+
 # next.js
 /.next/
 /out/
+
+#claude
+/.claude/
 
 # production
 /build
