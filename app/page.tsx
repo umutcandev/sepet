@@ -87,7 +87,7 @@ export default function HomePage() {
             <FieldLabel htmlFor="shopping-prompt" className="sr-only">
               Alışveriş listesi
             </FieldLabel>
-            <InputGroup className="rounded-xl bg-sidebar">
+            <InputGroup className="rounded-xl border-primary/15 bg-secondary shadow-sm">
               <InputGroupTextarea
                 id="shopping-prompt"
                 rows={2}

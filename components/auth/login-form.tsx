@@ -7,9 +7,9 @@ import { signInWithGoogleAction } from "@/lib/actions/auth"
 import { cn } from "@/lib/utils"
 
 const FEATURES = [
-  "162.929 ürün, canlı fiyat",
-  "Doğal dilde sepet yazımı",
-  "Fiş fotoğrafından otomatik kayıt",
+  "162.929 ürünün canlı fiyatı",
+  "Yapay zeka destekli alışveriş listesi",
+  "Fiş fotoğrafından en hızlı fiyat karşılaştırması",
 ]
 
 /**
@@ -59,8 +59,7 @@ export function LoginForm({ variant = "lg", callbackUrl }: Props) {
             descText,
           )}
         >
-          45+ market arasında karşılaştır. En iyi fiyatı bul. Akıllı alışverişin
-          tadını çıkar.
+          Yapay zeka ile akıllı alışverişin tadını çıkarın.
         </p>
       </div>
 

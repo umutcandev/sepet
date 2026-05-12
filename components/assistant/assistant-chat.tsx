@@ -26,6 +26,7 @@ import {
   type PromptInputMessage,
 } from "@/components/ai-elements/prompt-input"
 import { Button } from "@/components/ui/button"
+import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 import type {
   BasketDraft,
   MatchResult,
@@ -45,6 +46,7 @@ const SUGGESTIONS = [
 ]
 
 export function AssistantChat() {
+  const guard = useRequireAuth()
   const { messages, sendMessage, status, stop, error } = useChat({
     transport: new DefaultChatTransport({ api: "/api/assistant/chat" }),
   })
@@ -64,17 +66,17 @@ export function AssistantChat() {
 
   const isBusy = status === "submitted" || status === "streaming"
 
-  const handleSubmit = (message: PromptInputMessage) => {
+  const handleSubmit = guard((message: PromptInputMessage) => {
     const text = message.text?.trim()
     if (!text || isBusy) return
     sendMessage({ text })
     setInput("")
-  }
+  })
 
-  const handleSuggestionClick = (text: string) => {
+  const handleSuggestionClick = guard((text: string) => {
     if (isBusy) return
     sendMessage({ text })
-  }
+  })
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4">
@@ -85,15 +87,9 @@ export function AssistantChat() {
               <div className="text-muted-foreground">
                 <SparklesIcon className="size-10" />
               </div>
-              <div className="space-y-1">
-                <h3 className="text-sm font-medium">
-                  Asistana ne soracaksın?
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Alışveriş listeni doğal dilde yaz, market kombinasyonunu sana
-                  çıkarayım.
-                </p>
-              </div>
+              <h1 className="text-3xl font-bold tracking-tight">
+                Bugün ne alışverişi yapacaksın?
+              </h1>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {SUGGESTIONS.map((s) => (
                   <Button
@@ -165,13 +161,13 @@ export function AssistantChat() {
 
       <PromptInput
         onSubmit={handleSubmit}
-        className="mx-auto mt-3 w-full max-w-3xl rounded-xl bg-sidebar"
+        className="mx-auto mt-3 w-full max-w-3xl rounded-xl border-primary/15 bg-secondary shadow-sm"
       >
         <PromptInputBody>
           <PromptInputTextarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Asistana yaz…"
+            placeholder="Alışveriş listeni yaz ya da fişinin fotoğrafını yükle."
           />
         </PromptInputBody>
         <PromptInputFooter>
