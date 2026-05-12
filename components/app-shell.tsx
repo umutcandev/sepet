@@ -33,8 +33,8 @@ export function AppShell({ user, children }: Props) {
               className="mr-2 data-vertical:h-4 data-vertical:self-auto"
             />
             <Image
-              src="/sepetiq-dark.svg"
-              alt="SepetIQ"
+              src="/sepet-dark.svg"
+              alt="Sepet"
               width={846}
               height={178}
               priority

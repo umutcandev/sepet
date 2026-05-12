@@ -54,7 +54,6 @@ const nav: NavItem[] = [
     title: "Asistan",
     url: "/assistant",
     icon: SparklesIcon,
-    soon: true,
   },
 ]
 
@@ -78,8 +77,8 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
             <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent">
               <Link href="/">
                 <Image
-                  src="/sepetiq-dark.svg"
-                  alt="SepetIQ"
+                  src="/sepet-dark.svg"
+                  alt="Sepet"
                   width={846}
                   height={178}
                   priority

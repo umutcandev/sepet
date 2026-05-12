@@ -1,5 +1,7 @@
 "use client"
 
+import * as React from "react"
+import { useRouter } from "next/navigation"
 import { Mic, Plus, ShoppingCart } from "lucide-react"
 
 import {
@@ -26,12 +28,22 @@ const CHIPS = [
   "Fiş yükle ve analiz et",
 ]
 
+const ASSISTANT_SEED_KEY = "assistant:seed"
+
 export default function HomePage() {
+  const router = useRouter()
   const guard = useRequireAuth()
+  const [prompt, setPrompt] = React.useState("")
 
   const handleSubmit = guard((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // TODO: wire up basket creation server action
+    const text = prompt.trim()
+    if (!text) return
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem(ASSISTANT_SEED_KEY, text)
+    }
+    setPrompt("")
+    router.push("/assistant")
   })
 
   const handleAdd = guard(() => {
@@ -42,8 +54,8 @@ export default function HomePage() {
     // TODO: open voice input flow
   })
 
-  const handleChip = guard(() => {
-    // TODO: prefill prompt with chip value
+  const handleChip = guard((chip: string) => {
+    setPrompt((current) => (current.trim() ? current : chip))
   })
 
   return (
@@ -75,12 +87,20 @@ export default function HomePage() {
             <FieldLabel htmlFor="shopping-prompt" className="sr-only">
               Alışveriş listesi
             </FieldLabel>
-            <InputGroup className="rounded-xl bg-sidebar">
+            <InputGroup className="rounded-xl border-primary/15 bg-secondary shadow-sm">
               <InputGroupTextarea
                 id="shopping-prompt"
                 rows={2}
                 placeholder="Alışveriş listeni yaz ya da fişinin fotoğrafını yükle."
                 className="placeholder: text-sm"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault()
+                    ;(e.currentTarget.form as HTMLFormElement | null)?.requestSubmit()
+                  }
+                }}
               />
               <InputGroupAddon align="block-end">
                 <InputGroupButton
@@ -88,6 +108,7 @@ export default function HomePage() {
                   variant="ghost"
                   aria-label="Ekle"
                   onClick={handleAdd}
+                  type="button"
                 >
                   <Plus />
                 </InputGroupButton>
@@ -97,10 +118,16 @@ export default function HomePage() {
                   aria-label="Sesli giriş"
                   className="ml-auto"
                   onClick={handleMic}
+                  type="button"
                 >
                   <Mic />
                 </InputGroupButton>
-                <InputGroupButton size="sm" variant="default" type="submit">
+                <InputGroupButton
+                  size="sm"
+                  variant="default"
+                  type="submit"
+                  disabled={!prompt.trim()}
+                >
                   <ShoppingCart />
                   Sepeti Oluştur
                 </InputGroupButton>
@@ -116,7 +143,7 @@ export default function HomePage() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={handleChip}
+              onClick={() => handleChip(chip)}
               className="h-auto rounded-full px-3 py-1.5 text-xs font-normal text-muted-foreground"
             >
               {chip}

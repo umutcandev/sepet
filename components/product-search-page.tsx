@@ -91,7 +91,7 @@ export function ProductSearchPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Barkod, ürün adı ya da marka arayın..."
-            className="h-9 pl-8"
+            className="h-9 pl-8 bg-sidebar"
             autoFocus
             autoComplete="off"
             spellCheck={false}

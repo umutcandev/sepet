@@ -3,6 +3,10 @@ import { camgozSearchResponseSchema, type CamgozRawProduct } from "./types"
 const CAMGOZ_BASE =
   process.env.CAMGOZ_API_BASE ?? "https://camgoz.jojapi.net/api/external"
 
+const CAMGOZ_PREFERRED_MARKETS =
+  process.env.CAMGOZ_PREFERRED_MARKETS?.trim() ||
+  "A101,Şok Market,Migros,Carrefour"
+
 function authHeaders(): HeadersInit {
   const key = process.env.JOJAPI_KEY
   if (!key) throw new Error("JOJAPI_KEY is not set")
@@ -40,6 +44,9 @@ export async function camgozSearch({
   url.searchParams.set("query", query)
   url.searchParams.set("marketPrices", String(withMarketPrices))
   if (withHistory) url.searchParams.set("historyPrices", "true")
+  if (CAMGOZ_PREFERRED_MARKETS) {
+    url.searchParams.set("preferredMarkets", CAMGOZ_PREFERRED_MARKETS)
+  }
 
   const res = await fetch(url.toString(), {
     headers: authHeaders(),
