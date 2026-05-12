@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -8,12 +9,11 @@ import {
   ShoppingBasketIcon,
   ReceiptIcon,
   SparklesIcon,
-  ShoppingCartIcon,
   SearchIcon,
 } from "lucide-react"
 
+import { NavGuest } from "@/components/nav-guest"
 import { NavUser } from "@/components/nav-user"
-import { Badge } from "@/components/ui/badge"
 import {
   Sidebar,
   SidebarContent,
@@ -24,7 +24,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
+import type { CurrentUser } from "@/lib/auth/session"
 
 type NavItem = {
   title: string
@@ -34,53 +36,55 @@ type NavItem = {
 }
 
 const nav: NavItem[] = [
-  { title: "Ana Sayfa", url: "/dashboard", icon: HomeIcon },
-  { title: "Ürün Ara", url: "/dashboard/search", icon: SearchIcon },
+  { title: "Ana Sayfa", url: "/", icon: HomeIcon },
+  { title: "Ürün Ara", url: "/search", icon: SearchIcon },
   {
     title: "Sepetlerim",
-    url: "/dashboard/baskets",
+    url: "/baskets",
     icon: ShoppingBasketIcon,
     soon: true,
   },
   {
     title: "Fiş Geçmişi",
-    url: "/dashboard/purchases",
+    url: "/purchases",
     icon: ReceiptIcon,
     soon: true,
   },
   {
     title: "Asistan",
-    url: "/dashboard/assistant",
+    url: "/assistant",
     icon: SparklesIcon,
     soon: true,
   },
 ]
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
+  user: CurrentUser | null
 }
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const pathname = usePathname()
+  const { isMobile, setOpenMobile } = useSidebar()
+
+  const handleNavClick = () => {
+    if (isMobile) setOpenMobile(false)
+  }
 
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <ShoppingCartIcon className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">SepetIQ</span>
-                  <span className="truncate text-xs">Akıllı Sepet</span>
-                </div>
+            <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent">
+              <Link href="/">
+                <Image
+                  src="/sepetiq-dark.svg"
+                  alt="SepetIQ"
+                  width={846}
+                  height={178}
+                  priority
+                  className="h-6 w-auto"
+                />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -102,21 +106,15 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                       isActive={isActive}
                       aria-disabled={item.soon || undefined}
                       tooltip={item.title}
-                      className={item.soon ? "cursor-not-allowed" : undefined}
+                      className={item.soon ? "cursor-not-allowed opacity-40" : undefined}
                     >
                       {item.soon ? (
-                        <span>
+                        <span className="flex items-center gap-2">
                           <Icon />
                           <span>{item.title}</span>
-                          <Badge
-                            variant="outline"
-                            className="ml-auto h-4 px-1 text-[10px] font-normal"
-                          >
-                            yakında
-                          </Badge>
                         </span>
                       ) : (
-                        <Link href={item.url}>
+                        <Link href={item.url} onClick={handleNavClick}>
                           <Icon />
                           <span>{item.title}</span>
                         </Link>
@@ -131,7 +129,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       </SidebarContent>
 
       <SidebarFooter>
-        <NavUser user={user} />
+        {user ? <NavUser user={user} /> : <NavGuest />}
       </SidebarFooter>
     </Sidebar>
   )

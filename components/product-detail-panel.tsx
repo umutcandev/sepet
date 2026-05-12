@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ExternalLinkIcon, ImageIcon } from "lucide-react"
+import { CheckIcon, CopyIcon, ExternalLinkIcon, ImageIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -34,6 +34,15 @@ export function ProductDetailPanel({ barcode }: Props) {
   const [detail, setDetail] = React.useState<ProductDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
+  const [barcodeCopied, setBarcodeCopied] = React.useState(false)
+
+  function copyBarcode() {
+    if (!detail?.barcode) return
+    navigator.clipboard.writeText(detail.barcode).then(() => {
+      setBarcodeCopied(true)
+      setTimeout(() => setBarcodeCopied(false), 1500)
+    })
+  }
 
   React.useEffect(() => {
     let active = true
@@ -88,7 +97,7 @@ export function ProductDetailPanel({ barcode }: Props) {
   return (
     <>
       <ResponsiveDialogHeader>
-        <div className="flex items-start gap-3 pr-6">
+        <div className="flex items-start gap-3 pr-6 text-left">
           <DetailThumb url={detail.imageUrl} />
           <div className="flex min-w-0 flex-1 flex-col gap-1.5">
             <div className="space-y-0.5">
@@ -104,9 +113,16 @@ export function ProductDetailPanel({ barcode }: Props) {
             <div className="flex flex-wrap items-center gap-1.5">
               <Badge
                 variant="default"
-                className="h-5 px-2 font-mono text-[10px] font-normal tracking-tight"
+                className="group h-5 cursor-pointer gap-1.5 px-2 font-mono text-[10px] font-normal tracking-tight"
+                onClick={copyBarcode}
+                title="Barkodu kopyala"
               >
                 {detail.barcode}
+                {barcodeCopied ? (
+                  <CheckIcon className="size-2.5 text-primary" />
+                ) : (
+                  <CopyIcon className="size-2.5 opacity-60 transition-opacity group-hover:opacity-100" />
+                )}
               </Badge>
               <Badge
                 variant="secondary"

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/responsive-dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
+import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 import { formatTLOrDash } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { ProductHit } from "@/lib/camgoz/types"
@@ -31,6 +32,7 @@ export function ProductSearchPage() {
     null,
   )
   const abortRef = React.useRef<AbortController | null>(null)
+  const guard = useRequireAuth()
 
   React.useEffect(() => {
     return () => abortRef.current?.abort()
@@ -76,10 +78,11 @@ export function ProductSearchPage() {
       </div>
 
       <form
-        onSubmit={(e) => {
+        // eslint-disable-next-line react-hooks/refs -- guard() returns an event handler invoked at event time, not during render
+        onSubmit={guard((e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault()
           runSearch()
-        }}
+        })}
         className="mb-6 flex max-w-xl items-center gap-2"
       >
         <div className="relative flex-1">
@@ -113,7 +116,7 @@ export function ProductSearchPage() {
       <ResultArea
         result={result}
         inputLength={trimmed.length}
-        onSelect={setSelectedBarcode}
+        onSelect={guard(setSelectedBarcode)}
       />
 
       <ResponsiveDialog
@@ -224,7 +227,6 @@ function ProductCard({
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
             className="object-cover transition-transform duration-200 group-hover:scale-[1.03]"
-            unoptimized
           />
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
