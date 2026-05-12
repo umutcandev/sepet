@@ -62,7 +62,7 @@ export const verificationTokens = pgTable(
   (vt) => [primaryKey({ columns: [vt.identifier, vt.token] })],
 )
 
-// ─── SepetIQ: ürün / fiyat cache ───
+// ─── Sepet: ürün / fiyat cache ───
 
 export const products = pgTable(
   "product",

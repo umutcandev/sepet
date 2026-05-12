@@ -51,7 +51,7 @@ export function LoginForm({ variant = "lg", callbackUrl }: Props) {
             headingText,
           )}
         >
-          Sepet<span className={headingMuted}>IQ</span>
+          Sepet
         </h1>
         <p
           className={cn(
