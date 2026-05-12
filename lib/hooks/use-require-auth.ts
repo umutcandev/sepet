@@ -8,15 +8,15 @@ import { loginDialog } from "@/lib/stores/login-dialog"
 export function useRequireAuth() {
   const { isAuthenticated } = useCurrentUser()
   return React.useCallback(
-    <A extends unknown[]>(handler: (...args: A) => void) => {
-      return (...args: A) => {
+    <A extends unknown[], R>(handler: (...args: A) => R) => {
+      return (...args: A): R | undefined => {
         if (!isAuthenticated) {
           const first = args[0] as { preventDefault?: () => void } | undefined
           first?.preventDefault?.()
           loginDialog.open()
-          return
+          return undefined
         }
-        handler(...args)
+        return handler(...args)
       }
     },
     [isAuthenticated],

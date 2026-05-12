@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { Mic, Plus, ShoppingCart } from "lucide-react"
+import { ShoppingCart } from "lucide-react"
 
 import {
   Avatar,
@@ -12,13 +12,11 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Field, FieldLabel } from "@/components/ui/field"
 import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupTextarea,
-} from "@/components/ui/input-group"
+  type PromptInputMessage,
+} from "@/components/ai-elements/prompt-input"
+import { AssistantPrompt } from "@/components/assistant/assistant-prompt"
+
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 
 const CHIPS = [
@@ -29,33 +27,48 @@ const CHIPS = [
 ]
 
 const ASSISTANT_SEED_KEY = "assistant:seed"
+const ASSISTANT_FILE_KEY = "assistant:file"
 
 export default function HomePage() {
   const router = useRouter()
   const guard = useRequireAuth()
-  const [prompt, setPrompt] = React.useState("")
+  const [input, setInput] = React.useState("")
 
-  const handleSubmit = guard((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const text = prompt.trim()
-    if (!text) return
+  const handleSubmit = guard((message: PromptInputMessage) => {
+    const text = message.text?.trim() ?? ""
+    const imageFile = (message.files ?? []).find((f) =>
+      f.mediaType?.startsWith("image/"),
+    )
+
+    if (!text && !imageFile) return
+
     if (typeof window !== "undefined") {
-      window.sessionStorage.setItem(ASSISTANT_SEED_KEY, text)
+      if (text) {
+        window.sessionStorage.setItem(ASSISTANT_SEED_KEY, text)
+      }
+      if (imageFile) {
+        // Store file info so assistant page can pick it up
+        window.sessionStorage.setItem(
+          ASSISTANT_FILE_KEY,
+          JSON.stringify({
+            url: imageFile.url,
+            mediaType: imageFile.mediaType,
+            filename: imageFile.filename,
+          }),
+        )
+        // If no text was given, set a default seed
+        if (!text) {
+          window.sessionStorage.setItem(ASSISTANT_SEED_KEY, "Fişimi analiz et")
+        }
+      }
     }
-    setPrompt("")
+
+    setInput("")
     router.push("/assistant")
   })
 
-  const handleAdd = guard(() => {
-    // TODO: open add-attachment flow
-  })
-
-  const handleMic = guard(() => {
-    // TODO: open voice input flow
-  })
-
   const handleChip = guard((chip: string) => {
-    setPrompt((current) => (current.trim() ? current : chip))
+    setInput((current) => (current.trim() ? current : chip))
   })
 
   return (
@@ -82,59 +95,14 @@ export default function HomePage() {
           </h1>
         </div>
 
-        <form className="w-full" onSubmit={handleSubmit}>
-          <Field>
-            <FieldLabel htmlFor="shopping-prompt" className="sr-only">
-              Alışveriş listesi
-            </FieldLabel>
-            <InputGroup className="rounded-xl border-primary/15 bg-secondary shadow-sm">
-              <InputGroupTextarea
-                id="shopping-prompt"
-                rows={2}
-                placeholder="Alışveriş listeni yaz ya da fişinin fotoğrafını yükle."
-                className="placeholder: text-sm"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault()
-                    ;(e.currentTarget.form as HTMLFormElement | null)?.requestSubmit()
-                  }
-                }}
-              />
-              <InputGroupAddon align="block-end">
-                <InputGroupButton
-                  size="icon-sm"
-                  variant="ghost"
-                  aria-label="Ekle"
-                  onClick={handleAdd}
-                  type="button"
-                >
-                  <Plus />
-                </InputGroupButton>
-                <InputGroupButton
-                  size="icon-sm"
-                  variant="ghost"
-                  aria-label="Sesli giriş"
-                  className="ml-auto"
-                  onClick={handleMic}
-                  type="button"
-                >
-                  <Mic />
-                </InputGroupButton>
-                <InputGroupButton
-                  size="sm"
-                  variant="default"
-                  type="submit"
-                  disabled={!prompt.trim()}
-                >
-                  <ShoppingCart />
-                  Sepeti Oluştur
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
-          </Field>
-        </form>
+        <AssistantPrompt
+          input={input}
+          setInput={setInput}
+          onSubmit={handleSubmit}
+          className="w-full"
+          submitIcon={<ShoppingCart className="size-4" />}
+          submitLabel="Sepeti Oluştur"
+        />
 
         <div className="flex flex-wrap justify-center gap-2">
           {CHIPS.map((chip) => (
@@ -154,3 +122,4 @@ export default function HomePage() {
     </div>
   )
 }
+

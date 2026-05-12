@@ -1,12 +1,14 @@
 import { generateObject } from "ai"
 import {
   BasketDraftSchema,
+  ReceiptOCRSchema,
   type BasketDraft,
   type MatchResult,
   type ParsedItem,
+  type ReceiptOCR,
 } from "./schemas"
-import { geminiFlashLite } from "./models"
-import { PARSE_PROMPT } from "./prompts"
+import { geminiFlash, geminiFlashLite } from "./models"
+import { PARSE_PROMPT, RECEIPT_OCR_PROMPT } from "./prompts"
 import { searchProducts, getProductByBarcode } from "@/lib/camgoz/cache"
 import { CamgozError } from "@/lib/camgoz/client"
 
@@ -88,6 +90,32 @@ async function findFirstHit(
     }
   }
   return lastError ?? { kind: "no_match" }
+}
+
+export async function parseReceiptImage(imageUrl: string): Promise<ReceiptOCR> {
+  const { object } = await generateObject({
+    model: geminiFlash,
+    schema: ReceiptOCRSchema,
+    temperature: 0.1,
+    messages: [
+      {
+        role: "user",
+        content: [
+          { type: "text", text: RECEIPT_OCR_PROMPT },
+          { type: "image", image: new URL(imageUrl) },
+        ],
+      },
+    ],
+  })
+  console.log(
+    "[parseReceiptImage] market=",
+    object.marketName,
+    "items=",
+    object.items.length,
+    "total=",
+    object.totalAmount,
+  )
+  return object
 }
 
 export async function parseShoppingList(rawText: string): Promise<BasketDraft> {

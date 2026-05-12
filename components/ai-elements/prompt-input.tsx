@@ -78,25 +78,6 @@ import {
 // Helpers
 // ============================================================================
 
-const convertBlobUrlToDataUrl = async (url: string): Promise<string | null> => {
-  try {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    // FileReader uses callback-based API, wrapping in Promise is necessary
-    // oxlint-disable-next-line eslint-plugin-promise(avoid-new)
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      // oxlint-disable-next-line eslint-plugin-unicorn(prefer-add-event-listener)
-      reader.onloadend = () => resolve(reader.result as string);
-      // oxlint-disable-next-line eslint-plugin-unicorn(prefer-add-event-listener)
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(blob);
-    });
-  } catch {
-    return null;
-  }
-};
-
 const captureScreenshot = async (): Promise<File | null> => {
   if (
     typeof navigator === "undefined" ||
@@ -597,33 +578,39 @@ export const PromptInput = ({
         return;
       }
 
-      setItems((prev) => {
-        const capacity =
-          typeof maxFiles === "number"
-            ? Math.max(0, maxFiles - prev.length)
-            : undefined;
-        const capped =
-          typeof capacity === "number" ? sized.slice(0, capacity) : sized;
-        if (typeof capacity === "number" && sized.length > capacity) {
-          onError?.({
-            code: "max_files",
-            message: "Too many files. Some were not added.",
-          });
-        }
-        const next: (FileUIPart & { id: string })[] = [];
-        for (const file of capped) {
-          next.push({
-            filename: file.name,
-            id: nanoid(),
-            mediaType: file.type,
-            type: "file",
-            url: URL.createObjectURL(file),
-          });
-        }
-        return [...prev, ...next];
-      });
+      // Read files as data URLs immediately to avoid blob: URL fetch issues
+      const capacity =
+        typeof maxFiles === "number"
+          ? Math.max(0, maxFiles - items.length)
+          : undefined;
+      const capped =
+        typeof capacity === "number" ? sized.slice(0, capacity) : sized;
+      if (typeof capacity === "number" && sized.length > capacity) {
+        onError?.({
+          code: "max_files",
+          message: "Too many files. Some were not added.",
+        });
+      }
+
+      for (const file of capped) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const dataUrl = reader.result as string;
+          setItems((prev) => [
+            ...prev,
+            {
+              filename: file.name,
+              id: nanoid(),
+              mediaType: file.type,
+              type: "file" as const,
+              url: dataUrl,
+            },
+          ]);
+        };
+        reader.readAsDataURL(file);
+      }
     },
-    [matchesAccept, maxFiles, maxFileSize, onError]
+    [matchesAccept, maxFiles, maxFileSize, onError, items.length]
   );
 
   const removeLocal = useCallback(
@@ -860,19 +847,9 @@ export const PromptInput = ({
       }
 
       try {
-        // Convert blob URLs to data URLs asynchronously
-        const convertedFiles: FileUIPart[] = await Promise.all(
-          files.map(async ({ id: _id, ...item }) => {
-            if (item.url?.startsWith("blob:")) {
-              const dataUrl = await convertBlobUrlToDataUrl(item.url);
-              // If conversion failed, keep the original blob URL
-              return {
-                ...item,
-                url: dataUrl ?? item.url,
-              };
-            }
-            return item;
-          })
+        // Files are already stored as data: URLs (no conversion needed)
+        const convertedFiles: FileUIPart[] = files.map(
+          ({ id: _id, ...item }) => item
         );
 
         const result = onSubmit({ files: convertedFiles, text }, event);

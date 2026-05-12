@@ -46,9 +46,8 @@ const nav: NavItem[] = [
   },
   {
     title: "Fiş Geçmişi",
-    url: "/purchases",
+    url: "/fis-gecmisi",
     icon: ReceiptIcon,
-    soon: true,
   },
   {
     title: "Asistan",

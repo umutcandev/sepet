@@ -5,6 +5,7 @@ import "./globals.css"
 import { AppShell } from "@/components/app-shell"
 import { LoginDialogHost } from "@/components/auth/login-dialog-host"
 import { SessionProvider } from "@/components/providers/session-provider"
+import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { getCurrentUser } from "@/lib/auth/session"
 import { cn } from "@/lib/utils"
@@ -41,6 +42,7 @@ export default async function RootLayout({
           <SessionProvider user={user}>
             <AppShell user={user}>{children}</AppShell>
             <LoginDialogHost />
+            <Toaster position="top-right" richColors />
           </SessionProvider>
         </TooltipProvider>
       </body>

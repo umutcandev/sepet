@@ -89,3 +89,71 @@ export type BasketDraft = z.infer<typeof BasketDraftSchema>
 export type MatchResult = z.infer<typeof MatchResultSchema>
 export type OptimizationSummary = z.infer<typeof OptimizationSummarySchema>
 export type MarketAllocation = z.infer<typeof MarketAllocationSchema>
+
+// ─── Fiş OCR (Gemini Vision) ───
+
+export const ReceiptOCRItemSchema = z.object({
+  rawName: z
+    .string()
+    .describe("Fişte yazdığı haliyle ürün adı, ör. 'EKMEK 250G' veya 'BEYAZ PEYNIR 500G'."),
+  quantity: z
+    .number()
+    .describe("Adet/miktar. Fişte yazmıyorsa 1.")
+    .default(1),
+  unit: z
+    .enum(UNIT_VALUES)
+    .describe("Birim. Belirsizse 'adet'.")
+    .default("adet"),
+  unitPrice: z
+    .number()
+    .nullable()
+    .describe("Birim fiyat (TL). Fişte yoksa null."),
+  totalPrice: z
+    .number()
+    .nullable()
+    .describe("Bu kalemin toplam tutarı (TL). Fişte yoksa null."),
+  searchQuery: z
+    .string()
+    .describe(
+      "Bu ürün için camgöz aramasına gönderilecek normalize Türkçe sorgu. Marka, birim, miktar İÇERMEZ. Ör. 'beyaz peynir', 'uht süt'. 2-3 kelime ideal.",
+    ),
+})
+
+export const ReceiptOCRSchema = z.object({
+  marketName: z
+    .string()
+    .nullable()
+    .describe("Marketin adı (A101, Migros, BİM, Şok, Carrefour vb.). Net okunmuyorsa null."),
+  purchaseDate: z
+    .string()
+    .nullable()
+    .describe("Alışveriş tarihi ISO formatta YYYY-MM-DD. Net okunmuyorsa null."),
+  totalAmount: z
+    .number()
+    .nullable()
+    .describe("Fişin genel toplamı (TL). Net okunmuyorsa null."),
+  items: z.array(ReceiptOCRItemSchema),
+})
+
+export const ReceiptComparisonItemSchema = z.object({
+  rawName: z.string(),
+  receiptUnitPrice: z.number().nullable(),
+  receiptTotalPrice: z.number().nullable(),
+  matchedBarcode: z.string().nullable(),
+  matchedName: z.string().nullable(),
+  bestMarket: z.string().nullable(),
+  bestPrice: z.number().nullable(),
+  savingsTL: z.number().nullable(),
+})
+
+export const ReceiptComparisonSchema = z.object({
+  items: z.array(ReceiptComparisonItemSchema),
+  totalReceiptAmount: z.number(),
+  totalBestAmount: z.number(),
+  totalSavingsTL: z.number(),
+})
+
+export type ReceiptOCR = z.infer<typeof ReceiptOCRSchema>
+export type ReceiptOCRItem = z.infer<typeof ReceiptOCRItemSchema>
+export type ReceiptComparison = z.infer<typeof ReceiptComparisonSchema>
+export type ReceiptComparisonItem = z.infer<typeof ReceiptComparisonItemSchema>
