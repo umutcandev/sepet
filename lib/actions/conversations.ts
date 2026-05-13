@@ -1,0 +1,205 @@
+"use server"
+
+import { revalidatePath } from "next/cache"
+import { and, asc, desc, eq, max } from "drizzle-orm"
+import type { UIMessage } from "ai"
+import { auth } from "@/auth"
+import { db, conversations, conversationMessages } from "@/lib/db"
+
+const TITLE_MAX = 100
+const SEED_TITLE_MAX = 60
+
+type StoredMessage = Pick<UIMessage, "id" | "role" | "parts"> & {
+  metadata?: unknown
+}
+
+function extractTitleFromMessage(msg: UIMessage): string {
+  const parts = msg.parts ?? []
+  for (const p of parts) {
+    if (p.type === "text") {
+      const text = (p as { text?: unknown }).text
+      if (typeof text === "string" && text.trim()) {
+        const trimmed = text.trim().replace(/\s+/g, " ")
+        return trimmed.length > SEED_TITLE_MAX
+          ? trimmed.slice(0, SEED_TITLE_MAX).trimEnd() + "…"
+          : trimmed
+      }
+    }
+  }
+  for (const p of parts) {
+    if (
+      p.type === "file" &&
+      typeof (p as { mediaType?: unknown }).mediaType === "string" &&
+      (p as { mediaType: string }).mediaType.startsWith("image/")
+    ) {
+      return "Fiş analizi"
+    }
+  }
+  return "Yeni sohbet"
+}
+
+export async function createConversation(input: {
+  firstUserMessage: UIMessage
+}): Promise<{ id: string; title: string }> {
+  const session = await auth()
+  if (!session?.user?.id) throw new Error("unauthorized")
+
+  const title = extractTitleFromMessage(input.firstUserMessage)
+  const [row] = await db
+    .insert(conversations)
+    .values({ userId: session.user.id, title })
+    .returning({ id: conversations.id, title: conversations.title })
+
+  if (!row) throw new Error("conversation_insert_failed")
+
+  revalidatePath("/assistant", "layout")
+  return { id: row.id, title: row.title }
+}
+
+export async function listConversations() {
+  const session = await auth()
+  if (!session?.user?.id) return []
+
+  return db
+    .select({
+      id: conversations.id,
+      title: conversations.title,
+      updatedAt: conversations.updatedAt,
+    })
+    .from(conversations)
+    .where(eq(conversations.userId, session.user.id))
+    .orderBy(desc(conversations.updatedAt))
+    .limit(100)
+}
+
+export async function getConversation(id: string): Promise<{
+  id: string
+  title: string
+  messages: StoredMessage[]
+} | null> {
+  const session = await auth()
+  if (!session?.user?.id) return null
+
+  const [conv] = await db
+    .select({
+      id: conversations.id,
+      title: conversations.title,
+    })
+    .from(conversations)
+    .where(
+      and(
+        eq(conversations.id, id),
+        eq(conversations.userId, session.user.id),
+      ),
+    )
+    .limit(1)
+
+  if (!conv) return null
+
+  const rows = await db
+    .select({
+      id: conversationMessages.id,
+      role: conversationMessages.role,
+      parts: conversationMessages.parts,
+      metadata: conversationMessages.metadata,
+    })
+    .from(conversationMessages)
+    .where(eq(conversationMessages.conversationId, id))
+    .orderBy(asc(conversationMessages.sequence))
+
+  const messages: StoredMessage[] = rows.map((r) => ({
+    id: r.id,
+    role: r.role as UIMessage["role"],
+    parts: (r.parts ?? []) as UIMessage["parts"],
+    metadata: r.metadata ?? undefined,
+  }))
+
+  return { id: conv.id, title: conv.title, messages }
+}
+
+export async function deleteConversation(id: string): Promise<void> {
+  const session = await auth()
+  if (!session?.user?.id) throw new Error("unauthorized")
+
+  await db
+    .delete(conversations)
+    .where(
+      and(
+        eq(conversations.id, id),
+        eq(conversations.userId, session.user.id),
+      ),
+    )
+
+  revalidatePath("/assistant", "layout")
+}
+
+export async function renameConversation(
+  id: string,
+  title: string,
+): Promise<void> {
+  const session = await auth()
+  if (!session?.user?.id) throw new Error("unauthorized")
+
+  const trimmed = title.trim().slice(0, TITLE_MAX)
+  if (!trimmed) throw new Error("empty_title")
+
+  await db
+    .update(conversations)
+    .set({ title: trimmed, updatedAt: new Date() })
+    .where(
+      and(
+        eq(conversations.id, id),
+        eq(conversations.userId, session.user.id),
+      ),
+    )
+
+  revalidatePath("/assistant", "layout")
+}
+
+export async function appendMessages(
+  conversationId: string,
+  userId: string,
+  msgs: Array<{
+    role: "user" | "assistant"
+    parts: unknown
+    metadata?: unknown
+  }>,
+): Promise<void> {
+  if (msgs.length === 0) return
+
+  // Authorize: ensure conversation belongs to user (cheap re-check)
+  const [owner] = await db
+    .select({ id: conversations.id })
+    .from(conversations)
+    .where(
+      and(
+        eq(conversations.id, conversationId),
+        eq(conversations.userId, userId),
+      ),
+    )
+    .limit(1)
+  if (!owner) throw new Error("conversation_not_found")
+
+  const [{ value: lastSeq }] = await db
+    .select({ value: max(conversationMessages.sequence) })
+    .from(conversationMessages)
+    .where(eq(conversationMessages.conversationId, conversationId))
+
+  let next = (lastSeq ?? 0) + 1
+  const rows = msgs.map((m) => ({
+    conversationId,
+    role: m.role,
+    parts: m.parts as object,
+    metadata: (m.metadata ?? null) as object | null,
+    sequence: next++,
+  }))
+
+  await db.insert(conversationMessages).values(rows)
+
+  await db
+    .update(conversations)
+    .set({ updatedAt: new Date() })
+    .where(eq(conversations.id, conversationId))
+
+  revalidatePath("/assistant", "layout")
+}

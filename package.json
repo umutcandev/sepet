@@ -32,6 +32,8 @@
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "@xyflow/react": "^12.10.2",
+    "@zxing/browser": "^0.2.0",
+    "@zxing/library": "^0.23.0",
     "ai": "^6.0.177",
     "ansi-to-react": "^6.2.6",
     "class-variance-authority": "^0.7.1",

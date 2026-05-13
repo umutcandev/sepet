@@ -20,6 +20,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { Badge } from "@/components/ui/badge"
 import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
 
@@ -78,28 +79,40 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <SparklesIcon
                 />
-                Upgrade to Pro
+                Pro'ya Yükselt
+                <Badge variant="secondary" className="ml-auto text-[10px]" >
+                  YAKINDA
+                </Badge>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <BadgeCheckIcon
                 />
-                Account
+                Hesap
+                <Badge variant="secondary" className="ml-auto text-[10px]" >
+                  YAKINDA
+                </Badge>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <CreditCardIcon
                 />
-                Billing
+                Faturalandırma
+                <Badge variant="secondary" className="ml-auto text-[10px]" >
+                  YAKINDA
+                </Badge>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <BellIcon
                 />
-                Notifications
+                Bildirimler
+                <Badge variant="secondary" className="ml-auto text-[10px]" >
+                  YAKINDA
+                </Badge>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

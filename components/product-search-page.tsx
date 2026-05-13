@@ -2,8 +2,9 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ImageIcon, SearchIcon } from "lucide-react"
+import { ImageIcon, ScanBarcodeIcon, SearchIcon } from "lucide-react"
 
+import { BarcodeScannerDialog } from "@/components/barcode-scanner-dialog"
 import { ProductDetailPanel } from "@/components/product-detail-panel"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -31,6 +32,7 @@ export function ProductSearchPage() {
   const [selectedBarcode, setSelectedBarcode] = React.useState<string | null>(
     null,
   )
+  const [scannerOpen, setScannerOpen] = React.useState(false)
   const abortRef = React.useRef<AbortController | null>(null)
   const guard = useRequireAuth()
 
@@ -41,8 +43,9 @@ export function ProductSearchPage() {
   const trimmed = q.trim()
   const canSubmit = trimmed.length >= 2 && result.kind !== "loading"
 
-  async function runSearch() {
-    if (!canSubmit) return
+  async function runSearchWith(query: string) {
+    const value = query.trim()
+    if (value.length < 2) return
     abortRef.current?.abort()
     const ctrl = new AbortController()
     abortRef.current = ctrl
@@ -50,7 +53,7 @@ export function ProductSearchPage() {
 
     try {
       const res = await fetch(
-        `/api/products/search?q=${encodeURIComponent(trimmed)}`,
+        `/api/products/search?q=${encodeURIComponent(value)}`,
         { signal: ctrl.signal },
       )
       if (!res.ok) {
@@ -61,11 +64,17 @@ export function ProductSearchPage() {
       }
       const data = (await res.json()) as { hits: ProductHit[] }
       if (ctrl.signal.aborted) return
-      setResult({ kind: "ok", query: trimmed, hits: data.hits })
+      setResult({ kind: "ok", query: value, hits: data.hits })
     } catch (err) {
       if ((err as Error).name === "AbortError") return
       setResult({ kind: "error", message: (err as Error).message })
     }
+  }
+
+  function handleBarcodeDetected(barcode: string) {
+    setScannerOpen(false)
+    setQ(barcode)
+    runSearchWith(barcode)
   }
 
   return (
@@ -81,7 +90,7 @@ export function ProductSearchPage() {
         // eslint-disable-next-line react-hooks/refs -- guard() returns an event handler invoked at event time, not during render
         onSubmit={guard((e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault()
-          runSearch()
+          runSearchWith(q)
         })}
         className="mb-6 flex max-w-xl items-center gap-2"
       >
@@ -98,6 +107,15 @@ export function ProductSearchPage() {
             inputMode="search"
           />
         </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="icon-lg"
+          aria-label="Barkod tara"
+          onClick={guard(() => setScannerOpen(true))}
+        >
+          <ScanBarcodeIcon className="size-4" />
+        </Button>
         <Button
           type="submit"
           size="sm"
@@ -131,6 +149,12 @@ export function ProductSearchPage() {
           )}
         </ResponsiveDialogContent>
       </ResponsiveDialog>
+
+      <BarcodeScannerDialog
+        open={scannerOpen}
+        onOpenChange={setScannerOpen}
+        onDetected={handleBarcodeDetected}
+      />
     </div>
   )
 }

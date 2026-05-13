@@ -6,6 +6,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   HomeIcon,
+  PlusIcon,
   ReceiptIcon,
   SparklesIcon,
   SearchIcon,
@@ -13,6 +14,10 @@ import {
 
 import { NavGuest } from "@/components/nav-guest"
 import { NavUser } from "@/components/nav-user"
+import {
+  AssistantConversationsGroup,
+  type ConversationListItem,
+} from "@/components/assistant/assistant-conversations-group"
 import {
   Sidebar,
   SidebarContent,
@@ -51,15 +56,22 @@ const nav: NavItem[] = [
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: CurrentUser | null
+  conversations?: ConversationListItem[]
 }
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
+export function AppSidebar({
+  user,
+  conversations,
+  ...props
+}: AppSidebarProps) {
   const pathname = usePathname()
   const { isMobile, setOpenMobile } = useSidebar()
 
   const handleNavClick = () => {
     if (isMobile) setOpenMobile(false)
   }
+
+  const showAssistantConversations = !!user
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -83,12 +95,38 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent>
+        {user ? (
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    size="default"
+                    variant="outline"
+                    tooltip="Yeni Sohbet"
+                    asChild
+                    className="h-9 justify-center font-medium"
+                  >
+                    <Link href="/assistant" onClick={handleNavClick}>
+                      <PlusIcon />
+                      <span>Yeni Sohbet</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ) : null}
+
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {nav.map((item) => {
                 const Icon = item.icon
-                const isActive = pathname === item.url
+                const isAssistant = item.url === "/assistant"
+                const isActive = isAssistant
+                  ? pathname === "/assistant"
+                  : pathname === item.url
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
@@ -117,6 +155,12 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {showAssistantConversations ? (
+          <AssistantConversationsGroup
+            conversations={conversations ?? []}
+          />
+        ) : null}
       </SidebarContent>
 
       <SidebarFooter>

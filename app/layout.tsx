@@ -8,6 +8,7 @@ import { SessionProvider } from "@/components/providers/session-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { getCurrentUser } from "@/lib/auth/session"
+import { listConversations } from "@/lib/actions/conversations"
 import { cn } from "@/lib/utils"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
@@ -32,15 +33,28 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const user = await getCurrentUser()
+  const conversations = user ? await listConversations() : []
   return (
     <html
       lang="tr"
       className={cn("style-nova antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
+      <head>
+        {!user && (
+          <link
+            rel="preload"
+            as="image"
+            href="/login-image.webp"
+            type="image/webp"
+          />
+        )}
+      </head>
       <body>
         <TooltipProvider>
           <SessionProvider user={user}>
-            <AppShell user={user}>{children}</AppShell>
+            <AppShell user={user} conversations={conversations}>
+              {children}
+            </AppShell>
             <LoginDialogHost />
             <Toaster position="top-right" richColors />
           </SessionProvider>
