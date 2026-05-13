@@ -12,6 +12,7 @@ import {
   lookupProducts,
 } from "@/lib/ai/tools"
 import { computeOptimization } from "@/lib/ai/optimize"
+import { STALE_DAY_THRESHOLD } from "@/lib/receipt-staleness"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -150,15 +151,61 @@ function buildReceiptComparisonText(comp: ReceiptComparison): string {
   if (comp.items.length === 0) {
     return "Fişindeki kalemleri çıkardım ama eşleşen ürün bulamadım."
   }
+  if (comp.staleness?.isStale) {
+    if (comp.staleness.reason === "date" && comp.staleness.ageLabel) {
+      return `Bu fiş ${comp.staleness.ageLabel} öncesine ait — o dönemin fiyatları bugünkü piyasayla karşılaştırılamaz. Aşağıdaki rakamlar yalnızca bugünün fiyatlarını gösterir, tasarruf hesabı anlamlı değil.`
+    }
+    return `Fişindeki tutar bugünkü fiyatlarla kıyaslanamayacak kadar düşük görünüyor — büyük olasılıkla farklı bir döneme ait. Aşağıdaki en iyi fiyatlar yalnızca güncel piyasa için geçerli; tasarruf hesabı yapmıyoruz.`
+  }
   if (comp.totalSavingsTL <= 0) {
     return `Fişindeki ${formatTL(comp.totalReceiptAmount)} TL'lik harcamana karşılık bulduğumuz en iyi fiyatlar zaten yakın — ek bir kazanç çıkmadı.`
   }
   return `Bu fişinde ${formatTL(comp.totalReceiptAmount)} TL harcamışsın. Bulduğumuz en iyi fiyatlarla aynı sepet ${formatTL(comp.totalBestAmount)} TL'ye geliyordu — yaklaşık ${formatTL(comp.totalSavingsTL)} TL tasarruf mümkündü.`
 }
 
+const STALE_RATIO_THRESHOLD = 3
+
+function formatAgeLabel(days: number): string {
+  if (days < 30) return `~${Math.max(1, Math.round(days / 7))} hafta`
+  if (days < 365) return `~${Math.round(days / 30)} ay`
+  return `~${Math.round(days / 365)} yıl`
+}
+
+function computeStaleness(input: {
+  purchaseDate: string | null
+  totalReceiptAmount: number
+  totalBestAmount: number
+  itemCount: number
+}): ReceiptComparison["staleness"] {
+  if (input.itemCount === 0) return null
+
+  let ageDays: number | null = null
+  let ageLabel: string | null = null
+  if (input.purchaseDate) {
+    const d = new Date(input.purchaseDate)
+    if (!Number.isNaN(d.getTime())) {
+      ageDays = Math.floor((Date.now() - d.getTime()) / 86_400_000)
+      if (ageDays >= 0) ageLabel = formatAgeLabel(ageDays)
+    }
+  }
+
+  const priceRatio =
+    input.totalReceiptAmount > 0
+      ? input.totalBestAmount / input.totalReceiptAmount
+      : null
+
+  let reason: "date" | "ratio" | null = null
+  if (ageDays != null && ageDays >= STALE_DAY_THRESHOLD) reason = "date"
+  else if (priceRatio != null && priceRatio >= STALE_RATIO_THRESHOLD) reason = "ratio"
+
+  return { isStale: reason !== null, reason, ageDays, ageLabel, priceRatio }
+}
+
 function computeReceiptComparison(
   payloadItems: ReceiptApprovalPayload["items"],
   matches: MatchResult[],
+  purchaseDate: string | null,
+  receiptTotalAmount: number | null,
 ): ReceiptComparison {
   const items = payloadItems.map((it, idx) => {
     const match = matches[idx]
@@ -190,10 +237,14 @@ function computeReceiptComparison(
     }
   })
 
-  const totalReceiptAmount = items.reduce(
+  const lineItemsTotal = items.reduce(
     (sum, i) => sum + (i.receiptTotalPrice ?? 0),
     0,
   )
+  const totalReceiptAmount =
+    receiptTotalAmount != null && receiptTotalAmount > 0
+      ? receiptTotalAmount
+      : lineItemsTotal
   const totalBestAmount = items.reduce(
     (sum, i, idx) =>
       sum +
@@ -205,7 +256,14 @@ function computeReceiptComparison(
     0,
   )
 
-  return { items, totalReceiptAmount, totalBestAmount, totalSavingsTL }
+  const staleness = computeStaleness({
+    purchaseDate,
+    totalReceiptAmount,
+    totalBestAmount,
+    itemCount: items.length,
+  })
+
+  return { items, totalReceiptAmount, totalBestAmount, totalSavingsTL, staleness }
 }
 
 export async function POST(req: Request) {
@@ -320,7 +378,12 @@ export async function POST(req: Request) {
           output: summary,
         })
 
-        const comparison = computeReceiptComparison(p.items, matches)
+        const comparison = computeReceiptComparison(
+          p.items,
+          matches,
+          p.purchaseDate ?? null,
+          p.totalAmount ?? null,
+        )
         const compareCallId = nanoid()
         writer.write({
           type: "tool-input-available",

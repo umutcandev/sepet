@@ -299,7 +299,7 @@ export function ReceiptApprovalCard({
             disabled={items.length === 0}
           >
             <CheckIcon className="mr-1 size-3.5" />
-            Onayla & karşılaştır
+            Onayla
           </Button>
         </div>
       )}

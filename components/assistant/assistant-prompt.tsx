@@ -1,16 +1,20 @@
 "use client"
 
 import * as React from "react"
-import { PaperclipIcon, XIcon } from "lucide-react"
+import { ImageIcon, PaperclipIcon, PlusIcon, XIcon } from "lucide-react"
 
 import {
   PromptInput,
   PromptInputBody,
   PromptInputFooter,
+  PromptInputHeader,
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-  PromptInputButton,
+  PromptInputActionMenu,
+  PromptInputActionMenuContent,
+  PromptInputActionMenuItem,
+  PromptInputActionMenuTrigger,
   usePromptInputAttachments,
   type PromptInputMessage,
 } from "@/components/ai-elements/prompt-input"
@@ -23,7 +27,6 @@ interface AssistantPromptProps {
   onSubmit: (message: PromptInputMessage) => void | Promise<void>
   className?: string
   // For Assistant Chat
-  isBusy?: boolean
   status?: ChatStatus
   onStop?: () => void
   // Custom submit button
@@ -36,7 +39,6 @@ export function AssistantPrompt({
   setInput,
   onSubmit,
   className,
-  isBusy,
   status,
   onStop,
   submitIcon,
@@ -47,24 +49,27 @@ export function AssistantPrompt({
       accept="image/*"
       maxFiles={1}
       onSubmit={onSubmit as any}
-      className={cn("rounded-xl border-primary/15 bg-background/70 shadow-sm backdrop-blur-sm", className)}
+      className={cn(
+        "rounded-xl border-ring/70 bg-muted shadow-sm",
+        "has-[[data-slot=input-group-control]:focus-visible]:border-ring/70 has-[[data-slot=input-group-control]:focus-visible]:ring-0",
+        "has-disabled:bg-muted has-disabled:opacity-100",
+        className,
+      )}
     >
+      <AttachmentHeader />
       <PromptInputBody>
-        <AttachmentPreviewStrip />
         <PromptInputTextarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Alışveriş listeni yaz ya da fişinin fotoğrafını yükle."
-          className="text-sm"
+          className="text-sm placeholder:text-foreground/60"
         />
       </PromptInputBody>
       <PromptInputFooter>
         <PromptInputTools>
-          <UploadReceiptButton />
+          <AddAttachmentMenu />
         </PromptInputTools>
         <SubmitButton
-          input={input}
-          isBusy={isBusy}
           status={status}
           onStop={onStop}
           submitIcon={submitIcon}
@@ -75,48 +80,52 @@ export function AssistantPrompt({
   )
 }
 
-function UploadReceiptButton() {
+function AddAttachmentMenu() {
   const att = usePromptInputAttachments()
   return (
-    <PromptInputButton
-      className="w-auto px-3 rounded-full text-xs font-normal"
-      onClick={() => att.openFileDialog()}
-    >
-      <PaperclipIcon className="mr-1.5 size-3.5" />
-      Fiş Yükle
-    </PromptInputButton>
+    <PromptInputActionMenu>
+      <PromptInputActionMenuTrigger className="rounded-full">
+        <PlusIcon className="size-4" />
+      </PromptInputActionMenuTrigger>
+      <PromptInputActionMenuContent>
+        <PromptInputActionMenuItem onSelect={() => att.openFileDialog()}>
+          <ImageIcon className="mr-2 size-4" />
+          Resim yükle
+        </PromptInputActionMenuItem>
+      </PromptInputActionMenuContent>
+    </PromptInputActionMenu>
   )
 }
 
-function AttachmentPreviewStrip() {
+function AttachmentHeader() {
   const att = usePromptInputAttachments()
   if (att.files.length === 0) return null
   return (
-    <div className="flex flex-wrap gap-2 px-3 pt-3">
+    <PromptInputHeader className="justify-start px-2.5 pt-2 pb-0">
       {att.files.map((f) => {
         const isImage = f.mediaType?.startsWith("image/")
         return (
           <div
             key={f.id}
-            className="group relative flex items-center gap-2 rounded-lg border bg-background/60 px-2 py-1.5 text-xs"
+            className="group relative inline-flex items-center gap-1.5 rounded-full border bg-background/80 py-1 pr-1 pl-1 text-xs"
           >
             {isImage && f.url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={f.url}
                 alt={f.filename ?? "fiş"}
-                className="size-8 rounded object-cover"
+                className="size-5 rounded-full object-cover"
               />
             ) : (
-              <PaperclipIcon className="size-4 text-muted-foreground" />
+              <PaperclipIcon className="ml-1 size-3.5 text-muted-foreground" />
             )}
-            <span className="max-w-[140px] truncate">
+            <span className="max-w-[120px] truncate">
               {f.filename ?? "Fiş fotoğrafı"}
             </span>
             <button
               type="button"
               onClick={() => att.remove(f.id)}
-              className="ml-1 rounded-full p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="ml-0.5 rounded-full p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground"
               aria-label="Eki kaldır"
             >
               <XIcon className="size-3" />
@@ -124,27 +133,21 @@ function AttachmentPreviewStrip() {
           </div>
         )
       })}
-    </div>
+    </PromptInputHeader>
   )
 }
 
 function SubmitButton({
-  input,
-  isBusy,
   status,
   onStop,
   submitIcon,
   submitLabel,
 }: {
-  input: string
-  isBusy?: boolean
   status?: ChatStatus
   onStop?: () => void
   submitIcon?: React.ReactNode
   submitLabel?: React.ReactNode
 }) {
-  const att = usePromptInputAttachments()
-  const hasContent = !!input.trim() || att.files.length > 0
   const isGenerating = status === "submitted" || status === "streaming"
 
   // Use "sm" when displaying text so it's not square, otherwise "icon-sm"
@@ -154,7 +157,6 @@ function SubmitButton({
     <PromptInputSubmit
       status={status}
       onStop={onStop}
-      disabled={!hasContent && !isBusy}
       className={cn("ml-auto", submitLabel && !isGenerating && "px-3 rounded-full")}
       size={size}
     >

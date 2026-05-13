@@ -1,7 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, Loader2Icon, SaveIcon, TrendingDownIcon } from "lucide-react"
+import {
+  CheckIcon,
+  InfoIcon,
+  Loader2Icon,
+  SaveIcon,
+  TrendingDownIcon,
+} from "lucide-react"
 import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -48,6 +54,15 @@ export function ReceiptComparisonCard({
   const { comparison, receiptContext, summary, matches } = data
 
   const canSave = !!receiptContext.imageR2Key
+  const isStale = !!comparison.staleness?.isStale
+  const staleLabel = (() => {
+    const s = comparison.staleness
+    if (!s?.isStale) return null
+    if (s.reason === "date" && s.ageLabel) {
+      return `${s.ageLabel} öncesi • bilgi amaçlı`
+    }
+    return "Farklı dönem • bilgi amaçlı"
+  })()
 
   async function handleSave() {
     if (!canSave || saving || savedId) return
@@ -77,15 +92,25 @@ export function ReceiptComparisonCard({
   return (
     <div className="rounded-xl border bg-card">
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
-        <TrendingDownIcon className="size-4 text-emerald-600 dark:text-emerald-400" />
+        {isStale ? (
+          <InfoIcon className="size-4 text-muted-foreground" />
+        ) : (
+          <TrendingDownIcon className="size-4 text-emerald-600 dark:text-emerald-400" />
+        )}
         <span className="text-sm font-medium">Fiş Karşılaştırması</span>
-        {comparison.totalSavingsTL > 0 && (
-          <Badge
-            variant="outline"
-            className="ml-auto border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
-          >
-            {formatTL(comparison.totalSavingsTL)} tasarruf mümkündü
+        {isStale ? (
+          <Badge variant="outline" className="ml-auto text-muted-foreground">
+            {staleLabel}
           </Badge>
+        ) : (
+          comparison.totalSavingsTL > 0 && (
+            <Badge
+              variant="outline"
+              className="ml-auto border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
+            >
+              {formatTL(comparison.totalSavingsTL)} tasarruf mümkündü
+            </Badge>
+          )
         )}
       </div>
 
@@ -131,7 +156,7 @@ export function ReceiptComparisonCard({
                   <TableCell className="text-right tabular-nums">
                     {it.savingsTL == null ? (
                       <span className="text-xs text-muted-foreground">—</span>
-                    ) : hasSavings ? (
+                    ) : hasSavings && !isStale ? (
                       <span className="font-medium text-emerald-700 dark:text-emerald-300">
                         −{formatTL(it.savingsTL)}
                       </span>
@@ -161,6 +186,11 @@ export function ReceiptComparisonCard({
             <span className="font-semibold text-foreground tabular-nums">
               {formatTL(comparison.totalBestAmount)}
             </span>
+            {isStale && (
+              <span className="ml-1 text-[11px] text-muted-foreground">
+                (bugünkü piyasaya göre)
+              </span>
+            )}
           </span>
         </div>
         <div className="ml-auto flex items-center gap-2">

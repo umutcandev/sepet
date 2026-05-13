@@ -239,7 +239,7 @@ export function AssistantChat() {
                           return renderToolPart(
                             key,
                             part,
-                            "Listeni okuyorum…",
+                            "Hallediyorum…",
                             (out) => (
                               <ParsedItemsCard data={out as BasketDraft} />
                             ),
@@ -319,7 +319,6 @@ export function AssistantChat() {
         setInput={setInput}
         onSubmit={handleSubmit}
         className="mx-auto mt-3 w-full max-w-3xl"
-        isBusy={isBusy}
         status={status}
         onStop={stop}
       />

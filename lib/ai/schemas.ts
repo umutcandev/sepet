@@ -146,11 +146,20 @@ export const ReceiptComparisonItemSchema = z.object({
   savingsTL: z.number().nullable(),
 })
 
+export const ReceiptStalenessSchema = z.object({
+  isStale: z.boolean(),
+  reason: z.enum(["date", "ratio"]).nullable(),
+  ageDays: z.number().nullable(),
+  ageLabel: z.string().nullable(),
+  priceRatio: z.number().nullable(),
+})
+
 export const ReceiptComparisonSchema = z.object({
   items: z.array(ReceiptComparisonItemSchema),
   totalReceiptAmount: z.number(),
   totalBestAmount: z.number(),
   totalSavingsTL: z.number(),
+  staleness: ReceiptStalenessSchema.nullable(),
 })
 
 export type ReceiptOCR = z.infer<typeof ReceiptOCRSchema>

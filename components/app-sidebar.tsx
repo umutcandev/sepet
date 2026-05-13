@@ -6,7 +6,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   HomeIcon,
-  ShoppingBasketIcon,
   ReceiptIcon,
   SparklesIcon,
   SearchIcon,
@@ -38,12 +37,6 @@ type NavItem = {
 const nav: NavItem[] = [
   { title: "Ana Sayfa", url: "/", icon: HomeIcon },
   { title: "Ürün Ara", url: "/search", icon: SearchIcon },
-  {
-    title: "Sepetlerim",
-    url: "/baskets",
-    icon: ShoppingBasketIcon,
-    soon: true,
-  },
   {
     title: "Fiş Geçmişi",
     url: "/fis-gecmisi",

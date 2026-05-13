@@ -36,6 +36,9 @@ export async function saveReceipt(input: {
   const totalAmount =
     input.totalAmount ?? input.comparison.totalReceiptAmount ?? null
 
+  const isStale = !!input.comparison.staleness?.isStale
+  const persistedSavings = isStale ? 0 : input.comparison.totalSavingsTL
+
   const [inserted] = await db
     .insert(receipts)
     .values({
@@ -50,7 +53,7 @@ export async function saveReceipt(input: {
       ocrModel: "gemini-2.5-flash",
       bestSingleMarket: bestSingle?.market ?? null,
       bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
-      potentialSavingsTL: input.comparison.totalSavingsTL.toFixed(2),
+      potentialSavingsTL: persistedSavings.toFixed(2),
       summaryJson: input.summary,
     })
     .returning({ id: receipts.id })
@@ -79,8 +82,11 @@ export async function saveReceipt(input: {
           bestMarket: comp?.bestMarket ?? null,
           bestPrice:
             comp?.bestPrice != null ? comp.bestPrice.toFixed(2) : null,
-          savingsTL:
-            comp?.savingsTL != null ? comp.savingsTL.toFixed(2) : null,
+          savingsTL: isStale
+            ? null
+            : comp?.savingsTL != null
+              ? comp.savingsTL.toFixed(2)
+              : null,
         }
       }),
     )

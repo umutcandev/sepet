@@ -3,6 +3,7 @@ import Link from "next/link"
 import { SparklesIcon, ChevronRightIcon } from "lucide-react"
 import { auth } from "@/auth"
 import { listReceipts } from "@/lib/actions/receipts"
+import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -84,9 +85,11 @@ export default async function ReceiptsHistoryPage() {
             </TableHeader>
             <TableBody>
               {rows.map((r) => {
-                const savings = r.potentialSavingsTL
-                  ? Number(r.potentialSavingsTL)
-                  : 0
+                const isStale = isReceiptStaleByDate(r.purchaseDate)
+                const savings =
+                  !isStale && r.potentialSavingsTL
+                    ? Number(r.potentialSavingsTL)
+                    : 0
                 return (
                   <TableRow
                     key={r.id}

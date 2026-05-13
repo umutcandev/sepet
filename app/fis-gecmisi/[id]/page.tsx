@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation"
 import { ChevronLeftIcon } from "lucide-react"
 import { auth } from "@/auth"
 import { getReceiptDetail } from "@/lib/actions/receipts"
+import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -42,9 +43,11 @@ export default async function ReceiptDetailPage({
   if (!detail) notFound()
   const { receipt, items } = detail
 
-  const totalSavings = receipt.potentialSavingsTL
-    ? Number(receipt.potentialSavingsTL)
-    : 0
+  const isStale = isReceiptStaleByDate(receipt.purchaseDate)
+  const totalSavings =
+    !isStale && receipt.potentialSavingsTL
+      ? Number(receipt.potentialSavingsTL)
+      : 0
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
@@ -110,18 +113,25 @@ export default async function ReceiptDetailPage({
                   </dd>
                 </div>
               )}
-              {totalSavings > 0 && (
-                <div className="mt-1 flex items-center justify-between gap-3 rounded-lg bg-emerald-500/10 px-2 py-1.5">
-                  <span className="text-xs text-emerald-700 dark:text-emerald-300">
-                    Tasarruf edebilirdin
-                  </span>
-                  <Badge
-                    variant="outline"
-                    className="border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
-                  >
-                    {tl.format(totalSavings)}
-                  </Badge>
+              {isStale ? (
+                <div className="mt-1 rounded-lg bg-muted/50 px-2 py-1.5 text-[11px] text-muted-foreground">
+                  Bu fiş 6 aydan eski — bugünkü piyasayla kıyaslanmıyor,
+                  tasarruf hesabı gösterilmiyor.
                 </div>
+              ) : (
+                totalSavings > 0 && (
+                  <div className="mt-1 flex items-center justify-between gap-3 rounded-lg bg-emerald-500/10 px-2 py-1.5">
+                    <span className="text-xs text-emerald-700 dark:text-emerald-300">
+                      Tasarruf edebilirdin
+                    </span>
+                    <Badge
+                      variant="outline"
+                      className="border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
+                    >
+                      {tl.format(totalSavings)}
+                    </Badge>
+                  </div>
+                )
               )}
             </dl>
           </div>
@@ -148,7 +158,8 @@ export default async function ReceiptDetailPage({
               </TableHeader>
               <TableBody>
                 {items.map((it) => {
-                  const savings = it.savingsTL ? Number(it.savingsTL) : 0
+                  const savings =
+                    !isStale && it.savingsTL ? Number(it.savingsTL) : 0
                   return (
                     <TableRow key={it.id}>
                       <TableCell className="align-top">
