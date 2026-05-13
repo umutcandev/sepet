@@ -6,9 +6,20 @@ import {
 } from "ai"
 import { nanoid } from "nanoid"
 import { auth } from "@/auth"
-import { parseShoppingList, lookupProducts } from "@/lib/ai/tools"
+import {
+  parseShoppingList,
+  parseReceiptImage,
+  lookupProducts,
+} from "@/lib/ai/tools"
 import { computeOptimization } from "@/lib/ai/optimize"
-import type { MatchResult, OptimizationSummary } from "@/lib/ai/schemas"
+import { STALE_DAY_THRESHOLD } from "@/lib/receipt-staleness"
+import type {
+  MatchResult,
+  OptimizationSummary,
+  ParsedItem,
+  ReceiptOCR,
+  ReceiptComparison,
+} from "@/lib/ai/schemas"
 
 export const runtime = "nodejs"
 export const maxDuration = 60
@@ -16,21 +27,79 @@ export const maxDuration = 60
 const FALLBACK_TEXT =
   'Sana yardım edebilmem için alışveriş listeni yazar mısın? Örnek: "2 ekmek, 1 lt süt, 500g beyaz peynir".'
 
-function extractLastUserText(messages: UIMessage[]): string {
+type LastUserMode =
+  | { kind: "receiptApproval"; payload: ReceiptApprovalPayload }
+  | { kind: "receiptImage"; imageUrl: string; imageR2Key?: string; text: string }
+  | { kind: "text"; text: string }
+  | { kind: "empty" }
+
+type ReceiptApprovalPayload = {
+  receiptImageUrl: string
+  receiptImageR2Key: string
+  marketName: string | null
+  purchaseDate: string | null
+  totalAmount: number | null
+  items: Array<{
+    rawName: string
+    searchQuery: string
+    quantity: number
+    unit: ParsedItem["unit"]
+    unitPrice: number | null
+    totalPrice: number | null
+  }>
+}
+
+function detectLastUserMode(messages: UIMessage[]): LastUserMode {
   for (let i = messages.length - 1; i >= 0; i--) {
     const m = messages[i]
     if (m.role !== "user") continue
-    const text = (m.parts ?? [])
-      .filter(
-        (p): p is { type: "text"; text: string } =>
-          p.type === "text" && typeof (p as { text?: unknown }).text === "string",
-      )
-      .map((p) => p.text)
-      .join(" ")
-      .trim()
-    if (text) return text
+
+    const meta = (m as { metadata?: unknown }).metadata as
+      | { kind?: string; payload?: ReceiptApprovalPayload }
+      | undefined
+    if (meta?.kind === "receiptApproval" && meta.payload) {
+      return { kind: "receiptApproval", payload: meta.payload }
+    }
+
+    const parts = m.parts ?? []
+    let imageUrl: string | null = null
+    let imageR2Key: string | undefined
+    let textBuf = ""
+
+    for (const p of parts) {
+      if (
+        p.type === "file" &&
+        typeof (p as { mediaType?: unknown }).mediaType === "string" &&
+        (p as { mediaType: string }).mediaType.startsWith("image/")
+      ) {
+        const url = (p as { url?: unknown }).url
+        if (typeof url === "string") imageUrl = url
+        // Client passes the R2 object key via `filename` field.
+        const fn = (p as { filename?: unknown }).filename
+        if (typeof fn === "string" && fn.startsWith("receipts/")) {
+          imageR2Key = fn
+        }
+      } else if (
+        p.type === "text" &&
+        typeof (p as { text?: unknown }).text === "string"
+      ) {
+        textBuf += " " + (p as { text: string }).text
+      }
+    }
+
+    if (imageUrl) {
+      return {
+        kind: "receiptImage",
+        imageUrl,
+        imageR2Key,
+        text: textBuf.trim(),
+      }
+    }
+    const text = textBuf.trim()
+    if (text) return { kind: "text", text }
+    return { kind: "empty" }
   }
-  return ""
+  return { kind: "empty" }
 }
 
 function formatTL(n: number) {
@@ -78,6 +147,125 @@ function buildSummaryText(
   return head + missingPart
 }
 
+function buildReceiptComparisonText(comp: ReceiptComparison): string {
+  if (comp.items.length === 0) {
+    return "Fişindeki kalemleri çıkardım ama eşleşen ürün bulamadım."
+  }
+  if (comp.staleness?.isStale) {
+    if (comp.staleness.reason === "date" && comp.staleness.ageLabel) {
+      return `Bu fiş ${comp.staleness.ageLabel} öncesine ait — o dönemin fiyatları bugünkü piyasayla karşılaştırılamaz. Aşağıdaki rakamlar yalnızca bugünün fiyatlarını gösterir, tasarruf hesabı anlamlı değil.`
+    }
+    return `Fişindeki tutar bugünkü fiyatlarla kıyaslanamayacak kadar düşük görünüyor — büyük olasılıkla farklı bir döneme ait. Aşağıdaki en iyi fiyatlar yalnızca güncel piyasa için geçerli; tasarruf hesabı yapmıyoruz.`
+  }
+  if (comp.totalSavingsTL <= 0) {
+    return `Fişindeki ${formatTL(comp.totalReceiptAmount)} TL'lik harcamana karşılık bulduğumuz en iyi fiyatlar zaten yakın — ek bir kazanç çıkmadı.`
+  }
+  return `Bu fişinde ${formatTL(comp.totalReceiptAmount)} TL harcamışsın. Bulduğumuz en iyi fiyatlarla aynı sepet ${formatTL(comp.totalBestAmount)} TL'ye geliyordu — yaklaşık ${formatTL(comp.totalSavingsTL)} TL tasarruf mümkündü.`
+}
+
+const STALE_RATIO_THRESHOLD = 3
+
+function formatAgeLabel(days: number): string {
+  if (days < 30) return `~${Math.max(1, Math.round(days / 7))} hafta`
+  if (days < 365) return `~${Math.round(days / 30)} ay`
+  return `~${Math.round(days / 365)} yıl`
+}
+
+function computeStaleness(input: {
+  purchaseDate: string | null
+  totalReceiptAmount: number
+  totalBestAmount: number
+  itemCount: number
+}): ReceiptComparison["staleness"] {
+  if (input.itemCount === 0) return null
+
+  let ageDays: number | null = null
+  let ageLabel: string | null = null
+  if (input.purchaseDate) {
+    const d = new Date(input.purchaseDate)
+    if (!Number.isNaN(d.getTime())) {
+      ageDays = Math.floor((Date.now() - d.getTime()) / 86_400_000)
+      if (ageDays >= 0) ageLabel = formatAgeLabel(ageDays)
+    }
+  }
+
+  const priceRatio =
+    input.totalReceiptAmount > 0
+      ? input.totalBestAmount / input.totalReceiptAmount
+      : null
+
+  let reason: "date" | "ratio" | null = null
+  if (ageDays != null && ageDays >= STALE_DAY_THRESHOLD) reason = "date"
+  else if (priceRatio != null && priceRatio >= STALE_RATIO_THRESHOLD) reason = "ratio"
+
+  return { isStale: reason !== null, reason, ageDays, ageLabel, priceRatio }
+}
+
+function computeReceiptComparison(
+  payloadItems: ReceiptApprovalPayload["items"],
+  matches: MatchResult[],
+  purchaseDate: string | null,
+  receiptTotalAmount: number | null,
+): ReceiptComparison {
+  const items = payloadItems.map((it, idx) => {
+    const match = matches[idx]
+    const best = match?.bestMatch ?? null
+    const minPrice = best?.minPrice ?? null
+    const marketWithMin = best
+      ? match.marketPrices.find((mp) => mp.price === minPrice) ?? null
+      : null
+    const bestMarket = marketWithMin?.market ?? null
+    const bestPrice = minPrice ?? null
+    // Fişteki toplam tutarla en iyi (birim fiyat * quantity) karşılaştır
+    const receiptTotal =
+      it.totalPrice ??
+      (it.unitPrice != null ? it.unitPrice * it.quantity : null)
+    const bestTotal = bestPrice != null ? bestPrice * it.quantity : null
+    const savingsTL =
+      receiptTotal != null && bestTotal != null
+        ? Math.max(0, receiptTotal - bestTotal)
+        : null
+    return {
+      rawName: it.rawName,
+      receiptUnitPrice: it.unitPrice,
+      receiptTotalPrice: receiptTotal,
+      matchedBarcode: best?.barcode ?? null,
+      matchedName: best?.name ?? null,
+      bestMarket,
+      bestPrice,
+      savingsTL,
+    }
+  })
+
+  const lineItemsTotal = items.reduce(
+    (sum, i) => sum + (i.receiptTotalPrice ?? 0),
+    0,
+  )
+  const totalReceiptAmount =
+    receiptTotalAmount != null && receiptTotalAmount > 0
+      ? receiptTotalAmount
+      : lineItemsTotal
+  const totalBestAmount = items.reduce(
+    (sum, i, idx) =>
+      sum +
+      (i.bestPrice != null ? i.bestPrice * payloadItems[idx].quantity : 0),
+    0,
+  )
+  const totalSavingsTL = items.reduce(
+    (sum, i) => sum + (i.savingsTL ?? 0),
+    0,
+  )
+
+  const staleness = computeStaleness({
+    purchaseDate,
+    totalReceiptAmount,
+    totalBestAmount,
+    itemCount: items.length,
+  })
+
+  return { items, totalReceiptAmount, totalBestAmount, totalSavingsTL, staleness }
+}
+
 export async function POST(req: Request) {
   const session = await auth()
   if (!session?.user) {
@@ -96,15 +284,138 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "no_messages" }, { status: 400 })
   }
 
-  const rawText = extractLastUserText(messages)
-  if (!rawText) {
-    return NextResponse.json({ error: "no_text" }, { status: 400 })
+  const mode = detectLastUserMode(messages)
+  if (mode.kind === "empty") {
+    return NextResponse.json({ error: "no_input" }, { status: 400 })
   }
 
   const stream = createUIMessageStream({
     execute: async ({ writer }) => {
       writer.write({ type: "start" })
 
+      if (mode.kind === "receiptImage") {
+        const parseCallId = nanoid()
+        writer.write({
+          type: "tool-input-available",
+          toolCallId: parseCallId,
+          toolName: "parseReceipt",
+          input: { imageUrl: mode.imageUrl },
+        })
+
+        let ocr: ReceiptOCR
+        try {
+          ocr = await parseReceiptImage(mode.imageUrl)
+        } catch (err) {
+          console.error("[assistant/chat] receipt OCR failed", err)
+          writer.write({
+            type: "tool-output-error",
+            toolCallId: parseCallId,
+            errorText:
+              "Fişi okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
+          })
+          writer.write({ type: "finish" })
+          return
+        }
+
+        writer.write({
+          type: "tool-output-available",
+          toolCallId: parseCallId,
+          output: {
+            ocr,
+            receiptImageUrl: mode.imageUrl,
+            receiptImageR2Key: mode.imageR2Key ?? null,
+          },
+        })
+
+        emitText(
+          writer,
+          ocr.items.length === 0
+            ? "Fişten ürün çıkartamadım. Lütfen tüm satırların net göründüğü bir kare çek."
+            : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et ve düzeltmelerini yap — ardından karşılaştırma için onayla.",
+        )
+        writer.write({ type: "finish" })
+        return
+      }
+
+      if (mode.kind === "receiptApproval") {
+        const p = mode.payload
+        const parsedItems: ParsedItem[] = p.items.map((it) => ({
+          name: it.rawName,
+          searchQuery: it.searchQuery,
+          quantity: it.quantity,
+          unit: it.unit,
+        }))
+
+        const lookupCallId = nanoid()
+        writer.write({
+          type: "tool-input-available",
+          toolCallId: lookupCallId,
+          toolName: "lookupProducts",
+          input: { items: parsedItems },
+        })
+
+        const { matches } = await lookupProducts(parsedItems)
+
+        writer.write({
+          type: "tool-output-available",
+          toolCallId: lookupCallId,
+          output: { matches },
+        })
+
+        const summarizeCallId = nanoid()
+        writer.write({
+          type: "tool-input-available",
+          toolCallId: summarizeCallId,
+          toolName: "summarizeOptimization",
+          input: { matches },
+        })
+
+        const summary = computeOptimization(matches)
+
+        writer.write({
+          type: "tool-output-available",
+          toolCallId: summarizeCallId,
+          output: summary,
+        })
+
+        const comparison = computeReceiptComparison(
+          p.items,
+          matches,
+          p.purchaseDate ?? null,
+          p.totalAmount ?? null,
+        )
+        const compareCallId = nanoid()
+        writer.write({
+          type: "tool-input-available",
+          toolCallId: compareCallId,
+          toolName: "receiptComparison",
+          input: {},
+        })
+        writer.write({
+          type: "tool-output-available",
+          toolCallId: compareCallId,
+          output: {
+            comparison,
+            receiptContext: {
+              imageUrl: p.receiptImageUrl,
+              imageR2Key: p.receiptImageR2Key,
+              marketName: p.marketName,
+              purchaseDate: p.purchaseDate,
+              totalAmount: p.totalAmount,
+              items: p.items,
+            },
+            summary,
+            matches,
+          },
+        })
+
+        emitText(writer, buildReceiptComparisonText(comparison))
+        writer.write({ type: "finish" })
+        return
+      }
+
+      // Text mode (existing)
+      const rawText = mode.text
       const parseCallId = nanoid()
       writer.write({
         type: "tool-input-available",

@@ -51,9 +51,6 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                 )}
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                <span className="truncate text-xs text-muted-foreground">
-                  {m.rawName}
-                </span>
                 {m.bestMatch ? (
                   <>
                     <span className="truncate text-sm font-medium">
@@ -103,7 +100,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                   className="group flex w-full items-center justify-center gap-1.5 border-t bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/60"
                 >
                   <span>
-                    Diğer marketlerdeki fiyat ({otherPrices.length})
+                    Diğer marketlerdeki fiyatları gör
                   </span>
                   <ChevronDownIcon className="size-3.5 transition-transform group-data-[state=open]:rotate-180" />
                 </CollapsibleTrigger>

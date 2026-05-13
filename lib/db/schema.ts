@@ -6,6 +6,7 @@ import {
   numeric,
   boolean,
   uuid,
+  jsonb,
   primaryKey,
   uniqueIndex,
   index,
@@ -104,4 +105,65 @@ export const priceSnapshots = pgTable(
     ),
     index("price_snapshot_market_product_idx").on(t.marketName, t.productId),
   ],
+)
+
+// ─── Fiş OCR: receipts + items ───
+
+export const receipts = pgTable(
+  "receipt",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    marketName: text("marketName"),
+    purchaseDate: timestamp("purchaseDate", { mode: "date" }),
+    totalAmount: numeric("totalAmount", { precision: 10, scale: 2 }),
+    imageUrl: text("imageUrl").notNull(),
+    imageR2Key: text("imageR2Key").notNull(),
+    ocrModel: text("ocrModel").notNull().default("gemini-2.5-flash"),
+    bestSingleMarket: text("bestSingleMarket"),
+    bestSingleTotal: numeric("bestSingleTotal", { precision: 10, scale: 2 }),
+    potentialSavingsTL: numeric("potentialSavingsTL", {
+      precision: 10,
+      scale: 2,
+    }),
+    summaryJson: jsonb("summaryJson"),
+    createdAt: timestamp("createdAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    index("receipt_user_created_idx").on(t.userId, t.createdAt.desc()),
+  ],
+)
+
+export const receiptItems = pgTable(
+  "receipt_item",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    receiptId: uuid("receiptId")
+      .notNull()
+      .references(() => receipts.id, { onDelete: "cascade" }),
+    rawName: text("rawName").notNull(),
+    searchQuery: text("searchQuery"),
+    quantity: numeric("quantity", { precision: 10, scale: 3 })
+      .notNull()
+      .default("1"),
+    unit: text("unit").notNull().default("adet"),
+    receiptUnitPrice: numeric("receiptUnitPrice", {
+      precision: 10,
+      scale: 2,
+    }),
+    receiptTotalPrice: numeric("receiptTotalPrice", {
+      precision: 10,
+      scale: 2,
+    }),
+    matchedBarcode: text("matchedBarcode"),
+    matchedName: text("matchedName"),
+    bestMarket: text("bestMarket"),
+    bestPrice: numeric("bestPrice", { precision: 10, scale: 2 }),
+    savingsTL: numeric("savingsTL", { precision: 10, scale: 2 }),
+  },
+  (t) => [index("receipt_item_receipt_idx").on(t.receiptId)],
 )

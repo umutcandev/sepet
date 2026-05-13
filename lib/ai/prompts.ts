@@ -77,3 +77,38 @@ Kullanıcı metni:
 """
 ${rawText}
 """`
+
+export const RECEIPT_OCR_PROMPT = `Sana bir Türk market fişinin fotoğrafı verildi. Görseli analiz et ve yapılandırılmış veri çıkar.
+
+ÇIKARILACAK BİLGİLER:
+1) marketName — Fişin tepesindeki market adı (A101, BİM, Migros, Şok, Carrefour vb.). Net okunmuyorsa null.
+2) purchaseDate — Tarih (ISO YYYY-MM-DD). Fişte 12.05.2026 / 12/05/26 gibi yazıyorsa ISO'ya çevir. Net okunmuyorsa null.
+3) totalAmount — Genel toplam (TL). "TOPLAM", "GENEL TOPLAM", "TOPKDV" satırı. Net okunmuyorsa null.
+4) items — Her ürün için bir kayıt.
+
+ÜRÜN SATIRLARI:
+- Genelde: ürün adı + adet + birim fiyat + toplam tutar şeklinde dizilir.
+- ASLA ürün olarak sayma: KDV satırları, indirimler/iskonto, "TOPLAM", "ARA TOPLAM", "PARA ÜSTÜ", "NAKİT", "KREDİ KARTI", "FİŞ NO", "MÜŞTERİ", "KASA" satırları.
+- Açık seçik okunamayan satırları atla. Tahmin etme.
+
+HER ÜRÜN İÇİN:
+- rawName: Fişte yazdığı haliyle (büyük harf normalmiş — olduğu gibi bırak ya da Title Case'e çevir, ör. "ETI CIN 270G").
+- quantity: Adet/miktar. "2 X" gibi yazıyorsa 2. Tek kalem ise 1. Sayı yoksa 1.
+- unit: "adet" | "kg" | "g" | "l" | "ml" | "paket". Belirsizse "adet".
+- unitPrice: Birim fiyat TL (sayı). Yoksa null.
+- totalPrice: Bu kalemin toplam tutarı TL. Yoksa null.
+- searchQuery: camgöz.net Türkiye market arama API'sine gönderilecek normalize Türkçe sorgu. KURALLAR:
+  · ASLA sayı içermez ("250", "1.5", "yarım" sil).
+  · ASLA birim sözcüğü içermez ("g", "kg", "lt", "ml", "paket", "tane", "adet", "kutu", "şişe" sil).
+  · Türkçe karakterler korunur (büyük harf yazıldıysa lowercase'e çevir).
+  · Marka adı varsa KORU (ör. "ETI CIN" → "eti cin", "ÜLKER ALBENI" → "ülker albeni").
+  · 2-3 kelime ideal.
+
+ÖRNEKLER:
+- "ETI CIN 270G" → rawName="ETI CIN 270G", quantity=1, unit="paket", searchQuery="eti cin"
+- "EKMEK 250G x2" → rawName="EKMEK 250G", quantity=2, unit="adet", searchQuery="ekmek"
+- "ULUDAG GAZOZ 1LT" → rawName="ULUDAG GAZOZ 1LT", quantity=1, unit="l", searchQuery="uludağ gazoz"
+- "ICIM SUT 1LT 2X" → rawName="ICIM SUT 1LT", quantity=2, unit="l", searchQuery="içim süt"
+- "BEYAZ PEYNIR 500G" → rawName="BEYAZ PEYNIR 500G", quantity=500, unit="g", searchQuery="beyaz peynir"
+
+EMİN OL: Sadece ürün olduğu net olan satırları çıkar. Şüphede atla.`

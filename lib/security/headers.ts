@@ -8,7 +8,7 @@ const CSP = [
   "default-src 'self'",
   `script-src ${scriptSrc}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://lh3.googleusercontent.com https://file.camgoz.net",
+  "img-src 'self' data: blob: https://lh3.googleusercontent.com https://file.camgoz.net https://cdn.trysepet.com https://pub-35b1290eb3ac4f07b50824e8f7d12f48.r2.dev",
   "font-src 'self' data:",
   "connect-src 'self' https://accounts.google.com https://*.upstash.io",
   "frame-src https://accounts.google.com",
