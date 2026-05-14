@@ -8,6 +8,32 @@ const nextConfig = {
       { protocol: "https", hostname: "**.camgoz.net" },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: "/zxing_reader.wasm",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/wasm",
+          },
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+        ],
+      },
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Permissions-Policy",
+            value: "camera=*",
+          },
+        ],
+      },
+    ]
+  },
 }
 
 export default nextConfig
