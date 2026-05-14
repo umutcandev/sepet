@@ -77,8 +77,10 @@ export function VoiceInput({
 }: VoiceInputProps) {
   const [recording, setRecording] = React.useState(false)
   const [starting, setStarting] = React.useState(false)
+  const [activeStream, setActiveStream] = React.useState<MediaStream | null>(null)
 
   const recognitionRef = React.useRef<SpeechRecognitionLike | null>(null)
+  const streamRef = React.useRef<MediaStream | null>(null)
   // Kayıt başladığı andaki input değeri — çözümlenen metin bunun sonuna eklenir.
   const baseValueRef = React.useRef("")
   // En güncel onTranscript referansı (stale closure'ı önlemek için).
@@ -97,12 +99,21 @@ export function VoiceInput({
 
   const stopRecording = React.useCallback(() => {
     recognitionRef.current?.stop()
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop())
+      streamRef.current = null
+      setActiveStream(null)
+    }
   }, [])
 
   // Bileşen unmount olursa tanımayı durdur.
   React.useEffect(() => {
     return () => {
       recognitionRef.current?.abort()
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop())
+        streamRef.current = null
+      }
     }
   }, [])
 
@@ -114,11 +125,12 @@ export function VoiceInput({
     }
 
     setStarting(true)
+    let stream: MediaStream | null = null
     try {
       // Önce mikrofon iznini netçe iste — hem tanıma hem dalga formu için.
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      // İzin alındı; bu stream'e gerek yok, dalga formu kendi stream'ini açacak.
-      stream.getTracks().forEach((track) => track.stop())
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      streamRef.current = stream
+      setActiveStream(stream)
     } catch {
       setStarting(false)
       toast.error("Mikrofon izni verilmedi.")
@@ -155,6 +167,11 @@ export function VoiceInput({
     recognition.onend = () => {
       setRecording(false)
       recognitionRef.current = null
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop())
+        streamRef.current = null
+        setActiveStream(null)
+      }
     }
 
     recognitionRef.current = recognition
@@ -183,6 +200,7 @@ export function VoiceInput({
       >
         <LiveWaveform
           active={recording}
+          audioStream={activeStream}
           mode="static"
           height={20}
           barWidth={2}

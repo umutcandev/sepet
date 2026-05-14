@@ -9,6 +9,7 @@ export type LiveWaveformProps = React.HTMLAttributes<HTMLDivElement> & {
   active?: boolean
   processing?: boolean
   deviceId?: string
+  audioStream?: MediaStream | null
   barWidth?: number
   barHeight?: number
   barGap?: number
@@ -32,6 +33,7 @@ export const LiveWaveform = ({
   active = false,
   processing = false,
   deviceId,
+  audioStream,
   barWidth = 3,
   barGap = 1,
   barRadius = 1.5,
@@ -211,11 +213,11 @@ export const LiveWaveform = ({
   // Handle microphone setup and teardown.
   useEffect(() => {
     if (!active) {
-      if (streamRef.current) {
+      if (streamRef.current && !audioStream) {
         streamRef.current.getTracks().forEach((track) => track.stop())
-        streamRef.current = null
-        onStreamEnd?.()
       }
+      streamRef.current = null
+      onStreamEnd?.()
       if (
         audioContextRef.current &&
         audioContextRef.current.state !== "closed"
@@ -231,20 +233,23 @@ export const LiveWaveform = ({
     }
     const setupMicrophone = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: deviceId
-            ? {
-                deviceId: { exact: deviceId },
-                echoCancellation: true,
-                noiseSuppression: true,
-                autoGainControl: true,
-              }
-            : {
-                echoCancellation: true,
-                noiseSuppression: true,
-                autoGainControl: true,
-              },
-        })
+        let stream = audioStream
+        if (!stream) {
+          stream = await navigator.mediaDevices.getUserMedia({
+            audio: deviceId
+              ? {
+                  deviceId: { exact: deviceId },
+                  echoCancellation: true,
+                  noiseSuppression: true,
+                  autoGainControl: true,
+                }
+              : {
+                  echoCancellation: true,
+                  noiseSuppression: true,
+                  autoGainControl: true,
+                },
+          })
+        }
         streamRef.current = stream
         onStreamReady?.(stream)
         const AudioContextConstructor =
@@ -252,6 +257,11 @@ export const LiveWaveform = ({
           (window as unknown as { webkitAudioContext: typeof AudioContext })
             .webkitAudioContext
         const audioContext = new AudioContextConstructor()
+        
+        if (audioContext.state === "suspended") {
+          await audioContext.resume()
+        }
+
         const analyser = audioContext.createAnalyser()
         analyser.fftSize = fftSize
         analyser.smoothingTimeConstant = smoothingTimeConstant
@@ -266,11 +276,12 @@ export const LiveWaveform = ({
     }
     setupMicrophone()
     return () => {
-      if (streamRef.current) {
+      if (streamRef.current && !audioStream) {
         streamRef.current.getTracks().forEach((track) => track.stop())
-        streamRef.current = null
-        onStreamEnd?.()
       }
+      streamRef.current = null
+      onStreamEnd?.()
+      
       if (
         audioContextRef.current &&
         audioContextRef.current.state !== "closed"
@@ -286,6 +297,7 @@ export const LiveWaveform = ({
   }, [
     active,
     deviceId,
+    audioStream,
     fftSize,
     smoothingTimeConstant,
     onError,
