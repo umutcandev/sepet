@@ -4,13 +4,12 @@ import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import {
-  ResponsiveDialog,
-  ResponsiveDialogBody,
-  ResponsiveDialogContent,
-  ResponsiveDialogDescription,
-  ResponsiveDialogHeader,
-  ResponsiveDialogTitle,
-} from "@/components/ui/responsive-dialog"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Spinner } from "@/components/ui/spinner"
 
 type Props = {
@@ -27,32 +26,34 @@ export function BarcodeScannerDialog({
   const [attempt, setAttempt] = React.useState(0)
 
   return (
-    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent className="sm:max-w-lg">
-        <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>Barkod tara</ResponsiveDialogTitle>
-          <ResponsiveDialogDescription>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Barkod tara</DialogTitle>
+          <DialogDescription>
             Ürün barkodunu kameraya doğru tutun, çerçevenin içinde
             konumlandırın.
-          </ResponsiveDialogDescription>
-        </ResponsiveDialogHeader>
-        <ResponsiveDialogBody>
-          {open ? (
-            <ScannerSession
-              key={attempt}
-              onDetected={onDetected}
-              onRetry={() => setAttempt((n) => n + 1)}
-            />
-          ) : (
-            <div className="aspect-video w-full rounded-lg bg-muted" />
-          )}
-        </ResponsiveDialogBody>
-      </ResponsiveDialogContent>
-    </ResponsiveDialog>
+          </DialogDescription>
+        </DialogHeader>
+        {open ? (
+          <ScannerSession
+            key={attempt}
+            onDetected={onDetected}
+            onRetry={() => setAttempt((n) => n + 1)}
+          />
+        ) : (
+          <div className="aspect-[4/3] w-full rounded-lg bg-muted sm:aspect-video" />
+        )}
+      </DialogContent>
+    </Dialog>
   )
 }
 
 type Status = "starting" | "scanning" | "error"
+
+// Market ürün barkodları: 1D formatlar. 2D (QR/DataMatrix) taranmayınca
+// motor her karede daha az iş yapar, tespit hızlanır.
+const FORMATS = ["ean_13", "ean_8", "upc_a", "upc_e", "code_128"] as const
 
 function ScannerSession({
   onDetected,
@@ -65,6 +66,9 @@ function ScannerSession({
   const onDetectedRef = React.useRef(onDetected)
   const [status, setStatus] = React.useState<Status>("starting")
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
+  const [torchOn, setTorchOn] = React.useState(false)
+  const [torchSupported, setTorchSupported] = React.useState(false)
+  const trackRef = React.useRef<MediaStreamTrack | null>(null)
 
   React.useEffect(() => {
     onDetectedRef.current = onDetected
@@ -72,7 +76,9 @@ function ScannerSession({
 
   React.useEffect(() => {
     let cancelled = false
-    let controls: { stop: () => void } | null = null
+    let stream: MediaStream | null = null
+    let rafId: number | null = null
+    let frameCbId: number | null = null
     const videoEl = videoRef.current
 
     ;(async () => {
@@ -88,83 +94,94 @@ function ScannerSession({
           return
         }
 
-        const [{ BrowserMultiFormatReader }, { DecodeHintType, BarcodeFormat }] =
-          await Promise.all([
-            import("@zxing/browser"),
-            import("@zxing/library"),
-          ])
-        if (cancelled) return
-
-        if (!videoEl) return
-
-        // Sadece market ürün barkodu formatları: QR/DataMatrix/Aztec
-        // taramayı atlayınca tespit hızlanır ve konsol gürültüsü azalır.
-        // TRY_HARDER zorlu koşullarda (bulanık, eğik) tespiti belirgin
-        // artırır — 1D ürün barkodları için kritik.
-        const hints = new Map()
-        hints.set(DecodeHintType.POSSIBLE_FORMATS, [
-          BarcodeFormat.EAN_13,
-          BarcodeFormat.EAN_8,
-          BarcodeFormat.UPC_A,
-          BarcodeFormat.UPC_E,
-          BarcodeFormat.CODE_128,
-        ])
-        hints.set(DecodeHintType.TRY_HARDER, true)
-
-        const reader = new BrowserMultiFormatReader(hints, {
-          // Varsayılan 500ms — düşürünce saniyede daha çok kare taranır.
-          delayBetweenScanAttempts: 150,
-          delayBetweenScanSuccess: 300,
-        })
-        // Cihaz listeleme yerine doğrudan kısıtlama ile başlatıyoruz:
-        // enumerateDevices() izin istemeden boş dönebildiği için
-        // getUserMedia'yı tetikleyen bu çağrı izin penceresini açar.
-        // Yüksek çözünürlük: ince barkod çizgileri düşük çözünürlükte
-        // çözülemez, bu yüzden mümkünse 1080p talep ediyoruz.
-        const ctrl = await reader.decodeFromConstraints(
-          {
-            video: {
-              facingMode: { ideal: "environment" },
-              width: { ideal: 1920 },
-              height: { ideal: 1080 },
-            },
-          },
-          videoEl,
-          (result, _err, c) => {
-            if (cancelled || !result) return
-            const text = result.getText().trim()
-            if (!text) return
-            c.stop()
-            controls = null
-            onDetectedRef.current(text)
-          },
+        // barcode-detector: Android'de işletim sisteminin native BarcodeDetector
+        // API'sini (Google on-device ML — anında ve doğru), desteklemeyen
+        // tarayıcılarda zxing-wasm fallback'ini kullanan spec uyumlu ponyfill.
+        const { BarcodeDetector, setZXingModuleOverrides } = await import(
+          "barcode-detector/ponyfill"
         )
+        if (cancelled || !videoEl) return
 
+        // zxing-wasm varsayılan olarak WASM'ı jsDelivr CDN'den çeker — bu
+        // ağ koşullarına göre başarısız olabiliyor. Dosyayı public/'ten
+        // kendimiz servis ediyoruz (bkz. public/zxing_reader.wasm).
+        setZXingModuleOverrides({
+          locateFile: (path: string, prefix: string) =>
+            path.endsWith(".wasm") ? "/zxing_reader.wasm" : prefix + path,
+        })
+
+        const detector = new BarcodeDetector({ formats: [...FORMATS] })
+
+        // Yüksek çözünürlük: ince barkod çizgileri düşük çözünürlükte
+        // çözülemez. facingMode environment ile arka kamera.
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: "environment" },
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+          },
+        })
         if (cancelled) {
-          ctrl.stop()
+          stream.getTracks().forEach((t) => t.stop())
           return
         }
-        controls = ctrl
+
+        videoEl.srcObject = stream
+        await videoEl.play()
         setStatus("scanning")
 
-        // Sürekli otomatik odak: telefon kameraları gibi destekleyen
-        // cihazlarda barkodun netleşmesini sağlar. Sabit odaklı
-        // webcam'ler bunu desteklemez ve sessizce atlanır.
-        const track = (videoEl.srcObject as MediaStream | null)
-          ?.getVideoTracks()?.[0]
+        const track = stream.getVideoTracks()[0] ?? null
+        trackRef.current = track
         const caps = track?.getCapabilities?.() as
-          | (MediaTrackCapabilities & { focusMode?: string[] })
+          | (MediaTrackCapabilities & {
+              focusMode?: string[]
+              torch?: boolean
+            })
           | undefined
+
+        // Sürekli otomatik odak — telefon kameralarında barkodun
+        // netleşmesini sağlar. Desteklemeyen cihazlarda sessizce atlanır.
         if (track && caps?.focusMode?.includes("continuous")) {
           try {
             await track.applyConstraints({
-              // @ts-expect-error focusMode standart tip tanımında henüz yok
+              // @ts-expect-error focusMode standart tipte henüz yok
               advanced: [{ focusMode: "continuous" }],
             })
           } catch {
             /* desteklenmiyorsa yoksay */
           }
         }
+        if (caps?.torch) setTorchSupported(true)
+
+        // Tarama döngüsü: her karede detector.detect çalıştır. Mümkünse
+        // requestVideoFrameCallback (kameranın gerçek kare hızına bağlı,
+        // boşa CPU yakmaz), yoksa requestAnimationFrame fallback.
+        const scan = async () => {
+          if (cancelled || !videoEl) return
+          if (videoEl.readyState >= 2) {
+            try {
+              const results = await detector.detect(videoEl)
+              if (cancelled) return
+              const hit = results.find((r) => r.rawValue?.trim())
+              if (hit) {
+                onDetectedRef.current(hit.rawValue.trim())
+                return
+              }
+            } catch {
+              /* tek kare hatası — döngü devam etsin */
+            }
+          }
+          if (cancelled) return
+          const v = videoEl as HTMLVideoElement & {
+            requestVideoFrameCallback?: (cb: () => void) => number
+          }
+          if (typeof v.requestVideoFrameCallback === "function") {
+            frameCbId = v.requestVideoFrameCallback(() => void scan())
+          } else {
+            rafId = requestAnimationFrame(() => void scan())
+          }
+        }
+        void scan()
       } catch (err) {
         if (cancelled) return
         setStatus("error")
@@ -187,15 +204,38 @@ function ScannerSession({
 
     return () => {
       cancelled = true
-      controls?.stop()
-      const stream = videoEl?.srcObject as MediaStream | null
+      if (rafId != null) cancelAnimationFrame(rafId)
+      if (frameCbId != null) {
+        const v = videoEl as
+          | (HTMLVideoElement & {
+              cancelVideoFrameCallback?: (id: number) => void
+            })
+          | null
+        v?.cancelVideoFrameCallback?.(frameCbId)
+      }
+      trackRef.current = null
       stream?.getTracks().forEach((t) => t.stop())
       if (videoEl) videoEl.srcObject = null
     }
   }, [])
 
+  const toggleTorch = React.useCallback(async () => {
+    const track = trackRef.current
+    if (!track) return
+    const next = !torchOn
+    try {
+      await track.applyConstraints({
+        // @ts-expect-error torch standart tipte henüz yok
+        advanced: [{ torch: next }],
+      })
+      setTorchOn(next)
+    } catch {
+      setTorchSupported(false)
+    }
+  }, [torchOn])
+
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border/60 bg-black">
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-border/60 bg-black sm:aspect-video">
       <video
         ref={videoRef}
         className="h-full w-full object-cover"
@@ -207,6 +247,17 @@ function ScannerSession({
         <>
           <div className="pointer-events-none absolute inset-0 ring-2 ring-inset ring-white/40" />
           <div className="pointer-events-none absolute inset-x-6 top-1/2 h-px -translate-y-1/2 bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+          {torchSupported && (
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              className="absolute right-3 bottom-3"
+              onClick={toggleTorch}
+            >
+              {torchOn ? "Işığı kapat" : "Işığı aç"}
+            </Button>
+          )}
         </>
       )}
       {status === "starting" && (
