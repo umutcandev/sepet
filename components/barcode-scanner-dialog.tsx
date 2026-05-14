@@ -223,26 +223,14 @@ function ScannerSession({
         }
         if (caps?.torch) setTorchSupported(true)
 
-        // Zoom: uzaktaki/küçük barkodu büyütür, ince çizgileri çözülebilir
-        // hale getirir. Varsayılan olarak hafif (2x) yakınlaştırılmış başlar.
+        // Zoom: uzaktaki/küçük barkodu büyütür. Otomatik UYGULAMIYORUZ —
+        // varsayılan zoom barkodu fazla büyütüp sessiz alanları (quiet zone)
+        // kadrajdan kırparak EAN-13 çözümünü engelliyordu. 1x'te başlar,
+        // kullanıcı gerekiyorsa çubuktan yakınlaştırır.
         if (track && caps?.zoom) {
           const z = caps.zoom
-          const range: ZoomRange = {
-            min: z.min,
-            max: z.max,
-            step: z.step ?? 0.1,
-          }
-          const desired = Math.min(z.max, Math.max(z.min, 2))
-          setZoomRange(range)
-          try {
-            await track.applyConstraints({
-              // @ts-expect-error zoom standart tipte henüz yok
-              advanced: [{ zoom: desired }],
-            })
-            setZoom(desired)
-          } catch {
-            setZoom(z.min)
-          }
+          setZoomRange({ min: z.min, max: z.max, step: z.step ?? 0.1 })
+          setZoom(z.min)
         }
 
         // Tarama döngüsü: her karede merkez yatay bandı bir canvas'a kopyalar
@@ -256,9 +244,12 @@ function ScannerSession({
           const vw = videoEl.videoWidth
           const vh = videoEl.videoHeight
           if (videoEl.readyState >= 2 && ctx && vw && vh) {
-            const cw = Math.round(vw * 0.92)
-            const ch = Math.round(vh * 0.5)
-            const sx = Math.round((vw - cw) / 2)
+            // Tam genişlik: EAN-13'ün solundaki/sağındaki sessiz alanlar
+            // (quiet zone) kadraj dışında kalırsa kod çözülemiyor. Yalnızca
+            // dikeyde merkez banda kırparak hız kazanıyoruz.
+            const cw = vw
+            const ch = Math.round(vh * 0.6)
+            const sx = 0
             const sy = Math.round((vh - ch) / 2)
             canvas.width = cw
             canvas.height = ch
