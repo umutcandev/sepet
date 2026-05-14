@@ -25,97 +25,105 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
   // recommendation — render it first.
   const comboFirst = !singleIsFull && hasCombo
 
-  const singleCard = (
-    <div
-      key="single"
-      className={
-        singleIsFull
-          ? "rounded-xl border bg-gradient-to-br from-primary/5 to-transparent p-4"
-          : "rounded-xl border border-amber-500/40 bg-amber-500/5 p-4"
-      }
-    >
-      <div className="mb-2 flex items-center gap-2 text-sm font-medium text-muted-foreground">
-        {singleIsFull ? (
-          <>
-            <StoreIcon className="size-4" />
-            Tek market en ucuz
-          </>
-        ) : (
-          <>
-            <AlertTriangleIcon className="size-4 text-amber-600 dark:text-amber-400" />
-            <span className="text-amber-700 dark:text-amber-300">
-              Tek markette sepetin eksik kalıyor
-            </span>
-          </>
-        )}
+  const singleRow = (
+    <div key="single" className="flex items-center gap-3 px-4 py-3">
+      {singleIsFull ? (
+        <StoreIcon className="size-4 shrink-0 text-muted-foreground" />
+      ) : (
+        <AlertTriangleIcon className="size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+      )}
+      <div className="min-w-0 flex-1">
+        <div
+          className={
+            singleIsFull
+              ? "text-[11px] font-medium text-muted-foreground"
+              : "text-[11px] font-medium text-amber-700 dark:text-amber-300"
+          }
+        >
+          {singleIsFull
+            ? "Tek market en ucuz"
+            : "Tek markette sepet eksik kalıyor"}
+        </div>
+        <div className="truncate text-base font-semibold">
+          {singleMarket.market}
+        </div>
+        <div
+          className={
+            singleIsFull
+              ? "text-[11px] text-muted-foreground"
+              : "text-[11px] text-amber-700 dark:text-amber-400"
+          }
+        >
+          {singleMarket.itemCount}/{totalItems} kalem
+          {singleMarket.missingItemCount > 0 &&
+            ` · ${singleMarket.missingItemCount} kalem stokta yok`}
+        </div>
       </div>
-      <div className="flex items-baseline justify-between gap-3">
-        <span className="text-lg font-semibold">{singleMarket.market}</span>
-        <span className="text-2xl font-bold tabular-nums">
-          {tl.format(singleMarket.total)}
-        </span>
-      </div>
-      <div
-        className={
-          singleIsFull
-            ? "mt-1 text-xs text-muted-foreground"
-            : "mt-1 text-xs text-amber-700 dark:text-amber-400"
-        }
-      >
-        {singleMarket.itemCount}/{totalItems} kalem
-        {singleMarket.missingItemCount > 0 &&
-          ` · ${singleMarket.missingItemCount} kalem stokta yok`}
-      </div>
+      <span className="shrink-0 text-xl font-bold tabular-nums">
+        {tl.format(singleMarket.total)}
+      </span>
     </div>
   )
 
-  const comboCard = hasCombo ? (
-    <div
-      key="combo"
-      className="rounded-xl border bg-gradient-to-br from-emerald-500/10 to-transparent p-4"
-    >
-      <div className="mb-2 flex items-center gap-2 text-sm font-medium text-muted-foreground">
-        <SparklesIcon className="size-4" />
-        {comboFirst ? "Tüm sepetini karşılayan kombinasyon" : "İki market kombinasyonu"}
-        {twoMarketCombo.savingsTL > 0 && (
-          <Badge
-            variant="outline"
-            className="ml-auto border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
-          >
-            <TrendingDownIcon className="mr-1 size-3" />%
-            {twoMarketCombo.savingsPct.toFixed(1)}
-          </Badge>
-        )}
-      </div>
-      <div className="flex items-baseline justify-between gap-3">
-        <span className="text-lg font-semibold">
+  const comboRow = hasCombo ? (
+    <div key="combo" className="flex items-center gap-3 px-4 py-3">
+      <SparklesIcon className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+          {comboFirst
+            ? "Tüm sepeti karşılayan kombinasyon"
+            : "İki market kombinasyonu"}
+          {twoMarketCombo.savingsTL > 0 && (
+            <Badge
+              variant="outline"
+              className="border-emerald-500/40 px-1.5 py-0 text-[10px] text-emerald-700 dark:text-emerald-300"
+            >
+              <TrendingDownIcon className="mr-0.5 size-2.5" />%
+              {twoMarketCombo.savingsPct.toFixed(1)}
+            </Badge>
+          )}
+        </div>
+        <div className="truncate text-base font-semibold">
           {twoMarketCombo.markets.join(" + ")}
-        </span>
-        <span className="text-2xl font-bold tabular-nums">
-          {tl.format(twoMarketCombo.total)}
-        </span>
+        </div>
+        <div
+          className={
+            twoMarketCombo.savingsTL > 0
+              ? "text-[11px] font-medium text-emerald-700 dark:text-emerald-300"
+              : "text-[11px] text-muted-foreground"
+          }
+        >
+          {twoMarketCombo.savingsTL > 0
+            ? `${tl.format(twoMarketCombo.savingsTL)} tasarruf`
+            : `${totalItems}/${totalItems} kalem`}
+        </div>
       </div>
-      <div className="mt-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
-        {twoMarketCombo.savingsTL > 0
-          ? `${tl.format(twoMarketCombo.savingsTL)} tasarruf`
-          : `${totalItems}/${totalItems} kalem`}
-      </div>
+      <span className="shrink-0 text-xl font-bold tabular-nums">
+        {tl.format(twoMarketCombo.total)}
+      </span>
     </div>
   ) : null
 
   return (
-    <div className="grid gap-3">
-      {comboFirst ? (
-        <>
-          {comboCard}
-          {singleCard}
-        </>
-      ) : (
-        <>
-          {singleCard}
-          {comboCard}
-        </>
-      )}
+    <div
+      className={
+        "overflow-hidden rounded-xl border bg-card " +
+        (singleIsFull ? "" : "border-amber-500/40")
+      }
+    >
+      <div className="divide-y">
+        {comboFirst ? (
+          <>
+            {comboRow}
+            {singleRow}
+          </>
+        ) : (
+          <>
+            {singleRow}
+            {comboRow}
+          </>
+        )}
+      </div>
     </div>
   )
 }

@@ -93,7 +93,9 @@ export const RECEIPT_OCR_PROMPT = `Sana bir Türk market fişinin fotoğrafı ve
 
 HER ÜRÜN İÇİN:
 - rawName: Fişte yazdığı haliyle (büyük harf normalmiş — olduğu gibi bırak ya da Title Case'e çevir, ör. "ETI CIN 270G").
-- quantity: Adet/miktar. "2 X" gibi yazıyorsa 2. Tek kalem ise 1. Sayı yoksa 1.
+- quantity: Adet/miktar. SADECE açıkça adet belirten ifade varsa o sayı ("2 X", "2 ADET", "x3"). Aksi halde 1.
+  · DİKKAT — KDV oranını ADET SANMA: Fiş satırlarında ürünün yanında "%1", "%8", "%10", "%18", "%20" gibi yüzdeler veya KDV harf kodu (A / B / C / D) bulunur. Bunlar KDV oranıdır, ADET DEĞİLDİR. Yüzde işaretli ya da tek harflik kodları asla quantity'ye yazma.
+  · TUTARLILIK KONTROLÜ: "unitPrice × quantity ≈ totalPrice" olmalı. Tutmuyorsa adedi yanlış okudun demektir — quantity=1 al ve unitPrice = totalPrice yap.
 - unit: "adet" | "kg" | "g" | "l" | "ml" | "paket". Belirsizse "adet".
 - unitPrice: Birim fiyat TL (sayı). Yoksa null.
 - totalPrice: Bu kalemin toplam tutarı TL. Yoksa null.
@@ -110,5 +112,46 @@ HER ÜRÜN İÇİN:
 - "ULUDAG GAZOZ 1LT" → rawName="ULUDAG GAZOZ 1LT", quantity=1, unit="l", searchQuery="uludağ gazoz"
 - "ICIM SUT 1LT 2X" → rawName="ICIM SUT 1LT", quantity=2, unit="l", searchQuery="içim süt"
 - "BEYAZ PEYNIR 500G" → rawName="BEYAZ PEYNIR 500G", quantity=500, unit="g", searchQuery="beyaz peynir"
+- "PEPSI 2.5 LT  %10  81,00" → rawName="PEPSI 2.5 LT", quantity=1, unit="l", unitPrice=81.00, totalPrice=81.00, searchQuery="pepsi" (%10 KDV oranıdır, adet değil)
+- "COCA COLA 1L  C  18,50" → rawName="COCA COLA 1L", quantity=1, unit="l", unitPrice=18.50, totalPrice=18.50, searchQuery="coca cola" (C harfi KDV kodudur, adet değil)
 
 EMİN OL: Sadece ürün olduğu net olan satırları çıkar. Şüphede atla.`
+
+// ─── Ürün eşleştirme (LLM seçim adımı) ───
+
+export type MatchPromptItem = {
+  itemIndex: number
+  rawName: string
+  quantity: number
+  unit: string
+  candidates: Array<{
+    barcode: string
+    name: string
+    brand: string | null
+    category: string | null
+  }>
+}
+
+export const MATCH_PROMPT = (items: MatchPromptItem[]) => `Bir alışveriş asistanısın. Her kalem için kullanıcının istediği ürünü, camgöz arama API'sinden dönen aday ürünler arasından SEÇ.
+
+GÖREV: Her kalem için "candidates" listesinden EN UYGUN adayın barcode'unu seç. Hiçbir aday gerçekten uymuyorsa matchedBarcode=null döndür ("bulunamadı").
+
+EŞLEŞTİRME KURALLARI:
+1) ÜRÜN TİPİ DOĞRU OLMALI: Aday, kullanıcının istediği ürünün ta kendisi olmalı. Aynı kategoriden ama farklı bir ürün KABUL EDİLMEZ:
+   · "domates" istendi → "domates salçası" YANLIŞ (salça farklı ürün), taze domates DOĞRU.
+   · "soğan" istendi → "Ülker Çizi soğan aromalı peynir" YANLIŞ (peynir, soğan değil).
+   · Gerçek bir soğan/domates adayı yoksa → matchedBarcode=null.
+2) MARKA/ALT-VARYANT ESNEK: Aynı ürün tipindeyse marka farkı, ambalaj tarzı vs. sorun değil — makul her aday kabul. Kullanıcı net marka yazdıysa (ör. "eti cin") o markayı tercih et ama tek aday başka markaysa ve ürün tipi aynıysa yine de seçebilirsin.
+3) BOYUT/VARYANT: rawName'de boyut/miktar belirtilmişse (ör. "PEPSI 2.5 LT") o boyuttaki adayı SEÇ. O boyut adaylar arasında yoksa, aynı üründen FARKLI boyutlu bir adayı seç ve sizeMismatch=true işaretle. Boyut tam uyuyorsa veya rawName'de boyut belirtilmemişse sizeMismatch=false.
+4) KOLİ/ÇOKLU PAKET: rawName tekil bir ürünse, "koli", "6'lı", "24'lü" gibi toplu paketleri seçme (tersi de geçerli).
+5) reason: Kısa Türkçe gerekçe (1 cümle), neden o adayı/null seçtiğini açıkla.
+
+ÖRNEKLER:
+- rawName="PEPSI 2.5 LT", adaylar arasında "Pepsi 2.5 Lt" var → onun barcode'u, sizeMismatch=false.
+- rawName="PEPSI 2.5 LT", adaylar sadece "Pepsi 330 ml" ve "Pepsi 1 L" → "Pepsi 1 L" barcode'u, sizeMismatch=true.
+- rawName="soğan", adaylar sadece "Ülker Çizi Soğan Aromalı" → matchedBarcode=null.
+
+ÇIKTI: Her kalem için bir selection. itemIndex'i girdideki ile aynı tut.
+
+KALEMLER:
+${JSON.stringify(items, null, 2)}`

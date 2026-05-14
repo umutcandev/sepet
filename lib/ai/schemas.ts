@@ -82,11 +82,27 @@ export const MatchResultSchema = z.object({
   alternatives: z.array(MatchedProductSchema),
   lookupStatus: z.enum(["ok", "no_match", "api_quota", "api_error"]),
   errorMessage: z.string().nullable(),
+  // Eşleşti ama ham isimde belirtilen boyut/varyant API'de yoktu — farklı
+  // boyutlu aynı ürünle eşleştirildi. Bu kalemde tasarruf hesabı yapılmaz.
+  sizeMismatch: z.boolean(),
+})
+
+// lookupProducts içindeki LLM seçim adımının batch çıktısı.
+export const MatchSelectionSchema = z.object({
+  selections: z.array(
+    z.object({
+      itemIndex: z.number(),
+      matchedBarcode: z.string().nullable(),
+      sizeMismatch: z.boolean(),
+      reason: z.string(),
+    }),
+  ),
 })
 
 export type ParsedItem = z.infer<typeof ParsedItemSchema>
 export type BasketDraft = z.infer<typeof BasketDraftSchema>
 export type MatchResult = z.infer<typeof MatchResultSchema>
+export type MatchSelection = z.infer<typeof MatchSelectionSchema>
 export type OptimizationSummary = z.infer<typeof OptimizationSummarySchema>
 export type MarketAllocation = z.infer<typeof MarketAllocationSchema>
 
@@ -143,7 +159,9 @@ export const ReceiptComparisonItemSchema = z.object({
   matchedName: z.string().nullable(),
   bestMarket: z.string().nullable(),
   bestPrice: z.number().nullable(),
+  bestUrl: z.string().nullable(),
   savingsTL: z.number().nullable(),
+  sizeMismatch: z.boolean(),
 })
 
 export const ReceiptStalenessSchema = z.object({

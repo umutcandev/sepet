@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table"
 import type { ReceiptOCR, ReceiptOCRItem } from "@/lib/ai/schemas"
 import { UNIT_VALUES } from "@/lib/ai/schemas"
+import { stripQuantityTokens } from "@/lib/ai/normalize"
 
 type EditableItem = ReceiptOCRItem & { _id: string }
 
@@ -132,23 +133,12 @@ export function ReceiptApprovalCard({
           </label>
         </div>
       )}
-      {readOnly && (
-        <div className="flex flex-wrap items-center gap-3 border-b px-4 py-2 text-xs text-muted-foreground">
-          <span>
-            <span className="font-medium text-foreground">
-              {marketName || "—"}
-            </span>{" "}
-            · {purchaseDate || "tarih belirsiz"}
-          </span>
-        </div>
-      )}
-
       <div className="overflow-x-auto">
-        <Table className="min-w-[600px]">
+        <Table className="min-w-[600px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
           <TableHeader>
             <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
               <TableHead className="min-w-[140px]">Ürün</TableHead>
-              <TableHead className="w-20">Adet</TableHead>
+              <TableHead className="w-20 text-right">Adet</TableHead>
               <TableHead className="w-24">Birim</TableHead>
               <TableHead className="w-24 text-right">B. Fiyat</TableHead>
               <TableHead className="w-24 text-right">Tutar</TableHead>
@@ -160,7 +150,7 @@ export function ReceiptApprovalCard({
               <TableRow>
                 <TableCell
                   colSpan={readOnly ? 5 : 6}
-                  className="py-6 text-center text-sm text-muted-foreground"
+                  className="py-6 text-center text-xs text-muted-foreground"
                 >
                   Hiç kalem kalmadı.
                 </TableCell>
@@ -177,14 +167,16 @@ export function ReceiptApprovalCard({
                         onChange={(e) =>
                           updateItem(it._id, {
                             rawName: e.target.value,
-                            searchQuery: e.target.value.toLocaleLowerCase("tr-TR"),
+                            // searchQuery'den miktar/birim ayıkla — API aramasını
+                            // "pepsi 2.5 lt" gibi bozuk sorgularla kirletme.
+                            searchQuery: stripQuantityTokens(e.target.value),
                           })
                         }
                         className="h-8 text-sm"
                       />
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-right">
                     {readOnly ? (
                       <span className="tabular-nums">
                         {formatQty(it.quantity)}
@@ -199,7 +191,7 @@ export function ReceiptApprovalCard({
                             quantity: parseFloat(e.target.value) || 0,
                           })
                         }
-                        className="h-8 w-16 text-sm tabular-nums"
+                        className="h-8 w-full text-right text-sm tabular-nums"
                       />
                     )}
                   </TableCell>
@@ -243,7 +235,7 @@ export function ReceiptApprovalCard({
                                 : parseFloat(e.target.value),
                           })
                         }
-                        className="h-8 w-20 text-right text-sm tabular-nums"
+                        className="h-8 w-full text-right text-sm tabular-nums"
                       />
                     )}
                   </TableCell>
@@ -275,10 +267,23 @@ export function ReceiptApprovalCard({
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={4} className="text-right text-muted-foreground">
-                Fiş toplamı
+              <TableCell colSpan={4} className="text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  {readOnly && (
+                    <span className="text-xs">
+                      <span className="font-medium text-foreground">
+                        {marketName || "—"}
+                      </span>
+                      {" · "}
+                      {purchaseDate || "tarih belirsiz"}
+                    </span>
+                  )}
+                  <span className="ml-auto text-xs font-semibold">
+                    FİŞ TOPLAMI
+                  </span>
+                </div>
               </TableCell>
-              <TableCell className="text-right text-base font-semibold text-foreground tabular-nums">
+              <TableCell className="text-right text-sm font-semibold text-foreground tabular-nums">
                 {formatTL(ocr.totalAmount ?? totalReceipt)}
               </TableCell>
               {!readOnly && <TableCell />}

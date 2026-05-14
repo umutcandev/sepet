@@ -63,6 +63,12 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                           {m.bestMatch.marketCount} market
                         </Badge>
                       )}
+                      {m.sizeMismatch && (
+                        <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
+                          <AlertCircleIcon className="size-3" />
+                          farklı boyut
+                        </span>
+                      )}
                     </div>
                   </>
                 ) : m.lookupStatus === "api_quota" ? (

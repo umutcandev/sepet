@@ -20,6 +20,7 @@ import {
 } from "@/components/ai-elements/prompt-input"
 import type { ChatStatus } from "ai"
 import { cn } from "@/lib/utils"
+import { VoiceInput } from "@/components/assistant/voice-input"
 
 interface AssistantPromptProps {
   input: string
@@ -69,12 +70,19 @@ export function AssistantPrompt({
         <PromptInputTools>
           <AddAttachmentMenu />
         </PromptInputTools>
-        <SubmitButton
-          status={status}
-          onStop={onStop}
-          submitIcon={submitIcon}
-          submitLabel={submitLabel}
-        />
+        <div className="ml-auto flex items-center gap-1">
+          <VoiceInput
+            value={input}
+            onTranscript={setInput}
+            disabled={status === "submitted" || status === "streaming"}
+          />
+          <SubmitButton
+            status={status}
+            onStop={onStop}
+            submitIcon={submitIcon}
+            submitLabel={submitLabel}
+          />
+        </div>
       </PromptInputFooter>
     </PromptInput>
   )

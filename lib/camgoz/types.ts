@@ -10,11 +10,12 @@ const marketPriceSchema = z.object({
   id: z.string(),
   name: z.string(),
   price: z.number(),
-  priceModified: z.string().optional(),
+  // camgöz bu opsiyonel string alanları bazen null gönderiyor — null'ı da kabul et.
+  priceModified: z.string().nullish(),
   market: z.string(),
-  sourceUrl: z.string().optional(),
-  location: z.string().optional(),
-  history: z.array(priceHistoryEntrySchema).optional(),
+  sourceUrl: z.string().nullish(),
+  location: z.string().nullish(),
+  history: z.array(priceHistoryEntrySchema).nullish(),
 })
 
 export const camgozProductSchema = z.object({

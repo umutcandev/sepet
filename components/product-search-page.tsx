@@ -112,7 +112,12 @@ export function ProductSearchPage() {
           variant="outline"
           size="icon-lg"
           aria-label="Barkod tara"
-          onClick={guard(() => setScannerOpen(true))}
+          onClick={guard((e: React.MouseEvent<HTMLButtonElement>) => {
+            // Dialog açılınca Radix dış ağaca aria-hidden koyuyor; tetikleyici
+            // buton focus'lu kalırsa erişilebilirlik uyarısı çıkar. Önce blur.
+            e.currentTarget.blur()
+            setScannerOpen(true)
+          })}
         >
           <ScanBarcodeIcon className="size-4" />
         </Button>

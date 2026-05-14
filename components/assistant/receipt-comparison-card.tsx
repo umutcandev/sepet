@@ -3,6 +3,7 @@
 import * as React from "react"
 import {
   CheckIcon,
+  DownloadIcon,
   InfoIcon,
   Loader2Icon,
   SaveIcon,
@@ -53,6 +54,33 @@ export function ReceiptComparisonCard({
 
   const { comparison, receiptContext, summary, matches } = data
 
+  const linkItems = comparison.items.filter((it) => !!it.bestUrl)
+
+  function handleDownloadLinks() {
+    if (linkItems.length === 0) {
+      toast.error("İndirilebilecek ürün bağlantısı bulunamadı.")
+      return
+    }
+    const body = linkItems
+      .map((it) => {
+        const name = it.matchedName ?? it.rawName
+        const market = it.bestMarket ? ` (${it.bestMarket})` : ""
+        return `${name}${market}\n${it.bestUrl}`
+      })
+      .join("\n\n")
+    const blob = new Blob([`${body}\n`], {
+      type: "text/plain;charset=utf-8",
+    })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "fis-urun-linkleri.txt"
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }
+
   const canSave = !!receiptContext.imageR2Key
   const isStale = !!comparison.staleness?.isStale
   const staleLabel = (() => {
@@ -92,11 +120,6 @@ export function ReceiptComparisonCard({
   return (
     <div className="rounded-xl border bg-card">
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
-        {isStale ? (
-          <InfoIcon className="size-4 text-muted-foreground" />
-        ) : (
-          <TrendingDownIcon className="size-4 text-emerald-600 dark:text-emerald-400" />
-        )}
         <span className="text-sm font-medium">Fiş Karşılaştırması</span>
         {isStale ? (
           <Badge variant="outline" className="ml-auto text-muted-foreground">
@@ -115,7 +138,7 @@ export function ReceiptComparisonCard({
       </div>
 
       <div className="overflow-x-auto">
-        <Table>
+        <Table className="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
           <TableHeader>
             <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
               <TableHead className="min-w-[140px]">Ürün</TableHead>
@@ -137,13 +160,30 @@ export function ReceiptComparisonCard({
                         ↪ {it.matchedName}
                       </div>
                     )}
+                    {it.sizeMismatch && (
+                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-amber-600 dark:text-amber-400">
+                        <InfoIcon className="size-3" />
+                        Farklı boyut — fiyat kıyaslanamaz
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
                     {formatTL(it.receiptTotalPrice)}
                   </TableCell>
-                  <TableCell className="align-top">
+                  <TableCell>
                     {it.bestMarket ? (
-                      <span className="text-sm">{it.bestMarket}</span>
+                      it.bestUrl ? (
+                        <a
+                          href={it.bestUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-primary underline"
+                        >
+                          {it.bestMarket}
+                        </a>
+                      ) : (
+                        <span className="text-sm">{it.bestMarket}</span>
+                      )
                     ) : (
                       <span className="text-xs text-muted-foreground">
                         eşleşme yok
@@ -194,10 +234,22 @@ export function ReceiptComparisonCard({
           </span>
         </div>
         <div className="ml-auto flex items-center gap-2">
+          {linkItems.length > 0 && (
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={handleDownloadLinks}
+            >
+              <DownloadIcon className="mr-1 size-3.5" />
+              Ürün Linklerini İndir
+            </Button>
+          )}
           {savedId ? (
-            <Badge variant="secondary" className="gap-1">
-              <CheckIcon className="size-3" /> Kaydedildi
-            </Badge>
+            <Button type="button" size="sm" variant="secondary" disabled>
+              <CheckIcon className="mr-1 size-3.5" />
+              Kaydedildi
+            </Button>
           ) : (
             <Button
               type="button"

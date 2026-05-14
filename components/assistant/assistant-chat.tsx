@@ -393,7 +393,7 @@ export function AssistantChat({
         input={input}
         setInput={setInput}
         onSubmit={handleSubmit}
-        className="mx-auto mt-3 w-full max-w-3xl"
+        className="mx-auto w-full max-w-3xl"
         status={status}
         onStop={stop}
       />

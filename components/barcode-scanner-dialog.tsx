@@ -77,28 +77,58 @@ function ScannerSession({
 
     ;(async () => {
       try {
-        const { BrowserMultiFormatReader } = await import("@zxing/browser")
-        if (cancelled) return
-
-        const devices =
-          await BrowserMultiFormatReader.listVideoInputDevices()
-        if (cancelled) return
-
-        if (devices.length === 0) {
+        if (
+          typeof navigator === "undefined" ||
+          !navigator.mediaDevices?.getUserMedia
+        ) {
           setStatus("error")
-          setErrorMessage("Cihazda kamera bulunamadı.")
+          setErrorMessage(
+            "Bu tarayıcı kamera erişimini desteklemiyor. Güncel bir tarayıcıda ve HTTPS üzerinden dene.",
+          )
           return
         }
 
-        const backCam =
-          devices.find((d) => /back|rear|environment/i.test(d.label)) ??
-          devices[devices.length - 1]
+        const [{ BrowserMultiFormatReader }, { DecodeHintType, BarcodeFormat }] =
+          await Promise.all([
+            import("@zxing/browser"),
+            import("@zxing/library"),
+          ])
+        if (cancelled) return
 
         if (!videoEl) return
 
-        const reader = new BrowserMultiFormatReader()
-        const ctrl = await reader.decodeFromVideoDevice(
-          backCam.deviceId,
+        // Sadece market ürün barkodu formatları: QR/DataMatrix/Aztec
+        // taramayı atlayınca tespit hızlanır ve konsol gürültüsü azalır.
+        // TRY_HARDER zorlu koşullarda (bulanık, eğik) tespiti belirgin
+        // artırır — 1D ürün barkodları için kritik.
+        const hints = new Map()
+        hints.set(DecodeHintType.POSSIBLE_FORMATS, [
+          BarcodeFormat.EAN_13,
+          BarcodeFormat.EAN_8,
+          BarcodeFormat.UPC_A,
+          BarcodeFormat.UPC_E,
+          BarcodeFormat.CODE_128,
+        ])
+        hints.set(DecodeHintType.TRY_HARDER, true)
+
+        const reader = new BrowserMultiFormatReader(hints, {
+          // Varsayılan 500ms — düşürünce saniyede daha çok kare taranır.
+          delayBetweenScanAttempts: 150,
+          delayBetweenScanSuccess: 300,
+        })
+        // Cihaz listeleme yerine doğrudan kısıtlama ile başlatıyoruz:
+        // enumerateDevices() izin istemeden boş dönebildiği için
+        // getUserMedia'yı tetikleyen bu çağrı izin penceresini açar.
+        // Yüksek çözünürlük: ince barkod çizgileri düşük çözünürlükte
+        // çözülemez, bu yüzden mümkünse 1080p talep ediyoruz.
+        const ctrl = await reader.decodeFromConstraints(
+          {
+            video: {
+              facingMode: { ideal: "environment" },
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            },
+          },
           videoEl,
           (result, _err, c) => {
             if (cancelled || !result) return
@@ -116,6 +146,25 @@ function ScannerSession({
         }
         controls = ctrl
         setStatus("scanning")
+
+        // Sürekli otomatik odak: telefon kameraları gibi destekleyen
+        // cihazlarda barkodun netleşmesini sağlar. Sabit odaklı
+        // webcam'ler bunu desteklemez ve sessizce atlanır.
+        const track = (videoEl.srcObject as MediaStream | null)
+          ?.getVideoTracks()?.[0]
+        const caps = track?.getCapabilities?.() as
+          | (MediaTrackCapabilities & { focusMode?: string[] })
+          | undefined
+        if (track && caps?.focusMode?.includes("continuous")) {
+          try {
+            await track.applyConstraints({
+              // @ts-expect-error focusMode standart tip tanımında henüz yok
+              advanced: [{ focusMode: "continuous" }],
+            })
+          } catch {
+            /* desteklenmiyorsa yoksay */
+          }
+        }
       } catch (err) {
         if (cancelled) return
         setStatus("error")
@@ -124,12 +173,14 @@ function ScannerSession({
           setErrorMessage(
             "Kamera izni reddedildi. Tarayıcı ayarlarından izin verip tekrar dene.",
           )
-        } else if (name === "NotFoundError") {
+        } else if (name === "NotFoundError" || name === "OverconstrainedError") {
           setErrorMessage("Cihazda kullanılabilir kamera bulunamadı.")
-        } else {
+        } else if (name === "NotReadableError") {
           setErrorMessage(
-            (err as Error).message ?? "Kamera başlatılamadı.",
+            "Kameraya erişilemedi. Başka bir uygulama kullanıyor olabilir.",
           )
+        } else {
+          setErrorMessage((err as Error).message ?? "Kamera başlatılamadı.")
         }
       }
     })()

@@ -22,5 +22,5 @@ export function applySecurityHeaders(h: Headers) {
   h.set("X-Frame-Options", "DENY")
   h.set("X-Content-Type-Options", "nosniff")
   h.set("Referrer-Policy", "strict-origin-when-cross-origin")
-  h.set("Permissions-Policy", "camera=(), microphone=(self), geolocation=()")
+  h.set("Permissions-Policy", "camera=(self), microphone=(self), geolocation=()")
 }

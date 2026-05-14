@@ -30,6 +30,12 @@ export const ConversationContent = ({
 }: ConversationContentProps) => (
   <StickToBottom.Content
     className={cn("flex flex-col gap-8 p-4", className)}
+    scrollClassName={cn(
+      // Hide the scrollbar across browsers
+      "[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+      // Smooth fade as content scrolls under the top edge
+      "[mask-image:linear-gradient(to_bottom,transparent_0,#000_1rem)]"
+    )}
     {...props}
   />
 );

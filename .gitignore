@@ -17,6 +17,7 @@ SepetIQ-PRD.md
 # next.js
 /.next/
 /out/
+/certificates/
 
 #claude
 /.claude/

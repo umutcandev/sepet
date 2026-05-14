@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import {
+  APICallError,
   createUIMessageStream,
   createUIMessageStreamResponse,
   type UIMessage,
@@ -34,6 +35,21 @@ export const maxDuration = 60
 
 const FALLBACK_TEXT =
   'Sana yardım edebilmem için alışveriş listeni yazar mısın? Örnek: "2 ekmek, 1 lt süt, 500g beyaz peynir".'
+
+const MODEL_BUSY_TEXT =
+  "Yapay zeka servisi şu an yoğun (geçici bir durum). Birkaç dakika sonra tekrar dener misin?"
+
+/**
+ * Google Gemini "yüksek talep" hatası (503 / UNAVAILABLE) — model geçici
+ * olarak meşgul demek; kullanıcı hatası değil. AI SDK retry'ları tükettiğinde
+ * bu hata dışarı düşer.
+ */
+function isModelOverloaded(err: unknown): boolean {
+  if (APICallError.isInstance(err)) {
+    return err.statusCode === 503 || err.statusCode === 429
+  }
+  return false
+}
 
 type LastUserMode =
   | { kind: "receiptApproval"; payload: ReceiptApprovalPayload }
@@ -218,19 +234,22 @@ function computeReceiptComparison(
   const items = payloadItems.map((it, idx) => {
     const match = matches[idx]
     const best = match?.bestMatch ?? null
+    const sizeMismatch = match?.sizeMismatch ?? false
     const minPrice = best?.minPrice ?? null
     const marketWithMin = best
       ? match.marketPrices.find((mp) => mp.price === minPrice) ?? null
       : null
     const bestMarket = marketWithMin?.market ?? null
     const bestPrice = minPrice ?? null
+    const bestUrl = marketWithMin?.sourceUrl ?? null
     // Fişteki toplam tutarla en iyi (birim fiyat * quantity) karşılaştır
     const receiptTotal =
       it.totalPrice ??
       (it.unitPrice != null ? it.unitPrice * it.quantity : null)
     const bestTotal = bestPrice != null ? bestPrice * it.quantity : null
+    // Farklı boyutlu ürünle eşleşmişse fiyatlar kıyaslanamaz — tasarruf yazma.
     const savingsTL =
-      receiptTotal != null && bestTotal != null
+      !sizeMismatch && receiptTotal != null && bestTotal != null
         ? Math.max(0, receiptTotal - bestTotal)
         : null
     return {
@@ -241,7 +260,9 @@ function computeReceiptComparison(
       matchedName: best?.name ?? null,
       bestMarket,
       bestPrice,
+      bestUrl,
       savingsTL,
+      sizeMismatch,
     }
   })
 
@@ -249,8 +270,14 @@ function computeReceiptComparison(
     (sum, i) => sum + (i.receiptTotalPrice ?? 0),
     0,
   )
-  const totalReceiptAmount =
-    receiptTotalAmount != null && receiptTotalAmount > 0
+  // Onay ekranında kalem silinince fişin basılı genel toplamı artık güncel
+  // kalem listesini yansıtmaz. Tüm kalemlerin tutarı biliniyorsa satır
+  // toplamını kullan; bir kısmı OCR'dan okunamadıysa basılı toplama düş.
+  const allLineTotalsKnown =
+    items.length > 0 && items.every((i) => i.receiptTotalPrice != null)
+  const totalReceiptAmount = allLineTotalsKnown
+    ? lineItemsTotal
+    : receiptTotalAmount != null && receiptTotalAmount > 0
       ? receiptTotalAmount
       : lineItemsTotal
   const totalBestAmount = items.reduce(
@@ -520,8 +547,9 @@ async function runAssistantTurn({
       writer.write({
         type: "tool-output-error",
         toolCallId: parseCallId,
-        errorText:
-          "Fişi okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
+        errorText: isModelOverloaded(err)
+          ? MODEL_BUSY_TEXT
+          : "Fişi okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
       } as AnyChunk)
       return
     }
@@ -636,12 +664,15 @@ async function runAssistantTurn({
     basket = await parseShoppingList(rawText)
   } catch (err) {
     console.error("[assistant/chat] parse failed", err)
+    const busy = isModelOverloaded(err)
     writer.write({
       type: "tool-output-error",
       toolCallId: parseCallId,
-      errorText: "Listeyi okuyamadım, tekrar yazabilir misin?",
+      errorText: busy
+        ? MODEL_BUSY_TEXT
+        : "Listeyi okuyamadım, tekrar yazabilir misin?",
     } as AnyChunk)
-    await emitText(writer, FALLBACK_TEXT)
+    await emitText(writer, busy ? MODEL_BUSY_TEXT : FALLBACK_TEXT)
     return
   }
 

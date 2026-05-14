@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { MessageSquareIcon, MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react"
+import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react"
 import { toast } from "sonner"
 
 import {
@@ -46,6 +46,31 @@ import {
   deleteConversation,
   renameConversation,
 } from "@/lib/actions/conversations"
+
+function ConversationIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+      opacity="0.5"
+    >
+      <circle
+        cx="8"
+        cy="8"
+        r="7.25"
+        stroke="currentColor"
+        fill="none"
+        strokeWidth="1.5"
+        strokeDasharray="3 3.4"
+      />
+    </svg>
+  )
+}
 
 export type ConversationListItem = {
   id: string
@@ -101,7 +126,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                       href={`/assistant/${c.id}`}
                       onClick={handleNavClick}
                     >
-                      <MessageSquareIcon />
+                      <ConversationIcon />
                       <span className="truncate">{c.title}</span>
                     </Link>
                   </SidebarMenuButton>
