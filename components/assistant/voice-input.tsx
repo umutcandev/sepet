@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { MicIcon, SquareIcon } from "lucide-react"
+import { MicIcon, SquareIcon, Loader2Icon } from "lucide-react"
 import { toast } from "sonner"
 
 import { PromptInputButton } from "@/components/ai-elements/prompt-input"
@@ -40,6 +40,7 @@ interface SpeechRecognitionLike extends EventTarget {
   abort(): void
   onresult: ((event: SpeechRecognitionEventLike) => void) | null
   onerror: ((event: SpeechRecognitionErrorEventLike) => void) | null
+  onstart: (() => void) | null
   onend: (() => void) | null
 }
 
@@ -78,10 +79,10 @@ export function VoiceInput({
   const [recording, setRecording] = React.useState(false)
   const [starting, setStarting] = React.useState(false)
   const [activeStream, setActiveStream] = React.useState<MediaStream | null>(null)
-  const [isMobile, setIsMobile] = React.useState(false)
 
   const recognitionRef = React.useRef<SpeechRecognitionLike | null>(null)
   const streamRef = React.useRef<MediaStream | null>(null)
+  const isAbortedRef = React.useRef(false)
   // Kayıt başladığı andaki input değeri — çözümlenen metin bunun sonuna eklenir.
   const baseValueRef = React.useRef("")
   // En güncel onTranscript referansı (stale closure'ı önlemek için).
@@ -95,12 +96,25 @@ export function VoiceInput({
   const [mounted, setMounted] = React.useState(false)
   React.useEffect(() => {
     setMounted(true)
-    setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
   }, [])
   const supported = mounted && getSpeechRecognition() !== null
 
   const stopRecording = React.useCallback(() => {
+    isAbortedRef.current = true
     recognitionRef.current?.stop()
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop())
+      streamRef.current = null
+      setActiveStream(null)
+    }
+    setRecording(false)
+  }, [])
+
+  const cancelStarting = React.useCallback(() => {
+    isAbortedRef.current = true
+    setStarting(false)
+    recognitionRef.current?.abort()
+    recognitionRef.current = null
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop())
       streamRef.current = null
@@ -111,6 +125,7 @@ export function VoiceInput({
   // Bileşen unmount olursa tanımayı durdur.
   React.useEffect(() => {
     return () => {
+      isAbortedRef.current = true
       recognitionRef.current?.abort()
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop())
@@ -126,22 +141,19 @@ export function VoiceInput({
       return
     }
 
+    isAbortedRef.current = false
     setStarting(true)
-    let stream: MediaStream | null = null
     try {
       // Önce mikrofon iznini netçe iste — hem tanıma hem dalga formu için.
-      stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      if (isMobile) {
-        // Mobilde donanım paylaşılamayacağı için (SpeechRecognition ve getUserMedia çakışır),
-        // izni aldıktan sonra stream'i hemen kapatıyoruz ki SpeechRecognition mikrofonu alabilsin.
-        stream.getTracks().forEach((track) => track.stop())
-      } else {
-        streamRef.current = stream
-        setActiveStream(stream)
-      }
+      const initialStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // İzni aldıktan sonra hemen kapatıyoruz ki SpeechRecognition mikrofonu kilitlenmeden alabilsin.
+      initialStream.getTracks().forEach((track) => track.stop())
+      if (isAbortedRef.current) return
     } catch {
-      setStarting(false)
-      toast.error("Mikrofon izni verilmedi.")
+      if (!isAbortedRef.current) {
+        setStarting(false)
+        toast.error("Mikrofon izni verilmedi.")
+      }
       return
     }
 
@@ -162,6 +174,8 @@ export function VoiceInput({
     }
 
     recognition.onerror = (event) => {
+      setStarting(false)
+      setRecording(false)
       if (event.error === "no-speech" || event.error === "aborted") {
         return
       }
@@ -172,8 +186,35 @@ export function VoiceInput({
       }
     }
 
+    recognition.onstart = () => {
+      if (isAbortedRef.current) {
+        recognition.abort()
+        return
+      }
+      setStarting(false)
+      setRecording(true)
+
+      // SpeechRecognition'ın mikrofon donanımını öncelikli olarak almasını garanti etmek için
+      // gerçek dalga formu stream'ini 500ms gecikmeli istiyoruz.
+      setTimeout(async () => {
+        if (!recognitionRef.current || isAbortedRef.current) return
+        try {
+          const waveStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+          if (isAbortedRef.current || !recognitionRef.current) {
+            waveStream.getTracks().forEach((t) => t.stop())
+            return
+          }
+          streamRef.current = waveStream
+          setActiveStream(waveStream)
+        } catch (e) {
+          console.warn("Dalga formu için stream alınamadı (Mobilde beklenen bir durum):", e)
+        }
+      }, 500)
+    }
+
     recognition.onend = () => {
       setRecording(false)
+      setStarting(false)
       recognitionRef.current = null
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop())
@@ -185,17 +226,41 @@ export function VoiceInput({
     recognitionRef.current = recognition
     try {
       recognition.start()
-      setRecording(true)
     } catch {
-      toast.error("Ses kaydı başlatılamadı.")
+      if (!isAbortedRef.current) {
+        toast.error("Ses kaydı başlatılamadı.")
+        setStarting(false)
+      }
       recognitionRef.current = null
-    } finally {
-      setStarting(false)
     }
   }, [lang, value])
 
   if (!supported) {
     return null
+  }
+
+  if (starting) {
+    return (
+      <div
+        className={cn(
+          "flex items-center gap-1 rounded-full border bg-background/80 py-1 pr-1 pl-3",
+          className,
+        )}
+      >
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mr-1 w-24 sm:w-32 justify-center">
+          <Loader2Icon className="size-3.5 animate-spin" />
+          <span className="text-xs font-medium">Bağlanıyor</span>
+        </div>
+        <button
+          type="button"
+          onClick={cancelStarting}
+          aria-label="İptal et"
+          className="flex h-6 px-2.5 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition-colors hover:bg-muted/80 text-xs font-medium"
+        >
+          İptal
+        </button>
+      </div>
+    )
   }
 
   if (recording) {
@@ -207,8 +272,7 @@ export function VoiceInput({
         )}
       >
         <LiveWaveform
-          active={isMobile ? false : recording}
-          processing={isMobile ? recording : false}
+          active={recording}
           audioStream={activeStream}
           mode="static"
           height={20}
