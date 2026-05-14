@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { ShoppingCart } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
 
 import {
   Avatar,
@@ -20,10 +20,17 @@ import { AssistantPrompt } from "@/components/assistant/assistant-prompt"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 
 const CHIPS = [
-  "Haftalık market listesi",
-  "Kahvaltılık ürünler",
-  "Temizlik malzemeleri",
-  "Fiş yükle ve analiz et",
+  "Sucuklu pizza için malzemeler",
+  "Menemen için malzemeler",
+  "Market fişimi analiz et",
+]
+
+const ROTATING_HEADINGS = [
+  "Alışveriş listeni oluşturalım mı?",
+  "Bugün ne pişirelim?",
+  "Market fişini analiz edelim mi?",
+  "Tarifin için malzemeleri çıkaralım mı?",
+  "Bütçeni birlikte planlayalım mı?",
 ]
 
 const ASSISTANT_SEED_KEY = "assistant:seed"
@@ -33,6 +40,23 @@ export default function HomePage() {
   const router = useRouter()
   const guard = useRequireAuth()
   const [input, setInput] = React.useState("")
+  const [headingIndex, setHeadingIndex] = React.useState(0)
+
+  React.useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval> | undefined
+
+    const timeoutId = setTimeout(() => {
+      setHeadingIndex((prev) => (prev + 1) % ROTATING_HEADINGS.length)
+      intervalId = setInterval(() => {
+        setHeadingIndex((prev) => (prev + 1) % ROTATING_HEADINGS.length)
+      }, 10000)
+    }, 3200)
+
+    return () => {
+      clearTimeout(timeoutId)
+      if (intervalId) clearInterval(intervalId)
+    }
+  }, [])
 
   const handleSubmit = guard((message: PromptInputMessage) => {
     const text = message.text?.trim() ?? ""
@@ -90,8 +114,19 @@ export default function HomePage() {
             </Avatar>
             <AvatarGroupCount>+42</AvatarGroupCount>
           </AvatarGroup>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Alışveriş listeni oluşturalım mı?
+          <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={headingIndex}
+                initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                className="inline-block"
+              >
+                {ROTATING_HEADINGS[headingIndex]}
+              </motion.span>
+            </AnimatePresence>
           </h1>
         </div>
 
@@ -100,8 +135,6 @@ export default function HomePage() {
           setInput={setInput}
           onSubmit={handleSubmit}
           className="w-full"
-          submitIcon={<ShoppingCart className="size-4" />}
-          submitLabel="Sepeti Oluştur"
         />
 
         <div className="flex flex-wrap justify-center gap-2">

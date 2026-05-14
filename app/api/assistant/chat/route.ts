@@ -3,6 +3,8 @@ import {
   createUIMessageStream,
   createUIMessageStreamResponse,
   type UIMessage,
+  type UIMessageChunk,
+  type UIMessageStreamWriter,
 } from "ai"
 import { nanoid } from "nanoid"
 import { auth } from "@/auth"
@@ -20,6 +22,12 @@ import type {
   ReceiptOCR,
   ReceiptComparison,
 } from "@/lib/ai/schemas"
+import {
+  appendMessages,
+  createConversation,
+} from "@/lib/actions/conversations"
+import { and, eq } from "drizzle-orm"
+import { db, conversations } from "@/lib/db"
 
 export const runtime = "nodejs"
 export const maxDuration = 60
@@ -268,11 +276,12 @@ function computeReceiptComparison(
 
 export async function POST(req: Request) {
   const session = await auth()
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 })
   }
+  const userId = session.user.id
 
-  let payload: { messages?: UIMessage[] }
+  let payload: { messages?: UIMessage[]; conversationId?: string }
   try {
     payload = await req.json()
   } catch {
@@ -289,201 +298,84 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "no_input" }, { status: 400 })
   }
 
+  const lastUserMessage = findLastUserMessage(messages)
+  if (!lastUserMessage) {
+    return NextResponse.json({ error: "no_user_message" }, { status: 400 })
+  }
+
+  let conversationId = payload.conversationId
+  let createdNewConversation = false
+  if (conversationId) {
+    const [owned] = await db
+      .select({ id: conversations.id })
+      .from(conversations)
+      .where(
+        and(
+          eq(conversations.id, conversationId),
+          eq(conversations.userId, userId),
+        ),
+      )
+      .limit(1)
+    if (!owned) {
+      return NextResponse.json(
+        { error: "conversation_not_found" },
+        { status: 404 },
+      )
+    }
+  } else {
+    const created = await createConversation({
+      firstUserMessage: lastUserMessage,
+    })
+    conversationId = created.id
+    createdNewConversation = true
+  }
+
+  // Persist the user message immediately so it survives a stream abort.
+  try {
+    await appendMessages(conversationId, userId, [
+      {
+        role: "user",
+        parts: lastUserMessage.parts as unknown,
+        metadata: (lastUserMessage as { metadata?: unknown }).metadata,
+      },
+    ])
+  } catch (err) {
+    console.error("[assistant/chat] user message persist failed", err)
+  }
+
   const stream = createUIMessageStream({
     execute: async ({ writer }) => {
+      const recorder = createAssistantRecorder()
+      const wrappedWriter = wrapWriter(writer, recorder)
+
       writer.write({ type: "start" })
 
-      if (mode.kind === "receiptImage") {
-        const parseCallId = nanoid()
+      // Send the conversation id to the client as a transient data event so
+      // the client can update the URL without persisting an extra part.
+      if (createdNewConversation) {
         writer.write({
-          type: "tool-input-available",
-          toolCallId: parseCallId,
-          toolName: "parseReceipt",
-          input: { imageUrl: mode.imageUrl },
-        })
+          type: "data-conversation-id",
+          data: { id: conversationId },
+          transient: true,
+        } as Parameters<typeof writer.write>[0])
+      }
 
-        let ocr: ReceiptOCR
+      // Original execute logic — using wrappedWriter so we can buffer the
+      // assistant message parts for persistence.
+      await runAssistantTurn({ writer: wrappedWriter, mode })
+
+      // Persist the assistant message before signalling finish.
+      const parts = recorder.finalize()
+      if (parts.length > 0) {
         try {
-          ocr = await parseReceiptImage(mode.imageUrl)
+          await appendMessages(conversationId, userId, [
+            { role: "assistant", parts },
+          ])
         } catch (err) {
-          console.error("[assistant/chat] receipt OCR failed", err)
-          writer.write({
-            type: "tool-output-error",
-            toolCallId: parseCallId,
-            errorText:
-              "Fişi okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
-          })
-          writer.write({ type: "finish" })
-          return
+          console.error("[assistant/chat] assistant message persist failed", err)
         }
-
-        writer.write({
-          type: "tool-output-available",
-          toolCallId: parseCallId,
-          output: {
-            ocr,
-            receiptImageUrl: mode.imageUrl,
-            receiptImageR2Key: mode.imageR2Key ?? null,
-          },
-        })
-
-        emitText(
-          writer,
-          ocr.items.length === 0
-            ? "Fişten ürün çıkartamadım. Lütfen tüm satırların net göründüğü bir kare çek."
-            : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et ve düzeltmelerini yap — ardından karşılaştırma için onayla.",
-        )
-        writer.write({ type: "finish" })
-        return
       }
 
-      if (mode.kind === "receiptApproval") {
-        const p = mode.payload
-        const parsedItems: ParsedItem[] = p.items.map((it) => ({
-          name: it.rawName,
-          searchQuery: it.searchQuery,
-          quantity: it.quantity,
-          unit: it.unit,
-        }))
-
-        const lookupCallId = nanoid()
-        writer.write({
-          type: "tool-input-available",
-          toolCallId: lookupCallId,
-          toolName: "lookupProducts",
-          input: { items: parsedItems },
-        })
-
-        const { matches } = await lookupProducts(parsedItems)
-
-        writer.write({
-          type: "tool-output-available",
-          toolCallId: lookupCallId,
-          output: { matches },
-        })
-
-        const summarizeCallId = nanoid()
-        writer.write({
-          type: "tool-input-available",
-          toolCallId: summarizeCallId,
-          toolName: "summarizeOptimization",
-          input: { matches },
-        })
-
-        const summary = computeOptimization(matches)
-
-        writer.write({
-          type: "tool-output-available",
-          toolCallId: summarizeCallId,
-          output: summary,
-        })
-
-        const comparison = computeReceiptComparison(
-          p.items,
-          matches,
-          p.purchaseDate ?? null,
-          p.totalAmount ?? null,
-        )
-        const compareCallId = nanoid()
-        writer.write({
-          type: "tool-input-available",
-          toolCallId: compareCallId,
-          toolName: "receiptComparison",
-          input: {},
-        })
-        writer.write({
-          type: "tool-output-available",
-          toolCallId: compareCallId,
-          output: {
-            comparison,
-            receiptContext: {
-              imageUrl: p.receiptImageUrl,
-              imageR2Key: p.receiptImageR2Key,
-              marketName: p.marketName,
-              purchaseDate: p.purchaseDate,
-              totalAmount: p.totalAmount,
-              items: p.items,
-            },
-            summary,
-            matches,
-          },
-        })
-
-        emitText(writer, buildReceiptComparisonText(comparison))
-        writer.write({ type: "finish" })
-        return
-      }
-
-      // Text mode (existing)
-      const rawText = mode.text
-      const parseCallId = nanoid()
-      writer.write({
-        type: "tool-input-available",
-        toolCallId: parseCallId,
-        toolName: "parseShoppingList",
-        input: { rawText },
-      })
-
-      let basket: Awaited<ReturnType<typeof parseShoppingList>>
-      try {
-        basket = await parseShoppingList(rawText)
-      } catch (err) {
-        console.error("[assistant/chat] parse failed", err)
-        writer.write({
-          type: "tool-output-error",
-          toolCallId: parseCallId,
-          errorText: "Listeyi okuyamadım, tekrar yazabilir misin?",
-        })
-        emitText(writer, FALLBACK_TEXT)
-        writer.write({ type: "finish" })
-        return
-      }
-
-      writer.write({
-        type: "tool-output-available",
-        toolCallId: parseCallId,
-        output: basket,
-      })
-
-      if (basket.items.length === 0) {
-        emitText(writer, FALLBACK_TEXT)
-        writer.write({ type: "finish" })
-        return
-      }
-
-      const lookupCallId = nanoid()
-      writer.write({
-        type: "tool-input-available",
-        toolCallId: lookupCallId,
-        toolName: "lookupProducts",
-        input: { items: basket.items },
-      })
-
-      const { matches } = await lookupProducts(basket.items)
-
-      writer.write({
-        type: "tool-output-available",
-        toolCallId: lookupCallId,
-        output: { matches },
-      })
-
-      const summarizeCallId = nanoid()
-      writer.write({
-        type: "tool-input-available",
-        toolCallId: summarizeCallId,
-        toolName: "summarizeOptimization",
-        input: { matches },
-      })
-
-      const summary = computeOptimization(matches)
-
-      writer.write({
-        type: "tool-output-available",
-        toolCallId: summarizeCallId,
-        output: summary,
-      })
-
-      emitText(writer, buildSummaryText(summary, matches))
       writer.write({ type: "finish" })
     },
     onError: (error) => {
@@ -495,14 +387,321 @@ export async function POST(req: Request) {
   return createUIMessageStreamResponse({ stream })
 }
 
-function emitText(
-  writer: Parameters<
-    NonNullable<Parameters<typeof createUIMessageStream>[0]["execute"]>
-  >[0]["writer"],
-  text: string,
-) {
+function findLastUserMessage(messages: UIMessage[]): UIMessage | null {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].role === "user") return messages[i]
+  }
+  return null
+}
+
+type AnyChunk = UIMessageChunk
+
+type StoredTextPart = { type: "text"; text: string }
+type StoredFilePart = {
+  type: "file"
+  mediaType: string
+  url: string
+  filename?: string
+}
+type StoredToolPart = {
+  type: string
+  toolCallId: string
+  state: "input-available" | "output-available" | "output-error"
+  input?: unknown
+  output?: unknown
+  errorText?: string
+}
+type StoredPart = StoredTextPart | StoredFilePart | StoredToolPart
+
+type AssistantRecorder = {
+  handle: (chunk: AnyChunk) => void
+  finalize: () => StoredPart[]
+}
+
+function createAssistantRecorder(): AssistantRecorder {
+  const parts: StoredPart[] = []
+  const textIndex = new Map<string, number>()
+  const toolIndex = new Map<string, number>()
+
+  function handle(chunkRaw: AnyChunk) {
+    const c = chunkRaw as unknown as { type: string } & Record<string, unknown>
+    switch (c.type) {
+      case "text-start": {
+        const id = c.id as string
+        const idx = parts.length
+        parts.push({ type: "text", text: "" })
+        textIndex.set(id, idx)
+        return
+      }
+      case "text-delta": {
+        const id = c.id as string
+        const idx = textIndex.get(id)
+        if (idx == null) return
+        const p = parts[idx] as StoredTextPart
+        p.text += (c.delta as string) ?? ""
+        return
+      }
+      case "text-end":
+        return
+      case "tool-input-available": {
+        const toolCallId = c.toolCallId as string
+        const toolName = c.toolName as string
+        const idx = parts.length
+        parts.push({
+          type: `tool-${toolName}`,
+          toolCallId,
+          state: "input-available",
+          input: c.input,
+        })
+        toolIndex.set(toolCallId, idx)
+        return
+      }
+      case "tool-output-available": {
+        const toolCallId = c.toolCallId as string
+        const idx = toolIndex.get(toolCallId)
+        if (idx == null) return
+        const p = parts[idx] as StoredToolPart
+        p.state = "output-available"
+        p.output = c.output
+        return
+      }
+      case "tool-output-error": {
+        const toolCallId = c.toolCallId as string
+        const idx = toolIndex.get(toolCallId)
+        if (idx == null) return
+        const p = parts[idx] as StoredToolPart
+        p.state = "output-error"
+        p.errorText = c.errorText as string
+        return
+      }
+      default:
+        return
+    }
+  }
+
+  return { handle, finalize: () => parts }
+}
+
+type WriterLike = Pick<UIMessageStreamWriter, "write">
+
+function wrapWriter(
+  writer: UIMessageStreamWriter,
+  recorder: AssistantRecorder,
+): WriterLike {
+  return {
+    write(chunk) {
+      recorder.handle(chunk as AnyChunk)
+      writer.write(chunk)
+    },
+  }
+}
+
+async function runAssistantTurn({
+  writer,
+  mode,
+}: {
+  writer: WriterLike
+  mode: Exclude<LastUserMode, { kind: "empty" }>
+}) {
+  if (mode.kind === "receiptImage") {
+    const parseCallId = nanoid()
+    writer.write({
+      type: "tool-input-available",
+      toolCallId: parseCallId,
+      toolName: "parseReceipt",
+      input: { imageUrl: mode.imageUrl },
+    } as AnyChunk)
+
+    let ocr: ReceiptOCR
+    try {
+      ocr = await parseReceiptImage(mode.imageUrl)
+    } catch (err) {
+      console.error("[assistant/chat] receipt OCR failed", err)
+      writer.write({
+        type: "tool-output-error",
+        toolCallId: parseCallId,
+        errorText:
+          "Fişi okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
+      } as AnyChunk)
+      return
+    }
+
+    writer.write({
+      type: "tool-output-available",
+      toolCallId: parseCallId,
+      output: {
+        ocr,
+        receiptImageUrl: mode.imageUrl,
+        receiptImageR2Key: mode.imageR2Key ?? null,
+      },
+    } as AnyChunk)
+
+    await emitText(
+      writer,
+      ocr.items.length === 0
+        ? "Fişten ürün çıkartamadım. Lütfen tüm satırların net göründüğü bir kare çek."
+        : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et ve düzeltmelerini yap — ardından karşılaştırma için onayla.",
+    )
+    return
+  }
+
+  if (mode.kind === "receiptApproval") {
+    const p = mode.payload
+    const parsedItems: ParsedItem[] = p.items.map((it) => ({
+      name: it.rawName,
+      searchQuery: it.searchQuery,
+      quantity: it.quantity,
+      unit: it.unit,
+    }))
+
+    const lookupCallId = nanoid()
+    writer.write({
+      type: "tool-input-available",
+      toolCallId: lookupCallId,
+      toolName: "lookupProducts",
+      input: { items: parsedItems },
+    } as AnyChunk)
+
+    const { matches } = await lookupProducts(parsedItems)
+
+    writer.write({
+      type: "tool-output-available",
+      toolCallId: lookupCallId,
+      output: { matches },
+    } as AnyChunk)
+
+    const summarizeCallId = nanoid()
+    writer.write({
+      type: "tool-input-available",
+      toolCallId: summarizeCallId,
+      toolName: "summarizeOptimization",
+      input: { matches },
+    } as AnyChunk)
+
+    const summary = computeOptimization(matches)
+
+    writer.write({
+      type: "tool-output-available",
+      toolCallId: summarizeCallId,
+      output: summary,
+    } as AnyChunk)
+
+    const comparison = computeReceiptComparison(
+      p.items,
+      matches,
+      p.purchaseDate ?? null,
+      p.totalAmount ?? null,
+    )
+    const compareCallId = nanoid()
+    writer.write({
+      type: "tool-input-available",
+      toolCallId: compareCallId,
+      toolName: "receiptComparison",
+      input: {},
+    } as AnyChunk)
+    writer.write({
+      type: "tool-output-available",
+      toolCallId: compareCallId,
+      output: {
+        comparison,
+        receiptContext: {
+          imageUrl: p.receiptImageUrl,
+          imageR2Key: p.receiptImageR2Key,
+          marketName: p.marketName,
+          purchaseDate: p.purchaseDate,
+          totalAmount: p.totalAmount,
+          items: p.items,
+        },
+        summary,
+        matches,
+      },
+    } as AnyChunk)
+
+    await emitText(writer, buildReceiptComparisonText(comparison))
+    return
+  }
+
+  // Text mode
+  const rawText = mode.text
+  const parseCallId = nanoid()
+  writer.write({
+    type: "tool-input-available",
+    toolCallId: parseCallId,
+    toolName: "parseShoppingList",
+    input: { rawText },
+  } as AnyChunk)
+
+  let basket: Awaited<ReturnType<typeof parseShoppingList>>
+  try {
+    basket = await parseShoppingList(rawText)
+  } catch (err) {
+    console.error("[assistant/chat] parse failed", err)
+    writer.write({
+      type: "tool-output-error",
+      toolCallId: parseCallId,
+      errorText: "Listeyi okuyamadım, tekrar yazabilir misin?",
+    } as AnyChunk)
+    await emitText(writer, FALLBACK_TEXT)
+    return
+  }
+
+  writer.write({
+    type: "tool-output-available",
+    toolCallId: parseCallId,
+    output: basket,
+  } as AnyChunk)
+
+  if (basket.items.length === 0) {
+    await emitText(writer, FALLBACK_TEXT)
+    return
+  }
+
+  const lookupCallId = nanoid()
+  writer.write({
+    type: "tool-input-available",
+    toolCallId: lookupCallId,
+    toolName: "lookupProducts",
+    input: { items: basket.items },
+  } as AnyChunk)
+
+  const { matches } = await lookupProducts(basket.items)
+
+  writer.write({
+    type: "tool-output-available",
+    toolCallId: lookupCallId,
+    output: { matches },
+  } as AnyChunk)
+
+  const summarizeCallId = nanoid()
+  writer.write({
+    type: "tool-input-available",
+    toolCallId: summarizeCallId,
+    toolName: "summarizeOptimization",
+    input: { matches },
+  } as AnyChunk)
+
+  const summary = computeOptimization(matches)
+
+  writer.write({
+    type: "tool-output-available",
+    toolCallId: summarizeCallId,
+    output: summary,
+  } as AnyChunk)
+
+  await emitText(writer, buildSummaryText(summary, matches))
+}
+
+async function emitText(writer: WriterLike, text: string) {
   const id = nanoid()
-  writer.write({ type: "text-start", id })
-  writer.write({ type: "text-delta", id, delta: text })
-  writer.write({ type: "text-end", id })
+  writer.write({ type: "text-start", id } as AnyChunk)
+  const tokens = text.match(/\S+\s*/g) ?? [text]
+  const groupSize = 3
+  for (let i = 0; i < tokens.length; i += groupSize) {
+    const delta = tokens.slice(i, i + groupSize).join("")
+    writer.write({ type: "text-delta", id, delta } as AnyChunk)
+    if (i + groupSize < tokens.length) {
+      await new Promise((resolve) => setTimeout(resolve, 18))
+    }
+  }
+  writer.write({ type: "text-end", id } as AnyChunk)
 }

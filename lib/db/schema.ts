@@ -167,3 +167,41 @@ export const receiptItems = pgTable(
   },
   (t) => [index("receipt_item_receipt_idx").on(t.receiptId)],
 )
+
+// ─── Asistan: sohbet geçmişi ───
+
+export const conversations = pgTable(
+  "conversation",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updatedAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("conv_user_updated_idx").on(t.userId, t.updatedAt.desc())],
+)
+
+export const conversationMessages = pgTable(
+  "conversation_message",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    conversationId: uuid("conversationId")
+      .notNull()
+      .references(() => conversations.id, { onDelete: "cascade" }),
+    role: text("role").notNull(),
+    parts: jsonb("parts").notNull(),
+    metadata: jsonb("metadata"),
+    sequence: integer("sequence").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("msg_conv_seq_idx").on(t.conversationId, t.sequence)],
+)

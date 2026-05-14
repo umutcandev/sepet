@@ -5,6 +5,7 @@ import Image from "next/image"
 
 
 import { AppSidebar } from "@/components/app-sidebar"
+import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -17,13 +18,14 @@ import { loginDialog } from "@/lib/stores/login-dialog"
 
 type Props = {
   user: CurrentUser | null
+  conversations?: ConversationListItem[]
   children: React.ReactNode
 }
 
-export function AppShell({ user, children }: Props) {
+export function AppShell({ user, conversations, children }: Props) {
   return (
     <SidebarProvider>
-      <AppSidebar user={user} />
+      <AppSidebar user={user} conversations={conversations} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center justify-between gap-2">
           <div className="flex items-center gap-2 px-4">

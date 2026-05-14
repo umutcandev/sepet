@@ -1,8 +1,9 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { useChat } from "@ai-sdk/react"
-import { DefaultChatTransport } from "ai"
+import { DefaultChatTransport, type UIMessage } from "ai"
 import { Loader2Icon, SparklesIcon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -45,10 +46,9 @@ const SEED_KEY = "assistant:seed"
 const FILE_KEY = "assistant:file"
 
 const SUGGESTIONS = [
-  "2 ekmek, 1 lt süt, 500g beyaz peynir, 4 elma",
-  "Haftalık market listemi hazırla",
-  "Bu hafta kahvaltılık ürünler",
-  "Temizlik malzemeleri",
+  "Sucuklu pizza için malzemeler",
+  "Menemen için malzemeler",
+  "Market fişimi analiz et",
 ]
 
 type ParseReceiptOutput = {
@@ -57,10 +57,56 @@ type ParseReceiptOutput = {
   receiptImageR2Key: string | null
 }
 
-export function AssistantChat() {
+type AssistantChatProps = {
+  conversationId?: string
+  initialMessages?: Array<Pick<UIMessage, "id" | "role" | "parts"> & {
+    metadata?: unknown
+  }>
+}
+
+export function AssistantChat({
+  conversationId: initialConversationId,
+  initialMessages,
+}: AssistantChatProps = {}) {
+  const router = useRouter()
   const guard = useRequireAuth()
+  const conversationIdRef = React.useRef<string | undefined>(initialConversationId)
+  const navigatedRef = React.useRef(false)
+  const transport = React.useMemo(
+    () =>
+      new DefaultChatTransport({
+        api: "/api/assistant/chat",
+        body: () => ({ conversationId: conversationIdRef.current }),
+      }),
+    [],
+  )
   const { messages, sendMessage, status, stop, error } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/assistant/chat" }),
+    transport,
+    messages: initialMessages as UIMessage[] | undefined,
+    onData: (dataPart) => {
+      if (
+        dataPart.type === "data-conversation-id" &&
+        dataPart.data &&
+        typeof (dataPart.data as { id?: unknown }).id === "string"
+      ) {
+        const id = (dataPart.data as { id: string }).id
+        conversationIdRef.current = id
+        if (!navigatedRef.current) {
+          navigatedRef.current = true
+          // Soft URL update: avoid Next.js route navigation here, which would
+          // unmount this component mid-stream and abort the SSE reader.
+          // The /assistant/[id] route will SSR fresh data on refresh / next nav.
+          window.history.replaceState(null, "", `/assistant/${id}`)
+        }
+      }
+    },
+    onFinish: () => {
+      // Stream is done — now safe to refresh server data so the sidebar's
+      // conversation list picks up the newly created conversation.
+      if (navigatedRef.current) {
+        router.refresh()
+      }
+    },
   })
   const [input, setInput] = React.useState("")
   const sentSeedRef = React.useRef(false)
@@ -68,6 +114,10 @@ export function AssistantChat() {
   React.useEffect(() => {
     if (sentSeedRef.current) return
     if (typeof window === "undefined") return
+    if (initialMessages && initialMessages.length > 0) {
+      sentSeedRef.current = true
+      return
+    }
 
     const seed = window.sessionStorage.getItem(SEED_KEY)
     const fileRaw = window.sessionStorage.getItem(FILE_KEY)
@@ -119,7 +169,7 @@ export function AssistantChat() {
     } else if (text) {
       sendMessage({ text })
     }
-  }, [sendMessage])
+  }, [sendMessage, initialMessages])
 
   const isBusy = status === "submitted" || status === "streaming"
 
@@ -292,8 +342,33 @@ export function AssistantChat() {
                               />
                             ),
                           )
-                        case "file":
-                          return null
+                        case "file": {
+                          const filePart = part as {
+                            type: "file"
+                            mediaType?: string
+                            url?: string
+                            filename?: string
+                          }
+                          if (
+                            !filePart.url ||
+                            !filePart.mediaType?.startsWith("image/")
+                          ) {
+                            return null
+                          }
+                          return (
+                            <div
+                              key={key}
+                              className="overflow-hidden rounded-lg border border-border max-w-[280px]"
+                            >
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={filePart.url}
+                                alt={filePart.filename ?? "Yüklenen görsel"}
+                                className="block h-auto w-full"
+                              />
+                            </div>
+                          )
+                        }
                         default:
                           return null
                       }
