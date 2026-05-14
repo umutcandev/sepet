@@ -2,7 +2,7 @@ const isDev = process.env.NODE_ENV !== "production"
 
 const scriptSrc = isDev
   ? "'self' 'unsafe-inline' 'unsafe-eval'"
-  : "'self' 'unsafe-inline'"
+  : "'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval'"
 
 const CSP = [
   "default-src 'self'",
