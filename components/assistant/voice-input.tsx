@@ -78,6 +78,7 @@ export function VoiceInput({
   const [recording, setRecording] = React.useState(false)
   const [starting, setStarting] = React.useState(false)
   const [activeStream, setActiveStream] = React.useState<MediaStream | null>(null)
+  const [isMobile, setIsMobile] = React.useState(false)
 
   const recognitionRef = React.useRef<SpeechRecognitionLike | null>(null)
   const streamRef = React.useRef<MediaStream | null>(null)
@@ -94,6 +95,7 @@ export function VoiceInput({
   const [mounted, setMounted] = React.useState(false)
   React.useEffect(() => {
     setMounted(true)
+    setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
   }, [])
   const supported = mounted && getSpeechRecognition() !== null
 
@@ -129,8 +131,14 @@ export function VoiceInput({
     try {
       // Önce mikrofon iznini netçe iste — hem tanıma hem dalga formu için.
       stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      streamRef.current = stream
-      setActiveStream(stream)
+      if (isMobile) {
+        // Mobilde donanım paylaşılamayacağı için (SpeechRecognition ve getUserMedia çakışır),
+        // izni aldıktan sonra stream'i hemen kapatıyoruz ki SpeechRecognition mikrofonu alabilsin.
+        stream.getTracks().forEach((track) => track.stop())
+      } else {
+        streamRef.current = stream
+        setActiveStream(stream)
+      }
     } catch {
       setStarting(false)
       toast.error("Mikrofon izni verilmedi.")
@@ -199,7 +207,8 @@ export function VoiceInput({
         )}
       >
         <LiveWaveform
-          active={recording}
+          active={isMobile ? false : recording}
+          processing={isMobile ? recording : false}
           audioStream={activeStream}
           mode="static"
           height={20}
