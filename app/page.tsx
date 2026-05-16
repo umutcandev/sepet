@@ -88,7 +88,7 @@ export default function HomePage() {
     }
 
     setInput("")
-    router.push("/assistant")
+    router.push("/asistan")
   })
 
   const handleChip = guard((chip: string) => {

@@ -19,6 +19,7 @@ export default async function AssistantConversationPage({
   return (
     <AssistantChat
       conversationId={conv.id}
+      initialTitle={conv.title}
       initialMessages={conv.messages}
     />
   )

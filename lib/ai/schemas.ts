@@ -20,6 +20,12 @@ export const ParsedItemSchema = z.object({
 
 export const BasketDraftSchema = z.object({
   items: z.array(ParsedItemSchema),
+  chatResponse: z
+    .string()
+    .nullable()
+    .describe(
+      "items boşsa kullanıcıya bağlama uygun kısa Türkçe cevap (selam ver, yetenekleri söyle, yönlendir). items doluysa null.",
+    ),
 })
 
 export const MarketAllocationSchema = z.object({
@@ -184,3 +190,15 @@ export type ReceiptOCR = z.infer<typeof ReceiptOCRSchema>
 export type ReceiptOCRItem = z.infer<typeof ReceiptOCRItemSchema>
 export type ReceiptComparison = z.infer<typeof ReceiptComparisonSchema>
 export type ReceiptComparisonItem = z.infer<typeof ReceiptComparisonItemSchema>
+
+// ─── Sohbet başlığı (AI üretimi) ───
+
+export const ChatTitleSchema = z.object({
+  title: z
+    .string()
+    .describe(
+      "3-5 kelimelik kısa Türkçe sohbet başlığı. Cümle değil, başlık. Noktalama/tırnak/emoji yok.",
+    ),
+})
+
+export type ChatTitle = z.infer<typeof ChatTitleSchema>

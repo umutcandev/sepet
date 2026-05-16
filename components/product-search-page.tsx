@@ -138,7 +138,6 @@ export function ProductSearchPage() {
 
       <ResultArea
         result={result}
-        inputLength={trimmed.length}
         onSelect={guard(setSelectedBarcode)}
       />
 
@@ -166,11 +165,9 @@ export function ProductSearchPage() {
 
 function ResultArea({
   result,
-  inputLength,
   onSelect,
 }: {
   result: Result
-  inputLength: number
   onSelect: (barcode: string) => void
 }) {
   if (result.kind === "loading") {

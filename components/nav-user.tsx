@@ -82,7 +82,7 @@ export function NavUser({
               <DropdownMenuItem disabled>
                 <SparklesIcon
                 />
-                Pro'ya Yükselt
+                Pro&apos;ya Yükselt
                 <Badge variant="secondary" className="ml-auto text-[10px]" >
                   YAKINDA
                 </Badge>

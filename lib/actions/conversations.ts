@@ -52,7 +52,7 @@ export async function createConversation(input: {
 
   if (!row) throw new Error("conversation_insert_failed")
 
-  revalidatePath("/assistant", "layout")
+  revalidatePath("/asistan", "layout")
   return { id: row.id, title: row.title }
 }
 
@@ -130,7 +130,33 @@ export async function deleteConversation(id: string): Promise<void> {
       ),
     )
 
-  revalidatePath("/assistant", "layout")
+  revalidatePath("/asistan", "layout")
+}
+
+/**
+ * Sunucu tarafından (oturum aç henüz validate edilmiş bir akışta) konuşma
+ * başlığını günceller. updatedAt'i bilinçli olarak değiştirmez — başlık
+ * güncellemesinin sohbeti sidebar sıralamasında zıplatmasını istemiyoruz.
+ */
+export async function setConversationTitle(
+  conversationId: string,
+  userId: string,
+  title: string,
+): Promise<void> {
+  const trimmed = title.trim().slice(0, TITLE_MAX)
+  if (!trimmed) return
+
+  await db
+    .update(conversations)
+    .set({ title: trimmed })
+    .where(
+      and(
+        eq(conversations.id, conversationId),
+        eq(conversations.userId, userId),
+      ),
+    )
+
+  revalidatePath("/asistan", "layout")
 }
 
 export async function renameConversation(
@@ -153,7 +179,7 @@ export async function renameConversation(
       ),
     )
 
-  revalidatePath("/assistant", "layout")
+  revalidatePath("/asistan", "layout")
 }
 
 export async function appendMessages(
@@ -201,5 +227,5 @@ export async function appendMessages(
     .set({ updatedAt: new Date() })
     .where(eq(conversations.id, conversationId))
 
-  revalidatePath("/assistant", "layout")
+  revalidatePath("/asistan", "layout")
 }

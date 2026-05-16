@@ -27,10 +27,6 @@ type Props = {
 }
 
 export function LoginForm({ variant = "lg", callbackUrl }: Props) {
-  const headingMuted =
-    variant === "md"
-      ? "text-background/60 md:text-muted-foreground/60"
-      : "text-background/60 lg:text-muted-foreground/60"
   const headingText =
     variant === "md"
       ? "text-background md:text-foreground"

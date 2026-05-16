@@ -123,7 +123,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                     tooltip={c.title}
                   >
                     <Link
-                      href={`/assistant/${c.id}`}
+                      href={`/asistan/${c.id}`}
                       onClick={handleNavClick}
                     >
                       <ConversationIcon />
@@ -193,6 +193,8 @@ function RenameDialog({
   const [pending, setPending] = React.useState(false)
 
   React.useEffect(() => {
+    // Dialog re-opens with a different target — reset editable value to its title.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(target?.title ?? "")
   }, [target])
 
@@ -266,7 +268,7 @@ function DeleteDialog({
     try {
       await deleteConversation(target.id)
       if (target.id === activeId) {
-        router.push("/assistant")
+        router.push("/asistan")
       }
       onClose()
     } catch (err) {

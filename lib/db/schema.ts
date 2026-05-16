@@ -168,6 +168,51 @@ export const receiptItems = pgTable(
   (t) => [index("receipt_item_receipt_idx").on(t.receiptId)],
 )
 
+// ─── Sepetlerim: doğal dil ile oluşturulup kaydedilen sepetler ───
+
+export const baskets = pgTable(
+  "basket",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    bestSingleMarket: text("bestSingleMarket"),
+    bestSingleTotal: numeric("bestSingleTotal", { precision: 10, scale: 2 }),
+    twoMarketSavingsTL: numeric("twoMarketSavingsTL", {
+      precision: 10,
+      scale: 2,
+    }),
+    summaryJson: jsonb("summaryJson"),
+    createdAt: timestamp("createdAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("basket_user_created_idx").on(t.userId, t.createdAt.desc())],
+)
+
+export const basketItems = pgTable(
+  "basket_item",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    basketId: uuid("basketId")
+      .notNull()
+      .references(() => baskets.id, { onDelete: "cascade" }),
+    rawName: text("rawName").notNull(),
+    searchQuery: text("searchQuery").notNull(),
+    quantity: numeric("quantity", { precision: 10, scale: 3 })
+      .notNull()
+      .default("1"),
+    unit: text("unit").notNull().default("adet"),
+    matchedBarcode: text("matchedBarcode"),
+    matchedName: text("matchedName"),
+    bestMarket: text("bestMarket"),
+    bestPrice: numeric("bestPrice", { precision: 10, scale: 2 }),
+  },
+  (t) => [index("basket_item_basket_idx").on(t.basketId)],
+)
+
 // ─── Asistan: sohbet geçmişi ───
 
 export const conversations = pgTable(

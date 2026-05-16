@@ -1,4 +1,4 @@
-# Gemini → Vercel AI Gateway Geçiş Raporu
+# Gemini → Vercel AI Gateway with Gemini Geçiş Raporu
 
 ## Araştırma Özeti
 
