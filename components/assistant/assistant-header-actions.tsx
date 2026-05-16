@@ -40,7 +40,7 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
             <MoreHorizontalIcon className="size-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
+        <DropdownMenuContent align="start" className="w-auto min-w-40">
           <DropdownMenuItem
             onSelect={(e) => {
               e.preventDefault()

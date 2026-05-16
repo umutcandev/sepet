@@ -144,6 +144,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                     <DropdownMenuContent
                       side={isMobile ? "bottom" : "right"}
                       align="start"
+                      className="w-auto min-w-40"
                     >
                       <DropdownMenuItem
                         onSelect={(e) => {

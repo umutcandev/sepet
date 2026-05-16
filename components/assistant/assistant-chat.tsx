@@ -694,8 +694,8 @@ function ReasoningBlock({ text, streaming }: ReasoningBlockProps) {
         )}
       </button>
       {open && (
-        <div className="border-l-2 border-border pl-3 text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">
-          {text}
+        <div className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground [&_p]:my-1 [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5 [&_li]:pl-1 [&_code]:text-[0.95em] [&_code]:px-1 [&_code]:py-0 [&_code]:font-normal [&_pre]:text-xs [&_pre]:p-2">
+          <MessageResponse>{text}</MessageResponse>
         </div>
       )}
     </div>
