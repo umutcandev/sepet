@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { MarketLogo } from "@/components/market-logo"
 import { DeleteBasketButton } from "./delete-button"
 
 export const metadata = { title: "Sepet Detayı" }
@@ -85,7 +86,10 @@ export default async function BasketDetailPage({
                 <div className="flex justify-between gap-3">
                   <dt className="text-muted-foreground">En iyi market</dt>
                   <dd className="text-right">
-                    <div>{basket.bestSingleMarket}</div>
+                    <div className="flex items-center justify-end gap-2">
+                      <MarketLogo name={basket.bestSingleMarket} size="sm" />
+                      <span>{basket.bestSingleMarket}</span>
+                    </div>
                     {basket.bestSingleTotal && (
                       <div className="text-xs text-muted-foreground tabular-nums">
                         {tl.format(Number(basket.bestSingleTotal))}
@@ -143,7 +147,12 @@ export default async function BasketDetailPage({
                       {Number(it.quantity)} {it.unit}
                     </TableCell>
                     <TableCell>
-                      {it.bestMarket ?? (
+                      {it.bestMarket ? (
+                        <div className="flex items-center gap-2">
+                          <MarketLogo name={it.bestMarket} size="sm" />
+                          <span>{it.bestMarket}</span>
+                        </div>
+                      ) : (
                         <span className="text-xs text-muted-foreground">—</span>
                       )}
                     </TableCell>

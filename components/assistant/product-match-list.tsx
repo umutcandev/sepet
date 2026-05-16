@@ -15,6 +15,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { MarketLogo } from "@/components/market-logo"
 import type { MatchResult } from "@/lib/ai/schemas"
 
 export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
@@ -92,6 +93,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
               </div>
               {cheapest && (
                 <div className="flex shrink-0 items-center gap-1.5">
+                  <MarketLogo name={cheapest.market} size="sm" />
                   <div className="flex flex-col items-end text-right">
                     <span className="text-xs text-muted-foreground">
                       {cheapest.market}
@@ -138,7 +140,10 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                         key={`${mp.market}-${idx}`}
                         className="flex items-center justify-between gap-2 px-3 py-2 text-sm"
                       >
-                        <span className="text-muted-foreground">{mp.market}</span>
+                        <div className="flex items-center gap-2">
+                          <MarketLogo name={mp.market} size="sm" />
+                          <span className="text-muted-foreground">{mp.market}</span>
+                        </div>
                         <div className="flex items-center gap-1.5">
                           <span className="font-medium tabular-nums">
                             {tlFormatter.format(mp.price)}

@@ -253,6 +253,7 @@ function ProductCard({
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
             className="object-cover transition-transform duration-200 group-hover:scale-[1.03]"
+            unoptimized
           />
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">

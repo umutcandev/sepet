@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { MarketLogo } from "@/components/market-logo"
 import { UnauthenticatedState } from "./unauthenticated-state"
 
 export const metadata = {
@@ -108,9 +109,14 @@ export default async function ReceiptsHistoryPage() {
                     <TableCell>
                       <Link
                         href={`/fis-gecmisi/${r.id}`}
-                        className="block py-1 font-medium"
+                        className="flex items-center gap-2 py-1 font-medium"
                       >
-                        {r.marketName ?? (
+                        {r.marketName ? (
+                          <>
+                            <MarketLogo name={r.marketName} size="sm" />
+                            <span>{r.marketName}</span>
+                          </>
+                        ) : (
                           <span className="text-muted-foreground">—</span>
                         )}
                       </Link>

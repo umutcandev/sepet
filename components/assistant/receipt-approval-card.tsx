@@ -18,6 +18,7 @@ import {
 import type { ReceiptOCR, ReceiptOCRItem } from "@/lib/ai/schemas"
 import { UNIT_VALUES } from "@/lib/ai/schemas"
 import { stripQuantityTokens } from "@/lib/ai/normalize"
+import { MarketLogo } from "@/components/market-logo"
 
 type EditableItem = ReceiptOCRItem & { _id: string }
 
@@ -284,7 +285,8 @@ export function ReceiptApprovalCard({
               <TableCell colSpan={4} className="text-muted-foreground">
                 <div className="flex items-center gap-2">
                   {readOnly && (
-                    <span className="text-xs">
+                    <span className="flex items-center gap-1.5 text-xs">
+                      {marketName && <MarketLogo name={marketName} size="sm" />}
                       <span className="font-medium text-foreground">
                         {marketName || "—"}
                       </span>

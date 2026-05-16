@@ -24,6 +24,7 @@ import {
   formatTL,
   priceTier,
 } from "@/lib/format"
+import { MarketLogo } from "@/components/market-logo"
 import type { ProductDetail } from "@/lib/camgoz/types"
 
 type Props = {
@@ -155,7 +156,8 @@ export function ProductDetailPanel({ barcode }: Props) {
                         className="border-border/60 last:border-b-0 hover:bg-muted/30"
                       >
                         <TableCell className="overflow-hidden px-3 py-2.5 align-middle">
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-2">
+                            <MarketLogo name={m.market} size="sm" />
                             <span
                               className="truncate text-sm font-medium text-foreground"
                               title={m.market}
