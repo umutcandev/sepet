@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { MarketLogo } from "@/components/market-logo"
 import { DeleteReceiptButton } from "./delete-button"
 
 export const metadata = { title: "Fiş Detayı" }
@@ -82,7 +83,16 @@ export default async function ReceiptDetailPage({
             <dl className="grid gap-1.5">
               <div className="flex justify-between gap-3">
                 <dt className="text-muted-foreground">Market</dt>
-                <dd className="font-medium">{receipt.marketName ?? "—"}</dd>
+                <dd className="flex items-center gap-2 font-medium">
+                  {receipt.marketName ? (
+                    <>
+                      <MarketLogo name={receipt.marketName} size="sm" />
+                      <span>{receipt.marketName}</span>
+                    </>
+                  ) : (
+                    "—"
+                  )}
+                </dd>
               </div>
               <div className="flex justify-between gap-3">
                 <dt className="text-muted-foreground">Tarih</dt>

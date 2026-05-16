@@ -2,11 +2,10 @@
 
 import {
   TrendingDownIcon,
-  StoreIcon,
-  SparklesIcon,
   AlertTriangleIcon,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import type { OptimizationSummary } from "@/lib/ai/schemas"
 
 export function OptimizationCard({ summary }: { summary: OptimizationSummary }) {
@@ -28,7 +27,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
   const singleRow = (
     <div key="single" className="flex items-center gap-3 px-4 py-3">
       {singleIsFull ? (
-        <StoreIcon className="size-4 shrink-0 text-muted-foreground" />
+        <MarketLogo name={singleMarket.market} size="default" />
       ) : (
         <AlertTriangleIcon className="size-4 shrink-0 text-amber-600 dark:text-amber-400" />
       )}
@@ -67,7 +66,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
 
   const comboRow = hasCombo ? (
     <div key="combo" className="flex items-center gap-3 px-4 py-3">
-      <SparklesIcon className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+      <MarketLogoGroup names={twoMarketCombo.markets} size="default" />
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
           {comboFirst

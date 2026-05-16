@@ -18,6 +18,7 @@ import {
 import { computeOptimization } from "@/lib/ai/optimize"
 import { STALE_DAY_THRESHOLD } from "@/lib/receipt-staleness"
 import type {
+  BasketDraft,
   MatchResult,
   OptimizationSummary,
   ParsedItem,
@@ -468,6 +469,11 @@ function findLastUserMessage(messages: UIMessage[]): UIMessage | null {
 type AnyChunk = UIMessageChunk
 
 type StoredTextPart = { type: "text"; text: string }
+type StoredReasoningPart = {
+  type: "reasoning"
+  text: string
+  state?: "streaming" | "done"
+}
 type StoredFilePart = {
   type: "file"
   mediaType: string
@@ -482,7 +488,11 @@ type StoredToolPart = {
   output?: unknown
   errorText?: string
 }
-type StoredPart = StoredTextPart | StoredFilePart | StoredToolPart
+type StoredPart =
+  | StoredTextPart
+  | StoredReasoningPart
+  | StoredFilePart
+  | StoredToolPart
 
 type AssistantRecorder = {
   handle: (chunk: AnyChunk) => void
@@ -492,6 +502,7 @@ type AssistantRecorder = {
 function createAssistantRecorder(): AssistantRecorder {
   const parts: StoredPart[] = []
   const textIndex = new Map<string, number>()
+  const reasoningIndex = new Map<string, number>()
   const toolIndex = new Map<string, number>()
 
   function handle(chunkRaw: AnyChunk) {
@@ -514,6 +525,29 @@ function createAssistantRecorder(): AssistantRecorder {
       }
       case "text-end":
         return
+      case "reasoning-start": {
+        const id = c.id as string
+        const idx = parts.length
+        parts.push({ type: "reasoning", text: "", state: "streaming" })
+        reasoningIndex.set(id, idx)
+        return
+      }
+      case "reasoning-delta": {
+        const id = c.id as string
+        const idx = reasoningIndex.get(id)
+        if (idx == null) return
+        const p = parts[idx] as StoredReasoningPart
+        p.text += (c.delta as string) ?? ""
+        return
+      }
+      case "reasoning-end": {
+        const id = c.id as string
+        const idx = reasoningIndex.get(id)
+        if (idx == null) return
+        const p = parts[idx] as StoredReasoningPart
+        p.state = "done"
+        return
+      }
       case "tool-input-available": {
         const toolCallId = c.toolCallId as string
         const toolName = c.toolName as string
@@ -584,8 +618,11 @@ async function runAssistantTurn({
     } as AnyChunk)
 
     let ocr: ReceiptOCR
+    let parseReasoning: string | null = null
     try {
-      ocr = await parseReceiptImage(mode.imageUrl)
+      const result = await parseReceiptImage(mode.imageUrl)
+      ocr = result.ocr
+      parseReasoning = result.reasoning
     } catch (err) {
       console.error("[assistant/chat] receipt OCR failed", err)
       writer.write({
@@ -596,6 +633,10 @@ async function runAssistantTurn({
           : "Fişi okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
       } as AnyChunk)
       return
+    }
+
+    if (parseReasoning) {
+      await emitReasoning(writer, parseReasoning)
     }
 
     writer.write({
@@ -762,9 +803,12 @@ async function runAssistantTurn({
     input: { rawText },
   } as AnyChunk)
 
-  let basket: Awaited<ReturnType<typeof parseShoppingList>>
+  let basket: BasketDraft
+  let parseReasoning: string | null = null
   try {
-    basket = await parseShoppingList(rawText)
+    const result = await parseShoppingList(rawText)
+    basket = result.draft
+    parseReasoning = result.reasoning
   } catch (err) {
     console.error("[assistant/chat] parse failed", err)
     const busy = isModelOverloaded(err)
@@ -777,6 +821,10 @@ async function runAssistantTurn({
     } as AnyChunk)
     await emitText(writer, busy ? MODEL_BUSY_TEXT : FALLBACK_TEXT)
     return
+  }
+
+  if (parseReasoning) {
+    await emitReasoning(writer, parseReasoning)
   }
 
   writer.write({
@@ -846,4 +894,26 @@ async function emitText(writer: WriterLike, text: string) {
     }
   }
   writer.write({ type: "text-end", id } as AnyChunk)
+}
+
+/**
+ * Gemini'nin thought summary'sini kullanıcıya kelime kelime akıt. generateObject
+ * sonrası bütün halinde elimize geçtiği için yapay bir gecikme ile word-by-word
+ * yayınlanır — kullanıcı modelin düşündüğü adımları okuyabilsin.
+ */
+async function emitReasoning(writer: WriterLike, text: string) {
+  const trimmed = text.trim()
+  if (!trimmed) return
+  const id = nanoid()
+  writer.write({ type: "reasoning-start", id } as AnyChunk)
+  const tokens = trimmed.match(/\S+\s*/g) ?? [trimmed]
+  const groupSize = 2
+  for (let i = 0; i < tokens.length; i += groupSize) {
+    const delta = tokens.slice(i, i + groupSize).join("")
+    writer.write({ type: "reasoning-delta", id, delta } as AnyChunk)
+    if (i + groupSize < tokens.length) {
+      await new Promise((resolve) => setTimeout(resolve, 22))
+    }
+  }
+  writer.write({ type: "reasoning-end", id } as AnyChunk)
 }

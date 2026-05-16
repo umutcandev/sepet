@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { MarketLogo } from "@/components/market-logo"
 import { UnauthenticatedState } from "./unauthenticated-state"
 
 export const metadata = {
@@ -107,9 +108,15 @@ export default async function BasketsPage() {
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <Link href={`/sepetlerim/${b.id}`} className="block py-1">
+                      <Link
+                        href={`/sepetlerim/${b.id}`}
+                        className="flex items-center gap-2 py-1"
+                      >
                         {b.bestSingleMarket ? (
-                          <span>{b.bestSingleMarket}</span>
+                          <>
+                            <MarketLogo name={b.bestSingleMarket} size="sm" />
+                            <span>{b.bestSingleMarket}</span>
+                          </>
                         ) : (
                           <span className="text-muted-foreground">—</span>
                         )}

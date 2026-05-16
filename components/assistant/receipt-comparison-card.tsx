@@ -20,6 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { saveReceipt } from "@/lib/actions/receipts"
+import { MarketLogo } from "@/components/market-logo"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -171,18 +172,21 @@ export function ReceiptComparisonCard({
                   </TableCell>
                   <TableCell>
                     {it.bestMarket ? (
-                      it.bestUrl ? (
-                        <a
-                          href={it.bestUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-medium text-primary underline"
-                        >
-                          {it.bestMarket}
-                        </a>
-                      ) : (
-                        <span className="text-sm">{it.bestMarket}</span>
-                      )
+                      <div className="flex items-center gap-2">
+                        <MarketLogo name={it.bestMarket} size="sm" />
+                        {it.bestUrl ? (
+                          <a
+                            href={it.bestUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium text-primary underline"
+                          >
+                            {it.bestMarket}
+                          </a>
+                        ) : (
+                          <span className="text-sm">{it.bestMarket}</span>
+                        )}
+                      </div>
                     ) : (
                       <span className="text-xs text-muted-foreground">
                         eşleşme yok

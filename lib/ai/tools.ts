@@ -64,8 +64,15 @@ async function findFirstHit(
   return lastError ?? { kind: "no_match" }
 }
 
-export async function parseReceiptImage(imageUrl: string): Promise<ReceiptOCR> {
-  const { object } = await generateObject({
+export type ReceiptOCRWithReasoning = {
+  ocr: ReceiptOCR
+  reasoning: string | null
+}
+
+export async function parseReceiptImage(
+  imageUrl: string,
+): Promise<ReceiptOCRWithReasoning> {
+  const { object, reasoning } = await generateObject({
     model: geminiFlash,
     schema: ReceiptOCRSchema,
     temperature: 0.1,
@@ -78,6 +85,14 @@ export async function parseReceiptImage(imageUrl: string): Promise<ReceiptOCR> {
         ],
       },
     ],
+    providerOptions: {
+      google: {
+        thinkingConfig: {
+          thinkingBudget: 1024,
+          includeThoughts: true,
+        },
+      },
+    },
   })
   console.log(
     "[parseReceiptImage] market=",
@@ -86,8 +101,10 @@ export async function parseReceiptImage(imageUrl: string): Promise<ReceiptOCR> {
     object.items.length,
     "total=",
     object.totalAmount,
+    "reasoning=",
+    reasoning ? `${reasoning.length} chars` : "none",
   )
-  return object
+  return { ocr: object, reasoning: reasoning ?? null }
 }
 
 export async function generateChatTitle(userText: string): Promise<string> {
@@ -100,18 +117,35 @@ export async function generateChatTitle(userText: string): Promise<string> {
   return object.title.trim().replace(/\s+/g, " ").slice(0, 100)
 }
 
-export async function parseShoppingList(rawText: string): Promise<BasketDraft> {
-  const { object } = await generateObject({
+export type BasketDraftWithReasoning = {
+  draft: BasketDraft
+  reasoning: string | null
+}
+
+export async function parseShoppingList(
+  rawText: string,
+): Promise<BasketDraftWithReasoning> {
+  const { object, reasoning } = await generateObject({
     model: geminiFlashLite,
     schema: BasketDraftSchema,
     temperature: 0.1,
     prompt: PARSE_PROMPT(rawText),
+    providerOptions: {
+      google: {
+        thinkingConfig: {
+          thinkingBudget: 512,
+          includeThoughts: true,
+        },
+      },
+    },
   })
   console.log(
     "[parseShoppingList] items:",
     object.items.map((i) => `${i.name} → "${i.searchQuery}"`).join(" | "),
+    "reasoning=",
+    reasoning ? `${reasoning.length} chars` : "none",
   )
-  return object
+  return { draft: object, reasoning: reasoning ?? null }
 }
 
 type HitList = Extract<FindOutcome, { kind: "hit" }>["hits"]
