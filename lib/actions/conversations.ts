@@ -5,6 +5,7 @@ import { and, asc, desc, eq, max } from "drizzle-orm"
 import type { UIMessage } from "ai"
 import { auth } from "@/auth"
 import { db, conversations, conversationMessages } from "@/lib/db"
+import { getSavedBasketsForConversation } from "./baskets"
 
 const TITLE_MAX = 100
 const SEED_TITLE_MAX = 60
@@ -76,6 +77,7 @@ export async function getConversation(id: string): Promise<{
   id: string
   title: string
   messages: StoredMessage[]
+  savedBaskets: Record<string, string>
 } | null> {
   const session = await auth()
   if (!session?.user?.id) return null
@@ -96,16 +98,19 @@ export async function getConversation(id: string): Promise<{
 
   if (!conv) return null
 
-  const rows = await db
-    .select({
-      id: conversationMessages.id,
-      role: conversationMessages.role,
-      parts: conversationMessages.parts,
-      metadata: conversationMessages.metadata,
-    })
-    .from(conversationMessages)
-    .where(eq(conversationMessages.conversationId, id))
-    .orderBy(asc(conversationMessages.sequence))
+  const [rows, savedBaskets] = await Promise.all([
+    db
+      .select({
+        id: conversationMessages.id,
+        role: conversationMessages.role,
+        parts: conversationMessages.parts,
+        metadata: conversationMessages.metadata,
+      })
+      .from(conversationMessages)
+      .where(eq(conversationMessages.conversationId, id))
+      .orderBy(asc(conversationMessages.sequence)),
+    getSavedBasketsForConversation(id, session.user.id),
+  ])
 
   const messages: StoredMessage[] = rows.map((r) => ({
     id: r.id,
@@ -114,7 +119,7 @@ export async function getConversation(id: string): Promise<{
     metadata: r.metadata ?? undefined,
   }))
 
-  return { id: conv.id, title: conv.title, messages }
+  return { id: conv.id, title: conv.title, messages, savedBaskets }
 }
 
 export async function deleteConversation(id: string): Promise<void> {

@@ -6,8 +6,10 @@ import {
   AlertCircleIcon,
   CreditCardIcon,
   ChevronDownIcon,
+  ExternalLinkIcon,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Collapsible,
   CollapsibleContent,
@@ -89,13 +91,32 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                 )}
               </div>
               {cheapest && (
-                <div className="flex shrink-0 flex-col items-end text-right">
-                  <span className="text-xs text-muted-foreground">
-                    {cheapest.market}
-                  </span>
-                  <span className="text-sm font-semibold tabular-nums">
-                    {tlFormatter.format(cheapest.price)}
-                  </span>
+                <div className="flex shrink-0 items-center gap-1.5">
+                  <div className="flex flex-col items-end text-right">
+                    <span className="text-xs text-muted-foreground">
+                      {cheapest.market}
+                    </span>
+                    <span className="text-sm font-semibold tabular-nums">
+                      {tlFormatter.format(cheapest.price)}
+                    </span>
+                  </div>
+                  {cheapest.sourceUrl && (
+                    <Button
+                      asChild
+                      size="icon-xs"
+                      variant="ghost"
+                      className="text-muted-foreground/70 hover:text-foreground"
+                    >
+                      <a
+                        href={cheapest.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${cheapest.market} sayfasını aç`}
+                      >
+                        <ExternalLinkIcon />
+                      </a>
+                    </Button>
+                  )}
                 </div>
               )}
             </div>
@@ -115,12 +136,31 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                     {otherPrices.map((mp, idx) => (
                       <li
                         key={`${mp.market}-${idx}`}
-                        className="flex items-center justify-between px-3 py-2 text-sm"
+                        className="flex items-center justify-between gap-2 px-3 py-2 text-sm"
                       >
                         <span className="text-muted-foreground">{mp.market}</span>
-                        <span className="font-medium tabular-nums">
-                          {tlFormatter.format(mp.price)}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-medium tabular-nums">
+                            {tlFormatter.format(mp.price)}
+                          </span>
+                          {mp.sourceUrl && (
+                            <Button
+                              asChild
+                              size="icon-xs"
+                              variant="ghost"
+                              className="text-muted-foreground/70 hover:text-foreground"
+                            >
+                              <a
+                                href={mp.sourceUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${mp.market} sayfasını aç`}
+                              >
+                                <ExternalLinkIcon />
+                              </a>
+                            </Button>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ul>

@@ -24,10 +24,20 @@ export type BasketContextPayload = {
   summary: OptimizationSummary
 }
 
-export function BasketSaveCard({ data }: { data: BasketContextPayload }) {
+export function BasketSaveCard({
+  data,
+  conversationId = null,
+  toolCallId = null,
+  initialSavedId = null,
+}: {
+  data: BasketContextPayload
+  conversationId?: string | null
+  toolCallId?: string | null
+  initialSavedId?: string | null
+}) {
   const [name, setName] = React.useState("")
   const [saving, setSaving] = React.useState(false)
-  const [savedId, setSavedId] = React.useState<string | null>(null)
+  const [savedId, setSavedId] = React.useState<string | null>(initialSavedId)
 
   const placeholder = React.useMemo(() => {
     const fmt = new Intl.DateTimeFormat("tr-TR", {
@@ -48,6 +58,8 @@ export function BasketSaveCard({ data }: { data: BasketContextPayload }) {
         items: data.items,
         matches: data.matches,
         summary: data.summary,
+        conversationId,
+        sourceToolCallId: toolCallId,
       })
       setSavedId(res.id)
       toast.success("Sepet kaydedildi.")

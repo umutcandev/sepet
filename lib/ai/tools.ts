@@ -304,19 +304,34 @@ export async function lookupProducts(
           ? outcome.message
           : null
 
+      const marketPrices = detail
+        ? detail.markets.map((m) => ({
+            market: m.market,
+            price: m.price,
+            sourceUrl: m.sourceUrl,
+          }))
+        : []
+
+      // Camgöz bazı kalemlerde (manav/pazar ürünleri tipik) per-market dökümü
+      // dönmüyor ama ürünün ortalama fiyatını biliyor. Bu durumda ürünü tamamen
+      // düşürmek yerine markayı (ör. "MANAV") sanal market etiketi olarak
+      // kullanıp tek bir referans entry sentezle — kullanıcı fiyatı görsün,
+      // optimizasyon "A101 + MANAV" gibi karma sepetler önerebilsin.
+      if (marketPrices.length === 0 && best?.averagePrice != null) {
+        marketPrices.push({
+          market: best.brand?.trim() || "Pazar / Manav",
+          price: best.averagePrice,
+          sourceUrl: null,
+        })
+      }
+
       return {
         rawName: item.name,
         searchQuery: item.searchQuery,
         quantity: item.quantity,
         unit: item.unit,
         bestMatch: best ? toMatchedProduct(best) : null,
-        marketPrices: detail
-          ? detail.markets.map((m) => ({
-              market: m.market,
-              price: m.price,
-              sourceUrl: m.sourceUrl,
-            }))
-          : [],
+        marketPrices,
         alternatives: hits
           .filter((h) => h.barcode !== best?.barcode)
           .slice(0, 3)

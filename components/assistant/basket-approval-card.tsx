@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, XIcon } from "lucide-react"
+import { CheckIcon, PlusIcon, XIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -38,6 +38,7 @@ export type BasketApprovalSubmit = {
 type Props = {
   data: BasketDraft
   alreadyApproved?: boolean
+  approvedItems?: BasketApprovalSubmit["items"]
   onApprove?: (input: BasketApprovalSubmit) => void
   onCancel?: () => void
 }
@@ -45,18 +46,27 @@ type Props = {
 export function BasketApprovalCard({
   data,
   alreadyApproved,
+  approvedItems,
   onApprove,
   onCancel,
 }: Props) {
-  const [items, setItems] = React.useState<EditableItem[]>(() =>
-    data.items.map((it) => ({
-      _id: crypto.randomUUID(),
-      rawName: it.name,
-      searchQuery: it.searchQuery,
-      quantity: it.quantity,
-      unit: it.unit,
-    })),
-  )
+  const [items, setItems] = React.useState<EditableItem[]>(() => {
+    const source =
+      alreadyApproved && approvedItems && approvedItems.length > 0
+        ? approvedItems.map((it) => ({
+            rawName: it.rawName,
+            searchQuery: it.searchQuery,
+            quantity: it.quantity,
+            unit: it.unit,
+          }))
+        : data.items.map((it) => ({
+            rawName: it.name,
+            searchQuery: it.searchQuery,
+            quantity: it.quantity,
+            unit: it.unit,
+          }))
+    return source.map((it) => ({ _id: crypto.randomUUID(), ...it }))
+  })
 
   const readOnly = !!alreadyApproved
 
@@ -67,6 +77,18 @@ export function BasketApprovalCard({
   }
   function removeItem(id: string) {
     setItems((arr) => arr.filter((it) => it._id !== id))
+  }
+  function addItem() {
+    setItems((arr) => [
+      ...arr,
+      {
+        _id: crypto.randomUUID(),
+        rawName: "",
+        searchQuery: "",
+        quantity: 1,
+        unit: "adet",
+      },
+    ])
   }
 
   function handleApprove() {
@@ -101,12 +123,12 @@ export function BasketApprovalCard({
       </div>
 
       <div className="overflow-x-auto">
-        <Table className="min-w-[480px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
+        <Table className="w-full min-w-[300px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
           <TableHeader>
             <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
-              <TableHead className="min-w-[160px]">Ürün</TableHead>
-              <TableHead className="w-20 text-right">Adet</TableHead>
-              <TableHead className="w-24">Birim</TableHead>
+              <TableHead className="w-auto">Ürün</TableHead>
+              <TableHead className="w-16 text-right">Adet</TableHead>
+              <TableHead className="w-20">Birim</TableHead>
               {!readOnly && <TableHead className="w-8" />}
             </TableRow>
           </TableHeader>
@@ -204,19 +226,30 @@ export function BasketApprovalCard({
       </div>
 
       {!readOnly && (
-        <div className="flex flex-wrap items-center justify-end gap-2 border-t bg-muted/30 px-4 py-3">
-          <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
-            İptal
-          </Button>
+        <div className="flex flex-wrap items-center gap-2 border-t bg-muted/30 px-4 py-3">
           <Button
             type="button"
+            variant="outline"
             size="sm"
-            onClick={handleApprove}
-            disabled={items.length === 0}
+            onClick={addItem}
           >
-            <CheckIcon className="mr-1 size-3.5" />
-            Onayla
+            <PlusIcon className="mr-1 size-3.5" />
+            Yeni kalem
           </Button>
+          <div className="ml-auto flex flex-wrap items-center gap-2">
+            <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
+              İptal
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleApprove}
+              disabled={items.length === 0}
+            >
+              <CheckIcon className="mr-1 size-3.5" />
+              Onayla
+            </Button>
+          </div>
         </div>
       )}
     </div>

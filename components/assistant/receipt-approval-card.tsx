@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, XIcon } from "lucide-react"
+import { CheckIcon, PlusIcon, XIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -73,6 +73,20 @@ export function ReceiptApprovalCard({
   }
   function removeItem(id: string) {
     setItems((arr) => arr.filter((it) => it._id !== id))
+  }
+  function addItem() {
+    setItems((arr) => [
+      ...arr,
+      {
+        _id: crypto.randomUUID(),
+        rawName: "",
+        searchQuery: "",
+        quantity: 1,
+        unit: "adet",
+        unitPrice: null,
+        totalPrice: null,
+      },
+    ])
   }
 
   function handleApprove() {
@@ -293,19 +307,30 @@ export function ReceiptApprovalCard({
       </div>
 
       {!readOnly && (
-        <div className="flex flex-wrap items-center justify-end gap-2 border-t bg-muted/30 px-4 py-3">
-          <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
-            İptal
-          </Button>
+        <div className="flex flex-wrap items-center gap-2 border-t bg-muted/30 px-4 py-3">
           <Button
             type="button"
+            variant="outline"
             size="sm"
-            onClick={handleApprove}
-            disabled={items.length === 0}
+            onClick={addItem}
           >
-            <CheckIcon className="mr-1 size-3.5" />
-            Onayla
+            <PlusIcon className="mr-1 size-3.5" />
+            Yeni kalem
           </Button>
+          <div className="ml-auto flex flex-wrap items-center gap-2">
+            <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
+              İptal
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleApprove}
+              disabled={items.length === 0}
+            >
+              <CheckIcon className="mr-1 size-3.5" />
+              Onayla
+            </Button>
+          </div>
         </div>
       )}
     </div>
