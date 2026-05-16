@@ -44,7 +44,7 @@ export default withAuth(async (req) => {
     if (!success) return tooManyResponse(reset)
   }
 
-  if (path.startsWith("/api/assistant")) {
+  if (path.startsWith("/api/assistant") || path === "/api/transcribe") {
     const key = userId ? `user:${userId}` : `ip:${ip}`
     const burst = await assistantBurstLimiter.limit(key)
     if (!burst.success) return tooManyResponse(burst.reset)

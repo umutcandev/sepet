@@ -2,10 +2,14 @@
 
 import * as React from "react"
 
-type State = { title: string | null; loading: boolean }
+type State = {
+  title: string | null
+  loading: boolean
+  conversationId: string | null
+}
 type Listener = (state: State) => void
 
-let state: State = { title: null, loading: false }
+let state: State = { title: null, loading: false, conversationId: null }
 const listeners = new Set<Listener>()
 
 function notify() {
@@ -20,12 +24,23 @@ export const assistantTitle = {
   },
   setTitle(title: string | null) {
     if (state.title === title && state.loading === false) return
-    state = { title, loading: false }
+    state = { ...state, title, loading: false }
+    notify()
+  },
+  setConversationId(conversationId: string | null) {
+    if (state.conversationId === conversationId) return
+    state = { ...state, conversationId }
     notify()
   },
   reset() {
-    if (state.title === null && state.loading === false) return
-    state = { title: null, loading: false }
+    if (
+      state.title === null &&
+      state.loading === false &&
+      state.conversationId === null
+    ) {
+      return
+    }
+    state = { title: null, loading: false, conversationId: null }
     notify()
   },
   subscribe(l: Listener) {
@@ -39,8 +54,12 @@ export const assistantTitle = {
   },
 }
 
+const SERVER_STATE: State = { title: null, loading: false, conversationId: null }
+
 export function useAssistantTitle(): State {
-  const [s, set] = React.useState<State>(() => assistantTitle.current)
-  React.useEffect(() => assistantTitle.subscribe(set), [])
-  return s
+  return React.useSyncExternalStore(
+    assistantTitle.subscribe,
+    () => assistantTitle.current,
+    () => SERVER_STATE,
+  )
 }

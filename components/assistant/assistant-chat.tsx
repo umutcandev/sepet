@@ -70,12 +70,14 @@ type AssistantChatProps = {
   initialMessages?: Array<Pick<UIMessage, "id" | "role" | "parts"> & {
     metadata?: unknown
   }>
+  initialSavedBaskets?: Record<string, string>
 }
 
 export function AssistantChat({
   conversationId: initialConversationId,
   initialTitle,
   initialMessages,
+  initialSavedBaskets,
 }: AssistantChatProps = {}) {
   const router = useRouter()
   const guard = useRequireAuth()
@@ -104,6 +106,7 @@ export function AssistantChat({
       ) {
         const id = (dataPart.data as { id: string }).id
         conversationIdRef.current = id
+        assistantTitle.setConversationId(id)
         if (!navigatedRef.current) {
           navigatedRef.current = true
           // Soft URL update: avoid Next.js route navigation here, which would
@@ -145,10 +148,11 @@ export function AssistantChat({
     } else {
       assistantTitle.reset()
     }
+    assistantTitle.setConversationId(initialConversationId ?? null)
     return () => {
       assistantTitle.reset()
     }
-  }, [initialTitle])
+  }, [initialTitle, initialConversationId])
 
   // Yeni bir sohbet başlatılırken (henüz id yok) header'da skeleton göster;
   // sunucudan title event'i geldiğinde store kapanır.
@@ -347,6 +351,17 @@ export function AssistantChat({
             {messages.map((m, msgIdx) => {
               const isLatestAssistant =
                 m.role === "assistant" && msgIdx === messages.length - 1
+              const nextMsg = messages[msgIdx + 1]
+              const nextMeta = (nextMsg as { metadata?: unknown } | undefined)
+                ?.metadata as
+                | { kind?: string; payload?: { items?: BasketApprovalSubmit["items"] } }
+                | undefined
+              const approvedBasketItems =
+                nextMsg?.role === "user" &&
+                nextMeta?.kind === "basketApproval" &&
+                Array.isArray(nextMeta.payload?.items)
+                  ? nextMeta.payload!.items
+                  : undefined
               return (
                 <Message from={m.role} key={m.id}>
                   <MessageContent>
@@ -371,12 +386,19 @@ export function AssistantChat({
                                 <BasketApprovalCard
                                   data={draft}
                                   alreadyApproved={!isLatestAssistant}
+                                  approvedItems={approvedBasketItems}
                                   onApprove={handleBasketApprove}
                                 />
                               )
                             },
                           )
-                        case "tool-basketContext":
+                        case "tool-basketContext": {
+                          const toolCallId =
+                            (part as { toolCallId?: string }).toolCallId ?? null
+                          const savedId =
+                            toolCallId && initialSavedBaskets
+                              ? initialSavedBaskets[toolCallId] ?? null
+                              : null
                           return renderToolPart(
                             key,
                             part,
@@ -384,9 +406,15 @@ export function AssistantChat({
                             (out) => (
                               <BasketSaveCard
                                 data={out as BasketContextPayload}
+                                conversationId={
+                                  conversationIdRef.current ?? null
+                                }
+                                toolCallId={toolCallId}
+                                initialSavedId={savedId}
                               />
                             ),
                           )
+                        }
                         case "tool-lookupProducts":
                           return renderToolPart(
                             key,

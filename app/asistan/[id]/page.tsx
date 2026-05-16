@@ -21,6 +21,7 @@ export default async function AssistantConversationPage({
       conversationId={conv.id}
       initialTitle={conv.title}
       initialMessages={conv.messages}
+      initialSavedBaskets={conv.savedBaskets}
     />
   )
 }

@@ -177,6 +177,10 @@ export const baskets = pgTable(
     userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
+    conversationId: uuid("conversationId").references(() => conversations.id, {
+      onDelete: "set null",
+    }),
+    sourceToolCallId: text("sourceToolCallId"),
     name: text("name").notNull(),
     bestSingleMarket: text("bestSingleMarket"),
     bestSingleTotal: numeric("bestSingleTotal", { precision: 10, scale: 2 }),
@@ -189,7 +193,14 @@ export const baskets = pgTable(
       .notNull()
       .defaultNow(),
   },
-  (t) => [index("basket_user_created_idx").on(t.userId, t.createdAt.desc())],
+  (t) => [
+    index("basket_user_created_idx").on(t.userId, t.createdAt.desc()),
+    uniqueIndex("basket_conv_tool_idx").on(
+      t.userId,
+      t.conversationId,
+      t.sourceToolCallId,
+    ),
+  ],
 )
 
 export const basketItems = pgTable(

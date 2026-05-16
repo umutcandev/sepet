@@ -6,10 +6,12 @@ import { usePathname } from "next/navigation"
 
 
 import { AppSidebar } from "@/components/app-sidebar"
+import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
+import { HeaderUserMenu } from "@/components/header-user-menu"
 import {
   SidebarInset,
   SidebarProvider,
@@ -27,7 +29,7 @@ type Props = {
 
 export function AppShell({ user, conversations, children }: Props) {
   const pathname = usePathname()
-  const { title, loading } = useAssistantTitle()
+  const { title, loading, conversationId } = useAssistantTitle()
   const isAssistantRoute = pathname?.startsWith("/asistan") ?? false
 
   return (
@@ -45,9 +47,17 @@ export function AppShell({ user, conversations, children }: Props) {
               loading && !title ? (
                 <Skeleton className="h-4 w-32" />
               ) : title ? (
-                <span className="truncate text-sm font-medium text-foreground">
-                  {title}
-                </span>
+                <>
+                  <span className="truncate text-sm font-medium text-foreground">
+                    {title}
+                  </span>
+                  {conversationId ? (
+                    <AssistantHeaderActions
+                      conversationId={conversationId}
+                      title={title}
+                    />
+                  ) : null}
+                </>
               ) : null
             ) : (
               <Image
@@ -60,8 +70,12 @@ export function AppShell({ user, conversations, children }: Props) {
               />
             )}
           </div>
-          {!user && (
-            <div className="px-4">
+          <div className="px-4">
+            {user ? (
+              <div className="md:hidden">
+                <HeaderUserMenu user={user} />
+              </div>
+            ) : (
               <Button
                 variant="outline"
                 size="sm"
@@ -69,8 +83,8 @@ export function AppShell({ user, conversations, children }: Props) {
               >
                 Giriş Yap
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </header>
         <div className="no-scrollbar flex min-h-0 flex-1 flex-col overflow-y-auto">
           {children}

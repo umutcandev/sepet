@@ -1,7 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { and, desc, eq } from "drizzle-orm"
+import { and, desc, eq, isNotNull } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, baskets, basketItems } from "@/lib/db"
 import type {
@@ -20,6 +20,8 @@ type SaveBasketInput = {
   }>
   matches: MatchResult[]
   summary: OptimizationSummary
+  conversationId?: string | null
+  sourceToolCallId?: string | null
 }
 
 function autoBasketName(): string {
@@ -36,6 +38,27 @@ export async function saveBasket(input: SaveBasketInput): Promise<{ id: string }
   const session = await auth()
   if (!session?.user?.id) throw new Error("unauthorized")
 
+  const userId = session.user.id
+  const conversationId = input.conversationId ?? null
+  const sourceToolCallId = input.sourceToolCallId ?? null
+
+  // Aynı (sohbet, tool-call) için kullanıcı zaten kaydettiyse aynı id'yi
+  // döndür — yenile/yeniden tıkla durumunda kopya satır oluşmasın.
+  if (conversationId && sourceToolCallId) {
+    const [existing] = await db
+      .select({ id: baskets.id })
+      .from(baskets)
+      .where(
+        and(
+          eq(baskets.userId, userId),
+          eq(baskets.conversationId, conversationId),
+          eq(baskets.sourceToolCallId, sourceToolCallId),
+        ),
+      )
+      .limit(1)
+    if (existing) return { id: existing.id }
+  }
+
   const trimmedName = input.name?.trim()
   const name = trimmedName && trimmedName.length > 0 ? trimmedName : autoBasketName()
 
@@ -51,7 +74,9 @@ export async function saveBasket(input: SaveBasketInput): Promise<{ id: string }
   const [inserted] = await db
     .insert(baskets)
     .values({
-      userId: session.user.id,
+      userId,
+      conversationId,
+      sourceToolCallId,
       name,
       bestSingleMarket: bestSingle?.market ?? null,
       bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
@@ -108,6 +133,35 @@ export async function listBaskets(userId: string) {
     .from(baskets)
     .where(eq(baskets.userId, userId))
     .orderBy(desc(baskets.createdAt))
+}
+
+/**
+ * Bir sohbet için kullanıcının kaydettiği sepetlerin {toolCallId → basketId}
+ * eşlemesini döndürür. Sohbet rehidrate edilirken her `tool-basketContext`
+ * çıktısı için "Kaydedildi" durumunu sunucudan kurabilmek için kullanılır.
+ */
+export async function getSavedBasketsForConversation(
+  conversationId: string,
+  userId: string,
+): Promise<Record<string, string>> {
+  const rows = await db
+    .select({
+      id: baskets.id,
+      sourceToolCallId: baskets.sourceToolCallId,
+    })
+    .from(baskets)
+    .where(
+      and(
+        eq(baskets.userId, userId),
+        eq(baskets.conversationId, conversationId),
+        isNotNull(baskets.sourceToolCallId),
+      ),
+    )
+  const map: Record<string, string> = {}
+  for (const row of rows) {
+    if (row.sourceToolCallId) map[row.sourceToolCallId] = row.id
+  }
+  return map
 }
 
 export async function getBasketDetail(id: string, userId: string) {
