@@ -356,6 +356,7 @@ export async function POST(req: Request) {
 
   let conversationId = payload.conversationId
   let createdNewConversation = false
+  let createdTitle: string | null = null
   if (conversationId) {
     const [owned] = await db
       .select({ id: conversations.id })
@@ -378,6 +379,7 @@ export async function POST(req: Request) {
       firstUserMessage: lastUserMessage,
     })
     conversationId = created.id
+    createdTitle = created.title
     createdNewConversation = true
   }
 
@@ -403,11 +405,14 @@ export async function POST(req: Request) {
       writer.write({ type: "start" })
 
       // Send the conversation id to the client as a transient data event so
-      // the client can update the URL without persisting an extra part.
+      // the client can update the URL without persisting an extra part. The
+      // initial title (extracted from the first user message) tags along so
+      // the sidebar can show the new conversation immediately without an RSC
+      // refresh — the AI-generated title arrives later via the title event.
       if (createdNewConversation) {
         writer.write({
           type: "data-conversation-id",
-          data: { id: newConversationId },
+          data: { id: newConversationId, title: createdTitle },
           transient: true,
         } as Parameters<typeof writer.write>[0])
       }

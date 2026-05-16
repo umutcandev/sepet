@@ -28,6 +28,7 @@ import {
   deleteConversation,
   renameConversation,
 } from "@/lib/actions/conversations"
+import { assistantConversations } from "@/lib/stores/assistant-conversations"
 
 export type ConversationTarget = {
   id: string
@@ -58,6 +59,9 @@ export function ConversationRenameDialog({
     setPending(true)
     try {
       await renameConversation(target.id, trimmed)
+      // Sidebar listesini hemen güncelle — server action revalidatePath
+      // çağırsa da client cache yalnızca sonraki navigasyonda yenileniyor.
+      assistantConversations.setTitle(target.id, trimmed)
       onClose()
     } catch (err) {
       toast.error(
@@ -119,6 +123,7 @@ export function ConversationDeleteDialog({
     setPending(true)
     try {
       await deleteConversation(target.id)
+      assistantConversations.remove(target.id)
       if (target.id === activeId) {
         router.push("/asistan")
       }
