@@ -95,6 +95,9 @@ export function VoiceInput({
   // önlemek için destek kontrolünü mount sonrasına erteliyoruz.
   const [mounted, setMounted] = React.useState(false)
   React.useEffect(() => {
+    // SSR-safe mount flag; required to avoid hydration mismatch when
+    // detecting browser-only APIs (SpeechRecognition).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
   }, [])
   const supported = mounted && getSpeechRecognition() !== null

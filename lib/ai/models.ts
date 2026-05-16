@@ -1,11 +1,7 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google"
+import { gateway } from "ai"
 
-export const GEMINI_FLASH = "gemini-2.5-flash"
-export const GEMINI_FLASH_LITE = "gemini-2.5-flash-lite"
+export const GEMINI_FLASH = "google/gemini-2.5-flash"
+export const GEMINI_FLASH_LITE = "google/gemini-2.5-flash-lite"
 
-export const google = createGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-})
-
-export const geminiFlash = google(GEMINI_FLASH)
-export const geminiFlashLite = google(GEMINI_FLASH_LITE)
+export const geminiFlash = gateway(GEMINI_FLASH)
+export const geminiFlashLite = gateway(GEMINI_FLASH_LITE)

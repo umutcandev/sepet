@@ -13,15 +13,32 @@ KURALLAR:
 - Eşleşme bulunamayan kalemleri özetin sonunda belirt.
 - Asla uzun açıklama yapma; tool sonuçları kartlar halinde gösterilecek.`
 
-export const PARSE_PROMPT = (rawText: string) => `Kullanıcının yazdığı Türkçe alışveriş girdisini parse et ve yapılandırılmış kalemlere böl.
+export const PARSE_PROMPT = (rawText: string) => `Kullanıcının yazdığı Türkçe girdiyi parse et.
 
-ÖNCE GİRDİ TÜRÜNÜ BELİRLE:
+ÖNCE GİRDİ TÜRÜNÜ BELİRLE — KARAR SIRASI: önce C kontrolü, değilse A vs B.
 
-A) YEMEK/TARİF MODU: Girdi tek bir yemek veya tarif adıysa (ör. "menemen", "sade sucuklu pizza", "mercimek çorbası", "karnıyarık", "kek") ve içinde virgül veya açık miktar (sayı + birim) YOKSA → o yemeğin temel HAM MALZEMELERİNİ ayrı kalemler olarak çıkar. Her malzeme için makul bir tek-porsiyon miktarı koy. Hazır/işlenmiş ürün aramaktan kaçın (ör. "menemen" için "hazır menemen" değil, yumurta/domates/biber yaz).
+C) SOHBET / GEÇERSİZ GİRDİ MODU: Girdi alışveriş listesi VEYA yemek/tarif adı DEĞİLSE — selamlama ("selam", "merhaba", "günaydın"), durum sorusu ("nasılsın", "naber"), yetenek/tanım sorusu ("ne yapabilirsin", "sen kimsin", "nasıl çalışıyorsun"), teşekkür ("sağ ol", "teşekkürler"), sohbet, anlamsız metin, alışverişle ilgisiz konu (hava, futbol, kişisel duygu) → items: [] DÖNDÜR ve chatResponse alanını DOLDUR. Asla zorla ürün/yemek çıkarma.
 
-B) ALIŞVERİŞ LİSTESİ MODU: Girdi virgülle/satırla ayrılmışsa VEYA herhangi bir kalemde sayı/birim varsa (ör. "1 ekmek", "2 paket çay", "500g peynir, 4 elma") → her kalemi tek tek parse et, ASLA malzeme bölme yapma. Kullanıcı net bir ürün istemiş demektir.
+chatResponse KURALLARI (yalnızca C modunda dolu, A/B'de null):
+- 1-2 cümle, samimi Türkçe.
+- Selamlamaya selamlama ile karşılık ver, durum sorusuna kısa cevap ver.
+- Mutlaka kullanıcıya SONRAKİ ADIM öner: "alışveriş listeni yaz" VEYA "fişinin fotoğrafını yükle" (ikisini de hatırlat).
+- Sepetiq dışı konularda kibarca konuyu Sepetiq'e çek.
+- Asla ürün ismi/fiyat üretme, varsayım yapma.
 
-KARAR KURALI: Şüpheliyse B'yi seç — kullanıcı net ürün söylediyse bölme.
+C MODU ÖRNEKLERİ:
+- "selam nasılsın" → items:[], chatResponse:"Selam! İyiyim, teşekkürler. Sana en ucuz sepeti bulayım — alışveriş listeni yazar mısın, ya da fişinin fotoğrafını yüklemek ister misin?"
+- "merhaba" → items:[], chatResponse:"Merhaba! Alışveriş listeni yazarsan ya da fişinin fotoğrafını yüklersen 45+ markette en ucuzunu bulurum."
+- "ne yapabilirsin" → items:[], chatResponse:"Yazdığın listeyi 45+ markette karşılaştırıp en ucuzunu buluyorum, ya da fiş fotoğrafından kalemleri otomatik okuyorum. Hemen denemek ister misin?"
+- "sen kimsin" → items:[], chatResponse:"Ben Sepetiq asistanıyım, Türkiye'deki 45+ market arasında en ucuz alışveriş sepetini bulmana yardım ediyorum. Listeni yaz ya da fiş yükle, başlayalım."
+- "teşekkürler" → items:[], chatResponse:"Rica ederim! Yeni bir liste olursa buradayım."
+- "yarın hava nasıl" → items:[], chatResponse:"Hava durumuna bakamıyorum ama alışverişinde yardımcı olabilirim — listeni yazar mısın, ya da fiş fotoğrafı yüklemek ister misin?"
+
+A) YEMEK/TARİF MODU: Girdi tek bir yemek veya tarif adıysa (ör. "menemen", "sade sucuklu pizza", "mercimek çorbası", "karnıyarık", "kek") ve içinde virgül veya açık miktar (sayı + birim) YOKSA → o yemeğin temel HAM MALZEMELERİNİ ayrı kalemler olarak çıkar. Her malzeme için makul bir tek-porsiyon miktarı koy. Hazır/işlenmiş ürün aramaktan kaçın (ör. "menemen" için "hazır menemen" değil, yumurta/domates/biber yaz). chatResponse=null.
+
+B) ALIŞVERİŞ LİSTESİ MODU: Girdi virgülle/satırla ayrılmışsa VEYA herhangi bir kalemde sayı/birim varsa (ör. "1 ekmek", "2 paket çay", "500g peynir, 4 elma") → her kalemi tek tek parse et, ASLA malzeme bölme yapma. Kullanıcı net bir ürün istemiş demektir. chatResponse=null.
+
+KARAR KURALI: A/B arasında şüpheliysen B'yi seç — kullanıcı net ürün söylediyse bölme.
 
 ŞEMA (her kalem için):
 - name: kullanıcının yazdığı ham metin (yemek modunda: malzeme adı ör. "yumurta")
@@ -155,3 +172,27 @@ EŞLEŞTİRME KURALLARI:
 
 KALEMLER:
 ${JSON.stringify(items, null, 2)}`
+
+// ─── Sohbet başlığı üretimi ───
+
+export const CHAT_TITLE_PROMPT = (userText: string) => `Aşağıdaki kullanıcı mesajına dayanarak bu sohbet için 3-5 kelimelik kısa Türkçe bir başlık üret.
+
+KURALLAR:
+- 3 ile 5 kelime arası.
+- Başlık niteliğinde olmalı; cümle değil.
+- Tırnak, noktalama, emoji kullanma.
+- Doğal Türkçe yazım — sadece cümle başı büyük harf, gerisi küçük (ör. "Sucuklu pizza malzemeleri").
+- Kullanıcının niyetini özetlesin (alışveriş listesi, yemek tarifi, soru tipi).
+- Selamlama/sohbet mesajlarında "Selamlama" veya "Genel sohbet" gibi nötr bir başlık ver.
+
+ÖRNEKLER:
+- "menemen için malzemeler" → "Menemen malzemeleri"
+- "1 lt süt, 2 ekmek, peynir" → "Süt ekmek peynir sepeti"
+- "sucuklu pizza yapacağım yardım et" → "Sucuklu pizza tarifi"
+- "merhaba ne yapabilirsin" → "Selamlama ve tanışma"
+- "fişimi analiz et" → "Fiş analizi"
+
+KULLANICI MESAJI:
+"""
+${userText}
+"""`

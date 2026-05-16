@@ -10,6 +10,7 @@ import {
 import { nanoid } from "nanoid"
 import { auth } from "@/auth"
 import {
+  generateChatTitle,
   parseShoppingList,
   parseReceiptImage,
   lookupProducts,
@@ -26,6 +27,7 @@ import type {
 import {
   appendMessages,
   createConversation,
+  setConversationTitle,
 } from "@/lib/actions/conversations"
 import { and, eq } from "drizzle-orm"
 import { db, conversations } from "@/lib/db"
@@ -54,6 +56,7 @@ function isModelOverloaded(err: unknown): boolean {
 type LastUserMode =
   | { kind: "receiptApproval"; payload: ReceiptApprovalPayload }
   | { kind: "receiptImage"; imageUrl: string; imageR2Key?: string; text: string }
+  | { kind: "basketApproval"; payload: BasketApprovalPayload }
   | { kind: "text"; text: string }
   | { kind: "empty" }
 
@@ -73,16 +76,37 @@ type ReceiptApprovalPayload = {
   }>
 }
 
+type BasketApprovalPayload = {
+  items: Array<{
+    rawName: string
+    searchQuery: string
+    quantity: number
+    unit: ParsedItem["unit"]
+  }>
+}
+
 function detectLastUserMode(messages: UIMessage[]): LastUserMode {
   for (let i = messages.length - 1; i >= 0; i--) {
     const m = messages[i]
     if (m.role !== "user") continue
 
     const meta = (m as { metadata?: unknown }).metadata as
-      | { kind?: string; payload?: ReceiptApprovalPayload }
+      | {
+          kind?: string
+          payload?: ReceiptApprovalPayload | BasketApprovalPayload
+        }
       | undefined
     if (meta?.kind === "receiptApproval" && meta.payload) {
-      return { kind: "receiptApproval", payload: meta.payload }
+      return {
+        kind: "receiptApproval",
+        payload: meta.payload as ReceiptApprovalPayload,
+      }
+    }
+    if (meta?.kind === "basketApproval" && meta.payload) {
+      return {
+        kind: "basketApproval",
+        payload: meta.payload as BasketApprovalPayload,
+      }
     }
 
     const parts = m.parts ?? []
@@ -370,6 +394,7 @@ export async function POST(req: Request) {
     console.error("[assistant/chat] user message persist failed", err)
   }
 
+  const newConversationId = conversationId
   const stream = createUIMessageStream({
     execute: async ({ writer }) => {
       const recorder = createAssistantRecorder()
@@ -382,20 +407,34 @@ export async function POST(req: Request) {
       if (createdNewConversation) {
         writer.write({
           type: "data-conversation-id",
-          data: { id: conversationId },
+          data: { id: newConversationId },
           transient: true,
         } as Parameters<typeof writer.write>[0])
       }
 
-      // Original execute logic — using wrappedWriter so we can buffer the
-      // assistant message parts for persistence.
-      await runAssistantTurn({ writer: wrappedWriter, mode })
+      // Yeni sohbet için: AI başlığını ana cevap stream'i ile paralel üret ve
+      // hazır olduğunda hem DB'ye yaz hem client'a transient event olarak emit
+      // et. Hata olursa sohbet yine çalışsın — başlık silently fallback'e düşer
+      // (createConversation'ın yazdığı extract title DB'de zaten var).
+      const titlePromise = createdNewConversation
+        ? resolveAndEmitTitle({
+            mode,
+            writer,
+            conversationId: newConversationId,
+            userId,
+          })
+        : Promise.resolve()
+
+      await Promise.all([
+        runAssistantTurn({ writer: wrappedWriter, mode }),
+        titlePromise,
+      ])
 
       // Persist the assistant message before signalling finish.
       const parts = recorder.finalize()
       if (parts.length > 0) {
         try {
-          await appendMessages(conversationId, userId, [
+          await appendMessages(newConversationId, userId, [
             { role: "assistant", parts },
           ])
         } catch (err) {
@@ -649,7 +688,66 @@ async function runAssistantTurn({
     return
   }
 
-  // Text mode
+  if (mode.kind === "basketApproval") {
+    const p = mode.payload
+    const parsedItems: ParsedItem[] = p.items.map((it) => ({
+      name: it.rawName,
+      searchQuery: it.searchQuery,
+      quantity: it.quantity,
+      unit: it.unit,
+    }))
+
+    const lookupCallId = nanoid()
+    writer.write({
+      type: "tool-input-available",
+      toolCallId: lookupCallId,
+      toolName: "lookupProducts",
+      input: { items: parsedItems },
+    } as AnyChunk)
+
+    const { matches } = await lookupProducts(parsedItems)
+
+    writer.write({
+      type: "tool-output-available",
+      toolCallId: lookupCallId,
+      output: { matches },
+    } as AnyChunk)
+
+    const summarizeCallId = nanoid()
+    writer.write({
+      type: "tool-input-available",
+      toolCallId: summarizeCallId,
+      toolName: "summarizeOptimization",
+      input: { matches },
+    } as AnyChunk)
+
+    const summary = computeOptimization(matches)
+
+    writer.write({
+      type: "tool-output-available",
+      toolCallId: summarizeCallId,
+      output: summary,
+    } as AnyChunk)
+
+    // Save kartı için tüm bağlamı tek bir tool-output'ta topla.
+    const contextCallId = nanoid()
+    writer.write({
+      type: "tool-input-available",
+      toolCallId: contextCallId,
+      toolName: "basketContext",
+      input: {},
+    } as AnyChunk)
+    writer.write({
+      type: "tool-output-available",
+      toolCallId: contextCallId,
+      output: { items: p.items, matches, summary },
+    } as AnyChunk)
+
+    await emitText(writer, buildSummaryText(summary, matches))
+    return
+  }
+
+  // Text mode — parse'ta dur, kullanıcının onayını bekle.
   const rawText = mode.text
   const parseCallId = nanoid()
   writer.write({
@@ -683,43 +781,51 @@ async function runAssistantTurn({
   } as AnyChunk)
 
   if (basket.items.length === 0) {
-    await emitText(writer, FALLBACK_TEXT)
+    await emitText(writer, basket.chatResponse?.trim() || FALLBACK_TEXT)
     return
   }
 
-  const lookupCallId = nanoid()
+  await emitText(
+    writer,
+    `${basket.items.length} kalem çıkardım. Kontrol edip düzeltmelerini yap — ardından karşılaştırma için onayla.`,
+  )
+}
+
+async function resolveAndEmitTitle(opts: {
+  mode: Exclude<LastUserMode, { kind: "empty" }>
+  writer: UIMessageStreamWriter
+  conversationId: string
+  userId: string
+}): Promise<void> {
+  const { mode, writer, conversationId, userId } = opts
+
+  let title: string | null = null
+
+  if (mode.kind === "text") {
+    try {
+      title = await generateChatTitle(mode.text)
+    } catch (err) {
+      console.error("[assistant/chat] title generation failed", err)
+    }
+  } else if (mode.kind === "receiptImage") {
+    title = "Fiş analizi"
+  }
+  // receiptApproval / basketApproval modları mevcut bir sohbeti devam ettirir;
+  // bu yola hiç gelinmez (yalnızca createdNewConversation === true iken çağrılır).
+
+  if (!title) return
+
+  try {
+    await setConversationTitle(conversationId, userId, title)
+  } catch (err) {
+    console.error("[assistant/chat] title persist failed", err)
+  }
+
   writer.write({
-    type: "tool-input-available",
-    toolCallId: lookupCallId,
-    toolName: "lookupProducts",
-    input: { items: basket.items },
-  } as AnyChunk)
-
-  const { matches } = await lookupProducts(basket.items)
-
-  writer.write({
-    type: "tool-output-available",
-    toolCallId: lookupCallId,
-    output: { matches },
-  } as AnyChunk)
-
-  const summarizeCallId = nanoid()
-  writer.write({
-    type: "tool-input-available",
-    toolCallId: summarizeCallId,
-    toolName: "summarizeOptimization",
-    input: { matches },
-  } as AnyChunk)
-
-  const summary = computeOptimization(matches)
-
-  writer.write({
-    type: "tool-output-available",
-    toolCallId: summarizeCallId,
-    output: summary,
-  } as AnyChunk)
-
-  await emitText(writer, buildSummaryText(summary, matches))
+    type: "data-conversation-title",
+    data: { id: conversationId, title },
+    transient: true,
+  } as Parameters<typeof writer.write>[0])
 }
 
 async function emitText(writer: WriterLike, text: string) {

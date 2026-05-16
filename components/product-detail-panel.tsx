@@ -46,6 +46,8 @@ export function ProductDetailPanel({ barcode }: Props) {
 
   React.useEffect(() => {
     let active = true
+    // Data fetch on barcode change: reset loading/error before issuing request.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true)
     setError(null)
     fetch(`/api/products/${encodeURIComponent(barcode)}`)

@@ -67,7 +67,7 @@ export default async function ReceiptsHistoryPage() {
             tasarruf edebileceğini hesaplayıp burada saklayalım.
           </p>
           <Button asChild className="mt-2">
-            <Link href="/assistant">Asistan&apos;a git</Link>
+            <Link href="/asistan">Asistan&apos;a git</Link>
           </Button>
         </div>
       ) : (

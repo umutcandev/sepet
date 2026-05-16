@@ -11,9 +11,6 @@
 # testing
 /coverage
 
-#PRD
-SepetIQ-PRD.md
-
 # next.js
 /.next/
 /out/

@@ -2,7 +2,12 @@ import NextAuth from "next-auth"
 import { NextResponse } from "next/server"
 
 import { authConfig } from "./auth.config"
-import { authLimiter, productLimiter } from "@/lib/security/rate-limit"
+import {
+  assistantBurstLimiter,
+  assistantDailyLimiter,
+  authLimiter,
+  productLimiter,
+} from "@/lib/security/rate-limit"
 import { applySecurityHeaders } from "@/lib/security/headers"
 
 const { auth: withAuth } = NextAuth(authConfig)
@@ -37,6 +42,14 @@ export default withAuth(async (req) => {
     const key = userId ? `user:${userId}` : `ip:${ip}`
     const { success, reset } = await productLimiter.limit(key)
     if (!success) return tooManyResponse(reset)
+  }
+
+  if (path.startsWith("/api/assistant")) {
+    const key = userId ? `user:${userId}` : `ip:${ip}`
+    const burst = await assistantBurstLimiter.limit(key)
+    if (!burst.success) return tooManyResponse(burst.reset)
+    const daily = await assistantDailyLimiter.limit(key)
+    if (!daily.success) return tooManyResponse(daily.reset)
   }
 
   const res = NextResponse.next()

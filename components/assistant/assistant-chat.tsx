@@ -10,7 +10,6 @@ import { toast } from "sonner"
 import {
   Conversation,
   ConversationContent,
-  ConversationEmptyState,
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation"
 import {
@@ -24,13 +23,13 @@ import {
 import { AssistantPrompt } from "./assistant-prompt"
 import { Button } from "@/components/ui/button"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
+import { assistantTitle } from "@/lib/stores/assistant-title"
 import type {
   BasketDraft,
   MatchResult,
   OptimizationSummary,
   ReceiptOCR,
 } from "@/lib/ai/schemas"
-import { ParsedItemsCard } from "./parsed-items-card"
 import { ProductMatchList } from "./product-match-list"
 import { OptimizationCard } from "./optimization-card"
 import {
@@ -41,6 +40,14 @@ import {
   ReceiptComparisonCard,
   type ReceiptComparisonPayload,
 } from "./receipt-comparison-card"
+import {
+  BasketApprovalCard,
+  type BasketApprovalSubmit,
+} from "./basket-approval-card"
+import {
+  BasketSaveCard,
+  type BasketContextPayload,
+} from "./basket-save-card"
 
 const SEED_KEY = "assistant:seed"
 const FILE_KEY = "assistant:file"
@@ -59,6 +66,7 @@ type ParseReceiptOutput = {
 
 type AssistantChatProps = {
   conversationId?: string
+  initialTitle?: string
   initialMessages?: Array<Pick<UIMessage, "id" | "role" | "parts"> & {
     metadata?: unknown
   }>
@@ -66,12 +74,16 @@ type AssistantChatProps = {
 
 export function AssistantChat({
   conversationId: initialConversationId,
+  initialTitle,
   initialMessages,
 }: AssistantChatProps = {}) {
   const router = useRouter()
   const guard = useRequireAuth()
   const conversationIdRef = React.useRef<string | undefined>(initialConversationId)
   const navigatedRef = React.useRef(false)
+  // body is a lazy callback invoked at request time — the ref read happens
+  // outside render. React 19's static analyzer flags this as a false positive.
+  /* eslint-disable react-hooks/refs, react-hooks/preserve-manual-memoization */
   const transport = React.useMemo(
     () =>
       new DefaultChatTransport({
@@ -80,6 +92,7 @@ export function AssistantChat({
       }),
     [],
   )
+  /* eslint-enable react-hooks/refs, react-hooks/preserve-manual-memoization */
   const { messages, sendMessage, status, stop, error } = useChat({
     transport,
     messages: initialMessages as UIMessage[] | undefined,
@@ -95,21 +108,55 @@ export function AssistantChat({
           navigatedRef.current = true
           // Soft URL update: avoid Next.js route navigation here, which would
           // unmount this component mid-stream and abort the SSE reader.
-          // The /assistant/[id] route will SSR fresh data on refresh / next nav.
-          window.history.replaceState(null, "", `/assistant/${id}`)
+          // The /asistan/[id] route will SSR fresh data on refresh / next nav.
+          window.history.replaceState(null, "", `/asistan/${id}`)
         }
+      }
+      if (
+        dataPart.type === "data-conversation-title" &&
+        dataPart.data &&
+        typeof (dataPart.data as { title?: unknown }).title === "string"
+      ) {
+        const title = (dataPart.data as { title: string }).title
+        assistantTitle.setTitle(title)
       }
     },
     onFinish: () => {
+      // Sunucu title event'i göndermediyse skeleton'u kapat — header
+      // çizgide kalır ya da varsa mevcut title'a düşer.
+      assistantTitle.setLoading(false)
       // Stream is done — now safe to refresh server data so the sidebar's
       // conversation list picks up the newly created conversation.
       if (navigatedRef.current) {
         router.refresh()
       }
     },
+    onError: () => {
+      assistantTitle.setLoading(false)
+    },
   })
   const [input, setInput] = React.useState("")
   const sentSeedRef = React.useRef(false)
+
+  // Header'daki title state'ini bu chat'in title'ı ile senkronize tut.
+  React.useEffect(() => {
+    if (initialTitle) {
+      assistantTitle.setTitle(initialTitle)
+    } else {
+      assistantTitle.reset()
+    }
+    return () => {
+      assistantTitle.reset()
+    }
+  }, [initialTitle])
+
+  // Yeni bir sohbet başlatılırken (henüz id yok) header'da skeleton göster;
+  // sunucudan title event'i geldiğinde store kapanır.
+  const markPendingTitleIfNew = React.useCallback(() => {
+    if (!conversationIdRef.current) {
+      assistantTitle.setLoading(true)
+    }
+  }, [])
 
   React.useEffect(() => {
     if (sentSeedRef.current) return
@@ -140,6 +187,7 @@ export function AssistantChat({
         ;(async () => {
           try {
             const upload = await uploadReceiptImage(fileData)
+            markPendingTitleIfNew()
             sendMessage({
               parts: [
                 { type: "text", text: text || "Fişimi analiz et" },
@@ -159,20 +207,31 @@ export function AssistantChat({
                 : "Fotoğraf yüklenemedi. Lütfen tekrar dene.",
             )
             // Still send the text if there was one
-            if (text) sendMessage({ text })
+            if (text) {
+              markPendingTitleIfNew()
+              sendMessage({ text })
+            }
           }
         })()
       } catch {
         // JSON parse failed, just send text
-        if (text) sendMessage({ text })
+        if (text) {
+          markPendingTitleIfNew()
+          sendMessage({ text })
+        }
       }
     } else if (text) {
+      markPendingTitleIfNew()
       sendMessage({ text })
     }
-  }, [sendMessage, initialMessages])
+  }, [sendMessage, initialMessages, markPendingTitleIfNew])
 
   const isBusy = status === "submitted" || status === "streaming"
 
+  // Handler'lar event-time'da çağrılır — render sırasında çağrılmaz. React 19
+  // derleyicisi `guard()`'a ref okuyan callback geçişini false-positive olarak
+  // bayraklıyor (transport useMemo'sunda da aynı kalıp var).
+  /* eslint-disable react-hooks/refs */
   const handleSubmit = guard(async (message: PromptInputMessage) => {
     if (isBusy) return
     const text = message.text?.trim() ?? ""
@@ -183,6 +242,7 @@ export function AssistantChat({
     if (imageFile) {
       try {
         const upload = await uploadReceiptImage(imageFile)
+        markPendingTitleIfNew()
         sendMessage({
           parts: [
             { type: "text", text: text || "Fişimi analiz et" },
@@ -207,14 +267,17 @@ export function AssistantChat({
     }
 
     if (!text) return
+    markPendingTitleIfNew()
     sendMessage({ text })
     setInput("")
   })
 
   const handleSuggestionClick = guard((text: string) => {
     if (isBusy) return
+    markPendingTitleIfNew()
     sendMessage({ text })
   })
+  /* eslint-enable react-hooks/refs */
 
   const handleApprove = React.useCallback(
     (a: ApprovalSubmit) => {
@@ -242,35 +305,46 @@ export function AssistantChat({
     [isBusy, sendMessage],
   )
 
+  const handleBasketApprove = React.useCallback(
+    (a: BasketApprovalSubmit) => {
+      if (isBusy) return
+      sendMessage({
+        metadata: { kind: "basketApproval", payload: { items: a.items } },
+        text: "Sepeti onayladım, en ucuz marketleri göster.",
+      })
+    },
+    [isBusy, sendMessage],
+  )
+
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4">
-      <Conversation className="mx-auto w-full max-w-3xl">
-        <ConversationContent className="px-0">
-          {messages.length === 0 ? (
-            <ConversationEmptyState>
-              <div className="text-muted-foreground">
-                <SparklesIcon className="size-10" />
-              </div>
-              <h1 className="text-3xl font-bold tracking-tight">
-                Bugün ne alışverişi yapacaksın?
-              </h1>
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                {SUGGESTIONS.map((s) => (
-                  <Button
-                    key={s}
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleSuggestionClick(s)}
-                    className="h-auto rounded-full px-3 py-1.5 text-xs font-normal text-muted-foreground"
-                  >
-                    {s}
-                  </Button>
-                ))}
-              </div>
-            </ConversationEmptyState>
-          ) : (
-            messages.map((m, msgIdx) => {
+      {messages.length === 0 ? (
+        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
+          <div className="text-muted-foreground">
+            <SparklesIcon className="size-10" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Bugün ne alışverişi yapacaksın?
+          </h1>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {SUGGESTIONS.map((s) => (
+              <Button
+                key={s}
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleSuggestionClick(s)}
+                className="h-auto rounded-full px-3 py-1.5 text-xs font-normal text-muted-foreground"
+              >
+                {s}
+              </Button>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <Conversation className="mx-auto w-full max-w-3xl">
+          <ConversationContent className="px-0">
+            {messages.map((m, msgIdx) => {
               const isLatestAssistant =
                 m.role === "assistant" && msgIdx === messages.length - 1
               return (
@@ -290,8 +364,27 @@ export function AssistantChat({
                             key,
                             part,
                             "Hallediyorum…",
+                            (out) => {
+                              const draft = out as BasketDraft
+                              if (draft.items.length === 0) return null
+                              return (
+                                <BasketApprovalCard
+                                  data={draft}
+                                  alreadyApproved={!isLatestAssistant}
+                                  onApprove={handleBasketApprove}
+                                />
+                              )
+                            },
+                          )
+                        case "tool-basketContext":
+                          return renderToolPart(
+                            key,
+                            part,
+                            "Sepetini hazırlıyorum…",
                             (out) => (
-                              <ParsedItemsCard data={out as BasketDraft} />
+                              <BasketSaveCard
+                                data={out as BasketContextPayload}
+                              />
                             ),
                           )
                         case "tool-lookupProducts":
@@ -376,18 +469,18 @@ export function AssistantChat({
                   </MessageContent>
                 </Message>
               )
-            })
-          )}
+            })}
 
-          {error && (
-            <div className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
-              {error.message ||
-                "Asistan şu an cevap veremiyor. Lütfen biraz sonra tekrar deneyin."}
-            </div>
-          )}
-        </ConversationContent>
-        <ConversationScrollButton />
-      </Conversation>
+            {error && (
+              <div className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+                {error.message ||
+                  "Asistan şu an cevap veremiyor. Lütfen biraz sonra tekrar deneyin."}
+              </div>
+            )}
+          </ConversationContent>
+          <ConversationScrollButton />
+        </Conversation>
+      )}
 
       <AssistantPrompt
         input={input}

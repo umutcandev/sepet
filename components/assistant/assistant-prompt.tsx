@@ -49,7 +49,7 @@ export function AssistantPrompt({
     <PromptInput
       accept="image/*"
       maxFiles={1}
-      onSubmit={onSubmit as any}
+      onSubmit={(message) => onSubmit(message)}
       className={cn(
         "rounded-xl border-ring/70 bg-muted shadow-sm",
         "has-[[data-slot=input-group-control]:focus-visible]:border-ring/70 has-[[data-slot=input-group-control]:focus-visible]:ring-0",

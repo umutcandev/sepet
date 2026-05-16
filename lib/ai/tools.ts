@@ -1,6 +1,7 @@
 import { generateObject } from "ai"
 import {
   BasketDraftSchema,
+  ChatTitleSchema,
   MatchSelectionSchema,
   ReceiptOCRSchema,
   type BasketDraft,
@@ -11,6 +12,7 @@ import {
 } from "./schemas"
 import { geminiFlash, geminiFlashLite } from "./models"
 import {
+  CHAT_TITLE_PROMPT,
   MATCH_PROMPT,
   PARSE_PROMPT,
   RECEIPT_OCR_PROMPT,
@@ -86,6 +88,16 @@ export async function parseReceiptImage(imageUrl: string): Promise<ReceiptOCR> {
     object.totalAmount,
   )
   return object
+}
+
+export async function generateChatTitle(userText: string): Promise<string> {
+  const { object } = await generateObject({
+    model: geminiFlashLite,
+    schema: ChatTitleSchema,
+    temperature: 0.2,
+    prompt: CHAT_TITLE_PROMPT(userText),
+  })
+  return object.title.trim().replace(/\s+/g, " ").slice(0, 100)
 }
 
 export async function parseShoppingList(rawText: string): Promise<BasketDraft> {

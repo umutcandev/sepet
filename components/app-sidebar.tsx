@@ -8,6 +8,7 @@ import {
   HomeIcon,
   PlusIcon,
   ReceiptIcon,
+  ShoppingBasketIcon,
   SparklesIcon,
   SearchIcon,
 } from "lucide-react"
@@ -41,7 +42,12 @@ type NavItem = {
 
 const nav: NavItem[] = [
   { title: "Ana Sayfa", url: "/", icon: HomeIcon },
-  { title: "Ürün Ara", url: "/search", icon: SearchIcon },
+  { title: "Ürün Ara", url: "/urun-ara", icon: SearchIcon },
+  {
+    title: "Sepetlerim",
+    url: "/sepetlerim",
+    icon: ShoppingBasketIcon,
+  },
   {
     title: "Fiş Geçmişi",
     url: "/fis-gecmisi",
@@ -49,7 +55,7 @@ const nav: NavItem[] = [
   },
   {
     title: "Asistan",
-    url: "/assistant",
+    url: "/asistan",
     icon: SparklesIcon,
   },
 ]
@@ -107,7 +113,7 @@ export function AppSidebar({
                     asChild
                     className="h-9 justify-center font-medium"
                   >
-                    <Link href="/assistant" onClick={handleNavClick}>
+                    <Link href="/asistan" onClick={handleNavClick}>
                       <PlusIcon />
                       <span>Yeni Sohbet</span>
                     </Link>
@@ -123,9 +129,9 @@ export function AppSidebar({
             <SidebarMenu>
               {nav.map((item) => {
                 const Icon = item.icon
-                const isAssistant = item.url === "/assistant"
+                const isAssistant = item.url === "/asistan"
                 const isActive = isAssistant
-                  ? pathname === "/assistant"
+                  ? pathname === "/asistan"
                   : pathname === item.url
                 return (
                   <SidebarMenuItem key={item.title}>
