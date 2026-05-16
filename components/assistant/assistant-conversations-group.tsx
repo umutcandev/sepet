@@ -25,6 +25,7 @@ import {
   ConversationDeleteDialog,
   ConversationRenameDialog,
 } from "@/components/assistant/conversation-action-dialogs"
+import { assistantConversations } from "@/lib/stores/assistant-conversations"
 
 function ConversationIcon({ className }: { className?: string }) {
   return (
@@ -66,6 +67,30 @@ export function AssistantConversationsGroup({ conversations }: Props) {
   const activeId = typeof params?.id === "string" ? params.id : null
   const { isMobile, setOpenMobile } = useSidebar()
 
+  // Sidebar listesini lokal state'te tutuyoruz: navigasyonda parent yeni
+  // server data ile bizi re-render eder (prop sync); stream/dialog
+  // mutasyonları ise store üzerinden inject edilir. router.refresh() yok —
+  // o, /asistan ↔ /asistan/[id] segment swap'ı yüzünden AssistantChat'i
+  // remount edip StickToBottom'ın "yukarıdan aşağı" smooth scroll'unu
+  // tetikliyordu.
+  // Render-phase sync: parent prop'u değişirse (sayfa değişimi / cold load)
+  // lokal state'i yenile. React'in resmi pattern'ı; useEffect'siz sync için
+  // tek render fazlası harcar — bkz. react.dev "storing information from
+  // previous renders".
+  const [list, setList] = React.useState<ConversationListItem[]>(conversations)
+  const [lastProp, setLastProp] = React.useState(conversations)
+  if (lastProp !== conversations) {
+    setLastProp(conversations)
+    setList(conversations)
+  }
+
+  // Mid-stream / dialog mutasyonlarını uygula.
+  React.useEffect(() => {
+    return assistantConversations.subscribe((mutator) => {
+      setList((current) => mutator(current))
+    })
+  }, [])
+
   const [renameTarget, setRenameTarget] = React.useState<ConversationListItem | null>(null)
   const [deleteTarget, setDeleteTarget] = React.useState<ConversationListItem | null>(null)
 
@@ -73,7 +98,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
     if (isMobile) setOpenMobile(false)
   }
 
-  if (conversations.length === 0) {
+  if (list.length === 0) {
     return (
       <SidebarGroup>
         <SidebarGroupLabel>Geçmiş Sohbetler</SidebarGroupLabel>
@@ -92,7 +117,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
         <SidebarGroupLabel>Geçmiş Sohbetler</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {conversations.map((c) => {
+            {list.map((c) => {
               const isActive = c.id === activeId
               return (
                 <SidebarMenuItem key={c.id}>

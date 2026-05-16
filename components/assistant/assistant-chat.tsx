@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
-import { Loader2Icon, SparklesIcon } from "lucide-react"
+import { SparklesIcon } from "lucide-react"
 import { toast } from "sonner"
 
 import {
@@ -24,6 +23,7 @@ import { AssistantPrompt } from "./assistant-prompt"
 import { Button } from "@/components/ui/button"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 import { assistantTitle } from "@/lib/stores/assistant-title"
+import { assistantConversations } from "@/lib/stores/assistant-conversations"
 import type {
   BasketDraft,
   MatchResult,
@@ -48,6 +48,7 @@ import {
   BasketSaveCard,
   type BasketContextPayload,
 } from "./basket-save-card"
+import { ThinkingText } from "./ai-thinking-text"
 
 const SEED_KEY = "assistant:seed"
 const FILE_KEY = "assistant:file"
@@ -79,8 +80,15 @@ export function AssistantChat({
   initialMessages,
   initialSavedBaskets,
 }: AssistantChatProps = {}) {
-  const router = useRouter()
   const guard = useRequireAuth()
+  // Render-time okuma için state, callback-time okuma için ref tutuyoruz.
+  // Transport `body` callback'i memo ile tek sefer oluşturulur ve istek anında
+  // çalışır; orada güncel değere ref üzerinden ulaşılır. JSX'te ise state
+  // okunur, böylece id değişince re-render düzgün tetiklenir (refs render
+  // tetiklemez, hidden staleness'a yol açar).
+  const [conversationId, setConversationId] = React.useState<string | undefined>(
+    initialConversationId,
+  )
   const conversationIdRef = React.useRef<string | undefined>(initialConversationId)
   const navigatedRef = React.useRef(false)
   // body is a lazy callback invoked at request time — the ref read happens
@@ -104,9 +112,19 @@ export function AssistantChat({
         dataPart.data &&
         typeof (dataPart.data as { id?: unknown }).id === "string"
       ) {
-        const id = (dataPart.data as { id: string }).id
+        const data = dataPart.data as { id: string; title?: string | null }
+        const id = data.id
         conversationIdRef.current = id
+        setConversationId(id)
         assistantTitle.setConversationId(id)
+        // Yeni konuşmayı sidebar listesine hemen ekle. AI başlığı
+        // sonradan title event'iyle gelir; o zamana kadar
+        // createConversation'ın çıkardığı seed title gösterilir.
+        assistantConversations.upsert({
+          id,
+          title: data.title?.trim() || "Yeni sohbet",
+          updatedAt: new Date(),
+        })
         if (!navigatedRef.current) {
           navigatedRef.current = true
           // Soft URL update: avoid Next.js route navigation here, which would
@@ -120,18 +138,29 @@ export function AssistantChat({
         dataPart.data &&
         typeof (dataPart.data as { title?: unknown }).title === "string"
       ) {
-        const title = (dataPart.data as { title: string }).title
+        const data = dataPart.data as { id?: string; title: string }
+        const title = data.title
         assistantTitle.setTitle(title)
+        const id = data.id ?? conversationIdRef.current
+        if (id) {
+          assistantConversations.setTitle(id, title)
+        }
       }
     },
     onFinish: () => {
       // Sunucu title event'i göndermediyse skeleton'u kapat — header
       // çizgide kalır ya da varsa mevcut title'a düşer.
       assistantTitle.setLoading(false)
-      // Stream is done — now safe to refresh server data so the sidebar's
-      // conversation list picks up the newly created conversation.
-      if (navigatedRef.current) {
-        router.refresh()
+      // NOT: Eskiden burada router.refresh() vardı — sidebar konuşma
+      // listesini güncellemek için. Ama URL replaceState ile değişmişken
+      // refresh, segment tree'yi /asistan → /asistan/[id]'ye swap edip
+      // AssistantChat ve içindeki StickToBottom'ı remount ediyordu →
+      // approval kartı göründüğü an "sayfa baştan yükleniyor, yukarıdan
+      // aşağı kayıyor" hissi. Artık sidebar mutasyonları
+      // assistantConversations store'u üzerinden uygulanıyor.
+      const id = conversationIdRef.current
+      if (id && navigatedRef.current) {
+        assistantConversations.touch(id)
       }
     },
     onError: () => {
@@ -374,6 +403,22 @@ export function AssistantChat({
                               {part.text}
                             </MessageResponse>
                           )
+                        case "reasoning": {
+                          const p = part as {
+                            type: "reasoning"
+                            text?: string
+                            state?: "streaming" | "done"
+                          }
+                          const text = p.text?.trim()
+                          if (!text) return null
+                          return (
+                            <ReasoningBlock
+                              key={key}
+                              text={text}
+                              streaming={p.state !== "done"}
+                            />
+                          )
+                        }
                         case "tool-parseShoppingList":
                           return renderToolPart(
                             key,
@@ -406,9 +451,7 @@ export function AssistantChat({
                             (out) => (
                               <BasketSaveCard
                                 data={out as BasketContextPayload}
-                                conversationId={
-                                  conversationIdRef.current ?? null
-                                }
+                                conversationId={conversationId ?? null}
                                 toolCallId={toolCallId}
                                 initialSavedId={savedId}
                               />
@@ -614,12 +657,47 @@ function renderToolPart(
     )
   }
   return (
-    <div
-      key={key}
-      className="flex items-center gap-2 rounded-xl border bg-muted/30 px-3 py-2 text-sm text-muted-foreground"
-    >
-      <Loader2Icon className="size-3.5 animate-spin" />
-      {loadingLabel}
+    <div key={key} className="py-0.5">
+      <ThinkingText>{loadingLabel}</ThinkingText>
+    </div>
+  )
+}
+
+type ReasoningBlockProps = {
+  text: string
+  streaming: boolean
+}
+
+function ReasoningBlock({ text, streaming }: ReasoningBlockProps) {
+  const [open, setOpen] = React.useState(true)
+
+  // Akış bittiğinde otomatik kapansın — sonradan tekrar açılabilir.
+  const prevStreamingRef = React.useRef(streaming)
+  React.useEffect(() => {
+    if (prevStreamingRef.current && !streaming) {
+      setOpen(false)
+    }
+    prevStreamingRef.current = streaming
+  }, [streaming])
+
+  return (
+    <div className="flex flex-col gap-1">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="self-start text-xs font-medium text-muted-foreground hover:text-foreground"
+      >
+        {streaming ? (
+          <ThinkingText className="text-xs">Düşünüyorum…</ThinkingText>
+        ) : (
+          <span>{open ? "Düşünceyi gizle" : "Düşünceyi göster"}</span>
+        )}
+      </button>
+      {open && (
+        <div className="border-l-2 border-border pl-3 text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">
+          {text}
+        </div>
+      )}
     </div>
   )
 }
