@@ -62,7 +62,7 @@ export function AssistantPrompt({
         <PromptInputTextarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Alışveriş listeni, yemek görselini veya fiş fotoğrafını yükle. Yardımcı olayım!"
+          placeholder="Alışveriş listeni, yemek görselini veya fiş fotoğrafını yükle."
           className="text-sm placeholder:text-foreground/60"
         />
       </PromptInputBody>

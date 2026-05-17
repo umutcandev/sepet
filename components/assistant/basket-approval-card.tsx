@@ -116,7 +116,7 @@ export function BasketApprovalCard({
         <div className="ml-auto flex flex-wrap gap-1.5">
           {readOnly ? (
             <Badge variant="secondary" className="text-[10px]">
-              <CheckIcon className="mr-1 size-3" /> Onaylandı
+              <CheckIcon className="mr-1 size-3" /> ONAYLANDI
             </Badge>
           ) : null}
         </div>

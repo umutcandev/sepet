@@ -9,7 +9,6 @@ import {
   AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
-  AvatarImage,
 } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -20,17 +19,17 @@ import { AssistantPrompt } from "@/components/assistant/assistant-prompt"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 
 const CHIPS = [
+  "Fiş veya yemek fotoğrafımı analiz et",
   "Kremalı makarna için malzemeler",
   "Limonata için malzemeler",
-  "Fiş veya yemek fotoğrafımı analiz et",
 ]
 
 const ROTATING_HEADINGS = [
   "Alışveriş listeni oluşturalım mı?",
-  "Bugün ne pişirelim?",
-  "Fişini veya yemek fotoğrafını analiz edelim mi?",
-  "Tarifin için malzemeleri çıkaralım mı?",
-  "Bütçeni birlikte planlayalım mı?",
+  "Market fişini analiz edelim mi?",
+  "Yemek fotoğrafından malzeme çıkaralım mı?",
+  "Tarifin için malzeme fiyatları çıkaralım mı?",
+  "Alışveriş bütçeni birlikte planlayalım mı?",
 ]
 
 const ASSISTANT_SEED_KEY = "assistant:seed"
@@ -41,6 +40,7 @@ export default function HomePage() {
   const guard = useRequireAuth()
   const [input, setInput] = React.useState("")
   const [headingIndex, setHeadingIndex] = React.useState(0)
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
 
   React.useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | undefined
@@ -59,6 +59,8 @@ export default function HomePage() {
   }, [])
 
   const handleSubmit = guard((message: PromptInputMessage) => {
+    if (isSubmitting) return
+
     const text = message.text?.trim() ?? ""
     const imageFile = (message.files ?? []).find((f) =>
       f.mediaType?.startsWith("image/"),
@@ -87,6 +89,7 @@ export default function HomePage() {
       }
     }
 
+    setIsSubmitting(true)
     setInput("")
     router.push("/asistan")
   })
@@ -96,23 +99,66 @@ export default function HomePage() {
   })
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-4 pb-16">
-      <div className="flex w-full max-w-2xl flex-col items-center gap-6">
+    <>
+      <link
+        rel="preload"
+        as="image"
+        href="/background-image.avif"
+        type="image/avif"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        as="image"
+        href="/background-image.webp"
+        type="image/webp"
+        fetchPriority="high"
+      />
+      <link rel="preload" as="image" href="/a101-brand.webp" />
+      <link rel="preload" as="image" href="/migros-brand.webp" />
+      <link rel="preload" as="image" href="/sok-brand.webp" />
+      <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 pb-16">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image.avif')_type('image/avif'),url('/background-image.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_35%,transparent_85%)] [-webkit-mask-image:linear-gradient(to_top,black_35%,transparent_85%)]"
+      />
+      <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-3 text-center">
-          <AvatarGroup>
-            <Avatar>
-              <AvatarImage src="/a101-brand.jpg" alt="A101" />
+          <AvatarGroup className="*:data-[slot=avatar]:ring-0">
+            <Avatar className="after:border-[1.5px] after:border-ring/70 [mask-image:radial-gradient(circle_18px_at_calc(100%+8px)_50%,transparent_99%,#000_100%)]">
               <AvatarFallback>A</AvatarFallback>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/a101-brand.webp"
+                alt="A101"
+                fetchPriority="high"
+                decoding="async"
+                className="absolute inset-0 size-full rounded-full object-cover"
+              />
             </Avatar>
-            <Avatar>
-              <AvatarImage src="/migros-brand.jpg" alt="Migros" />
+            <Avatar className="after:border-[1.5px] after:border-ring/70 [mask-image:radial-gradient(circle_18px_at_calc(100%+8px)_50%,transparent_99%,#000_100%)]">
               <AvatarFallback>M</AvatarFallback>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/migros-brand.webp"
+                alt="Migros"
+                fetchPriority="high"
+                decoding="async"
+                className="absolute inset-0 size-full rounded-full object-cover"
+              />
             </Avatar>
-            <Avatar>
-              <AvatarImage src="/sok-brand.jpg" alt="ŞOK" />
+            <Avatar className="after:border-[1.5px] after:border-ring/70 [mask-image:radial-gradient(circle_18px_at_calc(100%+8px)_50%,transparent_99%,#000_100%)]">
               <AvatarFallback>Ş</AvatarFallback>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/sok-brand.webp"
+                alt="ŞOK"
+                fetchPriority="high"
+                decoding="async"
+                className="absolute inset-0 size-full rounded-full object-cover"
+              />
             </Avatar>
-            <AvatarGroupCount>+42</AvatarGroupCount>
+            <AvatarGroupCount className="border-[1.5px] border-ring/70 ring-0">+42</AvatarGroupCount>
           </AvatarGroup>
           <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
             <AnimatePresence mode="wait" initial={false}>
@@ -134,6 +180,7 @@ export default function HomePage() {
           input={input}
           setInput={setInput}
           onSubmit={handleSubmit}
+          status={isSubmitting ? "submitted" : undefined}
           className="w-full"
         />
 
@@ -145,7 +192,7 @@ export default function HomePage() {
               variant="outline"
               size="sm"
               onClick={() => handleChip(chip)}
-              className="h-auto rounded-full px-3 py-1.5 text-xs font-normal text-muted-foreground"
+              className="h-auto rounded-full border-ring/70 px-3 py-1.5 text-xs font-normal text-muted-foreground"
             >
               {chip}
             </Button>
@@ -153,6 +200,7 @@ export default function HomePage() {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

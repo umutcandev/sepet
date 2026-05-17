@@ -7,6 +7,12 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 
 import { Button } from "@/components/ui/button"
 import { LoginForm } from "@/components/auth/login-form"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+} from "@/components/ui/drawer"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -16,6 +22,31 @@ type Props = {
 }
 
 export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
+  const isDesktop = useMediaQuery("(min-width: 768px)")
+
+  if (isDesktop) {
+    return (
+      <DesktopDialog
+        open={open}
+        onOpenChange={onOpenChange}
+        callbackUrl={callbackUrl}
+      />
+    )
+  }
+
+  return (
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerContent className="bg-background">
+        <DrawerTitle className="sr-only">Giriş Yap</DrawerTitle>
+        <div className="flex justify-center">
+          <LoginForm callbackUrl={callbackUrl} />
+        </div>
+      </DrawerContent>
+    </Drawer>
+  )
+}
+
+function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
@@ -30,38 +61,18 @@ export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
         <DialogPrimitive.Content
           aria-describedby={undefined}
           className={cn(
-            // Mobile (default): full-screen slide-up
-            "fixed inset-0 z-50 flex w-full max-w-none bg-background outline-none",
-            "data-open:animate-in data-open:slide-in-from-bottom-8 data-open:fade-in-0",
-            "data-closed:animate-out data-closed:slide-out-to-bottom-8 data-closed:fade-out-0",
+            "fixed top-1/2 left-1/2 z-50 flex h-auto max-h-[min(720px,calc(100dvh-2rem))] w-[min(100%-2rem,860px)]",
+            "-translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-background ring-1 ring-foreground/10 outline-none",
+            "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
+            "data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
             "duration-200",
-            // Desktop (≥768px): centered two-column dialog
-            "md:inset-auto md:top-1/2 md:left-1/2 md:h-auto md:max-h-[min(720px,calc(100dvh-2rem))] md:w-[min(100%-2rem,860px)]",
-            "md:-translate-x-1/2 md:-translate-y-1/2 md:overflow-hidden md:rounded-xl md:ring-1 md:ring-foreground/10",
-            "md:data-open:slide-in-from-bottom-0 md:data-open:zoom-in-95",
-            "md:data-closed:slide-out-to-bottom-0 md:data-closed:zoom-out-95",
           )}
         >
           <DialogPrimitive.Title className="sr-only">
             Giriş Yap
           </DialogPrimitive.Title>
 
-          {/* Mobile-only: background image with bottom gradient */}
-          <div className="absolute inset-0 md:hidden">
-            <Image
-              src="/login-image.webp"
-              alt=""
-              fill
-              priority
-              quality={95}
-              sizes="100vw"
-              className="object-cover object-top"
-            />
-            <div className="absolute inset-x-0 bottom-0 h-[50%] bg-[linear-gradient(to_top,var(--background)_0%,color-mix(in_oklab,var(--background)_85%,transparent)_55%,transparent_100%)]" />
-          </div>
-
-          {/* Desktop-only: left image column */}
-          <div className="relative hidden md:block md:flex-1">
+          <div className="relative flex-1">
             <Image
               src="/login-image.webp"
               alt=""
@@ -72,17 +83,15 @@ export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
             />
           </div>
 
-          {/* Form column */}
-          <div className="relative flex w-full justify-center md:w-[420px] md:shrink-0">
-            <LoginForm variant="md" callbackUrl={callbackUrl} />
+          <div className="relative flex w-[420px] shrink-0 justify-center">
+            <LoginForm callbackUrl={callbackUrl} />
           </div>
 
-          {/* Close button */}
           <DialogPrimitive.Close asChild>
             <Button
               variant="ghost"
               size="icon-sm"
-              className="absolute top-3 right-3 z-10 bg-background/70 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none"
+              className="absolute top-3 right-3 z-10"
               aria-label="Kapat"
             >
               <XIcon />

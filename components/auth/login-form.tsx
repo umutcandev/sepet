@@ -4,7 +4,6 @@ import { Check } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { signInWithGoogleAction } from "@/lib/actions/auth"
-import { cn } from "@/lib/utils"
 
 const FEATURES = [
   "162.929 ürünün canlı fiyatı",
@@ -12,54 +11,23 @@ const FEATURES = [
   "Fiş fotoğrafından en hızlı fiyat karşılaştırması",
 ]
 
-/**
- * The form transitions from "image-background overlay" style (text on image)
- * to "white panel" style (text on background) at the variant breakpoint.
- * - "md" (768px): used by the login dialog (narrower transition because
- *   the dialog reaches its two-column layout earlier)
- * - "lg" (1024px): default
- */
-type Variant = "lg" | "md"
-
 type Props = {
-  variant?: Variant
   callbackUrl?: string
 }
 
-export function LoginForm({ variant = "lg", callbackUrl }: Props) {
-  const headingText =
-    variant === "md"
-      ? "text-background md:text-foreground"
-      : "text-background lg:text-foreground"
-  const descText =
-    variant === "md"
-      ? "text-background/85 md:text-muted-foreground"
-      : "text-background/85 lg:text-muted-foreground"
-  const topGap =
-    variant === "md" ? "mt-8 flex flex-col md:mt-0" : "mt-[110px] flex flex-col lg:mt-20"
-
+export function LoginForm({ callbackUrl }: Props) {
   return (
     <div className="flex w-full max-w-[402px] flex-col px-5 pt-8 pb-5 md:pt-10 md:pb-6">
-      <div className={topGap}>
-        <h1
-          className={cn(
-            "text-[48px] font-semibold leading-[48px] tracking-[-0.04em] md:text-[36px] md:leading-[36px]",
-            headingText,
-          )}
-        >
+      <div className="flex flex-col">
+        <h1 className="text-[36px] font-semibold leading-[36px] tracking-[-0.04em] text-foreground">
           Sepet
         </h1>
-        <p
-          className={cn(
-            "mt-[18px] max-w-[260px] text-[17px] leading-[1.35] tracking-[-0.01em] md:mt-4 md:text-[15px]",
-            descText,
-          )}
-        >
+        <p className="mt-4 max-w-[260px] text-[15px] leading-[1.35] tracking-[-0.01em] text-muted-foreground">
           Yapay zeka ile akıllı alışverişin tadını çıkarın.
         </p>
       </div>
 
-      <ul className="mt-auto mb-6 flex flex-col gap-3 text-[13px] text-muted-foreground md:mt-10">
+      <ul className="mt-8 mb-6 flex flex-col gap-3 text-[13px] text-muted-foreground md:mt-10">
         {FEATURES.map((item) => (
           <li key={item} className="flex items-center gap-2">
             <Check className="h-3 w-3 shrink-0" strokeWidth={2.5} />
@@ -76,7 +44,7 @@ export function LoginForm({ variant = "lg", callbackUrl }: Props) {
         <Button
           type="submit"
           size="lg"
-          className="h-[52px] w-full gap-2 rounded-[14px] px-[6px] text-[15px] font-medium tracking-[-0.01em] md:h-[44px] md:rounded-xl md:text-[14px]"
+          className="h-[44px] w-full gap-2 rounded-xl px-[6px] text-[14px] font-medium tracking-[-0.01em]"
         >
           <span className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white">
             <GoogleIcon />
