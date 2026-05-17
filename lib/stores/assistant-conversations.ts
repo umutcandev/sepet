@@ -14,15 +14,29 @@ function emit(mutator: Mutator) {
 export const assistantConversations = {
   upsert(item: ConversationListItem) {
     emit((current) => {
+      const existing = current.find((c) => c.id === item.id)
       const rest = current.filter((c) => c.id !== item.id)
-      return [item, ...rest]
+      // Var olan kaydın pending durumunu koru: yeni stream başında upsert
+      // pending=true ile çağrılır; AI title sonradan setTitle ile gelir ve
+      // pending'i kapatır. Var olan title'ı placeholder ile ezmiyoruz.
+      const merged: ConversationListItem = existing
+        ? { ...existing, ...item, pending: item.pending ?? existing.pending }
+        : item
+      return [merged, ...rest]
     })
   },
   setTitle(id: string, title: string) {
     emit((current) =>
-      current.map((c) =>
-        c.id === id && c.title !== title ? { ...c, title } : c,
-      ),
+      current.map((c) => {
+        if (c.id !== id) return c
+        if (c.title === title && !c.pending) return c
+        return { ...c, title, pending: false }
+      }),
+    )
+  },
+  clearPending(id: string) {
+    emit((current) =>
+      current.map((c) => (c.id === id && c.pending ? { ...c, pending: false } : c)),
     )
   },
   touch(id: string) {

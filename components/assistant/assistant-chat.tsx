@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
-import { SparklesIcon } from "lucide-react"
+import { ChevronDownIcon, SparklesIcon } from "lucide-react"
 import { toast } from "sonner"
 
 import {
@@ -26,6 +26,7 @@ import { assistantTitle } from "@/lib/stores/assistant-title"
 import { assistantConversations } from "@/lib/stores/assistant-conversations"
 import type {
   BasketDraft,
+  ImageAnalysis,
   MatchResult,
   OptimizationSummary,
   ReceiptOCR,
@@ -49,18 +50,25 @@ import {
   type BasketContextPayload,
 } from "./basket-save-card"
 import { ThinkingText } from "./ai-thinking-text"
+import { cn } from "@/lib/utils"
 
 const SEED_KEY = "assistant:seed"
 const FILE_KEY = "assistant:file"
 
 const SUGGESTIONS = [
-  "Sucuklu pizza için malzemeler",
-  "Menemen için malzemeler",
-  "Market fişimi analiz et",
+  "Kremalı makarna için malzemeler",
+  "Limonata için malzemeler",
+  "Fiş veya yemek fotoğrafımı analiz et",
 ]
 
 type ParseReceiptOutput = {
   ocr: ReceiptOCR
+  receiptImageUrl: string
+  receiptImageR2Key: string | null
+}
+
+type AnalyzeImageOutput = {
+  analysis: ImageAnalysis
   receiptImageUrl: string
   receiptImageR2Key: string | null
 }
@@ -120,10 +128,15 @@ export function AssistantChat({
         // Yeni konuşmayı sidebar listesine hemen ekle. AI başlığı
         // sonradan title event'iyle gelir; o zamana kadar
         // createConversation'ın çıkardığı seed title gösterilir.
+        // pending=true → sidebar bu kayıt için title yerine skeleton gösterir;
+        // AI title `data-conversation-title` event'iyle gelince setTitle
+        // pending'i kapatır. Böylece header'daki skeleton ile sidebar'daki
+        // skeleton aynı anda görünür/kaybolur.
         assistantConversations.upsert({
           id,
           title: data.title?.trim() || "Yeni sohbet",
           updatedAt: new Date(),
+          pending: true,
         })
         if (!navigatedRef.current) {
           navigatedRef.current = true
@@ -162,9 +175,18 @@ export function AssistantChat({
       if (id && navigatedRef.current) {
         assistantConversations.touch(id)
       }
+      // Safety net: sunucu title event'i göndermediyse sidebar'daki
+      // skeleton'u kapat (header'la aynı davranış).
+      if (id) {
+        assistantConversations.clearPending(id)
+      }
     },
     onError: () => {
       assistantTitle.setLoading(false)
+      const id = conversationIdRef.current
+      if (id) {
+        assistantConversations.clearPending(id)
+      }
     },
   })
   const [input, setInput] = React.useState("")
@@ -223,7 +245,7 @@ export function AssistantChat({
             markPendingTitleIfNew()
             sendMessage({
               parts: [
-                { type: "text", text: text || "Fişimi analiz et" },
+                { type: "text", text: text || "Bu görseli analiz et" },
                 {
                   type: "file",
                   mediaType: fileData.mediaType ?? "image/jpeg",
@@ -278,7 +300,7 @@ export function AssistantChat({
         markPendingTitleIfNew()
         sendMessage({
           parts: [
-            { type: "text", text: text || "Fişimi analiz et" },
+            { type: "text", text: text || "Bu görseli analiz et" },
             {
               type: "file",
               mediaType: imageFile.mediaType,
@@ -307,8 +329,7 @@ export function AssistantChat({
 
   const handleSuggestionClick = guard((text: string) => {
     if (isBusy) return
-    markPendingTitleIfNew()
-    sendMessage({ text })
+    setInput(text)
   })
   /* eslint-enable react-hooks/refs */
 
@@ -391,11 +412,38 @@ export function AssistantChat({
                 Array.isArray(nextMeta.payload?.items)
                   ? nextMeta.payload!.items
                   : undefined
+              // Aktif (henüz "done" olmayan) bir reasoning part'ı varsa
+              // pending tool part'larının yükleniyor etiketi ("Hallediyorum…"
+              // vb.) bastırılır — aynı anda iki "düşünme" animasyonu (örn.
+              // "Hallediyorum" + "Düşünüyorum") görmemek için. Reasoning
+              // "done" olur olmaz tool kendi etiketini gösterir.
+              const hasActiveReasoning = m.parts.some(
+                (p) =>
+                  p.type === "reasoning" &&
+                  (p as { state?: string }).state !== "done",
+              )
+              // Asistan mesajlarında text/reasoning kısımlarını tool & file
+              // kart(lar)ından ÖNCE render et. Sunucu stream sırası genelde
+              // [tool, reasoning, text] şeklinde geliyor; kullanıcı için
+              // doğal okuma sırası ise önce kısa özet/açıklama, sonra
+              // detay/kart. User mesajlarında parts olduğu gibi gösterilir.
+              const orderedParts =
+                m.role === "assistant"
+                  ? [
+                      ...m.parts.filter(
+                        (p) => p.type === "text" || p.type === "reasoning",
+                      ),
+                      ...m.parts.filter(
+                        (p) => p.type !== "text" && p.type !== "reasoning",
+                      ),
+                    ]
+                  : m.parts
               return (
                 <Message from={m.role} key={m.id}>
                   <MessageContent>
-                    {m.parts.map((part, i) => {
+                    {orderedParts.map((part, i) => {
                       const key = `${m.id}-${i}`
+                      const suppressToolLoader = hasActiveReasoning
                       switch (part.type) {
                         case "text":
                           return (
@@ -436,6 +484,7 @@ export function AssistantChat({
                                 />
                               )
                             },
+                            suppressToolLoader,
                           )
                         case "tool-basketContext": {
                           const toolCallId =
@@ -456,6 +505,7 @@ export function AssistantChat({
                                 initialSavedId={savedId}
                               />
                             ),
+                            suppressToolLoader,
                           )
                         }
                         case "tool-lookupProducts":
@@ -470,6 +520,7 @@ export function AssistantChat({
                                 }
                               />
                             ),
+                            suppressToolLoader,
                           )
                         case "tool-summarizeOptimization":
                           return renderToolPart(
@@ -481,6 +532,7 @@ export function AssistantChat({
                                 summary={out as OptimizationSummary}
                               />
                             ),
+                            suppressToolLoader,
                           )
                         case "tool-parseReceipt":
                           return renderToolPart(
@@ -494,6 +546,47 @@ export function AssistantChat({
                                 onApprove={handleApprove}
                               />
                             ),
+                            suppressToolLoader,
+                          )
+                        case "tool-analyzeImage":
+                          return renderToolPart(
+                            key,
+                            part,
+                            "Görseli inceliyorum…",
+                            (out) => {
+                              const { analysis, receiptImageUrl, receiptImageR2Key } =
+                                out as AnalyzeImageOutput
+                              if (analysis.kind === "receipt" && analysis.receipt) {
+                                return (
+                                  <ReceiptApprovalCard
+                                    data={{
+                                      ocr: analysis.receipt,
+                                      receiptImageUrl,
+                                      receiptImageR2Key,
+                                    }}
+                                    alreadyApproved={!isLatestAssistant}
+                                    onApprove={handleApprove}
+                                  />
+                                )
+                              }
+                              if (analysis.kind === "food" && analysis.food) {
+                                const draft: BasketDraft = {
+                                  items: analysis.food.items,
+                                  chatResponse: null,
+                                }
+                                return (
+                                  <BasketApprovalCard
+                                    data={draft}
+                                    alreadyApproved={!isLatestAssistant}
+                                    approvedItems={approvedBasketItems}
+                                    onApprove={handleBasketApprove}
+                                  />
+                                )
+                              }
+                              // kind === "unknown" → kart yok; metin yanıtı yeter.
+                              return null
+                            },
+                            suppressToolLoader,
                           )
                         case "tool-receiptComparison":
                           return renderToolPart(
@@ -505,6 +598,7 @@ export function AssistantChat({
                                 data={out as ReceiptComparisonPayload}
                               />
                             ),
+                            suppressToolLoader,
                           )
                         case "file": {
                           const filePart = part as {
@@ -642,6 +736,7 @@ function renderToolPart(
   part: ToolPartLike,
   loadingLabel: string,
   renderResult: (output: unknown) => React.ReactNode,
+  suppressLoader = false,
 ) {
   if (part.state === "output-available" && part.output !== undefined) {
     return <div key={key}>{renderResult(part.output)}</div>
@@ -656,6 +751,9 @@ function renderToolPart(
       </div>
     )
   }
+  if (suppressLoader) {
+    return null
+  }
   return (
     <div key={key} className="py-0.5">
       <ThinkingText>{loadingLabel}</ThinkingText>
@@ -669,29 +767,34 @@ type ReasoningBlockProps = {
 }
 
 function ReasoningBlock({ text, streaming }: ReasoningBlockProps) {
-  const [open, setOpen] = React.useState(true)
-
-  // Akış bittiğinde otomatik kapansın — sonradan tekrar açılabilir.
-  const prevStreamingRef = React.useRef(streaming)
-  React.useEffect(() => {
-    if (prevStreamingRef.current && !streaming) {
-      setOpen(false)
-    }
-    prevStreamingRef.current = streaming
-  }, [streaming])
+  // Akordiyon her zaman kapalı başlar — kullanıcı isterse açıp düşünceleri
+  // (akış sırasında bile canlı yazılırken) görür.
+  const [open, setOpen] = React.useState(false)
 
   return (
     <div className="flex flex-col gap-1">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="self-start text-xs font-medium text-muted-foreground hover:text-foreground"
+        aria-expanded={open}
+        className={cn(
+          "group inline-flex items-center gap-1 self-start font-medium text-muted-foreground transition-colors hover:text-foreground",
+          streaming ? "text-xs" : "text-sm",
+        )}
       >
         {streaming ? (
-          <ThinkingText className="text-xs">Düşünüyorum…</ThinkingText>
+          <ThinkingText className="text-sm">Düşünüyorum</ThinkingText>
         ) : (
-          <span>{open ? "Düşünceyi gizle" : "Düşünceyi göster"}</span>
+          <span>Düşündüm</span>
         )}
+        <ChevronDownIcon
+          className={cn(
+            "transition-transform duration-200",
+            streaming ? "size-3.5" : "size-4",
+            open && "rotate-180",
+          )}
+          aria-hidden="true"
+        />
       </button>
       {open && (
         <div className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground [&_p]:my-1 [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5 [&_li]:pl-1 [&_code]:text-[0.95em] [&_code]:px-1 [&_code]:py-0 [&_code]:font-normal [&_pre]:text-xs [&_pre]:p-2">

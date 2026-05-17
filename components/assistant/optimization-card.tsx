@@ -1,12 +1,23 @@
 "use client"
 
-import {
-  TrendingDownIcon,
-  AlertTriangleIcon,
-} from "lucide-react"
+import { TrendingDownIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import type { OptimizationSummary } from "@/lib/ai/schemas"
+
+function formatMissingItemsText(names: string[], market: string): string {
+  if (names.length === 0) return ""
+  const capitalized = names.map(
+    (n) => n.charAt(0).toLocaleUpperCase("tr-TR") + n.slice(1),
+  )
+  const joined =
+    capitalized.length === 1
+      ? capitalized[0]
+      : capitalized.length === 2
+        ? capitalized.join(" ve ")
+        : `${capitalized.slice(0, -1).join(", ")} ve ${capitalized[capitalized.length - 1]}`
+  return `${joined} ${market} stoğunda yok`
+}
 
 export function OptimizationCard({ summary }: { summary: OptimizationSummary }) {
   if (!summary) return null
@@ -26,19 +37,9 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
 
   const singleRow = (
     <div key="single" className="flex items-center gap-3 px-4 py-3">
-      {singleIsFull ? (
-        <MarketLogo name={singleMarket.market} size="default" />
-      ) : (
-        <AlertTriangleIcon className="size-4 shrink-0 text-amber-600 dark:text-amber-400" />
-      )}
+      <MarketLogo name={singleMarket.market} size="default" />
       <div className="min-w-0 flex-1">
-        <div
-          className={
-            singleIsFull
-              ? "text-[11px] font-medium text-muted-foreground"
-              : "text-[11px] font-medium text-amber-700 dark:text-amber-300"
-          }
-        >
+        <div className="text-[11px] font-medium text-muted-foreground">
           {singleIsFull
             ? "Tek market en ucuz"
             : "Tek markette sepet eksik kalıyor"}
@@ -46,16 +47,15 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
         <div className="truncate text-base font-semibold">
           {singleMarket.market}
         </div>
-        <div
-          className={
-            singleIsFull
-              ? "text-[11px] text-muted-foreground"
-              : "text-[11px] text-amber-700 dark:text-amber-400"
-          }
-        >
-          {singleMarket.itemCount}/{totalItems} kalem
-          {singleMarket.missingItemCount > 0 &&
-            ` · ${singleMarket.missingItemCount} kalem stokta yok`}
+        <div className="truncate text-[11px] text-muted-foreground">
+          {singleIsFull
+            ? `${singleMarket.itemCount}/${totalItems} kalem`
+            : singleMarket.missingItemNames && singleMarket.missingItemNames.length > 0
+              ? formatMissingItemsText(
+                  singleMarket.missingItemNames,
+                  singleMarket.market,
+                )
+              : `${singleMarket.itemCount}/${totalItems} kalem`}
         </div>
       </div>
       <span className="shrink-0 text-xl font-bold tabular-nums">
@@ -104,12 +104,10 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
   ) : null
 
   return (
-    <div
-      className={
-        "overflow-hidden rounded-xl border bg-card " +
-        (singleIsFull ? "" : "border-amber-500/40")
-      }
-    >
+    <div className="overflow-hidden rounded-xl border bg-card">
+      <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
+        <span className="text-sm font-medium">Sepet Özeti</span>
+      </div>
       <div className="divide-y">
         {comboFirst ? (
           <>

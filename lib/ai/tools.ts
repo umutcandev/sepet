@@ -2,20 +2,20 @@ import { generateObject } from "ai"
 import {
   BasketDraftSchema,
   ChatTitleSchema,
+  ImageAnalysisSchema,
   MatchSelectionSchema,
-  ReceiptOCRSchema,
   type BasketDraft,
+  type ImageAnalysis,
   type MatchResult,
   type MatchSelection,
   type ParsedItem,
-  type ReceiptOCR,
 } from "./schemas"
 import { geminiFlash, geminiFlashLite } from "./models"
 import {
   CHAT_TITLE_PROMPT,
+  IMAGE_ANALYSIS_PROMPT,
   MATCH_PROMPT,
   PARSE_PROMPT,
-  RECEIPT_OCR_PROMPT,
   type MatchPromptItem,
 } from "./prompts"
 import { stripQuantityTokens } from "./normalize"
@@ -64,23 +64,23 @@ async function findFirstHit(
   return lastError ?? { kind: "no_match" }
 }
 
-export type ReceiptOCRWithReasoning = {
-  ocr: ReceiptOCR
+export type ImageAnalysisWithReasoning = {
+  analysis: ImageAnalysis
   reasoning: string | null
 }
 
-export async function parseReceiptImage(
+export async function analyzeImage(
   imageUrl: string,
-): Promise<ReceiptOCRWithReasoning> {
+): Promise<ImageAnalysisWithReasoning> {
   const { object, reasoning } = await generateObject({
     model: geminiFlash,
-    schema: ReceiptOCRSchema,
+    schema: ImageAnalysisSchema,
     temperature: 0.1,
     messages: [
       {
         role: "user",
         content: [
-          { type: "text", text: RECEIPT_OCR_PROMPT },
+          { type: "text", text: IMAGE_ANALYSIS_PROMPT },
           { type: "image", image: new URL(imageUrl) },
         ],
       },
@@ -95,16 +95,17 @@ export async function parseReceiptImage(
     },
   })
   console.log(
-    "[parseReceiptImage] market=",
-    object.marketName,
-    "items=",
-    object.items.length,
-    "total=",
-    object.totalAmount,
+    "[analyzeImage] kind=",
+    object.kind,
+    object.kind === "receipt"
+      ? `market=${object.receipt?.marketName} items=${object.receipt?.items.length} total=${object.receipt?.totalAmount}`
+      : object.kind === "food"
+        ? `dish=${object.food?.dishName} items=${object.food?.items.length}`
+        : `reason=${object.unknownReason}`,
     "reasoning=",
     reasoning ? `${reasoning.length} chars` : "none",
   )
-  return { ocr: object, reasoning: reasoning ?? null }
+  return { analysis: object, reasoning: reasoning ?? null }
 }
 
 export async function generateChatTitle(userText: string): Promise<string> {

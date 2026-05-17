@@ -3,7 +3,9 @@
 import * as React from "react"
 import {
   CheckIcon,
+  ChevronDownIcon,
   DownloadIcon,
+  ExternalLinkIcon,
   InfoIcon,
   Loader2Icon,
   SaveIcon,
@@ -53,6 +55,26 @@ export function ReceiptComparisonCard({
   const [saving, setSaving] = React.useState(false)
 
   const { comparison, receiptContext, summary, matches } = data
+  const [expanded, setExpanded] = React.useState<Set<number>>(new Set())
+
+  // barcode → tüm market fiyatları (best dahil). Satır genişletildiğinde
+  // best dışındakileri sırayla göstereceğiz.
+  const marketPricesByBarcode = React.useMemo(() => {
+    const map = new Map<string, MatchResult["marketPrices"]>()
+    for (const m of matches) {
+      if (m.bestMatch) map.set(m.bestMatch.barcode, m.marketPrices)
+    }
+    return map
+  }, [matches])
+
+  function toggleRow(idx: number) {
+    setExpanded((prev) => {
+      const next = new Set(prev)
+      if (next.has(idx)) next.delete(idx)
+      else next.add(idx)
+      return next
+    })
+  }
 
   const linkItems = comparison.items.filter((it) => !!it.bestUrl)
 
@@ -83,14 +105,6 @@ export function ReceiptComparisonCard({
 
   const canSave = !!receiptContext.imageR2Key
   const isStale = !!comparison.staleness?.isStale
-  const staleLabel = (() => {
-    const s = comparison.staleness
-    if (!s?.isStale) return null
-    if (s.reason === "date" && s.ageLabel) {
-      return `${s.ageLabel} öncesi • bilgi amaçlı`
-    }
-    return "Farklı dönem • bilgi amaçlı"
-  })()
 
   async function handleSave() {
     if (!canSave || saving || savedId) return
@@ -122,9 +136,10 @@ export function ReceiptComparisonCard({
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Fiş Karşılaştırması</span>
         {isStale ? (
-          <Badge variant="outline" className="ml-auto text-muted-foreground">
-            {staleLabel}
-          </Badge>
+          <span className="ml-auto inline-flex items-center gap-1 text-xs text-muted-foreground">
+            <InfoIcon className="size-3.5" />
+            Fişiniz Eski
+          </span>
         ) : (
           comparison.totalSavingsTL > 0 && (
             <Badge
@@ -151,65 +166,150 @@ export function ReceiptComparisonCard({
           <TableBody>
             {comparison.items.map((it, idx) => {
               const hasSavings = (it.savingsTL ?? 0) > 0
+              const allPrices = it.matchedBarcode
+                ? marketPricesByBarcode.get(it.matchedBarcode) ?? []
+                : []
+              // best market dışındaki entry'ler. bestMarket eşleşmiyorsa
+              // (sentetik fallback durumu) tüm liste gösterilir.
+              const otherPrices = it.bestMarket
+                ? allPrices.filter((mp) => mp.market !== it.bestMarket)
+                : allPrices
+              const canExpand = otherPrices.length > 0
+              const isOpen = expanded.has(idx)
               return (
-                <TableRow key={idx}>
-                  <TableCell className="align-top">
-                    <div className="text-sm font-medium">{it.rawName}</div>
-                    {it.matchedName && it.matchedName !== it.rawName && (
-                      <div className="text-[11px] text-muted-foreground">
-                        ↪ {it.matchedName}
-                      </div>
-                    )}
-                    {it.sizeMismatch && (
-                      <div className="mt-0.5 flex items-center gap-1 text-[11px] text-amber-600 dark:text-amber-400">
-                        <InfoIcon className="size-3" />
-                        Farklı boyut — fiyat kıyaslanamaz
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right tabular-nums">
-                    {formatTL(it.receiptTotalPrice)}
-                  </TableCell>
-                  <TableCell>
-                    {it.bestMarket ? (
-                      <div className="flex items-center gap-2">
-                        <MarketLogo name={it.bestMarket} size="sm" />
-                        {it.bestUrl ? (
-                          <a
-                            href={it.bestUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-medium text-primary underline"
+                <React.Fragment key={idx}>
+                  <TableRow>
+                    <TableCell className="align-top">
+                      <div className="flex items-start gap-2">
+                        {canExpand && (
+                          <Button
+                            type="button"
+                            size="icon-xs"
+                            variant="ghost"
+                            onClick={() => toggleRow(idx)}
+                            aria-expanded={isOpen}
+                            aria-label={
+                              isOpen
+                                ? "Diğer market fiyatlarını gizle"
+                                : "Diğer market fiyatlarını göster"
+                            }
+                            className="-ml-1 mt-0.5 text-muted-foreground hover:text-foreground"
                           >
-                            {it.bestMarket}
-                          </a>
-                        ) : (
-                          <span className="text-sm">{it.bestMarket}</span>
+                            <ChevronDownIcon
+                              className={`transition-transform ${
+                                isOpen ? "rotate-180" : ""
+                              }`}
+                            />
+                          </Button>
                         )}
+                        <div className="min-w-0 flex-1">
+                          <div className="text-sm font-medium">{it.rawName}</div>
+                          {it.matchedName && it.matchedName !== it.rawName && (
+                            <div className="text-[11px] text-muted-foreground">
+                              ↪ {it.matchedName}
+                            </div>
+                          )}
+                          {it.sizeMismatch && (
+                            <div className="mt-0.5 flex items-center gap-1 text-[11px] text-amber-600 dark:text-amber-400">
+                              <InfoIcon className="size-3" />
+                              Farklı boyut. Karşılaştırma tam olarak doğru olmayabilir.
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">
-                        eşleşme yok
-                      </span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right tabular-nums">
-                    {formatTL(it.bestPrice)}
-                  </TableCell>
-                  <TableCell className="text-right tabular-nums">
-                    {it.savingsTL == null ? (
-                      <span className="text-xs text-muted-foreground">—</span>
-                    ) : hasSavings && !isStale ? (
-                      <span className="font-medium text-emerald-700 dark:text-emerald-300">
-                        −{formatTL(it.savingsTL)}
-                      </span>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">
-                        +/− 0
-                      </span>
-                    )}
-                  </TableCell>
-                </TableRow>
+                    </TableCell>
+                    <TableCell className="text-right tabular-nums">
+                      {formatTL(it.receiptTotalPrice)}
+                    </TableCell>
+                    <TableCell>
+                      {it.bestMarket ? (
+                        <div className="flex items-center gap-2">
+                          <MarketLogo name={it.bestMarket} size="sm" />
+                          {it.bestUrl ? (
+                            <a
+                              href={it.bestUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm font-medium text-primary underline"
+                            >
+                              {it.bestMarket}
+                            </a>
+                          ) : (
+                            <span className="text-sm">{it.bestMarket}</span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">
+                          eşleşme yok
+                        </span>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right tabular-nums">
+                      {formatTL(it.bestPrice)}
+                    </TableCell>
+                    <TableCell className="text-right tabular-nums">
+                      {it.savingsTL == null ? (
+                        <span className="text-xs text-muted-foreground">—</span>
+                      ) : hasSavings && !isStale ? (
+                        <span className="font-medium text-emerald-700 dark:text-emerald-300">
+                          −{formatTL(it.savingsTL)}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">
+                          +/− 0
+                        </span>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                  {canExpand && isOpen && (
+                    <TableRow className="bg-muted/20 hover:bg-muted/20">
+                      <TableCell colSpan={5} className="p-0">
+                        <div className="px-4 py-2">
+                          <div className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                            Diğer Marketlerdeki Fiyatlar
+                          </div>
+                          <ul className="grid divide-y rounded-md border bg-background">
+                            {otherPrices.map((mp, i) => (
+                              <li
+                                key={`${mp.market}-${i}`}
+                                className="flex items-center justify-between gap-2 px-3 py-2 text-sm"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <MarketLogo name={mp.market} size="sm" />
+                                  <span className="text-muted-foreground">
+                                    {mp.market}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-medium tabular-nums">
+                                    {formatTL(mp.price)}
+                                  </span>
+                                  {mp.sourceUrl && (
+                                    <Button
+                                      asChild
+                                      size="icon-xs"
+                                      variant="ghost"
+                                      className="text-muted-foreground/70 hover:text-foreground"
+                                    >
+                                      <a
+                                        href={mp.sourceUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={`${mp.market} sayfasını aç`}
+                                      >
+                                        <ExternalLinkIcon />
+                                      </a>
+                                    </Button>
+                                  )}
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
               )
             })}
           </TableBody>
@@ -265,7 +365,7 @@ export function ReceiptComparisonCard({
               ) : (
                 <SaveIcon className="mr-1 size-3.5" />
               )}
-              Fiş Geçmişine Kaydet
+              Fişi Kaydet
             </Button>
           )}
         </div>

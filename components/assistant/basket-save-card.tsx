@@ -87,11 +87,11 @@ export function BasketSaveCard({
         />
         {savedId ? (
           <div className="flex items-center gap-2">
-            <Button type="button" size="sm" variant="secondary" disabled>
+            <Button type="button" variant="secondary" disabled>
               <CheckIcon className="mr-1 size-3.5" />
               Kaydedildi
             </Button>
-            <Button type="button" size="sm" variant="outline" asChild>
+            <Button type="button" variant="outline" asChild>
               <Link href={`/sepetlerim/${savedId}`}>
                 <ExternalLinkIcon className="mr-1 size-3.5" />
                 Görüntüle
@@ -99,7 +99,7 @@ export function BasketSaveCard({
             </Button>
           </div>
         ) : (
-          <Button type="button" size="lg" onClick={handleSave} disabled={saving}>
+          <Button type="button" onClick={handleSave} disabled={saving}>
             {saving ? (
               <Loader2Icon className="mr-1 size-3.5 animate-spin" />
             ) : (

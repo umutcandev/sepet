@@ -27,17 +27,18 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
   })
 
   return (
-    <div className="grid gap-2">
+    <div className="overflow-hidden rounded-xl border bg-card">
+      <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
+        <span className="text-sm font-medium">Eşleşen Ürünler</span>
+      </div>
+      <div className="divide-y">
       {matches.map((m, i) => {
         const cheapest = m.marketPrices[0]
         const otherPrices = m.marketPrices.slice(1)
         const hasMore = otherPrices.length > 0
 
         return (
-          <div
-            key={`${m.searchQuery}-${i}`}
-            className="overflow-hidden rounded-xl border bg-card"
-          >
+          <div key={`${m.searchQuery}-${i}`} className="overflow-hidden">
             <div className="flex items-center gap-3 p-3">
               <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted">
                 {m.bestMatch?.imageUrl ? (
@@ -69,7 +70,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                       {m.sizeMismatch && (
                         <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
                           <AlertCircleIcon className="size-3" />
-                          farklı boyut
+                          Farklı Boyut
                         </span>
                       )}
                     </div>
@@ -175,6 +176,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
           </div>
         )
       })}
+      </div>
     </div>
   )
 }

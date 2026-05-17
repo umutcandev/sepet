@@ -55,6 +55,7 @@ type SingleMarketCandidate = {
   total: number
   itemCount: number
   missingItemCount: number
+  missingItemNames: string[]
 }
 
 function bestSingleMarket(items: ItemMarketPrice[]): {
@@ -62,6 +63,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
   total: number
   itemCount: number
   missingItemCount: number
+  missingItemNames: string[]
   isFullCoverage: boolean
 } {
   const markets = collectMarketUniverse(items)
@@ -71,11 +73,11 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
   for (const market of markets) {
     let total = 0
     let count = 0
-    let missing = 0
+    const missingNames: string[] = []
     for (const item of items) {
       const price = item.marketPrices.get(market)
       if (price === undefined) {
-        missing++
+        missingNames.push(item.rawName)
         continue
       }
       total += price * item.packCount
@@ -87,9 +89,10 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
       market,
       total,
       itemCount: count,
-      missingItemCount: missing,
+      missingItemCount: missingNames.length,
+      missingItemNames: missingNames,
     }
-    if (missing === 0) {
+    if (missingNames.length === 0) {
       if (!bestFull || total < bestFull.total) bestFull = candidate
     } else {
       if (!bestPartial || total < bestPartial.total) bestPartial = candidate
@@ -103,6 +106,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
     total: 0,
     itemCount: 0,
     missingItemCount: items.length,
+    missingItemNames: items.map((i) => i.rawName),
     isFullCoverage: false,
   }
 }
@@ -188,6 +192,7 @@ export function computeOptimization(matches: MatchResult[]): OptimizationSummary
         total: 0,
         itemCount: 0,
         missingItemCount: matches.length,
+        missingItemNames: matches.map((m) => m.rawName),
         isFullCoverage: false,
       },
       twoMarketCombo: {

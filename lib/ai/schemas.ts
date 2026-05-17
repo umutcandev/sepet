@@ -42,6 +42,7 @@ export const SingleMarketResultSchema = z.object({
   total: z.number(),
   itemCount: z.number(),
   missingItemCount: z.number(),
+  missingItemNames: z.array(z.string()).default([]),
   isFullCoverage: z.boolean(),
 })
 
@@ -157,6 +158,35 @@ export const ReceiptOCRSchema = z.object({
   items: z.array(ReceiptOCRItemSchema),
 })
 
+export const FoodIngredientsSchema = z.object({
+  dishName: z
+    .string()
+    .describe(
+      "Görselde tespit edilen yemeğin/içeceğin Türkçe adı. Ör. 'döner', 'menemen', 'sade sucuklu pizza', 'mercimek çorbası'.",
+    ),
+  items: z.array(ParsedItemSchema),
+})
+
+export const ImageAnalysisSchema = z.object({
+  kind: z
+    .enum(["receipt", "food", "unknown"])
+    .describe(
+      "Görsel türü. 'receipt' = market fişi/fatura. 'food' = bir yemek veya içecek fotoğrafı (hazır tabak, sandviç, içecek vb.). 'unknown' = ne fiş ne de tanınabilir bir yemek (bulanık, alakasız obje, manzara, anlaşılmaz vs.).",
+    ),
+  receipt: ReceiptOCRSchema.nullable().describe(
+    "kind='receipt' ise fiş OCR sonucu, aksi halde null.",
+  ),
+  food: FoodIngredientsSchema.nullable().describe(
+    "kind='food' ise tespit edilen yemek ve onun temel ham malzemeleri, aksi halde null.",
+  ),
+  unknownReason: z
+    .string()
+    .nullable()
+    .describe(
+      "kind='unknown' ise neden tanınmadığına dair 1 kısa Türkçe cümle (ör. 'fotoğraf bulanık', 'görselde bir yemek değil bir kedi var'). Aksi halde null.",
+    ),
+})
+
 export const ReceiptComparisonItemSchema = z.object({
   rawName: z.string(),
   receiptUnitPrice: z.number().nullable(),
@@ -190,6 +220,8 @@ export type ReceiptOCR = z.infer<typeof ReceiptOCRSchema>
 export type ReceiptOCRItem = z.infer<typeof ReceiptOCRItemSchema>
 export type ReceiptComparison = z.infer<typeof ReceiptComparisonSchema>
 export type ReceiptComparisonItem = z.infer<typeof ReceiptComparisonItemSchema>
+export type ImageAnalysis = z.infer<typeof ImageAnalysisSchema>
+export type FoodIngredients = z.infer<typeof FoodIngredientsSchema>
 
 // ─── Sohbet başlığı (AI üretimi) ───
 

@@ -12,17 +12,17 @@ import { auth } from "@/auth"
 import {
   generateChatTitle,
   parseShoppingList,
-  parseReceiptImage,
+  analyzeImage,
   lookupProducts,
 } from "@/lib/ai/tools"
 import { computeOptimization } from "@/lib/ai/optimize"
 import { STALE_DAY_THRESHOLD } from "@/lib/receipt-staleness"
 import type {
   BasketDraft,
+  ImageAnalysis,
   MatchResult,
   OptimizationSummary,
   ParsedItem,
-  ReceiptOCR,
   ReceiptComparison,
 } from "@/lib/ai/schemas"
 import {
@@ -201,10 +201,21 @@ function buildReceiptComparisonText(comp: ReceiptComparison): string {
     return "Fişindeki kalemleri çıkardım ama eşleşen ürün bulamadım."
   }
   if (comp.staleness?.isStale) {
+    const diff = comp.totalSavingsTL
+    const figuresPart = (() => {
+      const head = `Yine de bilgi amaçlı: fişinde ${formatTL(comp.totalReceiptAmount)} TL harcamışsın, aynı sepet bugünün en iyi fiyatlarıyla ${formatTL(comp.totalBestAmount)} TL'ye geliyor`
+      if (diff > 0) {
+        return `${head} — bugüne kıyasla yaklaşık ${formatTL(diff)} TL tasarruf mümkün olurdu.`
+      }
+      if (diff < 0) {
+        return `${head} — bugüne kıyasla yaklaşık ${formatTL(Math.abs(diff))} TL daha fazla ödemiş olurdun.`
+      }
+      return `${head} — iki tutar neredeyse aynı.`
+    })()
     if (comp.staleness.reason === "date" && comp.staleness.ageLabel) {
-      return `Bu fiş ${comp.staleness.ageLabel} öncesine ait — o dönemin fiyatları bugünkü piyasayla karşılaştırılamaz. Aşağıdaki rakamlar yalnızca bugünün fiyatlarını gösterir, tasarruf hesabı anlamlı değil.`
+      return `Bu fiş ${comp.staleness.ageLabel} öncesine ait — o dönemin fiyatları bugünkü piyasayla birebir karşılaştırılamaz, bu yüzden tasarruf hesabı tam olarak anlamlı değil. ${figuresPart}`
     }
-    return `Fişindeki tutar bugünkü fiyatlarla kıyaslanamayacak kadar düşük görünüyor — büyük olasılıkla farklı bir döneme ait. Aşağıdaki en iyi fiyatlar yalnızca güncel piyasa için geçerli; tasarruf hesabı yapmıyoruz.`
+    return `Fişindeki tutar bugünkü fiyatlarla kıyaslanamayacak kadar düşük görünüyor — büyük olasılıkla farklı bir döneme ait, tasarruf hesabı birebir anlamlı değil. ${figuresPart}`
   }
   if (comp.totalSavingsTL <= 0) {
     return `Fişindeki ${formatTL(comp.totalReceiptAmount)} TL'lik harcamana karşılık bulduğumuz en iyi fiyatlar zaten yakın — ek bir kazanç çıkmadı.`
@@ -422,17 +433,58 @@ export async function POST(req: Request) {
       // hazır olduğunda hem DB'ye yaz hem client'a transient event olarak emit
       // et. Hata olursa sohbet yine çalışsın — başlık silently fallback'e düşer
       // (createConversation'ın yazdığı extract title DB'de zaten var).
-      const titlePromise = createdNewConversation
-        ? resolveAndEmitTitle({
-            mode,
-            writer,
-            conversationId: newConversationId,
-            userId,
-          })
-        : Promise.resolve()
+      //
+      // Görsel modunda başlık vision sonucuna bağlı (receipt → "Fiş analizi",
+      // food → "<dishName> malzemeleri", unknown → "Görsel analizi"). Bu yüzden
+      // text modunda paralel üretilir; görsel modunda runAssistantTurn vision
+      // bittikten sonra `onImageKind` ile başlığı bildirir.
+      let titlePromise: Promise<void> = Promise.resolve()
+      const emitTitleIfNew = async (title: string) => {
+        if (!createdNewConversation) return
+        try {
+          await setConversationTitle(newConversationId, userId, title)
+        } catch (err) {
+          console.error("[assistant/chat] title persist failed", err)
+        }
+        writer.write({
+          type: "data-conversation-title",
+          data: { id: newConversationId, title },
+          transient: true,
+        } as Parameters<typeof writer.write>[0])
+      }
+
+      if (createdNewConversation && mode.kind === "text") {
+        titlePromise = (async () => {
+          try {
+            const title = await generateChatTitle(mode.text)
+            await emitTitleIfNew(title)
+          } catch (err) {
+            console.error("[assistant/chat] title generation failed", err)
+          }
+        })()
+      }
+
+      const handleImageKind = createdNewConversation
+        ? async (
+            kind: ImageAnalysis["kind"],
+            analysis?: ImageAnalysis,
+          ) => {
+            const title =
+              kind === "receipt"
+                ? "Fiş analizi"
+                : kind === "food" && analysis?.food?.dishName
+                  ? `${analysis.food.dishName} malzemeleri`
+                  : "Görsel analizi"
+            await emitTitleIfNew(title)
+          }
+        : undefined
 
       await Promise.all([
-        runAssistantTurn({ writer: wrappedWriter, mode }),
+        runAssistantTurn({
+          writer: wrappedWriter,
+          mode,
+          onImageKind: handleImageKind,
+        }),
         titlePromise,
       ])
 
@@ -604,34 +656,40 @@ function wrapWriter(
 async function runAssistantTurn({
   writer,
   mode,
+  onImageKind,
 }: {
   writer: WriterLike
   mode: Exclude<LastUserMode, { kind: "empty" }>
+  onImageKind?: (
+    kind: ImageAnalysis["kind"],
+    analysis?: ImageAnalysis,
+  ) => Promise<void> | void
 }) {
   if (mode.kind === "receiptImage") {
-    const parseCallId = nanoid()
+    const analyzeCallId = nanoid()
     writer.write({
       type: "tool-input-available",
-      toolCallId: parseCallId,
-      toolName: "parseReceipt",
+      toolCallId: analyzeCallId,
+      toolName: "analyzeImage",
       input: { imageUrl: mode.imageUrl },
     } as AnyChunk)
 
-    let ocr: ReceiptOCR
+    let analysis: ImageAnalysis
     let parseReasoning: string | null = null
     try {
-      const result = await parseReceiptImage(mode.imageUrl)
-      ocr = result.ocr
+      const result = await analyzeImage(mode.imageUrl)
+      analysis = result.analysis
       parseReasoning = result.reasoning
     } catch (err) {
-      console.error("[assistant/chat] receipt OCR failed", err)
+      console.error("[assistant/chat] image analysis failed", err)
       writer.write({
         type: "tool-output-error",
-        toolCallId: parseCallId,
+        toolCallId: analyzeCallId,
         errorText: isModelOverloaded(err)
           ? MODEL_BUSY_TEXT
-          : "Fişi okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
+          : "Görseli okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
       } as AnyChunk)
+      if (onImageKind) await onImageKind("unknown")
       return
     }
 
@@ -641,19 +699,49 @@ async function runAssistantTurn({
 
     writer.write({
       type: "tool-output-available",
-      toolCallId: parseCallId,
+      toolCallId: analyzeCallId,
       output: {
-        ocr,
+        analysis,
         receiptImageUrl: mode.imageUrl,
         receiptImageR2Key: mode.imageR2Key ?? null,
       },
     } as AnyChunk)
 
+    if (onImageKind) await onImageKind(analysis.kind, analysis)
+
+    if (analysis.kind === "receipt") {
+      const ocr = analysis.receipt
+      await emitText(
+        writer,
+        !ocr || ocr.items.length === 0
+          ? "Fişten ürün çıkartamadım. Lütfen tüm satırların net göründüğü bir kare çek."
+          : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et ve düzeltmelerini yap — ardından karşılaştırma için onayla.",
+      )
+      return
+    }
+
+    if (analysis.kind === "food") {
+      const food = analysis.food
+      if (!food || food.items.length === 0) {
+        await emitText(
+          writer,
+          "Görseldeki yemeği tanıdım ama malzemelerini çıkaramadım. Yemeğin adını yazar mısın? Sana malzeme listesini hazırlayayım.",
+        )
+        return
+      }
+      await emitText(
+        writer,
+        `Görseldeki yemeği "${food.dishName}" olarak tanıdım. Evde yapman için temel malzemelerini çıkardım — kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.`,
+      )
+      return
+    }
+
+    // kind === "unknown"
+    const reason = analysis.unknownReason?.trim()
+    const reasonPart = reason ? ` (${reason})` : ""
     await emitText(
       writer,
-      ocr.items.length === 0
-        ? "Fişten ürün çıkartamadım. Lütfen tüm satırların net göründüğü bir kare çek."
-        : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et ve düzeltmelerini yap — ardından karşılaştırma için onayla.",
+      `Bu görseldeki yemeği tanıyamadım${reasonPart}. Bana yemeğin adını yazar mısın? Onun malzemelerini çıkarıp en ucuz marketleri bulayım.`,
     )
     return
   }
@@ -840,45 +928,8 @@ async function runAssistantTurn({
 
   await emitText(
     writer,
-    `${basket.items.length} kalem çıkardım. Kontrol edip düzeltmelerini yap — ardından karşılaştırma için onayla.`,
+    `${basket.items.length} kalem çıkardım. Kontrol edip düzeltmelerini yap, ardından karşılaştırma için onayla.`,
   )
-}
-
-async function resolveAndEmitTitle(opts: {
-  mode: Exclude<LastUserMode, { kind: "empty" }>
-  writer: UIMessageStreamWriter
-  conversationId: string
-  userId: string
-}): Promise<void> {
-  const { mode, writer, conversationId, userId } = opts
-
-  let title: string | null = null
-
-  if (mode.kind === "text") {
-    try {
-      title = await generateChatTitle(mode.text)
-    } catch (err) {
-      console.error("[assistant/chat] title generation failed", err)
-    }
-  } else if (mode.kind === "receiptImage") {
-    title = "Fiş analizi"
-  }
-  // receiptApproval / basketApproval modları mevcut bir sohbeti devam ettirir;
-  // bu yola hiç gelinmez (yalnızca createdNewConversation === true iken çağrılır).
-
-  if (!title) return
-
-  try {
-    await setConversationTitle(conversationId, userId, title)
-  } catch (err) {
-    console.error("[assistant/chat] title persist failed", err)
-  }
-
-  writer.write({
-    type: "data-conversation-title",
-    data: { id: conversationId, title },
-    transient: true,
-  } as Parameters<typeof writer.write>[0])
 }
 
 async function emitText(writer: WriterLike, text: string) {

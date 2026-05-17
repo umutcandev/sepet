@@ -20,15 +20,15 @@ import { AssistantPrompt } from "@/components/assistant/assistant-prompt"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 
 const CHIPS = [
-  "Sucuklu pizza için malzemeler",
-  "Menemen için malzemeler",
-  "Market fişimi analiz et",
+  "Kremalı makarna için malzemeler",
+  "Limonata için malzemeler",
+  "Fiş veya yemek fotoğrafımı analiz et",
 ]
 
 const ROTATING_HEADINGS = [
   "Alışveriş listeni oluşturalım mı?",
   "Bugün ne pişirelim?",
-  "Market fişini analiz edelim mi?",
+  "Fişini veya yemek fotoğrafını analiz edelim mi?",
   "Tarifin için malzemeleri çıkaralım mı?",
   "Bütçeni birlikte planlayalım mı?",
 ]
@@ -82,7 +82,7 @@ export default function HomePage() {
         )
         // If no text was given, set a default seed
         if (!text) {
-          window.sessionStorage.setItem(ASSISTANT_SEED_KEY, "Fişimi analiz et")
+          window.sessionStorage.setItem(ASSISTANT_SEED_KEY, "Bu görseli analiz et")
         }
       }
     }
@@ -92,7 +92,7 @@ export default function HomePage() {
   })
 
   const handleChip = guard((chip: string) => {
-    setInput((current) => (current.trim() ? current : chip))
+    setInput(chip)
   })
 
   return (

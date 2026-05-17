@@ -47,7 +47,7 @@ export function HeaderUserMenu({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="min-w-56 rounded-lg"
+        className="min-w-56 rounded-lg border bg-popover"
         align="end"
         sideOffset={8}
       >

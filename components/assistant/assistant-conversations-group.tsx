@@ -26,6 +26,7 @@ import {
   ConversationRenameDialog,
 } from "@/components/assistant/conversation-action-dialogs"
 import { assistantConversations } from "@/lib/stores/assistant-conversations"
+import { Skeleton } from "@/components/ui/skeleton"
 
 function ConversationIcon({ className }: { className?: string }) {
   return (
@@ -56,6 +57,7 @@ export type ConversationListItem = {
   id: string
   title: string
   updatedAt: Date | string
+  pending?: boolean
 }
 
 type Props = {
@@ -124,14 +126,18 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                   <SidebarMenuButton
                     asChild
                     isActive={isActive}
-                    tooltip={c.title}
+                    tooltip={c.pending ? undefined : c.title}
                   >
                     <Link
                       href={`/asistan/${c.id}`}
                       onClick={handleNavClick}
                     >
                       <ConversationIcon />
-                      <span className="truncate">{c.title}</span>
+                      {c.pending ? (
+                        <Skeleton className="h-4 w-32" />
+                      ) : (
+                        <span className="truncate">{c.title}</span>
+                      )}
                     </Link>
                   </SidebarMenuButton>
                   <DropdownMenu>
