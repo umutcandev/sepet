@@ -125,7 +125,7 @@ export function VoiceConfirmButton({
       ) : (
         <CheckIcon className="size-3" />
       )}
-      <span>Okey</span>
+      <span>İlet</span>
       {elapsedLabel && !loading && (
         <span className="ml-0.5 tabular-nums opacity-70">{elapsedLabel}</span>
       )}

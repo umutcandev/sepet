@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import { XIcon } from "lucide-react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
@@ -61,7 +60,7 @@ function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
         <DialogPrimitive.Content
           aria-describedby={undefined}
           className={cn(
-            "fixed top-1/2 left-1/2 z-50 flex h-auto max-h-[min(720px,calc(100dvh-2rem))] w-[min(100%-2rem,860px)]",
+            "fixed top-1/2 left-1/2 z-50 flex h-auto max-h-[min(720px,calc(100dvh-2rem))] w-[min(100%-2rem,420px)]",
             "-translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-background ring-1 ring-foreground/10 outline-none",
             "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
             "data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
@@ -72,18 +71,7 @@ function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
             Giriş Yap
           </DialogPrimitive.Title>
 
-          <div className="relative flex-1">
-            <Image
-              src="/login-image.webp"
-              alt=""
-              fill
-              priority
-              sizes="(min-width: 768px) 50vw, 0"
-              className="object-cover"
-            />
-          </div>
-
-          <div className="relative flex w-[420px] shrink-0 justify-center">
+          <div className="relative flex w-full justify-center">
             <LoginForm callbackUrl={callbackUrl} />
           </div>
 

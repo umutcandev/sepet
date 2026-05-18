@@ -352,7 +352,7 @@ export function VoiceInputMobile({
     return (
       <div className={cn(voiceContainerClass, className)}>
         <div className="w-24 text-xs text-muted-foreground sm:w-32 px-1">
-          Mikrofon hazırlanıyor…
+          Hazırlanıyor…
         </div>
         <VoiceStopButton
           onClick={cancelRequesting}

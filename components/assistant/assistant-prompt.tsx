@@ -51,9 +51,9 @@ export function AssistantPrompt({
       maxFiles={1}
       onSubmit={(message) => onSubmit(message)}
       className={cn(
-        "rounded-xl border-ring/70 bg-muted shadow-sm",
+        "rounded-xl border-ring/70 bg-muted shadow-sm dark:bg-muted",
         "has-[[data-slot=input-group-control]:focus-visible]:border-ring/70 has-[[data-slot=input-group-control]:focus-visible]:ring-0",
-        "has-disabled:bg-muted has-disabled:opacity-100",
+        "has-disabled:bg-muted has-disabled:opacity-100 dark:has-disabled:bg-muted",
         className,
       )}
     >

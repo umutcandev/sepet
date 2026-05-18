@@ -57,7 +57,7 @@ const FILE_KEY = "assistant:file"
 
 const SUGGESTIONS = [
   "Fiş veya yemek fotoğrafımı analiz et",
-  "Kremalı makarna için malzemeler",
+  "Sucuklu yumurta için malzemeler",
   "Limonata için malzemeler",
 ]
 

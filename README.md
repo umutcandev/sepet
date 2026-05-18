@@ -1,8 +1,8 @@
 <div align="center">
-<h2>Sepet - Yapay Zekâ Destekli Akıllı Alışveriş Asistanı</h2>
-<img src="./public/github-banner.png" alt="Sepet — Yapay Zekâ Destekli Akıllı Alışveriş Asistanı" />
+<img src="./public/github-banner.png" alt="Sepet — Yapay Zekâ Destekli Akıllı Alışveriş Asistanı" width="100" height="100" />
+<h2>Sepet</h2>
 
-[Canlı Demo](https://www.trysepet.com) · [GitHub](https://github.com/umutcandev/sepet) · [Sorun Bildir](https://github.com/umutcandev/sepet/issues)
+[Canlı (trysepet.com)](https://www.trysepet.com) · [GitHub](https://github.com/umutcandev/sepet) · [Sorun Bildir](https://github.com/umutcandev/sepet/issues)
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)

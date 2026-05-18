@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react"
 
 import {
@@ -25,7 +24,8 @@ import {
   ConversationDeleteDialog,
   ConversationRenameDialog,
 } from "@/components/assistant/conversation-action-dialogs"
-import { assistantConversations } from "@/lib/stores/assistant-conversations"
+import { useAssistantConversations } from "@/lib/stores/assistant-conversations"
+import { useAssistantTitle } from "@/lib/stores/assistant-title"
 import { Skeleton } from "@/components/ui/skeleton"
 
 function ConversationIcon({ className }: { className?: string }) {
@@ -65,33 +65,22 @@ type Props = {
 }
 
 export function AssistantConversationsGroup({ conversations }: Props) {
-  const params = useParams<{ id?: string }>()
-  const activeId = typeof params?.id === "string" ? params.id : null
+  // Aktif id'yi router'dan değil assistant-title store'undan okuyoruz:
+  // AssistantChat yeni sohbet başlatınca URL'yi `window.history.replaceState`
+  // ile değiştiriyor (SSE stream'ini koparmamak için) → Next router bunu
+  // görmediğinden `useParams().id` undefined kalıyor. Store, conversationId'yi
+  // stream'in `data-conversation-id` event'inde ve sayfa cold-load'da
+  // güncelliyor; replaceState URL'leriyle de uyumlu.
+  const { conversationId } = useAssistantTitle()
+  const activeId = conversationId
   const { isMobile, setOpenMobile } = useSidebar()
 
-  // Sidebar listesini lokal state'te tutuyoruz: navigasyonda parent yeni
-  // server data ile bizi re-render eder (prop sync); stream/dialog
-  // mutasyonları ise store üzerinden inject edilir. router.refresh() yok —
-  // o, /asistan ↔ /asistan/[id] segment swap'ı yüzünden AssistantChat'i
-  // remount edip StickToBottom'ın "yukarıdan aşağı" smooth scroll'unu
-  // tetikliyordu.
-  // Render-phase sync: parent prop'u değişirse (sayfa değişimi / cold load)
-  // lokal state'i yenile. React'in resmi pattern'ı; useEffect'siz sync için
-  // tek render fazlası harcar — bkz. react.dev "storing information from
-  // previous renders".
-  const [list, setList] = React.useState<ConversationListItem[]>(conversations)
-  const [lastProp, setLastProp] = React.useState(conversations)
-  if (lastProp !== conversations) {
-    setLastProp(conversations)
-    setList(conversations)
-  }
-
-  // Mid-stream / dialog mutasyonlarını uygula.
-  React.useEffect(() => {
-    return assistantConversations.subscribe((mutator) => {
-      setList((current) => mutator(current))
-    })
-  }, [])
+  // Stateful store. Mobilde sidebar `Sheet` içinde, kapalıyken DOM'dan
+  // unmount oluyor → subscribe da unmount oluyor. Mutasyonları store kendisi
+  // tutuyor (listener yokken state hâlâ güncelleniyor), sidebar tekrar
+  // açıldığında snapshot olduğu gibi okunuyor. Hidrasyon AppShell
+  // useEffect'inde yapılıyor — bkz. app-shell.tsx.
+  const list = useAssistantConversations(conversations)
 
   const [renameTarget, setRenameTarget] = React.useState<ConversationListItem | null>(null)
   const [deleteTarget, setDeleteTarget] = React.useState<ConversationListItem | null>(null)

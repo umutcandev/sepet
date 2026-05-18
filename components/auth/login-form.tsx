@@ -3,6 +3,15 @@
 import { Check } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { signInWithGoogleAction } from "@/lib/actions/auth"
 
 const FEATURES = [
@@ -54,9 +63,190 @@ export function LoginForm({ callbackUrl }: Props) {
       </form>
 
       <p className="mt-3.5 text-center text-[11px] leading-[1.5] tracking-[-0.005em] text-muted-foreground/60">
-        Devam ederek <u>Şartlar</u> ve <u>Gizlilik</u>&apos;i kabul ediyorsun.
+        Devam ederek <TermsDialog /> ve <PrivacyDialog />&apos;i kabul ediyorsun.
       </p>
     </div>
+  )
+}
+
+function TermsDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="underline underline-offset-2 transition-colors hover:text-foreground"
+        >
+          Şartlar
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Kullanım Şartları</DialogTitle>
+          <DialogDescription>Son güncelleme: 18 Mayıs 2026</DialogDescription>
+        </DialogHeader>
+        <ScrollArea className="max-h-[60vh] pr-4">
+          <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">1. Hizmet Hakkında</h3>
+              <p>
+                Sepet, market ürünlerinin fiyatlarını karşılaştırmana ve yapay
+                zeka destekli alışveriş listeleri oluşturmana yardımcı olan bir
+                platformdur. Hizmeti kullanarak bu şartları kabul etmiş
+                olursun.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">2. Hesap</h3>
+              <p>
+                Sepet&apos;e Google hesabınla giriş yaparsın. Hesabının
+                güvenliği senin sorumluluğundadır. Hesabını başkasıyla
+                paylaşmamalısın.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">
+                3. Kabul Edilebilir Kullanım
+              </h3>
+              <p>
+                Hizmeti yasalara aykırı amaçlarla, sistemi kötüye kullanacak ya
+                da diğer kullanıcıları rahatsız edecek şekilde kullanamazsın.
+                Yapay zeka çıktılarının ticari kararlarda tek başına
+                kullanılmasını önermiyoruz.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">
+                4. Fiyat ve Ürün Bilgileri
+              </h3>
+              <p>
+                Gösterilen fiyatlar üçüncü taraf kaynaklardan derlenir ve
+                gerçek zamanlı olmayabilir. Sepet, fiyat doğruluğu için
+                garanti vermez; nihai fiyat ilgili satıcının kasasında
+                belirlenir.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">
+                5. Sorumluluk Reddi
+              </h3>
+              <p>
+                Hizmet &quot;olduğu gibi&quot; sunulur. Sepet, yazılımdaki
+                hatalar, kesintiler veya veri kayıplarından doğabilecek
+                doğrudan ya da dolaylı zararlardan sorumlu tutulamaz.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">
+                6. Değişiklikler
+              </h3>
+              <p>
+                Bu şartları zaman zaman güncelleyebiliriz. Önemli
+                değişiklikleri uygulama içinde bildiririz; güncellemeden sonra
+                hizmeti kullanmaya devam etmen yeni şartları kabul ettiğin
+                anlamına gelir.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">7. İletişim</h3>
+              <p>
+                Sorularını <span className="text-foreground">support@trysepet.com</span>{" "}
+                adresine iletebilirsin.
+              </p>
+            </section>
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function PrivacyDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="underline underline-offset-2 transition-colors hover:text-foreground"
+        >
+          Gizlilik
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Gizlilik Politikası</DialogTitle>
+          <DialogDescription>Son güncelleme: 18 Mayıs 2026</DialogDescription>
+        </DialogHeader>
+        <ScrollArea className="max-h-[60vh] pr-4">
+          <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">
+                1. Topladığımız Veriler
+              </h3>
+              <p>
+                Google ile giriş yaptığında adın, e-posta adresin ve profil
+                fotoğrafın bize aktarılır. Bunun dışında oluşturduğun
+                alışveriş listeleri, sohbet geçmişlerin ve yüklediğin fiş
+                fotoğrafları hizmet sağlamak için saklanır.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">
+                2. Verileri Nasıl Kullanırız
+              </h3>
+              <p>
+                Verilerini hesabını tanımlamak, kişisel öneriler sunmak,
+                yapay zeka asistanını çalıştırmak ve hizmet kalitesini
+                geliştirmek için kullanırız. Verilerini reklam amacıyla
+                üçüncü taraflara satmıyoruz.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">
+                3. Yapay Zeka İşleme
+              </h3>
+              <p>
+                Asistan mesajların ve fiş görüntülerin, yanıt üretmek için
+                yapay zeka sağlayıcılarımıza iletilir. Bu sağlayıcılar
+                verileri model eğitimi için kullanmaz.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">4. Çerezler</h3>
+              <p>
+                Oturumunu açık tutmak ve tercihlerini hatırlamak için zorunlu
+                çerezler kullanırız. İsteğe bağlı analiz çerezlerini
+                ayarlardan kapatabilirsin.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">5. Haklarınız</h3>
+              <p>
+                KVKK ve GDPR kapsamında verilerine erişme, düzeltme, silme ve
+                taşınabilirlik haklarına sahipsin. Talebini iletmek için
+                bizimle iletişime geçebilirsin.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">6. Saklama Süresi</h3>
+              <p>
+                Hesabını sildiğinde tüm kişisel verilerin 30 gün içinde kalıcı
+                olarak silinir; yasal yükümlülükler nedeniyle bazı kayıtlar
+                anonimleştirilerek saklanabilir.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-medium text-foreground">7. İletişim</h3>
+              <p>
+                Gizlilikle ilgili sorularını{" "}
+                <span className="text-foreground">privacy@trysepet.com</span>{" "}
+                adresine iletebilirsin.
+              </p>
+            </section>
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
   )
 }
 

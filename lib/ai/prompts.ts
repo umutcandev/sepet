@@ -113,22 +113,41 @@ ${rawText}
 """`
 
 export const IMAGE_ANALYSIS_PROMPT = `Sana bir kullanıcının yüklediği görsel verildi. Görsel ÜÇ farklı şeyden biri olabilir:
-(1) Bir Türk market fişi (alışveriş fişi/faturası)
+(1) Bir Türk MARKET / GIDA-MARKET fişi (zincir marketten süpermarket/bakkal alışverişi)
 (2) Bir yemek veya içecek fotoğrafı (hazır tabak, sandviç/döner/burger, bir bardak içecek, bir tatlı vs.)
-(3) Bunlardan hiçbiri (alakasız obje, bulanık görüntü, kişi, manzara, ne olduğu anlaşılamayan içerik)
+(3) Bunlardan hiçbiri (alakasız obje, bulanık görüntü, kişi, manzara, MARKET DIŞI FİŞ, ne olduğu anlaşılamayan içerik)
 
 ÖNCE TÜR'Ü BELİRLE — kind alanına yaz:
 
-A) kind="receipt" — Görselde bir market fişi/fatura görüyorsan. Fişlerde tipik olarak market adı, tarih, ürün satırları, KDV, TOPLAM gibi bilgiler bulunur.
+A) kind="receipt" — Görselde bir MARKET fişi/faturası görüyorsan. SADECE şu sektörden olanlar geçerlidir: süpermarket, hipermarket, indirim marketi, bakkal, kasap, manav, şarküteri, fırın gibi GIDA/TEMİZLİK/KİŞİSEL BAKIM perakende fişleri.
    → receipt alanını doldur (aşağıdaki FİŞ KURALLARI'na göre). food=null, unknownReason=null.
+
+   POZİTİF SİNYALLER (market fişi göstergeleri — en az birkaçı görünmeli):
+   · Bilinen market markası: A101, BİM, Migros, Şok, Carrefour, CarrefourSA, Hakmar, Onur, Tarım Kredi, Macrocenter, File, ekomini, Happy Center, Metro, Pehlivanoğlu, Bizim Toptan, Mopaş, Seyidoğlu, Özhan, vb.
+   · Ürün satırlarında tipik market kalemleri (ekmek, süt, peynir, yumurta, deterjan, çamaşır suyu, makarna, çay, kola, sebze/meyve vs.).
+   · KDV oranları %1, %8, %10 (gıda) baskın.
+
+   NEGATİF SİNYALLER (fiş gibi görünür ama MARKET DEĞİL — buradaysa kind="unknown" yap, ASLA receipt'e yazma):
+   · Giyim/ayakkabı mağazası: LCW, Koton, DeFacto, Mavi, Zara, Boyner, Flo, ürün satırlarında beden (XS/S/M/L/XL, 38, 40, 42), "T-shirt", "pantolon", "balıkçı yaka", "sıfır kol", "elbise", "ayakkabı", "çanta" gibi kalemler.
+   · Akaryakıt istasyonu fişi: Shell, BP, OPET, Petrol Ofisi, TP, Aytemiz, "MOTORIN", "BENZIN", "V/Power", "95 OKTAN", "LPG", litre × TL/lt formatı, pompa numarası.
+   · Eczane fişi: "Eczane", reçeteli ilaç adı, "SGK", barkodlu kutu ilaç.
+   · Restoran/kafe/lokanta/pastane adisyonu: "Adisyon", masa no, garson, "servis", sıcak yemek/içecek isimleri sipariş olarak (porsiyon halinde).
+   · Elektronik/teknoloji, mobilya, hırdavat, kırtasiye, kuyumcu, oto yedek parça, kuaför, otopark, ulaşım/HGS, fatura (elektrik/su/doğalgaz/internet/telefon).
+   · Banka dekontu, ATM makbuzu, POS slipi (tek satır sadece tutar/onay kodu).
+   Bu listede görüneni unknownReason'a şu kalıpla yaz: "Bu bir [sektör] fişi gibi görünüyor (ör. [marka/ipucu]). Sepetiq sadece market/gıda fişlerini analiz ediyor — bir market fişi yüklemek ister misin?"
 
 B) kind="food" — Görselde net bir şekilde bir yemek/içecek tanıyorsan ve ADINI biliyorsan (ör. "döner", "menemen", "kumpir", "lahmacun", "sade sucuklu pizza", "limonata", "sahlep").
    → food alanını doldur (aşağıdaki YEMEK KURALLARI'na göre). receipt=null, unknownReason=null.
 
-C) kind="unknown" — Görsel ne fiş ne de tanıyabildiğin bir yemek/içecek ise (kedi, araba, manzara, anlamsız obje, tanıyamadığın ekzotik tabak, çok bulanık fotoğraf).
-   → unknownReason alanına 1 kısa Türkçe cümle yaz (ör. "Görselde bir yemek değil bir kedi var" / "Tabaktaki yemeği tanıyamadım, fotoğraf bulanık görünüyor"). receipt=null, food=null.
+C) kind="unknown" — Görsel (a) ne market fişi ne de tanıyabildiğin bir yemek/içecek ise (kedi, araba, manzara, anlamsız obje, tanıyamadığın ekzotik tabak, çok bulanık fotoğraf), VEYA (b) fiş gibi görünüyor ama yukarıdaki NEGATİF SİNYALLER'den biriyse (market dışı sektör).
+   → unknownReason alanına 1 kısa Türkçe cümle yaz. Örnekler:
+     · "Görselde bir yemek değil bir kedi var — bir yemek ya da market fişi fotoğrafı yükleyebilir misin?"
+     · "Tabaktaki yemeği tanıyamadım, fotoğraf bulanık görünüyor — daha net bir kare çekebilir misin?"
+     · "Bu bir giyim mağazası fişi gibi görünüyor (Giyim Dünyası). Sepetiq sadece market/gıda fişlerini analiz ediyor — bir market fişi yüklemek ister misin?"
+     · "Bu bir akaryakıt fişi gibi görünüyor (Shell, motorin). Sepetiq sadece market/gıda fişlerini analiz ediyor — bir market fişi yüklemek ister misin?"
+   receipt=null, food=null.
 
-KARAR KURALI: Şüphedeysen unknown'a düş — yanlış yemek/fiş tahmin etmek, kullanıcıdan ismi istemekten kötüdür.
+KARAR KURALI: Şüphedeysen unknown'a düş — yanlış yemek/fiş tahmin etmek, kullanıcıdan ismi istemekten kötüdür. MARKET FİŞİ OLDUĞUNDAN EMİN DEĞİLSEN receipt yazma; non-grocery bir fişin satırlarını sepete önermek kullanıcı için çok daha kötü bir hatadır.
 
 ═══ FİŞ KURALLARI (kind="receipt" için) ═══
 

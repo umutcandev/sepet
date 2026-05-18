@@ -23,6 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
+import { ThemeMenuItems } from "@/components/theme-toggle"
 
 export function NavUser({
   user,
@@ -58,7 +59,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg border bg-popover"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg bg-popover/70! backdrop-blur-xl backdrop-saturate-150 supports-[not(backdrop-filter:blur(0))]:bg-popover!"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -115,6 +116,8 @@ export function NavUser({
                 </Badge>
               </DropdownMenuItem>
             </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <ThemeMenuItems />
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onSelect={(event) => {

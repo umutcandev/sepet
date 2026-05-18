@@ -736,12 +736,16 @@ async function runAssistantTurn({
       return
     }
 
-    // kind === "unknown"
+    // kind === "unknown" — model ya bir yemek/fiş tanıyamadı, ya da fiş
+    // market dışı bir sektörden (giyim, akaryakıt, eczane, restoran vb.).
+    // unknownReason zaten kullanıcıya hitap eden tam bir Türkçe cümle —
+    // varsa onu direkt göster, yoksa generic fallback.
     const reason = analysis.unknownReason?.trim()
-    const reasonPart = reason ? ` (${reason})` : ""
     await emitText(
       writer,
-      `Bu görseldeki yemeği tanıyamadım${reasonPart}. Bana yemeğin adını yazar mısın? Onun malzemelerini çıkarıp en ucuz marketleri bulayım.`,
+      reason && reason.length > 0
+        ? reason
+        : "Bu görseldeki yemeği ya da fişi tanıyamadım. Bana yemeğin adını yazar mısın, ya da bir market fişi fotoğrafı yüklemek ister misin?",
     )
     return
   }

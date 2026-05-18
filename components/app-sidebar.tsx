@@ -78,6 +78,25 @@ export function AppSidebar({
     if (isMobile) setOpenMobile(false)
   }
 
+  // Yeni sohbet başlatıldığında assistant-chat URL'yi history.replaceState ile
+  // /asistan/[id]'ye günceller (SSE stream'i koparmamak için). URL bar
+  // /asistan/[id] gösterse de Next bunu hâlâ /asistan segment'i olarak işler →
+  // Link href="/asistan" tıklaması aynı segment'e gider, AssistantChat remount
+  // olmaz ve useChat client state'i (mesajlar, conversationId) korunur.
+  // Gerçek /asistan/[id] sayfasında da aynı segment durumu olmadığı için
+  // SPA çalışıyor; ama drift case'i SPA ile çözmek mümkün değil. Bu yüzden
+  // /asistan/* altındaki her durumda tam reload ile fresh mount sağlıyoruz.
+  const handleNewChatClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    handleNavClick()
+    if (
+      typeof window !== "undefined" &&
+      window.location.pathname.startsWith("/asistan/")
+    ) {
+      e.preventDefault()
+      window.location.assign("/asistan")
+    }
+  }
+
   const showAssistantConversations = !!user
 
   return (
@@ -93,7 +112,15 @@ export function AppSidebar({
                   width={846}
                   height={178}
                   priority
-                  className="h-6 w-auto"
+                  className="h-6 w-auto dark:hidden"
+                />
+                <Image
+                  src="/sepet-light.svg"
+                  alt=""
+                  aria-hidden
+                  width={846}
+                  height={178}
+                  className="hidden h-6 w-auto dark:block"
                 />
               </Link>
             </SidebarMenuButton>
@@ -135,7 +162,7 @@ export function AppSidebar({
                     asChild
                     className="h-9 justify-center font-medium"
                   >
-                    <Link href="/asistan" onClick={handleNavClick}>
+                    <Link href="/asistan" onClick={handleNewChatClick}>
                       <PlusIcon />
                       <span>Yeni Sohbet</span>
                     </Link>

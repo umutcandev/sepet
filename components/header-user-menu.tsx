@@ -23,6 +23,7 @@ import {
   LogOutIcon,
 } from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
+import { ThemeMenuItems } from "@/components/theme-toggle"
 
 export function HeaderUserMenu({
   user,
@@ -47,7 +48,7 @@ export function HeaderUserMenu({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="min-w-56 rounded-lg border bg-popover"
+        className="min-w-56 rounded-lg bg-popover/70! backdrop-blur-xl backdrop-saturate-150 supports-[not(backdrop-filter:blur(0))]:bg-popover!"
         align="end"
         sideOffset={8}
       >
@@ -99,6 +100,8 @@ export function HeaderUserMenu({
             </Badge>
           </DropdownMenuItem>
         </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <ThemeMenuItems />
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={(event) => {
