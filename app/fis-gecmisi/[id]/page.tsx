@@ -14,7 +14,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { MarketLogo } from "@/components/market-logo"
+import { MarketCell } from "@/components/market-cell"
+import {
+  MarketSplitDonut,
+  type MarketDatum,
+} from "@/components/charts/market-split-donut"
 import { DeleteReceiptButton } from "./delete-button"
 
 export const metadata = { title: "Fiş Detayı" }
@@ -30,6 +34,108 @@ const dateFmt = new Intl.DateTimeFormat("tr-TR", {
   month: "long",
   year: "numeric",
 })
+
+type ReceiptRow = Awaited<ReturnType<typeof getReceiptDetail>> extends
+  | { receipt: infer R }
+  | null
+  ? R
+  : never
+
+function ReceiptInfoCard({
+  receipt,
+  isStale,
+  totalSavings,
+}: {
+  receipt: ReceiptRow
+  isStale: boolean
+  totalSavings: number
+}) {
+  return (
+    <div className="overflow-hidden rounded-xl border bg-card">
+      <div className="flex items-center gap-2 border-b px-4 py-3">
+        <span className="text-sm font-medium">Fiş Bilgisi</span>
+      </div>
+      <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
+        <TableBody>
+          <TableRow>
+            <TableCell className="text-xs uppercase tracking-wide text-muted-foreground">
+              Market
+            </TableCell>
+            <TableCell className="text-right">
+              <div className="flex justify-end font-medium">
+                <MarketCell name={receipt.marketName} size="sm" />
+              </div>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="text-xs uppercase tracking-wide text-muted-foreground">
+              Tarih
+            </TableCell>
+            <TableCell className="text-right tabular-nums">
+              {receipt.purchaseDate
+                ? dateFmt.format(new Date(receipt.purchaseDate))
+                : dateFmt.format(new Date(receipt.createdAt))}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="text-xs uppercase tracking-wide text-muted-foreground">
+              Fiş tutarı
+            </TableCell>
+            <TableCell className="text-right font-medium tabular-nums">
+              {receipt.totalAmount
+                ? tl.format(Number(receipt.totalAmount))
+                : "—"}
+            </TableCell>
+          </TableRow>
+          {receipt.bestSingleMarket && (
+            <TableRow>
+              <TableCell className="text-xs uppercase tracking-wide text-muted-foreground">
+                En iyi market
+              </TableCell>
+              <TableCell className="text-right">
+                <div className="flex justify-end">
+                  <MarketCell name={receipt.bestSingleMarket} size="sm" />
+                </div>
+                {receipt.bestSingleTotal && (
+                  <div className="text-xs text-muted-foreground tabular-nums">
+                    {tl.format(Number(receipt.bestSingleTotal))}
+                  </div>
+                )}
+              </TableCell>
+            </TableRow>
+          )}
+          {isStale ? (
+            <TableRow className="bg-muted/40 hover:bg-muted/50">
+              <TableCell
+                colSpan={2}
+                className="text-[11px] text-muted-foreground"
+              >
+                Bu fiş 6 aydan eski — bugünkü piyasayla kıyaslanmıyor, tasarruf
+                hesabı gösterilmiyor.
+              </TableCell>
+            </TableRow>
+          ) : (
+            totalSavings > 0 && (
+              <TableRow className="bg-emerald-500/5 hover:bg-emerald-500/10">
+                <TableCell className="text-xs text-emerald-700 dark:text-emerald-300">
+                  Tasarruf edebilirdin
+                </TableCell>
+                <TableCell className="text-right">
+                  <Badge
+                    variant="outline"
+                    className="border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
+                  >
+                    {tl.format(totalSavings)}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            )
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
 
 export default async function ReceiptDetailPage({
   params,
@@ -50,6 +156,21 @@ export default async function ReceiptDetailPage({
       ? Number(receipt.potentialSavingsTL)
       : 0
 
+  const marketSplitMap = new Map<string, number>()
+  for (const it of items) {
+    if (!it.bestMarket || !it.bestPrice) continue
+    const line = Number(it.bestPrice) * Number(it.quantity)
+    if (!Number.isFinite(line) || line <= 0) continue
+    marketSplitMap.set(
+      it.bestMarket,
+      (marketSplitMap.get(it.bestMarket) ?? 0) + line,
+    )
+  }
+  const marketSplit: MarketDatum[] = Array.from(marketSplitMap.entries()).map(
+    ([market, value]) => ({ market, value }),
+  )
+  const showSplit = marketSplit.length >= 2
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
       <div className="mb-4 flex items-center gap-2">
@@ -67,154 +188,107 @@ export default async function ReceiptDetailPage({
       <div className="grid gap-5 md:grid-cols-[280px_1fr]">
         <div className="space-y-3">
           <div className="overflow-hidden rounded-xl border bg-muted/30">
-            <a href={receipt.imageUrl} target="_blank" rel="noreferrer">
+            <a
+              href={receipt.imageUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="block max-h-[300px] overflow-hidden"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={receipt.imageUrl}
                 alt="Fiş"
-                className="h-auto w-full object-contain"
+                className="block h-auto w-full object-cover object-top"
               />
             </a>
           </div>
-          <div className="rounded-xl border bg-card p-4 text-sm">
-            <div className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">
-              Fiş Bilgisi
+
+          {showSplit && (
+            <div className="rounded-xl border bg-card p-4">
+              <div className="mb-3 text-xs uppercase tracking-wide text-muted-foreground">
+                Marketlere Göre Dağılım
+              </div>
+              <MarketSplitDonut
+                data={marketSplit}
+                totalLabel="En iyi alternatif"
+                emptyHint="Dağılım için yeterli market yok."
+              />
             </div>
-            <dl className="grid gap-1.5">
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted-foreground">Market</dt>
-                <dd className="flex items-center gap-2 font-medium">
-                  {receipt.marketName ? (
-                    <>
-                      <MarketLogo name={receipt.marketName} size="sm" />
-                      <span>{receipt.marketName}</span>
-                    </>
-                  ) : (
-                    "—"
-                  )}
-                </dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted-foreground">Tarih</dt>
-                <dd>
-                  {receipt.purchaseDate
-                    ? dateFmt.format(new Date(receipt.purchaseDate))
-                    : dateFmt.format(new Date(receipt.createdAt))}
-                </dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted-foreground">Fiş tutarı</dt>
-                <dd className="tabular-nums font-medium">
-                  {receipt.totalAmount
-                    ? tl.format(Number(receipt.totalAmount))
-                    : "—"}
-                </dd>
-              </div>
-              {receipt.bestSingleMarket && (
-                <div className="flex justify-between gap-3">
-                  <dt className="text-muted-foreground">En iyi market</dt>
-                  <dd className="text-right">
-                    <div>{receipt.bestSingleMarket}</div>
-                    {receipt.bestSingleTotal && (
-                      <div className="text-xs text-muted-foreground tabular-nums">
-                        {tl.format(Number(receipt.bestSingleTotal))}
-                      </div>
-                    )}
-                  </dd>
-                </div>
-              )}
-              {isStale ? (
-                <div className="mt-1 rounded-lg bg-muted/50 px-2 py-1.5 text-[11px] text-muted-foreground">
-                  Bu fiş 6 aydan eski — bugünkü piyasayla kıyaslanmıyor,
-                  tasarruf hesabı gösterilmiyor.
-                </div>
-              ) : (
-                totalSavings > 0 && (
-                  <div className="mt-1 flex items-center justify-between gap-3 rounded-lg bg-emerald-500/10 px-2 py-1.5">
-                    <span className="text-xs text-emerald-700 dark:text-emerald-300">
-                      Tasarruf edebilirdin
-                    </span>
-                    <Badge
-                      variant="outline"
-                      className="border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
-                    >
-                      {tl.format(totalSavings)}
-                    </Badge>
-                  </div>
-                )
-              )}
-            </dl>
-          </div>
+          )}
         </div>
 
-        <div className="overflow-hidden rounded-xl border bg-card">
-          <div className="flex items-center gap-2 border-b px-4 py-3">
-            <span className="text-sm font-medium">Fişteki Kalemler</span>
-            <Badge variant="secondary" className="text-[10px]">
-              {items.length}
-            </Badge>
+        <div className="space-y-3">
+          <div className="overflow-hidden rounded-xl border bg-card">
+            <div className="flex items-center gap-2 border-b px-4 py-3">
+              <span className="text-sm font-medium">Fişteki Kalemler</span>
+              <Badge variant="secondary" className="text-[10px]">
+                {items.length}
+              </Badge>
+            </div>
+            <div className="overflow-x-auto">
+              <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
+                <TableHeader>
+                  <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                    <TableHead className="min-w-[160px]">Ürün</TableHead>
+                    <TableHead className="w-20 text-right">Adet</TableHead>
+                    <TableHead className="w-24 text-right">Fişteki</TableHead>
+                    <TableHead className="min-w-[120px]">En iyi market</TableHead>
+                    <TableHead className="w-24 text-right">En iyi</TableHead>
+                    <TableHead className="w-24 text-right">Fark</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {items.map((it) => {
+                    const savings =
+                      !isStale && it.savingsTL ? Number(it.savingsTL) : 0
+                    return (
+                      <TableRow key={it.id}>
+                        <TableCell className="align-top">
+                          <div className="text-sm font-medium">{it.rawName}</div>
+                          {it.matchedName && it.matchedName !== it.rawName && (
+                            <div className="text-[11px] text-muted-foreground">
+                              ↪ {it.matchedName}
+                            </div>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums text-sm">
+                          {Number(it.quantity)} {it.unit}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {it.receiptTotalPrice
+                            ? tl.format(Number(it.receiptTotalPrice))
+                            : "—"}
+                        </TableCell>
+                        <TableCell>
+                          <MarketCell name={it.bestMarket} size="sm" />
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {it.bestPrice ? tl.format(Number(it.bestPrice)) : "—"}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {savings > 0 ? (
+                            <span className="font-medium text-emerald-700 dark:text-emerald-300">
+                              −{tl.format(savings)}
+                            </span>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">
+                              —
+                            </span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
           </div>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
-                  <TableHead className="min-w-[160px]">Ürün</TableHead>
-                  <TableHead className="w-20 text-right">Adet</TableHead>
-                  <TableHead className="w-24 text-right">Fişteki</TableHead>
-                  <TableHead className="min-w-[120px]">En iyi market</TableHead>
-                  <TableHead className="w-24 text-right">En iyi</TableHead>
-                  <TableHead className="w-24 text-right">Fark</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.map((it) => {
-                  const savings =
-                    !isStale && it.savingsTL ? Number(it.savingsTL) : 0
-                  return (
-                    <TableRow key={it.id}>
-                      <TableCell className="align-top">
-                        <div className="text-sm font-medium">{it.rawName}</div>
-                        {it.matchedName && it.matchedName !== it.rawName && (
-                          <div className="text-[11px] text-muted-foreground">
-                            ↪ {it.matchedName}
-                          </div>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums text-sm">
-                        {Number(it.quantity)} {it.unit}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {it.receiptTotalPrice
-                          ? tl.format(Number(it.receiptTotalPrice))
-                          : "—"}
-                      </TableCell>
-                      <TableCell>
-                        {it.bestMarket ?? (
-                          <span className="text-xs text-muted-foreground">
-                            —
-                          </span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {it.bestPrice ? tl.format(Number(it.bestPrice)) : "—"}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {savings > 0 ? (
-                          <span className="font-medium text-emerald-700 dark:text-emerald-300">
-                            −{tl.format(savings)}
-                          </span>
-                        ) : (
-                          <span className="text-xs text-muted-foreground">
-                            —
-                          </span>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          </div>
+
+          <ReceiptInfoCard
+            receipt={receipt}
+            isStale={isStale}
+            totalSavings={totalSavings}
+          />
         </div>
       </div>
     </div>

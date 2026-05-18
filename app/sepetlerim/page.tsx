@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { ChevronRightIcon, ShoppingBasketIcon } from "lucide-react"
+import { ChevronRightIcon, ShoppingBasketIcon, InfoIcon } from "lucide-react"
 import { auth } from "@/auth"
 import { listBaskets } from "@/lib/actions/baskets"
 import { Badge } from "@/components/ui/badge"
@@ -13,7 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { MarketLogo } from "@/components/market-logo"
+import { MarketCell } from "@/components/market-cell"
+import {
+  MonthlyBarChart,
+  MonthlyChartLegend,
+} from "@/components/charts/monthly-bar-chart"
+import { aggregateMonthly } from "@/lib/charts/aggregate-monthly"
 import { UnauthenticatedState } from "./unauthenticated-state"
 
 export const metadata = {
@@ -37,6 +42,12 @@ const dateFmt = new Intl.DateTimeFormat("tr-TR", {
 export default async function BasketsPage() {
   const session = await auth()
   const rows = session?.user?.id ? await listBaskets(session.user.id) : []
+
+  const monthly = aggregateMonthly(
+    rows,
+    (r) => r.createdAt,
+    (r) => (r.bestSingleTotal ? Number(r.bestSingleTotal) : 0),
+  )
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
@@ -72,8 +83,30 @@ export default async function BasketsPage() {
           </Button>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border bg-card">
-          <Table>
+        <div className="space-y-5">
+          <div className="rounded-xl border bg-card p-4">
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                Son 6 ay sepet toplamların
+              </span>
+              <Badge variant="secondary" className="gap-1">
+                <InfoIcon />
+                En iyi market fiyatına göre hesaplanır.
+              </Badge>
+            </div>
+            <MonthlyBarChart
+              data={monthly}
+              label="Sepet toplamı"
+              emptyHint="Son 6 ayda kayıtlı sepet tutarı yok."
+            />
+            <MonthlyChartLegend
+              items={[
+                { color: "var(--chart-1)", label: "Sepet toplamı (₺)" },
+              ]}
+            />
+          </div>
+          <div className="overflow-hidden rounded-xl border bg-card">
+          <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
             <TableHeader>
               <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
                 <TableHead className="min-w-[100px]">Tarih</TableHead>
@@ -110,16 +143,13 @@ export default async function BasketsPage() {
                     <TableCell>
                       <Link
                         href={`/sepetlerim/${b.id}`}
-                        className="flex items-center gap-2 py-1"
+                        className="block py-1"
                       >
-                        {b.bestSingleMarket ? (
-                          <>
-                            <MarketLogo name={b.bestSingleMarket} size="sm" />
-                            <span>{b.bestSingleMarket}</span>
-                          </>
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
+                        <MarketCell
+                          name={b.bestSingleMarket}
+                          size="sm"
+                          clickable={false}
+                        />
                       </Link>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
@@ -157,6 +187,7 @@ export default async function BasketsPage() {
               })}
             </TableBody>
           </Table>
+          </div>
         </div>
       )}
     </div>

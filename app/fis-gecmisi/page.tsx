@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { SparklesIcon, ChevronRightIcon } from "lucide-react"
+import { SparklesIcon, ChevronRightIcon, ClockIcon } from "lucide-react"
 import { auth } from "@/auth"
 import { listReceipts } from "@/lib/actions/receipts"
 import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
@@ -14,7 +14,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { MarketLogo } from "@/components/market-logo"
+import { MarketCell } from "@/components/market-cell"
+import {
+  MonthlyBarChart,
+  MonthlyChartLegend,
+} from "@/components/charts/monthly-bar-chart"
+import { aggregateMonthly } from "@/lib/charts/aggregate-monthly"
 import { UnauthenticatedState } from "./unauthenticated-state"
 
 export const metadata = {
@@ -38,7 +43,16 @@ const dateFmt = new Intl.DateTimeFormat("tr-TR", {
 export default async function ReceiptsHistoryPage() {
   const session = await auth()
   const rows = session?.user?.id ? await listReceipts(session.user.id) : []
-  
+
+  const monthly = aggregateMonthly(
+    rows,
+    (r) => r.purchaseDate ?? r.createdAt,
+    (r) => {
+      if (isReceiptStaleByDate(r.purchaseDate)) return 0
+      return r.potentialSavingsTL ? Number(r.potentialSavingsTL) : 0
+    },
+  )
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
       <div className="mb-6 flex flex-col gap-1">
@@ -72,8 +86,30 @@ export default async function ReceiptsHistoryPage() {
           </Button>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border bg-card">
-          <Table>
+        <div className="space-y-5">
+          <div className="rounded-xl border bg-card p-4">
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                Son 6 ay tasarruf potansiyelin
+              </span>
+              <Badge variant="secondary" className="gap-1">
+                <ClockIcon />
+                Son 6 ay
+              </Badge>
+            </div>
+            <MonthlyBarChart
+              data={monthly}
+              label="Tasarruf"
+              emptyHint="Son 6 ayda hesaplanan tasarruf yok."
+            />
+            <MonthlyChartLegend
+              items={[
+                { color: "var(--chart-1)", label: "Tasarruf potansiyeli (₺)" },
+              ]}
+            />
+          </div>
+          <div className="overflow-hidden rounded-xl border bg-card">
+          <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
             <TableHeader>
               <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
                 <TableHead className="min-w-[100px]">Tarih</TableHead>
@@ -109,16 +145,13 @@ export default async function ReceiptsHistoryPage() {
                     <TableCell>
                       <Link
                         href={`/fis-gecmisi/${r.id}`}
-                        className="flex items-center gap-2 py-1 font-medium"
+                        className="block py-1 font-medium"
                       >
-                        {r.marketName ? (
-                          <>
-                            <MarketLogo name={r.marketName} size="sm" />
-                            <span>{r.marketName}</span>
-                          </>
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
+                        <MarketCell
+                          name={r.marketName}
+                          size="sm"
+                          clickable={false}
+                        />
                       </Link>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
@@ -178,6 +211,7 @@ export default async function ReceiptsHistoryPage() {
               })}
             </TableBody>
           </Table>
+          </div>
         </div>
       )}
     </div>
