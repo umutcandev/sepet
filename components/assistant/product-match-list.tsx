@@ -87,8 +87,13 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                   </div>
                 ) : (
                   <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                    <AlertCircleIcon className="size-3.5" />
-                    Eşleşme bulunamadı
+                    <AlertCircleIcon className="size-3.5 shrink-0" />
+                    <span className="truncate">
+                      <span className="font-medium text-foreground">
+                        {m.searchQuery}
+                      </span>{" "}
+                      için eşleşme bulunamadı
+                    </span>
                   </div>
                 )}
               </div>

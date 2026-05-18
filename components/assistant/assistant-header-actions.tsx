@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react"
+import { ChevronDownIcon, PencilIcon, Trash2Icon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -32,12 +32,12 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="outline"
-            size="icon"
-            className="size-7"
+            variant="ghost"
+            size="icon-xs"
+            className="ml-1 size-6 text-muted-foreground hover:text-foreground"
             aria-label="Sohbet eylemleri"
           >
-            <MoreHorizontalIcon className="size-4" />
+            <ChevronDownIcon className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-auto min-w-40">

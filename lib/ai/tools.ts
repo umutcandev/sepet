@@ -44,10 +44,14 @@ async function findFirstHit(
   for (const q of variants) {
     try {
       const result = await searchProducts(q)
+      // En az bir marketten fiyat verisi olmayan adayları ele. Bunlar için
+      // camgöz "ortalama fiyat" döndürse de hangi markette satıldığı belli
+      // değil, dolayısıyla optimizasyona katkı yapamazlar.
+      const hits = result.hits.filter((h) => h.marketCount >= 1)
       console.log(
-        `[lookupProducts] q="${q}" cached=${result.cached} hits=${result.hits.length}`,
+        `[lookupProducts] q="${q}" cached=${result.cached} hits=${result.hits.length} withMarket=${hits.length}`,
       )
-      if (result.hits.length > 0) return { kind: "hit", hits: result.hits }
+      if (hits.length > 0) return { kind: "hit", hits }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
       const status = err instanceof CamgozError ? err.status : undefined
@@ -346,19 +350,6 @@ export async function lookupProducts(
             sourceUrl: m.sourceUrl,
           }))
         : []
-
-      // Camgöz bazı kalemlerde (manav/pazar ürünleri tipik) per-market dökümü
-      // dönmüyor ama ürünün ortalama fiyatını biliyor. Bu durumda ürünü tamamen
-      // düşürmek yerine markayı (ör. "MANAV") sanal market etiketi olarak
-      // kullanıp tek bir referans entry sentezle — kullanıcı fiyatı görsün,
-      // optimizasyon "A101 + MANAV" gibi karma sepetler önerebilsin.
-      if (marketPrices.length === 0 && best?.averagePrice != null) {
-        marketPrices.push({
-          market: best.brand?.trim() || "Pazar / Manav",
-          price: best.averagePrice,
-          sourceUrl: null,
-        })
-      }
 
       return {
         rawName: item.name,

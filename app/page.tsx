@@ -20,7 +20,7 @@ import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 
 const CHIPS = [
   "Fiş veya yemek fotoğrafımı analiz et",
-  "Kremalı makarna için malzemeler",
+  "Sucuklu yumurta için malzemeler",
   "Limonata için malzemeler",
 ]
 
@@ -114,13 +114,29 @@ export default function HomePage() {
         type="image/webp"
         fetchPriority="high"
       />
+      <link
+        rel="preload"
+        as="image"
+        href="/background-image-dark.avif"
+        type="image/avif"
+      />
+      <link
+        rel="preload"
+        as="image"
+        href="/background-image-dark.webp"
+        type="image/webp"
+      />
       <link rel="preload" as="image" href="/a101-brand.webp" />
       <link rel="preload" as="image" href="/migros-brand.webp" />
       <link rel="preload" as="image" href="/sok-brand.webp" />
       <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 pb-16">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image.avif')_type('image/avif'),url('/background-image.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_35%,transparent_85%)] [-webkit-mask-image:linear-gradient(to_top,black_35%,transparent_85%)]"
+        className="dark:hidden pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image.avif')_type('image/avif'),url('/background-image.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
+      />
+      <div
+        aria-hidden
+        className="hidden dark:block pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image-dark.avif')_type('image/avif'),url('/background-image-dark.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
       />
       <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-3 text-center">
@@ -158,7 +174,7 @@ export default function HomePage() {
                 className="absolute inset-0 size-full rounded-full object-cover"
               />
             </Avatar>
-            <AvatarGroupCount className="border-[1.5px] border-ring/70 ring-0">+42</AvatarGroupCount>
+            <AvatarGroupCount className="border-[1.5px] border-ring/70 ring-0 dark:border-foreground/15">+42</AvatarGroupCount>
           </AvatarGroup>
           <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
             <AnimatePresence mode="wait" initial={false}>
@@ -192,7 +208,7 @@ export default function HomePage() {
               variant="outline"
               size="sm"
               onClick={() => handleChip(chip)}
-              className="h-auto rounded-full border-ring/70 px-3 py-1.5 text-xs font-normal text-muted-foreground"
+              className="h-auto rounded-full border-ring/70 px-3 py-1.5 text-xs font-normal text-muted-foreground dark:bg-muted dark:hover:bg-muted/80"
             >
               {chip}
             </Button>

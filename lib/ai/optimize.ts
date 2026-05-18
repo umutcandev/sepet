@@ -124,6 +124,8 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
       const b = markets[j]
       let total = 0
       let valid = true
+      let usedA = false
+      let usedB = false
       const allocation: MarketAllocation[] = []
       for (const item of items) {
         const priceA = item.marketPrices.get(a)
@@ -140,6 +142,8 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
               : priceA <= priceB
                 ? a
                 : b
+        if (pickedMarket === a) usedA = true
+        else usedB = true
         const unitPrice = pickedMarket === a ? (priceA as number) : (priceB as number)
         const lineTotal = unitPrice * item.packCount
         total += lineTotal
@@ -153,30 +157,17 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
         })
       }
       if (!valid) continue
+      // Gerçek bir iki-market kombosu sayılması için her iki marketin de en az
+      // bir kaleme katkı vermesi gerekir; aksi halde "X + Y" göstermek
+      // yanıltıcı olur (Y hiç kullanılmıyor).
+      if (!usedA || !usedB) continue
       if (total < best.total) {
         best = { markets: [a, b], total, allocation }
       }
     }
   }
   if (best.total === Infinity) {
-    const single = bestSingleMarket(items)
-    return {
-      markets: [single.market],
-      total: single.total,
-      allocation: items
-        .filter((item) => item.marketPrices.has(single.market))
-        .map((item) => {
-          const unitPrice = item.marketPrices.get(single.market)!
-          return {
-            market: single.market,
-            productBarcode: item.productBarcode,
-            productName: item.productName,
-            unitPrice,
-            quantity: item.packCount,
-            lineTotal: unitPrice * item.packCount,
-          }
-        }),
-    }
+    return { markets: [], total: 0, allocation: [] }
   }
   return best
 }

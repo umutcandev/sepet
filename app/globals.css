@@ -3,7 +3,7 @@
 @import "shadcn/tailwind.css";
 @import "./style-nova.css";
 
-/* Light-only: dark variants only activate via explicit .dark class (never set), not system preference */
+/* Dark variants activate when next-themes adds .dark class to <html>; system pref is opt-in via the theme toggle ("Sistem" option). */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -81,6 +81,40 @@
     --sidebar-accent: #F0E0CB;
     --sidebar-accent-foreground: #3D2418;
     --sidebar-border: #E8DDD0;
+    --sidebar-ring: #C08552;
+}
+
+.dark {
+    --background: #1A130E;
+    --foreground: #F5E8DA;
+    --card: #221A14;
+    --card-foreground: #F5E8DA;
+    --popover: #221A14;
+    --popover-foreground: #F5E8DA;
+    --primary: #D4A574;
+    --primary-foreground: #1A130E;
+    --secondary: #2D2218;
+    --secondary-foreground: #F5E8DA;
+    --muted: #2D2218;
+    --muted-foreground: #B89A78;
+    --accent: #3D2D1F;
+    --accent-foreground: #F5E8DA;
+    --destructive: #E07259;
+    --border: #2D2218;
+    --input: #2D2218;
+    --ring: #C08552;
+    --chart-1: #D4A574;
+    --chart-2: #C08552;
+    --chart-3: #A06848;
+    --chart-4: #8C5A3C;
+    --chart-5: #F5E8DA;
+    --sidebar: #1F1812;
+    --sidebar-foreground: #F5E8DA;
+    --sidebar-primary: #D4A574;
+    --sidebar-primary-foreground: #1A130E;
+    --sidebar-accent: #3D2D1F;
+    --sidebar-accent-foreground: #F5E8DA;
+    --sidebar-border: #2D2218;
     --sidebar-ring: #C08552;
 }
 
