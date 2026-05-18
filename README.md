@@ -97,6 +97,18 @@ Mikrofon kaydı `audio/webm` olarak alınıp `/api/transcribe` endpoint'inde Gem
 
 Kullanıcının onayladığı her sepet ve analiz edilen her fiş Postgres'te kalıcı olarak saklanır; özet tutarlar (`bestSingleTotal`, `twoMarketSavingsTL`) listede önizleme olarak sunulur.
 
+### Aylık Tasarruf ve Sepet Grafikleri
+
+`/sepetlerim` ve `/fis-gecmisi` sayfalarında son altı ayın sepet toplamları ve tasarruf rakamları **recharts** tabanlı `MonthlyBarChart` ile görselleştirilir. Sepet detay sayfasındaki `MarketSplitDonut` ise iki market kombinasyonunda hangi alışverişin hangi markete dağıldığını donut grafikle gösterir. Toplama işlemleri `lib/charts/aggregate-monthly.ts` içindeki saf yardımcı fonksiyonla deterministik şekilde yapılır.
+
+### Karanlık Tema
+
+`next-themes` ile **system / light / dark** tema desteği. Tüm sayfa, kart ve grafik tokenları `globals.css` üzerinden CSS değişkenlerine bağlıdır; arka plan görselleri AVIF + WebP olarak hem aydınlık hem karanlık varyantlarda servis edilir. Tema değişimi `HeaderUserMenu`, `NavUser` ve mobil menüden yapılabilir; Sonner bildirimleri ve grafik renkleri seçilen temaya otomatik uyarlanır.
+
+### Onboarding Akışı
+
+Yeni kullanıcı ilk girişte 5 adımlı video destekli bir onboarding modalıyla karşılanır (doğal dil sepeti, fiş okuma, yemek görseli, barkod tarayıcı, sepet/fiş geçmişi). Tamamlama zaman damgası `users.onboardingCompletedAt` alanında saklanır; `completeOnboarding` server action'ı bu alanı güncelleyerek modalın bir daha açılmamasını sağlar. Masaüstünde `Dialog`, mobilde `Drawer` olarak responsive şekilde sunulur.
+
 ---
 
 ## Agentic Mimari
@@ -218,7 +230,9 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 | Dil | **TypeScript 5.9** | Uçtan uca tip güvenliği |
 | Stil | **Tailwind CSS 4** + `tw-animate-css` | Utility-first, tema sistemi |
 | Bileşen | **shadcn/ui** + Radix UI + Base UI | Erişilebilir primitives |
-| Animasyon | **Motion** (`motion/react`) | Heading rotasyonu, geçişler |
+| Animasyon | **Motion** (`motion/react`) | Heading rotasyonu, onboarding step geçişleri |
+| Tema | **next-themes** | System / light / dark mod, SSR uyumlu |
+| Grafikler | **Recharts** | Aylık tasarruf bar grafiği, market dağılım donut grafiği |
 | Form / Şema | **Zod 4** | Tüm LLM çıktılarının doğrulanması |
 
 ### Yapay Zekâ Katmanı
@@ -310,7 +324,7 @@ Drizzle ORM ile tanımlanan ana tablolar:
 
 | Tablo | Rol |
 |---|---|
-| `user`, `account`, `session`, `verificationToken` | NextAuth tabloları |
+| `user`, `account`, `session`, `verificationToken` | NextAuth tabloları (`user.onboardingCompletedAt` onboarding tamamlanma zamanını tutar) |
 | `product` | Barkod bazlı ürün cache (`uniqueIndex` barkod) |
 | `price_snapshot` | Market bazlı fiyat geçmişi (product + market + tarih indeksli) |
 | `receipt` | OCR'lanmış fiş başlıkları (en iyi market, potansiyel tasarruf, R2 key) |
@@ -410,7 +424,11 @@ sepet/
 ├── components/
 │   ├── ai-elements/              # Stream chat primitives
 │   ├── assistant/                # Asistan UI (kartlar, prompt, ses, dialog)
-│   ├── auth/                     # Login dialog
+│   ├── auth/                     # Login dialog + Şartlar & Gizlilik dialogları
+│   ├── charts/                   # Aylık bar chart, market split donut
+│   ├── onboarding/               # Video destekli onboarding modal + host
+│   ├── providers/                # ThemeProvider (next-themes)
+│   ├── theme-toggle.tsx          # Tema değiştirici menü
 │   ├── ui/                       # shadcn/ui bileşenleri
 │   └── app-sidebar.tsx
 ├── lib/
@@ -421,12 +439,13 @@ sepet/
 │   │   ├── tools.ts              # analyzeImage, parseShoppingList, lookupProducts
 │   │   └── optimize.ts           # Tek ve iki market optimizasyonu
 │   ├── camgoz/                   # JoJAPI client + Redis cache
+│   ├── charts/                   # aggregate-monthly toplama yardımcısı
 │   ├── db/                       # Drizzle şema ve bağlantı
 │   ├── markets/registry.ts       # 45+ market logo + URL registry
 │   ├── storage/r2.ts             # Cloudflare R2 client
 │   ├── security/                 # rate-limit, headers
-│   ├── auth/                     # NextAuth session helper
-│   ├── actions/                  # Server actions (baskets, receipts, conversations)
+│   ├── auth/                     # NextAuth session helper (onboarding flag dahil)
+│   ├── actions/                  # Server actions (baskets, receipts, conversations, onboarding)
 │   ├── hooks/                    # Client hooks
 │   └── stores/                   # Client store'lar
 ├── drizzle/                      # Migration çıktıları
