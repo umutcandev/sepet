@@ -38,7 +38,7 @@ const ONBOARDING_STEPS: Step[] = [
   {
     title: "Fişini fotoğrafla, analiz edelim",
     description:
-      "Market fişinin fotoğrafını yükle; Gemini 2.5 Flash market adını, tarihi ve tüm kalemleri çıkarır. Ödediğin tutar, aynı sepetin bugünkü en iyi fiyatıyla karşılaştırılır.",
+      "Market fişinin fotoğrafını yükle; yapay zeka market adını, tarihi ve tüm kalemleri çıkarır. Ödediğin tutar, aynı sepetin bugünkü en iyi fiyatıyla karşılaştırılır.",
     video: "/onboarding/2-fis-okuma.mp4",
   },
   {
@@ -48,15 +48,15 @@ const ONBOARDING_STEPS: Step[] = [
     video: "/onboarding/3-yemek-gorseli.mp4",
   },
   {
-    title: "Sepetin tamamı için en iyi kombinasyon",
+    title: "Barkod tarayıcı ile fiyat karşılaştırması yap",
     description:
-      "Sepetini tek market üzerinden en ucuz toplamla kuruyoruz. bunun yanında iki market kombinasyonu deneyerek ek tasarruf üretiyoruz.",
-    video: "/onboarding/4-optimizasyon.mp4",
+      "Ürünlerin barkodlarını tarayarak farklı marketlerdeki fiyatları karşılaştır. En ucuz seçeneği anında gör, tasarruf etmeye başla.",
+    video: "/onboarding/4-barkod.mp4",
   },
   {
     title: "Sepetlerini ya da fişlerini kaydet",
     description:
-      "Onayladığın sepetleri ve analiz ettiğin fişleri kaydedebilirsin. Böylece zaman içinde ne kadar tasarruf ettiğini görebilir, geçmiş sepetlerini ve fişlerini tek bir yerden takip edebilirsin.",
+      "Onayladığın sepetleri ve analiz ettiğin fişleri kaydedebilirsin. Böylece daha sonra ne kadar tasarruf ettiğini görebilir, geçmiş sepetlerini ve fişlerini takip edebilirsin.",
     video: "/onboarding/5-gecmis.mp4",
   },
 ]
