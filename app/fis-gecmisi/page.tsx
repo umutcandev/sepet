@@ -90,7 +90,7 @@ export default async function ReceiptsHistoryPage() {
           <div className="rounded-xl border bg-card p-4">
             <div className="mb-2 flex items-center justify-between gap-2">
               <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                Son 6 ay tasarruf potansiyelin
+                Tasarruf potansiyelin
               </span>
               <Badge variant="secondary" className="gap-1">
                 <ClockIcon />

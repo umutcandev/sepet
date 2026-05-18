@@ -168,12 +168,12 @@ export default async function BasketDetailPage({
       <div
         className={
           showSplit
-            ? "grid gap-5 md:grid-cols-[280px_1fr]"
+            ? "grid gap-5 md:grid-cols-[280px_minmax(0,1fr)]"
             : "space-y-5"
         }
       >
         {showSplit && (
-          <div className="space-y-3">
+          <div className="min-w-0 space-y-3">
             <div className="rounded-xl border bg-card p-4">
               <div className="mb-3 text-xs uppercase tracking-wide text-muted-foreground">
                 2-Market Dağılımı
@@ -187,7 +187,7 @@ export default async function BasketDetailPage({
           </div>
         )}
 
-        <div className="space-y-3">
+        <div className="min-w-0 space-y-3">
           <div className="overflow-hidden rounded-xl border bg-card">
             <div className="flex items-center gap-2 border-b px-4 py-3">
               <span className="text-sm font-medium">Sepetteki Kalemler</span>
@@ -195,7 +195,40 @@ export default async function BasketDetailPage({
                 {items.length}
               </Badge>
             </div>
-            <div className="overflow-x-auto">
+
+            <ul className="divide-y md:hidden">
+              {items.map((it) => (
+                <li key={it.id} className="space-y-2 px-4 py-3">
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium break-words">
+                      {it.rawName}
+                    </div>
+                    {it.matchedName && it.matchedName !== it.rawName && (
+                      <div className="text-[11px] text-muted-foreground break-words">
+                        ↪ {it.matchedName}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <MarketCell name={it.bestMarket} size="sm" />
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <div className="text-[11px] text-muted-foreground tabular-nums">
+                        {Number(it.quantity)} {it.unit}
+                      </div>
+                      <div className="text-sm font-medium tabular-nums">
+                        {it.bestPrice
+                          ? tl.format(Number(it.bestPrice))
+                          : "—"}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <div className="hidden md:block">
               <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
                 <TableHeader>
                   <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">

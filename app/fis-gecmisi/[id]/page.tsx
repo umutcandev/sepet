@@ -185,8 +185,8 @@ export default async function ReceiptDetailPage({
         </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-[280px_1fr]">
-        <div className="space-y-3">
+      <div className="grid gap-5 md:grid-cols-[280px_minmax(0,1fr)]">
+        <div className="min-w-0 space-y-3">
           <div className="overflow-hidden rounded-xl border bg-muted/30">
             <a
               href={receipt.imageUrl}
@@ -217,7 +217,7 @@ export default async function ReceiptDetailPage({
           )}
         </div>
 
-        <div className="space-y-3">
+        <div className="min-w-0 space-y-3">
           <div className="overflow-hidden rounded-xl border bg-card">
             <div className="flex items-center gap-2 border-b px-4 py-3">
               <span className="text-sm font-medium">Fişteki Kalemler</span>
@@ -225,7 +225,70 @@ export default async function ReceiptDetailPage({
                 {items.length}
               </Badge>
             </div>
-            <div className="overflow-x-auto">
+
+            <ul className="divide-y md:hidden">
+              {items.map((it) => {
+                const savings =
+                  !isStale && it.savingsTL ? Number(it.savingsTL) : 0
+                return (
+                  <li key={it.id} className="space-y-2 px-4 py-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="text-sm font-medium break-words">
+                          {it.rawName}
+                        </div>
+                        {it.matchedName && it.matchedName !== it.rawName && (
+                          <div className="text-[11px] text-muted-foreground break-words">
+                            ↪ {it.matchedName}
+                          </div>
+                        )}
+                      </div>
+                      <div className="shrink-0 text-right text-[11px] text-muted-foreground tabular-nums">
+                        {Number(it.quantity)} {it.unit}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 rounded-md bg-muted/40 p-2 text-xs">
+                      <div>
+                        <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                          Fişteki
+                        </div>
+                        <div className="tabular-nums">
+                          {it.receiptTotalPrice
+                            ? tl.format(Number(it.receiptTotalPrice))
+                            : "—"}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                          En iyi
+                        </div>
+                        <div className="tabular-nums">
+                          {it.bestPrice
+                            ? tl.format(Number(it.bestPrice))
+                            : "—"}
+                        </div>
+                      </div>
+                      <div className="col-span-2 flex items-center justify-between gap-3 border-t pt-2">
+                        <div className="min-w-0">
+                          <MarketCell name={it.bestMarket} size="sm" />
+                        </div>
+                        {savings > 0 ? (
+                          <span className="shrink-0 font-medium text-emerald-700 tabular-nums dark:text-emerald-300">
+                            −{tl.format(savings)}
+                          </span>
+                        ) : (
+                          <span className="shrink-0 text-muted-foreground">
+                            —
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+
+            <div className="hidden md:block">
               <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
                 <TableHeader>
                   <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">

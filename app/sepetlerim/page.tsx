@@ -91,7 +91,7 @@ export default async function BasketsPage() {
               </span>
               <Badge variant="secondary" className="gap-1">
                 <InfoIcon />
-                En iyi market fiyatına göre hesaplanır.
+                En iyi fiyata göre
               </Badge>
             </div>
             <MonthlyBarChart
