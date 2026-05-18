@@ -111,8 +111,8 @@ export function AppShell({ user, conversations, children }: Props) {
     <SidebarProvider>
       <AppSidebar user={user} conversations={conversations} />
       <SidebarInset className="min-h-0 overflow-hidden">
-        <header className="grid h-16 shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-2">
-          <div className="flex min-w-0 items-center gap-2 px-4">
+        <header className="flex h-16 shrink-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2 px-4">
             <SidebarToggleButton />
             <Separator
               orientation="vertical"
@@ -141,7 +141,7 @@ export function AppShell({ user, conversations, children }: Props) {
               </>
             )}
           </div>
-          <div className="flex min-w-0 items-center justify-center">
+          <div className="flex min-w-0 flex-1 items-center justify-center">
             {isAssistantRoute ? (
               loading && !title ? (
                 <Skeleton className="h-4 w-40 rounded-md" />
@@ -160,12 +160,10 @@ export function AppShell({ user, conversations, children }: Props) {
               ) : null
             ) : null}
           </div>
-          <div className="flex items-center justify-end gap-1 px-4">
+          <div className="flex shrink-0 items-center justify-end gap-1 px-4">
             <ThemeToggleButton />
             {user ? (
-              <div className="md:hidden">
-                <HeaderUserMenu user={user} />
-              </div>
+              <HeaderUserMenu user={user} className="md:hidden" />
             ) : (
               <Button
                 variant="outline"

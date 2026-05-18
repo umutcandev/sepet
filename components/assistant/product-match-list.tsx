@@ -18,6 +18,12 @@ import {
 import { MarketLogo } from "@/components/market-logo"
 import type { MatchResult } from "@/lib/ai/schemas"
 
+function formatQuantity(qty: number) {
+  return Number.isInteger(qty)
+    ? qty.toString()
+    : qty.toFixed(2).replace(/\.?0+$/, "")
+}
+
 export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
   if (!matches?.length) return null
   const tlFormatter = new Intl.NumberFormat("tr-TR", {
@@ -36,6 +42,11 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
         const cheapest = m.marketPrices[0]
         const otherPrices = m.marketPrices.slice(1)
         const hasMore = otherPrices.length > 0
+        const showQty =
+          (m.unit === "adet" || m.unit === "paket") && m.quantity > 1
+        const qtyLabel = showQty
+          ? `× ${formatQuantity(m.quantity)} ${m.unit}`
+          : null
 
         return (
           <div key={`${m.searchQuery}-${i}`} className="overflow-hidden">
@@ -107,6 +118,11 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                     <span className="text-sm font-semibold tabular-nums">
                       {tlFormatter.format(cheapest.price)}
                     </span>
+                    {qtyLabel && (
+                      <span className="text-[10px] tabular-nums text-muted-foreground">
+                        {qtyLabel}
+                      </span>
+                    )}
                   </div>
                   {cheapest.sourceUrl && (
                     <Button
@@ -151,9 +167,16 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                           <span className="text-muted-foreground">{mp.market}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <span className="font-medium tabular-nums">
-                            {tlFormatter.format(mp.price)}
-                          </span>
+                          <div className="flex flex-col items-end text-right">
+                            <span className="font-medium tabular-nums">
+                              {tlFormatter.format(mp.price)}
+                            </span>
+                            {qtyLabel && (
+                              <span className="text-[10px] tabular-nums text-muted-foreground">
+                                {qtyLabel}
+                              </span>
+                            )}
+                          </div>
                           {mp.sourceUrl && (
                             <Button
                               asChild

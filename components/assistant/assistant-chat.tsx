@@ -192,6 +192,46 @@ export function AssistantChat({
   const [input, setInput] = React.useState("")
   const sentSeedRef = React.useRef(false)
 
+  // Ana sayfadan gelen seed'i synchronously oku ki ilk render'da hemen
+  // optimistic user bubble + "Düşünüyorum…" gösterebilelim. Aksi halde
+  // sendMessage useEffect içinde tetiklenene kadar kullanıcı boş bir
+  // empty state ile karşılaşıyor ve sayfa donuk görünüyor.
+  const [pendingSeed] = React.useState<{
+    text: string
+    file: { url: string; mediaType: string; filename?: string } | null
+  } | null>(() => {
+    if (typeof window === "undefined") return null
+    if (initialMessages && initialMessages.length > 0) return null
+    const rawText = window.sessionStorage.getItem(SEED_KEY)?.trim() ?? ""
+    const fileRaw = window.sessionStorage.getItem(FILE_KEY)
+    if (!rawText && !fileRaw) return null
+    let file: { url: string; mediaType: string; filename?: string } | null = null
+    if (fileRaw) {
+      try {
+        const parsed = JSON.parse(fileRaw) as {
+          url?: string
+          mediaType?: string
+          filename?: string
+        }
+        if (parsed.url && parsed.mediaType) {
+          file = {
+            url: parsed.url,
+            mediaType: parsed.mediaType,
+            filename: parsed.filename,
+          }
+        }
+      } catch {
+        // ignore — file görselsiz görünür ama text seed gene de işlenir
+      }
+    }
+    return {
+      text: rawText || (file ? "Bu görseli analiz et" : ""),
+      file,
+    }
+  })
+
+  const showSeedOptimistic = pendingSeed !== null && messages.length === 0
+
   // Header'daki title state'ini bu chat'in title'ı ile senkronize tut.
   React.useEffect(() => {
     if (initialTitle) {
@@ -372,7 +412,7 @@ export function AssistantChat({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4">
-      {messages.length === 0 ? (
+      {messages.length === 0 && !showSeedOptimistic ? (
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
           <div className="text-muted-foreground">
             <SparklesIcon className="size-10" />
@@ -388,7 +428,7 @@ export function AssistantChat({
                 variant="outline"
                 size="sm"
                 onClick={() => handleSuggestionClick(s)}
-                className="h-auto rounded-full px-3 py-1.5 text-xs font-normal text-muted-foreground"
+                className="h-auto rounded-full border-border px-3 py-1.5 text-xs font-normal text-muted-foreground dark:border-muted-foreground/25"
               >
                 {s}
               </Button>
@@ -398,6 +438,32 @@ export function AssistantChat({
       ) : (
         <Conversation className="mx-auto w-full max-w-3xl">
           <ConversationContent className="px-0">
+            {showSeedOptimistic && pendingSeed && (
+              <>
+                <Message from="user" key="__seed_user">
+                  <MessageContent>
+                    {pendingSeed.file?.mediaType.startsWith("image/") && (
+                      <div className="overflow-hidden rounded-lg border border-border max-w-[280px]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={pendingSeed.file.url}
+                          alt={pendingSeed.file.filename ?? "Yüklenen görsel"}
+                          className="block h-auto w-full"
+                        />
+                      </div>
+                    )}
+                    {pendingSeed.text && (
+                      <MessageResponse>{pendingSeed.text}</MessageResponse>
+                    )}
+                  </MessageContent>
+                </Message>
+                <Message from="assistant" key="__seed_assistant">
+                  <MessageContent>
+                    <ThinkingText>Düşünüyorum…</ThinkingText>
+                  </MessageContent>
+                </Message>
+              </>
+            )}
             {messages.map((m, msgIdx) => {
               const isLatestAssistant =
                 m.role === "assistant" && msgIdx === messages.length - 1
@@ -652,7 +718,7 @@ export function AssistantChat({
         setInput={setInput}
         onSubmit={handleSubmit}
         className="mx-auto w-full max-w-3xl"
-        status={status}
+        status={showSeedOptimistic ? "submitted" : status}
         onStop={stop}
       />
     </div>

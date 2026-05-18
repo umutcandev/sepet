@@ -208,7 +208,7 @@ export default function HomePage() {
               variant="outline"
               size="sm"
               onClick={() => handleChip(chip)}
-              className="h-auto rounded-full border-ring/70 px-3 py-1.5 text-xs font-normal text-muted-foreground dark:bg-muted dark:hover:bg-muted/80"
+              className="h-auto rounded-full border-border px-3 py-1.5 text-xs font-normal text-muted-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:bg-muted/80"
             >
               {chip}
             </Button>

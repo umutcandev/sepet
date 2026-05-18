@@ -24,25 +24,31 @@ import {
 } from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
 import { ThemeMenuItems } from "@/components/theme-toggle"
+import { cn } from "@/lib/utils"
 
 export function HeaderUserMenu({
   user,
+  className,
 }: {
   user: {
     name: string
     email: string
     avatar: string
   }
+  className?: string
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label="Hesap menüsü"
-        className="rounded-full bg-muted/40 p-0.5 transition-colors hover:bg-muted focus-visible:bg-muted"
+        className={cn(
+          "inline-flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted/40 p-0.5 transition-colors hover:bg-muted focus-visible:bg-muted",
+          className,
+        )}
       >
-        <Avatar className="h-6 w-6 rounded-[6px]">
+        <Avatar className="size-6 shrink-0 rounded-full">
           <AvatarImage src={user.avatar} alt={user.name} />
-          <AvatarFallback className="rounded-[6px] text-[10px]">
+          <AvatarFallback className="rounded-full text-[10px]">
             {user.name.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
