@@ -158,6 +158,22 @@ function formatTL(n: number) {
   })
 }
 
+function formatRequestedQty(qty: number, unit: MatchResult["unit"]): string {
+  return `${qty} ${unit}`
+}
+
+function buildSizeMismatchNote(matches: MatchResult[]): string {
+  const mismatches = matches.filter(
+    (m) => m.sizeMismatch && m.bestMatch && m.lookupStatus === "ok",
+  )
+  if (mismatches.length === 0) return ""
+  const lines = mismatches.map((m) => {
+    const requested = formatRequestedQty(m.quantity, m.unit)
+    return `- "${m.rawName}" için ${requested} istedin; aramamda tam o boyut yoktu, en yakın olarak "${m.bestMatch!.name}" ile eşleştirdim.`
+  })
+  return `\n\n**Not:** Aşağıdaki kalemlerde istediğin tam boyutu/miktarı bulamadım — kontrol et, gerekirse kartlardan değiştir:\n${lines.join("\n")}`
+}
+
 function buildSummaryText(
   summary: OptimizationSummary,
   matches: MatchResult[],
@@ -169,6 +185,7 @@ function buildSummaryText(
   const missingPart = missing.length
     ? ` Eşleştiremediklerim: ${missing.join(", ")}.`
     : ""
+  const mismatchNote = buildSizeMismatchNote(matches)
 
   if (matchedCount === 0) {
     return `Listendeki hiçbir kalemi şu an eşleştiremedim.${missingPart}`
@@ -184,16 +201,16 @@ function buildSummaryText(
       hasFullCombo && combo.savingsTL > 0
         ? ` İki market kombinasyonu denenirse (${combo.markets.join(" + ")}) ${formatTL(combo.savingsTL)} TL tasarruf edersin (%${combo.savingsPct.toFixed(1)}).`
         : ""
-    return head + comboPart + missingPart
+    return head + comboPart + missingPart + mismatchNote
   }
 
   if (hasFullCombo) {
     const head = `${matchedCount} kalemli sepetini hazırladım. Tek bir markette tüm sepetini bulamadım, ama iki market kombinasyonuyla (${combo.markets.join(" + ")}) tamamı ${formatTL(combo.total)} TL'ye geliyor.`
-    return head + missingPart
+    return head + missingPart + mismatchNote
   }
 
   const head = `${matchedCount} kalemli sepetini hazırladım. Tek bir markette tüm sepetini bulamadım — en iyi durumda ${single.market}'ten ${single.itemCount}/${matchedCount} kalem ${formatTL(single.total)} TL'ye alınıyor.`
-  return head + missingPart
+  return head + missingPart + mismatchNote
 }
 
 function buildReceiptComparisonText(comp: ReceiptComparison): string {
@@ -731,7 +748,7 @@ async function runAssistantTurn({
       }
       await emitText(
         writer,
-        `Görseldeki yemeği "${food.dishName}" olarak tanıdım. Evde yapman için temel malzemelerini çıkardım — kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.`,
+        `Görseldeki yemeği "${food.dishName}" olarak tanıdım. Evde yapman için temel malzemelerini çıkardım — miktarları tek porsiyona göre tahmin ettim, market paket boyutları farklı olabilir. Kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.`,
       )
       return
     }

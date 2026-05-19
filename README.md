@@ -25,6 +25,7 @@
 
 - [Proje Hakkında](#proje-hakkında)
 - [Çözülen Problem](#çözülen-problem)
+- [Örnek Denemeler](#örnek-denemeler)
 - [Temel Yetenekler](#temel-yetenekler)
 - [Agentic Mimari](#agentic-mimari)
 - [Mimari Genel Bakış](#mimari-genel-bakış)
@@ -57,6 +58,17 @@ Türk tüketicisi, market enflasyonunun en yüksek olduğu kategorilerden birind
 1. Doğal dil veya görsel girdiden yapılandırılmış sepet üretmek.
 2. Sepetin tamamını bir bütün olarak en uygun market kombinasyonuna yerleştirmek.
 3. Gerçek harcamayı (fiş) bugünün en iyi fiyatıyla karşılaştırarak ölçülebilir tasarruf rakamı üretmek.
+
+---
+
+## Örnek Denemeler
+
+Aşağıdaki örnek görselleri indirip Sepet üzerinde fiş okuma ve yemek görselinden tarif çıkarımı özelliklerini doğrudan deneyebilirsiniz.
+
+| Örnek Fiş Görseli | Örnek Yemek Görseli |
+|:---:|:---:|
+| <img src="./public/ornek-fis-gorseli-github.jpg" alt="Örnek market fişi" width="280" /> | <img src="./public/ornek-yemek-gorseli-github.jpg" alt="Örnek yemek görseli (mantı)" width="280" /> |
+| Asistana yükleyerek fişten otomatik OCR, ürün eşleştirme ve bugünkü en uygun fiyatla karşılaştırma akışını test edin. | Asistana yükleyerek yemek tanıma ve gerekli malzemelerin en uygun marketten alınmasına yönelik sepet önerisi akışını test edin. |
 
 ---
 

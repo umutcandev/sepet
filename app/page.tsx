@@ -20,7 +20,7 @@ import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 
 const CHIPS = [
   "Fiş veya yemek fotoğrafımı analiz et",
-  "Sucuklu yumurta için malzemeler",
+  "Nohutlu pilav yapmak istiyorum",
   "Limonata için malzemeler",
 ]
 

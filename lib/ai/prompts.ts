@@ -36,6 +36,17 @@ C MODU ÖRNEKLERİ:
 
 A) YEMEK/TARİF/İÇECEK MODU: Girdi bir yemek, tarif veya ev yapımı içecek adı içeriyorsa (ör. "menemen", "sade sucuklu pizza", "mercimek çorbası", "karnıyarık", "kek", "limonata", "sahlep", "salata") ve içinde virgülle ayrılmış liste veya açık miktar (sayı + birim) YOKSA → o yemeğin/içeceğin temel HAM MALZEMELERİNİ ayrı kalemler olarak çıkar. Her malzeme için makul bir tek-porsiyon miktarı koy. Hazır/işlenmiş ürün aramaktan kaçın (ör. "menemen" için "hazır menemen" değil, yumurta/domates/biber yaz; "limonata" için "hazır limonata" değil, limon/şeker/su yaz).
 
+A MODU — KAPSAM DİSİPLİNİ (ÖNEMLİ, hallüsinasyona karşı):
+- Yalnızca yemeğin TANIMLAYICI/ÇEKİRDEK malzemelerini yaz. Garnitür, baharat, tuz/karabiber/yağ gibi her mutfakta zaten bulunan opsiyonel malzemeleri EKLEME.
+- BİLEŞİK ADLAR (X'li Y kalıbı): Yemek adı zaten malzemelerini açıkça söylüyorsa SADECE o malzemeleri yaz, kıyaslamayla başka yemeklerden malzeme TAŞIMA. Bu en kritik kuraldır.
+  · "sucuklu yumurta" → SADECE sucuk + yumurta (menemen DEĞİL — biber/domates/soğan EKLEME).
+  · "patatesli omlet" → SADECE patates + yumurta.
+  · "peynirli omlet" → SADECE peynir + yumurta.
+  · "sucuklu tost" → SADECE sucuk + ekmek + kaşar peyniri (domates/biber EKLEME).
+  · "kıymalı makarna" → makarna + kıyma + (sos için domates salçası kabul) — ama salata/yan malzeme ekleme.
+- Düşünme/reasoning'de "şu malzemeyi de ekleyebilirim" diye spekülasyon YAPMA — kullanıcı bunu okuyor. Doğrudan kararı yaz: "X için çekirdek malzemeler: A, B."
+- Şüpheliysen FAZLASINI değil EKSİĞİNİ tercih et — kullanıcı kart üzerinden ekleyebilir.
+
 ÖNEMLİ — A MODU TETİKLEYİCİ KALIPLAR: Yemek/tarif adı tek başına gelmek zorunda değil. Aşağıdaki kalıpların TÜMÜ A modudur, kullanıcı net olarak malzeme listesi istiyor demektir, ASLA C moduna düşürme:
 - "X için malzemeler" / "X malzemeleri" / "X malzemesi" (ör. "limonata için malzemeler", "menemen malzemeleri")
 - "X tarifi" / "X yapmak istiyorum" / "X yapacağım" (ör. "kek tarifi", "pizza yapacağım")
@@ -76,6 +87,9 @@ searchQuery KURALLARI (sıkı):
 - "3 kutu cola" → quantity=3, unit="adet", searchQuery="cola"
 
 ÖRNEKLER — YEMEK/TARİF MODU (A):
+- "sucuklu yumurta" → 2 kalem (BİLEŞİK AD — sadece adı geçen malzemeler):
+  · name="sucuk", quantity=100, unit="g", searchQuery="sucuk"
+  · name="yumurta", quantity=2, unit="adet", searchQuery="yumurta"
 - "menemen" → 4 kalem:
   · name="yumurta", quantity=4, unit="adet", searchQuery="yumurta"
   · name="domates", quantity=3, unit="adet", searchQuery="domates"

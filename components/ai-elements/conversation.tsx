@@ -10,14 +10,26 @@ import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
 
 export type ConversationProps = ComponentProps<typeof StickToBottom>;
 
-export const Conversation = ({ className, ...props }: ConversationProps) => (
+export const Conversation = ({ className, children, ...props }: ConversationProps) => (
   <StickToBottom
     className={cn("relative flex-1 overflow-y-hidden", className)}
     initial="smooth"
     resize="smooth"
     role="log"
     {...props}
-  />
+  >
+    {children}
+    {/* Üst kenar fade overlay'i — scroll content'inin üzerine binip metinleri
+        kademeli olarak gizler. Eskiden bu efekt scroll konteynerine
+        `mask-image` ile veriliyordu, ama CSS mask layer'ı subpixel
+        antialiasing'i kapatıp Chrome/Windows'ta tüm yazıları bir an "kalın"
+        gösteriyordu (scroll sırasında flicker). Overlay DOM elementi olarak
+        durunca metin rendering'i etkilenmez. */}
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-x-0 top-0 z-10 h-4 bg-gradient-to-b from-background to-transparent"
+    />
+  </StickToBottom>
 );
 
 export type ConversationContentProps = ComponentProps<
@@ -32,9 +44,7 @@ export const ConversationContent = ({
     className={cn("flex flex-col gap-8 p-4", className)}
     scrollClassName={cn(
       // Hide the scrollbar across browsers
-      "[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
-      // Smooth fade as content scrolls under the top edge
-      "[mask-image:linear-gradient(to_bottom,transparent_0,#000_1rem)]"
+      "[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
     )}
     {...props}
   />

@@ -50,6 +50,7 @@ import {
   type BasketContextPayload,
 } from "./basket-save-card"
 import { ThinkingText } from "./ai-thinking-text"
+import { Spinner } from "@/components/ui/spinner"
 import { cn } from "@/lib/utils"
 
 const SEED_KEY = "assistant:seed"
@@ -57,7 +58,7 @@ const FILE_KEY = "assistant:file"
 
 const SUGGESTIONS = [
   "Fiş veya yemek fotoğrafımı analiz et",
-  "Sucuklu yumurta için malzemeler",
+  "Nohutlu pilav yapmak istiyorum",
   "Limonata için malzemeler",
 ]
 
@@ -231,6 +232,14 @@ export function AssistantChat({
   })
 
   const showSeedOptimistic = pendingSeed !== null && messages.length === 0
+  // Seed bir görsel içeriyorsa upload bitene kadar fotoğrafın üzerinde
+  // blur+spinner overlay göstermek için bayrak. Upload başarılıysa
+  // sendMessage tetiklenir → messages.length>0 olur → optimistic blok zaten
+  // unmount olur; başarısız olursa catch içinde false'a çekiyoruz ki kullanıcı
+  // donmuş bir overlay görmesin.
+  const [isSeedUploading, setIsSeedUploading] = React.useState(
+    () => pendingSeed?.file != null,
+  )
 
   // Header'daki title state'ini bu chat'in title'ı ile senkronize tut.
   React.useEffect(() => {
@@ -282,6 +291,9 @@ export function AssistantChat({
         ;(async () => {
           try {
             const upload = await uploadReceiptImage(fileData)
+            // R2 URL'ini browser cache'ine al ki optimistic blob'dan gerçek
+            // mesaja geçişte img boş kalıp "kaybolup tekrar gelmesin".
+            await preloadImage(upload.publicUrl)
             markPendingTitleIfNew()
             sendMessage({
               parts: [
@@ -296,6 +308,7 @@ export function AssistantChat({
             })
           } catch (err) {
             console.error("[assistant-chat] seed file upload failed", err)
+            setIsSeedUploading(false)
             toast.error(
               err instanceof Error
                 ? err.message
@@ -442,18 +455,30 @@ export function AssistantChat({
               <>
                 <Message from="user" key="__seed_user">
                   <MessageContent>
+                    {pendingSeed.text && (
+                      <MessageResponse>{pendingSeed.text}</MessageResponse>
+                    )}
                     {pendingSeed.file?.mediaType.startsWith("image/") && (
-                      <div className="overflow-hidden rounded-lg border border-border max-w-[280px]">
+                      <div className="relative overflow-hidden rounded-lg border border-border max-w-[280px]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={pendingSeed.file.url}
                           alt={pendingSeed.file.filename ?? "Yüklenen görsel"}
-                          className="block h-auto w-full"
+                          className={cn(
+                            "block h-auto w-full transition-[filter,transform] duration-200",
+                            isSeedUploading && "scale-[1.02] blur-sm",
+                          )}
                         />
+                        {isSeedUploading && (
+                          <div
+                            className="absolute inset-0 flex items-center justify-center bg-background/30 backdrop-blur-sm"
+                            aria-live="polite"
+                            aria-label="Görsel yükleniyor"
+                          >
+                            <Spinner className="size-6 text-foreground/80" />
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {pendingSeed.text && (
-                      <MessageResponse>{pendingSeed.text}</MessageResponse>
                     )}
                   </MessageContent>
                 </Message>
@@ -758,6 +783,22 @@ async function urlToBlob(url: string, mimeType: string): Promise<Blob> {
   } catch {
     throw new Error("Dosya indirilemedi.")
   }
+}
+
+/**
+ * Decode a remote image into the browser cache before swapping the <img> src.
+ * Without this, sendMessage fires with the R2 URL while the browser hasn't
+ * fetched it yet → optimistic blob image unmounts and the real image renders
+ * blank for a beat = visible "kaybolup tekrar geldi" flicker.
+ * Errors are swallowed: we don't want a flaky preload to block the chat flow.
+ */
+async function preloadImage(url: string): Promise<void> {
+  return new Promise((resolve) => {
+    const img = new window.Image()
+    img.onload = () => resolve()
+    img.onerror = () => resolve()
+    img.src = url
+  })
 }
 
 async function uploadReceiptImage(file: {
