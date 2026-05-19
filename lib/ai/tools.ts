@@ -174,7 +174,7 @@ function matchCacheKey(item: ParsedItem, hits: HitList): string {
       .map((h) => h.barcode)
       .sort(),
   })
-  return `camgoz:match:${createHash("sha1").update(payload).digest("hex")}`
+  return `camgoz:match:v2:${createHash("sha1").update(payload).digest("hex")}`
 }
 
 function toMatchedProduct(h: ProductHitItem) {

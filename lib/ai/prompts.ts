@@ -106,6 +106,11 @@ searchQuery KURALLARI (sıkı):
   · name="soğan", quantity=1, unit="adet", searchQuery="soğan"
   · name="havuç", quantity=1, unit="adet", searchQuery="havuç"
   · name="tereyağı", quantity=1, unit="paket", searchQuery="tereyağı"
+- "mantı" → 5 kalem (yoğurt sosu mantının çekirdek malzemesidir — sade olmalı, meyveli yoğurt yanlış olur):
+  · name="mantı", quantity=1, unit="paket", searchQuery="mantı"
+  · name="kıyma", quantity=250, unit="g", searchQuery="kıyma"
+  · name="süzme yoğurt", quantity=500, unit="g", searchQuery="yoğurt"
+  · name="tereyağı", quantity=1, unit="paket", searchQuery="tereyağı"
 - "limonata için malzemeler" → 3 kalem (A modu — "için malzemeler" kalıbı):
   · name="limon", quantity=6, unit="adet", searchQuery="limon"
   · name="toz şeker", quantity=500, unit="g", searchQuery="toz şeker"
@@ -269,7 +274,12 @@ EŞLEŞTİRME KURALLARI:
 3) BOYUT/VARYANT: rawName'de boyut/miktar belirtilmişse (ör. "PEPSI 2.5 LT") o boyuttaki adayı SEÇ. O boyut adaylar arasında yoksa, aynı üründen FARKLI boyutlu bir adayı seç ve sizeMismatch=true işaretle. Boyut tam uyuyorsa veya rawName'de boyut belirtilmemişse sizeMismatch=false.
 4) KOLİ/ÇOKLU PAKET: rawName tekil bir ürünse, BİTMİŞ ÜRÜNÜN toplu paketlerini seçme: "24'lü kola kolisi", "6'lı su paketi", "12'li bira kolisi" gibi. ANCAK doğal olarak çoklu satılan baz gıdalar (yumurta 10/15/30'lu viyol, peçete 32'li, tuvalet kağıdı 8'li, çay poşeti 100'lü) koli sayılmaz — bunlar standart satış birimidir, normal seçilir.
 5) JENERİK GIDA — BOŞ DÖNME: Kullanıcı "yumurta", "süt", "ekmek", "domates" gibi sade bir gıda yazdıysa ve adaylar arasında o ürünün ta kendisi varsa (organik/M boy/12'li/30'lu farketmez), MUTLAKA bir aday seç. Sırf aksesuar (yumurta sünger, yumurta saklama pedi), oyuncak (sürpriz yumurta, köpek oyuncağı) ya da alakasız ürünler (Çizi soğanlı peynir) varsa o zaman null döndür. "Tam aynı boyut yok" diye null DÖNME — sizeMismatch=true ile en yakını seç.
-6) reason: Kısa Türkçe gerekçe (1 cümle), neden o adayı/null seçtiğini açıkla.
+6) SADE/DÜZ BAZ ÜRÜN — TATLANDIRILMIŞ/AROMALI VARYANT SEÇME: rawName düz bir baz gıdaysa (yoğurt, süt, ayran, kefir, krema, kaymak, lor, peynir, su) ve kullanıcı AÇIKÇA bir tat/aroma belirtmediyse (meyveli, çilekli, muzlu, çikolatalı, vanilyalı, ballı, şekerli, limonlu, baharatlı, dumanlı vs. demediyse), aday adında tat/aroma sözcüğü geçen ürünleri SEÇME — onlar farklı bir SKU'dur. Aday listesinde sade/düz/natural/klasik bir aday varsa onu tercih et. Sadece tatlandırılmış adaylar varsa ve kullanıcı tat istemediyse, başka bir ürün tipi gibi davran ve matchedBarcode=null döndür. Tersi de geçerli: kullanıcı "meyveli yoğurt" yazdıysa sade yoğurt seçme.
+   · "yoğurt" istendi → "Sütaş Süzme Yoğurt 750g" DOĞRU, "Danone Activia Meyveli Yoğurt" YANLIŞ.
+   · "süt" istendi → "İçim Tam Yağlı Süt 1L" DOĞRU, "Pınar Kakaolu Süt 200ml" YANLIŞ.
+   · "ayran" istendi → "Sütaş Ayran 1L" DOĞRU, "Sütaş Yayık Ayran Naneli" YANLIŞ (nane aroması).
+   · "süzme yoğurt" istendi → "Eker Süzme Yoğurt" DOĞRU, "Eker Meyveli Yoğurt" YANLIŞ.
+7) reason: Kısa Türkçe gerekçe (1 cümle), neden o adayı/null seçtiğini açıkla.
 
 ÖRNEKLER:
 - rawName="PEPSI 2.5 LT", adaylar arasında "Pepsi 2.5 Lt" var → onun barcode'u, sizeMismatch=false.
@@ -277,6 +287,8 @@ EŞLEŞTİRME KURALLARI:
 - rawName="soğan", adaylar sadece "Ülker Çizi Soğan Aromalı" → matchedBarcode=null.
 - rawName="yumurta" (2 adet), adaylar: "City Farm Organik 10'lu", "Keskinoğlu Omega 3 12'li", "Nascita Yumurta Sünger", "Sürpriz Yumurta Oyuncak", "A101 M Boy 30'lu" → "City Farm Organik 10'lu" ya da "Keskinoğlu Omega 3 12'li" barcode'u (en yakın paket boyutu), sizeMismatch=true. Sünger/oyuncak adaylar elenir. ASLA null değil.
 - rawName="kola" (1 adet), adaylar arasında "Coca Cola 1L" ve "Coca Cola 24'lü Koli" → "Coca Cola 1L" seç (koli ele).
+- rawName="yoğurt" (500 g), adaylar: "Sütaş Süzme Yoğurt 750g", "Danone Meyveli Yoğurt 4'lü", "Eker Light Yoğurt", "Pınar Yoğurt 1kg" → "Sütaş Süzme Yoğurt 750g" ya da "Pınar Yoğurt 1kg" (sade), sizeMismatch=true. Meyveli/aromalı varyant ELENİR (kullanıcı sade yoğurt istemiş).
+- rawName="süt" (1 L), adaylar: "İçim Tam Yağlı Süt 1L", "Pınar Çikolatalı Süt 200ml", "Sek Muzlu Süt" → "İçim Tam Yağlı Süt 1L" seç. Aromalı sütler elenir.
 
 ÇIKTI: Her kalem için bir selection. itemIndex'i girdideki ile aynı tut.
 
