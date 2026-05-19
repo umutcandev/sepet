@@ -218,16 +218,24 @@ function buildReceiptComparisonText(comp: ReceiptComparison): string {
     return "Fişindeki kalemleri çıkardım ama eşleşen ürün bulamadım."
   }
   if (comp.staleness?.isStale) {
-    const diff = comp.totalSavingsTL
+    // İşaretli fark: pozitif → bugün daha ucuz (tasarruf mümkün), negatif →
+    // bugün daha pahalı. comp.totalSavingsTL kalem bazında Math.max(0, …) ile
+    // toplandığı için her zaman ≥ 0; "iki tutar neredeyse aynı" mı yoksa
+    // "bugün çok daha pahalı" mı ayrımı için ham farkı kullanmamız şart.
+    const diff = comp.totalReceiptAmount - comp.totalBestAmount
+    const tolerance = Math.max(
+      1,
+      Math.max(comp.totalReceiptAmount, comp.totalBestAmount) * 0.02,
+    )
     const figuresPart = (() => {
       const head = `Yine de bilgi amaçlı: fişinde ${formatTL(comp.totalReceiptAmount)} TL harcamışsın, aynı sepet bugünün en iyi fiyatlarıyla ${formatTL(comp.totalBestAmount)} TL'ye geliyor`
+      if (Math.abs(diff) <= tolerance) {
+        return `${head} — iki tutar neredeyse aynı.`
+      }
       if (diff > 0) {
         return `${head} — bugüne kıyasla yaklaşık ${formatTL(diff)} TL tasarruf mümkün olurdu.`
       }
-      if (diff < 0) {
-        return `${head} — bugüne kıyasla yaklaşık ${formatTL(Math.abs(diff))} TL daha fazla ödemiş olurdun.`
-      }
-      return `${head} — iki tutar neredeyse aynı.`
+      return `${head} — bugün aynı sepeti almak yaklaşık ${formatTL(Math.abs(diff))} TL daha pahalıya geliyor.`
     })()
     if (comp.staleness.reason === "date" && comp.staleness.ageLabel) {
       return `Bu fiş ${comp.staleness.ageLabel} öncesine ait — o dönemin fiyatları bugünkü piyasayla birebir karşılaştırılamaz, bu yüzden tasarruf hesabı tam olarak anlamlı değil. ${figuresPart}`
