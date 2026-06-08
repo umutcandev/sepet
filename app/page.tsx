@@ -3,6 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { AnimatePresence, motion } from "motion/react"
+import { ArrowUpRightIcon, XIcon } from "lucide-react"
 
 import {
   Avatar,
@@ -35,12 +36,35 @@ const ROTATING_HEADINGS = [
 const ASSISTANT_SEED_KEY = "assistant:seed"
 const ASSISTANT_FILE_KEY = "assistant:file"
 
+const HACKATHON_BANNER_KEY = "sepet:hackathon26-banner-dismissed"
+const HACKATHON_URL = "https://www.btkakademi.gov.tr/portal/public/hackathon2026"
+
 export default function HomePage() {
   const router = useRouter()
   const guard = useRequireAuth()
   const [input, setInput] = React.useState("")
   const [headingIndex, setHeadingIndex] = React.useState(0)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [bannerVisible, setBannerVisible] = React.useState(false)
+
+  React.useEffect(() => {
+    try {
+      if (window.localStorage.getItem(HACKATHON_BANNER_KEY) !== "1") {
+        setBannerVisible(true)
+      }
+    } catch {
+      setBannerVisible(true)
+    }
+  }, [])
+
+  const dismissBanner = React.useCallback(() => {
+    setBannerVisible(false)
+    try {
+      window.localStorage.setItem(HACKATHON_BANNER_KEY, "1")
+    } catch {
+      // localStorage erişilemezse sessizce geç — şerit oturum boyunca kapanır.
+    }
+  }, [])
 
   React.useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | undefined
@@ -198,6 +222,35 @@ export default function HomePage() {
           onSubmit={handleSubmit}
           status={isSubmitting ? "submitted" : undefined}
           className="w-full"
+          announcement={
+            bannerVisible ? (
+              <>
+                <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+                  Sepet, BTK Akademi HACKATHON&apos;26 birincisi.
+                </p>
+
+                <a
+                  href={HACKATHON_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex shrink-0 items-center gap-0.5 text-xs font-medium text-primary underline-offset-4 transition-colors hover:text-primary/80 hover:underline"
+                >
+                  <span className="hidden sm:inline">Detayları İncele</span>
+                  <span className="sm:hidden">İncele</span>
+                  <ArrowUpRightIcon className="size-3" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={dismissBanner}
+                  aria-label="Bildirimi kapat"
+                  className="-mr-1 inline-flex size-5 shrink-0 items-center justify-center rounded-md text-muted-foreground/70 transition-colors hover:bg-foreground/5 hover:text-foreground"
+                >
+                  <XIcon className="size-3.5" />
+                </button>
+              </>
+            ) : null
+          }
         />
 
         <div className="flex flex-wrap justify-center gap-2">

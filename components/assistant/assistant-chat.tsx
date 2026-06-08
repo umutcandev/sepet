@@ -4,7 +4,6 @@ import * as React from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
 import { ChevronDownIcon, SparklesIcon } from "lucide-react"
-import { toast } from "sonner"
 
 import {
   Conversation,
@@ -50,7 +49,6 @@ import {
   type BasketContextPayload,
 } from "./basket-save-card"
 import { ThinkingText } from "./ai-thinking-text"
-import { Spinner } from "@/components/ui/spinner"
 import { cn } from "@/lib/utils"
 
 const SEED_KEY = "assistant:seed"
@@ -160,6 +158,20 @@ export function AssistantChat({
           assistantConversations.setTitle(id, title)
         }
       }
+      if (
+        dataPart.type === "data-conversation-status" &&
+        dataPart.data &&
+        typeof (dataPart.data as { status?: unknown }).status === "string"
+      ) {
+        const data = dataPart.data as {
+          id?: string
+          status: "awaiting" | "completed"
+        }
+        const id = data.id ?? conversationIdRef.current
+        if (id) {
+          assistantConversations.setStatus(id, data.status)
+        }
+      }
     },
     onFinish: () => {
       // Sunucu title event'i göndermediyse skeleton'u kapat — header
@@ -232,14 +244,6 @@ export function AssistantChat({
   })
 
   const showSeedOptimistic = pendingSeed !== null && messages.length === 0
-  // Seed bir görsel içeriyorsa upload bitene kadar fotoğrafın üzerinde
-  // blur+spinner overlay göstermek için bayrak. Upload başarılıysa
-  // sendMessage tetiklenir → messages.length>0 olur → optimistic blok zaten
-  // unmount olur; başarısız olursa catch içinde false'a çekiyoruz ki kullanıcı
-  // donmuş bir overlay görmesin.
-  const [isSeedUploading, setIsSeedUploading] = React.useState(
-    () => pendingSeed?.file != null,
-  )
 
   // Header'daki title state'ini bu chat'in title'ı ile senkronize tut.
   React.useEffect(() => {
@@ -281,46 +285,31 @@ export function AssistantChat({
     const text = seed?.trim() || ""
 
     if (fileRaw) {
-      // Home page stored a file — upload it, then send as message
+      // Home page görseli attach anında R2'ye yükledi ve public URL + key'i
+      // sessionStorage'a yazdı. Burada upload yok; doğrudan gönderiyoruz.
       try {
         const fileData = JSON.parse(fileRaw) as {
           url?: string
           mediaType?: string
           filename?: string
         }
-        ;(async () => {
-          try {
-            const upload = await uploadReceiptImage(fileData)
-            // R2 URL'ini browser cache'ine al ki optimistic blob'dan gerçek
-            // mesaja geçişte img boş kalıp "kaybolup tekrar gelmesin".
-            await preloadImage(upload.publicUrl)
-            markPendingTitleIfNew()
-            sendMessage({
-              parts: [
-                { type: "text", text: text || "Bu görseli analiz et" },
-                {
-                  type: "file",
-                  mediaType: fileData.mediaType ?? "image/jpeg",
-                  url: upload.publicUrl,
-                  filename: upload.key,
-                },
-              ],
-            })
-          } catch (err) {
-            console.error("[assistant-chat] seed file upload failed", err)
-            setIsSeedUploading(false)
-            toast.error(
-              err instanceof Error
-                ? err.message
-                : "Fotoğraf yüklenemedi. Lütfen tekrar dene.",
-            )
-            // Still send the text if there was one
-            if (text) {
-              markPendingTitleIfNew()
-              sendMessage({ text })
-            }
-          }
-        })()
+        if (fileData.url) {
+          markPendingTitleIfNew()
+          sendMessage({
+            parts: [
+              { type: "text", text: text || "Bu görseli analiz et" },
+              {
+                type: "file",
+                mediaType: fileData.mediaType ?? "image/jpeg",
+                url: fileData.url,
+                filename: fileData.filename,
+              },
+            ],
+          })
+        } else if (text) {
+          markPendingTitleIfNew()
+          sendMessage({ text })
+        }
       } catch {
         // JSON parse failed, just send text
         if (text) {
@@ -336,6 +325,17 @@ export function AssistantChat({
 
   const isBusy = status === "submitted" || status === "streaming"
 
+  // Sidebar'da bu sohbet için üç nokta animasyonunu süren istemci-içi bayrak.
+  // Stream başladığında (id biliniyorsa) işaretle, bittiğinde/değiştiğinde
+  // temizle. Yeni sohbette id ilk turn'de gelir → conversationId state'i
+  // değişince effect tekrar çalışır ve bayrağı kurar. Onay turn'lerinde
+  // (mevcut sohbet) de aynı şekilde çalışır.
+  React.useEffect(() => {
+    if (!isBusy || !conversationId) return
+    assistantConversations.setStreaming(conversationId)
+    return () => assistantConversations.clearStreaming()
+  }, [isBusy, conversationId])
+
   // Handler'lar event-time'da çağrılır — render sırasında çağrılmaz. React 19
   // derleyicisi `guard()`'a ref okuyan callback geçişini false-positive olarak
   // bayraklıyor (transport useMemo'sunda da aynı kalıp var).
@@ -348,29 +348,21 @@ export function AssistantChat({
     )
 
     if (imageFile) {
-      try {
-        const upload = await uploadReceiptImage(imageFile)
-        markPendingTitleIfNew()
-        sendMessage({
-          parts: [
-            { type: "text", text: text || "Bu görseli analiz et" },
-            {
-              type: "file",
-              mediaType: imageFile.mediaType,
-              url: upload.publicUrl,
-              filename: upload.key,
-            },
-          ],
-        })
-        setInput("")
-      } catch (err) {
-        console.error("[assistant-chat] upload failed", err)
-        toast.error(
-          err instanceof Error
-            ? err.message
-            : "Fotoğraf yüklenemedi. Lütfen tekrar dene.",
-        )
-      }
+      // Görsel attach anında zaten R2'ye yüklendi; imageFile.url public URL,
+      // imageFile.filename ise R2 key'idir. Burada upload beklemiyoruz.
+      markPendingTitleIfNew()
+      sendMessage({
+        parts: [
+          { type: "text", text: text || "Bu görseli analiz et" },
+          {
+            type: "file",
+            mediaType: imageFile.mediaType,
+            url: imageFile.url,
+            filename: imageFile.filename,
+          },
+        ],
+      })
+      setInput("")
       return
     }
 
@@ -459,25 +451,13 @@ export function AssistantChat({
                       <MessageResponse>{pendingSeed.text}</MessageResponse>
                     )}
                     {pendingSeed.file?.mediaType.startsWith("image/") && (
-                      <div className="relative overflow-hidden rounded-lg border border-border max-w-[280px]">
+                      <div className="overflow-hidden rounded-lg border border-border max-w-[280px]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={pendingSeed.file.url}
                           alt={pendingSeed.file.filename ?? "Yüklenen görsel"}
-                          className={cn(
-                            "block h-auto w-full transition-[filter,transform] duration-200",
-                            isSeedUploading && "scale-[1.02] blur-sm",
-                          )}
+                          className="block h-auto w-full"
                         />
-                        {isSeedUploading && (
-                          <div
-                            className="absolute inset-0 flex items-center justify-center bg-background/30 backdrop-blur-sm"
-                            aria-live="polite"
-                            aria-label="Görsel yükleniyor"
-                          >
-                            <Spinner className="size-6 text-foreground/80" />
-                          </div>
-                        )}
                       </div>
                     )}
                   </MessageContent>
@@ -749,88 +729,6 @@ export function AssistantChat({
     </div>
   )
 }
-
-/**
- * Convert any browser-side URL (data: or blob:) into a usable Blob.
- * Falls back gracefully if fetch fails (e.g. revoked blob URL).
- */
-async function urlToBlob(url: string, mimeType: string): Promise<Blob> {
-  if (url.startsWith("data:")) {
-    try {
-      const [meta, b64] = url.split(",", 2)
-      const mime = meta.match(/:(.*?);/)?.[1] ?? mimeType
-      const raw = atob(b64)
-      const arr = new Uint8Array(raw.length)
-      for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i)
-      return new Blob([arr], { type: mime })
-    } catch {
-      throw new Error("Data URL çözümlenemedi.")
-    }
-  }
-
-  if (url.startsWith("blob:")) {
-    try {
-      return await (await fetch(url)).blob()
-    } catch {
-      throw new Error(
-        "Dosya okunamadı — muhtemelen zaman aşımına uğradı. Lütfen tekrar yükle.",
-      )
-    }
-  }
-
-  try {
-    return await (await fetch(url)).blob()
-  } catch {
-    throw new Error("Dosya indirilemedi.")
-  }
-}
-
-/**
- * Decode a remote image into the browser cache before swapping the <img> src.
- * Without this, sendMessage fires with the R2 URL while the browser hasn't
- * fetched it yet → optimistic blob image unmounts and the real image renders
- * blank for a beat = visible "kaybolup tekrar geldi" flicker.
- * Errors are swallowed: we don't want a flaky preload to block the chat flow.
- */
-async function preloadImage(url: string): Promise<void> {
-  return new Promise((resolve) => {
-    const img = new window.Image()
-    img.onload = () => resolve()
-    img.onerror = () => resolve()
-    img.src = url
-  })
-}
-
-async function uploadReceiptImage(file: {
-  url?: string
-  mediaType?: string
-  filename?: string
-}): Promise<{ key: string; publicUrl: string }> {
-  if (!file.url || !file.mediaType) {
-    throw new Error("Geçersiz dosya.")
-  }
-
-  const blob = await urlToBlob(file.url, file.mediaType)
-
-  const res = await fetch("/api/receipts/upload", {
-    method: "POST",
-    headers: { "Content-Type": file.mediaType },
-    body: blob,
-  })
-  if (!res.ok) {
-    const data = (await res.json().catch(() => null)) as {
-      message?: string
-    } | null
-    throw new Error(data?.message ?? "Yükleme reddedildi.")
-  }
-  const { key, publicUrl } = (await res.json()) as {
-    key: string
-    publicUrl: string
-  }
-  return { key, publicUrl }
-}
-
-
 
 type ToolPartLike = {
   state: string

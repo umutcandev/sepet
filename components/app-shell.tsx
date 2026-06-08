@@ -45,7 +45,12 @@ function SidebarToggleButton() {
       <PanelLeftIcon className="cn-rtl-flip size-4" />
       <span className="hidden items-center gap-0.5 font-mono text-[11px] font-medium leading-none text-muted-foreground/60 md:inline-flex">
         <CommandIcon className="size-3 shrink-0" />
-        <span className="inline-flex h-3 items-center leading-none">B</span>
+        {/* Büyük "B"nin optik merkezi font metrikleri yüzünden ikon merkezinin
+            ~0.5px üstünde kalıyor → ⌘ ile yatay hizada görünmesi için hafif
+            aşağı nudge. */}
+        <span className="inline-flex h-3 translate-y-[0.5px] items-center justify-center leading-none">
+          B
+        </span>
       </span>
     </Button>
   )
@@ -166,11 +171,10 @@ export function AppShell({ user, conversations, children }: Props) {
               <HeaderUserMenu user={user} className="md:hidden" />
             ) : (
               <Button
-                variant="outline"
                 size="sm"
                 onClick={() => loginDialog.open()}
               >
-                Giriş Yap
+                Hemen Başla
               </Button>
             )}
           </div>

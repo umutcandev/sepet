@@ -160,3 +160,27 @@
   color: transparent;
   animation: ai-thinking-shimmer 2.4s linear infinite;
 }
+
+@keyframes conv-typing-blink {
+  0%, 80%, 100% { opacity: 0.25; }
+  40% { opacity: 1; }
+}
+
+.conv-typing-dot {
+  animation: conv-typing-blink 1.2s ease-in-out infinite;
+}
+
+.conv-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.conv-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conv-typing-dot {
+    animation: none;
+    opacity: 0.6;
+  }
+}

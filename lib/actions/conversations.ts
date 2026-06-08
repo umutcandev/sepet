@@ -5,6 +5,7 @@ import { and, asc, desc, eq, max } from "drizzle-orm"
 import type { UIMessage } from "ai"
 import { auth } from "@/auth"
 import { db, conversations, conversationMessages } from "@/lib/db"
+import type { ConversationStatus } from "@/lib/assistant/conversation-status"
 import { getSavedBasketsForConversation } from "./baskets"
 
 const TITLE_MAX = 100
@@ -66,6 +67,7 @@ export async function listConversations() {
       id: conversations.id,
       title: conversations.title,
       updatedAt: conversations.updatedAt,
+      status: conversations.status,
     })
     .from(conversations)
     .where(eq(conversations.userId, session.user.id))
@@ -154,6 +156,29 @@ export async function setConversationTitle(
   await db
     .update(conversations)
     .set({ title: trimmed })
+    .where(
+      and(
+        eq(conversations.id, conversationId),
+        eq(conversations.userId, userId),
+      ),
+    )
+
+  revalidatePath("/asistan", "layout")
+}
+
+/**
+ * Asistan turn'ü bittiğinde sohbetin sidebar durumunu günceller. setTitle gibi
+ * updatedAt'i bilinçli olarak değiştirmez — durum güncellemesi sohbeti sidebar
+ * sıralamasında zıplatmasın (asıl sıralama dokunuşu appendMessages'ta yapılır).
+ */
+export async function setConversationStatus(
+  conversationId: string,
+  userId: string,
+  status: ConversationStatus,
+): Promise<void> {
+  await db
+    .update(conversations)
+    .set({ status })
     .where(
       and(
         eq(conversations.id, conversationId),

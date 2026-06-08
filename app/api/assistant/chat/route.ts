@@ -29,7 +29,9 @@ import {
   appendMessages,
   createConversation,
   setConversationTitle,
+  setConversationStatus,
 } from "@/lib/actions/conversations"
+import type { ConversationStatus } from "@/lib/assistant/conversation-status"
 import { and, eq } from "drizzle-orm"
 import { db, conversations } from "@/lib/db"
 
@@ -504,7 +506,7 @@ export async function POST(req: Request) {
           }
         : undefined
 
-      await Promise.all([
+      const [turn] = await Promise.all([
         runAssistantTurn({
           writer: wrappedWriter,
           mode,
@@ -524,6 +526,21 @@ export async function POST(req: Request) {
           console.error("[assistant/chat] assistant message persist failed", err)
         }
       }
+
+      // Sidebar ikon durumunu yaz ve client'a transient event olarak ilet —
+      // store anında güncellensin (RSC refresh gerektirmeden). Turn bir onay
+      // kartında bittiyse "awaiting", terminal sonuçta bittiyse "completed".
+      const status: ConversationStatus = turn.awaiting ? "awaiting" : "completed"
+      try {
+        await setConversationStatus(newConversationId, userId, status)
+      } catch (err) {
+        console.error("[assistant/chat] status persist failed", err)
+      }
+      writer.write({
+        type: "data-conversation-status",
+        data: { id: newConversationId, status },
+        transient: true,
+      } as Parameters<typeof writer.write>[0])
 
       writer.write({ type: "finish" })
     },
@@ -678,6 +695,14 @@ function wrapWriter(
   }
 }
 
+/**
+ * Bir asistan turn'ünü çalıştırır ve terminal durumu döndürür.
+ * `awaiting: true` → turn kullanıcıdan onay bekleyen bir kartla bitti
+ * (sepet/fiş/yemek onayı). `awaiting: false` → terminal sonuç (karşılaştırma,
+ * optimizasyon, ya da kapanış/hata mesajı). Sidebar ikonu buna göre seçilir.
+ */
+type TurnResult = { awaiting: boolean }
+
 async function runAssistantTurn({
   writer,
   mode,
@@ -689,7 +714,7 @@ async function runAssistantTurn({
     kind: ImageAnalysis["kind"],
     analysis?: ImageAnalysis,
   ) => Promise<void> | void
-}) {
+}): Promise<TurnResult> {
   if (mode.kind === "receiptImage") {
     const analyzeCallId = nanoid()
     writer.write({
@@ -715,7 +740,7 @@ async function runAssistantTurn({
           : "Görseli okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
       } as AnyChunk)
       if (onImageKind) await onImageKind("unknown")
-      return
+      return { awaiting: false }
     }
 
     if (parseReasoning) {
@@ -736,13 +761,15 @@ async function runAssistantTurn({
 
     if (analysis.kind === "receipt") {
       const ocr = analysis.receipt
+      const hasItems = !!ocr && ocr.items.length > 0
       await emitText(
         writer,
-        !ocr || ocr.items.length === 0
+        !hasItems
           ? "Fişten ürün çıkartamadım. Lütfen tüm satırların net göründüğü bir kare çek."
           : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et ve düzeltmelerini yap — ardından karşılaştırma için onayla.",
       )
-      return
+      // Kalem çıktıysa onay kartı gösterilir → awaiting; çıkmadıysa terminal.
+      return { awaiting: hasItems }
     }
 
     if (analysis.kind === "food") {
@@ -752,13 +779,13 @@ async function runAssistantTurn({
           writer,
           "Görseldeki yemeği tanıdım ama malzemelerini çıkaramadım. Yemeğin adını yazar mısın? Sana malzeme listesini hazırlayayım.",
         )
-        return
+        return { awaiting: false }
       }
       await emitText(
         writer,
         `Görseldeki yemeği "${food.dishName}" olarak tanıdım. Evde yapman için temel malzemelerini çıkardım — miktarları tek porsiyona göre tahmin ettim, market paket boyutları farklı olabilir. Kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.`,
       )
-      return
+      return { awaiting: true }
     }
 
     // kind === "unknown" — model ya bir yemek/fiş tanıyamadı, ya da fiş
@@ -772,7 +799,7 @@ async function runAssistantTurn({
         ? reason
         : "Bu görseldeki yemeği ya da fişi tanıyamadım. Bana yemeğin adını yazar mısın, ya da bir market fişi fotoğrafı yüklemek ister misin?",
     )
-    return
+    return { awaiting: false }
   }
 
   if (mode.kind === "receiptApproval") {
@@ -848,7 +875,7 @@ async function runAssistantTurn({
     } as AnyChunk)
 
     await emitText(writer, buildReceiptComparisonText(comparison))
-    return
+    return { awaiting: false }
   }
 
   if (mode.kind === "basketApproval") {
@@ -907,7 +934,7 @@ async function runAssistantTurn({
     } as AnyChunk)
 
     await emitText(writer, buildSummaryText(summary, matches))
-    return
+    return { awaiting: false }
   }
 
   // Text mode — parse'ta dur, kullanıcının onayını bekle.
@@ -937,7 +964,7 @@ async function runAssistantTurn({
         : "Listeyi okuyamadım, tekrar yazabilir misin?",
     } as AnyChunk)
     await emitText(writer, busy ? MODEL_BUSY_TEXT : FALLBACK_TEXT)
-    return
+    return { awaiting: false }
   }
 
   if (parseReasoning) {
@@ -952,13 +979,15 @@ async function runAssistantTurn({
 
   if (basket.items.length === 0) {
     await emitText(writer, basket.chatResponse?.trim() || FALLBACK_TEXT)
-    return
+    return { awaiting: false }
   }
 
   await emitText(
     writer,
     `${basket.items.length} kalem çıkardım. Kontrol edip düzeltmelerini yap, ardından karşılaştırma için onayla.`,
   )
+  // Sepet onay kartı gösterildi → kullanıcının "Onayla" aksiyonunu bekliyoruz.
+  return { awaiting: true }
 }
 
 async function emitText(writer: WriterLike, text: string) {

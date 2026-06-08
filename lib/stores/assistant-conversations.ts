@@ -54,6 +54,31 @@ export const assistantConversations = {
     })
     setState(next)
   },
+  // Sidebar ikon durumunu güncelle (server'ın turn sonunda gönderdiği
+  // data-conversation-status transient event'i ile çağrılır).
+  setStatus(id: string, status: ConversationListItem["status"]) {
+    const next = state.map((c) =>
+      c.id === id && c.status !== status ? { ...c, status } : c,
+    )
+    setState(next)
+  },
+  // Bu sohbeti "stream ediliyor" işaretle (üç nokta animasyonu) ve aynı anda
+  // başka bir sohbette kalmış streaming bayrağını temizle — tek seferde yalnız
+  // bir sohbet stream edilir.
+  setStreaming(id: string) {
+    let changed = false
+    const next = state.map((c) => {
+      const shouldStream = c.id === id
+      if (!!c.streaming === shouldStream) return c
+      changed = true
+      return { ...c, streaming: shouldStream }
+    })
+    if (changed) setState(next)
+  },
+  clearStreaming() {
+    if (!state.some((c) => c.streaming)) return
+    setState(state.map((c) => (c.streaming ? { ...c, streaming: false } : c)))
+  },
   clearPending(id: string) {
     const next = state.map((c) =>
       c.id === id && c.pending ? { ...c, pending: false } : c,

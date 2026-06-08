@@ -12,6 +12,7 @@ import {
   index,
 } from "drizzle-orm/pg-core"
 import type { AdapterAccountType } from "next-auth/adapters"
+import type { ConversationStatus } from "@/lib/assistant/conversation-status"
 
 export const users = pgTable("user", {
   id: text("id")
@@ -235,6 +236,14 @@ export const conversations = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
+    // Sidebar ikonunu süren kalıcı durum: "awaiting" (onay bekliyor) |
+    // "completed" (karşılaştırma/optimizasyon tamamlandı). Bkz.
+    // lib/assistant/conversation-status.ts. Varsayılan "awaiting" — yarıda
+    // kalan/eski sohbetler bugünkü draft ikonuyla aynı görünür.
+    status: text("status")
+      .$type<ConversationStatus>()
+      .notNull()
+      .default("awaiting"),
     createdAt: timestamp("createdAt", { mode: "date" })
       .notNull()
       .defaultNow(),
