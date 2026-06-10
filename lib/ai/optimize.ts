@@ -6,12 +6,21 @@ import type {
 
 // Bir kalemin BİR markette satın alınma maliyeti + o markette hangi ürüne
 // çözüldüğü. Aynı kalem farklı marketlerde farklı ürüne (productId) çözülebilir;
-// maliyet `effectiveLineCost` ile birim fiyata göre normalize edilmiştir, yani
-// paket boyutu ne olursa olsun "istenen miktarın" maliyetidir.
-type MarketChoice = { cost: number; productId: string; productName: string }
+// `cost`, istenen miktarı karşılayan tam paket(ler)in GERÇEK toplam fiyatıdır
+// (packsNeeded × packagePrice) — oran-orantı yok.
+type MarketChoice = {
+  cost: number
+  packsNeeded: number
+  packagePrice: number
+  productId: string
+  productName: string
+}
 
 type ItemMarketPrice = {
   rawName: string
+  // İstenen boyut bulunamadı, farklı boyutlu ürünle eşleşti — allocation
+  // satırında "Farklı Boyut" rozeti için kalem boyunca taşınır.
+  sizeMismatch: boolean
   // market display adı → o markette en hesaplı kabul edilebilir seçenek.
   marketChoices: Map<string, MarketChoice>
 }
@@ -28,12 +37,14 @@ function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
       if (!cur || opt.effectiveCost < cur.cost) {
         marketChoices.set(opt.market, {
           cost: opt.effectiveCost,
+          packsNeeded: opt.packsNeeded,
+          packagePrice: opt.packagePrice,
           productId: opt.productId,
           productName: opt.productName,
         })
       }
     }
-    items.push({ rawName: m.rawName, marketChoices })
+    items.push({ rawName: m.rawName, sizeMismatch: m.sizeMismatch, marketChoices })
   }
   return items
 }
@@ -52,6 +63,7 @@ type SingleMarketCandidate = {
   itemCount: number
   missingItemCount: number
   missingItemNames: string[]
+  allocation: MarketAllocation[]
 }
 
 function bestSingleMarket(items: ItemMarketPrice[]): {
@@ -61,6 +73,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
   missingItemCount: number
   missingItemNames: string[]
   isFullCoverage: boolean
+  allocation: MarketAllocation[]
 } {
   const markets = collectMarketUniverse(items)
   let bestFull: SingleMarketCandidate | null = null
@@ -70,6 +83,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
     let total = 0
     let count = 0
     const missingNames: string[] = []
+    const allocation: MarketAllocation[] = []
     for (const item of items) {
       const choice = item.marketChoices.get(market)
       if (choice === undefined) {
@@ -78,6 +92,16 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
       }
       total += choice.cost
       count++
+      allocation.push({
+        market,
+        rawName: item.rawName,
+        productId: choice.productId,
+        productName: choice.productName,
+        unitPrice: choice.packagePrice,
+        quantity: choice.packsNeeded,
+        lineTotal: choice.cost,
+        sizeMismatch: item.sizeMismatch,
+      })
     }
     if (count === 0) continue
 
@@ -87,6 +111,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
       itemCount: count,
       missingItemCount: missingNames.length,
       missingItemNames: missingNames,
+      allocation,
     }
     if (missingNames.length === 0) {
       if (!bestFull || total < bestFull.total) bestFull = candidate
@@ -104,6 +129,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
     missingItemCount: items.length,
     missingItemNames: items.map((i) => i.rawName),
     isFullCoverage: false,
+    allocation: [],
   }
 }
 
@@ -144,11 +170,13 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
         total += choice.cost
         allocation.push({
           market: pickedMarket,
+          rawName: item.rawName,
           productId: choice.productId,
           productName: choice.productName,
-          unitPrice: choice.cost,
-          quantity: 1,
+          unitPrice: choice.packagePrice,
+          quantity: choice.packsNeeded,
           lineTotal: choice.cost,
+          sizeMismatch: item.sizeMismatch,
         })
       }
       if (!valid) continue
@@ -180,6 +208,7 @@ export function computeOptimization(matches: MatchResult[]): OptimizationSummary
         missingItemCount: matches.length,
         missingItemNames: matches.map((m) => m.rawName),
         isFullCoverage: false,
+        allocation: [],
       },
       twoMarketCombo: {
         markets: [],

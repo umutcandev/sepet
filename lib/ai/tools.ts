@@ -23,7 +23,7 @@ import { stripQuantityTokens } from "./normalize"
 import { searchProductDetails } from "@/lib/marketfiyati/cache"
 import type { ProductDetail } from "@/lib/marketfiyati/types"
 import { MarketfiyatiError } from "@/lib/marketfiyati/client"
-import { effectiveLineCost } from "./effective-cost"
+import { effectiveLineCost, hasBaseMismatch, hasSizeOvershoot } from "./effective-cost"
 import { redis, MF_MATCH_TTL } from "@/lib/redis"
 import { createHash } from "node:crypto"
 
@@ -268,23 +268,24 @@ function resolveSelection(
 
 /**
  * Market-bilinçli optimizasyon girdisi. Kabul edilen adaylar arasından HER
- * market için, o kalemin istenen miktarını almanın en düşük normalize maliyetli
- * (birim fiyatla hesaplanmış) seçeneğini bulur. Aynı kalem farklı marketlerde
- * farklı ürüne çözülebilir — tek/iki market kombinasyonlarının özü budur.
+ * market için en hesaplı (tek paket raf fiyatı en düşük) seçeneği bulur. İstenen
+ * miktar fiyata etki etmez — yalnızca eşleştirmede kullanılır. Aynı kalem farklı
+ * marketlerde farklı ürüne çözülebilir — tek/iki market kombinasyonlarının özü budur.
  */
-function buildMarketOptions(item: ParsedItem, accepted: HitList): MarketOption[] {
+function buildMarketOptions(accepted: HitList): MarketOption[] {
   const byMarket = new Map<string, MarketOption>()
   for (const cand of accepted) {
     for (const mp of cand.markets) {
-      const cost = effectiveLineCost(item.quantity, item.unit, mp, cand.name)
+      const { packsNeeded, packagePrice, total } = effectiveLineCost(mp)
       const cur = byMarket.get(mp.market)
-      if (!cur || cost < cur.effectiveCost) {
+      if (!cur || total < cur.effectiveCost) {
         byMarket.set(mp.market, {
           market: mp.market,
           productId: cand.productId,
           productName: cand.name,
-          packagePrice: mp.price,
-          effectiveCost: cost,
+          packagePrice,
+          packsNeeded,
+          effectiveCost: total,
           unitPriceLabel: mp.unitPrice ?? null,
         })
       }
@@ -402,7 +403,18 @@ export async function lookupProducts(
       accepted[0] ??
       null
     const best = primary
-    const sizeMismatch = best ? (selection?.sizeMismatch ?? false) : false
+    // LLM, rawName'de geçen boyutu işaretler. Ancak sepet onayında boyut
+    // rawName'de değil ayrı quantity/unit alanında gelir; bu yüzden ek olarak
+    // deterministik kontroller yaparız:
+    //   · hasBaseMismatch — gramaj istenip adetle satılan ürünle eşleşme
+    //     ("tavuk göğüs 200 g" → "Tavuk Göğsü 1 Adet").
+    //   · hasSizeOvershoot — baz uyumlu ama en küçük paket istenenin kat kat
+    //     üstünde ("nohut 200 g" → "Nohut 1 Kg").
+    const sizeMismatch = best
+      ? (selection?.sizeMismatch ?? false) ||
+        hasBaseMismatch(item.quantity, item.unit, best) ||
+        hasSizeOvershoot(item.quantity, item.unit, best)
+      : false
 
     const lookupStatus: MatchResult["lookupStatus"] =
       outcome.kind === "hit"
@@ -432,7 +444,7 @@ export async function lookupProducts(
       unit: item.unit,
       bestMatch: best ? toMatchedProduct(best) : null,
       marketPrices,
-      marketOptions: buildMarketOptions(item, accepted),
+      marketOptions: buildMarketOptions(accepted),
       alternatives: accepted
         .filter((h) => h.productId !== best?.productId)
         .slice(0, 3)

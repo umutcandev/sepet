@@ -17,7 +17,7 @@ const LOGOS = [
 
 // Aynı anda gösterilen logo sayısı ve her adım arasındaki süre.
 const WINDOW_SIZE = 3
-const STEP_MS = 650
+const STEP_MS = 500
 
 // Kayma geçişi: hızlı ve net bir yay; opacity ayrı tween ile yumuşak fade.
 const slide = { type: "spring", stiffness: 460, damping: 34, mass: 0.7 } as const
@@ -81,7 +81,7 @@ export function HeroMarketBadge() {
       </div>
 
       <span className="text-[13px] font-medium text-muted-foreground">
-        Market alışverişini yapay zekayla planla.
+        Sepetini Asistan&apos;la Doldur!
       </span>
 
       <motion.span

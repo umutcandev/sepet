@@ -30,11 +30,19 @@ export const BasketDraftSchema = z.object({
 
 export const MarketAllocationSchema = z.object({
   market: z.string(),
+  // Kullanıcının yazdığı ham kalem adı (ör. "tavuk göğüs") — döküm gösterimi için.
+  rawName: z.string().default(""),
   productId: z.string(),
   productName: z.string(),
+  // Tek paketin gerçek raf fiyatı.
   unitPrice: z.number(),
+  // Alınacak tam paket sayısı (≥1).
   quantity: z.number(),
+  // unitPrice × quantity — gerçek tutar (oran-orantı yok).
   lineTotal: z.number(),
+  // İstenen boyut/miktar bulunamadı, farklı boyutlu ürünle eşleşti. Eski
+  // kayıtlarda yok → default. UI'da "Farklı Boyut" rozeti için.
+  sizeMismatch: z.boolean().default(false),
 })
 
 export const SingleMarketResultSchema = z.object({
@@ -44,6 +52,8 @@ export const SingleMarketResultSchema = z.object({
   missingItemCount: z.number(),
   missingItemNames: z.array(z.string()).default([]),
   isFullCoverage: z.boolean(),
+  // Bu markette karşılanan kalemlerin dökümü (UI'da "hangi kalemler" listesi).
+  allocation: z.array(MarketAllocationSchema).default([]),
 })
 
 export const TwoMarketComboResultSchema = z.object({
@@ -86,10 +96,13 @@ export const MarketOptionSchema = z.object({
   market: z.string(),
   productId: z.string(),
   productName: z.string(),
-  // Gösterim için ham paket fiyatı.
+  // Seçilen ürünün gerçek raf fiyatı (tek paket).
   packagePrice: z.number(),
-  // Optimizasyonda kullanılan, istenen miktara göre normalize maliyet
-  // (birim fiyatla — ₺/L, ₺/kg, ₺/adet — hesaplanır).
+  // İstenen miktarı karşılamak için alınacak tam paket sayısı (≥1). Eski
+  // kayıtlarda yok → default 1.
+  packsNeeded: z.number().default(1),
+  // Optimizasyonda kullanılan GERÇEK maliyet: packsNeeded × packagePrice. Oran-
+  // orantıyla türetilmiş kesirli bir fiyat değildir.
   effectiveCost: z.number(),
   // "7,08 ₺/Adet" gibi birim fiyat etiketi (varsa).
   unitPriceLabel: z.string().nullable(),

@@ -63,39 +63,115 @@ function parseSizeFromText(text: string): { base: Base; amount: number } | null 
   }
 }
 
+export type LineCost = {
+  // Her zaman 1. İstenen miktar (adet/gramaj) kalemin FİYATINI ETKİLEMEZ;
+  // yalnızca doğru ürünü eşleştirmek için kullanılır. Şema/UI uyumu için korunur.
+  packsNeeded: number
+  // Seçilen ürünün GERÇEK raf fiyatı (tek paket).
+  packagePrice: number
+  // Kalemin maliyeti = tek paketin raf fiyatı. Miktarla çarpım / oran-orantı YOK.
+  total: number
+}
+
 /**
- * Bir kalemin istenen miktarını belirli bir markette belirli bir üründen almanın
- * NORMALİZE maliyeti. Önceliklerle:
- *   1) API'nin birim fiyatı (₺/L, ₺/kg, ₺/adet) — istenen bazla uyuşuyorsa
- *   2) Ürün adından çıkarılan boyutla `paket fiyatı / boyut × istenen` — API
- *      birim fiyatı yoksa veya baz uyuşmuyorsa
- *   3) Yedek: ham paket fiyatı (adet/paket'te istenen adetle çarpılır)
- *
- * Bu sayede farklı paket boyutları (6'lı vs 10'lu yumurta) ve farklı marketler
- * adilce kıyaslanır; küçük-paket yanlılığı ve eski packCount çarpım hatası önlenir.
+ * Bir markette bir ürünün paket boyutunu istenen baz biriminde türetir:
+ *   1) API birim fiyatından: `paket fiyatı / birim fiyat` (baz uyuşuyorsa)
+ *   2) Ürün adındaki boyuttan ("700 Gr", "1 Kg", "10 Adet")
+ * Türetilemezse null. Boyut-overshoot kontrolü (hasSizeOvershoot) kullanır.
  */
-export function effectiveLineCost(
-  quantity: number,
-  unit: Unit,
+function derivePackSize(
+  base: Base,
   mp: MarketPrice,
   productName: string,
-): number {
-  const req = requestBase(quantity, unit)
-
-  // 1) API'nin normalize birim fiyatı — en güvenilir kaynak.
-  if (req.base && mp.unitBase === req.base && mp.unitPriceValue != null) {
-    return round2(mp.unitPriceValue * req.amount)
+): number | null {
+  let packSize: number | null = null
+  // 1) API birim fiyatından paket boyutu (baz birimde).
+  if (mp.unitBase === base && mp.unitPriceValue && mp.unitPriceValue > 0) {
+    packSize = mp.price / mp.unitPriceValue
   }
-
-  // 2) Ürün adından boyut türet → birim başına fiyat.
-  if (req.base) {
+  // 2) Ürün adından boyut.
+  if (packSize == null || !Number.isFinite(packSize) || packSize <= 0) {
     const size = parseSizeFromText(productName)
-    if (size && size.base === req.base && size.amount > 0) {
-      return round2((mp.price / size.amount) * req.amount)
+    if (size && size.base === base && size.amount > 0) packSize = size.amount
+  }
+  if (packSize == null || !Number.isFinite(packSize) || packSize <= 0) return null
+  return packSize
+}
+
+/**
+ * Bir kalemin belirli bir markette belirli bir üründen maliyeti = o ürünün TEK
+ * paketinin GERÇEK raf fiyatı. İstenen miktar (adet/gramaj) fiyata MÜDAHALE
+ * ETMEZ — yalnızca doğru ürünü/marketi SEÇMEK için kullanılır. ÇARPIM YOK:
+ * "6 adet limon" + "1 Kg Limon" → 1 kg'lık paketin raf fiyatı (6× değil).
+ * Boyut farkı varsa kullanıcı `sizeMismatch` ("Farklı Boyut") rozetiyle
+ * ayrıca uyarılır — ama fiyat asla çarpılmaz/uydurulmaz.
+ */
+export function effectiveLineCost(mp: MarketPrice): LineCost {
+  return {
+    packsNeeded: 1,
+    packagePrice: mp.price,
+    total: round2(mp.price),
+  }
+}
+
+/**
+ * Kullanıcı ölçülebilir bir miktar (gramaj/hacim — kg/l) istedi ama eşleşen ürün
+ * o bazda fiyatlanamıyor mu? Tipik vaka: "tavuk göğüs 200 g" → "Tavuk Göğsü 1
+ * Adet" — adetle satılan bir ürün gramajla istenince ne istenen miktar onurlanır
+ * ne de fiyat anlamlı normalize edilir (effectiveLineCost ham paket fiyatına
+ * düşer). Bu durumda kalem `sizeMismatch` sayılmalı; tasarruf/kıyas yapılmaz.
+ *
+ * Yalnızca SÜREKLİ ölçüler (kg/l) için anlamlıdır: "1 adet" istendiğinde gramajlı
+ * bir ürünü (ekmek, lavaş) 1 paket almak doğal yorumdur — mismatch değildir.
+ */
+export function hasBaseMismatch(
+  quantity: number,
+  unit: Unit,
+  product: { name: string; markets: MarketPrice[] },
+): boolean {
+  const req = requestBase(quantity, unit)
+  if (req.base !== "kg" && req.base !== "l") return false
+  // API herhangi bir markette istenen bazda birim fiyat veriyorsa uyumludur.
+  const apiResolvable = product.markets.some(
+    (mp) => mp.unitBase === req.base && mp.unitPriceValue != null,
+  )
+  if (apiResolvable) return false
+  // Ürün adından istenen bazda bir boyut çıkarılabiliyorsa uyumludur.
+  const size = parseSizeFromText(product.name)
+  if (size && size.base === req.base) return false
+  return true
+}
+
+// İstenen miktarı karşılayan en küçük paket, istenen miktarın bu katından
+// büyükse boyut uyuşmazlığı sayılır. "200 g nohut" → en küçük paket "1 kg"
+// (5×) kullanıcıyı istediğinin kat kat fazlasını almaya zorlar. 2× eşiği
+// "500 g → 1 kg"yı işaretler ama "600 g → 1 kg" (1,67×) gibi makul yukarı
+// yuvarlamaları işaretlemez.
+const OVERSHOOT_FACTOR = 2
+
+/**
+ * Kullanıcı ölçülebilir bir miktar (kg/l) istedi ama eşleşen ürünün satılan EN
+ * KÜÇÜK paketi bile istenen miktarı belirgin biçimde aşıyor mu? Baz uyumlu olsa
+ * da (1 kg nohut ₺/kg fiyatlanır) "200 g istedim, 1 kg almak zorundayım" bir
+ * boyut uyuşmazlığıdır — `hasBaseMismatch`'in yakalamadığı durum.
+ *
+ * Yalnızca SÜREKLİ ölçüler (kg/l) için anlamlıdır: "1 adet" / "1 paket"
+ * istendiğinde tek paket almak doğal yorumdur, overshoot sayılmaz.
+ */
+export function hasSizeOvershoot(
+  quantity: number,
+  unit: Unit,
+  product: { name: string; markets: MarketPrice[] },
+): boolean {
+  const req = requestBase(quantity, unit)
+  if (req.base !== "kg" && req.base !== "l") return false
+  let smallest: number | null = null
+  for (const mp of product.markets) {
+    const packSize = derivePackSize(req.base, mp, product.name)
+    if (packSize != null && (smallest == null || packSize < smallest)) {
+      smallest = packSize
     }
   }
-
-  // 3) Yedek: paket fiyatı (adet/paket'te istenen adetle çarp).
-  const mult = unit === "adet" || unit === "paket" ? Math.max(1, quantity) : 1
-  return round2(mp.price * mult)
+  if (smallest == null) return false
+  return smallest >= req.amount * OVERSHOOT_FACTOR
 }
