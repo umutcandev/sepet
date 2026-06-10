@@ -103,7 +103,7 @@ export async function saveBasket(input: SaveBasketInput): Promise<{ id: string }
           searchQuery: it.searchQuery,
           quantity: it.quantity.toString(),
           unit: it.unit,
-          matchedBarcode: best?.barcode ?? null,
+          matchedProductId: best?.productId ?? null,
           matchedName: best?.name ?? null,
           bestMarket: marketWithMin?.market ?? null,
           bestPrice: minPrice != null ? minPrice.toFixed(2) : null,

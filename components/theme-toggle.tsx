@@ -1,11 +1,11 @@
 "use client"
 
-import * as React from "react"
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenuLabel } from "@/components/ui/dropdown-menu"
+import { useMounted } from "@/hooks/use-mounted"
 import { cn } from "@/lib/utils"
 
 const OPTIONS = [
@@ -22,9 +22,7 @@ const NEXT_THEME: Record<string, string> = {
 
 export function ThemeMenuItems() {
   const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => setMounted(true), [])
+  const mounted = useMounted()
 
   const current = mounted ? (theme ?? "system") : "light"
 
@@ -68,9 +66,7 @@ export function ThemeMenuItems() {
 
 export function ThemeToggleButton({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => setMounted(true), [])
+  const mounted = useMounted()
 
   const current = mounted ? (theme ?? "system") : "light"
   const meta =

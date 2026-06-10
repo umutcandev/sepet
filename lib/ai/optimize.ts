@@ -2,42 +2,38 @@ import type {
   MatchResult,
   OptimizationSummary,
   MarketAllocation,
-  Unit,
 } from "./schemas"
+
+// Bir kalemin BİR markette satın alınma maliyeti + o markette hangi ürüne
+// çözüldüğü. Aynı kalem farklı marketlerde farklı ürüne (productId) çözülebilir;
+// maliyet `effectiveLineCost` ile birim fiyata göre normalize edilmiştir, yani
+// paket boyutu ne olursa olsun "istenen miktarın" maliyetidir.
+type MarketChoice = { cost: number; productId: string; productName: string }
 
 type ItemMarketPrice = {
   rawName: string
-  productBarcode: string
-  productName: string
-  packCount: number
-  marketPrices: Map<string, number>
-}
-
-// "500g beyaz peynir" gibi ağırlık/hacim girdilerinde quantity miktarı temsil
-// eder (gram, ml). Ancak eşleşen ürün zaten sabit boyutlu paket. Bu yüzden
-// fiyat çarpanı olarak sadece adet/paket birimlerinde quantity kullanılır;
-// diğerlerinde 1 paket satın alındığı varsayılır.
-function toPackCount(quantity: number, unit: Unit): number {
-  if (unit === "adet" || unit === "paket") return Math.max(1, quantity)
-  return 1
+  // market display adı → o markette en hesaplı kabul edilebilir seçenek.
+  marketChoices: Map<string, MarketChoice>
 }
 
 function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
   const items: ItemMarketPrice[] = []
   for (const m of matches) {
-    if (!m.bestMatch) continue
-    if (m.marketPrices.length === 0) continue
-    const priceMap = new Map<string, number>()
-    for (const mp of m.marketPrices) {
-      priceMap.set(mp.market, mp.price)
+    if (m.marketOptions.length === 0) continue
+    const marketChoices = new Map<string, MarketChoice>()
+    for (const opt of m.marketOptions) {
+      // marketOptions zaten market başına tek (en ucuz) seçenek; yine de
+      // savunmacı olalım.
+      const cur = marketChoices.get(opt.market)
+      if (!cur || opt.effectiveCost < cur.cost) {
+        marketChoices.set(opt.market, {
+          cost: opt.effectiveCost,
+          productId: opt.productId,
+          productName: opt.productName,
+        })
+      }
     }
-    items.push({
-      rawName: m.rawName,
-      productBarcode: m.bestMatch.barcode,
-      productName: m.bestMatch.name,
-      packCount: toPackCount(m.quantity, m.unit),
-      marketPrices: priceMap,
-    })
+    items.push({ rawName: m.rawName, marketChoices })
   }
   return items
 }
@@ -45,7 +41,7 @@ function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
 function collectMarketUniverse(items: ItemMarketPrice[]): string[] {
   const set = new Set<string>()
   for (const item of items) {
-    for (const market of item.marketPrices.keys()) set.add(market)
+    for (const market of item.marketChoices.keys()) set.add(market)
   }
   return Array.from(set)
 }
@@ -75,12 +71,12 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
     let count = 0
     const missingNames: string[] = []
     for (const item of items) {
-      const price = item.marketPrices.get(market)
-      if (price === undefined) {
+      const choice = item.marketChoices.get(market)
+      if (choice === undefined) {
         missingNames.push(item.rawName)
         continue
       }
-      total += price * item.packCount
+      total += choice.cost
       count++
     }
     if (count === 0) continue
@@ -128,32 +124,31 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
       let usedB = false
       const allocation: MarketAllocation[] = []
       for (const item of items) {
-        const priceA = item.marketPrices.get(a)
-        const priceB = item.marketPrices.get(b)
-        if (priceA === undefined && priceB === undefined) {
+        const choiceA = item.marketChoices.get(a)
+        const choiceB = item.marketChoices.get(b)
+        if (choiceA === undefined && choiceB === undefined) {
           valid = false
           break
         }
-        const pickedMarket =
-          priceA === undefined
-            ? b
-            : priceB === undefined
-              ? a
-              : priceA <= priceB
-                ? a
-                : b
-        if (pickedMarket === a) usedA = true
+        // İki markette de varsa ucuz olanı; sadece birinde varsa o.
+        const pickA =
+          choiceB === undefined
+            ? true
+            : choiceA === undefined
+              ? false
+              : choiceA.cost <= choiceB.cost
+        const pickedMarket = pickA ? a : b
+        const choice = (pickA ? choiceA : choiceB) as MarketChoice
+        if (pickA) usedA = true
         else usedB = true
-        const unitPrice = pickedMarket === a ? (priceA as number) : (priceB as number)
-        const lineTotal = unitPrice * item.packCount
-        total += lineTotal
+        total += choice.cost
         allocation.push({
           market: pickedMarket,
-          productBarcode: item.productBarcode,
-          productName: item.productName,
-          unitPrice,
-          quantity: item.packCount,
-          lineTotal,
+          productId: choice.productId,
+          productName: choice.productName,
+          unitPrice: choice.cost,
+          quantity: 1,
+          lineTotal: choice.cost,
         })
       }
       if (!valid) continue
@@ -205,10 +200,10 @@ export function computeOptimization(matches: MatchResult[]): OptimizationSummary
   const savingsPct = single.total > 0 ? (savingsTL / single.total) * 100 : 0
 
   return {
-    singleMarket: single,
+    singleMarket: { ...single, total: round2(single.total) },
     twoMarketCombo: {
       markets: combo.markets,
-      total: combo.total,
+      total: round2(combo.total),
       savingsTL: round2(savingsTL),
       savingsPct: round2(savingsPct),
       allocation: combo.allocation,

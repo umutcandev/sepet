@@ -75,7 +75,7 @@ export default async function BasketsPage() {
           </div>
           <h2 className="text-base font-medium">Henüz sepet oluşturmadın</h2>
           <p className="max-w-sm text-sm text-muted-foreground">
-            Asistana alışveriş listeni yaz. Kalemleri onayladığında 45+ markette
+            Asistana alışveriş listeni yaz. Kalemleri onayladığında 6 markette
             en ucuzunu bulup buraya kaydedelim.
           </p>
           <Button asChild className="mt-2">

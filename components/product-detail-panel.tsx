@@ -2,10 +2,9 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { CheckIcon, CopyIcon, ExternalLinkIcon, ImageIcon } from "lucide-react"
+import { CheckIcon, CopyIcon, ImageIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
@@ -25,33 +24,33 @@ import {
   priceTier,
 } from "@/lib/format"
 import { MarketLogo } from "@/components/market-logo"
-import type { ProductDetail } from "@/lib/camgoz/types"
+import type { ProductDetail } from "@/lib/marketfiyati/types"
 
 type Props = {
-  barcode: string
+  productId: string
 }
 
-export function ProductDetailPanel({ barcode }: Props) {
+export function ProductDetailPanel({ productId }: Props) {
   const [detail, setDetail] = React.useState<ProductDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
-  const [barcodeCopied, setBarcodeCopied] = React.useState(false)
+  const [idCopied, setIdCopied] = React.useState(false)
 
-  function copyBarcode() {
-    if (!detail?.barcode) return
-    navigator.clipboard.writeText(detail.barcode).then(() => {
-      setBarcodeCopied(true)
-      setTimeout(() => setBarcodeCopied(false), 1500)
+  function copyProductId() {
+    if (!detail?.productId) return
+    navigator.clipboard.writeText(detail.productId).then(() => {
+      setIdCopied(true)
+      setTimeout(() => setIdCopied(false), 1500)
     })
   }
 
   React.useEffect(() => {
     let active = true
-    // Data fetch on barcode change: reset loading/error before issuing request.
+    // Data fetch on productId change: reset loading/error before issuing request.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true)
     setError(null)
-    fetch(`/api/products/${encodeURIComponent(barcode)}`)
+    fetch(`/api/products/${encodeURIComponent(productId)}`)
       .then(async (res) => {
         if (!res.ok) {
           const body = (await res.json().catch(() => null)) as {
@@ -75,7 +74,7 @@ export function ProductDetailPanel({ barcode }: Props) {
     return () => {
       active = false
     }
-  }, [barcode])
+  }, [productId])
 
   if (loading) return <DetailSkeleton />
 
@@ -117,11 +116,11 @@ export function ProductDetailPanel({ barcode }: Props) {
               <Badge
                 variant="default"
                 className="group h-5 cursor-pointer gap-1.5 px-2 font-mono text-[10px] font-normal tracking-tight"
-                onClick={copyBarcode}
-                title="Barkodu kopyala"
+                onClick={copyProductId}
+                title="Ürün kimliğini kopyala"
               >
-                {detail.barcode}
-                {barcodeCopied ? (
+                {detail.productId}
+                {idCopied ? (
                   <CheckIcon className="size-2.5 text-primary" />
                 ) : (
                   <CopyIcon className="size-2.5 opacity-60 transition-opacity group-hover:opacity-100" />
@@ -173,14 +172,19 @@ export function ProductDetailPanel({ barcode }: Props) {
                               </Badge>
                             )}
                           </div>
-                          {m.priceModifiedAt && (
+                          {m.depotName && (
                             <div className="mt-0.5 truncate text-[10px] text-muted-foreground/70">
+                              {m.depotName}
+                            </div>
+                          )}
+                          {m.priceModifiedAt && (
+                            <div className="truncate text-[10px] text-muted-foreground/70">
                               {formatRelative(m.priceModifiedAt)}{" "}
                               güncellendi
                             </div>
                           )}
                         </TableCell>
-                        <TableCell className="w-[148px] whitespace-nowrap px-3 py-2.5 text-right align-middle">
+                        <TableCell className="w-[120px] whitespace-nowrap px-3 py-2.5 text-right align-middle">
                           <div className="flex items-center justify-end gap-1">
                             <Badge
                               variant={tier}
@@ -188,24 +192,12 @@ export function ProductDetailPanel({ barcode }: Props) {
                             >
                               {formatTL(m.price)}
                             </Badge>
-                            {m.sourceUrl && (
-                              <Button
-                                asChild
-                                size="icon-xs"
-                                variant="ghost"
-                                className="text-muted-foreground/70 hover:text-foreground"
-                              >
-                                <a
-                                  href={m.sourceUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  aria-label={`${m.market} sayfasını aç`}
-                                >
-                                  <ExternalLinkIcon />
-                                </a>
-                              </Button>
-                            )}
                           </div>
+                          {m.unitPrice && (
+                            <div className="mt-0.5 truncate text-[10px] text-muted-foreground/70">
+                              {m.unitPrice}
+                            </div>
+                          )}
                         </TableCell>
                       </TableRow>
                     )

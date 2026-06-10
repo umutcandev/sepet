@@ -254,7 +254,7 @@ export function OnboardingModal({ enabled }: { enabled: boolean }) {
         <DrawerContent>
           <div className="mx-auto w-full max-w-sm">
             <DrawerHeader className="sr-only">
-              <DrawerTitle>Sepet'e hoş geldin</DrawerTitle>
+              <DrawerTitle>Sepet&apos;e hoş geldin</DrawerTitle>
               <DrawerDescription>
                 Hızlıca temel özellikleri keşfet
               </DrawerDescription>
@@ -275,7 +275,7 @@ export function OnboardingModal({ enabled }: { enabled: boolean }) {
     >
       <DialogContent className="p-5 sm:max-w-md" showCloseButton={false}>
         <DialogHeader className="sr-only">
-          <DialogTitle>Sepet'e hoş geldin</DialogTitle>
+          <DialogTitle>Sepet&apos;e hoş geldin</DialogTitle>
           <DialogDescription>
             Hızlıca temel özellikleri keşfet
           </DialogDescription>

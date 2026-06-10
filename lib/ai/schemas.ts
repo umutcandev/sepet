@@ -14,7 +14,7 @@ export const ParsedItemSchema = z.object({
   searchQuery: z
     .string()
     .describe(
-      "Bu ürün için camgoz aramasına gönderilecek normalize Türkçe sorgu. Marka, birim ve miktar bilgisi içermez. Ör. 'beyaz peynir', 'toz deterjan', 'uht süt'.",
+      "Bu ürün için market arama API'sine gönderilecek normalize Türkçe sorgu. Marka, birim ve miktar bilgisi içermez. Ör. 'beyaz peynir', 'toz deterjan', 'uht süt'.",
     ),
 })
 
@@ -30,7 +30,7 @@ export const BasketDraftSchema = z.object({
 
 export const MarketAllocationSchema = z.object({
   market: z.string(),
-  productBarcode: z.string(),
+  productId: z.string(),
   productName: z.string(),
   unitPrice: z.number(),
   quantity: z.number(),
@@ -62,7 +62,7 @@ export const OptimizationSummarySchema = z.object({
 })
 
 export const MatchedProductSchema = z.object({
-  barcode: z.string(),
+  productId: z.string(),
   name: z.string(),
   brand: z.string().nullable(),
   category: z.string().nullable(),
@@ -76,7 +76,23 @@ export const MatchedProductSchema = z.object({
 export const MarketPriceEntrySchema = z.object({
   market: z.string(),
   price: z.number(),
-  sourceUrl: z.string().nullable(),
+})
+
+// Optimizasyonun market-bilinçli girdisi: bir kalem için BİR markette, kabul
+// edilen adaylar arasından o markette en hesaplı seçenek. Aynı kalem farklı
+// marketlerde farklı ürüne (productId) çözülebilir — tek market / iki market
+// kombinasyonlarının doğru kurulabilmesi için kritik.
+export const MarketOptionSchema = z.object({
+  market: z.string(),
+  productId: z.string(),
+  productName: z.string(),
+  // Gösterim için ham paket fiyatı.
+  packagePrice: z.number(),
+  // Optimizasyonda kullanılan, istenen miktara göre normalize maliyet
+  // (birim fiyatla — ₺/L, ₺/kg, ₺/adet — hesaplanır).
+  effectiveCost: z.number(),
+  // "7,08 ₺/Adet" gibi birim fiyat etiketi (varsa).
+  unitPriceLabel: z.string().nullable(),
 })
 
 export const MatchResultSchema = z.object({
@@ -85,7 +101,10 @@ export const MatchResultSchema = z.object({
   quantity: z.number(),
   unit: z.enum(UNIT_VALUES),
   bestMatch: MatchedProductSchema.nullable(),
+  // Temsilci ürünün (bestMatch) market fiyatları — UI gösterimi için.
   marketPrices: z.array(MarketPriceEntrySchema),
+  // Market-bilinçli optimizasyon girdisi. Eski kayıtlarda olmayabilir → default.
+  marketOptions: z.array(MarketOptionSchema).default([]),
   alternatives: z.array(MatchedProductSchema),
   lookupStatus: z.enum(["ok", "no_match", "api_quota", "api_error"]),
   errorMessage: z.string().nullable(),
@@ -94,12 +113,18 @@ export const MatchResultSchema = z.object({
   sizeMismatch: z.boolean(),
 })
 
-// lookupProducts içindeki LLM seçim adımının batch çıktısı.
+// lookupProducts içindeki LLM seçim adımının batch çıktısı. Tek ürün yerine
+// KABUL EDİLEBİLİR aday kümesini döndürür (market konsolidasyonu için), ayrıca
+// UI kartı için temsilci (primary) ürünü işaretler.
 export const MatchSelectionSchema = z.object({
   selections: z.array(
     z.object({
       itemIndex: z.number(),
-      matchedBarcode: z.string().nullable(),
+      // UI kartı için en uygun temsilci ürün. Hiç uygun aday yoksa null.
+      primaryProductId: z.string().nullable(),
+      // Optimizasyonda kullanılacak TÜM kabul edilebilir adaylar (primary dahil).
+      // Doğru ürün tipinin makul marka/boyut varyantları; yanlış tip/aroma/koli HARİÇ.
+      acceptedProductIds: z.array(z.string()).default([]),
       sizeMismatch: z.boolean(),
       reason: z.string(),
     }),
@@ -109,6 +134,7 @@ export const MatchSelectionSchema = z.object({
 export type ParsedItem = z.infer<typeof ParsedItemSchema>
 export type BasketDraft = z.infer<typeof BasketDraftSchema>
 export type MatchResult = z.infer<typeof MatchResultSchema>
+export type MarketOption = z.infer<typeof MarketOptionSchema>
 export type MatchSelection = z.infer<typeof MatchSelectionSchema>
 export type OptimizationSummary = z.infer<typeof OptimizationSummarySchema>
 export type MarketAllocation = z.infer<typeof MarketAllocationSchema>
@@ -138,7 +164,7 @@ export const ReceiptOCRItemSchema = z.object({
   searchQuery: z
     .string()
     .describe(
-      "Bu ürün için camgöz aramasına gönderilecek normalize Türkçe sorgu. Marka, birim, miktar İÇERMEZ. Ör. 'beyaz peynir', 'uht süt'. 2-3 kelime ideal.",
+      "Bu ürün için market arama API'sine gönderilecek normalize Türkçe sorgu. Marka, birim, miktar İÇERMEZ. Ör. 'beyaz peynir', 'uht süt'. 2-3 kelime ideal.",
     ),
 })
 
@@ -191,11 +217,10 @@ export const ReceiptComparisonItemSchema = z.object({
   rawName: z.string(),
   receiptUnitPrice: z.number().nullable(),
   receiptTotalPrice: z.number().nullable(),
-  matchedBarcode: z.string().nullable(),
+  matchedProductId: z.string().nullable(),
   matchedName: z.string().nullable(),
   bestMarket: z.string().nullable(),
   bestPrice: z.number().nullable(),
-  bestUrl: z.string().nullable(),
   savingsTL: z.number().nullable(),
   sizeMismatch: z.boolean(),
 })
