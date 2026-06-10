@@ -7,13 +7,13 @@ import {
   CreditCardIcon,
   ChevronDownIcon,
 } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { MarketLogo } from "@/components/market-logo"
+import { DepotInfo } from "@/components/assistant/depot-info"
 import type { MatchResult } from "@/lib/ai/schemas"
 
 function formatQuantity(qty: number) {
@@ -71,11 +71,6 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                     </span>
                     <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
                       {m.bestMatch.brand && <span>{m.bestMatch.brand}</span>}
-                      {m.bestMatch.marketCount > 0 && (
-                        <Badge variant="outline" className="h-5 px-1.5 text-[10px]">
-                          {m.bestMatch.marketCount} market
-                        </Badge>
-                      )}
                       {m.sizeMismatch && (
                         <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
                           <AlertCircleIcon className="size-3" />
@@ -110,8 +105,12 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                 <div className="flex shrink-0 items-center gap-1.5">
                   <MarketLogo name={cheapest.market} size="sm" />
                   <div className="flex flex-col items-end text-right">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
                       {cheapest.market}
+                      <DepotInfo
+                        depotName={cheapest.depotName}
+                        market={cheapest.market}
+                      />
                     </span>
                     <span className="text-sm font-semibold tabular-nums">
                       {tlFormatter.format(cheapest.price)}
@@ -146,6 +145,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                         <div className="flex items-center gap-2">
                           <MarketLogo name={mp.market} size="sm" />
                           <span className="text-muted-foreground">{mp.market}</span>
+                          <DepotInfo depotName={mp.depotName} market={mp.market} />
                         </div>
                         <div className="flex flex-col items-end text-right">
                           <span className="font-medium tabular-nums">

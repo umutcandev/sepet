@@ -7,6 +7,7 @@ import {
   assistantDailyLimiter,
   authLimiter,
   productLimiter,
+  receiptUploadLimiter,
 } from "@/lib/security/rate-limit"
 import { applySecurityHeaders } from "@/lib/security/headers"
 
@@ -41,6 +42,12 @@ export default withAuth(async (req) => {
   if (path.startsWith("/api/products")) {
     const key = userId ? `user:${userId}` : `ip:${ip}`
     const { success, reset } = await productLimiter.limit(key)
+    if (!success) return tooManyResponse(reset)
+  }
+
+  if (path.startsWith("/api/receipts")) {
+    const key = userId ? `user:${userId}` : `ip:${ip}`
+    const { success, reset } = await receiptUploadLimiter.limit(key)
     if (!success) return tooManyResponse(reset)
   }
 

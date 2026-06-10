@@ -29,15 +29,6 @@ const nextConfig = {
         ],
       },
       {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "Permissions-Policy",
-            value: "camera=*",
-          },
-        ],
-      },
-      {
         source: "/:path*.(png|jpg|jpeg|webp|avif|svg|ico|woff|woff2|ttf)",
         headers: [
           {

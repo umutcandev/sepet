@@ -22,8 +22,8 @@ export async function GET(request: Request) {
     return NextResponse.json(result)
   } catch (err) {
     const status = err instanceof MarketfiyatiError ? err.status : 500
-    const message =
-      err instanceof Error ? err.message : "unknown marketfiyati error"
-    return NextResponse.json({ error: message }, { status })
+    // İç hata detayını client'a sızdırma — yalnız sunucu loguna yaz.
+    console.error("[products/search] failed", err)
+    return NextResponse.json({ error: "search_failed" }, { status })
   }
 }

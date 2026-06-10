@@ -287,6 +287,7 @@ function buildMarketOptions(accepted: HitList): MarketOption[] {
           packsNeeded,
           effectiveCost: total,
           unitPriceLabel: mp.unitPrice ?? null,
+          depotName: mp.depotName,
         })
       }
     }
@@ -434,7 +435,11 @@ export async function lookupProducts(
 
     // Temsilci ürünün (UI kartı) market fiyatları.
     const marketPrices = best
-      ? best.markets.map((m) => ({ market: m.market, price: m.price }))
+      ? best.markets.map((m) => ({
+          market: m.market,
+          price: m.price,
+          depotName: m.depotName,
+        }))
       : []
 
     return {

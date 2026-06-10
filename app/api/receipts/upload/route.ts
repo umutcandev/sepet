@@ -11,6 +11,23 @@ export async function POST(req: Request) {
   }
 
   const contentType = req.headers.get("content-type") ?? ""
+
+  // Gövdeyi belleğe almadan önce ön-kontrol: bildirilen Content-Length zaten
+  // sınırı aşıyorsa (ya da content-type geçersizse) hemen reddet — büyük
+  // yüklemeyi buffer'lamaya gerek yok. Header yok/biçimsizse atla, gerçek
+  // boyut kontrolü buffer sonrası yine yapılıyor.
+  const rawLength = req.headers.get("content-length")
+  const declaredLength = rawLength != null ? Number(rawLength) : null
+  if (declaredLength != null && Number.isFinite(declaredLength)) {
+    const pre = validateUpload({ contentType, size: declaredLength })
+    if (!pre.ok) {
+      return NextResponse.json(
+        { error: "invalid_upload", message: pre.reason },
+        { status: pre.status },
+      )
+    }
+  }
+
   const body = await req.arrayBuffer()
   const size = body.byteLength
 

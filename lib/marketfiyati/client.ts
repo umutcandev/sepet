@@ -50,22 +50,30 @@ export class MarketfiyatiError extends Error {
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
-// ─── Self-imposed throttle ───
-// Tüm istekleri serileştirir ve aralarında min 200ms bekletir. Özellikle
-// lookupProducts'taki Promise.all paralel aramalarını WAF'a takılmaktan korur.
-const MIN_INTERVAL_MS = 200
-let throttleChain: Promise<void> = Promise.resolve()
-let lastRequestAt = 0
+// ─── Bounded concurrency ───
+// WAF'ı korumak için tüm istekleri tek seri zincire sokmak yerine, eşzamanlı
+// istek sayısını küçük bir tavanla sınırlarız. Böylece lookupProducts'ın paralel
+// aramaları WAF'ı tetiklemeden ilerler ama tek tek serileşip (saniyede ~5 istek)
+// throughput tavanı yaratmaz. Slot yalnız fetch + body okuma süresince tutulur;
+// retry backoff beklemeleri slot dışında olur.
+const MAX_CONCURRENT = 4
+let active = 0
+const waiters: Array<() => void> = []
 
-function throttle(): Promise<void> {
-  const next = throttleChain.then(async () => {
-    const wait = Math.max(0, lastRequestAt + MIN_INTERVAL_MS - Date.now())
-    if (wait > 0) await sleep(wait)
-    lastRequestAt = Date.now()
-  })
-  // Zincir bir hatayla kırılmasın; throttle hiç reject etmez.
-  throttleChain = next.catch(() => {})
-  return next
+function acquire(): Promise<void> {
+  if (active < MAX_CONCURRENT) {
+    active++
+    return Promise.resolve()
+  }
+  // Slot dolu — sıraya gir. release() bir bekleyeni uyandırırken slot sahipliğini
+  // ona devreder (active sabit kalır), bu yüzden burada tekrar artırmıyoruz.
+  return new Promise<void>((resolve) => waiters.push(resolve))
+}
+
+function release(): void {
+  const next = waiters.shift()
+  if (next) next()
+  else active--
 }
 
 type RequestInitLite = { method: "GET" | "POST"; body?: string }
@@ -86,71 +94,110 @@ function parseWith<T>(
   return parsed.data
 }
 
+type AttemptResult<T> =
+  | { status: "ok"; value: T }
+  | { status: "fail"; err: MarketfiyatiError; retriable: boolean }
+
+/** Tek bir deneme: concurrency slotunu yalnız bu süre boyunca tutar. */
+async function mfAttempt<T>(
+  path: string,
+  init: RequestInitLite,
+  parse: (json: unknown) => T,
+  opts: RequestOptions | undefined,
+): Promise<AttemptResult<T>> {
+  await acquire()
+  try {
+    let res: Response
+    try {
+      res = await fetch(`${MF_BASE}${path}`, {
+        method: init.method,
+        body: init.body,
+        headers: mfHeaders(),
+        cache: "no-store",
+        signal: opts?.signal,
+      })
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err)
+      // Ağ hatası — geçici olabilir, retriable.
+      return {
+        status: "fail",
+        err: new MarketfiyatiError(`marketfiyati ${path} network error: ${message}`, 0),
+        retriable: true,
+      }
+    }
+
+    // 403 = header eksik / IP bloğu. Retry anlamsız.
+    if (res.status === 403) {
+      return {
+        status: "fail",
+        err: new MarketfiyatiError(`marketfiyati ${path} 403 (forbidden / IP block)`, 403),
+        retriable: false,
+      }
+    }
+    // 5xx = sunucu hatası. Exponential backoff ile retry.
+    if (res.status >= 500) {
+      return {
+        status: "fail",
+        err: new MarketfiyatiError(`marketfiyati ${path} ${res.status}`, res.status),
+        retriable: true,
+      }
+    }
+    if (!res.ok) {
+      return {
+        status: "fail",
+        err: new MarketfiyatiError(`marketfiyati ${path} ${res.status}`, res.status),
+        retriable: false,
+      }
+    }
+
+    // WAF bloğunda response JSON değil, HTML ("Your Access To This Page Has Been
+    // Blocked!"). res.json() patlar — önce text al, content-type'a bak.
+    const contentType = res.headers.get("content-type") ?? ""
+    const text = await res.text()
+    if (
+      !contentType.includes("json") ||
+      /Access To This Page Has Been Blocked/i.test(text)
+    ) {
+      return {
+        status: "fail",
+        err: new MarketfiyatiError(`marketfiyati ${path} WAF/HTML block (geçici)`, 429),
+        retriable: false,
+      }
+    }
+
+    let json: unknown
+    try {
+      json = JSON.parse(text)
+    } catch {
+      return {
+        status: "fail",
+        err: new MarketfiyatiError(`marketfiyati ${path} invalid JSON`, 429),
+        retriable: false,
+      }
+    }
+    return { status: "ok", value: parse(json) }
+  } finally {
+    release()
+  }
+}
+
 async function mfRequest<T>(
   path: string,
   init: RequestInitLite,
   parse: (json: unknown) => T,
   opts?: RequestOptions,
-  attempt = 0,
 ): Promise<T> {
-  await throttle()
-
-  let res: Response
-  try {
-    res = await fetch(`${MF_BASE}${path}`, {
-      method: init.method,
-      body: init.body,
-      headers: mfHeaders(),
-      cache: "no-store",
-      signal: opts?.signal,
-    })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err)
-    // Ağ hatası — geçici olabilir, bir kez daha dene.
-    if (attempt < 2) {
+  // Ağ hatası ve 5xx için backoff'lu 2 tekrar (toplam 3 deneme). Backoff
+  // beklemesi slot dışında olur, böylece bekleyen istek slotu boşa tutmaz.
+  for (let attempt = 0; ; attempt++) {
+    const result = await mfAttempt(path, init, parse, opts)
+    if (result.status === "ok") return result.value
+    if (result.retriable && attempt < 2) {
       await sleep(300 * 2 ** attempt)
-      return mfRequest(path, init, parse, opts, attempt + 1)
+      continue
     }
-    throw new MarketfiyatiError(`marketfiyati ${path} network error: ${message}`, 0)
+    throw result.err
   }
-
-  // 403 = header eksik / IP bloğu. Retry anlamsız.
-  if (res.status === 403) {
-    throw new MarketfiyatiError(`marketfiyati ${path} 403 (forbidden / IP block)`, 403)
-  }
-  // 5xx = sunucu hatası. Exponential backoff ile 2 retry.
-  if (res.status >= 500) {
-    if (attempt < 2) {
-      await sleep(300 * 2 ** attempt)
-      return mfRequest(path, init, parse, opts, attempt + 1)
-    }
-    throw new MarketfiyatiError(`marketfiyati ${path} ${res.status}`, res.status)
-  }
-  if (!res.ok) {
-    throw new MarketfiyatiError(`marketfiyati ${path} ${res.status}`, res.status)
-  }
-
-  // WAF bloğunda response JSON değil, HTML ("Your Access To This Page Has Been
-  // Blocked!"). res.json() patlar — önce text al, content-type'a bak.
-  const contentType = res.headers.get("content-type") ?? ""
-  const text = await res.text()
-  if (
-    !contentType.includes("json") ||
-    /Access To This Page Has Been Blocked/i.test(text)
-  ) {
-    throw new MarketfiyatiError(
-      `marketfiyati ${path} WAF/HTML block (geçici)`,
-      429,
-    )
-  }
-
-  let json: unknown
-  try {
-    json = JSON.parse(text)
-  } catch {
-    throw new MarketfiyatiError(`marketfiyati ${path} invalid JSON`, 429)
-  }
-  return parse(json)
 }
 
 function mfPost<T>(
@@ -166,7 +213,17 @@ type GeoOptions = {
   latitude?: number
   longitude?: number
   distance?: number
+  // Yakın depo ID'leri (ör. "a101-K709"). marketfiyati lat/lng'yi tek başına
+  // KONUM FİLTRESİ olarak kullanmıyor — bu liste verilmezse rastgele (çoğunlukla
+  // İstanbul) depoları döndürür. Konum-doğru fiyat için /nearest'tan alınan
+  // ID'ler buraya verilmeli. Boş/verilmemişse alan body'den tamamen düşülür.
+  depots?: string[]
   signal?: AbortSignal
+}
+
+/** Boşsa body'ye hiç eklenmesin diye depots'u koşullu serpilen yardımcı. */
+function depotsField(depots?: string[]): { depots: string[] } | Record<string, never> {
+  return depots && depots.length > 0 ? { depots } : {}
 }
 
 function geo(opts?: GeoOptions) {
@@ -194,6 +251,7 @@ export function search(
       latitude,
       longitude,
       distance,
+      ...depotsField(opts?.depots),
     },
     (json) => parseWith(mfSearchResponseSchema, json, "/search"),
     opts,
@@ -209,7 +267,7 @@ export function searchByIdentity(
   const { latitude, longitude, distance } = geo(opts)
   return mfPost(
     "/api/v2/searchByIdentity",
-    { identity, identityType, latitude, longitude, distance },
+    { identity, identityType, latitude, longitude, distance, ...depotsField(opts?.depots) },
     (json) => parseWith(mfSearchResponseSchema, json, "/searchByIdentity"),
     opts,
   )

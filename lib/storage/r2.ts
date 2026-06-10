@@ -72,6 +72,32 @@ export function validateUpload(input: { contentType: string; size: number }): {
   return { ok: true }
 }
 
+/**
+ * Bir R2 key'inin gerçekten bu kullanıcıya ait olduğunu doğrular. Yüklemeler
+ * her zaman `receipts/{userId}/...` altına yazılır (bkz. uploadReceiptDirect);
+ * client'tan geri gelen key'e güvenmeden önce bu ön ek zorunlu kılınmalı —
+ * aksi halde bir kullanıcı başka birinin nesnesini kaydedip silebilir.
+ */
+export function isOwnedReceiptKey(
+  key: string | null | undefined,
+  userId: string,
+): boolean {
+  return typeof key === "string" && key.startsWith(`receipts/${userId}/`)
+}
+
+/**
+ * Bir public görsel URL'inin bu kullanıcının R2 klasörüne işaret ettiğini
+ * doğrular. SSRF'e karşı: yalnızca `{R2_PUBLIC_BASE_URL}/receipts/{userId}/...`
+ * biçimindeki URL'ler sunucu tarafı fetch için kabul edilir.
+ */
+export function isOwnedReceiptUrl(
+  url: string | null | undefined,
+  userId: string,
+): boolean {
+  if (typeof url !== "string") return false
+  return url.startsWith(`${getPublicBase()}/receipts/${userId}/`)
+}
+
 export async function deleteReceiptObject(key: string): Promise<void> {
   await getR2Client().send(
     new DeleteObjectCommand({ Bucket: getR2Bucket(), Key: key }),

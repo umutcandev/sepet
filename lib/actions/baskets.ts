@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { and, desc, eq, isNotNull } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, baskets, basketItems } from "@/lib/db"
+import { isUuid } from "@/lib/utils"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -119,6 +120,7 @@ export async function saveBasket(input: SaveBasketInput): Promise<{ id: string }
 export async function deleteBasket(id: string): Promise<void> {
   const session = await auth()
   if (!session?.user?.id) throw new Error("unauthorized")
+  if (!isUuid(id)) throw new Error("not_found")
 
   await db
     .delete(baskets)
@@ -165,6 +167,7 @@ export async function getSavedBasketsForConversation(
 }
 
 export async function getBasketDetail(id: string, userId: string) {
+  if (!isUuid(id)) return null
   const [basket] = await db
     .select()
     .from(baskets)

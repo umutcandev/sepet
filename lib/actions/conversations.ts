@@ -6,6 +6,7 @@ import type { UIMessage } from "ai"
 import { auth } from "@/auth"
 import { db, conversations, conversationMessages } from "@/lib/db"
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
+import { isUuid } from "@/lib/utils"
 import { getSavedBasketsForConversation } from "./baskets"
 
 const TITLE_MAX = 100
@@ -83,6 +84,7 @@ export async function getConversation(id: string): Promise<{
 } | null> {
   const session = await auth()
   if (!session?.user?.id) return null
+  if (!isUuid(id)) return null
 
   const [conv] = await db
     .select({
@@ -127,6 +129,7 @@ export async function getConversation(id: string): Promise<{
 export async function deleteConversation(id: string): Promise<void> {
   const session = await auth()
   if (!session?.user?.id) throw new Error("unauthorized")
+  if (!isUuid(id)) throw new Error("not_found")
 
   await db
     .delete(conversations)

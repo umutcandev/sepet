@@ -9,15 +9,19 @@ const DISMISS_KEY = "sepet:guest-beta-notice-dismissed"
 
 export function NavGuestInfo() {
   const mounted = useMounted()
-  const [dismissed, setDismissed] = React.useState(false)
-
-  React.useEffect(() => {
+  // Başlangıç değerini lazy initializer'da localStorage'dan oku — setState'i
+  // effect içinde çağırmak yerine (react-hooks/set-state-in-effect). Render
+  // zaten `mounted` ile geciktirildiği için SSR/hydration uyuşmazlığı olmaz:
+  // sunucuda ve ilk client render'da `mounted` false → null döner.
+  const [dismissed, setDismissed] = React.useState(() => {
+    if (typeof window === "undefined") return false
     try {
-      setDismissed(window.localStorage.getItem(DISMISS_KEY) === "1")
+      return window.localStorage.getItem(DISMISS_KEY) === "1"
     } catch {
       // localStorage erişilemezse (ör. gizli mod) kutuyu göstermeye devam et
+      return false
     }
-  }, [])
+  })
 
   const handleDismiss = () => {
     setDismissed(true)
