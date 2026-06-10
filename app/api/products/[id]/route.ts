@@ -36,8 +36,8 @@ export async function GET(
     return NextResponse.json({ detail })
   } catch (err) {
     const status = err instanceof MarketfiyatiError ? err.status : 500
-    const message =
-      err instanceof Error ? err.message : "unknown marketfiyati error"
-    return NextResponse.json({ error: message }, { status })
+    // İç hata detayını client'a sızdırma — yalnız sunucu loguna yaz.
+    console.error("[products/[id]] failed", err)
+    return NextResponse.json({ error: "lookup_failed" }, { status })
   }
 }

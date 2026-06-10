@@ -8,7 +8,10 @@ import {
   type UIMessageStreamWriter,
 } from "ai"
 import { nanoid } from "nanoid"
+import { z } from "zod"
 import { auth } from "@/auth"
+import { isOwnedReceiptUrl } from "@/lib/storage/r2"
+import { UNIT_VALUES } from "@/lib/ai/schemas"
 import {
   generateChatTitle,
   parseShoppingList,
@@ -87,6 +90,41 @@ type BasketApprovalPayload = {
     unit: ParsedItem["unit"]
   }>
 }
+
+// Onay payload'ları client'tan ham JSON olarak gelir; hesaba girmeden önce
+// runtime'da doğrula (TS cast yeterli değil). quantity/fiyatlar sonlu sayı
+// olmalı — NaN/Infinity/negatif değerler kayıtlı veriyi bozmasın.
+const finiteNum = z.number().refine(Number.isFinite, "sonlu sayı olmalı")
+const unitSchema = z.enum(UNIT_VALUES)
+
+const basketApprovalPayloadSchema = z.object({
+  items: z.array(
+    z.object({
+      rawName: z.string(),
+      searchQuery: z.string(),
+      quantity: finiteNum.refine((n) => n >= 0, "negatif olamaz"),
+      unit: unitSchema,
+    }),
+  ),
+})
+
+const receiptApprovalPayloadSchema = z.object({
+  receiptImageUrl: z.string(),
+  receiptImageR2Key: z.string(),
+  marketName: z.string().nullable(),
+  purchaseDate: z.string().nullable(),
+  totalAmount: finiteNum.nullable(),
+  items: z.array(
+    z.object({
+      rawName: z.string(),
+      searchQuery: z.string(),
+      quantity: finiteNum.refine((n) => n >= 0, "negatif olamaz"),
+      unit: unitSchema,
+      unitPrice: finiteNum.nullable(),
+      totalPrice: finiteNum.nullable(),
+    }),
+  ),
+})
 
 function detectLastUserMode(messages: UIMessage[]): LastUserMode {
   for (let i = messages.length - 1; i >= 0; i--) {
@@ -384,6 +422,28 @@ export async function POST(req: Request) {
   const mode = detectLastUserMode(messages)
   if (mode.kind === "empty") {
     return NextResponse.json({ error: "no_input" }, { status: 400 })
+  }
+
+  // SSRF koruması: görsel modunda sunucu (ya da AI Gateway) client'ın verdiği
+  // URL'i fetch eder. Yalnızca bu kullanıcının R2 klasöründeki görseller
+  // (`{R2_PUBLIC_BASE_URL}/receipts/{userId}/...`) kabul edilir; aksi halde iç
+  // ağ / cloud metadata adresleri taranabilir.
+  if (mode.kind === "receiptImage" && !isOwnedReceiptUrl(mode.imageUrl, userId)) {
+    return NextResponse.json({ error: "invalid_image_url" }, { status: 400 })
+  }
+
+  // Onay payload'larını hesaba/kayda almadan önce runtime'da doğrula.
+  if (
+    mode.kind === "receiptApproval" &&
+    !receiptApprovalPayloadSchema.safeParse(mode.payload).success
+  ) {
+    return NextResponse.json({ error: "invalid_payload" }, { status: 400 })
+  }
+  if (
+    mode.kind === "basketApproval" &&
+    !basketApprovalPayloadSchema.safeParse(mode.payload).success
+  ) {
+    return NextResponse.json({ error: "invalid_payload" }, { status: 400 })
   }
 
   const lastUserMessage = findLastUserMessage(messages)

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
+import { DepotInfo } from "@/components/assistant/depot-info"
 import type { MarketAllocation, OptimizationSummary } from "@/lib/ai/schemas"
 
 function capitalize(s: string): string {
@@ -80,6 +81,7 @@ function AllocationBreakdown({
                             {e.quantity}×
                           </span>
                         )}
+                        <DepotInfo depotName={e.depotName} market={e.market} />
                       </div>
                       <div className="text-[11px] text-muted-foreground">
                         {e.productName}

@@ -14,6 +14,7 @@ type MarketChoice = {
   packagePrice: number
   productId: string
   productName: string
+  depotName: string | null
 }
 
 type ItemMarketPrice = {
@@ -41,6 +42,7 @@ function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
           packagePrice: opt.packagePrice,
           productId: opt.productId,
           productName: opt.productName,
+          depotName: opt.depotName,
         })
       }
     }
@@ -101,6 +103,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
         quantity: choice.packsNeeded,
         lineTotal: choice.cost,
         sizeMismatch: item.sizeMismatch,
+        depotName: choice.depotName,
       })
     }
     if (count === 0) continue
@@ -177,6 +180,7 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
           quantity: choice.packsNeeded,
           lineTotal: choice.cost,
           sizeMismatch: item.sizeMismatch,
+          depotName: choice.depotName,
         })
       }
       if (!valid) continue

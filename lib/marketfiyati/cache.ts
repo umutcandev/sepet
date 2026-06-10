@@ -4,9 +4,10 @@ import {
   MF_SEARCH_TTL,
   MF_PRODUCT_TTL,
   MF_BARCODE_TTL,
+  MF_NEAREST_TTL,
 } from "@/lib/redis"
 import { db, barcodeMap } from "@/lib/db"
-import { search, searchByIdentity, MF_DEFAULT_COORDS } from "./client"
+import { search, searchByIdentity, nearest, MF_DEFAULT_COORDS } from "./client"
 import {
   toProductDetail,
   toProductHit,
@@ -21,15 +22,52 @@ const round2 = (n: number) => Math.round(n * 100) / 100
 // oranını artırır hem gizliliği korur. Bu fazda yalnızca env default kullanılıyor.
 const COORDS_KEY = `${round2(MF_DEFAULT_COORDS.latitude)}:${round2(MF_DEFAULT_COORDS.longitude)}`
 
-const SEARCH_KEY = (q: string) => `mf:search:${q}:${COORDS_KEY}`
-const PRODUCT_KEY = (productId: string) => `mf:product:${productId}`
+// v2: `depots` filtresi eklendi → fiyatlar artık konum-doğru. v1 anahtarları
+// konum filtresiz (yanlış/İstanbul) fiyat tutuyor; sürüm artışı eski kayıtları
+// TTL beklemeden geçersiz kılar. PRODUCT_KEY koordinat içermez ama tek
+// deployment tek konuma bağlı olduğundan COORDS_KEY ile konuma sabitlenir.
+const SEARCH_KEY = (q: string) => `mf:search:v2:${q}:${COORDS_KEY}`
+const PRODUCT_KEY = (productId: string) => `mf:product:v2:${COORDS_KEY}:${productId}`
 const BARCODE_KEY = (barcode: string) => `mf:barcode:${barcode}`
+const NEAREST_KEY = `mf:nearest:${COORDS_KEY}:${MF_DEFAULT_COORDS.distance}`
 
 export function normalizeQuery(input: string): string {
   return input.trim().toLocaleLowerCase("tr-TR").replace(/\s+/g, " ")
 }
 
 const isBarcode = (s: string) => /^\d{8,14}$/.test(s.trim())
+
+/**
+ * Yapılandırılmış varsayılan konuma yakın depo ID'leri. marketfiyati /search ve
+ * /searchByIdentity, lat/lng'yi konum FİLTRESİ olarak kullanmıyor — bu ID'ler
+ * `depots` alanında verilmezse rastgele (çoğunlukla İstanbul) depo fiyatları
+ * döner. Depolar nadiren değişir → 24 saat Redis cache. Çözülemezse boş liste
+ * döner (çağıran depots'suz devam eder; eski yanlış-konum davranışına düşer ama
+ * patlamaz).
+ */
+async function getNearbyDepotIds(): Promise<string[]> {
+  try {
+    const cached = await redis.get<string[]>(NEAREST_KEY)
+    if (cached && cached.length > 0) return cached
+  } catch (err) {
+    console.error("[marketfiyati] nearest cache read failed", err)
+  }
+  try {
+    const depots = await nearest(
+      MF_DEFAULT_COORDS.latitude,
+      MF_DEFAULT_COORDS.longitude,
+      MF_DEFAULT_COORDS.distance,
+    )
+    const ids = depots.map((d) => d.id)
+    if (ids.length > 0) {
+      await redis.set(NEAREST_KEY, ids, { ex: MF_NEAREST_TTL })
+    }
+    return ids
+  } catch (err) {
+    console.error("[marketfiyati] nearest depot resolve failed", err)
+    return []
+  }
+}
 
 async function readProducts(ids: string[]): Promise<ProductDetail[]> {
   if (ids.length === 0) return []
@@ -58,7 +96,8 @@ async function persistBarcode(barcode: string, productId: string): Promise<void>
 }
 
 async function fetchAndCacheSearch(rawQuery: string): Promise<ProductDetail[]> {
-  const resp = await search(rawQuery)
+  const depots = await getNearbyDepotIds()
+  const resp = await search(rawQuery, { depots })
   const details = resp.content.map((p) => toProductDetail(p))
   await writeProducts(details)
   return details
@@ -124,7 +163,8 @@ export async function getProductById(
   const cached = await redis.get<ProductDetail>(PRODUCT_KEY(id))
   if (cached) return cached
 
-  const resp = await searchByIdentity(id, "id")
+  const depots = await getNearbyDepotIds()
+  const resp = await searchByIdentity(id, "id", { depots })
   if (resp.content.length === 0) return null
   const details = resp.content.map((p) => toProductDetail(p))
   await writeProducts(details)
@@ -162,7 +202,8 @@ export async function getProductByBarcode(
     console.error("[marketfiyati] barcode_map read failed", err)
   }
 
-  const resp = await searchByIdentity(code, "barcode")
+  const depots = await getNearbyDepotIds()
+  const resp = await searchByIdentity(code, "barcode", { depots })
   if (resp.content.length === 0) return null
   const details = resp.content.map((p) => toProductDetail(p))
   await writeProducts(details)

@@ -15,6 +15,13 @@ export const authLimiter = new Ratelimit({
   prefix: "rl:auth",
 })
 
+export const receiptUploadLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(20, "1 m"),
+  prefix: "rl:receipts:upload",
+  analytics: true,
+})
+
 export const assistantBurstLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(10, "1 m"),

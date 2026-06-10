@@ -43,6 +43,9 @@ export const MarketAllocationSchema = z.object({
   // İstenen boyut/miktar bulunamadı, farklı boyutlu ürünle eşleşti. Eski
   // kayıtlarda yok → default. UI'da "Farklı Boyut" rozeti için.
   sizeMismatch: z.boolean().default(false),
+  // Bu kalemin fiyatının alındığı şube (depo) adı — UI'da "fiyat kaynağı" bilgi
+  // balonu için. Eski kayıtlarda yok → nullable + default.
+  depotName: z.string().nullable().default(null),
 })
 
 export const SingleMarketResultSchema = z.object({
@@ -86,6 +89,8 @@ export const MatchedProductSchema = z.object({
 export const MarketPriceEntrySchema = z.object({
   market: z.string(),
   price: z.number(),
+  // Fiyatın alındığı şube (depo) adı. Eski kayıtlarda yok → nullable + default.
+  depotName: z.string().nullable().default(null),
 })
 
 // Optimizasyonun market-bilinçli girdisi: bir kalem için BİR markette, kabul
@@ -106,6 +111,8 @@ export const MarketOptionSchema = z.object({
   effectiveCost: z.number(),
   // "7,08 ₺/Adet" gibi birim fiyat etiketi (varsa).
   unitPriceLabel: z.string().nullable(),
+  // Seçilen ürünün fiyatının alındığı şube (depo) adı. Eski kayıtlarda yok.
+  depotName: z.string().nullable().default(null),
 })
 
 export const MatchResultSchema = z.object({

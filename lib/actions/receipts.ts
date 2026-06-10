@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache"
 import { and, desc, eq } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, receipts, receiptItems } from "@/lib/db"
-import { deleteReceiptObject } from "@/lib/storage/r2"
+import { deleteReceiptObject, isOwnedReceiptKey } from "@/lib/storage/r2"
+import { isUuid } from "@/lib/utils"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -27,6 +28,13 @@ export async function saveReceipt(input: {
 }): Promise<{ id: string }> {
   const session = await auth()
   if (!session?.user?.id) throw new Error("unauthorized")
+
+  // R2 key'i client'tan geliyor — yalnızca bu kullanıcının klasörüne ait bir
+  // key kaydedilebilir. Aksi halde başka bir kullanıcının nesnesi bu fişe
+  // bağlanıp deleteReceipt ile silinebilir (IDOR).
+  if (!isOwnedReceiptKey(input.imageR2Key, session.user.id)) {
+    throw new Error("invalid_image_key")
+  }
 
   const bestSingle =
     input.summary.singleMarket.itemCount > 0
@@ -99,6 +107,7 @@ export async function saveReceipt(input: {
 export async function deleteReceipt(id: string): Promise<void> {
   const session = await auth()
   if (!session?.user?.id) throw new Error("unauthorized")
+  if (!isUuid(id)) throw new Error("not_found")
 
   const [existing] = await db
     .select({ imageR2Key: receipts.imageR2Key })
@@ -130,6 +139,7 @@ export async function listReceipts(userId: string) {
 }
 
 export async function getReceiptDetail(id: string, userId: string) {
+  if (!isUuid(id)) return null
   const [receipt] = await db
     .select()
     .from(receipts)
