@@ -1,3 +1,6 @@
+"use client"
+
+import * as React from "react"
 import Image from "next/image"
 import {
   Avatar,
@@ -25,16 +28,23 @@ type MarketLogoProps = {
 export function MarketLogo({ name, size = "default", className }: MarketLogoProps) {
   const entry = findMarket(name)
   const px = SIZE_PX[size]
+  // Logo dosyası henüz yoksa/yüklenmezse baş-harf fallback'ine düş — kırık
+  // görsel gösterme. Bir logo eklenip public/market-logos/'a konunca otomatik
+  // çalışır, kod değişmeden. Hatalı src'yi tutarız; src değişince (farklı
+  // market) tekrar denenir — bu yüzden effect'le reset gerekmez.
+  const [failedSrc, setFailedSrc] = React.useState<string | null>(null)
+  const showImage = !!entry?.icon && failedSrc !== entry.icon
 
   return (
     <Avatar size={size} className={cn("bg-background", className)}>
-      {entry?.icon ? (
+      {showImage ? (
         <Image
-          src={entry.icon}
-          alt={entry.name}
+          src={entry!.icon!}
+          alt={entry!.name}
           width={px}
           height={px}
           className="aspect-square size-full rounded-full object-contain"
+          onError={() => setFailedSrc(entry!.icon!)}
           unoptimized
         />
       ) : (

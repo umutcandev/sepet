@@ -150,9 +150,9 @@ export default function HomePage() {
         href="/background-image-dark.webp"
         type="image/webp"
       />
-      <link rel="preload" as="image" href="/a101-brand.webp" />
-      <link rel="preload" as="image" href="/migros-brand.webp" />
-      <link rel="preload" as="image" href="/sok-brand.webp" />
+      <link rel="preload" as="image" href="/market-logos/a101.webp" />
+      <link rel="preload" as="image" href="/market-logos/migros.webp" />
+      <link rel="preload" as="image" href="/market-logos/sok.webp" />
       <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 pb-16">
       <div
         aria-hidden
@@ -198,7 +198,7 @@ export default function HomePage() {
                 className="absolute inset-0 size-full rounded-full object-cover"
               />
             </Avatar>
-            <AvatarGroupCount className="border-[1.5px] border-ring/70 ring-0 dark:border-foreground/15">+42</AvatarGroupCount>
+            <AvatarGroupCount className="border-[1.5px] border-ring/70 ring-0 dark:border-foreground/15">+3</AvatarGroupCount>
           </AvatarGroup>
           <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
             <AnimatePresence mode="wait" initial={false}>

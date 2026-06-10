@@ -1,7 +1,8 @@
-// Market registry — marketfiyati.org.tr 6 marketi destekliyor. Logo asset'leri
-// henüz yok; `icon: null` olanlar UI'da baş-harf fallback gösterir (bkz.
-// components/market-logo.tsx). Logolar eklenince public/market-logos/'a koyup
-// icon alanını doldur.
+// Market registry — marketfiyati.org.tr 6 marketi destekliyor. Logolar
+// public/market-logos/ altında 1:1 kare webp olarak tutulur. Eksik bir dosya
+// olduğunda MarketLogo (components/market-logo.tsx) yükleme hatasında baş-harf
+// fallback'ine düşer — kırık görsel göstermez. Yeni logo eklemek için: kareyi
+// public/market-logos/<slug>.webp olarak koy, başka değişiklik gerekmez.
 
 export type MarketEntry = {
   name: string
@@ -10,12 +11,12 @@ export type MarketEntry = {
 }
 
 const REGISTRY: ReadonlyArray<MarketEntry> = [
-  { name: "BİM", icon: null, url: "https://www.bim.com.tr" },
-  { name: "A101", icon: null, url: "https://www.a101.com.tr" },
-  { name: "Migros", icon: null, url: "https://www.migros.com.tr" },
-  { name: "Şok", icon: null, url: "https://www.sokmarket.com.tr" },
-  { name: "CarrefourSA", icon: null, url: "https://www.carrefoursa.com" },
-  { name: "Tarım Kredi", icon: null, url: "https://www.tkkoopmarket.com.tr" },
+  { name: "BİM", icon: "/market-logos/bim.webp", url: "https://www.bim.com.tr" },
+  { name: "A101", icon: "/market-logos/a101.webp", url: "https://www.a101.com.tr" },
+  { name: "Migros", icon: "/market-logos/migros.webp", url: "https://www.migros.com.tr" },
+  { name: "Şok", icon: "/market-logos/sok.webp", url: "https://www.sokmarket.com.tr" },
+  { name: "CarrefourSA", icon: "/market-logos/carrefoursa.webp", url: "https://www.carrefoursa.com" },
+  { name: "Tarım Kredi", icon: "/market-logos/tarim-kredi.webp", url: "https://www.tkkoopmarket.com.tr" },
 ]
 
 // Türkçe-uyumlu agresif normalizasyon: diakritikleri sadeleştir, alfasayısal
