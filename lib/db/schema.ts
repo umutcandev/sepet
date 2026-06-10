@@ -71,7 +71,8 @@ export const products = pgTable(
   "product",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    barcode: text("barcode").notNull(),
+    // marketfiyati'nin kısa opak ürün ID'si (ör. "1O9J"). Eski EAN barkodun yerine.
+    productId: text("productId").notNull(),
     name: text("name").notNull(),
     brand: text("brand"),
     category: text("category"),
@@ -81,8 +82,17 @@ export const products = pgTable(
       .notNull()
       .defaultNow(),
   },
-  (t) => [uniqueIndex("product_barcode_idx").on(t.barcode)],
+  (t) => [uniqueIndex("product_productid_idx").on(t.productId)],
 )
+
+// EAN barkod → marketfiyati productId eşleşme tablosu. Barkod tarayıcıdan gelen
+// istekleri productId'ye çevirmek için kalıcı cache; her searchByIdentity barkod
+// çözümünde organik olarak büyür.
+export const barcodeMap = pgTable("barcode_map", {
+  barcode: text("barcode").primaryKey(),
+  productId: text("productId").notNull(),
+  resolvedAt: timestamp("resolvedAt", { mode: "date" }).notNull().defaultNow(),
+})
 
 export const priceSnapshots = pgTable(
   "price_snapshot",
@@ -161,7 +171,7 @@ export const receiptItems = pgTable(
       precision: 10,
       scale: 2,
     }),
-    matchedBarcode: text("matchedBarcode"),
+    matchedProductId: text("matchedProductId"),
     matchedName: text("matchedName"),
     bestMarket: text("bestMarket"),
     bestPrice: numeric("bestPrice", { precision: 10, scale: 2 }),
@@ -218,7 +228,7 @@ export const basketItems = pgTable(
       .notNull()
       .default("1"),
     unit: text("unit").notNull().default("adet"),
-    matchedBarcode: text("matchedBarcode"),
+    matchedProductId: text("matchedProductId"),
     matchedName: text("matchedName"),
     bestMarket: text("bestMarket"),
     bestPrice: numeric("bestPrice", { precision: 10, scale: 2 }),

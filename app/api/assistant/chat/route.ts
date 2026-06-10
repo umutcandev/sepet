@@ -304,7 +304,6 @@ function computeReceiptComparison(
       : null
     const bestMarket = marketWithMin?.market ?? null
     const bestPrice = minPrice ?? null
-    const bestUrl = marketWithMin?.sourceUrl ?? null
     // Fişteki toplam tutarla en iyi (birim fiyat * quantity) karşılaştır
     const receiptTotal =
       it.totalPrice ??
@@ -319,11 +318,10 @@ function computeReceiptComparison(
       rawName: it.rawName,
       receiptUnitPrice: it.unitPrice,
       receiptTotalPrice: receiptTotal,
-      matchedBarcode: best?.barcode ?? null,
+      matchedProductId: best?.productId ?? null,
       matchedName: best?.name ?? null,
       bestMarket,
       bestPrice,
-      bestUrl,
       savingsTL,
       sizeMismatch,
     }

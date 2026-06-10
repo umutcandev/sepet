@@ -77,7 +77,7 @@ export async function saveReceipt(input: {
             it.unitPrice != null ? it.unitPrice.toFixed(2) : null,
           receiptTotalPrice:
             lineTotal != null ? lineTotal.toFixed(2) : null,
-          matchedBarcode: comp?.matchedBarcode ?? null,
+          matchedProductId: comp?.matchedProductId ?? null,
           matchedName: comp?.matchedName ?? null,
           bestMarket: comp?.bestMarket ?? null,
           bestPrice:

@@ -6,6 +6,7 @@ import {
   MatchSelectionSchema,
   type BasketDraft,
   type ImageAnalysis,
+  type MarketOption,
   type MatchResult,
   type MatchSelection,
   type ParsedItem,
@@ -19,13 +20,15 @@ import {
   type MatchPromptItem,
 } from "./prompts"
 import { stripQuantityTokens } from "./normalize"
-import { searchProducts, getProductByBarcode } from "@/lib/camgoz/cache"
-import { CamgozError } from "@/lib/camgoz/client"
-import { redis, CAMGOZ_CACHE_TTL_SECONDS } from "@/lib/redis"
+import { searchProductDetails } from "@/lib/marketfiyati/cache"
+import type { ProductDetail } from "@/lib/marketfiyati/types"
+import { MarketfiyatiError } from "@/lib/marketfiyati/client"
+import { effectiveLineCost } from "./effective-cost"
+import { redis, MF_MATCH_TTL } from "@/lib/redis"
 import { createHash } from "node:crypto"
 
 type FindOutcome =
-  | { kind: "hit"; hits: Awaited<ReturnType<typeof searchProducts>>["hits"] }
+  | { kind: "hit"; hits: ProductDetail[] }
   | { kind: "no_match" }
   | { kind: "api_quota"; message: string }
   | { kind: "api_error"; message: string }
@@ -43,26 +46,22 @@ async function findFirstHit(
 
   for (const q of variants) {
     try {
-      const result = await searchProducts(q)
-      // En az bir marketten fiyat verisi olmayan adayları ele. Bunlar için
-      // camgöz "ortalama fiyat" döndürse de hangi markette satıldığı belli
-      // değil, dolayısıyla optimizasyona katkı yapamazlar.
-      const hits = result.hits.filter((h) => h.marketCount >= 1)
+      const result = await searchProductDetails(q)
+      // En az bir marketten gerçek fiyatı olmayan adayları ele — bir depo
+      // fiyatı yoksa o ürün optimizasyona katkı yapamaz.
+      const hits = result.details.filter((d) => d.markets.length >= 1)
       console.log(
-        `[lookupProducts] q="${q}" cached=${result.cached} hits=${result.hits.length} withMarket=${hits.length}`,
+        `[lookupProducts] q="${q}" cached=${result.cached} hits=${result.details.length} withMarket=${hits.length}`,
       )
       if (hits.length > 0) return { kind: "hit", hits }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
-      const status = err instanceof CamgozError ? err.status : undefined
+      const status = err instanceof MarketfiyatiError ? err.status : undefined
       console.error(
         `[lookupProducts] error for q="${q}" status=${status} ${message}`,
       )
-      if (status === 402 || status === 429) {
-        lastError = { kind: "api_quota", message }
-      } else {
-        lastError = { kind: "api_error", message }
-      }
+      // Marketfiyati ücretsiz — kota yok. 403/429/WAF/5xx hepsi geçici API hatası.
+      lastError = { kind: "api_error", message }
     }
   }
   return lastError ?? { kind: "no_match" }
@@ -153,16 +152,21 @@ export async function parseShoppingList(
   return { draft: object, reasoning: reasoning ?? null }
 }
 
-type HitList = Extract<FindOutcome, { kind: "hit" }>["hits"]
-type ProductHitItem = HitList[number]
+type HitList = ProductDetail[]
+type ProductHitItem = ProductDetail
 
 const MAX_CANDIDATES = 12
 
-type CachedSelection = { barcode: string | null; sizeMismatch: boolean }
+type CachedSelection = {
+  primaryProductId: string | null
+  acceptedProductIds: string[]
+  sizeMismatch: boolean
+}
 
 /**
  * LLM eşleştirme cache anahtarı. Aynı kalem (ham ad + miktar + birim) aynı
  * aday kümesiyle gelirse seçim de aynıdır — LLM'i tekrar çağırmaya gerek yok.
+ * v2: seçim tek ürün yerine kabul-edilebilir-küme döndürüyor (şema değişti).
  */
 function matchCacheKey(item: ParsedItem, hits: HitList): string {
   const payload = JSON.stringify({
@@ -171,15 +175,15 @@ function matchCacheKey(item: ParsedItem, hits: HitList): string {
     unit: item.unit,
     candidates: hits
       .slice(0, MAX_CANDIDATES)
-      .map((h) => h.barcode)
+      .map((h) => h.productId)
       .sort(),
   })
-  return `camgoz:match:v2:${createHash("sha1").update(payload).digest("hex")}`
+  return `mf:match:v2:${createHash("sha1").update(payload).digest("hex")}`
 }
 
 function toMatchedProduct(h: ProductHitItem) {
   return {
-    barcode: h.barcode,
+    productId: h.productId,
     name: h.name,
     brand: h.brand,
     category: h.category,
@@ -205,7 +209,7 @@ async function selectMatches(
     quantity: p.item.quantity,
     unit: p.item.unit,
     candidates: p.hits.slice(0, MAX_CANDIDATES).map((h) => ({
-      barcode: h.barcode,
+      productId: h.productId,
       name: h.name,
       brand: h.brand,
       category: h.category,
@@ -222,6 +226,73 @@ async function selectMatches(
   const map = new Map<number, MatchSelection["selections"][number]>()
   for (const sel of object.selections) map.set(sel.itemIndex, sel)
   return map
+}
+
+/**
+ * LLM seçimini (ya da yokluğunu) normalize CachedSelection'a çevirir:
+ * - Sadece gerçekten aday listesinde olan productId'leri tutar (halüsinasyon ele).
+ * - acceptedProductIds'in primary'yi içermesini garanti eder.
+ * - LLM yok/başarısızsa en üst adaya geri düşer (cache'lenmez).
+ */
+function resolveSelection(
+  sel: MatchSelection["selections"][number] | null | undefined,
+  hits: HitList,
+): CachedSelection {
+  const validIds = new Set(hits.map((h) => h.productId))
+
+  if (!sel) {
+    const top = hits[0]?.productId ?? null
+    return {
+      primaryProductId: top,
+      acceptedProductIds: top ? [top] : [],
+      sizeMismatch: false,
+    }
+  }
+
+  const accepted = (sel.acceptedProductIds ?? []).filter((id) =>
+    validIds.has(id),
+  )
+  let primary =
+    sel.primaryProductId && validIds.has(sel.primaryProductId)
+      ? sel.primaryProductId
+      : null
+  if (primary && !accepted.includes(primary)) accepted.unshift(primary)
+  if (!primary) primary = accepted[0] ?? null
+
+  return {
+    primaryProductId: primary,
+    acceptedProductIds: accepted,
+    sizeMismatch: sel.sizeMismatch,
+  }
+}
+
+/**
+ * Market-bilinçli optimizasyon girdisi. Kabul edilen adaylar arasından HER
+ * market için, o kalemin istenen miktarını almanın en düşük normalize maliyetli
+ * (birim fiyatla hesaplanmış) seçeneğini bulur. Aynı kalem farklı marketlerde
+ * farklı ürüne çözülebilir — tek/iki market kombinasyonlarının özü budur.
+ */
+function buildMarketOptions(item: ParsedItem, accepted: HitList): MarketOption[] {
+  const byMarket = new Map<string, MarketOption>()
+  for (const cand of accepted) {
+    for (const mp of cand.markets) {
+      const cost = effectiveLineCost(item.quantity, item.unit, mp, cand.name)
+      const cur = byMarket.get(mp.market)
+      if (!cur || cost < cur.effectiveCost) {
+        byMarket.set(mp.market, {
+          market: mp.market,
+          productId: cand.productId,
+          productName: cand.name,
+          packagePrice: mp.price,
+          effectiveCost: cost,
+          unitPriceLabel: mp.unitPrice ?? null,
+        })
+      }
+    }
+  }
+  return Array.from(byMarket.values()).sort(
+    (a, b) => a.effectiveCost - b.effectiveCost,
+  )
 }
 
 export async function lookupProducts(
@@ -289,10 +360,8 @@ export async function lookupProducts(
       misses.forEach((miss, promptIndex) => {
         const sel = selections?.get(promptIndex)
         const entry = withHits[miss.withHitsIdx]
-        const resolved: CachedSelection = sel
-          ? { barcode: sel.matchedBarcode, sizeMismatch: sel.sizeMismatch }
-          : // LLM başarısız ya da seçim yok → hits[0]'a geri düş (cache'leme).
-            { barcode: entry.hits[0]?.barcode ?? null, sizeMismatch: false }
+        // LLM başarısız ya da seçim yok → hits[0]'a geri düş (cache'leme).
+        const resolved = resolveSelection(sel, entry.hits)
         pick.set(entry.index, resolved)
         if (sel) {
           toCache.push({ key: cacheKeys[miss.withHitsIdx], value: resolved })
@@ -304,7 +373,7 @@ export async function lookupProducts(
         try {
           const p = redis.pipeline()
           for (const { key, value } of toCache) {
-            p.set(key, value, { ex: CAMGOZ_CACHE_TTL_SECONDS })
+            p.set(key, value, { ex: MF_MATCH_TTL })
           }
           await p.exec()
         } catch (err) {
@@ -314,59 +383,64 @@ export async function lookupProducts(
     }
   }
 
-  // Faz 3 — sonuçları kur.
-  const matches: MatchResult[] = await Promise.all(
-    items.map(async (item, index) => {
-      const outcome = outcomes[index]
-      const hits = outcome.kind === "hit" ? outcome.hits : []
-      const selection = pick.get(index) ?? null
-      const best =
-        selection?.barcode != null
-          ? hits.find((h) => h.barcode === selection.barcode) ?? null
-          : null
-      const sizeMismatch = best ? (selection?.sizeMismatch ?? false) : false
-      const detail = best ? await getProductByBarcode(best.barcode) : null
+  // Faz 3 — sonuçları kur. /search zaten her adayın market kırılımını getirdiği
+  // için ekstra ürün detayı çağrısına gerek yok.
+  const matches: MatchResult[] = items.map((item, index) => {
+    const outcome = outcomes[index]
+    const hits = outcome.kind === "hit" ? outcome.hits : []
+    const selection = pick.get(index) ?? null
 
-      const lookupStatus: MatchResult["lookupStatus"] =
-        outcome.kind === "hit"
-          ? best
-            ? "ok"
-            : "no_match"
-          : outcome.kind === "no_match"
-            ? "no_match"
-            : outcome.kind === "api_quota"
-              ? "api_quota"
-              : "api_error"
+    // Kabul edilen ve gerçek market fiyatı olan adaylar.
+    const acceptedIds = new Set(selection?.acceptedProductIds ?? [])
+    const accepted = hits.filter(
+      (h) => acceptedIds.has(h.productId) && h.markets.length > 0,
+    )
+    const primary =
+      (selection?.primaryProductId
+        ? accepted.find((h) => h.productId === selection.primaryProductId)
+        : undefined) ??
+      accepted[0] ??
+      null
+    const best = primary
+    const sizeMismatch = best ? (selection?.sizeMismatch ?? false) : false
 
-      const errorMessage =
-        outcome.kind === "api_quota" || outcome.kind === "api_error"
-          ? outcome.message
-          : null
+    const lookupStatus: MatchResult["lookupStatus"] =
+      outcome.kind === "hit"
+        ? best
+          ? "ok"
+          : "no_match"
+        : outcome.kind === "no_match"
+          ? "no_match"
+          : outcome.kind === "api_quota"
+            ? "api_quota"
+            : "api_error"
 
-      const marketPrices = detail
-        ? detail.markets.map((m) => ({
-            market: m.market,
-            price: m.price,
-            sourceUrl: m.sourceUrl,
-          }))
-        : []
+    const errorMessage =
+      outcome.kind === "api_quota" || outcome.kind === "api_error"
+        ? outcome.message
+        : null
 
-      return {
-        rawName: item.name,
-        searchQuery: item.searchQuery,
-        quantity: item.quantity,
-        unit: item.unit,
-        bestMatch: best ? toMatchedProduct(best) : null,
-        marketPrices,
-        alternatives: hits
-          .filter((h) => h.barcode !== best?.barcode)
-          .slice(0, 3)
-          .map(toMatchedProduct),
-        lookupStatus,
-        errorMessage,
-        sizeMismatch,
-      } satisfies MatchResult
-    }),
-  )
+    // Temsilci ürünün (UI kartı) market fiyatları.
+    const marketPrices = best
+      ? best.markets.map((m) => ({ market: m.market, price: m.price }))
+      : []
+
+    return {
+      rawName: item.name,
+      searchQuery: item.searchQuery,
+      quantity: item.quantity,
+      unit: item.unit,
+      bestMatch: best ? toMatchedProduct(best) : null,
+      marketPrices,
+      marketOptions: buildMarketOptions(item, accepted),
+      alternatives: accepted
+        .filter((h) => h.productId !== best?.productId)
+        .slice(0, 3)
+        .map(toMatchedProduct),
+      lookupStatus,
+      errorMessage,
+      sizeMismatch,
+    } satisfies MatchResult
+  })
   return { matches }
 }

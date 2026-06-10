@@ -103,7 +103,7 @@ Mikrofon kaydı `audio/webm` olarak alınıp `/api/transcribe` endpoint'inde Gem
 
 ### Barkod Tarayıcı ve Ürün Arama
 
-`@zxing/library` ile tarayıcı içinde çalışan barkod okuyucu ve 45+ market kataloğunda canlı arama yapan bir ürün sayfası mevcuttur.
+`@zxing/library` ile tarayıcı içinde çalışan barkod okuyucu ve 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) kataloğunda canlı arama yapan bir ürün sayfası mevcuttur.
 
 ### Sepetlerim ve Fiş Geçmişi
 
@@ -148,7 +148,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
             │
    ┌──────────────────────────────────────────┐
    │  Ajan 2 — Product Lookup                 │
-   │  camgöz API + Upstash Redis cache        │
+   │  marketfiyati API + Upstash Redis cache  │
    │  → her kalem için aday ürünler           │
    └────────┬─────────────────────────────────┘
             │
@@ -203,7 +203,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 │ /api/assistant/chat   UIMessageStream — multi-agent pipeline     │
 │ /api/transcribe       Gemini Flash Lite ile ses → metin          │
 │ /api/receipts/upload  Cloudflare R2'ye direkt upload             │
-│ /api/products/...     camgöz arama proxy + cache                 │
+│ /api/products/...     marketfiyati arama proxy + cache           │
 │ /api/auth/...         NextAuth.js v5 (Google OAuth)              │
 └──────────────────────────────────────────────────────────────────┘
                                  │
@@ -224,8 +224,8 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
                                  │
                                  ▼
                   ┌────────────────────────────┐
-                  │   camgöz / JoJAPI          │
-                  │   45+ Türk market kataloğu │
+                  │   marketfiyati.org.tr      │
+                  │   6 Türk market kataloğu   │
                   └────────────────────────────┘
 ```
 
@@ -264,7 +264,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 |---|---|
 | **Neon Postgres** (`@neondatabase/serverless`) | Birincil veritabanı — sohbet geçmişi, sepetler, fişler, ürün cache, fiyat snapshot'ları |
 | **Drizzle ORM** + Drizzle Kit | Şema, migration, type-safe query |
-| **Upstash Redis** (`@upstash/redis`) | camgöz cevap cache'i (12s TTL), LLM seçim cache'i, rate limit |
+| **Upstash Redis** (`@upstash/redis`) | marketfiyati cevap cache'i (arama 1s, ürün 3s TTL), barkod→productId eşleşmesi (30g), LLM seçim cache'i, rate limit |
 | **Upstash Ratelimit** | Asistan burst (10/dk) + günlük (50/gün), auth (10/dk), ürün arama (60/dk) |
 | **Cloudflare R2** (`@aws-sdk/client-s3`) | Fiş görsellerinin saklanması, public CDN |
 
@@ -281,7 +281,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 
 | Servis | Kullanım |
 |---|---|
-| **camgöz / JoJAPI** | 45+ Türk market için canlı ürün ve fiyat verisi |
+| **marketfiyati.org.tr** (TÜBİTAK + Ticaret Bakanlığı) | 6 Türk market için konum bazlı, resmi ve ücretsiz ürün/fiyat verisi |
 | **Google Gemini API** (Vercel AI Gateway üzerinden) | LLM çağrıları |
 
 ### Geliştirme Araçları
@@ -308,9 +308,9 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 
 ### Maliyet ve Hız
 
-- **İki katmanlı cache.** Aynı arama sorgusu önce Redis'te aranır (`camgoz:search:...`), miss durumunda Postgres'te ürün ve fiyat snapshot'ları kontrol edilir, son çare olarak JoJAPI çağrısı yapılır. Bunun sebebi camgoz.net API servisinin credit bazlı ücretlendirmeleridir.
-- **Batch LLM seçimi.** N kalem için N çağrı yerine tek bir `generateObject` çağrısında prompt'a tüm kalemler verilir; aday başına yalnızca barkod, ad, marka ve kategori gönderilerek token tüketimi minimize edilir.
-- **Selektif preferred markets.** `CAMGOZ_PREFERRED_MARKETS` ile API'den dönecek market sayısı kasıtlı olarak kısılır (A101, Şok, Migros, Carrefour); 45+ market kataloğu desteklense de varsayılan optimizasyon en yaygın olanları kapsar. Bunun sebebi yine camgoz.net API servisinin credit kullanımlarını ekonomik hale getirmek içindir. Güçlü bir pricing paketi alımından sonra bu katalog tüm marketleri destekleyecek şekilde güncellenebilir.
+- **Konum bazlı arama cache.** Aynı arama sorgusu önce Redis'te aranır (`mf:search:{q}:{lat}:{lng}`), koordinatlar 2 ondalığa yuvarlanarak (~1.1 km) cache hit oranı artırılır. marketfiyati ücretsiz olduğu için kredi koruma amaçlı uzun TTL yerine güncel fiyat önceliklidir (arama 1s, ürün 3s).
+- **Batch LLM seçimi.** N kalem için N çağrı yerine tek bir `generateObject` çağrısında prompt'a tüm kalemler verilir; aday başına yalnızca productId, ad, marka ve kategori gönderilerek token tüketimi minimize edilir.
+- **Self-imposed throttle.** marketfiyati WAF'ına takılmamak için istekler arası min 200ms beklenir; özellikle `lookupProducts`'taki paralel aramalar tek bir kuyrukta serileştirilir.
 - **Image preload.** Login arka planı, marka avatarları ve hero görselleri `<link rel="preload">` ile öncelendirilir; AVIF + WebP fallback ile bant genişliği düşürülür.
 - **Cache-Control immutable.** Tüm statik medya dosyaları `public, max-age=31536000, immutable` ile servis edilir.
 
@@ -337,10 +337,11 @@ Drizzle ORM ile tanımlanan ana tablolar:
 | Tablo | Rol |
 |---|---|
 | `user`, `account`, `session`, `verificationToken` | NextAuth tabloları (`user.onboardingCompletedAt` onboarding tamamlanma zamanını tutar) |
-| `product` | Barkod bazlı ürün cache (`uniqueIndex` barkod) |
+| `product` | productId bazlı ürün cache (`uniqueIndex` productId) |
+| `barcode_map` | EAN barkod → marketfiyati productId kalıcı eşleşme tablosu |
 | `price_snapshot` | Market bazlı fiyat geçmişi (product + market + tarih indeksli) |
 | `receipt` | OCR'lanmış fiş başlıkları (en iyi market, potansiyel tasarruf, R2 key) |
-| `receipt_item` | Fişin satır kalemleri (matched barcode, best price) |
+| `receipt_item` | Fişin satır kalemleri (matched productId, best price) |
 | `basket` | Doğal dilden üretilip kaydedilen sepetler |
 | `basket_item` | Sepet kalemleri |
 | `conversation` | Asistan sohbet oturumları |
@@ -360,7 +361,7 @@ Drizzle ORM ile tanımlanan ana tablolar:
   - Cloudflare R2 (opsiyonel, fiş özelliği için)
   - Google Cloud (OAuth client)
   - Vercel AI Gateway
-  - Camgoz.net JoJAPI (`jojapi.com/hub/api/product-barcode-api/pricing`) API anahtarı
+  - marketfiyati.org.tr (resmi, ücretsiz — API anahtarı gerekmez)
 
 ### Kurulum
 
@@ -406,9 +407,9 @@ pnpm dev               # http://localhost:3000
 | `AI_GATEWAY_API_KEY` | Vercel AI Gateway | Gemini erişimi |
 | `UPSTASH_REDIS_REST_URL` | Upstash | Redis REST URL |
 | `UPSTASH_REDIS_REST_TOKEN` | Upstash | Redis REST Token |
-| `CAMGOZ_API_BASE` | JoJAPI | Varsayılan `https://camgoz.jojapi.net/api/external` |
-| `JOJAPI_KEY` | JoJAPI | API anahtarı |
-| `CAMGOZ_PREFERRED_MARKETS` | JoJAPI | Virgülle ayrılmış market listesi |
+| `MARKETFIYATI_DEFAULT_LAT` | marketfiyati | Varsayılan enlem (opsiyonel, fallback `41.0082`) |
+| `MARKETFIYATI_DEFAULT_LNG` | marketfiyati | Varsayılan boylam (opsiyonel, fallback `28.9784`) |
+| `MARKETFIYATI_DEFAULT_DISTANCE` | marketfiyati | Arama yarıçapı km (opsiyonel, fallback `5`) |
 | `R2_ACCOUNT_ID` | Cloudflare R2 | Hesap ID |
 | `R2_ACCESS_KEY_ID` | Cloudflare R2 | Access Key |
 | `R2_SECRET_ACCESS_KEY` | Cloudflare R2 | Secret Key |
@@ -426,7 +427,7 @@ sepet/
 │   │   ├── assistant/chat/       # Multi-agent UIMessageStream pipeline
 │   │   ├── transcribe/           # Ses → metin (Gemini Flash Lite)
 │   │   ├── receipts/upload/      # R2'ye direkt yükleme
-│   │   ├── products/             # camgöz arama proxy + cache
+│   │   ├── products/             # marketfiyati arama proxy + cache
 │   │   └── auth/                 # NextAuth.js handler
 │   ├── asistan/                  # Asistan arayüzü ve geçmiş
 │   ├── sepetlerim/               # Kaydedilmiş sepetler
@@ -450,10 +451,10 @@ sepet/
 │   │   ├── schemas.ts            # Tüm Zod şemaları
 │   │   ├── tools.ts              # analyzeImage, parseShoppingList, lookupProducts
 │   │   └── optimize.ts           # Tek ve iki market optimizasyonu
-│   ├── camgoz/                   # JoJAPI client + Redis cache
+│   ├── marketfiyati/             # marketfiyati client + types + Redis cache
 │   ├── charts/                   # aggregate-monthly toplama yardımcısı
 │   ├── db/                       # Drizzle şema ve bağlantı
-│   ├── markets/registry.ts       # 45+ market logo + URL registry
+│   ├── markets/registry.ts       # 6 market logo + URL registry
 │   ├── storage/r2.ts             # Cloudflare R2 client
 │   ├── security/                 # rate-limit, headers
 │   ├── auth/                     # NextAuth session helper (onboarding flag dahil)
@@ -473,13 +474,3 @@ sepet/
 ## Lisans
 
 Bu proje hackathon süresince geliştirilmiş açık kaynak bir prototiptir. Lisans detayları için depodaki ilgili dosyaya bakınız.
-
----
-
-<div align="center">
-
-**Sepet** — Türkiye'nin en uygun fiyatlı alışveriş sepeti, bir cümle uzağınızda.
-
-<a href="https://www.trysepet.com">www.trysepet.com</a>
-
-</div>

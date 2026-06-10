@@ -28,7 +28,7 @@ export function MarketLogo({ name, size = "default", className }: MarketLogoProp
 
   return (
     <Avatar size={size} className={cn("bg-background", className)}>
-      {entry ? (
+      {entry?.icon ? (
         <Image
           src={entry.icon}
           alt={entry.name}
@@ -38,7 +38,7 @@ export function MarketLogo({ name, size = "default", className }: MarketLogoProp
           unoptimized
         />
       ) : (
-        <AvatarFallback>{getMarketInitial(name)}</AvatarFallback>
+        <AvatarFallback>{getMarketInitial(entry?.name ?? name)}</AvatarFallback>
       )}
     </Avatar>
   )

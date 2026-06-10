@@ -226,7 +226,7 @@ export default function HomePage() {
             bannerVisible ? (
               <>
                 <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
-                  Sepet, BTK Akademi HACKATHON&apos;26 birincisi.
+                  Sepet, HACKATHON&apos;26 birincisi oldu.
                 </p>
 
                 <a

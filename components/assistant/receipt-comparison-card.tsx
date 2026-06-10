@@ -4,8 +4,6 @@ import * as React from "react"
 import {
   CheckIcon,
   ChevronDownIcon,
-  DownloadIcon,
-  ExternalLinkIcon,
   InfoIcon,
   Loader2Icon,
   SaveIcon,
@@ -57,12 +55,12 @@ export function ReceiptComparisonCard({
   const { comparison, receiptContext, summary, matches } = data
   const [expanded, setExpanded] = React.useState<Set<number>>(new Set())
 
-  // barcode → tüm market fiyatları (best dahil). Satır genişletildiğinde
+  // productId → tüm market fiyatları (best dahil). Satır genişletildiğinde
   // best dışındakileri sırayla göstereceğiz.
-  const marketPricesByBarcode = React.useMemo(() => {
+  const marketPricesByProductId = React.useMemo(() => {
     const map = new Map<string, MatchResult["marketPrices"]>()
     for (const m of matches) {
-      if (m.bestMatch) map.set(m.bestMatch.barcode, m.marketPrices)
+      if (m.bestMatch) map.set(m.bestMatch.productId, m.marketPrices)
     }
     return map
   }, [matches])
@@ -74,33 +72,6 @@ export function ReceiptComparisonCard({
       else next.add(idx)
       return next
     })
-  }
-
-  const linkItems = comparison.items.filter((it) => !!it.bestUrl)
-
-  function handleDownloadLinks() {
-    if (linkItems.length === 0) {
-      toast.error("İndirilebilecek ürün bağlantısı bulunamadı.")
-      return
-    }
-    const body = linkItems
-      .map((it) => {
-        const name = it.matchedName ?? it.rawName
-        const market = it.bestMarket ? ` (${it.bestMarket})` : ""
-        return `${name}${market}\n${it.bestUrl}`
-      })
-      .join("\n\n")
-    const blob = new Blob([`${body}\n`], {
-      type: "text/plain;charset=utf-8",
-    })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = "fis-urun-linkleri.txt"
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
-    URL.revokeObjectURL(url)
   }
 
   const canSave = !!receiptContext.imageR2Key
@@ -166,8 +137,8 @@ export function ReceiptComparisonCard({
           <TableBody>
             {comparison.items.map((it, idx) => {
               const hasSavings = (it.savingsTL ?? 0) > 0
-              const allPrices = it.matchedBarcode
-                ? marketPricesByBarcode.get(it.matchedBarcode) ?? []
+              const allPrices = it.matchedProductId
+                ? marketPricesByProductId.get(it.matchedProductId) ?? []
                 : []
               // best market dışındaki entry'ler. bestMarket eşleşmiyorsa
               // (sentetik fallback durumu) tüm liste gösterilir.
@@ -225,18 +196,7 @@ export function ReceiptComparisonCard({
                       {it.bestMarket ? (
                         <div className="flex items-center gap-2">
                           <MarketLogo name={it.bestMarket} size="sm" />
-                          {it.bestUrl ? (
-                            <a
-                              href={it.bestUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-sm font-medium text-primary underline"
-                            >
-                              {it.bestMarket}
-                            </a>
-                          ) : (
-                            <span className="text-sm">{it.bestMarket}</span>
-                          )}
+                          <span className="text-sm">{it.bestMarket}</span>
                         </div>
                       ) : (
                         <span className="text-xs text-muted-foreground">
@@ -280,28 +240,9 @@ export function ReceiptComparisonCard({
                                     {mp.market}
                                   </span>
                                 </div>
-                                <div className="flex items-center gap-1.5">
-                                  <span className="font-medium tabular-nums">
-                                    {formatTL(mp.price)}
-                                  </span>
-                                  {mp.sourceUrl && (
-                                    <Button
-                                      asChild
-                                      size="icon-xs"
-                                      variant="ghost"
-                                      className="text-muted-foreground/70 hover:text-foreground"
-                                    >
-                                      <a
-                                        href={mp.sourceUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={`${mp.market} sayfasını aç`}
-                                      >
-                                        <ExternalLinkIcon />
-                                      </a>
-                                    </Button>
-                                  )}
-                                </div>
+                                <span className="font-medium tabular-nums">
+                                  {formatTL(mp.price)}
+                                </span>
                               </li>
                             ))}
                           </ul>
@@ -337,17 +278,6 @@ export function ReceiptComparisonCard({
           </span>
         </div>
         <div className="ml-auto flex items-center gap-2">
-          {linkItems.length > 0 && (
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              onClick={handleDownloadLinks}
-            >
-              <DownloadIcon className="mr-1 size-3.5" />
-              Ürün Linklerini İndir
-            </Button>
-          )}
           {savedId ? (
             <Button type="button" size="sm" variant="secondary" disabled>
               <CheckIcon className="mr-1 size-3.5" />

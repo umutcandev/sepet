@@ -6,10 +6,8 @@ import {
   AlertCircleIcon,
   CreditCardIcon,
   ChevronDownIcon,
-  ExternalLinkIcon,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import {
   Collapsible,
   CollapsibleContent,
@@ -124,23 +122,6 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                       </span>
                     )}
                   </div>
-                  {cheapest.sourceUrl && (
-                    <Button
-                      asChild
-                      size="icon-xs"
-                      variant="ghost"
-                      className="text-muted-foreground/70 hover:text-foreground"
-                    >
-                      <a
-                        href={cheapest.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${cheapest.market} sayfasını aç`}
-                      >
-                        <ExternalLinkIcon />
-                      </a>
-                    </Button>
-                  )}
                 </div>
               )}
             </div>
@@ -166,33 +147,14 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                           <MarketLogo name={mp.market} size="sm" />
                           <span className="text-muted-foreground">{mp.market}</span>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                          <div className="flex flex-col items-end text-right">
-                            <span className="font-medium tabular-nums">
-                              {tlFormatter.format(mp.price)}
+                        <div className="flex flex-col items-end text-right">
+                          <span className="font-medium tabular-nums">
+                            {tlFormatter.format(mp.price)}
+                          </span>
+                          {qtyLabel && (
+                            <span className="text-[10px] tabular-nums text-muted-foreground">
+                              {qtyLabel}
                             </span>
-                            {qtyLabel && (
-                              <span className="text-[10px] tabular-nums text-muted-foreground">
-                                {qtyLabel}
-                              </span>
-                            )}
-                          </div>
-                          {mp.sourceUrl && (
-                            <Button
-                              asChild
-                              size="icon-xs"
-                              variant="ghost"
-                              className="text-muted-foreground/70 hover:text-foreground"
-                            >
-                              <a
-                                href={mp.sourceUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={`${mp.market} sayfasını aç`}
-                              >
-                                <ExternalLinkIcon />
-                              </a>
-                            </Button>
                           )}
                         </div>
                       </li>

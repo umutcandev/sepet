@@ -18,7 +18,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 import { formatTLOrDash } from "@/lib/format"
 import { cn } from "@/lib/utils"
-import type { ProductHit } from "@/lib/camgoz/types"
+import type { ProductHit } from "@/lib/marketfiyati/types"
 
 type Result =
   | { kind: "idle" }
@@ -29,9 +29,7 @@ type Result =
 export function ProductSearchPage() {
   const [q, setQ] = React.useState("")
   const [result, setResult] = React.useState<Result>({ kind: "idle" })
-  const [selectedBarcode, setSelectedBarcode] = React.useState<string | null>(
-    null,
-  )
+  const [selectedId, setSelectedId] = React.useState<string | null>(null)
   const [scannerOpen, setScannerOpen] = React.useState(false)
   const abortRef = React.useRef<AbortController | null>(null)
   const guard = useRequireAuth()
@@ -82,7 +80,8 @@ export function ProductSearchPage() {
       <div className="mb-6 flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">Ürün Ara</h1>
         <p className="text-sm text-muted-foreground">
-          Ürün adı ya da barkod ile 45+ markette güncel fiyatları karşılaştır.
+          Ürün adı ya da barkod ile 6 markette (BİM, A101, Migros, Şok,
+          CarrefourSA, Tarım Kredi) güncel fiyatları karşılaştır.
         </p>
       </div>
 
@@ -138,19 +137,17 @@ export function ProductSearchPage() {
 
       <ResultArea
         result={result}
-        onSelect={guard(setSelectedBarcode)}
+        onSelect={guard(setSelectedId)}
       />
 
       <ResponsiveDialog
-        open={selectedBarcode !== null}
+        open={selectedId !== null}
         onOpenChange={(open) => {
-          if (!open) setSelectedBarcode(null)
+          if (!open) setSelectedId(null)
         }}
       >
         <ResponsiveDialogContent>
-          {selectedBarcode && (
-            <ProductDetailPanel barcode={selectedBarcode} />
-          )}
+          {selectedId && <ProductDetailPanel productId={selectedId} />}
         </ResponsiveDialogContent>
       </ResponsiveDialog>
 
@@ -168,7 +165,7 @@ function ResultArea({
   onSelect,
 }: {
   result: Result
-  onSelect: (barcode: string) => void
+  onSelect: (productId: string) => void
 }) {
   if (result.kind === "loading") {
     return (
@@ -218,9 +215,9 @@ function ResultArea({
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {result.hits.map((hit) => (
           <ProductCard
-            key={hit.barcode}
+            key={hit.productId}
             hit={hit}
-            onSelect={() => onSelect(hit.barcode)}
+            onSelect={() => onSelect(hit.productId)}
           />
         ))}
       </div>
@@ -268,7 +265,7 @@ function ProductCard({
         </div>
         <div className="truncate text-[11px] text-muted-foreground">
           {[hit.brand, hit.category].filter(Boolean).join(" · ") ||
-            hit.barcode}
+            hit.productId}
         </div>
       </div>
 

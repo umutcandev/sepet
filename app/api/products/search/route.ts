@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
-import { searchProducts } from "@/lib/camgoz/cache"
-import { CamgozError } from "@/lib/camgoz/client"
+import { searchProducts } from "@/lib/marketfiyati/cache"
+import { MarketfiyatiError } from "@/lib/marketfiyati/client"
 
 export const runtime = "nodejs"
 
@@ -21,9 +21,9 @@ export async function GET(request: Request) {
     const result = await searchProducts(q)
     return NextResponse.json(result)
   } catch (err) {
-    const status = err instanceof CamgozError ? err.status : 500
+    const status = err instanceof MarketfiyatiError ? err.status : 500
     const message =
-      err instanceof Error ? err.message : "unknown camgoz error"
+      err instanceof Error ? err.message : "unknown marketfiyati error"
     return NextResponse.json({ error: message }, { status })
   }
 }
