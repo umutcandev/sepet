@@ -1,6 +1,8 @@
 "use client"
 
-import { Check } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { ArrowUpRightIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -12,13 +14,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  LEGAL_LAST_UPDATED,
+  PrivacyContent,
+  TermsContent,
+} from "@/components/legal/legal-content"
 import { signInWithGoogleAction } from "@/lib/actions/auth"
-
-const FEATURES = [
-  "162.929 ürünün canlı fiyatı",
-  "Yapay zeka destekli alışveriş listesi",
-  "Fiş fotoğrafından en hızlı fiyat karşılaştırması",
-]
 
 type Props = {
   callbackUrl?: string
@@ -26,26 +27,32 @@ type Props = {
 
 export function LoginForm({ callbackUrl }: Props) {
   return (
-    <div className="flex w-full max-w-[402px] flex-col px-5 pt-8 pb-5 md:pt-10 md:pb-6">
-      <div className="flex flex-col">
-        <h1 className="text-[36px] font-semibold leading-[36px] tracking-[-0.04em] text-foreground">
-          Sepet
-        </h1>
-        <p className="mt-4 max-w-[260px] text-[15px] leading-[1.35] tracking-[-0.01em] text-muted-foreground">
-          Yapay zeka ile akıllı alışverişin tadını çıkarın.
-        </p>
-      </div>
+    <div className="flex w-full max-w-[402px] flex-col items-center px-6 pt-10 pb-6 text-center md:pt-12">
+      <Image
+        src="/sepet-square-dark.webp"
+        alt="Sepet"
+        width={256}
+        height={256}
+        className="h-16 w-16 rounded-xl dark:hidden"
+      />
+      <Image
+        src="/sepet-square-light.webp"
+        alt=""
+        aria-hidden
+        width={256}
+        height={256}
+        className="hidden h-16 w-16 rounded-xl dark:block"
+      />
 
-      <ul className="mt-8 mb-6 flex flex-col gap-3 text-[13px] text-muted-foreground md:mt-10">
-        {FEATURES.map((item) => (
-          <li key={item} className="flex items-center gap-2">
-            <Check className="h-3 w-3 shrink-0" strokeWidth={2.5} />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
+      <h1 className="mt-5 text-[22px] font-semibold leading-tight tracking-[-0.02em] text-foreground">
+        Oturum Açın
+      </h1>
+      <p className="mt-2 max-w-[300px] text-[14px] leading-[1.4] tracking-[-0.01em] text-muted-foreground">
+        Ne alacağını yaz, Sepet&apos;in için en ucuz marketi bulalım.
+      </p>
 
       <form
+        className="mt-7 w-full"
         action={async () => {
           await signInWithGoogleAction(callbackUrl)
         }}
@@ -55,14 +62,14 @@ export function LoginForm({ callbackUrl }: Props) {
           size="lg"
           className="h-[44px] w-full gap-2 rounded-xl px-[6px] text-[14px] font-medium tracking-[-0.01em]"
         >
-          <span className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white">
+          <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full">
             <GoogleIcon />
           </span>
-          Google ile devam et
+          Google ile giriş yap
         </Button>
       </form>
 
-      <p className="mt-3.5 text-center text-[11px] leading-[1.5] tracking-[-0.005em] text-muted-foreground/60">
+      <p className="mt-3.5 text-[11px] leading-[1.5] tracking-[-0.005em] text-muted-foreground/60">
         Devam ederek <TermsDialog /> ve <PrivacyDialog />&apos;i kabul ediyorsun.
       </p>
     </div>
@@ -83,79 +90,22 @@ function TermsDialog() {
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Kullanım Şartları</DialogTitle>
-          <DialogDescription>Son güncelleme: 18 Mayıs 2026</DialogDescription>
+          <DialogDescription>
+            Son güncelleme: {LEGAL_LAST_UPDATED}
+          </DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-[60vh] pr-4">
-          <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">1. Hizmet Hakkında</h3>
-              <p>
-                Sepet, market ürünlerinin fiyatlarını karşılaştırmana ve yapay
-                zeka destekli alışveriş listeleri oluşturmana yardımcı olan bir
-                platformdur. Hizmeti kullanarak bu şartları kabul etmiş
-                olursun.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">2. Hesap</h3>
-              <p>
-                Sepet&apos;e Google hesabınla giriş yaparsın. Hesabının
-                güvenliği senin sorumluluğundadır. Hesabını başkasıyla
-                paylaşmamalısın.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">
-                3. Kabul Edilebilir Kullanım
-              </h3>
-              <p>
-                Hizmeti yasalara aykırı amaçlarla, sistemi kötüye kullanacak ya
-                da diğer kullanıcıları rahatsız edecek şekilde kullanamazsın.
-                Yapay zeka çıktılarının ticari kararlarda tek başına
-                kullanılmasını önermiyoruz.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">
-                4. Fiyat ve Ürün Bilgileri
-              </h3>
-              <p>
-                Gösterilen fiyatlar üçüncü taraf kaynaklardan derlenir ve
-                gerçek zamanlı olmayabilir. Sepet, fiyat doğruluğu için
-                garanti vermez; nihai fiyat ilgili satıcının kasasında
-                belirlenir.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">
-                5. Sorumluluk Reddi
-              </h3>
-              <p>
-                Hizmet &quot;olduğu gibi&quot; sunulur. Sepet, yazılımdaki
-                hatalar, kesintiler veya veri kayıplarından doğabilecek
-                doğrudan ya da dolaylı zararlardan sorumlu tutulamaz.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">
-                6. Değişiklikler
-              </h3>
-              <p>
-                Bu şartları zaman zaman güncelleyebiliriz. Önemli
-                değişiklikleri uygulama içinde bildiririz; güncellemeden sonra
-                hizmeti kullanmaya devam etmen yeni şartları kabul ettiğin
-                anlamına gelir.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">7. İletişim</h3>
-              <p>
-                Sorularını <span className="text-foreground">support@trysepet.com</span>{" "}
-                adresine iletebilirsin.
-              </p>
-            </section>
-          </div>
+          <TermsContent />
         </ScrollArea>
+        <Link
+          href="/kullanim-sartlari"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+        >
+          Tam sayfada aç
+          <ArrowUpRightIcon className="size-3" />
+        </Link>
       </DialogContent>
     </Dialog>
   )
@@ -169,82 +119,28 @@ function PrivacyDialog() {
           type="button"
           className="underline underline-offset-2 transition-colors hover:text-foreground"
         >
-          Gizlilik
+          Gizlilik Politikası
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Gizlilik Politikası</DialogTitle>
-          <DialogDescription>Son güncelleme: 18 Mayıs 2026</DialogDescription>
+          <DialogDescription>
+            Son güncelleme: {LEGAL_LAST_UPDATED}
+          </DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-[60vh] pr-4">
-          <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">
-                1. Topladığımız Veriler
-              </h3>
-              <p>
-                Google ile giriş yaptığında adın, e-posta adresin ve profil
-                fotoğrafın bize aktarılır. Bunun dışında oluşturduğun
-                alışveriş listeleri, sohbet geçmişlerin ve yüklediğin fiş
-                fotoğrafları hizmet sağlamak için saklanır.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">
-                2. Verileri Nasıl Kullanırız
-              </h3>
-              <p>
-                Verilerini hesabını tanımlamak, kişisel öneriler sunmak,
-                yapay zeka asistanını çalıştırmak ve hizmet kalitesini
-                geliştirmek için kullanırız. Verilerini reklam amacıyla
-                üçüncü taraflara satmıyoruz.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">
-                3. Yapay Zeka İşleme
-              </h3>
-              <p>
-                Asistan mesajların ve fiş görüntülerin, yanıt üretmek için
-                yapay zeka sağlayıcılarımıza iletilir. Bu sağlayıcılar
-                verileri model eğitimi için kullanmaz.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">4. Çerezler</h3>
-              <p>
-                Oturumunu açık tutmak ve tercihlerini hatırlamak için zorunlu
-                çerezler kullanırız. İsteğe bağlı analiz çerezlerini
-                ayarlardan kapatabilirsin.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">5. Haklarınız</h3>
-              <p>
-                KVKK ve GDPR kapsamında verilerine erişme, düzeltme, silme ve
-                taşınabilirlik haklarına sahipsin. Talebini iletmek için
-                bizimle iletişime geçebilirsin.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">6. Saklama Süresi</h3>
-              <p>
-                Hesabını sildiğinde tüm kişisel verilerin 30 gün içinde kalıcı
-                olarak silinir; yasal yükümlülükler nedeniyle bazı kayıtlar
-                anonimleştirilerek saklanabilir.
-              </p>
-            </section>
-            <section className="space-y-2">
-              <h3 className="font-medium text-foreground">7. İletişim</h3>
-              <p>
-                Gizlilikle ilgili sorularını{" "}
-                <span className="text-foreground">privacy@trysepet.com</span>{" "}
-                adresine iletebilirsin.
-              </p>
-            </section>
-          </div>
+          <PrivacyContent />
         </ScrollArea>
+        <Link
+          href="/gizlilik"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+        >
+          Tam sayfada aç
+          <ArrowUpRightIcon className="size-3" />
+        </Link>
       </DialogContent>
     </Dialog>
   )

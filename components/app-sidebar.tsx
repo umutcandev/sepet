@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 
 import { NavGuest } from "@/components/nav-guest"
+import { NavGuestInfo } from "@/components/nav-guest-info"
 import { NavUser } from "@/components/nav-user"
 import { Button } from "@/components/ui/button"
 import {
@@ -219,7 +220,31 @@ export function AppSidebar({
       </SidebarContent>
 
       <SidebarFooter>
-        {user ? <NavUser user={user} /> : <NavGuest />}
+        {user ? (
+          <NavUser user={user} />
+        ) : (
+          <>
+            <NavGuestInfo />
+            <NavGuest />
+          </>
+        )}
+        <div className="flex items-center justify-center gap-1.5 px-2 pb-0.5 text-[11px] text-muted-foreground/60 group-data-[collapsible=icon]:hidden">
+          <Link
+            href="/gizlilik"
+            onClick={handleNavClick}
+            className="transition-colors hover:text-foreground"
+          >
+            Gizlilik Politikası
+          </Link>
+          <span aria-hidden>·</span>
+          <Link
+            href="/kullanim-sartlari"
+            onClick={handleNavClick}
+            className="transition-colors hover:text-foreground"
+          >
+            Kullanım Şartları
+          </Link>
+        </div>
       </SidebarFooter>
     </Sidebar>
   )

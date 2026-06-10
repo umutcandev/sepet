@@ -5,13 +5,8 @@ import { useRouter } from "next/navigation"
 import { AnimatePresence, motion } from "motion/react"
 import { ArrowUpRightIcon, XIcon } from "lucide-react"
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarGroupCount,
-} from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { HeroMarketBadge } from "@/components/hero-market-badge"
 import {
   type PromptInputMessage,
 } from "@/components/ai-elements/prompt-input"
@@ -48,13 +43,16 @@ export default function HomePage() {
   const [bannerVisible, setBannerVisible] = React.useState(false)
 
   React.useEffect(() => {
+    let dismissed = false
     try {
-      if (window.localStorage.getItem(HACKATHON_BANNER_KEY) !== "1") {
-        setBannerVisible(true)
-      }
+      dismissed = window.localStorage.getItem(HACKATHON_BANNER_KEY) === "1"
     } catch {
-      setBannerVisible(true)
+      dismissed = false
     }
+    // localStorage yalnızca mount sonrası okunabilir (SSR'de window yok);
+    // bu yüzden başlangıç durumunu effect içinde belirliyoruz.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBannerVisible(!dismissed)
   }, [])
 
   const dismissBanner = React.useCallback(() => {
@@ -153,6 +151,9 @@ export default function HomePage() {
       <link rel="preload" as="image" href="/market-logos/a101.webp" />
       <link rel="preload" as="image" href="/market-logos/migros.webp" />
       <link rel="preload" as="image" href="/market-logos/sok.webp" />
+      <link rel="preload" as="image" href="/market-logos/bim.webp" />
+      <link rel="preload" as="image" href="/market-logos/tarim-kredi.webp" />
+      <link rel="preload" as="image" href="/market-logos/carrefoursa.webp" />
       <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 pb-16">
       <div
         aria-hidden
@@ -164,42 +165,7 @@ export default function HomePage() {
       />
       <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-3 text-center">
-          <AvatarGroup className="*:data-[slot=avatar]:ring-0">
-            <Avatar className="after:border-[1.5px] after:border-ring/70 [mask-image:radial-gradient(circle_18px_at_calc(100%+8px)_50%,transparent_99%,#000_100%)]">
-              <AvatarFallback>A</AvatarFallback>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/a101-brand.webp"
-                alt="A101"
-                fetchPriority="high"
-                decoding="async"
-                className="absolute inset-0 size-full rounded-full object-cover"
-              />
-            </Avatar>
-            <Avatar className="after:border-[1.5px] after:border-ring/70 [mask-image:radial-gradient(circle_18px_at_calc(100%+8px)_50%,transparent_99%,#000_100%)]">
-              <AvatarFallback>M</AvatarFallback>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/migros-brand.webp"
-                alt="Migros"
-                fetchPriority="high"
-                decoding="async"
-                className="absolute inset-0 size-full rounded-full object-cover"
-              />
-            </Avatar>
-            <Avatar className="after:border-[1.5px] after:border-ring/70 [mask-image:radial-gradient(circle_18px_at_calc(100%+8px)_50%,transparent_99%,#000_100%)]">
-              <AvatarFallback>Ş</AvatarFallback>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/sok-brand.webp"
-                alt="ŞOK"
-                fetchPriority="high"
-                decoding="async"
-                className="absolute inset-0 size-full rounded-full object-cover"
-              />
-            </Avatar>
-            <AvatarGroupCount className="border-[1.5px] border-ring/70 ring-0 dark:border-foreground/15">+3</AvatarGroupCount>
-          </AvatarGroup>
+          <HeroMarketBadge />
           <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
