@@ -2,8 +2,11 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { AnimatePresence, motion } from "motion/react"
 import {
+  ArrowRightIcon,
   CheckSquareIcon,
+  ListFilterIcon,
   MessagesSquareIcon,
   MoreHorizontalIcon,
   PencilIcon,
@@ -41,11 +44,20 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
+import { useMediaQuery } from "@/hooks/use-media-query"
+import {
+  CONVERSATION_SORTS,
+  type ConversationSort,
+  DEFAULT_CONVERSATION_SORT,
+} from "@/lib/conversation-sort"
 import {
   deleteConversation,
   deleteConversations,
@@ -83,6 +95,15 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
   const loadingRef = React.useRef(false)
   const sentinelRef = React.useRef<HTMLDivElement>(null)
 
+  // ── Sıralama ── Sunucu tarafında uygulanır (infinite scroll ile tutarlı).
+  // initial veri DEFAULT_CONVERSATION_SORT ile geldiği için ilk render'da
+  // tekrar yükleme yapılmaz. `listGen`, sıralama değişiminde uçuştaki eski
+  // sayfa isteklerini geçersiz kılan kuşak (generation) sayacıdır.
+  const [sort, setSort] = React.useState<ConversationSort>(
+    DEFAULT_CONVERSATION_SORT,
+  )
+  const listGen = React.useRef(0)
+
   // Arama: boş sorgu → null (tam listeyi göster). Doluysa server sonuçları.
   const [query, setQuery] = React.useState("")
   const debouncedQuery = useDebounced(query, 300)
@@ -115,9 +136,14 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
     if (loadingRef.current || !hasMore) return
     loadingRef.current = true
     setLoadingMore(true)
+    const gen = listGen.current
     try {
-      const { items: next, hasMore: more } =
-        await listConversationsPaginated(items.length)
+      const { items: next, hasMore: more } = await listConversationsPaginated(
+        items.length,
+        sort,
+      )
+      // Sıralama bu sırada değiştiyse eski sayfayı yok say.
+      if (listGen.current !== gen) return
       setItems((prev) => {
         // Dedupe: silme/ekleme sonrası offset kayması olabilir.
         const existingIds = new Set(prev.map((c) => c.id))
@@ -126,12 +152,14 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
       })
       setHasMore(more)
     } catch {
-      toast.error("Sohbetler yüklenemedi.")
+      if (listGen.current === gen) toast.error("Sohbetler yüklenemedi.")
     } finally {
-      loadingRef.current = false
-      setLoadingMore(false)
+      if (listGen.current === gen) {
+        loadingRef.current = false
+        setLoadingMore(false)
+      }
     }
-  }, [hasMore, items.length])
+  }, [hasMore, items.length, sort])
 
   // IntersectionObserver: sentinel görünür olunca sonraki sayfayı yükle.
   // Arama aktifken infinite scroll devre dışı.
@@ -148,13 +176,45 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
     return () => obs.disconnect()
   }, [hasMore, isSearchActive, loadMore])
 
+  // ── Sıralama değişimi ── Ana listeyi sıfırdan, yeni sıralamayla yükle.
+  // Sadece görünür satırları sıralamak infinite scroll ile yanlış olurdu;
+  // bu yüzden sunucudan ilk sayfayı yeniden çekiyoruz. İlk render atlanır
+  // (initial veri zaten DEFAULT_CONVERSATION_SORT ile geldi).
+  const didMountSort = React.useRef(false)
+  React.useEffect(() => {
+    if (!didMountSort.current) {
+      didMountSort.current = true
+      return
+    }
+    const gen = ++listGen.current
+    loadingRef.current = true
+    setLoadingMore(true)
+    listConversationsPaginated(0, sort)
+      .then(({ items: fresh, hasMore: more }) => {
+        if (listGen.current !== gen) return
+        setItems(fresh)
+        setHasMore(more)
+      })
+      .catch(() => {
+        if (listGen.current === gen) toast.error("Sohbetler yüklenemedi.")
+      })
+      .finally(() => {
+        if (listGen.current === gen) {
+          loadingRef.current = false
+          setLoadingMore(false)
+        }
+      })
+  }, [sort])
+
   // ── Arama efekti ── stale yanıtları reqId ile ele (son istek kazanır).
+  // Sıralama da bağımlılıktır: arama açıkken sıralama değişince sonuçlar
+  // yeni sırayla yeniden çekilir (arama paginate edilmez, tek seferde gelir).
   React.useEffect(() => {
     const q = debouncedQuery.trim()
     if (!q) return
 
     const id = ++reqId.current
-    searchConversations(q)
+    searchConversations(q, sort)
       .then((res) => {
         if (reqId.current !== id) return
         setSearchResults(res)
@@ -166,7 +226,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
         setSearchLoading(false)
         toast.error("Arama başarısız oldu.")
       })
-  }, [debouncedQuery])
+  }, [debouncedQuery, sort])
 
   // ── Mutasyon yardımcıları ── items + searchResults + sidebar store senkron.
   const applyRemove = React.useCallback((ids: string[]) => {
@@ -318,6 +378,11 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
 
   const selectedCount = selected.size
 
+  // Mobilde (sm altı) seçim modundayken üst bar dar kalıyor; başlığı gizleyip
+  // aksiyon butonlarına tüm satırı bırakıyoruz. Desktop'ta başlık korunur.
+  const isMobile = useMediaQuery("(max-width: 639px)")
+  const showTitle = !(selecting && isMobile)
+
   // ── Boş durum: hiç sohbet yok ──
   if (items.length === 0 && !isSearchActive) {
     return (
@@ -341,33 +406,49 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
 
   return (
     <div className="space-y-4">
-      {/* Üst bar: başlık solda, aksiyonlar sağda — her iki modda da aynı yapı. */}
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight">Sohbetler</h1>
+      {/* Üst bar: başlık solda, aksiyonlar sağda. Mobilde seçim modunda başlık
+          fade ile gizlenir, aksiyonlar tüm satırı kullanır. */}
+      <div className="flex items-center justify-between gap-2 sm:gap-4">
+        <AnimatePresence initial={false} mode="popLayout">
+          {showTitle ? (
+            <motion.h1
+              key="sohbetler-title"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="text-2xl font-semibold tracking-tight"
+            >
+              Sohbetler
+            </motion.h1>
+          ) : null}
+        </AnimatePresence>
         {selecting ? (
-          <div className="flex items-center gap-1.5">
-            <span className="text-sm text-muted-foreground tabular-nums">
+          <div className="flex w-full items-center justify-between gap-1.5 sm:w-auto sm:justify-end">
+            <span className="shrink-0 text-sm text-muted-foreground tabular-nums">
               {selectedCount} seçildi
             </span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleSelectAll}
-              disabled={displayedIds.length === 0}
-            >
-              {allDisplayedSelected ? "Seçimi Kaldır" : "Tümünü Seç"}
-            </Button>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => setBulkDeleteOpen(true)}
-              disabled={selectedCount === 0}
-            >
-              Sil
-            </Button>
-            <Button variant="ghost" size="sm" onClick={exitSelect}>
-              Vazgeç
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleSelectAll}
+                disabled={displayedIds.length === 0}
+              >
+                {allDisplayedSelected ? "Seçimi Kaldır" : "Tümünü Seç"}
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => setBulkDeleteOpen(true)}
+                disabled={selectedCount === 0}
+              >
+                Sil
+              </Button>
+              <Button variant="ghost" size="sm" onClick={exitSelect}>
+                Vazgeç
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="flex items-center gap-1.5">
@@ -389,48 +470,83 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
         )}
       </div>
 
-      {/* Arama kutusu */}
-      <div className="relative">
-        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          type="search"
-          inputMode="search"
-          value={query}
-          onChange={(e) => {
-            const val = e.target.value
-            setQuery(val)
-            if (!val.trim()) {
-              reqId.current++
-              setSearchResults(null)
-              setSearchLoading(false)
-            } else {
-              setSearchLoading(true)
-            }
-          }}
-          placeholder="Sohbetlerde ara…"
-          aria-label="Sohbetlerde ara"
-          maxLength={100}
-          className="h-10 pr-9 pl-9 [&::-webkit-search-cancel-button]:hidden"
-        />
-        <div className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center">
-          {searchLoading ? (
-            <Spinner className="size-4 text-muted-foreground" />
-          ) : query ? (
-            <button
-              type="button"
-              onClick={() => {
-                setQuery("")
+      {/* Arama kutusu + sıralama */}
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            inputMode="search"
+            value={query}
+            onChange={(e) => {
+              const val = e.target.value
+              setQuery(val)
+              if (!val.trim()) {
                 reqId.current++
                 setSearchResults(null)
                 setSearchLoading(false)
-              }}
-              aria-label="Aramayı temizle"
-              className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <XIcon className="size-4" />
-            </button>
-          ) : null}
+              } else {
+                setSearchLoading(true)
+              }
+            }}
+            placeholder="Sohbetlerde ara…"
+            aria-label="Sohbetlerde ara"
+            maxLength={100}
+            className="h-9 pr-9 pl-9 [&::-webkit-search-cancel-button]:hidden"
+          />
+          <div className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center">
+            {searchLoading ? (
+              <Spinner className="size-4 text-muted-foreground" />
+            ) : query ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery("")
+                  reqId.current++
+                  setSearchResults(null)
+                  setSearchLoading(false)
+                }}
+                aria-label="Aramayı temizle"
+                className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <XIcon className="size-4" />
+              </button>
+            ) : null}
+          </div>
         </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              aria-label="Sırala"
+              className="size-9 shrink-0 text-muted-foreground"
+            >
+              <ListFilterIcon className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="min-w-48">
+            <DropdownMenuLabel>Sırala</DropdownMenuLabel>
+            <DropdownMenuRadioGroup
+              value={sort}
+              onValueChange={(v) => setSort(v as ConversationSort)}
+            >
+              {CONVERSATION_SORTS.map((opt) => (
+                <DropdownMenuRadioItem key={opt.value} value={opt.value}>
+                  <span className="flex items-center gap-1">
+                    {opt.prefix}
+                    <ArrowRightIcon
+                      className="size-3.5 text-muted-foreground"
+                      aria-hidden
+                    />
+                    {opt.suffix}
+                  </span>
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Liste / sonuç durumları */}
@@ -464,7 +580,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                       }}
                       aria-pressed={isSelected}
                       className={cn(
-                        "flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-secondary/50",
+                        "flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-left transition-colors hover:bg-secondary/50",
                         isSelected && "bg-secondary/40",
                       )}
                     >
@@ -488,7 +604,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                     <div className="group relative flex items-center gap-2 pr-2 transition-colors hover:bg-secondary/50">
                       <Link
                         href={`/asistan/${c.id}`}
-                        className="flex min-w-0 flex-1 items-center gap-2 py-3 pl-4"
+                        className="flex min-w-0 flex-1 items-center gap-2 py-2 pl-4"
                       >
                         <span className="min-w-0 flex-1 truncate text-sm">
                           {c.title}

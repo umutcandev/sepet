@@ -6,6 +6,10 @@ import type { UIMessage } from "ai"
 import { auth } from "@/auth"
 import { db, conversations, conversationMessages } from "@/lib/db"
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
+import {
+  type ConversationSort,
+  DEFAULT_CONVERSATION_SORT,
+} from "@/lib/conversation-sort"
 import { isUuid } from "@/lib/utils"
 import { getSavedBasketsForConversation } from "./baskets"
 
@@ -82,12 +86,37 @@ export async function listConversations() {
 const CONVERSATIONS_PAGE_SIZE = 30
 
 /**
+ * Sıralama anahtarını SQL ORDER BY ifadelerine çevirir. İsim sıralaması
+ * büyük/küçük harfe duyarsızdır (lower). Her sıralama, offset pagination'ın
+ * sayfalar arası tutarlı olması için `id` ile ikincil olarak stabilize edilir
+ * (eşit updatedAt/başlıklarda satırların atlanmasını/yinelenmesini önler).
+ */
+function orderByForSort(sort: ConversationSort) {
+  const lowerTitle = sql`lower(${conversations.title})`
+  switch (sort) {
+    case "date_asc":
+      return [asc(conversations.updatedAt), asc(conversations.id)]
+    case "name_asc":
+      return [asc(lowerTitle), asc(conversations.id)]
+    case "name_desc":
+      return [desc(lowerTitle), asc(conversations.id)]
+    case "date_desc":
+    default:
+      return [desc(conversations.updatedAt), asc(conversations.id)]
+  }
+}
+
+/**
  * /sohbetler sayfası için sayfalanmış listeleme. `offset` ile cursor-free
  * pagination sağlar; silme/ekleme sonrası offset kayması tolere edilir
  * (kullanıcı zaten ekrandaki listeyi görüyor, duplar istemci tarafı
- * dedupe ile engellenir).
+ * dedupe ile engellenir). `sort` sunucu tarafında uygulanır; böylece infinite
+ * scroll yeni sayfaları doğru sırada getirir.
  */
-export async function listConversationsPaginated(offset = 0) {
+export async function listConversationsPaginated(
+  offset = 0,
+  sort: ConversationSort = DEFAULT_CONVERSATION_SORT,
+) {
   const session = await auth()
   if (!session?.user?.id) return { items: [], hasMore: false }
 
@@ -101,7 +130,7 @@ export async function listConversationsPaginated(offset = 0) {
     })
     .from(conversations)
     .where(eq(conversations.userId, session.user.id))
-    .orderBy(desc(conversations.updatedAt))
+    .orderBy(...orderByForSort(sort))
     .limit(CONVERSATIONS_PAGE_SIZE + 1)
     .offset(offset)
 
@@ -123,7 +152,10 @@ function escapeLike(input: string): string {
  * yapılır; parts metne cast edilip ILIKE ile taranır. Sonuçlar updatedAt'e göre
  * sıralı ve tavanla sınırlıdır.
  */
-export async function searchConversations(query: string) {
+export async function searchConversations(
+  query: string,
+  sort: ConversationSort = DEFAULT_CONVERSATION_SORT,
+) {
   const session = await auth()
   if (!session?.user?.id) return []
 
@@ -159,7 +191,7 @@ export async function searchConversations(query: string) {
         or(ilike(conversations.title, pattern), messageMatch),
       ),
     )
-    .orderBy(desc(conversations.updatedAt))
+    .orderBy(...orderByForSort(sort))
     .limit(200)
 }
 

@@ -74,31 +74,6 @@ export type LineCost = {
 }
 
 /**
- * Bir markette bir ürünün paket boyutunu istenen baz biriminde türetir:
- *   1) API birim fiyatından: `paket fiyatı / birim fiyat` (baz uyuşuyorsa)
- *   2) Ürün adındaki boyuttan ("700 Gr", "1 Kg", "10 Adet")
- * Türetilemezse null. Boyut-overshoot kontrolü (hasSizeOvershoot) kullanır.
- */
-function derivePackSize(
-  base: Base,
-  mp: MarketPrice,
-  productName: string,
-): number | null {
-  let packSize: number | null = null
-  // 1) API birim fiyatından paket boyutu (baz birimde).
-  if (mp.unitBase === base && mp.unitPriceValue && mp.unitPriceValue > 0) {
-    packSize = mp.price / mp.unitPriceValue
-  }
-  // 2) Ürün adından boyut.
-  if (packSize == null || !Number.isFinite(packSize) || packSize <= 0) {
-    const size = parseSizeFromText(productName)
-    if (size && size.base === base && size.amount > 0) packSize = size.amount
-  }
-  if (packSize == null || !Number.isFinite(packSize) || packSize <= 0) return null
-  return packSize
-}
-
-/**
  * Bir kalemin belirli bir markette belirli bir üründen maliyeti = o ürünün TEK
  * paketinin GERÇEK raf fiyatı. İstenen miktar (adet/gramaj) fiyata MÜDAHALE
  * ETMEZ — yalnızca doğru ürünü/marketi SEÇMEK için kullanılır. ÇARPIM YOK:
@@ -142,36 +117,36 @@ export function hasBaseMismatch(
   return true
 }
 
-// İstenen miktarı karşılayan en küçük paket, istenen miktarın bu katından
-// büyükse boyut uyuşmazlığı sayılır. "200 g nohut" → en küçük paket "1 kg"
-// (5×) kullanıcıyı istediğinin kat kat fazlasını almaya zorlar. 2× eşiği
-// "500 g → 1 kg"yı işaretler ama "600 g → 1 kg" (1,67×) gibi makul yukarı
-// yuvarlamaları işaretlemez.
-const OVERSHOOT_FACTOR = 2
+// Kullanıcı ölçülebilir (kg/l) bir miktar verdiğinde, eşleşen ürünün ADINDA
+// yazan paket boyutu istenenden bu orandan fazla saparsa "Farklı Boyut"
+// sayılır. ±%10 bandı etiket gürültüsünü (0,5 kg ↔ 500 g, "1 kg" ↔ 950 g)
+// yutar ama 500 g → 750 g (1,5×) gibi gerçek farkları işaretler.
+const SIZE_TOLERANCE = 0.1
 
 /**
- * Kullanıcı ölçülebilir bir miktar (kg/l) istedi ama eşleşen ürünün satılan EN
- * KÜÇÜK paketi bile istenen miktarı belirgin biçimde aşıyor mu? Baz uyumlu olsa
- * da (1 kg nohut ₺/kg fiyatlanır) "200 g istedim, 1 kg almak zorundayım" bir
- * boyut uyuşmazlığıdır — `hasBaseMismatch`'in yakalamadığı durum.
+ * Kullanıcı ölçülebilir bir miktar (kg/l) istedi ama eşleşen ürünün paket boyutu
+ * istenenden belirgin farklı mı? Hem AŞIM (500 g → 750 g / 1 kg) hem EKSİKLİK
+ * (1,5 kg → 1 kg) "Farklı Boyut"tur: kullanıcı istediği gramajı/hacmi bu fiyata
+ * almıyor. İstenen miktar fiyatı ETKİLEMEZ — yalnızca uyarı rozetidir.
+ *
+ * Paket boyutunu ÜRÜN ADINDAN okuruz ("... Yoğurt 750 Gr" → 0,75 kg). Adında
+ * net bir boyut yoksa (açık/tartılan ürün: "Domates", "Kaşar Peyniri") sessiz
+ * kalırız — tartıyla tam istenen miktar alınabildiği için yanlış uyarı vermeyiz.
+ * (Eski sürüm API ₺/kg'dan boyut türetip açık ürünleri yanlış işaretliyordu.)
  *
  * Yalnızca SÜREKLİ ölçüler (kg/l) için anlamlıdır: "1 adet" / "1 paket"
- * istendiğinde tek paket almak doğal yorumdur, overshoot sayılmaz.
+ * istendiğinde tek paket almak doğal yorumdur; adet/koli (yumurta 10'lu viyol)
+ * için bu kontrol çalışmaz — o farkı LLM eşleştirme adımı işaretler.
  */
-export function hasSizeOvershoot(
+export function hasSizeMismatch(
   quantity: number,
   unit: Unit,
-  product: { name: string; markets: MarketPrice[] },
+  product: { name: string },
 ): boolean {
   const req = requestBase(quantity, unit)
   if (req.base !== "kg" && req.base !== "l") return false
-  let smallest: number | null = null
-  for (const mp of product.markets) {
-    const packSize = derivePackSize(req.base, mp, product.name)
-    if (packSize != null && (smallest == null || packSize < smallest)) {
-      smallest = packSize
-    }
-  }
-  if (smallest == null) return false
-  return smallest >= req.amount * OVERSHOOT_FACTOR
+  const size = parseSizeFromText(product.name)
+  if (!size || size.base !== req.base || size.amount <= 0) return false
+  const ratio = size.amount / req.amount
+  return ratio < 1 - SIZE_TOLERANCE || ratio > 1 + SIZE_TOLERANCE
 }

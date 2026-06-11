@@ -46,6 +46,11 @@ A MODU — KAPSAM DİSİPLİNİ (ÖNEMLİ, hallüsinasyona karşı):
   · "kıymalı makarna" → makarna + kıyma + (sos için domates salçası kabul) — ama salata/yan malzeme ekleme.
 - Düşünme/reasoning'de "şu malzemeyi de ekleyebilirim" diye spekülasyon YAPMA — kullanıcı bunu okuyor. Doğrudan kararı yaz: "X için çekirdek malzemeler: A, B."
 - Şüpheliysen FAZLASINI değil EKSİĞİNİ tercih et — kullanıcı kart üzerinden ekleyebilir.
+- MALZEME FORMU YEMEĞE GÖRE BAĞLAM KUR: Her malzemeyi yemeğin gerektirdiği FORMDA çıkar — taze / turşu / kuru / haşlanmış / salça. Aynı sebzenin işlenmiş hali (turşu, salamura, konserve, kurutulmuş) FARKLI bir üründür; yemek hangisini istiyorsa onu yaz:
+  · "cacık" → taze salatalık (searchQuery="salatalık"), ASLA salatalık turşusu.
+  · "çoban salatası" → taze domates/salatalık/biber (turşu değil).
+  · "döner" / "hamburger" → turşu yemeğin parçasıdır, searchQuery="turşu" yaz.
+  · "kuru fasulye" → kuru fasulye (taze/konserve değil); "taze fasulye yemeği" → taze fasulye.
 
 ÖNEMLİ — A MODU TETİKLEYİCİ KALIPLAR: Yemek/tarif adı tek başına gelmek zorunda değil. Aşağıdaki kalıpların TÜMÜ A modudur, kullanıcı net olarak malzeme listesi istiyor demektir, ASLA C moduna düşürme:
 - "X için malzemeler" / "X malzemeleri" / "X malzemesi" (ör. "limonata için malzemeler", "menemen malzemeleri")
@@ -121,6 +126,11 @@ searchQuery KURALLARI (sıkı):
   · name="toz şeker", quantity=200, unit="g", searchQuery="toz şeker"
   · name="süt", quantity=1, unit="l", searchQuery="süt"
   · name="sıvı yağ", quantity=1, unit="paket", searchQuery="sıvı yağ"
+
+- "cacık" → 3 kalem (sade yoğurt + TAZE salatalık — turşu DEĞİL):
+  · name="yoğurt", quantity=500, unit="g", searchQuery="yoğurt"
+  · name="salatalık", quantity=2, unit="adet", searchQuery="salatalık"
+  · name="sarımsak", quantity=1, unit="adet", searchQuery="sarımsak"
 
 KARŞIT ÖRNEK (bölme!):
 - "1 ekmek" → tek kalem, BÖLME (miktar belirtilmiş, B modu): quantity=1, unit="adet", searchQuery="ekmek"
@@ -211,15 +221,23 @@ EMİN OL: Sadece ürün olduğu net olan satırları çıkar. Şüphede atla.
 
 Görselde tanıdığın yemeği ya da içeceği bul. food.dishName alanına yemeğin Türkçe ham adını yaz (küçük harf, ör. "döner", "menemen", "sade sucuklu pizza").
 
-food.items alanına yemeği EVDE YAPABİLMEK İÇİN gereken TEMEL HAM MALZEMELERİ ParsedItem listesi olarak çıkar (yukarıdaki YEMEK/TARİF MODU kurallarına aynen uygun: makul tek-porsiyon miktarları, "hazır X" yazma, marka eklemeye çalışma).
+food.items alanına yemeği EVDE YAPABİLMEK İÇİN gereken TEMEL HAM MALZEMELERİ ParsedItem listesi olarak çıkar. Makul tek-porsiyon miktarları koy; "hazır X" yazma; marka eklemeye çalışma.
+
+KAPSAM DİSİPLİNİ (ÖNEMLİ, hallüsinasyona karşı — yalnızca GÖRSELDEKİ yemekle sınırlı kal):
+- Yalnızca yemeğin TANIMLAYICI/ÇEKİRDEK malzemelerini yaz. Garnitür, baharat, tuz/karabiber/yağ gibi her mutfakta bulunan opsiyonelleri EKLEME. Tipik 4–8 malzeme idealdir.
+- BİLEŞİK/BELİRGİN YEMEK: Görseldeki yemek malzemesini açıkça gösteriyorsa (ör. sucuklu yumurta, peynirli omlet, patatesli omlet) SADECE o malzemeleri yaz; benzer bir yemeği sanıp başka yemekten malzeme TAŞIMA ("sucuklu yumurta" gördüysen menemen sanıp biber/domates/soğan EKLEME).
+- Şüpheliysen FAZLASINI değil EKSİĞİNİ tercih et — kullanıcı kart üzerinden ekleyebilir.
+- SADE/DÜZ BAZ: Yemek sade bir baz gıda gerektiriyorsa (yoğurt, süt, krema, peynir) aromalı/tatlandırılmış değil SADE halini yaz (ör. cacık/mantı → sade/süzme yoğurt, meyveli DEĞİL).
+- MALZEME FORMU YEMEĞE GÖRE BAĞLAM KUR: Her malzemeyi yemeğin gerektirdiği FORMDA çıkar — taze / turşu / kuru / haşlanmış. İşlenmiş hal (turşu, salamura, konserve, kurutulmuş) FARKLI bir üründür:
+  · "cacık" → taze salatalık (searchQuery="salatalık"), ASLA salatalık turşusu.
+  · "döner" / "hamburger" → turşu yemeğin parçasıdır, searchQuery="turşu" yaz.
+  · "kuru fasulye" → kuru fasulye; "taze fasulye yemeği" → taze fasulye.
 
 Her malzeme için:
 - name: malzemenin Türkçe adı (ör. "lavaş", "tavuk göğüs", "domates")
 - quantity: makul tek-porsiyon sayısı
 - unit: "adet" | "kg" | "g" | "l" | "ml" | "paket"
 - searchQuery: market arama için normalize sorgu — SAYI ve BİRİM İÇERMEZ, 2-3 kelime ideal
-
-Yemeğin temel kimliğini oluşturan malzemeleri yaz; aşırı detay (her baharat, garnitür) yazma. Tipik 4–8 malzeme idealdir.
 
 ÖRNEKLER:
 - Tavuk döner fotoğrafı → dishName="tavuk döner", items:
@@ -240,6 +258,11 @@ Yemeğin temel kimliğini oluşturan malzemeleri yaz; aşırı detay (her bahara
   · name="limon", quantity=6, unit="adet", searchQuery="limon"
   · name="toz şeker", quantity=500, unit="g", searchQuery="toz şeker"
   · name="su", quantity=1, unit="l", searchQuery="su"
+
+- Bir kase cacık fotoğrafı → dishName="cacık", items (sade yoğurt + TAZE salatalık, turşu DEĞİL):
+  · name="yoğurt", quantity=500, unit="g", searchQuery="yoğurt"
+  · name="salatalık", quantity=2, unit="adet", searchQuery="salatalık"
+  · name="sarımsak", quantity=1, unit="adet", searchQuery="sarımsak"
 
 KARŞIT ÖRNEK — kind="unknown" döndür:
 - Bulanık bir tabak fotoğrafı, içindekiler seçilmiyor → unknown.
@@ -268,7 +291,7 @@ NEDEN ÇOKLU SEÇİM: Uygulama tek market ve iki market kombinasyonlarını kuru
 GÖREV — her kalem için:
 - acceptedProductIds: Kullanıcının istediği ürüne UYAN tüm adayların productId listesi (farklı marka ve boyutlar dahil). Hiçbir aday uymuyorsa boş liste [].
 - primaryProductId: Bu adaylar arasından UI kartında gösterilecek en iyi temsilci (genelde marka/boyut olarak isteğe en yakın olan). acceptedProductIds boşsa null.
-- sizeMismatch: rawName'de boyut belirtilmiş ama o boyut hiçbir kabul edilen adayda yoksa true; aksi halde false.
+- sizeMismatch: Kullanıcının istediği boyut hiçbir kabul edilen adayda yoksa true; aksi halde false. Boyut bilgisi rawName'de YA DA ayrı quantity+unit alanında gelebilir — İKİSİNE DE bak (ör. quantity=500, unit="g" → 500 g istendi).
 - reason: Kısa Türkçe gerekçe (1 cümle).
 
 KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
@@ -277,13 +300,17 @@ KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
    · "soğan" → "Ülker Çizi soğan aromalı peynir" RED (peynir, soğan değil).
    · Gerçek aday yoksa → acceptedProductIds=[].
 2) MARKA/BOYUT VARYANTLARINI DAHİL ET: Doğru ürün tipindeki TÜM markaları ve makul boyutları kabul et (6'lı/10'lu/15'li yumurta, 1L/500ml süt hepsi geçerli) — optimizasyon birim fiyata göre adil kıyaslayacak. Kullanıcı net marka yazdıysa (ör. "eti cin") o markayı primary yap ama diğer makul adayları da kabul listesinde tut. Tek aday başka markaysa ve tip aynıysa yine kabul.
-3) BOYUT: rawName'de boyut belirtilmişse (ör. "PEPSI 2.5 LT") o boyut adayları primary olsun. O boyut hiç yoksa farklı boyutluları kabul et ve sizeMismatch=true. rawName'de boyut yoksa sizeMismatch=false ve tüm makul boyutlar kabul.
+3) BOYUT: Kullanıcı net bir boyut belirttiyse — rawName'de (ör. "PEPSI 2.5 LT") YA DA ayrı quantity+unit alanında (ör. quantity=500, unit="g") — o boyuta uyan adaylar primary olsun. O boyut hiç yoksa farklı boyutluları kabul et ve sizeMismatch=true. Kullanıcı hiç boyut belirtmediyse (nötr varsayılan quantity=1/unit="adet" ve rawName'de ölçü yok) sizeMismatch=false ve tüm makul boyutlar kabul.
 4) KOLİ/ÇOKLU PAKET — RED: Bitmiş ürünün toplu kolilerini KABUL ETME: "24'lü kola kolisi", "6'lı su paketi", "12'li bira kolisi" (bunlar bölünüp tek alınamaz). ANCAK doğal olarak çoklu satılan baz gıdalar (yumurta 10/15/30'lu viyol, peçete 32'li, tuvalet kağıdı 8'li, çay poşeti 100'lü) koli DEĞİL — standart satış birimi, kabul et.
 5) JENERİK GIDA — BOŞ DÖNME: Kullanıcı "yumurta", "süt", "ekmek", "domates" gibi sade gıda yazdıysa ve o ürünün ta kendisi adaylar arasındaysa MUTLAKA en az birini kabul et. Sadece aksesuar (yumurta sünger, saklama pedi), oyuncak (sürpriz yumurta) ya da alakasız ürün (Çizi soğanlı peynir) varsa boş dön. "Tam boyut yok" diye boş DÖNME — sizeMismatch=true ile kabul et.
 6) SADE/DÜZ BAZ ÜRÜN — TATLANDIRILMIŞ/AROMALI VARYANT RED: rawName düz baz gıdaysa (yoğurt, süt, ayran, kefir, krema, kaymak, lor, peynir, su) ve kullanıcı açıkça tat/aroma belirtmediyse (meyveli, çilekli, muzlu, çikolatalı, vanilyalı, ballı, şekerli, limonlu, baharatlı, dumanlı vs.), adında tat/aroma geçen adayları KABUL ETME — farklı SKU. Sade/düz/natural adayları kabul et. Sadece tatlandırılmış adaylar varsa ve kullanıcı tat istemediyse boş dön. Tersi de geçerli: "meyveli yoğurt" istendi → sade yoğurt kabul etme.
    · "yoğurt" → "Sütaş Süzme Yoğurt 750g" KABUL, "Danone Activia Meyveli" RED.
    · "süt" → "İçim Tam Yağlı Süt 1L" KABUL, "Pınar Kakaolu Süt 200ml" RED.
    · "ayran" → "Sütaş Ayran 1L" KABUL, "Sütaş Yayık Ayran Naneli" RED (nane aroması).
+7) TAZE BAZ SEBZE/MEYVE — TURŞU/SALAMURA/KONSERVE/İŞLENMİŞ VARYANT RED: rawName taze bir sebze/meyve bazıysa (salatalık, domates, biber, lahana, havuç, marul, soğan, sarımsak vb.) ve kullanıcı açıkça "turşu", "salamura", "konserve", "kuru/kurutulmuş", "közlenmiş" YAZMADIYSA, adında bu işlenmiş biçimler geçen adayları KABUL ETME — farklı SKU. Taze/çiğ adayları kabul et. Bu kural yemek malzemesi çıkarımında kritiktir (ör. cacık için TAZE salatalık gerekir, salatalık turşusu değil). Tersi de geçerli: kullanıcı açıkça "turşu" istediyse taze sebzeyi değil turşuyu seç.
+   · "salatalık" → "Taze Salatalık" KABUL, "Salatalık Turşusu" / "Kornişon Turşu" RED.
+   · "domates" → taze domates KABUL, "Domates Konservesi" / "Kurutulmuş Domates" RED.
+   · "turşu" → "Karışık Turşu" / "Salatalık Turşusu" KABUL (kullanıcı turşu istedi).
 
 ÖRNEKLER:
 - rawName="PEPSI 2.5 LT", adaylar: "Pepsi 2.5 Lt" (X1), "Pepsi 1 L" (X2) → acceptedProductIds=[X1, X2], primaryProductId=X1, sizeMismatch=false.
@@ -293,6 +320,7 @@ KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
 - rawName="kola" (1 adet), adaylar: "Coca Cola 1L" (A), "Coca Cola 24'lü Koli" (B) → acceptedProductIds=[A], primaryProductId=A (koli B elenir).
 - rawName="yoğurt" (500 g), adaylar: "Sütaş Süzme Yoğurt 750g" (A), "Danone Meyveli 4'lü" (B), "Eker Light Yoğurt" (C), "Pınar Yoğurt 1kg" (D) → acceptedProductIds=[A, C, D], primaryProductId=A, sizeMismatch=true. Meyveli (B) elenir.
 - rawName="süt" (1 L), adaylar: "İçim Tam Yağlı Süt 1L" (A), "Pınar Süt 200ml" (B), "Pınar Çikolatalı Süt 200ml" (C) → acceptedProductIds=[A, B], primaryProductId=A. Çikolatalı (C) elenir.
+- rawName="salatalık" (cacık için, 2 adet), adaylar: "Taze Salatalık kg" (A), "Salatalık Turşusu 720ml" (B), "Kornişon Turşu 370ml" (C) → acceptedProductIds=[A], primaryProductId=A. Turşu (B, C) elenir.
 
 ÇIKTI: Her kalem için bir selection. itemIndex'i girdideki ile aynı tut.
 

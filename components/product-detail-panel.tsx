@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { CheckIcon, CopyIcon, ImageIcon } from "lucide-react"
+import { ImageIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -24,6 +24,7 @@ import {
   priceTier,
 } from "@/lib/format"
 import { MarketLogo } from "@/components/market-logo"
+import { DepotInfo } from "@/components/assistant/depot-info"
 import type { ProductDetail } from "@/lib/marketfiyati/types"
 
 type Props = {
@@ -34,15 +35,6 @@ export function ProductDetailPanel({ productId }: Props) {
   const [detail, setDetail] = React.useState<ProductDetail | null>(null)
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
-  const [idCopied, setIdCopied] = React.useState(false)
-
-  function copyProductId() {
-    if (!detail?.productId) return
-    navigator.clipboard.writeText(detail.productId).then(() => {
-      setIdCopied(true)
-      setTimeout(() => setIdCopied(false), 1500)
-    })
-  }
 
   React.useEffect(() => {
     let active = true
@@ -93,6 +85,9 @@ export function ProductDetailPanel({ productId }: Props) {
 
   const min = detail.minPrice ?? 0
   const max = detail.maxPrice ?? 0
+  // "en ucuz" yalnızca gerçekten en düşük fiyatlı market(ler)e takılır. Tüm
+  // marketler aynı fiyattaysa (min === max) "en ucuz" anlamsızdır → hiç gösterme.
+  const hasCheapest = min < max
   const subtitle =
     [detail.brand, detail.category].filter(Boolean).join(" · ") || null
 
@@ -111,27 +106,6 @@ export function ProductDetailPanel({ productId }: Props) {
                   {subtitle}
                 </ResponsiveDialogDescription>
               )}
-            </div>
-            <div className="flex flex-wrap items-center gap-1.5">
-              <Badge
-                variant="default"
-                className="group h-5 cursor-pointer gap-1.5 px-2 font-mono text-[10px] font-normal tracking-tight"
-                onClick={copyProductId}
-                title="Ürün kimliğini kopyala"
-              >
-                {detail.productId}
-                {idCopied ? (
-                  <CheckIcon className="size-2.5 text-primary" />
-                ) : (
-                  <CopyIcon className="size-2.5 opacity-60 transition-opacity group-hover:opacity-100" />
-                )}
-              </Badge>
-              <Badge
-                variant="secondary"
-                className="h-5 px-2 text-[10px] font-normal text-muted-foreground"
-              >
-                {detail.marketCount} market
-              </Badge>
             </div>
           </div>
         </div>
@@ -163,7 +137,11 @@ export function ProductDetailPanel({ productId }: Props) {
                             >
                               {m.market}
                             </span>
-                            {idx === 0 && (
+                            <DepotInfo
+                              depotName={m.depotName}
+                              market={m.market}
+                            />
+                            {hasCheapest && m.price === min && (
                               <Badge
                                 variant="success"
                                 className="h-4 shrink-0 px-1.5 text-[10px] font-medium tracking-tight"
@@ -172,11 +150,6 @@ export function ProductDetailPanel({ productId }: Props) {
                               </Badge>
                             )}
                           </div>
-                          {m.depotName && (
-                            <div className="mt-0.5 truncate text-[10px] text-muted-foreground/70">
-                              {m.depotName}
-                            </div>
-                          )}
                           {m.priceModifiedAt && (
                             <div className="truncate text-[10px] text-muted-foreground/70">
                               {formatRelative(m.priceModifiedAt)}{" "}
@@ -251,10 +224,6 @@ function DetailSkeleton() {
             <div className="space-y-1">
               <Skeleton className="h-4 w-3/4" />
               <Skeleton className="h-3 w-1/3" />
-            </div>
-            <div className="flex gap-1.5">
-              <Skeleton className="h-5 w-32 rounded-md" />
-              <Skeleton className="h-5 w-20 rounded-md" />
             </div>
           </div>
         </div>

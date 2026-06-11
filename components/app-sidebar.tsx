@@ -45,7 +45,7 @@ type NavItem = {
 
 const nav: NavItem[] = [
   { title: "Ana Sayfa", url: "/", icon: HomeIcon },
-  { title: "Tüm Sohbetler", url: "/sohbetler", icon: MessagesSquareIcon },
+  { title: "Sohbetler", url: "/sohbetler", icon: MessagesSquareIcon },
   { title: "Ürün Ara", url: "/urun-ara", icon: SearchIcon },
   {
     title: "Sepetlerim",

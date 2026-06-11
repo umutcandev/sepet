@@ -23,7 +23,7 @@ import { stripQuantityTokens } from "./normalize"
 import { searchProductDetails } from "@/lib/marketfiyati/cache"
 import type { ProductDetail } from "@/lib/marketfiyati/types"
 import { MarketfiyatiError } from "@/lib/marketfiyati/client"
-import { effectiveLineCost, hasBaseMismatch, hasSizeOvershoot } from "./effective-cost"
+import { effectiveLineCost, hasBaseMismatch, hasSizeMismatch } from "./effective-cost"
 import { redis, MF_MATCH_TTL } from "@/lib/redis"
 import { createHash } from "node:crypto"
 
@@ -167,6 +167,12 @@ type CachedSelection = {
  * LLM eşleştirme cache anahtarı. Aynı kalem (ham ad + miktar + birim) aynı
  * aday kümesiyle gelirse seçim de aynıdır — LLM'i tekrar çağırmaya gerek yok.
  * v2: seçim tek ürün yerine kabul-edilebilir-küme döndürüyor (şema değişti).
+ * v3: MATCH_PROMPT kuralları değişti (taze-vs-turşu/işlenmiş varyant reddi +
+ *     yemeğe göre form). Cache anahtarı prompt'a bağlı OLMADIĞI için, prompt
+ *     seçimi değiştirdiğinde sürümü yükseltmek ŞART — aksi halde eski (yanlış)
+ *     seçimler TTL boyunca servis edilmeye devam eder.
+ * v4: MATCH_PROMPT boyut (sizeMismatch) kuralı netleşti — boyut rawName'de YA DA
+ *     quantity/unit alanında olabilir; LLM artık ölçü farkını tutarlı işaretler.
  */
 function matchCacheKey(item: ParsedItem, hits: HitList): string {
   const payload = JSON.stringify({
@@ -178,7 +184,7 @@ function matchCacheKey(item: ParsedItem, hits: HitList): string {
       .map((h) => h.productId)
       .sort(),
   })
-  return `mf:match:v2:${createHash("sha1").update(payload).digest("hex")}`
+  return `mf:match:v4:${createHash("sha1").update(payload).digest("hex")}`
 }
 
 function toMatchedProduct(h: ProductHitItem) {
@@ -404,17 +410,18 @@ export async function lookupProducts(
       accepted[0] ??
       null
     const best = primary
-    // LLM, rawName'de geçen boyutu işaretler. Ancak sepet onayında boyut
-    // rawName'de değil ayrı quantity/unit alanında gelir; bu yüzden ek olarak
-    // deterministik kontroller yaparız:
+    // LLM yalnızca adetli/rawName boyut farklarını (ör. "2 yumurta" → 10'lu
+    // viyol) güvenilir işaretler. Sepet onayında ölçülebilir boyut ayrı
+    // quantity/unit alanında gelir; bu yüzden kg/l farklarını deterministik
+    // kontrollerle yakalarız:
     //   · hasBaseMismatch — gramaj istenip adetle satılan ürünle eşleşme
     //     ("tavuk göğüs 200 g" → "Tavuk Göğsü 1 Adet").
-    //   · hasSizeOvershoot — baz uyumlu ama en küçük paket istenenin kat kat
-    //     üstünde ("nohut 200 g" → "Nohut 1 Kg").
+    //   · hasSizeMismatch — ürün adındaki paket boyutu istenenden ±%10'dan
+    //     fazla sapıyor ("yoğurt 500 g" → "... Yoğurt 750 Gr", 1,5×).
     const sizeMismatch = best
       ? (selection?.sizeMismatch ?? false) ||
         hasBaseMismatch(item.quantity, item.unit, best) ||
-        hasSizeOvershoot(item.quantity, item.unit, best)
+        hasSizeMismatch(item.quantity, item.unit, best)
       : false
 
     const lookupStatus: MatchResult["lookupStatus"] =
