@@ -62,6 +62,13 @@ export const assistantConversations = {
     )
     setState(next)
   },
+  // Yıldız durumunu güncelle. Sıralamayı (updatedAt) değiştirmez.
+  setStarred(id: string, starred: boolean) {
+    const next = state.map((c) =>
+      c.id === id && c.starred !== starred ? { ...c, starred } : c,
+    )
+    setState(next)
+  },
   // Bu sohbeti "stream ediliyor" işaretle (üç nokta animasyonu) ve aynı anda
   // başka bir sohbette kalmış streaming bayrağını temizle — tek seferde yalnız
   // bir sohbet stream edilir.

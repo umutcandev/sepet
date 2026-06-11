@@ -1,7 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { and, asc, desc, eq, max } from "drizzle-orm"
+import { and, asc, desc, eq, exists, ilike, inArray, max, or, sql } from "drizzle-orm"
 import type { UIMessage } from "ai"
 import { auth } from "@/auth"
 import { db, conversations, conversationMessages } from "@/lib/db"
@@ -69,11 +69,98 @@ export async function listConversations() {
       title: conversations.title,
       updatedAt: conversations.updatedAt,
       status: conversations.status,
+      starred: conversations.starred,
     })
     .from(conversations)
     .where(eq(conversations.userId, session.user.id))
     .orderBy(desc(conversations.updatedAt))
     .limit(100)
+}
+
+// Sayfa başına yüklenecek sohbet sayısı. /sohbetler sayfası infinite scroll
+// ile bu boyutta parçalar halinde yükler.
+const CONVERSATIONS_PAGE_SIZE = 30
+
+/**
+ * /sohbetler sayfası için sayfalanmış listeleme. `offset` ile cursor-free
+ * pagination sağlar; silme/ekleme sonrası offset kayması tolere edilir
+ * (kullanıcı zaten ekrandaki listeyi görüyor, duplar istemci tarafı
+ * dedupe ile engellenir).
+ */
+export async function listConversationsPaginated(offset = 0) {
+  const session = await auth()
+  if (!session?.user?.id) return { items: [], hasMore: false }
+
+  const items = await db
+    .select({
+      id: conversations.id,
+      title: conversations.title,
+      updatedAt: conversations.updatedAt,
+      status: conversations.status,
+      starred: conversations.starred,
+    })
+    .from(conversations)
+    .where(eq(conversations.userId, session.user.id))
+    .orderBy(desc(conversations.updatedAt))
+    .limit(CONVERSATIONS_PAGE_SIZE + 1)
+    .offset(offset)
+
+  const hasMore = items.length > CONVERSATIONS_PAGE_SIZE
+  if (hasMore) items.pop()
+
+  return { items, hasMore }
+}
+
+// ILIKE deseni için kullanıcı girdisindeki joker karakterleri (\ % _) kaçır;
+// "%50" gibi bir aramanın tüm satırları getirmesini engeller.
+function escapeLike(input: string): string {
+  return input.replace(/[\\%_]/g, (ch) => `\\${ch}`)
+}
+
+/**
+ * Sohbetlerde arama: hem başlıkta hem de mesaj içeriğinde (jsonb parts) geçen
+ * eşleşmeleri döndürür. İçerik araması, her sohbet için EXISTS alt sorgusuyla
+ * yapılır; parts metne cast edilip ILIKE ile taranır. Sonuçlar updatedAt'e göre
+ * sıralı ve tavanla sınırlıdır.
+ */
+export async function searchConversations(query: string) {
+  const session = await auth()
+  if (!session?.user?.id) return []
+
+  const q = query.trim()
+  if (!q || q.length > 100) return []
+
+  const pattern = `%${escapeLike(q)}%`
+
+  const messageMatch = exists(
+    db
+      .select({ one: sql`1` })
+      .from(conversationMessages)
+      .where(
+        and(
+          eq(conversationMessages.conversationId, conversations.id),
+          sql`${conversationMessages.parts}::text ILIKE ${pattern}`,
+        ),
+      ),
+  )
+
+  return db
+    .select({
+      id: conversations.id,
+      title: conversations.title,
+      updatedAt: conversations.updatedAt,
+      status: conversations.status,
+      starred: conversations.starred,
+    })
+    .from(conversations)
+    .where(
+      and(
+        eq(conversations.userId, session.user.id),
+        or(ilike(conversations.title, pattern), messageMatch),
+      ),
+    )
+    .orderBy(desc(conversations.updatedAt))
+    .limit(200)
 }
 
 export async function getConversation(id: string): Promise<{
@@ -141,6 +228,79 @@ export async function deleteConversation(id: string): Promise<void> {
     )
 
   revalidatePath("/asistan", "layout")
+  revalidatePath("/sohbetler")
+}
+
+// Tek seferde silinebilecek azami sohbet sayısı. Toplu silmede istek
+// parça parça (CHUNK) çalıştırılır; bu, parametre limiti ve tek devasa
+// sorgudan kaynaklı timeout riskini ortadan kaldırır.
+const BULK_DELETE_CHUNK = 100
+
+/**
+ * Toplu silme. Güvenlik garantileri:
+ *  - Yalnızca geçerli UUID'ler işlenir (geçersiz girdi sessizce atlanır).
+ *  - Her silme `userId` ile kapsanır → başka kullanıcının sohbeti silinemez.
+ *  - Tekilleştirme + parçalama ile devasa/yinelenen girdilerde de güvenli.
+ *  - Boş/eşleşmesiz girdi sıfır döndürür, hata fırlatmaz.
+ * Mesajlar FK cascade ile, kayıtlı sepetlerin conversationId'si ise
+ * `set null` ile temizlenir (sepetler korunur). Gerçekte silinen sayı döner.
+ */
+export async function deleteConversations(
+  ids: string[],
+): Promise<{ deleted: number }> {
+  const session = await auth()
+  if (!session?.user?.id) throw new Error("unauthorized")
+
+  const valid = Array.from(new Set(ids)).filter((id) => isUuid(id))
+  if (valid.length === 0) return { deleted: 0 }
+
+  let deleted = 0
+  for (let i = 0; i < valid.length; i += BULK_DELETE_CHUNK) {
+    const slice = valid.slice(i, i + BULK_DELETE_CHUNK)
+    const rows = await db
+      .delete(conversations)
+      .where(
+        and(
+          inArray(conversations.id, slice),
+          eq(conversations.userId, session.user.id),
+        ),
+      )
+      .returning({ id: conversations.id })
+    deleted += rows.length
+  }
+
+  if (deleted > 0) {
+    revalidatePath("/asistan", "layout")
+    revalidatePath("/sohbetler")
+  }
+
+  return { deleted }
+}
+
+/**
+ * Sohbeti yıldızlar / yıldızı kaldırır. updatedAt'e bilinçli olarak dokunmaz —
+ * yıldızlamak sohbeti sidebar sıralamasında zıplatmaz.
+ */
+export async function setConversationStarred(
+  id: string,
+  starred: boolean,
+): Promise<void> {
+  const session = await auth()
+  if (!session?.user?.id) throw new Error("unauthorized")
+  if (!isUuid(id)) throw new Error("not_found")
+
+  await db
+    .update(conversations)
+    .set({ starred })
+    .where(
+      and(
+        eq(conversations.id, id),
+        eq(conversations.userId, session.user.id),
+      ),
+    )
+
+  revalidatePath("/asistan", "layout")
+  revalidatePath("/sohbetler")
 }
 
 /**

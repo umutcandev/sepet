@@ -13,6 +13,7 @@ import {
 import { AssistantPrompt } from "@/components/assistant/assistant-prompt"
 
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
+import { useCurrentUser } from "@/components/providers/session-provider"
 
 const CHIPS = [
   "Fiş veya yemek fotoğrafımı analiz et",
@@ -21,11 +22,11 @@ const CHIPS = [
 ]
 
 const ROTATING_HEADINGS = [
-  "Alışveriş listeni oluşturalım mı?",
-  "Market fişini analiz edelim mi?",
-  "Yemek fotoğrafından malzeme çıkaralım mı?",
-  "Tarifin için malzeme fiyatları çıkaralım mı?",
-  "Alışveriş bütçeni birlikte planlayalım mı?",
+  "Alışveriş listesi yapalım mı?",
+  "Market fişine göz atalım mı?",
+  "Yemek görseline bakalım mı?",
+  "Tarifinin fiyatını çıkaralım mı?",
+  "Alışveriş bütçeni planlayalım mı?",
 ]
 
 const ASSISTANT_SEED_KEY = "assistant:seed"
@@ -37,6 +38,18 @@ const HACKATHON_URL = "https://www.btkakademi.gov.tr/portal/public/hackathon2026
 export default function HomePage() {
   const router = useRouter()
   const guard = useRequireAuth()
+  const { user } = useCurrentUser()
+
+  const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : ""
+
+  const headings = React.useMemo(() => {
+    if (!firstName) return ROTATING_HEADINGS
+    return ROTATING_HEADINGS.map((heading) => {
+      const lowerFirst = heading.charAt(0).toLowerCase() + heading.slice(1)
+      return `${firstName}, ${lowerFirst}`
+    })
+  }, [firstName])
+
   const [input, setInput] = React.useState("")
   const [headingIndex, setHeadingIndex] = React.useState(0)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -155,86 +168,86 @@ export default function HomePage() {
       <link rel="preload" as="image" href="/market-logos/tarim-kredi.webp" />
       <link rel="preload" as="image" href="/market-logos/carrefoursa.webp" />
       <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-4 pb-16">
-      <div
-        aria-hidden
-        className="dark:hidden pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image.avif')_type('image/avif'),url('/background-image.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
-      />
-      <div
-        aria-hidden
-        className="hidden dark:block pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image-dark.avif')_type('image/avif'),url('/background-image-dark.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
-      />
-      <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
-        <div className="flex flex-col items-center gap-3 text-center">
-          <HeroMarketBadge />
-          <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span
-                key={headingIndex}
-                initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                className="inline-block"
-              >
-                {ROTATING_HEADINGS[headingIndex]}
-              </motion.span>
-            </AnimatePresence>
-          </h1>
-        </div>
-
-        <AssistantPrompt
-          input={input}
-          setInput={setInput}
-          onSubmit={handleSubmit}
-          status={isSubmitting ? "submitted" : undefined}
-          className="w-full"
-          announcement={
-            bannerVisible ? (
-              <>
-                <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
-                  Sepet, HACKATHON&apos;26 birincisi oldu.
-                </p>
-
-                <a
-                  href={HACKATHON_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex shrink-0 items-center gap-0.5 text-xs font-medium text-primary underline-offset-4 transition-colors hover:text-primary/80 hover:underline"
-                >
-                  <span className="hidden sm:inline">Detayları İncele</span>
-                  <span className="sm:hidden">İncele</span>
-                  <ArrowUpRightIcon className="size-3" />
-                </a>
-
-                <button
-                  type="button"
-                  onClick={dismissBanner}
-                  aria-label="Bildirimi kapat"
-                  className="-mr-1 inline-flex size-5 shrink-0 items-center justify-center rounded-md text-muted-foreground/70 transition-colors hover:bg-foreground/5 hover:text-foreground"
-                >
-                  <XIcon className="size-3.5" />
-                </button>
-              </>
-            ) : null
-          }
+        <div
+          aria-hidden
+          className="dark:hidden pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image.avif')_type('image/avif'),url('/background-image.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
         />
+        <div
+          aria-hidden
+          className="hidden dark:block pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image-dark.avif')_type('image/avif'),url('/background-image-dark.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
+        />
+        <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-3 text-center">
+            <HeroMarketBadge />
+            <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={headingIndex}
+                  initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
+                  transition={{ duration: 0.45, ease: "easeOut" }}
+                  className="inline-block"
+                >
+                  {headings[headingIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </h1>
+          </div>
 
-        <div className="flex flex-wrap justify-center gap-2">
-          {CHIPS.map((chip) => (
-            <Button
-              key={chip}
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => handleChip(chip)}
-              className="h-auto rounded-full border-border px-3 py-1.5 text-xs font-normal text-muted-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:bg-muted/80"
-            >
-              {chip}
-            </Button>
-          ))}
+          <AssistantPrompt
+            input={input}
+            setInput={setInput}
+            onSubmit={handleSubmit}
+            status={isSubmitting ? "submitted" : undefined}
+            className="w-full"
+            announcement={
+              bannerVisible ? (
+                <>
+                  <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+                    Sepet, HACKATHON&apos;26 birincisi oldu.
+                  </p>
+
+                  <a
+                    href={HACKATHON_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex shrink-0 items-center gap-0.5 text-xs font-medium text-primary underline-offset-4 transition-colors hover:text-primary/80 hover:underline"
+                  >
+                    <span className="hidden sm:inline">Detayları İncele</span>
+                    <span className="sm:hidden">İncele</span>
+                    <ArrowUpRightIcon className="size-3" />
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={dismissBanner}
+                    aria-label="Bildirimi kapat"
+                    className="-mr-1 inline-flex size-5 shrink-0 items-center justify-center rounded-md text-muted-foreground/70 transition-colors hover:bg-foreground/5 hover:text-foreground"
+                  >
+                    <XIcon className="size-3.5" />
+                  </button>
+                </>
+              ) : null
+            }
+          />
+
+          <div className="flex flex-wrap justify-center gap-2">
+            {CHIPS.map((chip) => (
+              <Button
+                key={chip}
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleChip(chip)}
+                className="h-auto rounded-full border-border px-3 py-1.5 text-xs font-normal text-muted-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:bg-muted/80"
+              >
+                {chip}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
     </>
   )
 }
