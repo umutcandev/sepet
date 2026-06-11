@@ -21,6 +21,7 @@ import {
 import { AssistantPrompt } from "./assistant-prompt"
 import { Button } from "@/components/ui/button"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
+import { useCurrentUser } from "@/components/providers/session-provider"
 import { assistantTitle } from "@/lib/stores/assistant-title"
 import { assistantConversations } from "@/lib/stores/assistant-conversations"
 import type {
@@ -88,6 +89,8 @@ export function AssistantChat({
   initialSavedBaskets,
 }: AssistantChatProps = {}) {
   const guard = useRequireAuth()
+  const { user } = useCurrentUser()
+  const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : ""
   // Render-time okuma için state, callback-time okuma için ref tutuyoruz.
   // Transport `body` callback'i memo ile tek sefer oluşturulur ve istek anında
   // çalışır; orada güncel değere ref üzerinden ulaşılır. JSX'te ise state
@@ -423,7 +426,9 @@ export function AssistantChat({
             <SparklesIcon className="size-10" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Bugün ne alışverişi yapacaksın?
+            {firstName
+              ? `${firstName}, bugün ne alıyoruz?`
+              : "Bugün ne alıyoruz?"}
           </h1>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             {SUGGESTIONS.map((s) => (

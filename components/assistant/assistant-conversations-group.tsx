@@ -2,7 +2,17 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react"
+import { toast } from "sonner"
+import { AnimatePresence, motion } from "motion/react"
+import {
+  CircleEllipsisIcon,
+  ChevronDownIcon,
+  MoreHorizontalIcon,
+  PencilIcon,
+  StarIcon,
+  StarOffIcon,
+  Trash2Icon,
+} from "lucide-react"
 
 import {
   SidebarGroup,
@@ -18,13 +28,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
   ConversationDeleteDialog,
   ConversationRenameDialog,
 } from "@/components/assistant/conversation-action-dialogs"
-import { useAssistantConversations } from "@/lib/stores/assistant-conversations"
+import { setConversationStarred } from "@/lib/actions/conversations"
+import {
+  assistantConversations,
+  useAssistantConversations,
+} from "@/lib/stores/assistant-conversations"
 import { useAssistantTitle } from "@/lib/stores/assistant-title"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -138,6 +153,8 @@ export type ConversationListItem = {
   title: string
   updatedAt: Date | string
   pending?: boolean
+  // Kullanıcının sabitlediği sohbet (server'dan gelir).
+  starred?: boolean
   // Kalıcı sidebar durumu (server'dan gelir). Eksikse "awaiting" varsayılır.
   status?: ConversationStatus
   // Yalnızca istemci tarafı: bu sohbet şu an bu sekmede stream ediliyor mu?
@@ -190,6 +207,116 @@ function useScrollFade() {
   return { scrollRef, measure, fade }
 }
 
+// Sidebar'da gösterilecek azami öğe sayıları. Tamamına /sohbetler'den erişilir.
+const SIDEBAR_HISTORY_LIMIT = 10
+const SIDEBAR_STARRED_LIMIT = 8
+
+/**
+ * Yıldız aç/kapa — store'da optimistik güncelle, server action başarısız olursa
+ * geri al. Sıralamayı (updatedAt) değiştirmez.
+ */
+async function toggleConversationStar(c: ConversationListItem) {
+  const next = !c.starred
+  assistantConversations.setStarred(c.id, next)
+  try {
+    await setConversationStarred(c.id, next)
+  } catch {
+    assistantConversations.setStarred(c.id, !next)
+    toast.error("İşlem başarısız oldu, tekrar dene.")
+  }
+}
+
+// Hem "Yıldızlı" hem "Geçmiş Sohbetler" gruplarında kullanılan tek satır.
+function ConversationRow({
+  c,
+  isActive,
+  isMobile,
+  onRename,
+  onDelete,
+  onNavigate,
+}: {
+  c: ConversationListItem
+  isActive: boolean
+  isMobile: boolean
+  onRename: (c: ConversationListItem) => void
+  onDelete: (c: ConversationListItem) => void
+  onNavigate: () => void
+}) {
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        asChild
+        isActive={isActive}
+        tooltip={c.pending ? undefined : c.title}
+      >
+        <Link href={`/asistan/${c.id}`} onClick={onNavigate}>
+          <ConversationStateIcon
+            status={c.status ?? DEFAULT_CONVERSATION_STATUS}
+            streaming={c.streaming}
+          />
+          {c.pending ? (
+            <Skeleton className="h-4 w-32" />
+          ) : (
+            <span className="truncate">{c.title}</span>
+          )}
+        </Link>
+      </SidebarMenuButton>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuAction showOnHover>
+            <MoreHorizontalIcon />
+            <span className="sr-only">Daha fazla</span>
+          </SidebarMenuAction>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          side={isMobile ? "bottom" : "right"}
+          align="start"
+          className="w-auto min-w-44"
+        >
+          <DropdownMenuItem
+            onSelect={(e) => {
+              e.preventDefault()
+              void toggleConversationStar(c)
+            }}
+          >
+            {c.starred ? (
+              <>
+                <StarOffIcon className="mr-2 size-4" />
+                Favorilerden çıkar
+              </>
+            ) : (
+              <>
+                <StarIcon className="mr-2 size-4" />
+                Favorilere ekle
+              </>
+            )}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={(e) => {
+              e.preventDefault()
+              onRename(c)
+            }}
+          >
+            <PencilIcon className="mr-2 size-4" />
+            Yeniden adlandır
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            variant="destructive"
+            onSelect={(e) => {
+              e.preventDefault()
+              onDelete(c)
+            }}
+          >
+            <Trash2Icon className="mr-2 size-4" />
+            Sil
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </SidebarMenuItem>
+  )
+}
+
 export function AssistantConversationsGroup({ conversations }: Props) {
   // Aktif id'yi router'dan değil assistant-title store'undan okuyoruz:
   // AssistantChat yeni sohbet başlatınca URL'yi `window.history.replaceState`
@@ -220,9 +347,13 @@ export function AssistantConversationsGroup({ conversations }: Props) {
   const [deleteTarget, setDeleteTarget] =
     React.useState<ConversationListItem | null>(null)
 
-  const handleNavClick = () => {
+  const handleNavClick = React.useCallback(() => {
     if (isMobile) setOpenMobile(false)
-  }
+  }, [isMobile, setOpenMobile])
+
+  // ── Collapse states for sidebar groups ──
+  const [favoritesCollapsed, setFavoritesCollapsed] = React.useState(false)
+  const [historyCollapsed, setHistoryCollapsed] = React.useState(false)
 
   if (list.length === 0) {
     return (
@@ -237,96 +368,149 @@ export function AssistantConversationsGroup({ conversations }: Props) {
     )
   }
 
+  const starred = list
+    .filter((c) => c.starred)
+    .slice(0, SIDEBAR_STARRED_LIMIT)
+  const history = list.slice(0, SIDEBAR_HISTORY_LIMIT)
+
   return (
     <>
+      {starred.length > 0 ? (
+        <SidebarGroup className="shrink-0">
+          <SidebarGroupLabel asChild>
+            <button
+              onClick={() => setFavoritesCollapsed((p) => !p)}
+              className="flex w-full items-center justify-start text-left cursor-pointer"
+            >
+              <span className="inline-flex items-center gap-1.5 w-fit hover:text-sidebar-foreground transition-colors [&:hover>svg]:opacity-100">
+                <span>Favoriler</span>
+                <ChevronDownIcon
+                  className={cn(
+                    "size-3.5 opacity-0 transition-all duration-200",
+                    favoritesCollapsed && "-rotate-90"
+                  )}
+                />
+              </span>
+            </button>
+          </SidebarGroupLabel>
+          <AnimatePresence initial={false}>
+            {!favoritesCollapsed && (
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {starred.map((c, i) => (
+                    <motion.div
+                      key={c.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.10, delay: i * 0.008 }}
+                    >
+                      <ConversationRow
+                        c={c}
+                        isActive={c.id === activeId}
+                        isMobile={isMobile}
+                        onRename={setRenameTarget}
+                        onDelete={setDeleteTarget}
+                        onNavigate={handleNavClick}
+                      />
+                    </motion.div>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            )}
+          </AnimatePresence>
+        </SidebarGroup>
+      ) : null}
+
       <SidebarGroup className="flex min-h-0 flex-1 flex-col">
-        <SidebarGroupLabel>Geçmiş Sohbetler</SidebarGroupLabel>
-        <div className="relative min-h-0 flex-1">
-          <div ref={scrollRef} className="no-scrollbar h-full overflow-y-auto">
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {list.map((c) => {
-                  const isActive = c.id === activeId
-                  return (
-                    <SidebarMenuItem key={c.id}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={isActive}
-                        tooltip={c.pending ? undefined : c.title}
+        <SidebarGroupLabel asChild>
+          <button
+            onClick={() => setHistoryCollapsed((p) => !p)}
+            className="flex w-full items-center justify-start text-left cursor-pointer"
+          >
+            <span className="inline-flex items-center gap-1.5 w-fit hover:text-sidebar-foreground transition-colors [&:hover>svg]:opacity-100">
+              <span>Geçmiş Sohbetler</span>
+              <ChevronDownIcon
+                className={cn(
+                  "size-3.5 opacity-0 transition-all duration-200",
+                  historyCollapsed && "-rotate-90"
+                )}
+              />
+            </span>
+          </button>
+        </SidebarGroupLabel>
+        <AnimatePresence initial={false}>
+          {!historyCollapsed && (
+            <div className="relative min-h-0 flex-1 h-full flex flex-col">
+              <div ref={scrollRef} className="no-scrollbar h-full overflow-y-auto pb-6">
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {history.map((c, i) => (
+                      <motion.div
+                        key={c.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.10, delay: i * 0.008 }}
                       >
-                        <Link
-                          href={`/asistan/${c.id}`}
-                          onClick={handleNavClick}
-                        >
-                          <ConversationStateIcon
-                            status={c.status ?? DEFAULT_CONVERSATION_STATUS}
-                            streaming={c.streaming}
-                          />
-                          {c.pending ? (
-                            <Skeleton className="h-4 w-32" />
-                          ) : (
-                            <span className="truncate">{c.title}</span>
-                          )}
-                        </Link>
-                      </SidebarMenuButton>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <SidebarMenuAction showOnHover>
-                            <MoreHorizontalIcon />
-                            <span className="sr-only">Daha fazla</span>
-                          </SidebarMenuAction>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          side={isMobile ? "bottom" : "right"}
-                          align="start"
-                          className="w-auto min-w-40"
-                        >
-                          <DropdownMenuItem
-                            onSelect={(e) => {
-                              e.preventDefault()
-                              setRenameTarget(c)
-                            }}
+                        <ConversationRow
+                          c={c}
+                          isActive={c.id === activeId}
+                          isMobile={isMobile}
+                          onRename={setRenameTarget}
+                          onDelete={setDeleteTarget}
+                          onNavigate={handleNavClick}
+                        />
+                      </motion.div>
+                    ))}
+                    {/* 10'dan fazla sohbet varsa, 10.'dan sonra /sohbetler'e
+                        yönlendiren "daha fazla göster" satırı. */}
+                    {list.length > SIDEBAR_HISTORY_LIMIT ? (
+                      <motion.div
+                        key="more"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.10, delay: history.length * 0.008 }}
+                      >
+                        <SidebarMenuItem>
+                          <SidebarMenuButton
+                            asChild
+                            tooltip="Daha fazla göster"
+                            className="text-muted-foreground"
                           >
-                            <PencilIcon className="mr-2 size-4" />
-                            Yeniden adlandır
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            variant="destructive"
-                            onSelect={(e) => {
-                              e.preventDefault()
-                              setDeleteTarget(c)
-                            }}
-                          >
-                            <Trash2Icon className="mr-2 size-4" />
-                            Sil
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </SidebarMenuItem>
-                  )
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </div>
-          {/* Kenar fade overlay'leri: metni maskelemeden (mask/opacity yazıyı
-              GPU katmanına alıp scroll sırasında "bold" gösteriyordu) sidebar
-              arka planından şeffafa geçen ince gradient şeritler. Yalnızca o
-              yönde kaydırılacak içerik varken görünür. */}
-          <div
-            aria-hidden
-            className={cn(
-              "pointer-events-none absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-sidebar to-transparent transition-opacity duration-200",
-              fade.top ? "opacity-100" : "opacity-0"
-            )}
-          />
-          <div
-            aria-hidden
-            className={cn(
-              "pointer-events-none absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-sidebar to-transparent transition-opacity duration-200",
-              fade.bottom ? "opacity-100" : "opacity-0"
-            )}
-          />
-        </div>
+                            <Link href="/sohbetler" onClick={handleNavClick}>
+                              <CircleEllipsisIcon />
+                              <span>Daha fazla göster</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </motion.div>
+                    ) : null}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </div>
+              {/* Kenar fade overlay'leri: metni maskelemeden (mask/opacity yazıyı
+                  GPU katmanına alıp scroll sırasında "bold" gösteriyordu) sidebar
+                  arka planından şeffafa geçen ince gradient şeritler. Yalnızca o
+                  yönde kaydırılacak içerik varken görünür. */}
+              <div
+                aria-hidden
+                className={cn(
+                  "pointer-events-none absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-sidebar to-transparent transition-opacity duration-200",
+                  fade.top ? "opacity-100" : "opacity-0"
+                )}
+              />
+              <div
+                aria-hidden
+                className={cn(
+                  "pointer-events-none absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-sidebar to-transparent transition-opacity duration-200",
+                  fade.bottom ? "opacity-100" : "opacity-0"
+                )}
+              />
+            </div>
+          )}
+        </AnimatePresence>
       </SidebarGroup>
 
       <ConversationRenameDialog

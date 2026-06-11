@@ -254,6 +254,9 @@ export const conversations = pgTable(
       .$type<ConversationStatus>()
       .notNull()
       .default("awaiting"),
+    // Kullanıcının sabitlediği sohbet. Sidebar'da "Yıldızlı" grubunda üstte
+    // gösterilir; updatedAt'i etkilemez (yıldızlamak sohbeti zıplatmaz).
+    starred: boolean("starred").notNull().default(false),
     createdAt: timestamp("createdAt", { mode: "date" })
       .notNull()
       .defaultNow(),
