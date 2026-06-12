@@ -79,7 +79,7 @@ export function ThemeToggleButton({ className }: { className?: string }) {
   return (
     <Button
       type="button"
-      variant="ghost"
+      variant="outline"
       size="icon-sm"
       onClick={() => setTheme(NEXT_THEME[current])}
       aria-label={`${meta.label}. Temayı değiştir.`}

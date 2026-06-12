@@ -6,6 +6,7 @@ import {
   assistantBurstLimiter,
   assistantDailyLimiter,
   authLimiter,
+  locationLimiter,
   productLimiter,
   receiptUploadLimiter,
 } from "@/lib/security/rate-limit"
@@ -42,6 +43,12 @@ export default withAuth(async (req) => {
   if (path.startsWith("/api/products")) {
     const key = userId ? `user:${userId}` : `ip:${ip}`
     const { success, reset } = await productLimiter.limit(key)
+    if (!success) return tooManyResponse(reset)
+  }
+
+  if (path.startsWith("/api/location")) {
+    const key = userId ? `user:${userId}` : `ip:${ip}`
+    const { success, reset } = await locationLimiter.limit(key)
     if (!success) return tooManyResponse(reset)
   }
 

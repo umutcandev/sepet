@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { searchProducts } from "@/lib/marketfiyati/cache"
 import { MarketfiyatiError } from "@/lib/marketfiyati/client"
+import { getUserLocationContext } from "@/lib/auth/location"
 
 export const runtime = "nodejs"
 
@@ -18,7 +19,8 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await searchProducts(q)
+    const loc = await getUserLocationContext()
+    const result = await searchProducts(q, loc)
     return NextResponse.json(result)
   } catch (err) {
     const status = err instanceof MarketfiyatiError ? err.status : 500

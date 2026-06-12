@@ -23,6 +23,26 @@ export const MF_DEFAULT_COORDS = {
 }
 
 /**
+ * Tek bir aramanın konum bağlamı: koordinat + yarıçap + dahil edilecek depo
+ * (şube) ID'leri. `depots` doluysa fiyatlar tam o şubelerle sınırlanır; boşsa
+ * koordinat+mesafeden /nearest ile çözülür. Kullanıcı konumu yoksa
+ * MF_DEFAULT_LOCATION fallback kullanılır.
+ */
+export type LocationContext = {
+  latitude: number
+  longitude: number
+  distance: number
+  depots: string[]
+}
+
+export const MF_DEFAULT_LOCATION: LocationContext = {
+  latitude: DEFAULT_LAT,
+  longitude: DEFAULT_LNG,
+  distance: DEFAULT_DISTANCE,
+  depots: [],
+}
+
+/**
  * Zorunlu header'lar — eksikse WAF 403 veriyor. Origin ve Referer kritik;
  * User-Agent bazı endpoint'lerde gerekli. API kontrolünü değiştirirse burası
  * tek değişiklik noktası.

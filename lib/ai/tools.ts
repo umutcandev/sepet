@@ -22,7 +22,11 @@ import {
 import { stripQuantityTokens } from "./normalize"
 import { searchProductDetails } from "@/lib/marketfiyati/cache"
 import type { ProductDetail } from "@/lib/marketfiyati/types"
-import { MarketfiyatiError } from "@/lib/marketfiyati/client"
+import {
+  MarketfiyatiError,
+  MF_DEFAULT_LOCATION,
+  type LocationContext,
+} from "@/lib/marketfiyati/client"
 import { effectiveLineCost, hasBaseMismatch, hasSizeMismatch } from "./effective-cost"
 import { redis, MF_MATCH_TTL } from "@/lib/redis"
 import { createHash } from "node:crypto"
@@ -36,6 +40,7 @@ type FindOutcome =
 async function findFirstHit(
   searchQuery: string,
   rawName: string,
+  loc: LocationContext,
 ): Promise<FindOutcome> {
   const tried = new Set<string>()
   const variants = [searchQuery, stripQuantityTokens(rawName)]
@@ -46,7 +51,7 @@ async function findFirstHit(
 
   for (const q of variants) {
     try {
-      const result = await searchProductDetails(q)
+      const result = await searchProductDetails(q, loc)
       // En az bir marketten gerçek fiyatı olmayan adayları ele — bir depo
       // fiyatı yoksa o ürün optimizasyona katkı yapamaz.
       const hits = result.details.filter((d) => d.markets.length >= 1)
@@ -305,10 +310,11 @@ function buildMarketOptions(accepted: HitList): MarketOption[] {
 
 export async function lookupProducts(
   items: ParsedItem[],
+  loc: LocationContext = MF_DEFAULT_LOCATION,
 ): Promise<{ matches: MatchResult[] }> {
   // Faz 1 — her kalem için aday ürünleri getir.
   const outcomes = await Promise.all(
-    items.map((item) => findFirstHit(item.searchQuery, item.name)),
+    items.map((item) => findFirstHit(item.searchQuery, item.name, loc)),
   )
 
   // Faz 2 — adayı olan kalemleri doğru ürüne eşle. Önce match-cache'e bak;

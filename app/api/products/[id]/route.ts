@@ -6,6 +6,7 @@ import {
   isBarcode,
 } from "@/lib/marketfiyati/cache"
 import { MarketfiyatiError } from "@/lib/marketfiyati/client"
+import { getUserLocationContext } from "@/lib/auth/location"
 
 export const runtime = "nodejs"
 
@@ -25,11 +26,12 @@ export async function GET(
   }
 
   try {
+    const loc = await getUserLocationContext()
     // Barkod (8-14 hane) → searchByIdentity barkod akışı; aksi halde opak
     // productId ile detay. Hem barkod tarayıcı hem arama kartı tıklaması çalışır.
     const detail = isBarcode(value)
-      ? await getProductByBarcode(value)
-      : await getProductById(value)
+      ? await getProductByBarcode(value, loc)
+      : await getProductById(value, loc)
     if (!detail) {
       return NextResponse.json({ error: "not_found" }, { status: 404 })
     }

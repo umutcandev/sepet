@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { AppShell } from "@/components/app-shell"
 import { LoginDialogHost } from "@/components/auth/login-dialog-host"
+import { LocationHost } from "@/components/location/location-host"
 import { OnboardingHost } from "@/components/onboarding/onboarding-host"
 import { SessionProvider } from "@/components/providers/session-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
@@ -87,6 +88,7 @@ export default async function RootLayout({
               </AppShell>
               <LoginDialogHost />
               <OnboardingHost />
+              <LocationHost />
               <Toaster position="top-right" richColors />
             </SessionProvider>
           </TooltipProvider>
