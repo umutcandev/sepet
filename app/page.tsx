@@ -12,6 +12,7 @@ import {
 import { AssistantPrompt } from "@/components/assistant/assistant-prompt"
 
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
+import { useRequireLocation } from "@/lib/hooks/use-require-location"
 import { useCurrentUser } from "@/components/providers/session-provider"
 
 const CHIPS = [
@@ -34,6 +35,7 @@ const ASSISTANT_FILE_KEY = "assistant:file"
 export default function HomePage() {
   const router = useRouter()
   const guard = useRequireAuth()
+  const locationGuard = useRequireLocation()
   const { user } = useCurrentUser()
 
   const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : ""
@@ -66,7 +68,9 @@ export default function HomePage() {
     }
   }, [])
 
-  const handleSubmit = guard((message: PromptInputMessage) => {
+  // Önce auth, sonra konum kapısı: giriş yoksa login modalı, konum yoksa konum
+  // modalı açılır; kaydedince gönderim kaldığı yerden devam eder.
+  const submitToAssistant = (message: PromptInputMessage) => {
     if (isSubmitting) return
 
     const text = message.text?.trim() ?? ""
@@ -100,7 +104,9 @@ export default function HomePage() {
     setIsSubmitting(true)
     setInput("")
     router.push("/asistan")
-  })
+  }
+
+  const handleSubmit = guard(locationGuard(submitToAssistant))
 
   const handleChip = guard((chip: string) => {
     setInput(chip)

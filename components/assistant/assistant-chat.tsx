@@ -22,6 +22,7 @@ import {
 import { AssistantPrompt } from "./assistant-prompt"
 import { Button } from "@/components/ui/button"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
+import { useRequireLocation } from "@/lib/hooks/use-require-location"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { assistantTitle } from "@/lib/stores/assistant-title"
 import { assistantConversations } from "@/lib/stores/assistant-conversations"
@@ -90,6 +91,7 @@ export function AssistantChat({
   initialSavedBaskets,
 }: AssistantChatProps = {}) {
   const guard = useRequireAuth()
+  const locationGuard = useRequireLocation()
   const { user } = useCurrentUser()
   const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : ""
   // Render-time okuma için state, callback-time okuma için ref tutuyoruz.
@@ -344,37 +346,39 @@ export function AssistantChat({
   // derleyicisi `guard()`'a ref okuyan callback geçişini false-positive olarak
   // bayraklıyor (transport useMemo'sunda da aynı kalıp var).
   /* eslint-disable react-hooks/refs */
-  const handleSubmit = guard(async (message: PromptInputMessage) => {
-    if (isBusy) return
-    const text = message.text?.trim() ?? ""
-    const imageFile = (message.files ?? []).find((f) =>
-      f.mediaType?.startsWith("image/"),
-    )
+  const handleSubmit = guard(
+    locationGuard(async (message: PromptInputMessage) => {
+      if (isBusy) return
+      const text = message.text?.trim() ?? ""
+      const imageFile = (message.files ?? []).find((f) =>
+        f.mediaType?.startsWith("image/"),
+      )
 
-    if (imageFile) {
-      // Görsel attach anında zaten R2'ye yüklendi; imageFile.url public URL,
-      // imageFile.filename ise R2 key'idir. Burada upload beklemiyoruz.
+      if (imageFile) {
+        // Görsel attach anında zaten R2'ye yüklendi; imageFile.url public URL,
+        // imageFile.filename ise R2 key'idir. Burada upload beklemiyoruz.
+        markPendingTitleIfNew()
+        sendMessage({
+          parts: [
+            { type: "text", text: text || "Bu görseli analiz et" },
+            {
+              type: "file",
+              mediaType: imageFile.mediaType,
+              url: imageFile.url,
+              filename: imageFile.filename,
+            },
+          ],
+        })
+        setInput("")
+        return
+      }
+
+      if (!text) return
       markPendingTitleIfNew()
-      sendMessage({
-        parts: [
-          { type: "text", text: text || "Bu görseli analiz et" },
-          {
-            type: "file",
-            mediaType: imageFile.mediaType,
-            url: imageFile.url,
-            filename: imageFile.filename,
-          },
-        ],
-      })
+      sendMessage({ text })
       setInput("")
-      return
-    }
-
-    if (!text) return
-    markPendingTitleIfNew()
-    sendMessage({ text })
-    setInput("")
-  })
+    }),
+  )
 
   const handleSuggestionClick = guard((text: string) => {
     if (isBusy) return

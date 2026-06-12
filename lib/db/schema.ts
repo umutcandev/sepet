@@ -23,6 +23,16 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   onboardingCompletedAt: timestamp("onboardingCompletedAt", { mode: "date" }),
+  // ─── Konum tercihi ───
+  // Kullanıcının haritada seçtiği konum + mesafe yarıçapı + dahil edilecek
+  // market şubeleri (marketfiyati depo ID'leri). lat/lng dolu = konum mevcut.
+  // selectedDepotIds, /search'e `depots` filtresi olarak geçer.
+  locationLat: numeric("locationLat", { precision: 9, scale: 6 }),
+  locationLng: numeric("locationLng", { precision: 9, scale: 6 }),
+  locationDistance: integer("locationDistance"),
+  locationLabel: text("locationLabel"),
+  selectedDepotIds: jsonb("selectedDepotIds").$type<string[]>(),
+  locationUpdatedAt: timestamp("locationUpdatedAt", { mode: "date" }),
 })
 
 export const accounts = pgTable(

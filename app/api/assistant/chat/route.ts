@@ -19,6 +19,8 @@ import {
   lookupProducts,
 } from "@/lib/ai/tools"
 import { computeOptimization } from "@/lib/ai/optimize"
+import { getUserLocationContext } from "@/lib/auth/location"
+import type { LocationContext } from "@/lib/marketfiyati/client"
 import { STALE_DAY_THRESHOLD } from "@/lib/receipt-staleness"
 import type {
   BasketDraft,
@@ -451,6 +453,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "no_user_message" }, { status: 400 })
   }
 
+  // Kullanıcının kayıtlı konumu — ürün eşleştirme/optimizasyon bu koordinat ve
+  // seçili şubelerle çalışır. Konum yoksa env fallback'e düşer.
+  const loc = await getUserLocationContext()
+
   let conversationId = payload.conversationId
   let createdNewConversation = false
   let createdTitle: string | null = null
@@ -568,6 +574,7 @@ export async function POST(req: Request) {
         runAssistantTurn({
           writer: wrappedWriter,
           mode,
+          loc,
           onImageKind: handleImageKind,
         }),
         titlePromise,
@@ -764,10 +771,12 @@ type TurnResult = { awaiting: boolean }
 async function runAssistantTurn({
   writer,
   mode,
+  loc,
   onImageKind,
 }: {
   writer: WriterLike
   mode: Exclude<LastUserMode, { kind: "empty" }>
+  loc: LocationContext
   onImageKind?: (
     kind: ImageAnalysis["kind"],
     analysis?: ImageAnalysis,
@@ -877,7 +886,7 @@ async function runAssistantTurn({
       input: { items: parsedItems },
     } as AnyChunk)
 
-    const { matches } = await lookupProducts(parsedItems)
+    const { matches } = await lookupProducts(parsedItems, loc)
 
     writer.write({
       type: "tool-output-available",
@@ -953,7 +962,7 @@ async function runAssistantTurn({
       input: { items: parsedItems },
     } as AnyChunk)
 
-    const { matches } = await lookupProducts(parsedItems)
+    const { matches } = await lookupProducts(parsedItems, loc)
 
     writer.write({
       type: "tool-output-available",

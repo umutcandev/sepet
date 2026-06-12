@@ -7,6 +7,9 @@ import type { CurrentUser } from "@/lib/auth/session"
 type SessionContextValue = {
   user: CurrentUser | null
   isAuthenticated: boolean
+  /** Sunucudan gelen başlangıç değeri. Anlık (kaydetme sonrası) durum için
+   *  `useHasLocation()` kullan — bu, locationStore overlay'ini de hesaba katar. */
+  hasLocation: boolean
 }
 
 const SessionContext = React.createContext<SessionContextValue | null>(null)
@@ -19,7 +22,11 @@ export function SessionProvider({
   children: React.ReactNode
 }) {
   const value = React.useMemo<SessionContextValue>(
-    () => ({ user, isAuthenticated: user !== null }),
+    () => ({
+      user,
+      isAuthenticated: user !== null,
+      hasLocation: user?.location != null,
+    }),
     [user],
   )
   return (

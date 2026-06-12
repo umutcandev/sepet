@@ -16,6 +16,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
+import { useRequireLocation } from "@/lib/hooks/use-require-location"
 import { formatTLOrDash } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { ProductHit } from "@/lib/marketfiyati/types"
@@ -33,6 +34,7 @@ export function ProductSearchPage() {
   const [scannerOpen, setScannerOpen] = React.useState(false)
   const abortRef = React.useRef<AbortController | null>(null)
   const guard = useRequireAuth()
+  const locationGuard = useRequireLocation()
 
   React.useEffect(() => {
     return () => abortRef.current?.abort()
@@ -75,6 +77,12 @@ export function ProductSearchPage() {
     runSearchWith(barcode)
   }
 
+  // Önce auth, sonra konum kapısı: konum yoksa modal açılır, kaydedince aksiyon
+  // devam eder. preventDefault/blur senkron kalsın diye gated kısım event almaz.
+  // eslint-disable-next-line react-hooks/refs -- guard wrappers run at event time, not render
+  const submitSearch = guard(locationGuard(() => runSearchWith(q)))
+  const openScanner = guard(locationGuard(() => setScannerOpen(true)))
+
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6 md:py-8">
       <div className="mb-6 flex flex-col gap-1">
@@ -86,11 +94,10 @@ export function ProductSearchPage() {
       </div>
 
       <form
-        // eslint-disable-next-line react-hooks/refs -- guard() returns an event handler invoked at event time, not during render
-        onSubmit={guard((e: React.FormEvent<HTMLFormElement>) => {
+        onSubmit={(e) => {
           e.preventDefault()
-          runSearchWith(q)
-        })}
+          submitSearch()
+        }}
         className="mb-6 flex max-w-xl items-center gap-2"
       >
         <div className="relative flex-1">
@@ -111,12 +118,13 @@ export function ProductSearchPage() {
           variant="outline"
           size="icon-lg"
           aria-label="Barkod tara"
-          onClick={guard((e: React.MouseEvent<HTMLButtonElement>) => {
+          onClick={(e) => {
             // Dialog açılınca Radix dış ağaca aria-hidden koyuyor; tetikleyici
-            // buton focus'lu kalırsa erişilebilirlik uyarısı çıkar. Önce blur.
+            // buton focus'lu kalırsa erişilebilirlik uyarısı çıkar. Önce blur
+            // (senkron), konum kapısı sonra.
             e.currentTarget.blur()
-            setScannerOpen(true)
-          })}
+            openScanner()
+          }}
         >
           <ScanBarcodeIcon className="size-4" />
         </Button>
