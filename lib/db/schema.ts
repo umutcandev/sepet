@@ -33,6 +33,11 @@ export const users = pgTable("user", {
   locationLabel: text("locationLabel"),
   selectedDepotIds: jsonb("selectedDepotIds").$type<string[]>(),
   locationUpdatedAt: timestamp("locationUpdatedAt", { mode: "date" }),
+  // ─── Kullanım katmanı (plan) ───
+  // Aylık kotalar plan'a göre belirlenir (bkz. lib/usage/limits.ts). Mevcut
+  // kullanıcılar 'free' default'u ile başlar; Pro yükseltme ileride bir ödeme
+  // webhook'u ile set edilir.
+  plan: text("plan").$type<"free" | "pro">().notNull().default("free"),
 })
 
 export const accounts = pgTable(
@@ -293,4 +298,26 @@ export const conversationMessages = pgTable(
       .defaultNow(),
   },
   (t) => [index("msg_conv_seq_idx").on(t.conversationId, t.sequence)],
+)
+
+// ─── Kullanım sayaçları: hesap + ay bazında aylık kotalar ───
+//
+// Periyot anahtarı "YYYY-MM" olduğu için yeni ay geldiğinde upsert yeni satıra
+// (0'dan) yazar — cron'a gerek yoktan lazy reset. Kota kontrolü + artırma tek
+// bir atomik INSERT … ON CONFLICT … WHERE ifadesiyle yapılır (bkz.
+// lib/usage/usage.ts reserveQuota) → eşzamanlı isteklerde overshoot imkânsız.
+// Depolama metrikleri (sepet/fiş) burada tutulmaz; mevcut tablolardan COUNT(*)
+// ile okunur.
+export const usageCounters = pgTable(
+  "usage_counter",
+  {
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    period: text("period").notNull(), // "YYYY-MM", ör. "2026-06"
+    textMessages: integer("textMessages").notNull().default(0),
+    imageAnalyses: integer("imageAnalyses").notNull().default(0),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.period] })],
 )

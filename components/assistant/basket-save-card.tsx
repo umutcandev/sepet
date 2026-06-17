@@ -61,6 +61,12 @@ export function BasketSaveCard({
         conversationId,
         sourceToolCallId: toolCallId,
       })
+      if (!res.ok) {
+        toast.error(
+          "Sepet kaydetme limitin doldu. Eski bir sepeti sil ya da Pro'ya geç.",
+        )
+        return
+      }
       setSavedId(res.id)
       toast.success("Sepet kaydedildi.")
     } catch (err) {

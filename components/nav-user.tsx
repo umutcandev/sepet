@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import {
   Avatar,
   AvatarFallback,
@@ -20,10 +21,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { Badge } from "@/components/ui/badge"
-import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import { ChevronsUpDownIcon, SettingsIcon, LogOutIcon } from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
 import { ThemeMenuItems } from "@/components/theme-toggle"
+import { SettingsDialog } from "@/components/settings/settings-dialog"
 
 export function NavUser({
   user,
@@ -35,6 +36,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const [settingsOpen, setSettingsOpen] = React.useState(false)
 
   return (
     <SidebarMenu>
@@ -80,40 +82,14 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem disabled>
-                <SparklesIcon
-                />
-                Pro&apos;ya Yükselt
-                <Badge variant="secondary" className="ml-auto text-[10px]" >
-                  YAKINDA
-                </Badge>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem disabled>
-                <BadgeCheckIcon
-                />
-                Hesap
-                <Badge variant="secondary" className="ml-auto text-[10px]" >
-                  YAKINDA
-                </Badge>
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                <CreditCardIcon
-                />
-                Faturalandırma
-                <Badge variant="secondary" className="ml-auto text-[10px]" >
-                  YAKINDA
-                </Badge>
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                <BellIcon
-                />
-                Bildirimler
-                <Badge variant="secondary" className="ml-auto text-[10px]" >
-                  YAKINDA
-                </Badge>
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault()
+                  setSettingsOpen(true)
+                }}
+              >
+                <SettingsIcon />
+                Ayarlar
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -130,6 +106,7 @@ export function NavUser({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
       </SidebarMenuItem>
     </SidebarMenu>
   )

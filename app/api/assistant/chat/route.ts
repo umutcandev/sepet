@@ -39,6 +39,8 @@ import {
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
 import { and, eq } from "drizzle-orm"
 import { db, conversations } from "@/lib/db"
+import { reserveQuota, refundQuota } from "@/lib/usage/usage"
+import type { MeteredMetric } from "@/lib/usage/limits"
 
 export const runtime = "nodejs"
 export const maxDuration = 60
@@ -457,6 +459,9 @@ export async function POST(req: Request) {
   // seçili şubelerle çalışır. Konum yoksa env fallback'e düşer.
   const loc = await getUserLocationContext()
 
+  // Var olan bir sohbete yazılıyorsa sahipliği KOTADAN ÖNCE doğrula — aksi halde
+  // 404 ile dönen (ya da konum/payload hatasıyla düşen) bir istek boşuna bir
+  // kota slotu yakardı.
   let conversationId = payload.conversationId
   let createdNewConversation = false
   let createdTitle: string | null = null
@@ -477,13 +482,42 @@ export async function POST(req: Request) {
         { status: 404 },
       )
     }
-  } else {
-    const created = await createConversation({
-      firstUserMessage: lastUserMessage,
-    })
-    conversationId = created.id
-    createdTitle = created.title
-    createdNewConversation = true
+  }
+
+  // Kota: pahalı AI çağrısından önce atomik rezerve et. Görsel modu (analyzeImage)
+  // imageAnalyses, diğer tüm LLM turları (parse / sepet / fiş onayı) textMessages
+  // sayar — "mesaj mesajdır". Kota doluysa LLM hiç çağrılmadan 402 döner. Tüm ucuz
+  // doğrulama (payload, SSRF, sahiplik, konum) bu noktadan önce bittiği için
+  // rezerve edilen slot yalnızca gerçekten AI'ya gidecek bir istekte harcanır.
+  const meteredMetric: MeteredMetric =
+    mode.kind === "receiptImage" ? "imageAnalyses" : "textMessages"
+  const reservation = await reserveQuota(userId, meteredMetric)
+  if (!reservation.ok) {
+    return NextResponse.json(
+      {
+        error: "quota_exceeded",
+        metric: meteredMetric,
+        resetAt: reservation.resetAt.toISOString(),
+      },
+      { status: 402 }, // Payment Required → istemci Pro CTA kartını gösterir
+    )
+  }
+
+  // Yeni sohbeti kota ONAYLANDIKTAN sonra oluştur — kota doluysa boş bir sohbet
+  // kaydı kalmaz. createConversation beklenmedik bir hatayla düşerse henüz hiç AI
+  // çağrılmadığı için rezerve edilen slotu iade et.
+  if (!conversationId) {
+    try {
+      const created = await createConversation({
+        firstUserMessage: lastUserMessage,
+      })
+      conversationId = created.id
+      createdTitle = created.title
+      createdNewConversation = true
+    } catch (err) {
+      await refundQuota(userId, meteredMetric).catch(() => {})
+      throw err
+    }
   }
 
   // Persist the user message immediately so it survives a stream abort.
@@ -570,15 +604,29 @@ export async function POST(req: Request) {
           }
         : undefined
 
-      const [turn] = await Promise.all([
-        runAssistantTurn({
-          writer: wrappedWriter,
-          mode,
-          loc,
-          onImageKind: handleImageKind,
-        }),
-        titlePromise,
-      ])
+      let turn: TurnResult
+      try {
+        const [result] = await Promise.all([
+          runAssistantTurn({
+            writer: wrappedWriter,
+            mode,
+            loc,
+            onImageKind: handleImageKind,
+          }),
+          titlePromise,
+        ])
+        turn = result
+      } catch (err) {
+        // Sert hata (örn. lookupProducts exception) çıktı üretilmeden düştü →
+        // rezerve edilen slotu iade et, sonra hatayı stream onError'a ilet.
+        await refundQuota(userId, meteredMetric).catch(() => {})
+        throw err
+      }
+      // Turn içeride yakalanan bir sert AI hatasıyla (model 503/429, parse
+      // exception) bittiyse de slotu iade et — başarısız istek kotayı yakmasın.
+      if (turn.hardError) {
+        await refundQuota(userId, meteredMetric).catch(() => {})
+      }
 
       // Persist the assistant message before signalling finish.
       const parts = recorder.finalize()
@@ -766,7 +814,7 @@ function wrapWriter(
  * (sepet/fiş/yemek onayı). `awaiting: false` → terminal sonuç (karşılaştırma,
  * optimizasyon, ya da kapanış/hata mesajı). Sidebar ikonu buna göre seçilir.
  */
-type TurnResult = { awaiting: boolean }
+type TurnResult = { awaiting: boolean; hardError?: boolean }
 
 async function runAssistantTurn({
   writer,
@@ -807,7 +855,8 @@ async function runAssistantTurn({
           : "Görseli okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
       } as AnyChunk)
       if (onImageKind) await onImageKind("unknown")
-      return { awaiting: false }
+      // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir.
+      return { awaiting: false, hardError: true }
     }
 
     if (parseReasoning) {
@@ -1031,7 +1080,8 @@ async function runAssistantTurn({
         : "Listeyi okuyamadım, tekrar yazabilir misin?",
     } as AnyChunk)
     await emitText(writer, busy ? MODEL_BUSY_TEXT : FALLBACK_TEXT)
-    return { awaiting: false }
+    // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir.
+    return { awaiting: false, hardError: true }
   }
 
   if (parseReasoning) {

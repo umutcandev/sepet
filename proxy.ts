@@ -3,12 +3,12 @@ import { NextResponse } from "next/server"
 
 import { authConfig } from "./auth.config"
 import {
-  assistantBurstLimiter,
-  assistantDailyLimiter,
   authLimiter,
   locationLimiter,
   productLimiter,
   receiptUploadLimiter,
+  transcribeBurstLimiter,
+  transcribeDailyLimiter,
 } from "@/lib/security/rate-limit"
 import { applySecurityHeaders } from "@/lib/security/headers"
 
@@ -58,11 +58,15 @@ export default withAuth(async (req) => {
     if (!success) return tooManyResponse(reset)
   }
 
-  if (path.startsWith("/api/assistant") || path === "/api/transcribe") {
+  // Sesli giriş (Gemini audio). Aylık kotaya dahil değil; bir hesabın AI
+  // bakiyesini tüketmesini engelleyen tek koruma bu altyapı limiti. Burst (dk)
+  // hızlı döngüyü, günlük tavan toplam hacmi sınırlar. /api/transcribe auth
+  // gerektirir → userId beklenir; yine de ip fallback bırakılır.
+  if (path === "/api/transcribe") {
     const key = userId ? `user:${userId}` : `ip:${ip}`
-    const burst = await assistantBurstLimiter.limit(key)
+    const burst = await transcribeBurstLimiter.limit(key)
     if (!burst.success) return tooManyResponse(burst.reset)
-    const daily = await assistantDailyLimiter.limit(key)
+    const daily = await transcribeDailyLimiter.limit(key)
     if (!daily.success) return tooManyResponse(daily.reset)
   }
 

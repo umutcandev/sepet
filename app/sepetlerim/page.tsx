@@ -97,7 +97,7 @@ export default async function BasketsPage() {
             <MonthlyBarChart
               data={monthly}
               label="Sepet toplamı"
-              emptyHint="Son 6 ayda kayıtlı sepet tutarı yok."
+              emptyHint="Son 6 ayda Sepet kaydetme tutarı yok."
             />
             <MonthlyChartLegend
               items={[

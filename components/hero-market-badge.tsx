@@ -81,7 +81,7 @@ export function HeroMarketBadge() {
       </div>
 
       <span className="text-[13px] font-medium text-muted-foreground">
-        Sepetini Asistan&apos;la Doldur!
+        Tüm zincir marketler burada!
       </span>
 
       <motion.span

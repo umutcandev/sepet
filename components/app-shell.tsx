@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { HeaderUserMenu } from "@/components/header-user-menu"
-import { LocationButton } from "@/components/location/location-button"
 import { ThemeToggleButton } from "@/components/theme-toggle"
 import {
   SidebarInset,
@@ -167,7 +166,6 @@ export function AppShell({ user, conversations, children }: Props) {
             ) : null}
           </div>
           <div className="flex shrink-0 items-center justify-end gap-1 px-4">
-            {user ? <LocationButton /> : null}
             <ThemeToggleButton />
             {user ? (
               <HeaderUserMenu user={user} className="md:hidden" />

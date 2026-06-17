@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import {
   Avatar,
   AvatarFallback,
@@ -14,16 +15,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
-import {
-  SparklesIcon,
-  BadgeCheckIcon,
-  CreditCardIcon,
-  BellIcon,
-  LogOutIcon,
-} from "lucide-react"
+import { SettingsIcon, LogOutIcon } from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
 import { ThemeMenuItems } from "@/components/theme-toggle"
+import { SettingsDialog } from "@/components/settings/settings-dialog"
 import { cn } from "@/lib/utils"
 
 export function HeaderUserMenu({
@@ -37,7 +32,9 @@ export function HeaderUserMenu({
   }
   className?: string
 }) {
+  const [settingsOpen, setSettingsOpen] = React.useState(false)
   return (
+    <>
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label="Hesap menüsü"
@@ -74,36 +71,14 @@ export function HeaderUserMenu({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem disabled>
-            <SparklesIcon />
-            Pro&apos;ya Yükselt
-            <Badge variant="secondary" className="ml-auto text-[10px]">
-              YAKINDA
-            </Badge>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem disabled>
-            <BadgeCheckIcon />
-            Hesap
-            <Badge variant="secondary" className="ml-auto text-[10px]">
-              YAKINDA
-            </Badge>
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            <CreditCardIcon />
-            Faturalandırma
-            <Badge variant="secondary" className="ml-auto text-[10px]">
-              YAKINDA
-            </Badge>
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            <BellIcon />
-            Bildirimler
-            <Badge variant="secondary" className="ml-auto text-[10px]">
-              YAKINDA
-            </Badge>
+          <DropdownMenuItem
+            onSelect={(event) => {
+              event.preventDefault()
+              setSettingsOpen(true)
+            }}
+          >
+            <SettingsIcon />
+            Ayarlar
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -120,5 +95,7 @@ export function HeaderUserMenu({
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+    <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
+    </>
   )
 }

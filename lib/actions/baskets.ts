@@ -1,10 +1,12 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { and, desc, eq, isNotNull } from "drizzle-orm"
+import { and, count, desc, eq, isNotNull } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, baskets, basketItems } from "@/lib/db"
 import { isUuid } from "@/lib/utils"
+import { getUserPlan } from "@/lib/usage/usage"
+import { planLimit } from "@/lib/usage/limits"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -35,7 +37,16 @@ function autoBasketName(): string {
   return `Sepet · ${fmt.format(new Date())}`
 }
 
-export async function saveBasket(input: SaveBasketInput): Promise<{ id: string }> {
+// Depolama limiti kullanıcıya gösterilecek beklenen bir sonuç olduğu için
+// (exception değil) ayrık bir union dönülür — Next.js production'da server
+// action exception mesajlarını maskeler, dönen değer ise korunur.
+export type SaveBasketResult =
+  | { ok: true; id: string }
+  | { ok: false; reason: "storage_limit_reached" }
+
+export async function saveBasket(
+  input: SaveBasketInput,
+): Promise<SaveBasketResult> {
   const session = await auth()
   if (!session?.user?.id) throw new Error("unauthorized")
 
@@ -57,7 +68,31 @@ export async function saveBasket(input: SaveBasketInput): Promise<{ id: string }
         ),
       )
       .limit(1)
-    if (existing) return { id: existing.id }
+    if (existing) return { ok: true, id: existing.id }
+  }
+
+  // Depolama kotası: kayıt öncesi sert tavan (kullanıcının açık "Kaydet"
+  // aksiyonu; sohbetlere kota yoktur).
+  //
+  // Eşzamanlılık notu: count→insert statement-düzeyinde atomik değil, ama
+  // pratikte güvenli. Gerçek çift-gönderim üç katmanda engelli: (1) UI "Kaydet"i
+  // kaydederken/kaydedince kilitler, (2) yukarıdaki dedup aynı (sohbet, tool-call)
+  // için var olan id'yi döner, (3) basket_conv_tool_idx unique index'i aynı
+  // kartın iki satırını DB'de imkânsız kılar. Geriye yalnızca "aynı anda iki
+  // FARKLI sepet" yarışı kalır — ardışık insan tıklamasıyla ulaşılamaz ve en kötü
+  // 1 fazla satır demektir (AI/maliyet/güvenlik etkisi yok). neon-http
+  // transaction desteklemediğinden daha sıkı serileştirme, jsonb/numeric'i ham
+  // SQL'de elle kodlayıp çalışan kayıt yolunu riske atmayı gerektirirdi — bu
+  // denge için gereksiz.
+  const basketLimit = planLimit(await getUserPlan(userId), "savedBaskets")
+  if (basketLimit !== null) {
+    const [row] = await db
+      .select({ value: count() })
+      .from(baskets)
+      .where(eq(baskets.userId, userId))
+    if ((row?.value ?? 0) >= basketLimit) {
+      return { ok: false, reason: "storage_limit_reached" }
+    }
   }
 
   const trimmedName = input.name?.trim()
@@ -114,7 +149,7 @@ export async function saveBasket(input: SaveBasketInput): Promise<{ id: string }
   }
 
   revalidatePath("/sepetlerim")
-  return { id: inserted.id }
+  return { ok: true, id: inserted.id }
 }
 
 export async function deleteBasket(id: string): Promise<void> {
