@@ -177,7 +177,7 @@ export default async function ReceiptDetailPage({
         <Button variant="ghost" size="sm" asChild>
           <Link href="/fis-gecmisi">
             <ChevronLeftIcon className="mr-1 size-4" />
-            Fiş Geçmişi
+            Fişlerim
           </Link>
         </Button>
         <div className="ml-auto">

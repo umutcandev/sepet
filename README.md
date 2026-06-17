@@ -97,13 +97,13 @@ Yüklenen fişin tutarı, aynı sepetin bugünkü en iyi fiyatıyla karşılaşt
 
 `@zxing/library` ile tarayıcı içinde çalışan barkod okuyucu ve 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) kataloğunda canlı arama yapan bir ürün sayfası mevcuttur.
 
-### Sepetlerim ve Fiş Geçmişi
+### Sepetlerim ve Fişlerim
 
 Kullanıcının onayladığı her sepet ve analiz edilen her fiş Postgres'te kalıcı olarak saklanır; özet tutarlar (`bestSingleTotal`, `twoMarketSavingsTL`) listede önizleme olarak sunulur.
 
-### Aylık Tasarruf ve Sepet Grafikleri
+### Sepet Dağılım Grafiği
 
-`/sepetlerim` ve `/fis-gecmisi` sayfalarında son altı ayın sepet toplamları ve tasarruf rakamları **recharts** tabanlı `MonthlyBarChart` ile görselleştirilir. Sepet detay sayfasındaki `MarketSplitDonut` ise iki market kombinasyonunda hangi alışverişin hangi markete dağıldığını donut grafikle gösterir. Toplama işlemleri `lib/charts/aggregate-monthly.ts` içindeki saf yardımcı fonksiyonla deterministik şekilde yapılır.
+Sepet detay sayfasındaki **recharts** tabanlı `MarketSplitDonut`, iki market kombinasyonunda hangi alışverişin hangi markete dağıldığını donut grafikle gösterir.
 
 
 ---

@@ -17,3 +17,9 @@ const UUID_RE =
 export function isUuid(value: string | null | undefined): boolean {
   return typeof value === "string" && UUID_RE.test(value)
 }
+
+// ILIKE deseni için kullanıcı girdisindeki joker karakterleri (\ % _) kaçır;
+// "%50" gibi bir aramanın tüm satırları getirmesini engeller.
+export function escapeLike(input: string): string {
+  return input.replace(/[\\%_]/g, (ch) => `\\${ch}`)
+}

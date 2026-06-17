@@ -16,7 +16,7 @@ export default async function ConversationsPage() {
     : { items: [], hasMore: false }
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-6">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6">
       {!session?.user?.id ? (
         <UnauthenticatedState />
       ) : (

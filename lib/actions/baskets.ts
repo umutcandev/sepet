@@ -1,17 +1,55 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { and, count, desc, eq, isNotNull } from "drizzle-orm"
+import { and, asc, count, desc, eq, exists, ilike, inArray, isNotNull, or, sql } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, baskets, basketItems } from "@/lib/db"
-import { isUuid } from "@/lib/utils"
+import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
+import { type BasketSort, DEFAULT_BASKET_SORT } from "@/lib/basket-sort"
 import type {
   MatchResult,
   OptimizationSummary,
   ParsedItem,
 } from "@/lib/ai/schemas"
+
+const BASKETS_PAGE_SIZE = 20
+const BULK_DELETE_CHUNK = 100
+
+// Liste satırı için gereken alanlar (tablo + arama + infinite scroll ortak tipi).
+export type BasketListItem = {
+  id: string
+  name: string
+  createdAt: Date
+  bestSingleMarket: string | null
+  bestSingleTotal: string | null
+  twoMarketSavingsTL: string | null
+}
+
+const basketListColumns = {
+  id: baskets.id,
+  name: baskets.name,
+  createdAt: baskets.createdAt,
+  bestSingleMarket: baskets.bestSingleMarket,
+  bestSingleTotal: baskets.bestSingleTotal,
+  twoMarketSavingsTL: baskets.twoMarketSavingsTL,
+} as const
+
+function orderByForBasketSort(sort: BasketSort) {
+  const lowerName = sql`lower(${baskets.name})`
+  switch (sort) {
+    case "date_asc":
+      return [asc(baskets.createdAt), asc(baskets.id)]
+    case "name_asc":
+      return [asc(lowerName), asc(baskets.id)]
+    case "name_desc":
+      return [desc(lowerName), asc(baskets.id)]
+    case "date_desc":
+    default:
+      return [desc(baskets.createdAt), asc(baskets.id)]
+  }
+}
 
 type SaveBasketInput = {
   name: string | null
@@ -164,12 +202,103 @@ export async function deleteBasket(id: string): Promise<void> {
   revalidatePath("/sepetlerim")
 }
 
-export async function listBaskets(userId: string) {
-  return db
-    .select()
+/**
+ * Toplu silme: yalnızca bu kullanıcıya ait satırlar silinir (yetki kontrolü
+ * her sorguda eq(userId) ile). Sorgu zaman aşımına girmemesi için 100'lük
+ * parçalara bölünür. `basketItems` CASCADE ile birlikte silinir.
+ */
+export async function deleteBaskets(
+  ids: string[],
+): Promise<{ deleted: number }> {
+  const session = await auth()
+  if (!session?.user?.id) throw new Error("unauthorized")
+
+  const valid = Array.from(new Set(ids)).filter((id) => isUuid(id))
+  if (valid.length === 0) return { deleted: 0 }
+
+  let deleted = 0
+  for (let i = 0; i < valid.length; i += BULK_DELETE_CHUNK) {
+    const slice = valid.slice(i, i + BULK_DELETE_CHUNK)
+    const rows = await db
+      .delete(baskets)
+      .where(
+        and(inArray(baskets.id, slice), eq(baskets.userId, session.user.id)),
+      )
+      .returning({ id: baskets.id })
+    deleted += rows.length
+  }
+
+  if (deleted > 0) revalidatePath("/sepetlerim")
+  return { deleted }
+}
+
+/**
+ * Sayfalı sepet listesi (infinite scroll). `PAGE_SIZE + 1` satır çekip fazlasını
+ * atarak `hasMore` belirlenir. Sıralama sunucu tarafında uygulanır.
+ */
+export async function listBasketsPaginated(
+  offset = 0,
+  sort: BasketSort = DEFAULT_BASKET_SORT,
+): Promise<{ items: BasketListItem[]; hasMore: boolean }> {
+  const session = await auth()
+  if (!session?.user?.id) return { items: [], hasMore: false }
+
+  const items = await db
+    .select(basketListColumns)
     .from(baskets)
-    .where(eq(baskets.userId, userId))
-    .orderBy(desc(baskets.createdAt))
+    .where(eq(baskets.userId, session.user.id))
+    .orderBy(...orderByForBasketSort(sort))
+    .limit(BASKETS_PAGE_SIZE + 1)
+    .offset(offset)
+
+  const hasMore = items.length > BASKETS_PAGE_SIZE
+  if (hasMore) items.pop()
+  return { items, hasMore }
+}
+
+/**
+ * Sepetlerde arama: sepet adı veya içindeki kalem adlarında (EXISTS alt sorgu)
+ * geçen eşleşmeleri döndürür. Tek seferde gelir (paginate edilmez), tavanla
+ * sınırlı.
+ */
+export async function searchBaskets(
+  query: string,
+  sort: BasketSort = DEFAULT_BASKET_SORT,
+): Promise<BasketListItem[]> {
+  const session = await auth()
+  if (!session?.user?.id) return []
+
+  const q = query.trim()
+  if (!q || q.length > 100) return []
+
+  const pattern = `%${escapeLike(q)}%`
+
+  const itemMatch = exists(
+    db
+      .select({ one: sql`1` })
+      .from(basketItems)
+      .where(
+        and(
+          eq(basketItems.basketId, baskets.id),
+          or(
+            ilike(basketItems.rawName, pattern),
+            ilike(basketItems.matchedName, pattern),
+          ),
+        ),
+      ),
+  )
+
+  return db
+    .select(basketListColumns)
+    .from(baskets)
+    .where(
+      and(
+        eq(baskets.userId, session.user.id),
+        or(ilike(baskets.name, pattern), itemMatch),
+      ),
+    )
+    .orderBy(...orderByForBasketSort(sort))
+    .limit(200)
 }
 
 /**

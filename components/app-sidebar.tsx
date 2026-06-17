@@ -53,7 +53,7 @@ const nav: NavItem[] = [
     icon: ShoppingBasketIcon,
   },
   {
-    title: "Fiş Geçmişi",
+    title: "Fişlerim",
     url: "/fis-gecmisi",
     icon: ReceiptIcon,
   },

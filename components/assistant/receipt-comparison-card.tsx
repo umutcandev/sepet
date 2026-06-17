@@ -99,7 +99,7 @@ export function ReceiptComparisonCard({
         return
       }
       setSavedId(res.id)
-      toast.success("Fiş geçmişine kaydedildi.")
+      toast.success("Fişlerime kaydedildi.")
     } catch (err) {
       console.error("[ReceiptComparisonCard] save failed", err)
       toast.error("Fiş kaydedilemedi. Lütfen tekrar dene.")

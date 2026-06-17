@@ -84,7 +84,7 @@ export function ProductSearchPage() {
   const openScanner = guard(locationGuard(() => setScannerOpen(true)))
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-6 md:py-8">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6 md:py-8">
       <div className="mb-6 flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">Ürün Ara</h1>
         <p className="text-sm text-muted-foreground">

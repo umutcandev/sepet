@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
 import { ChevronDownIcon, SparklesIcon } from "lucide-react"
@@ -427,24 +426,6 @@ export function AssistantChat({
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4">
       {messages.length === 0 && !showSeedOptimistic ? (
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
-          <div>
-            <Image
-              src="/asistan/asistan-draw-dark.svg"
-              alt="Asistan"
-              width={150}
-              height={150}
-              priority
-              className="size-20 dark:hidden"
-            />
-            <Image
-              src="/asistan/asistan-draw-light.svg"
-              alt=""
-              aria-hidden
-              width={150}
-              height={150}
-              className="hidden size-20 dark:block"
-            />
-          </div>
           <h1 className="text-3xl font-bold tracking-tight">
             {firstName
               ? `${firstName}, bugün ne alıyoruz?`
