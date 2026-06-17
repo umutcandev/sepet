@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import {
   Avatar,
   AvatarFallback,
@@ -21,9 +22,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Badge } from "@/components/ui/badge"
-import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import { ChevronsUpDownIcon, SparklesIcon, SettingsIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
 import { ThemeMenuItems } from "@/components/theme-toggle"
+import { SettingsDialog } from "@/components/settings/settings-dialog"
 
 export function NavUser({
   user,
@@ -35,6 +37,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const [settingsOpen, setSettingsOpen] = React.useState(false)
 
   return (
     <SidebarMenu>
@@ -91,6 +94,15 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault()
+                  setSettingsOpen(true)
+                }}
+              >
+                <SettingsIcon />
+                Ayarlar
+              </DropdownMenuItem>
               <DropdownMenuItem disabled>
                 <BadgeCheckIcon
                 />
@@ -130,6 +142,7 @@ export function NavUser({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
       </SidebarMenuItem>
     </SidebarMenu>
   )

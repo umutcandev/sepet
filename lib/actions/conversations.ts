@@ -274,7 +274,7 @@ const BULK_DELETE_CHUNK = 100
  *  - Her silme `userId` ile kapsanır → başka kullanıcının sohbeti silinemez.
  *  - Tekilleştirme + parçalama ile devasa/yinelenen girdilerde de güvenli.
  *  - Boş/eşleşmesiz girdi sıfır döndürür, hata fırlatmaz.
- * Mesajlar FK cascade ile, kayıtlı sepetlerin conversationId'si ise
+ * Mesajlar FK cascade ile, Sepet kaydetmelerin conversationId'si ise
  * `set null` ile temizlenir (sepetler korunur). Gerçekte silinen sayı döner.
  */
 export async function deleteConversations(

@@ -1,11 +1,13 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { and, desc, eq } from "drizzle-orm"
+import { and, count, desc, eq } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, receipts, receiptItems } from "@/lib/db"
 import { deleteReceiptObject, isOwnedReceiptKey } from "@/lib/storage/r2"
 import { isUuid } from "@/lib/utils"
+import { getUserPlan } from "@/lib/usage/usage"
+import { planLimit } from "@/lib/usage/limits"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -14,6 +16,12 @@ import type {
 } from "@/lib/ai/schemas"
 
 type SaveItem = ReceiptOCRItem
+
+// Depolama limiti kullanıcıya gösterilecek beklenen bir sonuç olduğu için
+// (exception değil) ayrık bir union dönülür — bkz. saveBasket.
+export type SaveReceiptResult =
+  | { ok: true; id: string }
+  | { ok: false; reason: "storage_limit_reached" }
 
 export async function saveReceipt(input: {
   imageUrl: string
@@ -25,7 +33,7 @@ export async function saveReceipt(input: {
   summary: OptimizationSummary
   matches: MatchResult[]
   comparison: ReceiptComparison
-}): Promise<{ id: string }> {
+}): Promise<SaveReceiptResult> {
   const session = await auth()
   if (!session?.user?.id) throw new Error("unauthorized")
 
@@ -34,6 +42,27 @@ export async function saveReceipt(input: {
   // bağlanıp deleteReceipt ile silinebilir (IDOR).
   if (!isOwnedReceiptKey(input.imageR2Key, session.user.id)) {
     throw new Error("invalid_image_key")
+  }
+
+  // Depolama kotası: kayıt öncesi sert tavan (kullanıcının açık "Kaydet"
+  // aksiyonu). Görsel analizi kotası ayrıdır ve asistan turunda sayılır.
+  //
+  // Eşzamanlılık notu: count→insert statement-düzeyinde atomik değil; ama gerçek
+  // çift-gönderim UI kilidiyle engelli (kart kaydederken/kaydedince butonu
+  // kilitler). Kalan tek yarış "aynı anda iki FARKLI fiş" — ardışık insan
+  // tıklamasıyla ulaşılamaz, en kötü 1 fazla satır (AI/maliyet/güvenlik etkisi
+  // yok). neon-http transaction desteklemediğinden daha sıkı serileştirme,
+  // jsonb/numeric'i ham SQL'de elle kodlayıp çalışan kayıt yolunu riske atmayı
+  // gerektirir — bu denge için gereksiz. Bkz. saveBasket aynı gerekçe.
+  const receiptLimit = planLimit(await getUserPlan(session.user.id), "savedReceipts")
+  if (receiptLimit !== null) {
+    const [row] = await db
+      .select({ value: count() })
+      .from(receipts)
+      .where(eq(receipts.userId, session.user.id))
+    if ((row?.value ?? 0) >= receiptLimit) {
+      return { ok: false, reason: "storage_limit_reached" }
+    }
   }
 
   const bestSingle =
@@ -101,7 +130,7 @@ export async function saveReceipt(input: {
   }
 
   revalidatePath("/fis-gecmisi")
-  return { id: inserted.id }
+  return { ok: true, id: inserted.id }
 }
 
 export async function deleteReceipt(id: string): Promise<void> {

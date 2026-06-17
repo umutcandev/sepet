@@ -4,7 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
-import { ChevronDownIcon } from "lucide-react"
+import { ChevronDownIcon, SparklesIcon } from "lucide-react"
 
 import {
   Conversation,
@@ -732,12 +732,24 @@ export function AssistantChat({
               )
             })}
 
-            {error && (
-              <div className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
-                {error.message ||
-                  "Asistan şu an cevap veremiyor. Lütfen biraz sonra tekrar deneyin."}
-              </div>
-            )}
+            {error &&
+              (() => {
+                const quota = parseQuotaError(error)
+                if (quota) {
+                  return (
+                    <QuotaExceededCard
+                      metric={quota.metric}
+                      resetAt={quota.resetAt}
+                    />
+                  )
+                }
+                return (
+                  <div className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+                    {error.message ||
+                      "Asistan şu an cevap veremiyor. Lütfen biraz sonra tekrar deneyin."}
+                  </div>
+                )
+              })()}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
@@ -787,6 +799,62 @@ function renderToolPart(
   return (
     <div key={key} className="py-0.5">
       <ThinkingText>{loadingLabel}</ThinkingText>
+    </div>
+  )
+}
+
+// Kota dolduğunda sunucu 402 + JSON gövdesiyle yanıtlar. AI SDK transport'u
+// ok olmayan yanıtta gövdeyi `Error.message`'a koyar (new Error(response.text()))
+// → burada parse edip dostça bir Pro kartı gösteririz.
+function parseQuotaError(
+  error: Error,
+): { metric: string; resetAt: string | null } | null {
+  try {
+    const data = JSON.parse(error.message) as {
+      error?: string
+      metric?: string
+      resetAt?: string
+    }
+    if (data?.error === "quota_exceeded") {
+      return { metric: data.metric ?? "", resetAt: data.resetAt ?? null }
+    }
+  } catch {
+    // gövde JSON değil → kota hatası değil
+  }
+  return null
+}
+
+function QuotaExceededCard({
+  metric,
+  resetAt,
+}: {
+  metric: string
+  resetAt: string | null
+}) {
+  const metricLabel =
+    metric === "imageAnalyses" ? "görsel analizi" : "metin mesajı"
+  const resetLabel = resetAt
+    ? new Intl.DateTimeFormat("tr-TR", {
+        day: "numeric",
+        month: "long",
+      }).format(new Date(resetAt))
+    : null
+  return (
+    <div className="mx-auto w-full max-w-3xl rounded-xl border bg-card p-4">
+      <div className="flex items-start gap-3">
+        <SparklesIcon className="mt-0.5 size-5 shrink-0 text-foreground" />
+        <div className="flex flex-col gap-1">
+          <span className="text-sm font-medium">
+            Bu ayki {metricLabel} hakkın doldu
+          </span>
+          <span className="text-sm text-muted-foreground">
+            {resetLabel
+              ? `Kotan ${resetLabel} tarihinde yenilenecek.`
+              : "Kotan gelecek ay yenilenecek."}{" "}
+            Daha fazlasına ihtiyacın varsa Pro yakında.
+          </span>
+        </div>
+      </div>
     </div>
   )
 }

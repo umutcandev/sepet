@@ -92,6 +92,12 @@ export function ReceiptComparisonCard({
         matches,
         comparison,
       })
+      if (!res.ok) {
+        toast.error(
+          "Fiş kaydetme limitin doldu. Eski bir fişi sil ya da Pro'ya geç.",
+        )
+        return
+      }
       setSavedId(res.id)
       toast.success("Fiş geçmişine kaydedildi.")
     } catch (err) {
