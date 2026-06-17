@@ -21,8 +21,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { Badge } from "@/components/ui/badge"
-import { ChevronsUpDownIcon, SparklesIcon, SettingsIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import { ChevronsUpDownIcon, SettingsIcon, LogOutIcon } from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
 import { ThemeMenuItems } from "@/components/theme-toggle"
 import { SettingsDialog } from "@/components/settings/settings-dialog"
@@ -83,17 +82,6 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem disabled>
-                <SparklesIcon
-                />
-                Pro&apos;ya Yükselt
-                <Badge variant="secondary" className="ml-auto text-[10px]" >
-                  YAKINDA
-                </Badge>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
               <DropdownMenuItem
                 onSelect={(event) => {
                   event.preventDefault()
@@ -102,30 +90,6 @@ export function NavUser({
               >
                 <SettingsIcon />
                 Ayarlar
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                <BadgeCheckIcon
-                />
-                Hesap
-                <Badge variant="secondary" className="ml-auto text-[10px]" >
-                  YAKINDA
-                </Badge>
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                <CreditCardIcon
-                />
-                Faturalandırma
-                <Badge variant="secondary" className="ml-auto text-[10px]" >
-                  YAKINDA
-                </Badge>
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                <BellIcon
-                />
-                Bildirimler
-                <Badge variant="secondary" className="ml-auto text-[10px]" >
-                  YAKINDA
-                </Badge>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

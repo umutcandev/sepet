@@ -15,8 +15,8 @@ export type StorageMetric = "savedBaskets" | "savedReceipts"
 export type UsageMetric = MeteredMetric | StorageMetric
 
 export const PLAN_LIMITS: Record<Plan, Record<UsageMetric, number | null>> = {
-  free: { textMessages: 120, imageAnalyses: 30, savedBaskets: 50, savedReceipts: 50 },
-  pro: { textMessages: null, imageAnalyses: 300, savedBaskets: null, savedReceipts: null },
+  free: { textMessages: 50, imageAnalyses: 10, savedBaskets: 20, savedReceipts: 20 },
+  pro: { textMessages: 500, imageAnalyses: 250, savedBaskets: null, savedReceipts: null },
 }
 
 export function planLimit(plan: Plan, metric: UsageMetric): number | null {

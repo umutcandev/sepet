@@ -1,5 +1,5 @@
 <div align="center">
-<img src="./public/github-banner.png" alt="Sepet — Yapay Zekâ Destekli Akıllı Alışveriş Asistanı" width="100" height="100" />
+<img src="./public/github-banner.png" alt="Sepet — Yapay Zekâ Destekli Akıllı Alışveriş Asistanı" height="60" />
 <h2>Sepet</h2>
 
 [Canlı (trysepet.com)](https://www.trysepet.com) · [GitHub](https://github.com/umutcandev/sepet) · [Sorun Bildir](https://github.com/umutcandev/sepet/issues)
@@ -30,11 +30,7 @@
 - [Agentic Mimari](#agentic-mimari)
 - [Mimari Genel Bakış](#mimari-genel-bakış)
 - [Teknoloji Yığını](#teknoloji-yığını)
-- [Performans ve Doğruluk Stratejisi](#performans-ve-doğruluk-stratejisi)
-- [Veri Modeli](#veri-modeli)
 - [Yerel Geliştirme](#yerel-geliştirme)
-- [Ortam Değişkenleri](#ortam-değişkenleri)
-- [Proje Yapısı](#proje-yapısı)
 - [Lisans](#lisans)
 
 ---
@@ -97,10 +93,6 @@ Yüklenen görselde tabakta bir yemek tespit edilirse model `food.dishName` ve e
 
 Yüklenen fişin tutarı, aynı sepetin bugünkü en iyi fiyatıyla karşılaştırılır. Tarih çok eskiyse veya tutar oranı `STALE_RATIO_THRESHOLD` üstündeyse `staleness` bayrağı işaretlenir; kullanıcıya rakamlar bilgi amaçlı sunulur, asılsız bir tasarruf vaadi yapılmaz.
 
-### Sesli Komut Girişi
-
-Mikrofon kaydı `audio/webm` olarak alınıp `/api/transcribe` endpoint'inde Gemini Flash Lite ile Türkçe metne çevrilir; ardından aynı doğal dil akışına beslenir.
-
 ### Barkod Tarayıcı ve Ürün Arama
 
 `@zxing/library` ile tarayıcı içinde çalışan barkod okuyucu ve 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) kataloğunda canlı arama yapan bir ürün sayfası mevcuttur.
@@ -113,13 +105,6 @@ Kullanıcının onayladığı her sepet ve analiz edilen her fiş Postgres'te ka
 
 `/sepetlerim` ve `/fis-gecmisi` sayfalarında son altı ayın sepet toplamları ve tasarruf rakamları **recharts** tabanlı `MonthlyBarChart` ile görselleştirilir. Sepet detay sayfasındaki `MarketSplitDonut` ise iki market kombinasyonunda hangi alışverişin hangi markete dağıldığını donut grafikle gösterir. Toplama işlemleri `lib/charts/aggregate-monthly.ts` içindeki saf yardımcı fonksiyonla deterministik şekilde yapılır.
 
-### Karanlık Tema
-
-`next-themes` ile **system / light / dark** tema desteği. Tüm sayfa, kart ve grafik tokenları `globals.css` üzerinden CSS değişkenlerine bağlıdır; arka plan görselleri AVIF + WebP olarak hem aydınlık hem karanlık varyantlarda servis edilir. Tema değişimi `HeaderUserMenu`, `NavUser` ve mobil menüden yapılabilir; Sonner bildirimleri ve grafik renkleri seçilen temaya otomatik uyarlanır.
-
-### Onboarding Akışı
-
-Yeni kullanıcı ilk girişte 5 adımlı video destekli bir onboarding modalıyla karşılanır (doğal dil sepeti, fiş okuma, yemek görseli, barkod tarayıcı, sepet/fiş geçmişi). Tamamlama zaman damgası `users.onboardingCompletedAt` alanında saklanır; `completeOnboarding` server action'ı bu alanı güncelleyerek modalın bir daha açılmamasını sağlar. Masaüstünde `Dialog`, mobilde `Drawer` olarak responsive şekilde sunulur.
 
 ---
 
@@ -175,15 +160,6 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
    └──────────────────────────────────────────┘
 ```
 
-### Agentic Tasarım Kararları
-
-- **Model seçiminde maliyet optimizasyonu.** Görsel analizi gibi yüksek bilişsel yük gerektiren adımlar için `gemini-2.5-flash`, hızlı yapılandırma adımları (parse, match selection, başlık, transkripsiyon) için ucuz `gemini-2.5-flash-lite` kullanılır.
-- **Reasoning streaming.** Parse ve görsel analizi adımlarında `thinkingConfig.includeThoughts: true` ile Gemini'nin düşünce özeti istemciye `reasoning-delta` chunk'ları olarak akıtılır; kullanıcı, modelin sepetini hangi mantıkla çıkardığını gerçek zamanlı okuyabilir.
-- **Human-in-the-loop onay.** Hiçbir sepet, kullanıcı parse edilen kalemleri görüp onaylamadan fiyat aramasına gönderilmez. Bu hem maliyeti düşürür hem de yanlış yorumlanmış kalemlerin düzeltilmesini sağlar.
-- **LLM seçim cache'i.** Aynı ham ad + miktar + aday kümesi tekrar geldiğinde LLM'i yeniden çağırmak yerine `sha1(payload)` anahtarıyla Redis'ten okunur (12 saatlik TTL).
-- **Deterministik optimizasyon.** Asistanın "kaç TL tasarruf edersin" cevabını LLM aritmetiğine bırakmıyoruz; tek market ve iki market kombinasyonu saf TypeScript ile hesaplanır, model sadece sonucu Türkçeleştirir. Bunun başlıca sebebi, `Gemini 2.5 Flash Lite` gibi bazı güç bakımından zayıf modellerin matematik hesaplamaları yönünüdeki olası hatalarından etkilenmemektir. 
-- **UI akışında transient event'ler.** Yeni bir sohbet açıldığında `data-conversation-id` ve `data-conversation-title` chunk'ları transient olarak gönderilir; sidebar, RSC refresh beklemeden anında güncellenir.
-
 ---
 
 ## Mimari Genel Bakış
@@ -237,21 +213,21 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 
 | Katman | Teknoloji | Kullanım Amacı |
 |---|---|---|
-| Framework | **Next.js 16** (App Router, Turbopack) | RSC, route handler, streaming UI |
-| UI | **React 19** | Server / client component ayrımı |
-| Dil | **TypeScript 5.9** | Uçtan uca tip güvenliği |
-| Stil | **Tailwind CSS 4** + `tw-animate-css` | Utility-first, tema sistemi |
+| Framework | **Next.js** (App Router, Turbopack) | RSC, route handler, streaming UI |
+| UI | **React** | Server / client component ayrımı |
+| Dil | **TypeScript** | Uçtan uca tip güvenliği |
+| Stil | **Tailwind CSS** + `tw-animate-css` | Utility-first, tema sistemi |
 | Bileşen | **shadcn/ui** + Radix UI + Base UI | Erişilebilir primitives |
 | Animasyon | **Motion** (`motion/react`) | Heading rotasyonu, onboarding step geçişleri |
 | Tema | **next-themes** | System / light / dark mod, SSR uyumlu |
 | Grafikler | **Recharts** | Aylık tasarruf bar grafiği, market dağılım donut grafiği |
-| Form / Şema | **Zod 4** | Tüm LLM çıktılarının doğrulanması |
+| Form / Şema | **Zod** | Tüm LLM çıktılarının doğrulanması |
 
 ### Yapay Zekâ Katmanı
 
 | Bileşen | Teknoloji |
 |---|---|
-| AI SDK | **Vercel AI SDK 6** (`ai`, `@ai-sdk/react`) |
+| AI SDK | **Vercel AI SDK** (`ai`, `@ai-sdk/react`) |
 | Gateway | **Vercel AI Gateway** |
 | Vision + Reasoning Modeli | **Google Gemini 2.5 Flash** |
 | Hafif Yapılandırma Modeli | **Google Gemini 2.5 Flash Lite** |
@@ -264,8 +240,8 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 |---|---|
 | **Neon Postgres** (`@neondatabase/serverless`) | Birincil veritabanı — sohbet geçmişi, sepetler, fişler, ürün cache, fiyat snapshot'ları |
 | **Drizzle ORM** + Drizzle Kit | Şema, migration, type-safe query |
-| **Upstash Redis** (`@upstash/redis`) | marketfiyati cevap cache'i (arama 1s, ürün 3s TTL), barkod→productId eşleşmesi (30g), LLM seçim cache'i, rate limit |
-| **Upstash Ratelimit** | Asistan burst (10/dk) + günlük (50/gün), auth (10/dk), ürün arama (60/dk) |
+| **Upstash Redis** (`@upstash/redis`) | marketfiyati cevap cache'i, barkod→productId eşleşmesi, LLM seçim cache'i, rate limit |
+| **Upstash Ratelimit** | Asistan, kimlik doğrulama ve ürün arama uçları için istek sınırlama |
 | **Cloudflare R2** (`@aws-sdk/client-s3`) | Fiş görsellerinin saklanması, public CDN |
 
 ### Kimlik ve Güvenlik
@@ -289,8 +265,8 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 | Araç | Rol |
 |---|---|
 | **pnpm** | Paket yönetimi |
-| **ESLint 9** + `eslint-config-next` | Lint |
-| **Prettier 3** + `prettier-plugin-tailwindcss` | Format |
+| **ESLint** + `eslint-config-next` | Lint |
+| **Prettier** + `prettier-plugin-tailwindcss` | Format |
 | **drizzle-kit** | Migration |
 | **tsx** | TypeScript script runner |
 
@@ -301,51 +277,6 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 | Hosting | **Vercel** (Edge / Node runtime, Fluid Compute, AI Gateway entegrasyonu) |
 | Asistan endpoint runtime | `nodejs`, `maxDuration: 60s` |
 | Görsel formatları | AVIF + WebP fallback, `image-set()` |
-
----
-
-## Performans ve Doğruluk Stratejisi
-
-### Maliyet ve Hız
-
-- **Konum bazlı arama cache.** Aynı arama sorgusu önce Redis'te aranır (`mf:search:{q}:{lat}:{lng}`), koordinatlar 2 ondalığa yuvarlanarak (~1.1 km) cache hit oranı artırılır. marketfiyati ücretsiz olduğu için kredi koruma amaçlı uzun TTL yerine güncel fiyat önceliklidir (arama 1s, ürün 3s).
-- **Batch LLM seçimi.** N kalem için N çağrı yerine tek bir `generateObject` çağrısında prompt'a tüm kalemler verilir; aday başına yalnızca productId, ad, marka ve kategori gönderilerek token tüketimi minimize edilir.
-- **Self-imposed throttle.** marketfiyati WAF'ına takılmamak için istekler arası min 200ms beklenir; özellikle `lookupProducts`'taki paralel aramalar tek bir kuyrukta serileştirilir.
-- **Image preload.** Login arka planı, marka avatarları ve hero görselleri `<link rel="preload">` ile öncelendirilir; AVIF + WebP fallback ile bant genişliği düşürülür.
-- **Cache-Control immutable.** Tüm statik medya dosyaları `public, max-age=31536000, immutable` ile servis edilir.
-
-### Doğruluk
-
-- **Zod-validated LLM çıktıları.** Her `generateObject` çağrısı Zod şemasına bağlıdır; şema dışı çıktı runtime hatasına döner, halüsinasyon UI'ya sızmaz.
-- **Tutarlılık kontrolü.** Fiş OCR'da `unitPrice × quantity ≈ totalPrice` invariantı uygulanır; sapma olursa quantity sıfırlanır.
-- **sizeMismatch bayrağı.** Aynı üründen farklı boyutla eşleşildiğinde tasarruf hesabı bilinçli olarak yapılmaz; kullanıcı yanıltılmaz.
-- **Staleness algılama.** Eski tarihli fişlerde tasarruf vaat edilmez, rakamlar yalnızca bilgi amaçlı sunulur.
-- **Boyut ve varyant esnekliği.** "yumurta" gibi jenerik girdilerde eşleşen 10'lu veya 30'lu paketler boyut farkı olarak işaretlenir, ama eşleştirme yine de yapılır — null dönmek yerine en yakın paket seçilir.
-
-### Erişilebilirlik ve Mobil
-
-- Tüm interaktif bileşenler Radix UI tabanlıdır; klavye navigasyonu ve ARIA tam desteklidir.
-- Sesli giriş hem masaüstü hem mobil için ayrı bileşenlerle uyarlanır, PC'de voice-input bileşeni yerleşik ses tanıma API'ı kullanır. Ancak mobilde LLM ile desteklenir. (`voice-input-desktop`, `voice-input-mobile`).
-- Barkod tarayıcı `Permissions-Policy: camera=*` başlığıyla birlikte çalışır; WASM tabanlı `zxing_reader.wasm` özel `Content-Type` ile servis edilir.
-
----
-
-## Veri Modeli
-
-Drizzle ORM ile tanımlanan ana tablolar:
-
-| Tablo | Rol |
-|---|---|
-| `user`, `account`, `session`, `verificationToken` | NextAuth tabloları (`user.onboardingCompletedAt` onboarding tamamlanma zamanını tutar) |
-| `product` | productId bazlı ürün cache (`uniqueIndex` productId) |
-| `barcode_map` | EAN barkod → marketfiyati productId kalıcı eşleşme tablosu |
-| `price_snapshot` | Market bazlı fiyat geçmişi (product + market + tarih indeksli) |
-| `receipt` | OCR'lanmış fiş başlıkları (en iyi market, potansiyel tasarruf, R2 key) |
-| `receipt_item` | Fişin satır kalemleri (matched productId, best price) |
-| `basket` | Doğal dilden üretilip kaydedilen sepetler |
-| `basket_item` | Sepet kalemleri |
-| `conversation` | Asistan sohbet oturumları |
-| `conversation_message` | Sohbet mesajları (parts `jsonb`, sequence indeksli) |
 
 ---
 
@@ -361,7 +292,7 @@ Drizzle ORM ile tanımlanan ana tablolar:
   - Cloudflare R2 (opsiyonel, fiş özelliği için)
   - Google Cloud (OAuth client)
   - Vercel AI Gateway
-  - marketfiyati.org.tr (resmi, ücretsiz — API anahtarı gerekmez)
+  - marketfiyati.org.tr (API)
 
 ### Kurulum
 
@@ -391,83 +322,6 @@ pnpm dev               # http://localhost:3000
 | `pnpm db:migrate` | Migration çalıştır |
 | `pnpm db:push` | Şemayı doğrudan veritabanına it |
 | `pnpm db:studio` | Drizzle Studio |
-
----
-
-## Ortam Değişkenleri
-
-`.env.example` dosyasındaki tüm değerlerin doldurulması gereklidir.
-
-| Değişken | Servis | Açıklama |
-|---|---|---|
-| `DATABASE_URL` | Neon Postgres | `postgres://...?sslmode=require` |
-| `AUTH_SECRET` | NextAuth.js | `openssl rand -base64 32` |
-| `AUTH_GOOGLE_ID` | Google OAuth | Client ID |
-| `AUTH_GOOGLE_SECRET` | Google OAuth | Client Secret |
-| `AI_GATEWAY_API_KEY` | Vercel AI Gateway | Gemini erişimi |
-| `UPSTASH_REDIS_REST_URL` | Upstash | Redis REST URL |
-| `UPSTASH_REDIS_REST_TOKEN` | Upstash | Redis REST Token |
-| `MARKETFIYATI_DEFAULT_LAT` | marketfiyati | Varsayılan enlem (opsiyonel, fallback `41.0082`) |
-| `MARKETFIYATI_DEFAULT_LNG` | marketfiyati | Varsayılan boylam (opsiyonel, fallback `28.9784`) |
-| `MARKETFIYATI_DEFAULT_DISTANCE` | marketfiyati | Arama yarıçapı km (opsiyonel, fallback `5`) |
-| `R2_ACCOUNT_ID` | Cloudflare R2 | Hesap ID |
-| `R2_ACCESS_KEY_ID` | Cloudflare R2 | Access Key |
-| `R2_SECRET_ACCESS_KEY` | Cloudflare R2 | Secret Key |
-| `R2_BUCKET` | Cloudflare R2 | Bucket adı |
-| `R2_PUBLIC_BASE_URL` | Cloudflare R2 | Public base URL (sondaki `/` olmadan) |
-
----
-
-## Proje Yapısı
-
-```
-sepet/
-├── app/                          # Next.js App Router
-│   ├── api/
-│   │   ├── assistant/chat/       # Multi-agent UIMessageStream pipeline
-│   │   ├── transcribe/           # Ses → metin (Gemini Flash Lite)
-│   │   ├── receipts/upload/      # R2'ye direkt yükleme
-│   │   ├── products/             # marketfiyati arama proxy + cache
-│   │   └── auth/                 # NextAuth.js handler
-│   ├── asistan/                  # Asistan arayüzü ve geçmiş
-│   ├── sepetlerim/               # Kaydedilmiş sepetler
-│   ├── fis-gecmisi/              # Analiz edilmiş fişler
-│   ├── urun-ara/                 # Ürün katalog araması
-│   └── page.tsx                  # Ana giriş / prompt
-├── components/
-│   ├── ai-elements/              # Stream chat primitives
-│   ├── assistant/                # Asistan UI (kartlar, prompt, ses, dialog)
-│   ├── auth/                     # Login dialog + Şartlar & Gizlilik dialogları
-│   ├── charts/                   # Aylık bar chart, market split donut
-│   ├── onboarding/               # Video destekli onboarding modal + host
-│   ├── providers/                # ThemeProvider (next-themes)
-│   ├── theme-toggle.tsx          # Tema değiştirici menü
-│   ├── ui/                       # shadcn/ui bileşenleri
-│   └── app-sidebar.tsx
-├── lib/
-│   ├── ai/
-│   │   ├── models.ts             # Gemini gateway tanımları
-│   │   ├── prompts.ts            # PARSE, IMAGE, MATCH, TITLE promptları
-│   │   ├── schemas.ts            # Tüm Zod şemaları
-│   │   ├── tools.ts              # analyzeImage, parseShoppingList, lookupProducts
-│   │   └── optimize.ts           # Tek ve iki market optimizasyonu
-│   ├── marketfiyati/             # marketfiyati client + types + Redis cache
-│   ├── charts/                   # aggregate-monthly toplama yardımcısı
-│   ├── db/                       # Drizzle şema ve bağlantı
-│   ├── markets/registry.ts       # 6 market logo + URL registry
-│   ├── storage/r2.ts             # Cloudflare R2 client
-│   ├── security/                 # rate-limit, headers
-│   ├── auth/                     # NextAuth session helper (onboarding flag dahil)
-│   ├── actions/                  # Server actions (baskets, receipts, conversations, onboarding)
-│   ├── hooks/                    # Client hooks
-│   └── stores/                   # Client store'lar
-├── drizzle/                      # Migration çıktıları
-├── public/                       # Statik medya
-├── auth.ts / auth.config.ts      # NextAuth.js v5 konfigürasyonu
-├── drizzle.config.ts
-├── next.config.mjs
-└── package.json
-```
 
 ---
 

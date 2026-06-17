@@ -184,3 +184,37 @@
     opacity: 0.6;
   }
 }
+
+/* Settings search — pulse halo when a setting is deep-linked from search. */
+.settings-search-highlight {
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 0 0 6px color-mix(in srgb, var(--accent) 85%, transparent),
+    0 0 0 8px color-mix(in srgb, var(--ring) 45%, transparent);
+  animation: settings-search-pulse 2.4s ease-in-out forwards;
+}
+
+@keyframes settings-search-pulse {
+  0% {
+    box-shadow:
+      0 0 0 0 transparent,
+      0 0 0 0 transparent;
+  }
+  12%,
+  60% {
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--accent) 85%, transparent),
+      0 0 0 8px color-mix(in srgb, var(--ring) 45%, transparent);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 transparent,
+      0 0 0 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-search-highlight {
+    animation: none;
+  }
+}
