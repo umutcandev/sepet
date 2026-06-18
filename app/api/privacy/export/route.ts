@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 
 import { auth } from "@/auth"
 import { exportLimiter } from "@/lib/security/rate-limit"
-import { buildUserExport } from "@/lib/privacy/export"
+import { buildUserExportStream } from "@/lib/privacy/export"
 import {
   isExportCategory,
   EXPORT_CATEGORIES,
@@ -20,6 +20,23 @@ export async function POST(req: Request) {
   }
   const userId = session.user.id
 
+  // CSRF defense-in-depth: tarayıcı kaynaklı cross-site POST'ları reddet. Origin
+  // header'ı varsa istekteki host ile eşleşmeli. (SameSite=Lax cookie zaten büyük
+  // ölçüde korur; bu ek bir katman. Origin yoksa atlanır.)
+  const origin = req.headers.get("origin")
+  if (origin) {
+    const host = req.headers.get("host")
+    let originHost: string | null = null
+    try {
+      originHost = new URL(origin).host
+    } catch {
+      originHost = null
+    }
+    if (!host || originHost !== host) {
+      return NextResponse.json({ error: "forbidden" }, { status: 403 })
+    }
+  }
+
   const { success } = await exportLimiter.limit(userId)
   if (!success) {
     return NextResponse.json(
@@ -28,39 +45,45 @@ export async function POST(req: Request) {
     )
   }
 
-  // Body opsiyonel: { categories?: string[] }. Geçersiz/boş gelirse tüm
-  // kategoriler dahil edilir.
+  // Body opsiyonel: { categories?: string[] }.
+  //  - categories hiç yoksa → tüm kategoriler (varsayılan).
+  //  - categories gönderildi ama geçerli bir değer içermiyorsa → 400 (client
+  //    en az bir seçim gönderir; sessizce "hepsi"ne düşmeyiz).
   let categories: ExportCategory[] = EXPORT_CATEGORIES
+  let badRequest = false
   try {
     const body = (await req.json()) as unknown
-    const raw =
-      body && typeof body === "object" && "categories" in body
-        ? (body as { categories?: unknown }).categories
-        : undefined
-    if (Array.isArray(raw)) {
-      const filtered = raw.filter(isExportCategory)
-      if (filtered.length > 0) categories = filtered
+    if (body && typeof body === "object" && "categories" in body) {
+      const raw = (body as { categories?: unknown }).categories
+      if (Array.isArray(raw)) {
+        const filtered = raw.filter(isExportCategory)
+        if (filtered.length > 0) categories = filtered
+        else badRequest = true
+      } else if (raw !== undefined) {
+        badRequest = true
+      }
     }
   } catch {
-    // Body yok/geçersiz JSON → tüm kategoriler.
+    // Body yok/geçersiz JSON → tüm kategoriler (varsayılan).
   }
 
-  try {
-    const { bytes, filename } = await buildUserExport(userId, categories)
-    return new NextResponse(bytes as BodyInit, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-        "Content-Length": String(bytes.byteLength),
-        "Cache-Control": "no-store",
-      },
-    })
-  } catch (err) {
-    console.error("[privacy/export] failed", err)
+  if (badRequest) {
     return NextResponse.json(
-      { error: "export_failed", message: "Veriler dışa aktarılamadı." },
-      { status: 500 },
+      { error: "bad_request", message: "Geçerli bir kategori seçilmedi." },
+      { status: 400 },
     )
   }
+
+  // Arşiv stream olarak akıtılır (tüm ZIP belleğe alınmaz). DB sorguları ve R2
+  // çekimleri stream okunurken (start) çalışır; oradaki hatalar stream'i
+  // hata'ya düşürür ve indirme yarıda kesilir (status zaten 200 gönderilmiştir).
+  const { stream, filename } = buildUserExportStream(userId, categories)
+  return new NextResponse(stream as BodyInit, {
+    status: 200,
+    headers: {
+      "Content-Type": "application/zip",
+      "Content-Disposition": `attachment; filename="${filename}"`,
+      "Cache-Control": "no-store",
+    },
+  })
 }
