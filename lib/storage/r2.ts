@@ -1,4 +1,10 @@
-import { S3Client, DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3"
+import {
+  S3Client,
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3"
 
 const ALLOWED_CONTENT_TYPES = new Set([
   "image/jpeg",
@@ -98,10 +104,79 @@ export function isOwnedReceiptUrl(
   return url.startsWith(`${getPublicBase()}/receipts/${userId}/`)
 }
 
+/**
+ * Bir public avatar URL'inin bu kullanıcının R2 klasörüne işaret ettiğini
+ * doğrular. setAvatar, yalnızca `{R2_PUBLIC_BASE_URL}/avatars/{userId}/...`
+ * biçimindeki URL'leri kabul eder — başka kullanıcının görselini set etmeyi
+ * engeller.
+ */
+export function isOwnedAvatarUrl(
+  url: string | null | undefined,
+  userId: string,
+): boolean {
+  if (typeof url !== "string") return false
+  return url.startsWith(`${getPublicBase()}/avatars/${userId}/`)
+}
+
 export async function deleteReceiptObject(key: string): Promise<void> {
   await getR2Client().send(
     new DeleteObjectCommand({ Bucket: getR2Bucket(), Key: key }),
   )
+}
+
+/** Upload an avatar image directly from server (avoids CORS). */
+export async function uploadAvatarDirect(input: {
+  userId: string
+  contentType: string
+  body: Uint8Array | Buffer
+}): Promise<{ key: string; publicUrl: string }> {
+  const ext = EXT_BY_TYPE[input.contentType] ?? "bin"
+  const key = `avatars/${input.userId}/${crypto.randomUUID()}.${ext}`
+  await getR2Client().send(
+    new PutObjectCommand({
+      Bucket: getR2Bucket(),
+      Key: key,
+      ContentType: input.contentType,
+      Body: input.body,
+    }),
+  )
+  return { key, publicUrl: publicUrlForKey(key) }
+}
+
+/** Verilen önek altındaki tüm nesneleri sayfalayarak siler. */
+async function deletePrefix(prefix: string): Promise<void> {
+  const client = getR2Client()
+  const bucket = getR2Bucket()
+  let token: string | undefined
+  do {
+    const list = await client.send(
+      new ListObjectsV2Command({
+        Bucket: bucket,
+        Prefix: prefix,
+        ContinuationToken: token,
+      }),
+    )
+    const objects =
+      list.Contents?.flatMap((o) => (o.Key ? [{ Key: o.Key }] : [])) ?? []
+    if (objects.length > 0) {
+      await client.send(
+        new DeleteObjectsCommand({
+          Bucket: bucket,
+          Delete: { Objects: objects },
+        }),
+      )
+    }
+    token = list.IsTruncated ? list.NextContinuationToken : undefined
+  } while (token)
+}
+
+/**
+ * Bir kullanıcının tüm R2 nesnelerini (avatar + fiş görselleri) siler. Hesap
+ * arşivinin 14 gün sonra kalıcı silinmesi (cron purge) sırasında çağrılır.
+ */
+export async function deleteUserStorage(userId: string): Promise<void> {
+  await deletePrefix(`avatars/${userId}/`)
+  await deletePrefix(`receipts/${userId}/`)
 }
 
 /** Upload receipt image directly from server (avoids CORS). */

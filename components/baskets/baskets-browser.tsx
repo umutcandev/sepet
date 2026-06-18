@@ -394,12 +394,10 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
             </Button>
           )}
         </div>
-        {showHeading ? (
-          <p className="text-sm text-muted-foreground">
-            Asistana yazdığın alışveriş listelerinden oluşturduğun sepetleri
-            buradan takip et.
-          </p>
-        ) : null}
+        <p className="text-sm text-muted-foreground">
+          Asistana yazdığın alışveriş listelerinden oluşturduğun sepetleri
+          buradan takip et.
+        </p>
       </div>
 
       {isEmpty ? (

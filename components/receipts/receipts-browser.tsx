@@ -395,11 +395,9 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
             </Button>
           )}
         </div>
-        {showHeading ? (
-          <p className="text-sm text-muted-foreground">
-            Yüklediğin fişleri ve potansiyel tasarruflarını tek yerden takip et.
-          </p>
-        ) : null}
+        <p className="text-sm text-muted-foreground">
+          Yüklediğin fişleri ve potansiyel tasarruflarını tek yerden takip et.
+        </p>
       </div>
 
       {isEmpty ? (

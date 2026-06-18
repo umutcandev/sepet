@@ -21,7 +21,10 @@ export const users = pgTable("user", {
   name: text("name"),
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
+  // Google sağlayıcı fotoğrafı. customImage doluysa görüntülenen avatar onu
+  // ezer; "Google'a dön" customImage'i null'lar.
   image: text("image"),
+  customImage: text("customImage"),
   onboardingCompletedAt: timestamp("onboardingCompletedAt", { mode: "date" }),
   // ─── Konum tercihi ───
   // Kullanıcının haritada seçtiği konum + mesafe yarıçapı + dahil edilecek
@@ -38,6 +41,11 @@ export const users = pgTable("user", {
   // kullanıcılar 'free' default'u ile başlar; Pro yükseltme ileride bir ödeme
   // webhook'u ile set edilir.
   plan: text("plan").$type<"free" | "pro">().notNull().default("free"),
+  // ─── Hesap arşivleme (yumuşak silme) ───
+  // "Hesabımı sil" verileri anında silmez; archivedAt'i set eder ve oturumları
+  // kapatır. 14 gün içinde tekrar giriş yapılmazsa cron (purge-archived) satırı
+  // kalıcı siler (cascade ile tüm bağlı veriler). Re-login archivedAt'i null'lar.
+  archivedAt: timestamp("archivedAt", { mode: "date" }),
 })
 
 export const accounts = pgTable(
@@ -69,6 +77,33 @@ export const sessions = pgTable("session", {
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 })
+
+// ─── Cihaz oturumları (Ayarlar → Hesap → Aktif oturumlar) ───
+// NextAuth JWT stratejisi kullandığı için yukarıdaki `session` tablosu boştur.
+// Çok-cihaz listeleme, uzaktan oturum kapatma ve "tüm cihazlardan çıkış" için
+// kendi oturum kayıtlarımızı burada tutarız. Her satırın `id`'si JWT'ye `sid`
+// olarak gömülür; jwt callback bunu doğrular (revokedAt dolu → oturum düşer).
+export const userSessions = pgTable(
+  "user_session",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    userAgent: text("userAgent"),
+    deviceLabel: text("deviceLabel"),
+    ip: text("ip"),
+    locationLabel: text("locationLabel"),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+    lastSeenAt: timestamp("lastSeenAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+    revokedAt: timestamp("revokedAt", { mode: "date" }),
+  },
+  (t) => [index("user_session_user_idx").on(t.userId)],
+)
 
 export const verificationTokens = pgTable(
   "verificationToken",

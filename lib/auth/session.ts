@@ -18,7 +18,12 @@ export type CurrentUser = {
   id: string
   name: string
   email: string
+  /** Görüntülenen avatar: customImage varsa o, yoksa Google fotoğrafı. */
   avatar: string
+  /** Google sağlayıcı fotoğrafı — "Google'a dön" sonrası gösterilecek görsel. */
+  googleAvatar: string
+  /** Kullanıcı özel bir avatar yüklemiş mi (avatar !== Google fotoğrafı). */
+  hasCustomAvatar: boolean
   onboardingCompletedAt: Date | null
   location: UserLocation | null
 }
@@ -32,6 +37,9 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 
   const [row] = await db
     .select({
+      name: users.name,
+      image: users.image,
+      customImage: users.customImage,
       onboardingCompletedAt: users.onboardingCompletedAt,
       locationLat: users.locationLat,
       locationLng: users.locationLng,
@@ -58,11 +66,18 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
         }
       : null
 
+  // Ad/avatar düzenlemelerinin otoriter olması için DB'yi esas al; satır
+  // bulunamazsa session (JWT) değerlerine düş.
+  const googleAvatar = row?.image ?? session.user.image ?? ""
+  const customImage = row?.customImage ?? null
+
   return {
     id: session.user.id,
-    name: session.user.name ?? "Kullanıcı",
+    name: row?.name ?? session.user.name ?? "Kullanıcı",
     email: session.user.email ?? "",
-    avatar: session.user.image ?? "",
+    avatar: customImage ?? googleAvatar,
+    googleAvatar,
+    hasCustomAvatar: customImage != null,
     onboardingCompletedAt: row?.onboardingCompletedAt ?? null,
     location,
   }

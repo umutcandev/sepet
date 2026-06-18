@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { authConfig } from "./auth.config"
 import {
   authLimiter,
+  avatarUploadLimiter,
   locationLimiter,
   productLimiter,
   receiptUploadLimiter,
@@ -55,6 +56,12 @@ export default withAuth(async (req) => {
   if (path.startsWith("/api/receipts")) {
     const key = userId ? `user:${userId}` : `ip:${ip}`
     const { success, reset } = await receiptUploadLimiter.limit(key)
+    if (!success) return tooManyResponse(reset)
+  }
+
+  if (path.startsWith("/api/avatar")) {
+    const key = userId ? `user:${userId}` : `ip:${ip}`
+    const { success, reset } = await avatarUploadLimiter.limit(key)
     if (!success) return tooManyResponse(reset)
   }
 

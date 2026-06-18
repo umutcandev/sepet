@@ -32,6 +32,16 @@ export const receiptUploadLimiter = new Ratelimit({
   analytics: true,
 })
 
+// Avatar yükleme (/api/avatar/upload → R2). Profil fotoğrafı nadiren değişir;
+// bu yüzden fişten daha sıkı bir tavan yeterli. Yalnızca kötüye kullanımı (R2'ye
+// sürekli yükleme) sınırlar, normal kullanıcıyı etkilemez.
+export const avatarUploadLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1 m"),
+  prefix: "rl:avatar:upload",
+  analytics: true,
+})
+
 // NOT: assistantBurstLimiter / assistantDailyLimiter kaldırıldı. AI asistanı
 // (/api/assistant/chat) artık hesap özelinde aylık kota + atomik rezervasyon
 // ile sınırlanıyor (bkz. lib/usage). Yukarıdaki limiter'lar yalnızca altyapı
