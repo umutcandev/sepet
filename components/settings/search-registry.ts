@@ -1,7 +1,10 @@
 import type * as React from "react"
 import {
   ChartColumnIcon,
+  CookieIcon,
   CreditCardIcon,
+  DownloadIcon,
+  FileTextIcon,
   LogOutIcon,
   MapPinIcon,
   MonitorIcon,
@@ -93,6 +96,45 @@ const HESAP_SETTINGS: SettingEntry[] = [
   },
 ]
 
+const GIZLILIK_SETTINGS: SettingEntry[] = [
+  {
+    target: "veri-disa-aktar",
+    title: "Verilerini dışa aktar",
+    keywords: "veri disa aktar export indir zip yedek tasima gdpr kvkk",
+    icon: DownloadIcon,
+  },
+  {
+    target: "sohbet-sil",
+    title: "Tüm sohbetleri sil",
+    keywords: "sohbet asistan gecmis sil temizle toplu",
+    icon: Trash2Icon,
+  },
+  {
+    target: "sepet-sil",
+    title: "Tüm sepetleri sil",
+    keywords: "sepet liste sil temizle toplu",
+    icon: Trash2Icon,
+  },
+  {
+    target: "fis-sil",
+    title: "Tüm fişleri sil",
+    keywords: "fis fatura makbuz sil temizle toplu gorsel",
+    icon: Trash2Icon,
+  },
+  {
+    target: "analiz-cerezleri",
+    title: "Analiz çerezleri",
+    keywords: "cerez analiz analytics gizlilik izleme takip opt out",
+    icon: CookieIcon,
+  },
+  {
+    target: "gizlilik-politikasi",
+    title: "Gizlilik Politikası",
+    keywords: "gizlilik politika yasal kvkk gdpr veri haklar",
+    icon: FileTextIcon,
+  },
+]
+
 const KULLANIM_SETTINGS: SettingEntry[] = [
   {
     target: "limits",
@@ -163,6 +205,7 @@ export const SEARCH_ENTRIES: SearchEntry[] = [
   ),
   ...entriesFor("genel", GENEL_SETTINGS),
   ...entriesFor("hesap", HESAP_SETTINGS),
+  ...entriesFor("gizlilik", GIZLILIK_SETTINGS),
   ...entriesFor("kullanim", KULLANIM_SETTINGS),
 ]
 

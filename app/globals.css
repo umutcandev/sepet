@@ -218,3 +218,28 @@
     animation: none;
   }
 }
+
+/* Thin, rounded scrollbar */
+.cn-scrollbar-thin,
+.cn-scrollbar-thin-table [data-slot="table-container"] {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.cn-scrollbar-thin::-webkit-scrollbar,
+.cn-scrollbar-thin-table [data-slot="table-container"]::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.cn-scrollbar-thin::-webkit-scrollbar-track,
+.cn-scrollbar-thin-table [data-slot="table-container"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cn-scrollbar-thin::-webkit-scrollbar-thumb,
+.cn-scrollbar-thin-table [data-slot="table-container"]::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: var(--border);
+}
+.cn-scrollbar-thin:hover::-webkit-scrollbar-thumb,
+.cn-scrollbar-thin-table [data-slot="table-container"]:hover::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+}

@@ -2,6 +2,7 @@ import {
   S3Client,
   DeleteObjectCommand,
   DeleteObjectsCommand,
+  GetObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
 } from "@aws-sdk/client-s3"
@@ -122,6 +123,21 @@ export async function deleteReceiptObject(key: string): Promise<void> {
   await getR2Client().send(
     new DeleteObjectCommand({ Bucket: getR2Bucket(), Key: key }),
   )
+}
+
+/**
+ * Bir R2 nesnesinin ham baytlarını döndürür. Veri dışa aktarımında (Gizlilik →
+ * Verilerini dışa aktar) fiş görsellerini ZIP'e gömmek için kullanılır. Nesne
+ * yoksa/erişilemezse hata fırlatır — çağıran best-effort sarmalamalıdır.
+ */
+export async function getObjectBytes(key: string): Promise<Uint8Array> {
+  const res = await getR2Client().send(
+    new GetObjectCommand({ Bucket: getR2Bucket(), Key: key }),
+  )
+  const body = res.Body
+  if (!body) throw new Error(`empty body for key: ${key}`)
+  // AWS SDK v3 stream → byte array. transformToByteArray Node/Web ikisinde de var.
+  return (body as { transformToByteArray: () => Promise<Uint8Array> }).transformToByteArray()
 }
 
 /** Upload an avatar image directly from server (avoids CORS). */

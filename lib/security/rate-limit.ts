@@ -67,3 +67,14 @@ export const transcribeDailyLimiter = new Ratelimit({
   prefix: "rl:transcribe:daily",
   analytics: true,
 })
+
+// Veri dışa aktarma (/api/privacy/export). Her istek tüm kullanıcı verisini
+// derleyip fiş görsellerini R2'den çekip ZIP'ler — pahalı. Hesap özelinde
+// (userId anahtarıyla) sıkı bir tavan: normal kullanıcı nadiren dışa aktarır,
+// bu limit yalnızca tekrar tekrar tetikleyen kötüye kullanımı sınırlar.
+export const exportLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10 m"),
+  prefix: "rl:privacy:export",
+  analytics: true,
+})
