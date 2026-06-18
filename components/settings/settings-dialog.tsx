@@ -23,6 +23,7 @@ import {
 import { GeneralPanel } from "./panels/general-panel"
 import { AccountPanel } from "./panels/account-panel"
 import { UsagePanel } from "./panels/usage-panel"
+import { PrivacyPanel } from "./panels/privacy-panel"
 
 function HighlightedLabel({ text, query }: { text: string; query: string }) {
   const q = normalize(query.trim())
@@ -134,7 +135,7 @@ export function SettingsDialog({
           Hesap ve kullanım ayarları
         </DialogDescription>
 
-        <div className="flex h-[min(680px,88svh)] min-h-0 min-w-0 flex-col sm:flex-row">
+        <div className="flex h-[min(680px,78svh)] min-h-0 min-w-0 flex-col sm:h-[min(680px,88svh)] sm:flex-row">
           {/* Gezinme — mobilde üstte yatay menü, masaüstünde solda dikey kenar */}
           <nav className="relative flex shrink-0 flex-col gap-3.5 border-b bg-muted/30 px-4 pt-4 pb-2.5 sm:w-52 sm:gap-2 sm:border-r sm:border-b-0 sm:px-3 sm:pt-3 sm:pb-3">
             {/* Mobil başlık — masaüstü dikey menüsünde gerekmez */}
@@ -159,8 +160,8 @@ export function SettingsDialog({
                     setQuery("")
                   }
                 }}
-                placeholder="Arama yapın"
-                aria-label="Arama yapın"
+                placeholder="Ayarlarda ara"
+                aria-label="Ayarlarda ara"
                 className="h-8 pl-8 text-sm [&::-webkit-search-cancel-button]:appearance-none"
               />
             </div>
@@ -199,7 +200,7 @@ export function SettingsDialog({
                     “{trimmed}” için sonuç bulunamadı
                   </div>
                 ) : (
-                  <ul className="max-h-72 overflow-y-auto p-1.5">
+                  <ul className="cn-scrollbar-thin max-h-72 overflow-y-auto p-1.5">
                     {results.map((r) => {
                       const Icon = r.icon
                       return (
@@ -234,12 +235,17 @@ export function SettingsDialog({
           </nav>
 
           {/* İçerik */}
-          <div ref={contentRef} className="min-h-0 min-w-0 flex-1 overflow-y-auto">
+          <div
+            ref={contentRef}
+            className="cn-scrollbar-thin min-h-0 min-w-0 flex-1 overflow-y-auto"
+          >
             <div className="px-5 pt-6 pb-8 sm:px-7 sm:pt-10">
               {tab === "genel" ? (
                 <GeneralPanel />
               ) : tab === "hesap" ? (
                 <AccountPanel />
+              ) : tab === "gizlilik" ? (
+                <PrivacyPanel />
               ) : tab === "kullanim" ? (
                 <UsagePanel />
               ) : (

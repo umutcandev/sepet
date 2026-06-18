@@ -36,7 +36,7 @@ export function SettingGroup({
       {title ? (
         <h3 className="text-sm font-semibold text-foreground">{title}</h3>
       ) : null}
-      {/* Satır ayraçları, Claude Settings kalıbı gibi her satırın ince alt
+      {/* Satır ayraçları, her satırın ince alt
           kenarıyla yapılır (bağımsız <Separator/> yerine divide-y) → tüm
           ayraçlar birbiriyle aynı incelikte; son satırda kenar olmaz. */}
       <div className="flex flex-col divide-y divide-border">{children}</div>

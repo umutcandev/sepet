@@ -89,9 +89,9 @@ export function SessionsTable() {
 
   return (
     // Tek tablo (mobil dahil). Table'ın iç kabı overflow-x-auto olduğu için
-    // taşmada yatay kaydırılır; varsayılan kalın scrollbar yerine ince, yuvarlak
-    // ve kompakt bir scrollbar veriyoruz (Firefox: thin; WebKit: 6px + yuvarlak thumb).
-    <div className="[&_[data-slot=table-container]]:[scrollbar-width:thin] [&_[data-slot=table-container]::-webkit-scrollbar]:h-1.5 [&_[data-slot=table-container]::-webkit-scrollbar-track]:bg-transparent [&_[data-slot=table-container]::-webkit-scrollbar-thumb]:rounded-full [&_[data-slot=table-container]::-webkit-scrollbar-thumb]:bg-border">
+    // taşmada yatay kaydırılır; ince, yuvarlak scrollbar tüm Ayarlar modalıyla
+    // ortak `cn-scrollbar-thin-table` yardımcısından gelir (bkz. globals.css).
+    <div className="cn-scrollbar-thin-table">
       <Table>
         <TableHeader>
           <TableRow>
