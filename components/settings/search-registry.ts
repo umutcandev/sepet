@@ -162,6 +162,13 @@ const ABONELIK_SETTINGS: SettingEntry[] = [
       "sss sik sorulan soru faq yardim iptal iade odeme guvenlik limit fiyat yenilenme",
     icon: CircleHelpIcon,
   },
+  {
+    target: "sozlesmeler",
+    title: "Yasal sözleşmeler",
+    keywords:
+      "mesafeli satis sozlesme iptal iade gizlilik yasal odeme fatura polar kayitli satici",
+    icon: FileTextIcon,
+  },
 ]
 
 const KULLANIM_SETTINGS: SettingEntry[] = [

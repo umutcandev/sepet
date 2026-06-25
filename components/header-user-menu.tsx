@@ -15,10 +15,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { SettingsIcon, LogOutIcon } from "lucide-react"
+import {
+  ChartColumnIcon,
+  CreditCardIcon,
+  LogOutIcon,
+  SettingsIcon,
+} from "lucide-react"
 import { signOutAction } from "@/lib/actions/auth"
 import { ThemeMenuItems } from "@/components/theme-toggle"
 import { SettingsDialog } from "@/components/settings/settings-dialog"
+import type { TabKey } from "@/components/settings/search-registry"
 import { cn } from "@/lib/utils"
 
 export function HeaderUserMenu({
@@ -33,6 +39,13 @@ export function HeaderUserMenu({
   className?: string
 }) {
   const [settingsOpen, setSettingsOpen] = React.useState(false)
+  const [settingsTab, setSettingsTab] = React.useState<TabKey>("genel")
+
+  const openSettings = (tab: TabKey) => {
+    setSettingsTab(tab)
+    setSettingsOpen(true)
+  }
+
   return (
     <>
     <DropdownMenu>
@@ -74,11 +87,29 @@ export function HeaderUserMenu({
           <DropdownMenuItem
             onSelect={(event) => {
               event.preventDefault()
-              setSettingsOpen(true)
+              openSettings("genel")
             }}
           >
             <SettingsIcon />
             Ayarlar
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={(event) => {
+              event.preventDefault()
+              openSettings("abonelik")
+            }}
+          >
+            <CreditCardIcon />
+            Abonelik
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={(event) => {
+              event.preventDefault()
+              openSettings("kullanim")
+            }}
+          >
+            <ChartColumnIcon />
+            Kullanım
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -95,7 +126,11 @@ export function HeaderUserMenu({
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-    <SettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
+    <SettingsDialog
+      open={settingsOpen}
+      onOpenChange={setSettingsOpen}
+      initialTab={settingsTab}
+    />
     </>
   )
 }

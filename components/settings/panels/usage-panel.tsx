@@ -72,7 +72,6 @@ export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
     }
   }, [])
 
-  const planLabel = snap?.plan === "pro" ? "Pro" : "Free"
   const resetLabel = snap ? dateFmt.format(snap.resetAt) : null
 
   return (
@@ -82,9 +81,15 @@ export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
           <h2 className="cn-font-heading text-lg font-semibold sm:text-xl">
             Kullanım Limitleri
           </h2>
-          <Badge variant={snap?.plan === "pro" ? "default" : "secondary"}>
-            {planLabel}
-          </Badge>
+          {/* Plan rozeti veri gelene kadar skeleton; aksi halde yüklenirken
+              kısa bir an yanlışlıkla "Free" görünüp sonra "Pro"ya dönüyor. */}
+          {status === "loading" ? (
+            <Skeleton className="h-5 w-12 rounded-md" />
+          ) : snap ? (
+            <Badge variant={snap.plan === "pro" ? "default" : "secondary"}>
+              {snap.plan === "pro" ? "Pro" : "Free"}
+            </Badge>
+          ) : null}
         </div>
         <p className="text-sm text-muted-foreground">
           Mevcut abonelik planınıza göre kalan kullanım limitlerinizi görüntüleyin.

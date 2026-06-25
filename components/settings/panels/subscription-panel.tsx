@@ -1,13 +1,17 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
 import {
   ArrowRightIcon,
-  CheckIcon,
-  CrownIcon,
+  ChevronDownIcon,
   ExternalLinkIcon,
-  ShieldCheckIcon,
+  FileTextIcon,
+  ImageIcon,
+  MessageSquareIcon,
+  ReceiptIcon,
+  ShoppingBasketIcon,
 } from "lucide-react"
 
 import {
@@ -18,7 +22,14 @@ import {
 } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
+import { LEGAL_SUPPORT_EMAIL } from "@/components/legal/legal-content"
 import { cn } from "@/lib/utils"
 import { PanelHeader } from "../settings-row"
 import { getSubscription, type SubscriptionInfo } from "@/lib/actions/subscription"
@@ -39,30 +50,36 @@ const YEARLY_PRICE = 990
 const YEARLY_LIST = MONTHLY_PRICE * 12
 
 const priceFmt = new Intl.NumberFormat("tr-TR")
-const tl = (n: number) => `₺${priceFmt.format(n)}`
 
 // Free ve Pro özellikleri. Sayılar lib/usage/limits.ts'teki PLAN_LIMITS ile
-// hizalıdır; orada değişirse buradaki vitrin metni de güncellenmelidir.
-const FREE_FEATURES = [
-  "50 asistan mesajı / ay",
-  "10 görsel analizi / ay",
-  "20 sepet kaydı",
-  "20 fiş kaydı",
+// hizalıdır; orada değişirse buradaki vitrin metni de güncellenmelidir. Her
+// satır, tick yerine ilgili metriği anlatan bir ikonla gösterilir.
+type Feature = {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+}
+
+const FREE_FEATURES: Feature[] = [
+  { icon: MessageSquareIcon, label: "Aylık 50 asistan mesajı" },
+  { icon: ImageIcon, label: "Aylık 10 görsel analizi" },
+  { icon: ShoppingBasketIcon, label: "20 sepet kaydı" },
+  { icon: ReceiptIcon, label: "20 fiş kaydı" },
 ]
 
-const PRO_FEATURES = [
-  "500 asistan mesajı / ay",
-  "250 görsel analizi / ay",
-  "Sınırsız sepet kaydı",
-  "Sınırsız fiş kaydı",
+const PRO_FEATURES: Feature[] = [
+  { icon: MessageSquareIcon, label: "Aylık 500 asistan mesajı" },
+  { icon: ImageIcon, label: "Aylık 250 görsel analizi" },
+  { icon: ShoppingBasketIcon, label: "Sınırsız sepet kaydı" },
+  { icon: ReceiptIcon, label: "Sınırsız fiş kaydı" },
 ]
 
-// Pro kullanıcıya "sahip olduğun avantajlar" listesi.
-const PRO_BENEFITS = [
-  "Asistan mesajları: 50 → 500 / ay",
-  "Görsel analizleri: 10 → 250 / ay",
-  "Sepet kaydetme: sınırsız",
-  "Fiş kaydetme: sınırsız",
+// Pro kullanıcıya gösterilen Ücretsiz↔Pro karşılaştırma satırları. Değerler
+// yukarıdaki FREE_FEATURES/PRO_FEATURES ile aynı PLAN_LIMITS kaynağından gelir.
+const PLAN_COMPARISON: { feature: string; free: string; pro: string }[] = [
+  { feature: "Asistan mesajları", free: "50 / ay", pro: "500 / ay" },
+  { feature: "Görsel analizleri", free: "10 / ay", pro: "250 / ay" },
+  { feature: "Sepet kaydetme", free: "20", pro: "Sınırsız" },
+  { feature: "Fiş kaydetme", free: "20", pro: "Sınırsız" },
 ]
 
 const STATUS_LABEL: Record<string, string> = {
@@ -78,11 +95,29 @@ const STATUS_LABEL: Record<string, string> = {
 // fiyatlar Polar ürünlerinden (₺99 aylık / ₺990 yıllık, TRY), limitler
 // lib/usage/limits.ts'ten, iptal/ödeme akışı app/api/webhooks/polar'dan
 // (past_due → erişim sürer, revoked → free), portal app/api/portal'dan, aylık
-// sıfırlama ise lib/usage/period.ts'ten gelir.
-const FAQ_ITEMS: { q: string; a: string }[] = [
+// sıfırlama ise lib/usage/period.ts'ten gelir. Destek e-postası tek kaynak
+// olarak legal-content'teki LEGAL_SUPPORT_EMAIL'den alınır. `a` zengin içerik
+// (mailto bağlantısı) taşıyabilsin diye ReactNode'dur.
+const FAQ_ITEMS: { q: string; a: React.ReactNode }[] = [
   {
     q: "Pro'ya geçince neler değişir?",
-    a: "Aylık asistan mesajların 50'den 500'e, görsel analizlerin 10'dan 250'ye çıkar. Sepet ve fiş kaydetme ise sınırsız olur — Ücretsiz planda her biri 20 ile sınırlıdır.",
+    a: "Aylık asistan mesajların 50'den 500'e, görsel analizlerin 10'dan 250'ye çıkar. Sepet ve fiş kaydetme ise sınırsız olur.",
+  },
+  {
+    q: "Ödeme veya abonelikte sorun yaşarsam ne yapmalıyım?",
+    a: (
+      <>
+        Tahsilat, yenilenme veya plan durumuyla ilgili bir sorun yaşarsan{" "}
+        <a
+          href={`mailto:${LEGAL_SUPPORT_EMAIL}`}
+          className="font-medium text-foreground underline underline-offset-2"
+        >
+          {LEGAL_SUPPORT_EMAIL}
+        </a>{" "}
+        adresine yazabilirsin; en kısa sürede yardımcı oluruz. Fatura ve ödeme
+        geçmişine ayrıca Polar müşteri portalından ulaşabilirsin.
+      </>
+    ),
   },
   {
     q: "Ödeme bilgilerim güvende mi?",
@@ -97,8 +132,8 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
     a: "Hayır. İptalde aboneliğin, içinde bulunduğun faturalandırma döneminin sonuna kadar açık kalır; o tarihe kadar tüm Pro avantajların sürer, ardından otomatik olarak Ücretsiz plana dönersin. Dönem bitmeden fikrini değiştirirsen iptali geri alabilirsin.",
   },
   {
-    q: "Ödemem başarısız olursa ne olur?",
-    a: "Bir tahsilat başarısız olursa aboneliğin “Gecikti” durumuna geçer ama Pro erişimin hemen kesilmez; Polar ödemeyi yeniden dener. Tüm denemeler başarısız olursa abonelik iptal edilir ve Ücretsiz plana inersin.",
+    q: "Mevcut planımın ödemesi başarısız olursa ne olur?",
+    a: "Bir tahsilat başarısız olursa aboneliğin “Gecikti” durumuna geçer ama Pro erişimin hemen kesilmez; Polar ödemeyi yeniden dener. Tüm denemeler başarısız olursa abonelik iptal edilir ve Ücretsiz plana geri dönersin.",
   },
   {
     q: "Kullanım limitlerim ne zaman yenilenir?",
@@ -147,14 +182,7 @@ export function SubscriptionPanel() {
 
       {status === "ready" && sub && (
         <>
-          {sub.plan === "pro" ? (
-            <>
-              <ProState sub={sub} />
-              <BenefitsCard />
-            </>
-          ) : (
-            <UpgradeState />
-          )}
+          {sub.plan === "pro" ? <ProState sub={sub} /> : <UpgradeState />}
           <SubscriptionFaq />
         </>
       )}
@@ -177,7 +205,7 @@ function GradientCard({
   return (
     <div
       className={cn(
-        "h-full rounded-[calc(var(--radius)*1.8)] bg-gradient-to-br from-primary via-ring to-primary/50 p-0.5 shadow-xl shadow-primary/25",
+        "h-full rounded-[calc(var(--radius)*1.8)] bg-gradient-to-br from-primary via-ring to-primary/50 p-0.5",
         className,
       )}
     >
@@ -195,36 +223,43 @@ function GradientCard({
   )
 }
 
-// ─── Pro kullanıcı: mevcut abonelik (hero kart) ───
+// ─── Pro kullanıcı: mevcut abonelik + plan avantajları (metin tabanlı) ───
+// Kart/kenarlık/gölge yok; diğer panellerle aynı metin + grid kalıbını izler.
 function ProState({ sub }: { sub: SubscriptionInfo }) {
-  const intervalLabel = sub.interval === "year" ? "Yıllık" : "Aylık"
+  // interval yalnızca Polar'dan tanınan bir Pro ürünü için dolar; elle 'pro'
+  // yapılmış (Polar müşterisi olmayan) hesapta null gelir — o durumda yanlış
+  // "Aylık" göstermek yerine aralık rozetini hiç göstermeyiz.
+  const intervalLabel =
+    sub.interval === "year" ? "Yıllık" : sub.interval === "month" ? "Aylık" : null
   const periodEnd = sub.currentPeriodEnd
     ? dateFmt.format(new Date(sub.currentPeriodEnd))
     : null
   const statusLabel = sub.status ? (STATUS_LABEL[sub.status] ?? sub.status) : null
+  // Rozet rengi durumu yansıtır: iptal planlandıysa veya ödeme geciktiyse
+  // uyarı, sağlıklı aboneliklerde başarı, aksi halde nötr.
+  const statusVariant =
+    sub.cancelAtPeriodEnd ||
+    sub.status === "past_due" ||
+    sub.status === "unpaid"
+      ? "warning"
+      : sub.status === "active" || sub.status === "trialing"
+        ? "success"
+        : "secondary"
 
   return (
-    <section data-search-target="abonelik-durumu">
-      <GradientCard>
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <CrownIcon className="size-4" />
-            </span>
-            <div className="flex flex-col gap-1">
-              <span className="cn-font-heading text-lg font-semibold leading-none">
-                Sepet Pro
-              </span>
-              <Badge variant="secondary" className="w-fit">
-                {intervalLabel}
-              </Badge>
-            </div>
-          </div>
-          {statusLabel && (
-            <Badge variant={sub.cancelAtPeriodEnd ? "warning" : "secondary"}>
-              {statusLabel}
-            </Badge>
-          )}
+    <section
+      data-search-target="abonelik-durumu"
+      className="flex flex-col gap-8"
+    >
+      {/* Plan kimliği + durum + yönetim */}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+          <span className="cn-font-heading text-lg font-semibold leading-none">
+            Mevcut planın
+          </span>
+          <Badge variant="default">Pro</Badge>
+          {intervalLabel && <Badge variant="secondary">{intervalLabel}</Badge>}
+          {statusLabel && <Badge variant={statusVariant}>{statusLabel}</Badge>}
         </div>
 
         {periodEnd && (
@@ -244,7 +279,7 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
           </p>
         )}
 
-        <div data-search-target="abonelik-yonet" className="mt-auto">
+        <div data-search-target="abonelik-yonet">
           {sub.hasCustomer ? (
             <Button asChild variant="outline" size="sm">
               <a href="/api/portal">
@@ -254,11 +289,50 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
             </Button>
           ) : (
             <p className="text-xs text-muted-foreground">
-              Bu plan elle ayarlandığı için Polar üzerinden yönetilemiyor.
+              Bu plan elle tanımlandığı için Polar üzerinden yönetilemiyor.
             </p>
           )}
         </div>
-      </GradientCard>
+      </div>
+
+      {/* Ücretsiz↔Pro karşılaştırması; Pro sütunu hafif bir zeminle vurgulanır */}
+      <div className="flex flex-col gap-3">
+        <h3 className="text-sm font-semibold">Plan avantajların</h3>
+        <table className="w-full border-separate border-spacing-0 text-sm">
+          <thead>
+            <tr className="text-xs font-medium text-muted-foreground">
+              <th className="py-2 pr-4 text-left font-medium">Özellik</th>
+              <th className="px-4 py-2 text-center font-medium">Ücretsiz</th>
+              <th className="rounded-t-lg bg-primary/[0.07] px-4 py-2 text-center font-semibold text-primary">
+                Pro
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {PLAN_COMPARISON.map((row, i) => {
+              const last = i === PLAN_COMPARISON.length - 1
+              return (
+                <tr key={row.feature}>
+                  <td className="border-t border-border py-2.5 pr-4 text-foreground">
+                    {row.feature}
+                  </td>
+                  <td className="border-t border-border px-4 py-2.5 text-center text-muted-foreground tabular-nums">
+                    {row.free}
+                  </td>
+                  <td
+                    className={cn(
+                      "border-t border-border bg-primary/[0.07] px-4 py-2.5 text-center font-medium text-foreground tabular-nums",
+                      last && "rounded-b-lg",
+                    )}
+                  >
+                    {row.pro}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }
@@ -269,20 +343,97 @@ function UpgradeState() {
 
   return (
     <section data-search-target="pro-yukselt" className="flex flex-col gap-5">
-      <BillingToggle value={interval} onChange={setInterval} />
+      {/* Faturalandırma aralığı solda, tüm sözleşmeleri açan menü sağda. */}
+      <div className="flex items-center justify-between gap-3">
+        <BillingToggle value={interval} onChange={setInterval} />
+        <ContractsMenu />
+      </div>
 
       <div className="grid items-stretch gap-3 sm:grid-cols-2">
         <FreeCard />
         <ProCard interval={interval} />
       </div>
 
-      {/* Sözleşme sayfaları (Mesafeli Satış, İptal & İade, Gizlilik) hazır
-          olunca buraya "·" ile ayrılmış linkler olarak eklenir. */}
-      <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-        <ShieldCheckIcon className="size-3.5 shrink-0" />
-        <span>Ödemeler Polar altyapısı ile sağlanır.</span>
-      </div>
+      {/* Ödeme güvencesi. Tahsilat tamamen Polar'ın barındırdığı sayfada
+          yapıldığı için kart bilgisi Sepet'e ulaşmaz; sözleşmeler yukarıdaki
+          menüde. "Polar" sözcüğü polar.sh'a gider. */}
+      <p className="text-center text-xs text-muted-foreground">
+        Ödemeler{" "}
+        <a
+          href="https://polar.sh"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 align-middle underline-offset-2 transition-colors hover:text-foreground hover:underline"
+        >
+          <PolarIcon className="size-3.5 shrink-0" />
+          Polar
+        </a>{" "}
+        altyapısı ile güvenli şekilde alınır.
+      </p>
     </section>
+  )
+}
+
+// Polar logosu. fill="currentColor" olduğundan içinde bulunduğu metnin
+// rengini (muted-foreground) alır ve "Polar" sözcüğünün soluna oturur.
+function PolarIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 300 300" className={className} fill="currentColor" aria-hidden="true">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M66.4284 274.26C134.876 320.593 227.925 302.666 274.258 234.219C320.593 165.771 302.666 72.7222 234.218 26.3885C165.77 -19.9451 72.721 -2.0181 26.3873 66.4297C-19.9465 134.877 -2.01938 227.927 66.4284 274.26ZM47.9555 116.67C30.8375 169.263 36.5445 221.893 59.2454 256.373C18.0412 217.361 7.27564 150.307 36.9437 92.318C55.9152 55.2362 87.5665 29.3937 122.5 18.3483C90.5911 36.7105 62.5549 71.8144 47.9555 116.67ZM175.347 283.137C211.377 272.606 244.211 246.385 263.685 208.322C293.101 150.825 282.768 84.4172 242.427 45.2673C264.22 79.7626 269.473 131.542 252.631 183.287C237.615 229.421 208.385 265.239 175.347 283.137ZM183.627 266.229C207.945 245.418 228.016 210.604 236.936 168.79C251.033 102.693 232.551 41.1978 195.112 20.6768C214.97 47.3945 225.022 99.2902 218.824 157.333C214.085 201.724 200.814 240.593 183.627 266.229ZM63.7178 131.844C49.5155 198.43 68.377 260.345 106.374 280.405C85.9962 254.009 75.5969 201.514 81.8758 142.711C86.5375 99.0536 99.4504 60.737 116.225 35.0969C92.2678 55.983 72.5384 90.4892 63.7178 131.844ZM199.834 149.561C200.908 217.473 179.59 272.878 152.222 273.309C124.853 273.742 101.797 219.039 100.724 151.127C99.6511 83.2138 120.968 27.8094 148.337 27.377C175.705 26.9446 198.762 81.648 199.834 149.561Z"
+      />
+    </svg>
+  )
+}
+
+// Menüde listelenen tüm yasal sözleşmeler. Her biri public bir sayfaya bağlanır
+// ve yeni sekmede açılır (target=_blank). Sıra: önce ödeme sözleşmeleri.
+const CONTRACTS: { href: string; label: string }[] = [
+  { href: "/mesafeli-satis", label: "Mesafeli Satış Sözleşmesi" },
+  { href: "/iptal-iade", label: "İptal ve İade Politikası" },
+  { href: "/gizlilik", label: "Gizlilik Politikası" },
+  { href: "/kullanim-sartlari", label: "Kullanım Şartları" },
+]
+
+// "Sözleşmeler" bölünmüş düğmesi: sol tarafta etiket, dikey bir sınırla ayrılmış
+// sağ tarafta açılır menüyü tetikleyen ok. Menü öğeleri sözleşme sayfalarına
+// yeni sekmede gider; sağlarındaki ikon bunu (target=_blank) belli eder.
+function ContractsMenu() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="default"
+          data-search-target="sozlesmeler"
+          className="gap-0 px-0"
+        >
+          <span className="flex items-center gap-1.5 pr-2 pl-2.5">
+            <FileTextIcon className="size-3.5" />
+            Sözleşmeler
+          </span>
+          <span className="flex items-center self-stretch border-l border-border px-1.5">
+            <ChevronDownIcon className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
+          </span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-60">
+        {CONTRACTS.map((contract) => (
+          <DropdownMenuItem key={contract.href} asChild>
+            <Link
+              href={contract.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {contract.label}
+              <ExternalLinkIcon className="ml-auto size-3.5 text-muted-foreground" />
+            </Link>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
@@ -297,7 +448,7 @@ function BillingToggle({
     <div
       role="group"
       aria-label="Faturalandırma aralığı"
-      className="inline-flex w-fit items-center gap-0.5 rounded-full border border-border bg-muted/60 p-0.5 text-sm"
+      className="inline-flex h-8 w-fit items-center gap-0.5 rounded-lg border border-border bg-muted/60 p-0.5 text-sm"
     >
       {(["month", "year"] as const).map((iv) => {
         const active = value === iv
@@ -308,7 +459,7 @@ function BillingToggle({
             onClick={() => onChange(iv)}
             aria-pressed={active}
             className={cn(
-              "flex items-center gap-1 rounded-full px-3 py-1 font-medium transition-colors",
+              "flex items-center gap-1 self-stretch rounded-md px-3 font-medium transition-colors",
               active
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
@@ -318,7 +469,7 @@ function BillingToggle({
             {iv === "year" && (
               <span
                 className={cn(
-                  "rounded-full px-1 py-px text-[10px] font-medium leading-none transition-colors",
+                  "rounded-full px-1 py-px font-mono text-[10px] font-medium leading-none transition-colors",
                   active
                     ? "bg-primary/15 text-primary"
                     : "bg-muted-foreground/10 text-muted-foreground",
@@ -345,8 +496,8 @@ function FreeCard() {
           <Badge variant="secondary">Mevcut</Badge>
         </div>
         <div className="flex items-end gap-1.5">
-          <span className="cn-font-heading text-3xl font-semibold tracking-tight">
-            ₺0
+          <span className="font-mono text-3xl font-semibold tracking-tight">
+            <Amount value={0} />
           </span>
           <span className="pb-1 text-sm text-muted-foreground">/ ay</span>
         </div>
@@ -356,7 +507,7 @@ function FreeCard() {
 
       <Button
         variant="outline"
-        size="sm"
+        size="default"
         disabled
         className="mt-auto w-full"
       >
@@ -383,13 +534,24 @@ function ProCard({ interval }: { interval: Interval }) {
 
       <FeatureList items={PRO_FEATURES} />
 
-      <Button asChild size="sm" className="mt-auto w-full">
+      <Button asChild size="default" className="mt-auto w-full">
         <a href={`/api/checkout?interval=${interval}`}>
           Pro&apos;ya Geç
           <ArrowRightIcon data-icon="inline-end" />
         </a>
       </Button>
     </GradientCard>
+  )
+}
+
+// Fiyat tutarı: rakamlar sarmalayan span'in font-mono'sundan gelir, ₺ simgesi
+// ise ana fonta (sans) alınır — Geist Mono'nun ₺ glyph'i bozuk göründüğü için.
+function Amount({ value }: { value: number }) {
+  return (
+    <>
+      <span className="font-sans">₺</span>
+      {priceFmt.format(value)}
+    </>
   )
 }
 
@@ -401,8 +563,8 @@ function ProPrice({ interval }: { interval: Interval }) {
   if (interval === "month") {
     return (
       <div className="flex items-end gap-1.5">
-        <span className="cn-font-heading text-3xl font-semibold tracking-tight">
-          {tl(MONTHLY_PRICE)}
+        <span className="font-mono text-3xl font-semibold tracking-tight">
+          <Amount value={MONTHLY_PRICE} />
         </span>
         <span className="pb-1 text-sm text-muted-foreground">/ ay</span>
       </div>
@@ -418,8 +580,8 @@ function ProPrice({ interval }: { interval: Interval }) {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
       >
-        <span className="cn-font-heading text-sm font-medium text-muted-foreground">
-          {tl(YEARLY_LIST)}
+        <span className="font-mono text-sm font-medium text-muted-foreground">
+          <Amount value={YEARLY_LIST} />
         </span>
         <motion.span
           aria-hidden
@@ -432,12 +594,12 @@ function ProPrice({ interval }: { interval: Interval }) {
       {/* Altta: indirimli fiyat, kendi büyük boyutunda */}
       <div className="flex items-end gap-1.5">
         <motion.span
-          className="cn-font-heading text-3xl font-semibold tracking-tight"
+          className="font-mono text-3xl font-semibold tracking-tight"
           initial={reduce ? false : { opacity: 0, y: 8, filter: "blur(4px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ delay: 0.45, duration: 0.35, ease: "easeOut" }}
         >
-          {tl(YEARLY_PRICE)}
+          <Amount value={YEARLY_PRICE} />
         </motion.span>
         <span className="pb-1 text-sm text-muted-foreground">/ yıl</span>
       </div>
@@ -449,41 +611,25 @@ function FeatureList({
   items,
   muted,
 }: {
-  items: string[]
+  items: Feature[]
   muted?: boolean
 }) {
   return (
     <ul className="flex flex-col gap-2.5">
-      {items.map((item) => (
-        <li key={item} className="flex items-center gap-2.5 text-sm">
-          <CheckIcon
+      {items.map(({ icon: Icon, label }) => (
+        <li key={label} className="flex items-center gap-2.5 text-sm">
+          <Icon
             className={cn(
               "size-4 shrink-0",
               muted ? "text-muted-foreground" : "text-primary",
             )}
           />
           <span className={muted ? "text-muted-foreground" : "text-foreground"}>
-            {item}
+            {label}
           </span>
         </li>
       ))}
     </ul>
-  )
-}
-
-function BenefitsCard() {
-  return (
-    <section className="flex flex-col gap-3">
-      <h3 className="text-sm font-semibold">Pro avantajların</h3>
-      <ul className="flex flex-col gap-2">
-        {PRO_BENEFITS.map((b) => (
-          <li key={b} className="flex items-center gap-2.5 text-sm">
-            <CheckIcon className="size-4 shrink-0 text-primary" />
-            <span className="text-muted-foreground">{b}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
   )
 }
 
@@ -495,7 +641,7 @@ function SubscriptionFaq() {
       <Accordion type="single" collapsible>
         {FAQ_ITEMS.map((item) => (
           <AccordionItem key={item.q} value={item.q}>
-            <AccordionTrigger>{item.q}</AccordionTrigger>
+            <AccordionTrigger className="font-normal">{item.q}</AccordionTrigger>
             <AccordionContent className="text-muted-foreground">
               {item.a}
             </AccordionContent>

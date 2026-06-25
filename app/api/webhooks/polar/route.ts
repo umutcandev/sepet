@@ -28,31 +28,87 @@ type SubscriptionLike = {
 // pes ederse subscription.revoked ile zaten free'ye iner.
 const ACTIVE_STATUSES = new Set(["active", "trialing", "past_due"])
 
+// Yeni/üst-aboneliğin "taze aktif" olduğunu belirten durumlar. Sıra-dışı teslimat
+// korumasında (aşağı bkz.) yalnızca bunlar farklı bir subscriptionId ile gelen
+// satırı güncelleyebilir; past_due bilinçli olarak dışarıda — o sadece mevcut
+// aboneliğin (aynı subId) geçici durumudur, yeni bir aboneliği temsil etmez.
+const FRESH_ACTIVE_STATUSES = new Set(["active", "trialing"])
+
 // Tek senkron noktası: gelen tüm subscription event'leri buraya akar ve users
 // satırını Polar'ın bildirdiği son duruma eşitler. `plan` tek doğruluk
 // kaynağıdır; diğer alanlar Abonelik panelini + portalı besler.
 async function syncSubscription(sub: SubscriptionLike): Promise<void> {
-  const values = {
-    plan: ACTIVE_STATUSES.has(sub.status) ? "pro" : "free",
-    polarCustomerId: sub.customerId,
-    polarSubscriptionId: sub.id,
-    subscriptionStatus: sub.status,
-    subscriptionInterval: intervalForProduct(sub.productId),
-    subscriptionCurrentPeriodEnd: sub.currentPeriodEnd ?? null,
-    subscriptionCancelAtPeriodEnd: sub.cancelAtPeriodEnd,
-  } as const
+  // Ürün gate'i: event yalnızca status değil, gerçekten BİZİM Pro ürünümüze ait
+  // olduğunda Pro açar. intervalForProduct tanımadığı üründe null döner; org'a
+  // ileride başka bir ürün (farklı tier / tek seferlik) eklenirse ona abone olan
+  // kullanıcılar yanlışlıkla Pro erişimi almasın.
+  const interval = intervalForProduct(sub.productId)
+  const isProProduct = interval !== null
+  const grantsAccess = isProProduct && ACTIVE_STATUSES.has(sub.status)
 
-  // Öncelik externalCustomerId (= users.id); checkout sırasında biz set ederiz.
-  // Yoksa (elle/önceden oluşturulmuş müşteri) Polar müşteri ID'siyle eşle.
+  // Hedef kullanıcı: önce externalCustomerId (= users.id; checkout'ta biz set
+  // ederiz), yoksa (elle/önceden oluşturulmuş müşteri) Polar müşteri ID'siyle.
   const externalId = sub.customer?.externalId
+  const whereUser = externalId
+    ? eq(users.id, externalId)
+    : eq(users.polarCustomerId, sub.customerId)
+
+  const [row] = await db
+    .select({ id: users.id, polarSubscriptionId: users.polarSubscriptionId })
+    .from(users)
+    .where(whereUser)
+    .limit(1)
+
+  if (!row) {
+    // Eşleşen kullanıcı yok. Checkout akışımız her zaman externalCustomerId
+    // gönderdiği için pratikte olmamalı; sessizce kaybolmasın diye loglarız
+    // (örn. elle oluşturulan müşterinin polarCustomerId'si henüz yazılmamış).
+    console.warn("[polar] webhook eşleşen kullanıcı bulamadı", {
+      subscriptionId: sub.id,
+      customerId: sub.customerId,
+      hasExternalId: Boolean(externalId),
+    })
+    return
+  }
+
+  // Sıra-dışı / gecikmeli teslimat koruması: Polar event sırasını garanti etmez.
+  // Kullanıcı iptal edip (revoked) tekrar abone olduysa (yeni active), eski
+  // aboneliğe ait gecikmeli "revoked" yeni active'ten sonra gelirse satırı
+  // yanlışlıkla free'ye düşürebilir. Kayıtta FARKLI bir abonelik dururken yalnızca
+  // taze-aktif bir event (yeni aboneliğin devralması) güncelleyebilir; diğer her
+  // şey (revoked/canceled/past_due...) eski aboneliğe ait sayılıp atlanır.
+  const isNewSubscription =
+    Boolean(row.polarSubscriptionId) && row.polarSubscriptionId !== sub.id
+  if (isNewSubscription && !FRESH_ACTIVE_STATUSES.has(sub.status)) {
+    console.warn("[polar] eski aboneliğe ait gecikmeli event atlandı", {
+      incomingSubscriptionId: sub.id,
+      storedSubscriptionId: row.polarSubscriptionId,
+      status: sub.status,
+    })
+    return
+  }
+
   await db
     .update(users)
-    .set(values)
-    .where(
-      externalId
-        ? eq(users.id, externalId)
-        : eq(users.polarCustomerId, sub.customerId),
-    )
+    .set({
+      plan: grantsAccess ? "pro" : "free",
+      polarCustomerId: sub.customerId,
+      polarSubscriptionId: sub.id,
+      subscriptionStatus: sub.status,
+      subscriptionInterval: interval,
+      subscriptionCurrentPeriodEnd: sub.currentPeriodEnd ?? null,
+      subscriptionCancelAtPeriodEnd: sub.cancelAtPeriodEnd,
+    })
+    .where(eq(users.id, row.id))
+}
+
+// Imza doğrulaması secret olmadan tüm istekleri fail-closed (403) reddeder; bu
+// güvenli ama webhook'un sessizce hiç çalışmaması teşhisi zorlaştırır. Eksikse
+// erken uyar (deploy checklist'inde POLAR_WEBHOOK_SECRET zorunludur).
+if (!process.env.POLAR_WEBHOOK_SECRET) {
+  console.warn(
+    "[polar] POLAR_WEBHOOK_SECRET ayarlı değil — webhook imza doğrulaması tüm istekleri 403 ile reddeder.",
+  )
 }
 
 export const POST = Webhooks({
