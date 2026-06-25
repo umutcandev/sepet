@@ -24,6 +24,7 @@ import { GeneralPanel } from "./panels/general-panel"
 import { AccountPanel } from "./panels/account-panel"
 import { UsagePanel } from "./panels/usage-panel"
 import { PrivacyPanel } from "./panels/privacy-panel"
+import { SubscriptionPanel } from "./panels/subscription-panel"
 
 function HighlightedLabel({ text, query }: { text: string; query: string }) {
   const q = normalize(query.trim())
@@ -246,8 +247,10 @@ export function SettingsDialog({
                 <AccountPanel />
               ) : tab === "gizlilik" ? (
                 <PrivacyPanel />
+              ) : tab === "abonelik" ? (
+                <SubscriptionPanel />
               ) : tab === "kullanim" ? (
-                <UsagePanel />
+                <UsagePanel onUpgrade={() => setTab("abonelik")} />
               ) : (
                 <ComingSoonPanel tab={tab} />
               )}
