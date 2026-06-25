@@ -16,6 +16,7 @@
 [![Neon](https://img.shields.io/badge/Neon_Postgres-00E599?logo=postgresql&logoColor=white)](https://neon.tech)
 [![Upstash Redis](https://img.shields.io/badge/Upstash_Redis-00E9A3?logo=redis&logoColor=white)](https://upstash.com)
 [![Cloudflare R2](https://img.shields.io/badge/Cloudflare_R2-F38020?logo=cloudflare&logoColor=white)](https://www.cloudflare.com/products/r2/)
+[![Polar](https://img.shields.io/badge/Polar-Abonelik-0062FF)](https://polar.sh)
 [![Zod](https://img.shields.io/badge/Zod-4-3068B7?logo=zod&logoColor=white)](https://zod.dev)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
 
@@ -37,9 +38,9 @@
 
 ## Proje Hakkında
 
-**Sepet**, Türkiye'deki 45'ten fazla zincir ve sanal marketin canlı fiyatlarını tek bir yapay zekâ asistanı arkasına toplayan üretken AI tabanlı bir alışveriş optimizasyon platformudur. Kullanıcı doğal dilde bir alışveriş listesi yazdığında, bir market fişinin fotoğrafını yüklediğinde veya yapmak istediği yemeğin görselini paylaştığında; Sepet bu girdiyi yapılandırılmış kalemlere dönüştürür, gerçek market kataloglarıyla eşleştirir, fiyatları çapraz karşılaştırır ve en uygun tek market ile en uygun iki market kombinasyonunu hesaplar.
+**Sepet**, Türkiye'deki zincir ve sanal marketlerin canlı fiyatlarını tek bir yapay zekâ asistanı arkasına toplayan AI tabanlı bir alışveriş optimizasyon platformudur. Kullanıcı doğal dilde bir alışveriş listesi yazdığında, bir market fişi veya yemek görseli yüklediğinde; Sepet bu girdiyi yapılandırılmış kalemlere dönüştürür, gerçek market kataloglarıyla eşleştirir ve en uygun tek market ile en uygun iki market kombinasyonunu hesaplar.
 
-Proje, kullanıcı için bir tarayıcı eklentisi veya elle fiyat takibi yerine, **doğal dil → yapılandırılmış sepet → fiyat optimizasyonu** akışını uçtan uca otomatikleştiren bir agentic sistem olarak tasarlanmıştır.
+Sistem, tarayıcı eklentisi veya elle fiyat takibi yerine **doğal dil → yapılandırılmış sepet → fiyat optimizasyonu** akışını uçtan uca otomatikleştirir.
 
 **Canlı sürüm:** <https://www.trysepet.com>
 
@@ -47,24 +48,24 @@ Proje, kullanıcı için bir tarayıcı eklentisi veya elle fiyat takibi yerine,
 
 ## Çözülen Problem
 
-Türk tüketicisi, market enflasyonunun en yüksek olduğu kategorilerden birinde alışveriş yapıyor. Aynı marka çay veya zeytinyağı, üç farklı zincir markette yüzde otuza varan fiyat farkıyla satılabiliyor. Kullanıcının her ürünü tek tek farklı sitelerden taraması pratik değil; mevcut karşılaştırma siteleri ise yalnızca tek ürün üzerinden çalışıyor ve sepet bütününü optimize etmiyor.
+Aynı marka çay veya zeytinyağı, farklı zincir marketlerde yüzde otuza varan fiyat farkıyla satılabiliyor. Her ürünü tek tek farklı sitelerden taramak pratik değil; mevcut karşılaştırma siteleri ise yalnızca tek ürün üzerinden çalışıyor ve sepetin bütününü optimize etmiyor.
 
-**Sepet**, bu boşluğu üç temel yetenekle dolduruyor:
+**Sepet** bu boşluğu üç yetenekle dolduruyor:
 
 1. Doğal dil veya görsel girdiden yapılandırılmış sepet üretmek.
-2. Sepetin tamamını bir bütün olarak en uygun market kombinasyonuna yerleştirmek.
-3. Gerçek harcamayı (fiş) bugünün en iyi fiyatıyla karşılaştırarak ölçülebilir tasarruf rakamı üretmek.
+2. Sepetin tamamını en uygun market kombinasyonuna yerleştirmek.
+3. Gerçek harcamayı (fiş) bugünün en iyi fiyatıyla karşılaştırarak ölçülebilir tasarruf üretmek.
 
 ---
 
 ## Örnek Denemeler
 
-Aşağıdaki örnek görselleri indirip Sepet üzerinde fiş okuma ve yemek görselinden tarif çıkarımı özelliklerini doğrudan deneyebilirsiniz.
+Aşağıdaki görselleri indirip fiş okuma ve yemek görselinden tarif çıkarımı özelliklerini doğrudan deneyebilirsiniz.
 
 | Örnek Fiş Görseli | Örnek Yemek Görseli |
 |:---:|:---:|
 | <img src="./public/ornek-fis-gorseli-github.jpg" alt="Örnek market fişi" width="280" /> | <img src="./public/ornek-yemek-gorseli-github.jpg" alt="Örnek yemek görseli (mantı)" width="280" /> |
-| Asistana yükleyerek fişten otomatik OCR, ürün eşleştirme ve bugünkü en uygun fiyatla karşılaştırma akışını test edin. | Asistana yükleyerek yemek tanıma ve gerekli malzemelerin en uygun marketten alınmasına yönelik sepet önerisi akışını test edin. |
+| Fişten otomatik OCR, ürün eşleştirme ve bugünkü en uygun fiyatla karşılaştırma. | Yemek tanıma ve gerekli malzemelerin en uygun marketten alınmasına yönelik sepet önerisi. |
 
 ---
 
@@ -72,38 +73,42 @@ Aşağıdaki örnek görselleri indirip Sepet üzerinde fiş okuma ve yemek gör
 
 ### Doğal Dil Sepeti
 
-Kullanıcı `"2 ekmek, 1 lt süt, 500g beyaz peynir"` gibi serbest metin yazar. Sistem bu metni `ParsedItem` şemasına bölerek miktar, birim ve normalize edilmiş arama sorgusunu çıkarır. Yalın yemek veya tarif adları (`"menemen"`, `"limonata için malzemeler"`) algılandığında ise asistan ham malzeme listesini otomatik türetir.
+Kullanıcı `"2 ekmek, 1 lt süt, 500g beyaz peynir"` gibi serbest metin yazar; sistem bunu miktar, birim ve normalize arama sorgusu içeren `ParsedItem` şemasına böler. Yemek veya tarif adları (`"menemen"`, `"limonata için malzemeler"`) algılandığında ham malzeme listesi otomatik türetilir.
 
 ### Fiş Fotoğrafından Otomatik OCR
 
-Kullanıcı bir market fişinin fotoğrafını yükler. Görsel, Google Gemini 2.5 Flash'in çok modlu yeteneğiyle analiz edilir; market adı, satın alma tarihi, toplam tutar ve tek tek ürün satırları yapılandırılmış JSON olarak çıkarılır. Sistem; KDV satırları, indirim kalemleri, kasa bilgileri gibi ürün olmayan satırları filtreler ve `unitPrice × quantity ≈ totalPrice` tutarlılık kontrolü uygular.
+Yüklenen fiş, Gemini 2.5 Flash'in çok modlu yeteneğiyle analiz edilir; market adı, tarih, toplam tutar ve ürün satırları yapılandırılmış JSON olarak çıkarılır. KDV, indirim ve kasa gibi ürün olmayan satırlar filtrelenir, `unitPrice × quantity ≈ totalPrice` tutarlılık kontrolü uygulanır.
 
 ### Yemek Görselinden Tarif Çıkarımı
 
-Yüklenen görselde tabakta bir yemek tespit edilirse model `food.dishName` ve evde yapmak için gerekli temel malzeme listesini döner. Bu liste doğrudan sepet akışına aktarılır; kullanıcı tek tıkla bu malzemelerin en ucuz marketini görür.
+Görselde bir yemek tespit edilirse model `food.dishName` ve gerekli temel malzeme listesini döner. Liste doğrudan sepet akışına aktarılır; kullanıcı tek tıkla en ucuz marketi görür.
 
 ### Sepet Optimizasyonu
 
-`computeOptimization` modülü, eşleşen ürünlerin market başına fiyat matrisini gezerek iki ayrı çıkarım yapar:
+`computeOptimization` modülü, eşleşen ürünlerin market başına fiyat matrisinden iki sonuç üretir:
 
-- **Tek market en ucuz:** Sepetin tamamını karşılayan en düşük toplamlı tek market.
-- **İki market kombinasyonu:** Olası market çiftleri üzerinde lineer arama; her kalem için iki market arasından ucuz olanı seçilerek minimum toplam üretilir, tek market sonucuna göre TL ve yüzde tasarruf hesaplanır.
+- **Tek market en ucuz:** Sepetin tamamını karşılayan en düşük toplamlı market.
+- **İki market kombinasyonu:** Market çiftleri üzerinde her kalem için ucuz olan seçilerek minimum toplam bulunur; tek market sonucuna göre TL ve yüzde tasarruf hesaplanır.
 
 ### Fiş Karşılaştırma ve Eskime Tespiti
 
-Yüklenen fişin tutarı, aynı sepetin bugünkü en iyi fiyatıyla karşılaştırılır. Tarih çok eskiyse veya tutar oranı `STALE_RATIO_THRESHOLD` üstündeyse `staleness` bayrağı işaretlenir; kullanıcıya rakamlar bilgi amaçlı sunulur, asılsız bir tasarruf vaadi yapılmaz.
+Fişin tutarı, aynı sepetin bugünkü en iyi fiyatıyla karşılaştırılır. Tarih çok eskiyse veya tutar oranı `STALE_RATIO_THRESHOLD` üstündeyse `staleness` bayrağı işaretlenir ve rakamlar yalnızca bilgi amaçlı sunulur.
 
 ### Barkod Tarayıcı ve Ürün Arama
 
-`@zxing/library` ile tarayıcı içinde çalışan barkod okuyucu ve 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) kataloğunda canlı arama yapan bir ürün sayfası mevcuttur.
+`@zxing/library` ile tarayıcı içinde çalışan barkod okuyucu ve 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) kataloğunda canlı arama yapan ürün sayfası.
 
 ### Sepetlerim ve Fişlerim
 
-Kullanıcının onayladığı her sepet ve analiz edilen her fiş Postgres'te kalıcı olarak saklanır; özet tutarlar (`bestSingleTotal`, `twoMarketSavingsTL`) listede önizleme olarak sunulur.
+Onaylanan her sepet ve analiz edilen her fiş Postgres'te saklanır; özet tutarlar (`bestSingleTotal`, `twoMarketSavingsTL`) listede önizlenir.
 
 ### Sepet Dağılım Grafiği
 
-Sepet detay sayfasındaki **recharts** tabanlı `MarketSplitDonut`, iki market kombinasyonunda hangi alışverişin hangi markete dağıldığını donut grafikle gösterir.
+**recharts** tabanlı `MarketSplitDonut`, iki market kombinasyonunda hangi alışverişin hangi markete dağıldığını donut grafikle gösterir.
+
+### Abonelik ve Plan (Pro)
+
+Ücretsiz ve Pro planlar; aylık kullanım kotaları plana göre belirlenir. Pro yükseltmesi **Polar** checkout'u (aylık veya yıllık ürün) üzerinden yapılır, abonelik durumu imzası doğrulanan webhook'larla `users.plan`'a senkronlanır ve kullanıcı Polar müşteri portalından planını yönetir veya iptal eder.
 
 
 ---
@@ -259,6 +264,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 |---|---|
 | **marketfiyati.org.tr** (TÜBİTAK + Ticaret Bakanlığı) | 6 Türk market için konum bazlı, resmi ve ücretsiz ürün/fiyat verisi |
 | **Google Gemini API** (Vercel AI Gateway üzerinden) | LLM çağrıları |
+| **Polar** (`@polar-sh/sdk`, `@polar-sh/nextjs`) | Abonelik ve ödeme — Pro checkout, müşteri portalı, webhook senkronizasyonu |
 
 ### Geliştirme Araçları
 
@@ -293,6 +299,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
   - Google Cloud (OAuth client)
   - Vercel AI Gateway
   - marketfiyati.org.tr (API)
+  - Polar (opsiyonel, abonelik / Pro özelliği için)
 
 ### Kurulum
 

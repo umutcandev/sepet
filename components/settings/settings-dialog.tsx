@@ -24,6 +24,7 @@ import { GeneralPanel } from "./panels/general-panel"
 import { AccountPanel } from "./panels/account-panel"
 import { UsagePanel } from "./panels/usage-panel"
 import { PrivacyPanel } from "./panels/privacy-panel"
+import { SubscriptionPanel } from "./panels/subscription-panel"
 
 function HighlightedLabel({ text, query }: { text: string; query: string }) {
   const q = normalize(query.trim())
@@ -44,12 +45,22 @@ function HighlightedLabel({ text, query }: { text: string; query: string }) {
 export function SettingsDialog({
   open,
   onOpenChange,
+  initialTab = "genel",
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
+  initialTab?: TabKey
 }) {
-  const [tab, setTab] = React.useState<TabKey>("genel")
+  const [tab, setTab] = React.useState<TabKey>(initialTab)
   const [query, setQuery] = React.useState("")
+
+  // Dialog her açıldığında istenen sekmeye geç (örn. menüden "Abonelik").
+  // Yalnızca kapalı→açık geçişinde uygulanır; açıkken kullanıcı serbest gezer.
+  const prevOpen = React.useRef(open)
+  React.useEffect(() => {
+    if (open && !prevOpen.current) setTab(initialTab)
+    prevOpen.current = open
+  }, [open, initialTab])
 
   const contentRef = React.useRef<HTMLDivElement>(null)
   const highlightTimer = React.useRef<number | null>(null)
@@ -246,8 +257,10 @@ export function SettingsDialog({
                 <AccountPanel />
               ) : tab === "gizlilik" ? (
                 <PrivacyPanel />
+              ) : tab === "abonelik" ? (
+                <SubscriptionPanel />
               ) : tab === "kullanim" ? (
-                <UsagePanel />
+                <UsagePanel onUpgrade={() => setTab("abonelik")} />
               ) : (
                 <ComingSoonPanel tab={tab} />
               )}

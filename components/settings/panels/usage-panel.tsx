@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { RefreshCwIcon, SparklesIcon } from "lucide-react"
+import { RefreshCwIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -25,7 +25,7 @@ const timeFmt = new Intl.DateTimeFormat("tr-TR", {
 // Dialog kapanınca Radix içeriği unmount eder → her açılışta bu panel sıfırdan
 // mount olur ve "loading" ile başlar. Veri mount'ta bir kez çekilir; kullanıcı
 // yenile düğmesiyle (özellikle anlık sepet/fiş sayıları için) tekrar çekebilir.
-export function UsagePanel() {
+export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
   const [snap, setSnap] = React.useState<UsageSnapshot | null>(null)
   const [status, setStatus] = React.useState<"loading" | "ready" | "error">(
     "loading",
@@ -72,7 +72,6 @@ export function UsagePanel() {
     }
   }, [])
 
-  const planLabel = snap?.plan === "pro" ? "Pro" : "Free"
   const resetLabel = snap ? dateFmt.format(snap.resetAt) : null
 
   return (
@@ -82,9 +81,15 @@ export function UsagePanel() {
           <h2 className="cn-font-heading text-lg font-semibold sm:text-xl">
             Kullanım Limitleri
           </h2>
-          <Badge variant={snap?.plan === "pro" ? "default" : "secondary"}>
-            {planLabel}
-          </Badge>
+          {/* Plan rozeti veri gelene kadar skeleton; aksi halde yüklenirken
+              kısa bir an yanlışlıkla "Free" görünüp sonra "Pro"ya dönüyor. */}
+          {status === "loading" ? (
+            <Skeleton className="h-5 w-12 rounded-md" />
+          ) : snap ? (
+            <Badge variant={snap.plan === "pro" ? "default" : "secondary"}>
+              {snap.plan === "pro" ? "Pro" : "Free"}
+            </Badge>
+          ) : null}
         </div>
         <p className="text-sm text-muted-foreground">
           Mevcut abonelik planınıza göre kalan kullanım limitlerinizi görüntüleyin.
@@ -172,7 +177,7 @@ export function UsagePanel() {
             </Button>
           </div>
 
-          {snap.plan !== "pro" && <ProUpsell />}
+          {snap.plan !== "pro" && <ProUpsell onUpgrade={onUpgrade} />}
         </>
       )}
     </div>
@@ -232,18 +237,28 @@ function UsageMeter({
   )
 }
 
-function ProUpsell() {
+function ProUpsell({ onUpgrade }: { onUpgrade?: () => void }) {
   return (
     <div className="flex items-start gap-3 rounded-xl border border-border bg-muted/40 p-4">
-      <SparklesIcon className="mt-0.5 size-4 shrink-0 text-foreground" />
-      <div className="flex flex-col gap-0.5">
-        <span className="text-sm font-medium">
-          Daha fazlasına mı ihtiyacın var?
-        </span>
-        <span className="text-xs text-muted-foreground">
-          Yakında yayınlanacak Pro ile aylık limitlerin yükselir; Sepet kaydetme
-          ve fiş sınırsız olur.
-        </span>
+      <div className="flex min-w-0 grow flex-col gap-2">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-sm font-medium">
+            Daha fazlasına mı ihtiyacın var?
+          </span>
+          <span className="text-xs text-muted-foreground">
+            Hemen planını yükselt ve kullanım limitlerini artır. Pro plan ile daha yüksek kullanımların keyfini çıkar!
+          </span>
+        </div>
+        {onUpgrade && (
+          <Button
+            variant="default"
+            size="sm"
+            className="self-start"
+            onClick={onUpgrade}
+          >
+            Pro&apos;ya Geç
+          </Button>
+        )}
       </div>
     </div>
   )

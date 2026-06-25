@@ -6,6 +6,7 @@ import { AppShell } from "@/components/app-shell"
 import { LoginDialogHost } from "@/components/auth/login-dialog-host"
 import { LocationHost } from "@/components/location/location-host"
 import { OnboardingHost } from "@/components/onboarding/onboarding-host"
+import { CheckoutResultHost } from "@/components/subscription/checkout-result-host"
 import { SessionProvider } from "@/components/providers/session-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
@@ -89,6 +90,7 @@ export default async function RootLayout({
               <LoginDialogHost />
               <OnboardingHost />
               <LocationHost />
+              <CheckoutResultHost />
               <Toaster position="top-right" richColors />
             </SessionProvider>
           </TooltipProvider>

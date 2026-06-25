@@ -1,6 +1,7 @@
 import type * as React from "react"
 import {
   ChartColumnIcon,
+  CircleHelpIcon,
   CookieIcon,
   CreditCardIcon,
   DownloadIcon,
@@ -135,6 +136,41 @@ const GIZLILIK_SETTINGS: SettingEntry[] = [
   },
 ]
 
+const ABONELIK_SETTINGS: SettingEntry[] = [
+  {
+    target: "pro-yukselt",
+    title: "Pro'ya yükselt",
+    keywords: "pro yukselt abonelik satin al odeme aylik yillik plan upgrade",
+    icon: CreditCardIcon,
+  },
+  {
+    target: "abonelik-durumu",
+    title: "Abonelik durumu",
+    keywords: "abonelik durum plan pro yenilenme iptal fatura",
+    icon: CreditCardIcon,
+  },
+  {
+    target: "abonelik-yonet",
+    title: "Aboneliği yönet",
+    keywords: "abonelik yonet iptal portal fatura odeme degistir",
+    icon: CreditCardIcon,
+  },
+  {
+    target: "sss",
+    title: "Sıkça sorulan sorular",
+    keywords:
+      "sss sik sorulan soru faq yardim iptal iade odeme guvenlik limit fiyat yenilenme",
+    icon: CircleHelpIcon,
+  },
+  {
+    target: "sozlesmeler",
+    title: "Yasal sözleşmeler",
+    keywords:
+      "mesafeli satis sozlesme iptal iade gizlilik yasal odeme fatura polar kayitli satici",
+    icon: FileTextIcon,
+  },
+]
+
 const KULLANIM_SETTINGS: SettingEntry[] = [
   {
     target: "limits",
@@ -206,6 +242,7 @@ export const SEARCH_ENTRIES: SearchEntry[] = [
   ...entriesFor("genel", GENEL_SETTINGS),
   ...entriesFor("hesap", HESAP_SETTINGS),
   ...entriesFor("gizlilik", GIZLILIK_SETTINGS),
+  ...entriesFor("abonelik", ABONELIK_SETTINGS),
   ...entriesFor("kullanim", KULLANIM_SETTINGS),
 ]
 

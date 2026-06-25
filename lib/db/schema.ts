@@ -38,9 +38,25 @@ export const users = pgTable("user", {
   locationUpdatedAt: timestamp("locationUpdatedAt", { mode: "date" }),
   // ─── Kullanım katmanı (plan) ───
   // Aylık kotalar plan'a göre belirlenir (bkz. lib/usage/limits.ts). Mevcut
-  // kullanıcılar 'free' default'u ile başlar; Pro yükseltme ileride bir ödeme
-  // webhook'u ile set edilir.
+  // kullanıcılar 'free' default'u ile başlar; Pro'ya yükseltme Polar abonelik
+  // webhook'larıyla set edilir (bkz. app/api/webhooks/polar).
   plan: text("plan").$type<"free" | "pro">().notNull().default("free"),
+  // ─── Polar abonelik senkronizasyonu ───
+  // `plan` tek doğruluk kaynağıdır; aşağıdaki alanlar Polar webhook'larıyla
+  // senkronlanır ve yalnızca Abonelik panelini beslemek (durum, yenilenme tarihi)
+  // ve müşteri portalını açmak içindir. Checkout sırasında externalCustomerId =
+  // users.id geçilir, böylece Polar müşterisi bu hesaba bağlanır; polarCustomerId
+  // ilk webhook'la yazılır. Yıllık/aylık ayrımı productId eşlemesinden gelir.
+  polarCustomerId: text("polarCustomerId"),
+  polarSubscriptionId: text("polarSubscriptionId"),
+  subscriptionStatus: text("subscriptionStatus"),
+  subscriptionInterval: text("subscriptionInterval").$type<"month" | "year">(),
+  subscriptionCurrentPeriodEnd: timestamp("subscriptionCurrentPeriodEnd", {
+    mode: "date",
+  }),
+  subscriptionCancelAtPeriodEnd: boolean("subscriptionCancelAtPeriodEnd")
+    .notNull()
+    .default(false),
   // ─── Hesap arşivleme (yumuşak silme) ───
   // "Hesabımı sil" verileri anında silmez; archivedAt'i set eder ve oturumları
   // kapatır. 14 gün içinde tekrar giriş yapılmazsa cron (purge-archived) satırı

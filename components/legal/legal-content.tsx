@@ -7,14 +7,21 @@ import * as React from "react"
 import Link from "next/link"
 
 export const LEGAL_LAST_UPDATED = "18 Mayıs 2026"
+// Ödeme sözleşmeleri (Mesafeli Satış + İptal & İade) Polar entegrasyonuyla
+// birlikte yayınlandı; Gizlilik/Kullanım metinlerinden ayrı bir tarih taşırlar.
+export const LEGAL_PAYMENTS_LAST_UPDATED = "25 Haziran 2026"
 export const LEGAL_SUPPORT_EMAIL = "support@trysepet.com"
 export const LEGAL_PRIVACY_EMAIL = "privacy@trysepet.com"
 
 export function LegalPageShell({
   title,
+  // Son güncelleme tarihi belge başına farklı olabilir; verilmezse Gizlilik/
+  // Kullanım metinlerinin ortak tarihine düşer.
+  lastUpdated = LEGAL_LAST_UPDATED,
   children,
 }: {
   title: string
+  lastUpdated?: string
   children: React.ReactNode
 }) {
   return (
@@ -24,7 +31,7 @@ export function LegalPageShell({
           {title}
         </h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
-          Son güncelleme: {LEGAL_LAST_UPDATED}
+          Son güncelleme: {lastUpdated}
         </p>
       </div>
       {children}
@@ -176,6 +183,213 @@ export function PrivacyContent() {
             {LEGAL_PRIVACY_EMAIL}
           </a>{" "}
           adresine iletebilirsin.
+        </p>
+      </section>
+    </div>
+  )
+}
+
+// Mesafeli Satış Sözleşmesi. Metin, koddaki gerçek davranışla doğrulanabilir:
+// fiyatlar subscription-panel'den (₺99/ay, ₺990/yıl, TRY), Pro avantajları
+// lib/usage/limits.ts PLAN_LIMITS'ten, ödeme/aktivasyon app/api/checkout +
+// webhooks/polar'dan, faturalandırma/vergi ise Polar'ın Kayıtlı Satıcı
+// (Merchant of Record) rolünden gelir. Kart bilgileri Sepet'e hiç ulaşmaz;
+// tahsilat tamamen Polar'ın barındırdığı ödeme sayfasında yapılır.
+export function DistanceSalesContent() {
+  return (
+    <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">1. Taraflar</h2>
+        <p>
+          Bu sözleşme, bir tarafta hizmeti sunan{" "}
+          <span className="text-foreground">Sepet</span> (trysepet.com,
+          “Hizmet Sağlayıcı”) ile diğer tarafta Pro aboneliği satın alan
+          kullanıcı (“Abone”) arasındadır. Ödemenin tahsilatı ve faturalandırma,
+          aşağıda 4. maddede açıklandığı üzere{" "}
+          <span className="text-foreground">Polar Software Inc.</span> tarafından
+          Kayıtlı Satıcı (Merchant of Record) sıfatıyla gerçekleştirilir.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">2. Sözleşmenin Konusu</h2>
+        <p>
+          Sözleşmenin konusu, Sepet Pro aboneliğinin elektronik ortamda
+          satışı ve ifasıdır. Pro planı; aylık 500 asistan mesajı, aylık 250
+          görsel analizi ile sınırsız sepet ve fiş kaydı sunar. Aylık sayaçlar
+          her ayın ilk günü (UTC) otomatik olarak sıfırlanır. Ücretsiz plan ise
+          aylık 50 asistan mesajı, 10 görsel analizi ve 20’şer sepet/fiş kaydı
+          ile sınırlıdır.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">3. Ücret ve Süre</h2>
+        <p>
+          Pro aboneliği aylık ₺99 veya yıllık ₺990 (Türk Lirası) olarak sunulur.
+          Geçerli vergiler konumuna göre Polar tarafından ödeme sayfasında
+          hesaplanır ve ödeyeceğin nihai tutar orada gösterilir. Abonelik,
+          seçilen faturalandırma döneminin (ay veya yıl) sonunda aynı ücretle
+          otomatik olarak yenilenir ve sen iptal edene kadar bu şekilde devam
+          eder. Fiyat değişikliklerini yürürlüğe girmeden önce sana bildiririz.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">
+          4. Ödeme ve Faturalandırma
+        </h2>
+        <p>
+          Ödeme adımı tamamen Polar’ın barındırdığı güvenli ödeme sayfasında
+          tamamlanır. Kart bilgilerin Sepet sunucularında saklanmaz ya da
+          işlenmez; Sepet yalnızca plan durumunu ve yenilenme tarihini tutar.
+          Polar bu işlemde Kayıtlı Satıcı (Merchant of Record) olarak hareket
+          eder; tahsilatı yapar, faturayı düzenler ve KDV dâhil vergilerin
+          tahsil ve beyanından sorumludur. Aboneliğine ilişkin fatura Polar
+          tarafından düzenlenir ve e-posta ile iletilir.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">5. Hizmetin İfası</h2>
+        <p>
+          Ödemen Polar tarafından onaylandığı anda hesabın otomatik olarak Pro’ya
+          yükseltilir ve tüm Pro avantajların derhal açılır. Hizmet dijital
+          olduğundan ayrıca bir teslimat süresi yoktur; aktivasyon anlıktır.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">6. Cayma Hakkı</h2>
+        <p>
+          Pro aboneliği, anında ifa edilen dijital hizmet niteliğindedir ve
+          ödeme sonrası erişimin derhal açılır. Bu nedenle Mesafeli Sözleşmeler
+          Yönetmeliği’nin 15. maddesi uyarınca cayma hakkı kullanılamaz. Bununla
+          birlikte aboneliğini dilediğin an iptal ederek bir sonraki yenilenmeyi
+          durdurabilirsin; ayrıntılar için{" "}
+          <Link
+            href="/iptal-iade"
+            className="text-foreground underline underline-offset-2"
+          >
+            İptal ve İade Politikası
+          </Link>
+          ’na bakabilirsin.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">7. İptal ve Yenileme</h2>
+        <p>
+          Aboneliğini, Abonelik ekranındaki “Aboneliği yönet” düğmesiyle açılan
+          Polar müşteri portalından dilediğin an iptal edebilirsin. İptalde
+          aboneliğin, içinde bulunduğun faturalandırma döneminin sonuna kadar
+          açık kalır; o tarihe kadar Pro avantajların sürer, ardından otomatik
+          olarak Ücretsiz plana dönersin. Bir tahsilat başarısız olursa erişimin
+          hemen kesilmez; Polar ödemeyi yeniden dener, tüm denemeler başarısız
+          olursa abonelik iptal edilir.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">8. Sorumluluk</h2>
+        <p>
+          Sepet, fiyat karşılaştırma ve yapay zeka destekli alışveriş özellikleri
+          sunar; market fiyatları üçüncü taraf kaynaklardan derlenir ve nihai
+          fiyat ilgili satıcının kasasında belirlenir. Hizmet “olduğu gibi”
+          sunulur. Bu sözleşmenin Kullanım Şartları ve Gizlilik Politikası ile
+          birlikte değerlendirilmesi gerekir.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">9. İletişim</h2>
+        <p>
+          Aboneliğin ve bu sözleşmeyle ilgili sorularını{" "}
+          <a
+            href={`mailto:${LEGAL_SUPPORT_EMAIL}`}
+            className="text-foreground underline underline-offset-2"
+          >
+            {LEGAL_SUPPORT_EMAIL}
+          </a>{" "}
+          adresine iletebilirsin. Fatura ve ödeme kayıtlarına ise Polar müşteri
+          portalından ulaşabilirsin.
+        </p>
+      </section>
+    </div>
+  )
+}
+
+// İptal ve İade Politikası. Tüm maddeler koddaki davranışla birebir uyumludur:
+// iptal app/api/portal (Polar müşteri portalı) üzerinden yapılır; cancelAtPeriodEnd
+// → dönem sonuna kadar erişim, revoked → free (app/api/webhooks/polar). past_due
+// erişimi kesmez (ACTIVE_STATUSES). İade akışı koda gömülü değildir; tahsilat ve
+// iade Polar (Merchant of Record) tarafından yürütülür.
+export function RefundPolicyContent() {
+  return (
+    <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">1. Aboneliği İptal Etme</h2>
+        <p>
+          Aboneliğini dilediğin an iptal edebilirsin. Abonelik ekranındaki
+          “Aboneliği yönet” düğmesi seni Polar müşteri portalına götürür; iptal,
+          plan değişikliği ve fatura geçmişi buradan yönetilir. Portal yalnızca
+          ödemeden geçmiş hesaplar için açılır.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">
+          2. İptal Sonrası Erişim
+        </h2>
+        <p>
+          İptalde Pro erişimin hemen kapanmaz. Aboneliğin, içinde bulunduğun
+          faturalandırma döneminin sonuna kadar açık kalır; o güne kadar tüm Pro
+          avantajların sürer, ardından otomatik olarak Ücretsiz plana dönersin.
+          Dönem bitmeden fikrini değiştirirsen iptali geri alabilirsin.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">3. İade Politikası</h2>
+        <p>
+          Pro, anında ifa edilen ve sürekli erişim sağlanan dijital bir
+          hizmettir. İptal ettiğinde bir sonraki yenilenme durur ve dönem sonuna
+          kadar hizmetten yararlanmaya devam edersin; bu nedenle kullanılmış
+          dönemler için kural olarak iade yapılmaz. Hatalı veya mükerrer tahsilat
+          gibi istisnai durumlarda iade talebini bizimle paylaşabilirsin.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">4. Başarısız Ödeme</h2>
+        <p>
+          Bir yenileme tahsilatı başarısız olursa aboneliğin “Gecikti” durumuna
+          geçer ama Pro erişimin hemen kesilmez; Polar ödemeyi belirli aralıklarla
+          yeniden dener. Tüm denemeler başarısız olursa abonelik iptal edilir ve
+          Ücretsiz plana inersin.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">
+          5. Polar’ın Rolü ve İade Süreci
+        </h2>
+        <p>
+          Tahsilat ve faturalandırma, Kayıtlı Satıcı (Merchant of Record) olan
+          Polar Software Inc. tarafından yürütülür; onaylanan iadeler de Polar
+          üzerinden ilgili ödeme yöntemine yapılır. Polar, ters ibrazı (chargeback)
+          önlemek amacıyla satın almadan sonraki 60 gün içinde kendi inisiyatifiyle
+          iade başlatabilir. Bir siparişin iade edilmesi aboneliği kendiliğinden
+          sonlandırmaz; erişimin sona ermesi için aboneliğin ayrıca iptal edilmesi
+          gerekir.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">6. İletişim</h2>
+        <p>
+          İptal ve iade taleplerini{" "}
+          <a
+            href={`mailto:${LEGAL_SUPPORT_EMAIL}`}
+            className="text-foreground underline underline-offset-2"
+          >
+            {LEGAL_SUPPORT_EMAIL}
+          </a>{" "}
+          adresine iletebilirsin. Bu politika{" "}
+          <Link
+            href="/mesafeli-satis"
+            className="text-foreground underline underline-offset-2"
+          >
+            Mesafeli Satış Sözleşmesi
+          </Link>{" "}
+          ile birlikte geçerlidir.
         </p>
       </section>
     </div>
