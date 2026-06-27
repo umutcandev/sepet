@@ -51,6 +51,7 @@ import {
   type BasketContextPayload,
 } from "./basket-save-card"
 import { ThinkingText } from "./ai-thinking-text"
+import { Marker, MarkerContent } from "@/components/ui/marker"
 import { cn } from "@/lib/utils"
 
 const SEED_KEY = "assistant:seed"
@@ -470,7 +471,11 @@ export function AssistantChat({
                 </Message>
                 <Message from="assistant" key="__seed_assistant">
                   <MessageContent>
-                    <ThinkingText>Düşünüyorum…</ThinkingText>
+                    <Marker role="status">
+                      <MarkerContent className="shimmer font-medium">
+                        Düşünüyorum…
+                      </MarkerContent>
+                    </Marker>
                   </MessageContent>
                 </Message>
               </>
@@ -779,7 +784,9 @@ function renderToolPart(
   }
   return (
     <div key={key} className="py-0.5">
-      <ThinkingText>{loadingLabel}</ThinkingText>
+      <Marker role="status">
+        <MarkerContent className="shimmer font-medium">{loadingLabel}</MarkerContent>
+      </Marker>
     </div>
   )
 }

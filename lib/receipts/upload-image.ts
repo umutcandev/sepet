@@ -39,31 +39,62 @@ export async function urlToBlob(url: string, mimeType: string): Promise<Blob> {
   }
 }
 
-export async function uploadReceiptImage(file: {
-  url?: string
-  mediaType?: string
-  filename?: string
-}): Promise<{ key: string; publicUrl: string }> {
-  if (!file.url || !file.mediaType) {
+export async function uploadReceiptImage(
+  file: {
+    url?: string
+    mediaType?: string
+    filename?: string
+  },
+  options?: {
+    /** Yükleme ilerlemesi (gerçek byte sayacı, XHR upload.onprogress). */
+    onProgress?: (loaded: number, total: number) => void
+  },
+): Promise<{ key: string; publicUrl: string; size: number }> {
+  const url = file.url
+  const mediaType = file.mediaType
+  if (!url || !mediaType) {
     throw new Error("Geçersiz dosya.")
   }
 
-  const blob = await urlToBlob(file.url, file.mediaType)
+  const blob = await urlToBlob(url, mediaType)
+  // `blob.size` yüklenen dosyanın tam byte uzunluğudur — gösterilen boyutun
+  // doğru kaynağı budur (sunucu boyutu geri döndürmüyor).
+  const size = blob.size
 
-  const res = await fetch("/api/receipts/upload", {
-    method: "POST",
-    headers: { "Content-Type": file.mediaType },
-    body: blob,
-  })
-  if (!res.ok) {
-    const data = (await res.json().catch(() => null)) as {
-      message?: string
-    } | null
-    throw new Error(data?.message ?? "Yükleme reddedildi.")
-  }
-  const { key, publicUrl } = (await res.json()) as {
+  // fetch upload ilerlemesini raporlamadığı için XHR kullanıyoruz.
+  const { key, publicUrl } = await new Promise<{
     key: string
     publicUrl: string
-  }
-  return { key, publicUrl }
+  }>((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open("POST", "/api/receipts/upload")
+    xhr.responseType = "json"
+    xhr.setRequestHeader("Content-Type", mediaType)
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) options?.onProgress?.(e.loaded, e.total)
+    }
+
+    xhr.onload = () => {
+      const data = xhr.response as
+        | { key?: string; publicUrl?: string; message?: string }
+        | null
+      if (xhr.status >= 200 && xhr.status < 300) {
+        if (data?.key && data?.publicUrl) {
+          resolve({ key: data.key, publicUrl: data.publicUrl })
+        } else {
+          reject(new Error("Yükleme yanıtı geçersiz."))
+        }
+      } else {
+        reject(new Error(data?.message ?? "Yükleme reddedildi."))
+      }
+    }
+
+    xhr.onerror = () => reject(new Error("Ağ hatası — yükleme başarısız."))
+    xhr.onabort = () => reject(new Error("Yükleme iptal edildi."))
+
+    xhr.send(blob)
+  })
+
+  return { key, publicUrl, size }
 }

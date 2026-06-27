@@ -11,7 +11,7 @@ export type ThinkingTextProps = {
 export function ThinkingText({ children, className }: ThinkingTextProps) {
   return (
     <span
-      className={cn("ai-thinking-text text-sm font-medium", className)}
+      className={cn("shimmer text-sm font-medium", className)}
       aria-live="polite"
     >
       {children}

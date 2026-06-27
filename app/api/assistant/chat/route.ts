@@ -12,12 +12,25 @@ import { z } from "zod"
 import { auth } from "@/auth"
 import { isOwnedReceiptUrl } from "@/lib/storage/r2"
 import { UNIT_VALUES } from "@/lib/ai/schemas"
+import type { AiCallOptions } from "@/lib/ai/models"
 import {
   generateChatTitle,
   parseShoppingList,
   analyzeImage,
   lookupProducts,
 } from "@/lib/ai/tools"
+import {
+  textStart,
+  textDelta,
+  textEnd,
+  reasoningStart,
+  reasoningDelta,
+  reasoningEnd,
+  toolInputAvailable,
+  toolOutputAvailable,
+  toolOutputError,
+  dataPart,
+} from "@/lib/assistant/ui-chunks"
 import { computeOptimization } from "@/lib/ai/optimize"
 import { getUserLocationContext } from "@/lib/auth/location"
 import type { LocationContext } from "@/lib/marketfiyati/client"
@@ -533,6 +546,11 @@ export async function POST(req: Request) {
     console.error("[assistant/chat] user message persist failed", err)
   }
 
+  // İstek iptal sinyali — kullanıcı sekmeyi kapatınca / stream abort olunca
+  // tetiklenir. LLM çağrılarına bağlanır ki arka planda boşa token/maliyet
+  // yakılmasın (özellikle onay turundaki selectMatches).
+  const requestSignal = req.signal
+
   const newConversationId = conversationId
   const stream = createUIMessageStream({
     execute: async ({ writer }) => {
@@ -547,11 +565,12 @@ export async function POST(req: Request) {
       // the sidebar can show the new conversation immediately without an RSC
       // refresh — the AI-generated title arrives later via the title event.
       if (createdNewConversation) {
-        writer.write({
-          type: "data-conversation-id",
-          data: { id: newConversationId, title: createdTitle },
-          transient: true,
-        } as Parameters<typeof writer.write>[0])
+        writer.write(
+          dataPart("conversation-id", {
+            id: newConversationId,
+            title: createdTitle,
+          }),
+        )
       }
 
       // Yeni sohbet için: AI başlığını ana cevap stream'i ile paralel üret ve
@@ -571,17 +590,15 @@ export async function POST(req: Request) {
         } catch (err) {
           console.error("[assistant/chat] title persist failed", err)
         }
-        writer.write({
-          type: "data-conversation-title",
-          data: { id: newConversationId, title },
-          transient: true,
-        } as Parameters<typeof writer.write>[0])
+        writer.write(dataPart("conversation-title", { id: newConversationId, title }))
       }
 
       if (createdNewConversation && mode.kind === "text") {
         titlePromise = (async () => {
           try {
-            const title = await generateChatTitle(mode.text)
+            const title = await generateChatTitle(mode.text, {
+              signal: requestSignal,
+            })
             await emitTitleIfNew(title)
           } catch (err) {
             console.error("[assistant/chat] title generation failed", err)
@@ -612,6 +629,7 @@ export async function POST(req: Request) {
             mode,
             loc,
             onImageKind: handleImageKind,
+            signal: requestSignal,
           }),
           titlePromise,
         ])
@@ -649,11 +667,7 @@ export async function POST(req: Request) {
       } catch (err) {
         console.error("[assistant/chat] status persist failed", err)
       }
-      writer.write({
-        type: "data-conversation-status",
-        data: { id: newConversationId, status },
-        transient: true,
-      } as Parameters<typeof writer.write>[0])
+      writer.write(dataPart("conversation-status", { id: newConversationId, status }))
 
       writer.write({ type: "finish" })
     },
@@ -672,8 +686,6 @@ function findLastUserMessage(messages: UIMessage[]): UIMessage | null {
   }
   return null
 }
-
-type AnyChunk = UIMessageChunk
 
 type StoredTextPart = { type: "text"; text: string }
 type StoredReasoningPart = {
@@ -702,88 +714,85 @@ type StoredPart =
   | StoredToolPart
 
 type AssistantRecorder = {
-  handle: (chunk: AnyChunk) => void
+  handle: (chunk: UIMessageChunk) => void
   finalize: () => StoredPart[]
 }
 
+/**
+ * Elle yazdığımız stream chunk'larını kalıcılaştırılacak mesaj part'larına
+ * yeniden birleştirir (SDK'nın tool-loop'unu kullanmadığımız için bu adımı kendimiz
+ * yapıyoruz). `chunk` artık `UIMessageChunk` union'ı olarak tipli — `switch
+ * (chunk.type)` her kolu ilgili üyeye daraltır, eskiden gereken alan-bazlı cast'ler
+ * (c.id/c.delta/...) kalktı.
+ */
 function createAssistantRecorder(): AssistantRecorder {
   const parts: StoredPart[] = []
   const textIndex = new Map<string, number>()
   const reasoningIndex = new Map<string, number>()
   const toolIndex = new Map<string, number>()
 
-  function handle(chunkRaw: AnyChunk) {
-    const c = chunkRaw as unknown as { type: string } & Record<string, unknown>
-    switch (c.type) {
+  function handle(chunk: UIMessageChunk) {
+    switch (chunk.type) {
       case "text-start": {
-        const id = c.id as string
         const idx = parts.length
         parts.push({ type: "text", text: "" })
-        textIndex.set(id, idx)
+        textIndex.set(chunk.id, idx)
         return
       }
       case "text-delta": {
-        const id = c.id as string
-        const idx = textIndex.get(id)
+        const idx = textIndex.get(chunk.id)
         if (idx == null) return
         const p = parts[idx] as StoredTextPart
-        p.text += (c.delta as string) ?? ""
+        p.text += chunk.delta
         return
       }
       case "text-end":
         return
       case "reasoning-start": {
-        const id = c.id as string
         const idx = parts.length
         parts.push({ type: "reasoning", text: "", state: "streaming" })
-        reasoningIndex.set(id, idx)
+        reasoningIndex.set(chunk.id, idx)
         return
       }
       case "reasoning-delta": {
-        const id = c.id as string
-        const idx = reasoningIndex.get(id)
+        const idx = reasoningIndex.get(chunk.id)
         if (idx == null) return
         const p = parts[idx] as StoredReasoningPart
-        p.text += (c.delta as string) ?? ""
+        p.text += chunk.delta
         return
       }
       case "reasoning-end": {
-        const id = c.id as string
-        const idx = reasoningIndex.get(id)
+        const idx = reasoningIndex.get(chunk.id)
         if (idx == null) return
         const p = parts[idx] as StoredReasoningPart
         p.state = "done"
         return
       }
       case "tool-input-available": {
-        const toolCallId = c.toolCallId as string
-        const toolName = c.toolName as string
         const idx = parts.length
         parts.push({
-          type: `tool-${toolName}`,
-          toolCallId,
+          type: `tool-${chunk.toolName}`,
+          toolCallId: chunk.toolCallId,
           state: "input-available",
-          input: c.input,
+          input: chunk.input,
         })
-        toolIndex.set(toolCallId, idx)
+        toolIndex.set(chunk.toolCallId, idx)
         return
       }
       case "tool-output-available": {
-        const toolCallId = c.toolCallId as string
-        const idx = toolIndex.get(toolCallId)
+        const idx = toolIndex.get(chunk.toolCallId)
         if (idx == null) return
         const p = parts[idx] as StoredToolPart
         p.state = "output-available"
-        p.output = c.output
+        p.output = chunk.output
         return
       }
       case "tool-output-error": {
-        const toolCallId = c.toolCallId as string
-        const idx = toolIndex.get(toolCallId)
+        const idx = toolIndex.get(chunk.toolCallId)
         if (idx == null) return
         const p = parts[idx] as StoredToolPart
         p.state = "output-error"
-        p.errorText = c.errorText as string
+        p.errorText = chunk.errorText
         return
       }
       default:
@@ -802,7 +811,7 @@ function wrapWriter(
 ): WriterLike {
   return {
     write(chunk) {
-      recorder.handle(chunk as AnyChunk)
+      recorder.handle(chunk)
       writer.write(chunk)
     },
   }
@@ -821,6 +830,7 @@ async function runAssistantTurn({
   mode,
   loc,
   onImageKind,
+  signal,
 }: {
   writer: WriterLike
   mode: Exclude<LastUserMode, { kind: "empty" }>
@@ -829,31 +839,35 @@ async function runAssistantTurn({
     kind: ImageAnalysis["kind"],
     analysis?: ImageAnalysis,
   ) => Promise<void> | void
+  signal?: AbortSignal
 }): Promise<TurnResult> {
+  // İstek iptal sinyalini tüm LLM çağrılarına taşı — abort'ta boşa token yanmasın.
+  const aiOpts: AiCallOptions = { signal }
+
   if (mode.kind === "receiptImage") {
     const analyzeCallId = nanoid()
-    writer.write({
-      type: "tool-input-available",
-      toolCallId: analyzeCallId,
-      toolName: "analyzeImage",
-      input: { imageUrl: mode.imageUrl },
-    } as AnyChunk)
+    writer.write(
+      toolInputAvailable(analyzeCallId, "analyzeImage", {
+        imageUrl: mode.imageUrl,
+      }),
+    )
 
     let analysis: ImageAnalysis
     let parseReasoning: string | null = null
     try {
-      const result = await analyzeImage(mode.imageUrl)
+      const result = await analyzeImage(mode.imageUrl, aiOpts)
       analysis = result.analysis
       parseReasoning = result.reasoning
     } catch (err) {
       console.error("[assistant/chat] image analysis failed", err)
-      writer.write({
-        type: "tool-output-error",
-        toolCallId: analyzeCallId,
-        errorText: isModelOverloaded(err)
-          ? MODEL_BUSY_TEXT
-          : "Görseli okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
-      } as AnyChunk)
+      writer.write(
+        toolOutputError(
+          analyzeCallId,
+          isModelOverloaded(err)
+            ? MODEL_BUSY_TEXT
+            : "Görseli okuyamadım. Daha net bir fotoğrafla tekrar deneyebilir misin?",
+        ),
+      )
       if (onImageKind) await onImageKind("unknown")
       // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir.
       return { awaiting: false, hardError: true }
@@ -863,15 +877,13 @@ async function runAssistantTurn({
       await emitReasoning(writer, parseReasoning)
     }
 
-    writer.write({
-      type: "tool-output-available",
-      toolCallId: analyzeCallId,
-      output: {
+    writer.write(
+      toolOutputAvailable(analyzeCallId, {
         analysis,
         receiptImageUrl: mode.imageUrl,
         receiptImageR2Key: mode.imageR2Key ?? null,
-      },
-    } as AnyChunk)
+      }),
+    )
 
     if (onImageKind) await onImageKind(analysis.kind, analysis)
 
@@ -928,36 +940,22 @@ async function runAssistantTurn({
     }))
 
     const lookupCallId = nanoid()
-    writer.write({
-      type: "tool-input-available",
-      toolCallId: lookupCallId,
-      toolName: "lookupProducts",
-      input: { items: parsedItems },
-    } as AnyChunk)
+    writer.write(
+      toolInputAvailable(lookupCallId, "lookupProducts", { items: parsedItems }),
+    )
 
-    const { matches } = await lookupProducts(parsedItems, loc)
+    const { matches } = await lookupProducts(parsedItems, loc, aiOpts)
 
-    writer.write({
-      type: "tool-output-available",
-      toolCallId: lookupCallId,
-      output: { matches },
-    } as AnyChunk)
+    writer.write(toolOutputAvailable(lookupCallId, { matches }))
 
     const summarizeCallId = nanoid()
-    writer.write({
-      type: "tool-input-available",
-      toolCallId: summarizeCallId,
-      toolName: "summarizeOptimization",
-      input: { matches },
-    } as AnyChunk)
+    writer.write(
+      toolInputAvailable(summarizeCallId, "summarizeOptimization", { matches }),
+    )
 
     const summary = computeOptimization(matches)
 
-    writer.write({
-      type: "tool-output-available",
-      toolCallId: summarizeCallId,
-      output: summary,
-    } as AnyChunk)
+    writer.write(toolOutputAvailable(summarizeCallId, summary))
 
     const comparison = computeReceiptComparison(
       p.items,
@@ -966,16 +964,9 @@ async function runAssistantTurn({
       p.totalAmount ?? null,
     )
     const compareCallId = nanoid()
-    writer.write({
-      type: "tool-input-available",
-      toolCallId: compareCallId,
-      toolName: "receiptComparison",
-      input: {},
-    } as AnyChunk)
-    writer.write({
-      type: "tool-output-available",
-      toolCallId: compareCallId,
-      output: {
+    writer.write(toolInputAvailable(compareCallId, "receiptComparison", {}))
+    writer.write(
+      toolOutputAvailable(compareCallId, {
         comparison,
         receiptContext: {
           imageUrl: p.receiptImageUrl,
@@ -987,8 +978,8 @@ async function runAssistantTurn({
         },
         summary,
         matches,
-      },
-    } as AnyChunk)
+      }),
+    )
 
     await emitText(writer, buildReceiptComparisonText(comparison))
     return { awaiting: false }
@@ -1004,50 +995,29 @@ async function runAssistantTurn({
     }))
 
     const lookupCallId = nanoid()
-    writer.write({
-      type: "tool-input-available",
-      toolCallId: lookupCallId,
-      toolName: "lookupProducts",
-      input: { items: parsedItems },
-    } as AnyChunk)
+    writer.write(
+      toolInputAvailable(lookupCallId, "lookupProducts", { items: parsedItems }),
+    )
 
-    const { matches } = await lookupProducts(parsedItems, loc)
+    const { matches } = await lookupProducts(parsedItems, loc, aiOpts)
 
-    writer.write({
-      type: "tool-output-available",
-      toolCallId: lookupCallId,
-      output: { matches },
-    } as AnyChunk)
+    writer.write(toolOutputAvailable(lookupCallId, { matches }))
 
     const summarizeCallId = nanoid()
-    writer.write({
-      type: "tool-input-available",
-      toolCallId: summarizeCallId,
-      toolName: "summarizeOptimization",
-      input: { matches },
-    } as AnyChunk)
+    writer.write(
+      toolInputAvailable(summarizeCallId, "summarizeOptimization", { matches }),
+    )
 
     const summary = computeOptimization(matches)
 
-    writer.write({
-      type: "tool-output-available",
-      toolCallId: summarizeCallId,
-      output: summary,
-    } as AnyChunk)
+    writer.write(toolOutputAvailable(summarizeCallId, summary))
 
     // Save kartı için tüm bağlamı tek bir tool-output'ta topla.
     const contextCallId = nanoid()
-    writer.write({
-      type: "tool-input-available",
-      toolCallId: contextCallId,
-      toolName: "basketContext",
-      input: {},
-    } as AnyChunk)
-    writer.write({
-      type: "tool-output-available",
-      toolCallId: contextCallId,
-      output: { items: p.items, matches, summary },
-    } as AnyChunk)
+    writer.write(toolInputAvailable(contextCallId, "basketContext", {}))
+    writer.write(
+      toolOutputAvailable(contextCallId, { items: p.items, matches, summary }),
+    )
 
     await emitText(writer, buildSummaryText(summary, matches))
     return { awaiting: false }
@@ -1056,29 +1026,23 @@ async function runAssistantTurn({
   // Text mode — parse'ta dur, kullanıcının onayını bekle.
   const rawText = mode.text
   const parseCallId = nanoid()
-  writer.write({
-    type: "tool-input-available",
-    toolCallId: parseCallId,
-    toolName: "parseShoppingList",
-    input: { rawText },
-  } as AnyChunk)
+  writer.write(toolInputAvailable(parseCallId, "parseShoppingList", { rawText }))
 
   let basket: BasketDraft
   let parseReasoning: string | null = null
   try {
-    const result = await parseShoppingList(rawText)
+    const result = await parseShoppingList(rawText, aiOpts)
     basket = result.draft
     parseReasoning = result.reasoning
   } catch (err) {
     console.error("[assistant/chat] parse failed", err)
     const busy = isModelOverloaded(err)
-    writer.write({
-      type: "tool-output-error",
-      toolCallId: parseCallId,
-      errorText: busy
-        ? MODEL_BUSY_TEXT
-        : "Listeyi okuyamadım, tekrar yazabilir misin?",
-    } as AnyChunk)
+    writer.write(
+      toolOutputError(
+        parseCallId,
+        busy ? MODEL_BUSY_TEXT : "Listeyi okuyamadım, tekrar yazabilir misin?",
+      ),
+    )
     await emitText(writer, busy ? MODEL_BUSY_TEXT : FALLBACK_TEXT)
     // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir.
     return { awaiting: false, hardError: true }
@@ -1088,11 +1052,7 @@ async function runAssistantTurn({
     await emitReasoning(writer, parseReasoning)
   }
 
-  writer.write({
-    type: "tool-output-available",
-    toolCallId: parseCallId,
-    output: basket,
-  } as AnyChunk)
+  writer.write(toolOutputAvailable(parseCallId, basket))
 
   if (basket.items.length === 0) {
     await emitText(writer, basket.chatResponse?.trim() || FALLBACK_TEXT)
@@ -1107,39 +1067,55 @@ async function runAssistantTurn({
   return { awaiting: true }
 }
 
+// Typewriter (kelime kelime akıtma) yapay gecikmesinin TOPLAM bütçesi. Adım başı
+// gecikme bu bütçeyi aşmayacak şekilde otomatik küçülür: kısa metinde akıcı
+// kademeli görünüm korunur, uzun metinde toplam bekleme bu tavanı geçmez.
+const TEXT_STREAM_BUDGET_MS = 1500
+const REASONING_STREAM_BUDGET_MS = 1200
+
+/** Adımlar arası gecikme = min(temel, bütçe / boşluk sayısı). */
+function perStepDelay(gaps: number, baseMs: number, budgetMs: number): number {
+  if (gaps <= 0) return 0
+  return Math.min(baseMs, Math.floor(budgetMs / gaps))
+}
+
 async function emitText(writer: WriterLike, text: string) {
   const id = nanoid()
-  writer.write({ type: "text-start", id } as AnyChunk)
+  writer.write(textStart(id))
   const tokens = text.match(/\S+\s*/g) ?? [text]
   const groupSize = 3
+  const gaps = Math.max(0, Math.ceil(tokens.length / groupSize) - 1)
+  const delayMs = perStepDelay(gaps, 18, TEXT_STREAM_BUDGET_MS)
   for (let i = 0; i < tokens.length; i += groupSize) {
-    const delta = tokens.slice(i, i + groupSize).join("")
-    writer.write({ type: "text-delta", id, delta } as AnyChunk)
-    if (i + groupSize < tokens.length) {
-      await new Promise((resolve) => setTimeout(resolve, 18))
+    writer.write(textDelta(id, tokens.slice(i, i + groupSize).join("")))
+    if (i + groupSize < tokens.length && delayMs > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs))
     }
   }
-  writer.write({ type: "text-end", id } as AnyChunk)
+  writer.write(textEnd(id))
 }
 
 /**
  * Gemini'nin thought summary'sini kullanıcıya kelime kelime akıt. generateObject
  * sonrası bütün halinde elimize geçtiği için yapay bir gecikme ile word-by-word
- * yayınlanır — kullanıcı modelin düşündüğü adımları okuyabilsin.
+ * yayınlanır — kullanıcı modelin düşündüğü adımları okuyabilsin. Reasoning sonuç
+ * KARTINDAN ÖNCE yayınlandığı için toplam gecikme REASONING_STREAM_BUDGET_MS ile
+ * sınırlandırılır: uzun bir özet kartın görünmesini saniyelerce geciktirmesin.
  */
 async function emitReasoning(writer: WriterLike, text: string) {
   const trimmed = text.trim()
   if (!trimmed) return
   const id = nanoid()
-  writer.write({ type: "reasoning-start", id } as AnyChunk)
+  writer.write(reasoningStart(id))
   const tokens = trimmed.match(/\S+\s*/g) ?? [trimmed]
   const groupSize = 2
+  const gaps = Math.max(0, Math.ceil(tokens.length / groupSize) - 1)
+  const delayMs = perStepDelay(gaps, 22, REASONING_STREAM_BUDGET_MS)
   for (let i = 0; i < tokens.length; i += groupSize) {
-    const delta = tokens.slice(i, i + groupSize).join("")
-    writer.write({ type: "reasoning-delta", id, delta } as AnyChunk)
-    if (i + groupSize < tokens.length) {
-      await new Promise((resolve) => setTimeout(resolve, 22))
+    writer.write(reasoningDelta(id, tokens.slice(i, i + groupSize).join("")))
+    if (i + groupSize < tokens.length && delayMs > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs))
     }
   }
-  writer.write({ type: "reasoning-end", id } as AnyChunk)
+  writer.write(reasoningEnd(id))
 }

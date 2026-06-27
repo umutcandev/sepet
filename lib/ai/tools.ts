@@ -11,7 +11,15 @@ import {
   type MatchSelection,
   type ParsedItem,
 } from "./schemas"
-import { geminiFlash, geminiFlashLite } from "./models"
+import {
+  geminiFlash,
+  geminiFlashLite,
+  GEMINI_FLASH,
+  GEMINI_FLASH_LITE,
+  AI_MAX_RETRIES,
+  type AiCallOptions,
+} from "./models"
+import { withLlmCall } from "./telemetry"
 import {
   CHAT_TITLE_PROMPT,
   IMAGE_ANALYSIS_PROMPT,
@@ -79,29 +87,37 @@ export type ImageAnalysisWithReasoning = {
 
 export async function analyzeImage(
   imageUrl: string,
+  opts: AiCallOptions = {},
 ): Promise<ImageAnalysisWithReasoning> {
-  const { object, reasoning } = await generateObject({
-    model: geminiFlash,
-    schema: ImageAnalysisSchema,
-    temperature: 0.1,
-    messages: [
-      {
-        role: "user",
-        content: [
-          { type: "text", text: IMAGE_ANALYSIS_PROMPT },
-          { type: "image", image: new URL(imageUrl) },
+  const { object, reasoning } = await withLlmCall(
+    "analyzeImage",
+    GEMINI_FLASH,
+    () =>
+      generateObject({
+        model: geminiFlash,
+        schema: ImageAnalysisSchema,
+        temperature: 0.1,
+        abortSignal: opts.signal,
+        maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: IMAGE_ANALYSIS_PROMPT },
+              { type: "image", image: new URL(imageUrl) },
+            ],
+          },
         ],
-      },
-    ],
-    providerOptions: {
-      google: {
-        thinkingConfig: {
-          thinkingBudget: 1024,
-          includeThoughts: true,
+        providerOptions: {
+          google: {
+            thinkingConfig: {
+              thinkingBudget: 1024,
+              includeThoughts: true,
+            },
+          },
         },
-      },
-    },
-  })
+      }),
+  )
   console.log(
     "[analyzeImage] kind=",
     object.kind,
@@ -116,13 +132,20 @@ export async function analyzeImage(
   return { analysis: object, reasoning: reasoning ?? null }
 }
 
-export async function generateChatTitle(userText: string): Promise<string> {
-  const { object } = await generateObject({
-    model: geminiFlashLite,
-    schema: ChatTitleSchema,
-    temperature: 0.2,
-    prompt: CHAT_TITLE_PROMPT(userText),
-  })
+export async function generateChatTitle(
+  userText: string,
+  opts: AiCallOptions = {},
+): Promise<string> {
+  const { object } = await withLlmCall("generateChatTitle", GEMINI_FLASH_LITE, () =>
+    generateObject({
+      model: geminiFlashLite,
+      schema: ChatTitleSchema,
+      temperature: 0.2,
+      abortSignal: opts.signal,
+      maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+      prompt: CHAT_TITLE_PROMPT(userText),
+    }),
+  )
   return object.title.trim().replace(/\s+/g, " ").slice(0, 100)
 }
 
@@ -133,21 +156,29 @@ export type BasketDraftWithReasoning = {
 
 export async function parseShoppingList(
   rawText: string,
+  opts: AiCallOptions = {},
 ): Promise<BasketDraftWithReasoning> {
-  const { object, reasoning } = await generateObject({
-    model: geminiFlashLite,
-    schema: BasketDraftSchema,
-    temperature: 0.1,
-    prompt: PARSE_PROMPT(rawText),
-    providerOptions: {
-      google: {
-        thinkingConfig: {
-          thinkingBudget: 512,
-          includeThoughts: true,
+  const { object, reasoning } = await withLlmCall(
+    "parseShoppingList",
+    GEMINI_FLASH_LITE,
+    () =>
+      generateObject({
+        model: geminiFlashLite,
+        schema: BasketDraftSchema,
+        temperature: 0.1,
+        abortSignal: opts.signal,
+        maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+        prompt: PARSE_PROMPT(rawText),
+        providerOptions: {
+          google: {
+            thinkingConfig: {
+              thinkingBudget: 512,
+              includeThoughts: true,
+            },
+          },
         },
-      },
-    },
-  })
+      }),
+  )
   console.log(
     "[parseShoppingList] items:",
     object.items.map((i) => `${i.name} → "${i.searchQuery}"`).join(" | "),
@@ -169,15 +200,23 @@ type CachedSelection = {
 }
 
 /**
- * LLM eşleştirme cache anahtarı. Aynı kalem (ham ad + miktar + birim) aynı
- * aday kümesiyle gelirse seçim de aynıdır — LLM'i tekrar çağırmaya gerek yok.
- * v2: seçim tek ürün yerine kabul-edilebilir-küme döndürüyor (şema değişti).
- * v3: MATCH_PROMPT kuralları değişti (taze-vs-turşu/işlenmiş varyant reddi +
- *     yemeğe göre form). Cache anahtarı prompt'a bağlı OLMADIĞI için, prompt
- *     seçimi değiştirdiğinde sürümü yükseltmek ŞART — aksi halde eski (yanlış)
- *     seçimler TTL boyunca servis edilmeye devam eder.
- * v4: MATCH_PROMPT boyut (sizeMismatch) kuralı netleşti — boyut rawName'de YA DA
- *     quantity/unit alanında olabilir; LLM artık ölçü farkını tutarlı işaretler.
+ * MATCH_PROMPT'un içeriğinden türetilen kısa sürüm damgası. Eskiden cache anahtarı
+ * prompt'a bağlı DEĞİLDİ; prompt kuralı değişince elle `v4` gibi bir sürüm bump'ı
+ * yapmak ŞARTTI — unutulursa eski (yanlış) seçimler TTL boyunca servis ediliyordu.
+ * Artık prompt şablonunun kendisini hash'leyerek bunu OTOMATİKLEŞTİRİYORUZ: kabul/
+ * red kuralları her değiştiğinde damga da değişir ve cache kendiliğinden geçersiz
+ * olur. `MATCH_PROMPT([])` sabit aday listesiyle (boş) yalnızca kural metnini verir.
+ */
+const MATCH_PROMPT_VERSION = createHash("sha1")
+  .update(MATCH_PROMPT([]))
+  .digest("hex")
+  .slice(0, 12)
+
+/**
+ * LLM eşleştirme cache anahtarı. Aynı kalem (ham ad + miktar + birim) aynı aday
+ * kümesi VE aynı prompt sürümüyle gelirse seçim de aynıdır — LLM'i tekrar
+ * çağırmaya gerek yok. Prompt sürümü (MATCH_PROMPT_VERSION) anahtara dahil
+ * olduğundan kural değişikliği eski seçimleri otomatik geçersiz kılar.
  */
 function matchCacheKey(item: ParsedItem, hits: HitList): string {
   const payload = JSON.stringify({
@@ -189,7 +228,7 @@ function matchCacheKey(item: ParsedItem, hits: HitList): string {
       .map((h) => h.productId)
       .sort(),
   })
-  return `mf:match:v4:${createHash("sha1").update(payload).digest("hex")}`
+  return `mf:match:${MATCH_PROMPT_VERSION}:${createHash("sha1").update(payload).digest("hex")}`
 }
 
 function toMatchedProduct(h: ProductHitItem) {
@@ -213,6 +252,7 @@ function toMatchedProduct(h: ProductHitItem) {
  */
 async function selectMatches(
   prepared: Array<{ item: ParsedItem; hits: HitList }>,
+  opts: AiCallOptions = {},
 ): Promise<Map<number, MatchSelection["selections"][number]>> {
   const promptItems: MatchPromptItem[] = prepared.map((p, idx) => ({
     itemIndex: idx,
@@ -227,12 +267,16 @@ async function selectMatches(
     })),
   }))
 
-  const { object } = await generateObject({
-    model: geminiFlashLite,
-    schema: MatchSelectionSchema,
-    temperature: 0.1,
-    prompt: MATCH_PROMPT(promptItems),
-  })
+  const { object } = await withLlmCall("selectMatches", GEMINI_FLASH_LITE, () =>
+    generateObject({
+      model: geminiFlashLite,
+      schema: MatchSelectionSchema,
+      temperature: 0.1,
+      abortSignal: opts.signal,
+      maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+      prompt: MATCH_PROMPT(promptItems),
+    }),
+  )
 
   const map = new Map<number, MatchSelection["selections"][number]>()
   for (const sel of object.selections) map.set(sel.itemIndex, sel)
@@ -311,6 +355,7 @@ function buildMarketOptions(accepted: HitList): MarketOption[] {
 export async function lookupProducts(
   items: ParsedItem[],
   loc: LocationContext = MF_DEFAULT_LOCATION,
+  opts: AiCallOptions = {},
 ): Promise<{ matches: MatchResult[] }> {
   // Faz 1 — her kalem için aday ürünleri getir.
   const outcomes = await Promise.all(
@@ -360,6 +405,7 @@ export async function lookupProducts(
       try {
         selections = await selectMatches(
           misses.map(({ item, hits }) => ({ item, hits })),
+          opts,
         )
       } catch (err) {
         console.error(

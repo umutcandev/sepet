@@ -9,6 +9,7 @@ import {
   ExternalLinkIcon,
   FileTextIcon,
   ImageIcon,
+  InfoIcon,
   MessageSquareIcon,
   ReceiptIcon,
   ShoppingBasketIcon,
@@ -82,13 +83,43 @@ const PLAN_COMPARISON: { feature: string; free: string; pro: string }[] = [
   { feature: "Fiş kaydetme", free: "20", pro: "Sınırsız" },
 ]
 
-const STATUS_LABEL: Record<string, string> = {
-  active: "Aktif",
-  trialing: "Deneme",
-  past_due: "Gecikti",
-  canceled: "İptal",
-  unpaid: "Ödenmedi",
-  incomplete: "Tamamlanmadı",
+// Abonelik durumunu, kullanıcıya gösterilecek tek bir net etikete + tona
+// indirger. cancelAtPeriodEnd, status hâlâ "active" olsa bile önceliklidir:
+// "iptal edilecek" bilgisi daha önce yalnızca rozet renginde (sarımsı "Aktif")
+// taşınıyordu ve yeşil "Aktif"ten ayırt edilemiyordu; artık doğrudan metne
+// yazılır.
+type StatusTone = "positive" | "warning" | "negative"
+
+function describeStatus(sub: SubscriptionInfo): {
+  label: string
+  tone: StatusTone
+} {
+  if (sub.cancelAtPeriodEnd) return { label: "İptal edilecek", tone: "warning" }
+  if (!sub.status || sub.status === "active")
+    return { label: "Aktif", tone: "positive" }
+  switch (sub.status) {
+    case "trialing":
+      return { label: "Deneme sürümü", tone: "positive" }
+    case "past_due":
+      return { label: "Ödeme gecikti", tone: "warning" }
+    case "incomplete":
+      return { label: "Tamamlanmadı", tone: "warning" }
+    case "unpaid":
+      return { label: "Ödeme alınamadı", tone: "negative" }
+    case "canceled":
+      return { label: "İptal edildi", tone: "negative" }
+    default:
+      return { label: sub.status, tone: "positive" }
+  }
+}
+
+// Ton → metin rengi. Tokenlar badge'in success/warning/destructive
+// varyantlarıyla aynı paletten gelir; renk artık anlamı tek başına taşımaz,
+// yalnızca etiketteki durumu pekiştirir.
+const STATUS_TONE_CLASS: Record<StatusTone, string> = {
+  positive: "text-emerald-700 dark:text-emerald-300",
+  warning: "text-amber-700 dark:text-amber-300",
+  negative: "text-destructive",
 }
 
 // SSS — her madde koddaki davranış ve Polar yapılandırmasıyla doğrulanabilir:
@@ -234,17 +265,8 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
   const periodEnd = sub.currentPeriodEnd
     ? dateFmt.format(new Date(sub.currentPeriodEnd))
     : null
-  const statusLabel = sub.status ? (STATUS_LABEL[sub.status] ?? sub.status) : null
-  // Rozet rengi durumu yansıtır: iptal planlandıysa veya ödeme geciktiyse
-  // uyarı, sağlıklı aboneliklerde başarı, aksi halde nötr.
-  const statusVariant =
-    sub.cancelAtPeriodEnd ||
-    sub.status === "past_due" ||
-    sub.status === "unpaid"
-      ? "warning"
-      : sub.status === "active" || sub.status === "trialing"
-        ? "success"
-        : "secondary"
+  // Durum artık rozet renginde değil, açık bir etikette taşınır (aşağıda).
+  const status = describeStatus(sub)
 
   return (
     <section
@@ -253,85 +275,135 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
     >
       {/* Plan kimliği + durum + yönetim */}
       <div className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-          <span className="cn-font-heading text-lg font-semibold leading-none">
-            Mevcut planın
+        {/* Başlık solda, sözleşmeler menüsü sağda — Ücretsiz görünümdeki
+            (toggle ↔ menü) hizalamanın Pro karşılığı. */}
+        <div className="flex flex-wrap items-center justify-between gap-x-2.5 gap-y-3">
+          <span className="cn-font-heading text-md font-semibold leading-none">
+            Plan detayları
           </span>
-          <Badge variant="default">Pro</Badge>
-          {intervalLabel && <Badge variant="secondary">{intervalLabel}</Badge>}
-          {statusLabel && <Badge variant={statusVariant}>{statusLabel}</Badge>}
+          <ContractsMenu />
         </div>
 
-        {periodEnd && (
-          <p className="text-sm text-muted-foreground">
-            {sub.cancelAtPeriodEnd ? (
-              <>
-                Aboneliğin{" "}
-                <span className="font-medium text-foreground">{periodEnd}</span>{" "}
-                tarihinde sona erecek; o güne kadar Pro avantajları açık kalır.
-              </>
-            ) : (
-              <>
-                Bir sonraki yenilenme:{" "}
-                <span className="font-medium text-foreground">{periodEnd}</span>
-              </>
-            )}
-          </p>
-        )}
+        {/* Abonelik bilgileri — "Plan avantajların" tablosuyla aynı stil:
+            text-sm, ince border-t ayraçlar, py-2.5 nefes payı, hover yok.
+            Etiket solda (muted), değer sağda. İlk satırda üst ayraç olmaz;
+            aralık ve tarih yalnızca Polar'dan biliniyorsa eklenir. */}
+        <div className="flex flex-col gap-2.5">
+          <div className="overflow-hidden rounded-lg border border-border">
+            <table className="w-full border-separate border-spacing-0 text-sm">
+              <tbody>
+                <tr>
+                  <td className="px-4 py-2.5 text-foreground">Plan</td>
+                  <td className="px-4 py-2.5 text-right font-semibold text-primary">
+                    Pro
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border-t border-border px-4 py-2.5 text-foreground">
+                    Durum
+                  </td>
+                  <td
+                    className={cn(
+                      "border-t border-border px-4 py-2.5 text-right font-medium",
+                      STATUS_TONE_CLASS[status.tone],
+                    )}
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      <StatusHintDropdown sub={sub} periodEnd={periodEnd} />
+                      {status.label}
+                    </span>
+                  </td>
+                </tr>
+                {intervalLabel && (
+                  <tr>
+                    <td className="border-t border-border px-4 py-2.5 text-foreground">
+                      Faturalandırma
+                    </td>
+                    <td className="border-t border-border px-4 py-2.5 text-right font-medium text-foreground">
+                      {intervalLabel}
+                    </td>
+                  </tr>
+                )}
+                {periodEnd && (
+                  <tr>
+                    <td className="border-t border-border px-4 py-2.5 text-foreground">
+                      {sub.cancelAtPeriodEnd ? "Sona erme tarihi" : "Sonraki yenilenme"}
+                    </td>
+                    <td className="border-t border-border px-4 py-2.5 text-right font-medium text-foreground tabular-nums">
+                      {periodEnd}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td
+                    colSpan={2}
+                    className="border-t border-border bg-muted/30 px-4 py-2"
+                  >
+                    <div
+                      data-search-target="abonelik-yonet"
+                      className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5"
+                    >
+                      {sub.hasCustomer ? (
+                        <>
+                          <span className="text-xs text-muted-foreground">
+                            Plan değişikliği, fatura geçmişi ve iptal işlemleri
+                          </span>
+                          <Button asChild variant="outline" size="sm">
+                            <a href="/api/portal">
+                              Aboneliği yönet
+                              <ExternalLinkIcon data-icon="inline-end" />
+                            </a>
+                          </Button>
+                        </>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">
+                          Bu plan elle tanımlandığı için Polar üzerinden
+                          yönetilemiyor.
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
 
-        <div data-search-target="abonelik-yonet">
-          {sub.hasCustomer ? (
-            <Button asChild variant="outline" size="sm">
-              <a href="/api/portal">
-                Aboneliği yönet
-                <ExternalLinkIcon data-icon="inline-end" />
-              </a>
-            </Button>
-          ) : (
-            <p className="text-xs text-muted-foreground">
-              Bu plan elle tanımlandığı için Polar üzerinden yönetilemiyor.
-            </p>
-          )}
         </div>
       </div>
 
       {/* Ücretsiz↔Pro karşılaştırması; Pro sütunu hafif bir zeminle vurgulanır */}
       <div className="flex flex-col gap-3">
         <h3 className="text-sm font-semibold">Plan avantajların</h3>
-        <table className="w-full border-separate border-spacing-0 text-sm">
-          <thead>
-            <tr className="text-xs font-medium text-muted-foreground">
-              <th className="py-2 pr-4 text-left font-medium">Özellik</th>
-              <th className="px-4 py-2 text-center font-medium">Ücretsiz</th>
-              <th className="rounded-t-lg bg-primary/[0.07] px-4 py-2 text-center font-semibold text-primary">
-                Pro
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {PLAN_COMPARISON.map((row, i) => {
-              const last = i === PLAN_COMPARISON.length - 1
-              return (
+        <div className="overflow-hidden rounded-lg border border-border">
+          <table className="w-full border-separate border-spacing-0 text-sm">
+            <thead>
+              <tr className="text-xs font-medium text-muted-foreground">
+                <th className="px-4 py-2 text-left font-medium">Özellik</th>
+                <th className="px-4 py-2 text-center font-medium">Ücretsiz</th>
+                <th className="bg-primary/[0.07] px-4 py-2 text-center font-semibold text-primary">
+                  Pro
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {PLAN_COMPARISON.map((row) => (
                 <tr key={row.feature}>
-                  <td className="border-t border-border py-2.5 pr-4 text-foreground">
+                  <td className="border-t border-border px-4 py-2.5 text-foreground">
                     {row.feature}
                   </td>
                   <td className="border-t border-border px-4 py-2.5 text-center text-muted-foreground tabular-nums">
                     {row.free}
                   </td>
-                  <td
-                    className={cn(
-                      "border-t border-border bg-primary/[0.07] px-4 py-2.5 text-center font-medium text-foreground tabular-nums",
-                      last && "rounded-b-lg",
-                    )}
-                  >
+                  <td className="border-t border-border bg-primary/[0.07] px-4 py-2.5 text-center font-medium text-foreground tabular-nums">
                     {row.pro}
                   </td>
                 </tr>
-              )
-            })}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   )
@@ -632,6 +704,68 @@ function FeatureList({
     </ul>
   )
 }
+
+// ─── Durum ipucu dropdown'u ───
+// Durum etiketinin (ör. "İptal edilecek") yanında küçük bir info circle ikonu
+// gösterilir. Tıklanınca dropdown açılır ve duruma özgü açıklama metni
+// okunabilir. Popover yerine dropdown tercih edilmiştir çünkü mobilde
+// dokunma deneyimi daha güvenilirdir.
+function getStatusHint(
+  sub: SubscriptionInfo,
+  periodEnd: string | null,
+): string | null {
+  if (sub.cancelAtPeriodEnd && periodEnd) {
+    return `${periodEnd} tarihine kadar Pro avantajların açık kalır; dilersen iptali geri alabilirsin.`
+  }
+  switch (sub.status) {
+    case "past_due":
+      return "Son ödeme tahsil edilemedi. Polar ödemeyi yeniden deneyecek; bu süre zarfında Pro erişimin devam eder."
+    case "incomplete":
+      return "Abonelik ödeme işlemi tamamlanamadı. Lütfen ödeme bilgilerini kontrol et."
+    case "trialing":
+      return periodEnd
+        ? `Deneme süren ${periodEnd} tarihine kadar geçerli. Süre bitiminde otomatik olarak faturalandırılırsın.`
+        : "Deneme sürümünü kullanıyorsun. Süre bitiminde otomatik olarak faturalandırılırsın."
+    case "unpaid":
+      return "Tüm ödeme denemeleri başarısız oldu. Aboneliğin yakında iptal edilebilir."
+    default:
+      return null
+  }
+}
+
+function StatusHintDropdown({
+  sub,
+  periodEnd,
+}: {
+  sub: SubscriptionInfo
+  periodEnd: string | null
+}) {
+  const hint = getStatusHint(sub, periodEnd)
+  if (!hint) return null
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          aria-label="Durum hakkında bilgi"
+          className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        >
+          <InfoIcon className="size-3.5" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        className="max-w-72 px-3 py-2.5"
+      >
+        <p className="text-xs leading-relaxed text-muted-foreground">
+          {hint}
+        </p>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
 
 // Kod ve Polar yapılandırmasından doğrulanabilir SSS (içerik FAQ_ITEMS'ta).
 function SubscriptionFaq() {

@@ -3,10 +3,10 @@
 import * as React from "react"
 import { AnimatePresence, motion } from "motion/react"
 import {
-  AlertTriangleIcon,
   ImageIcon,
   PaperclipIcon,
   PlusIcon,
+  RefreshCwIcon,
   XIcon,
 } from "lucide-react"
 import { toast } from "sonner"
@@ -30,6 +30,16 @@ import type { ChatStatus } from "ai"
 import { cn } from "@/lib/utils"
 import { VoiceInput } from "@/components/assistant/voice-input"
 import { Spinner } from "@/components/ui/spinner"
+import {
+  Attachment,
+  AttachmentAction,
+  AttachmentActions,
+  AttachmentContent,
+  AttachmentDescription,
+  AttachmentGroup,
+  AttachmentMedia,
+  AttachmentTitle,
+} from "@/components/ui/attachment"
 import { uploadReceiptImage } from "@/lib/receipts/upload-image"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { loginDialog } from "@/lib/stores/login-dialog"
@@ -58,9 +68,44 @@ type UploadState = {
   status: "uploading" | "done" | "error"
   publicUrl?: string
   key?: string
+  progress?: number // 0-100, yalnızca yüklenirken
+  size?: number // byte cinsinden dosya boyutu, tamamlandığında
 }
 
-const UploadsContext = React.createContext<Record<string, UploadState>>({})
+// "image/png" → "PNG", "image/jpeg" → "JPG". Sunucu yalnızca JPEG/PNG/WebP
+// kabul ettiği için done state'inde mediaType her zaman bu kümeden gelir.
+function fileTypeLabel(mediaType?: string, filename?: string): string {
+  const sub = mediaType?.split("/")[1]?.split("+")[0]
+  if (sub) {
+    const upper = sub.toUpperCase()
+    return upper === "JPEG" ? "JPG" : upper
+  }
+  const ext = filename?.split(".").pop()
+  return ext ? ext.toUpperCase() : "DOSYA"
+}
+
+// Byte → insancıl boyut: "64 KB", "1.2 MB". 10'un altındaki değerlerde tek
+// ondalık, üstünde tam sayı (örn. "8.4 KB", "64 KB", "1.2 MB").
+function formatFileSize(bytes?: number): string {
+  if (bytes == null || !Number.isFinite(bytes) || bytes <= 0) return ""
+  if (bytes < 1024) return `${bytes} B`
+  const kb = bytes / 1024
+  if (kb < 1024) return `${kb < 10 ? kb.toFixed(1) : Math.round(kb)} KB`
+  const mb = kb / 1024
+  return `${mb < 10 ? mb.toFixed(1) : Math.round(mb)} MB`
+}
+
+type UploadFile = { url?: string; mediaType?: string; filename?: string }
+
+type UploadsContextValue = {
+  uploads: Record<string, UploadState>
+  retry: (file: UploadFile) => void
+}
+
+const UploadsContext = React.createContext<UploadsContextValue>({
+  uploads: {},
+  retry: () => {},
+})
 const useUploads = () => React.useContext(UploadsContext)
 
 export function AssistantPrompt({
@@ -82,6 +127,44 @@ export function AssistantPrompt({
     uploadsRef.current = uploads
   }, [uploads])
 
+  // Bir görseli R2'ye yükler ve upload state'ini günceller. Hem attach anında
+  // (UploadManager) hem de hata sonrası "tekrar dene" akışında kullanılır.
+  const startUpload = React.useCallback((file: UploadFile) => {
+    const url = file.url
+    if (!url) return
+    setUploads((prev) => ({ ...prev, [url]: { status: "uploading" } }))
+    uploadReceiptImage(file, {
+      onProgress: (loaded, total) => {
+        const percent = total > 0 ? Math.round((loaded / total) * 100) : 0
+        setUploads((prev) => {
+          const cur = prev[url]
+          // Yalnızca hâlâ bu yükleme sürerken ilerlemeyi yaz (yarış önler).
+          if (!cur || cur.status !== "uploading") return prev
+          return { ...prev, [url]: { ...cur, progress: percent } }
+        })
+      },
+    })
+      .then((res) => {
+        setUploads((prev) => ({
+          ...prev,
+          [url]: {
+            status: "done",
+            publicUrl: res.publicUrl,
+            key: res.key,
+            size: res.size,
+          },
+        }))
+      })
+      .catch((err) => {
+        setUploads((prev) => ({ ...prev, [url]: { status: "error" } }))
+        toast.error(
+          err instanceof Error
+            ? err.message
+            : "Fotoğraf yüklenemedi. Lütfen tekrar dene.",
+        )
+      })
+  }, [])
+
   // Dosya zaten yüklendiği için, parent'a iletmeden önce ekin data: URL'ini
   // R2 public URL'i + key ile değiştir. Parent artık upload beklemez.
   const handleSubmit = React.useCallback(
@@ -99,7 +182,7 @@ export function AssistantPrompt({
   )
 
   return (
-    <UploadsContext.Provider value={uploads}>
+    <UploadsContext.Provider value={{ uploads, retry: startUpload }}>
       <PromptInput
         accept="image/*"
         maxFiles={1}
@@ -111,7 +194,7 @@ export function AssistantPrompt({
           className,
         )}
       >
-        <UploadManager setUploads={setUploads} />
+        <UploadManager setUploads={setUploads} startUpload={startUpload} />
         <AttachmentHeader />
         <PromptInputBody>
           <PromptInputTextarea
@@ -188,10 +271,12 @@ export function AssistantPrompt({
  */
 function UploadManager({
   setUploads,
+  startUpload,
 }: {
   setUploads: React.Dispatch<
     React.SetStateAction<Record<string, UploadState>>
   >
+  startUpload: (file: UploadFile) => void
 }) {
   const att = usePromptInputAttachments()
   const { isAuthenticated } = useCurrentUser()
@@ -214,27 +299,8 @@ function UploadManager({
         continue
       }
 
-      const url = f.url
-      const mediaType = f.mediaType
-      const filename = f.filename
-      startedRef.current.add(url)
-      setUploads((prev) => ({ ...prev, [url]: { status: "uploading" } }))
-
-      uploadReceiptImage({ url, mediaType, filename })
-        .then((res) => {
-          setUploads((prev) => ({
-            ...prev,
-            [url]: { status: "done", publicUrl: res.publicUrl, key: res.key },
-          }))
-        })
-        .catch((err) => {
-          setUploads((prev) => ({ ...prev, [url]: { status: "error" } }))
-          toast.error(
-            err instanceof Error
-              ? err.message
-              : "Fotoğraf yüklenemedi. Lütfen tekrar dene.",
-          )
-        })
+      startedRef.current.add(f.url)
+      startUpload({ url: f.url, mediaType: f.mediaType, filename: f.filename })
     }
 
     // Kaldırılan ekler için upload kayıtlarını temizle.
@@ -251,7 +317,7 @@ function UploadManager({
       }
       return changed ? next : prev
     })
-  }, [att, isAuthenticated, setUploads])
+  }, [att, isAuthenticated, setUploads, startUpload])
 
   return null
 }
@@ -275,71 +341,91 @@ function AddAttachmentMenu() {
 
 function AttachmentHeader() {
   const att = usePromptInputAttachments()
-  const uploads = useUploads()
+  const { uploads, retry } = useUploads()
   if (att.files.length === 0) return null
   return (
     <PromptInputHeader className="justify-start px-2.5 pt-2 pb-0">
-      {att.files.map((f) => {
-        const isImage = f.mediaType?.startsWith("image/")
-        const upload = f.url ? uploads[f.url] : undefined
-        const uploading = upload?.status === "uploading"
-        const errored = upload?.status === "error"
-        return (
-          <div
-            key={f.id}
-            className={cn(
-              "group relative inline-flex items-center gap-1.5 rounded-full border bg-background/80 py-1 pr-1 pl-1 text-xs",
-              errored && "border-destructive/50",
-            )}
-          >
-            <span className="relative inline-flex size-5 shrink-0 items-center justify-center">
-              {isImage && f.url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={f.url}
-                  alt={f.filename ?? "fiş"}
-                  className={cn(
-                    "size-5 rounded-full object-cover transition",
-                    uploading && "blur-[1px]",
-                  )}
-                />
-              ) : (
-                <PaperclipIcon className="size-3.5 text-muted-foreground" />
-              )}
-              {uploading && (
-                <span className="absolute inset-0 flex items-center justify-center rounded-full bg-background/40">
-                  <Spinner className="size-3 text-foreground/80" />
-                </span>
-              )}
-              {errored && (
-                <span className="absolute inset-0 flex items-center justify-center rounded-full bg-destructive/15">
-                  <AlertTriangleIcon className="size-3 text-destructive" />
-                </span>
-              )}
-            </span>
-            <span
-              className={cn(
-                "max-w-[120px] truncate",
-                errored && "text-destructive",
-              )}
+      <AttachmentGroup>
+        {att.files.map((f) => {
+          const url = f.url
+          const isImage = f.mediaType?.startsWith("image/")
+          const upload = url ? uploads[url] : undefined
+          const state: "idle" | "uploading" | "error" | "done" =
+            upload?.status === "uploading"
+              ? "uploading"
+              : upload?.status === "error"
+                ? "error"
+                : upload?.status === "done"
+                  ? "done"
+                  : "idle"
+          const doneInfo = [
+            fileTypeLabel(f.mediaType, f.filename),
+            formatFileSize(upload?.size),
+          ]
+            .filter(Boolean)
+            .join(" · ")
+          return (
+            <Attachment
+              key={f.id}
+              state={state}
+              orientation="horizontal"
+              size="sm"
             >
-              {uploading
-                ? "Yükleniyor…"
-                : errored
-                  ? "Yüklenemedi"
-                  : (f.filename ?? "Fiş fotoğrafı")}
-            </span>
-            <button
-              type="button"
-              onClick={() => att.remove(f.id)}
-              className="ml-0.5 rounded-full p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground"
-              aria-label="Eki kaldır"
-            >
-              <XIcon className="size-3" />
-            </button>
-          </div>
-        )
-      })}
+              <AttachmentMedia variant={isImage && url ? "image" : "icon"}>
+                {isImage && url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={url} alt={f.filename ?? "fiş"} />
+                ) : (
+                  <PaperclipIcon />
+                )}
+                {state === "uploading" && (
+                  <span className="absolute inset-0 flex items-center justify-center bg-background/40">
+                    <Spinner className="size-3.5 text-foreground/80" />
+                  </span>
+                )}
+              </AttachmentMedia>
+              <AttachmentContent>
+                <AttachmentTitle>
+                  {f.filename ?? "Fiş fotoğrafı"}
+                </AttachmentTitle>
+                <AttachmentDescription>
+                  {state === "uploading"
+                    ? upload?.progress != null
+                      ? `Yükleniyor · ${upload.progress}%`
+                      : "Yükleniyor…"
+                    : state === "error"
+                      ? "Yüklenemedi. Tekrar dene."
+                      : state === "done"
+                        ? doneInfo || "Yüklendi"
+                        : "Yüklenecek"}
+                </AttachmentDescription>
+              </AttachmentContent>
+              <AttachmentActions>
+                {state === "error" && url && (
+                  <AttachmentAction
+                    aria-label="Tekrar dene"
+                    onClick={() =>
+                      retry({
+                        url,
+                        mediaType: f.mediaType,
+                        filename: f.filename,
+                      })
+                    }
+                  >
+                    <RefreshCwIcon />
+                  </AttachmentAction>
+                )}
+                <AttachmentAction
+                  aria-label="Eki kaldır"
+                  onClick={() => att.remove(f.id)}
+                >
+                  <XIcon />
+                </AttachmentAction>
+              </AttachmentActions>
+            </Attachment>
+          )
+        })}
+      </AttachmentGroup>
     </PromptInputHeader>
   )
 }
@@ -358,7 +444,7 @@ function SubmitButton({
   textEmpty: boolean
 }) {
   const att = usePromptInputAttachments()
-  const uploads = useUploads()
+  const { uploads } = useUploads()
   const isGenerating = status === "submitted" || status === "streaming"
 
   // Görsel ekleri henüz yüklenmediyse (uploading/error) gönderimi engelle.
