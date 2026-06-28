@@ -285,30 +285,30 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
         </div>
 
         {/* Abonelik bilgileri — "Plan avantajların" tablosuyla aynı stil:
-            text-sm, ince border-t ayraçlar, py-2.5 nefes payı, hover yok.
+            text-sm, ince border-t ayraçlar, py-1.5 nefes payı, hover yok.
             Etiket solda (muted), değer sağda. İlk satırda üst ayraç olmaz;
             aralık ve tarih yalnızca Polar'dan biliniyorsa eklenir. */}
         <div className="flex flex-col gap-2.5">
           <div className="overflow-hidden rounded-lg border border-border">
-            <table className="w-full border-separate border-spacing-0 text-sm">
+            <table className="w-full table-fixed border-separate border-spacing-0 text-sm">
               <tbody>
                 <tr>
-                  <td className="px-4 py-2.5 text-foreground">Plan</td>
-                  <td className="px-4 py-2.5 text-right font-semibold text-primary">
+                  <td className="px-4 py-1.5 text-foreground">Plan</td>
+                  <td className="px-4 py-1.5 text-right font-semibold text-primary">
                     Pro
                   </td>
                 </tr>
                 <tr>
-                  <td className="border-t border-border px-4 py-2.5 text-foreground">
+                  <td className="border-t border-border px-4 py-1.5 text-foreground">
                     Durum
                   </td>
                   <td
                     className={cn(
-                      "border-t border-border px-4 py-2.5 text-right font-medium",
+                      "border-t border-border px-4 py-1.5 text-right font-medium",
                       STATUS_TONE_CLASS[status.tone],
                     )}
                   >
-                    <span className="inline-flex items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1.5 align-middle">
                       <StatusHintDropdown sub={sub} periodEnd={periodEnd} />
                       {status.label}
                     </span>
@@ -316,20 +316,20 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
                 </tr>
                 {intervalLabel && (
                   <tr>
-                    <td className="border-t border-border px-4 py-2.5 text-foreground">
+                    <td className="border-t border-border px-4 py-1.5 text-foreground">
                       Faturalandırma
                     </td>
-                    <td className="border-t border-border px-4 py-2.5 text-right font-medium text-foreground">
+                    <td className="border-t border-border px-4 py-1.5 text-right font-medium text-foreground">
                       {intervalLabel}
                     </td>
                   </tr>
                 )}
                 {periodEnd && (
                   <tr>
-                    <td className="border-t border-border px-4 py-2.5 text-foreground">
+                    <td className="border-t border-border px-4 py-1.5 text-foreground">
                       {sub.cancelAtPeriodEnd ? "Sona erme tarihi" : "Sonraki yenilenme"}
                     </td>
-                    <td className="border-t border-border px-4 py-2.5 text-right font-medium text-foreground tabular-nums">
+                    <td className="border-t border-border px-4 py-1.5 text-right font-medium text-foreground tabular-nums">
                       {periodEnd}
                     </td>
                   </tr>
@@ -339,18 +339,18 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
                 <tr>
                   <td
                     colSpan={2}
-                    className="border-t border-border bg-muted/30 px-4 py-2"
+                    className="border-t border-border bg-muted/30 px-4 py-1.5"
                   >
                     <div
                       data-search-target="abonelik-yonet"
-                      className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5"
+                      className="flex items-center justify-between gap-x-3"
                     >
                       {sub.hasCustomer ? (
                         <>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="min-w-0 truncate text-xs text-muted-foreground">
                             Plan değişikliği, fatura geçmişi ve iptal işlemleri
                           </span>
-                          <Button asChild variant="outline" size="sm">
+                          <Button asChild variant="outline" size="xs" className="shrink-0">
                             <a href="/api/portal">
                               Aboneliği yönet
                               <ExternalLinkIcon data-icon="inline-end" />
@@ -380,9 +380,9 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
           <table className="w-full border-separate border-spacing-0 text-sm">
             <thead>
               <tr className="text-xs font-medium text-muted-foreground">
-                <th className="px-4 py-2 text-left font-medium">Özellik</th>
-                <th className="px-4 py-2 text-center font-medium">Ücretsiz</th>
-                <th className="bg-primary/[0.07] px-4 py-2 text-center font-semibold text-primary">
+                <th className="px-4 py-1.5 text-left font-medium">Özellik</th>
+                <th className="px-4 py-1.5 text-center font-medium">Ücretsiz</th>
+                <th className="bg-primary/[0.07] px-4 py-1.5 text-center font-semibold text-primary">
                   Pro
                 </th>
               </tr>
@@ -390,13 +390,13 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
             <tbody>
               {PLAN_COMPARISON.map((row) => (
                 <tr key={row.feature}>
-                  <td className="border-t border-border px-4 py-2.5 text-foreground">
+                  <td className="border-t border-border px-4 py-1.5 text-foreground">
                     {row.feature}
                   </td>
-                  <td className="border-t border-border px-4 py-2.5 text-center text-muted-foreground tabular-nums">
+                  <td className="border-t border-border px-4 py-1.5 text-center text-muted-foreground tabular-nums">
                     {row.free}
                   </td>
-                  <td className="border-t border-border bg-primary/[0.07] px-4 py-2.5 text-center font-medium text-foreground tabular-nums">
+                  <td className="border-t border-border bg-primary/[0.07] px-4 py-1.5 text-center font-medium text-foreground tabular-nums">
                     {row.pro}
                   </td>
                 </tr>

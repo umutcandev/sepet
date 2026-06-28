@@ -7,14 +7,12 @@ const scriptSrc = isDev
 const CSP = [
   "default-src 'self'",
   `script-src ${scriptSrc}`,
-  // MapLibre/MapTiler vektör tile'larını blob URL'li bir Web Worker'da işler;
-  // worker-src tanımlı değilse script-src'ye düşer ve blob: bloklanır.
-  "worker-src 'self' blob:",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://lh3.googleusercontent.com https://cdn.marketfiyati.org.tr https://cdn.trysepet.com https://pub-35b1290eb3ac4f07b50824e8f7d12f48.r2.dev https://api.maptiler.com",
+  // *.tile.openstreetmap.org: Leaflet OSM raster döşemeleri (<img> olarak yüklenir).
+  "img-src 'self' data: blob: https://lh3.googleusercontent.com https://cdn.marketfiyati.org.tr https://cdn.trysepet.com https://pub-35b1290eb3ac4f07b50824e8f7d12f48.r2.dev https://*.tile.openstreetmap.org",
   "font-src 'self' data:",
-  // api.maptiler.com: stil, tile, sprite, glyph, geocoding ve metrics istekleri.
-  "connect-src 'self' https://accounts.google.com https://*.upstash.io https://api.maptiler.com",
+  // nominatim.openstreetmap.org: pin oturunca reverse geocode (ücretsiz, anahtarsız).
+  "connect-src 'self' https://accounts.google.com https://*.upstash.io https://nominatim.openstreetmap.org",
   "frame-src https://accounts.google.com",
   "frame-ancestors 'none'",
   "form-action 'self' https://accounts.google.com",

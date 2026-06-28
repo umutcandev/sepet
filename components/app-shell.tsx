@@ -6,7 +6,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { CommandIcon, PanelLeftIcon, PlusIcon } from "lucide-react"
 
-
+import { cn } from "@/lib/utils"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
@@ -121,7 +121,10 @@ export function AppShell({ user, conversations, children }: Props) {
             <SidebarToggleButton />
             <Separator
               orientation="vertical"
-              className="mr-2 data-vertical:h-4 data-vertical:self-auto"
+              className={cn(
+                "mr-2 data-vertical:h-4 data-vertical:self-auto",
+                !isAssistantRoute && "md:hidden"
+              )}
             />
             {isAssistantRoute ? (
               <NewConversationButton />

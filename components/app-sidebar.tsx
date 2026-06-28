@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation"
 import {
   HomeIcon,
   MessagesSquareIcon,
-  PlusIcon,
   ReceiptIcon,
   ShoppingBasketIcon,
   SparklesIcon,
@@ -166,7 +165,6 @@ export function AppSidebar({
                     className="h-9 justify-center font-medium"
                   >
                     <Link href="/asistan" onClick={handleNewChatClick}>
-                      <PlusIcon />
                       <span>Yeni Sohbet</span>
                     </Link>
                   </SidebarMenuButton>

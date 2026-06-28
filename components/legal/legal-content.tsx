@@ -215,10 +215,12 @@ export function DistanceSalesContent() {
         <p>
           Sözleşmenin konusu, Sepet Pro aboneliğinin elektronik ortamda
           satışı ve ifasıdır. Pro planı; aylık 500 asistan mesajı, aylık 250
-          görsel analizi ile sınırsız sepet ve fiş kaydı sunar. Aylık sayaçlar
-          her ayın ilk günü (UTC) otomatik olarak sıfırlanır. Ücretsiz plan ise
+          görsel analizi ile sınırsız sepet ve fiş kaydı sunar. Pro planında
+          aylık sayaçlar, aboneliğin her ay yenilendiği gün (UTC) otomatik
+          olarak sıfırlanır; yıllık abonelikte de bu sıfırlama, aboneliğin
+          başladığı gün baz alınarak her ay tekrarlanır. Ücretsiz plan ise
           aylık 50 asistan mesajı, 10 görsel analizi ve 20’şer sepet/fiş kaydı
-          ile sınırlıdır.
+          ile sınırlıdır ve sayaçları her ayın ilk günü (UTC) sıfırlanır.
         </p>
       </section>
       <section className="space-y-2">

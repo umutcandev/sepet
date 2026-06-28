@@ -1,0 +1,101 @@
+// Türkiye'nin 81 ili — il merkezi koordinatları (preset). Geocoding (adres arama)
+// kaldırıldığı için, kullanıcı tarayıcı konumunda sorun yaşadığında haritayı
+// hızlıca ilinin merkezine taşımak için kullanılır. Saf veri — başka bağımlılık yok.
+
+export type Province = {
+  /** Plaka kodu (1–81). */
+  plate: number
+  name: string
+  lat: number
+  lng: number
+}
+
+// Plaka sırasıyla ham liste. Görüntü için aşağıda Türkçe alfabetik sıralanır.
+const RAW: Province[] = [
+  { plate: 1, name: "Adana", lat: 37.0, lng: 35.3213 },
+  { plate: 2, name: "Adıyaman", lat: 37.7648, lng: 38.2786 },
+  { plate: 3, name: "Afyonkarahisar", lat: 38.7507, lng: 30.5567 },
+  { plate: 4, name: "Ağrı", lat: 39.7191, lng: 43.0503 },
+  { plate: 5, name: "Amasya", lat: 40.6499, lng: 35.8353 },
+  { plate: 6, name: "Ankara", lat: 39.9334, lng: 32.8597 },
+  { plate: 7, name: "Antalya", lat: 36.8969, lng: 30.7133 },
+  { plate: 8, name: "Artvin", lat: 41.1828, lng: 41.8183 },
+  { plate: 9, name: "Aydın", lat: 37.856, lng: 27.8416 },
+  { plate: 10, name: "Balıkesir", lat: 39.6484, lng: 27.8826 },
+  { plate: 11, name: "Bilecik", lat: 40.1426, lng: 29.9793 },
+  { plate: 12, name: "Bingöl", lat: 38.8854, lng: 40.4966 },
+  { plate: 13, name: "Bitlis", lat: 38.4938, lng: 42.1232 },
+  { plate: 14, name: "Bolu", lat: 40.576, lng: 31.5788 },
+  { plate: 15, name: "Burdur", lat: 37.7203, lng: 30.2908 },
+  { plate: 16, name: "Bursa", lat: 40.1885, lng: 29.061 },
+  { plate: 17, name: "Çanakkale", lat: 40.1553, lng: 26.4142 },
+  { plate: 18, name: "Çankırı", lat: 40.6013, lng: 33.6134 },
+  { plate: 19, name: "Çorum", lat: 40.5506, lng: 34.9556 },
+  { plate: 20, name: "Denizli", lat: 37.7765, lng: 29.0864 },
+  { plate: 21, name: "Diyarbakır", lat: 37.9144, lng: 40.2306 },
+  { plate: 22, name: "Edirne", lat: 41.6818, lng: 26.5623 },
+  { plate: 23, name: "Elazığ", lat: 38.681, lng: 39.2264 },
+  { plate: 24, name: "Erzincan", lat: 39.75, lng: 39.5 },
+  { plate: 25, name: "Erzurum", lat: 39.9, lng: 41.27 },
+  { plate: 26, name: "Eskişehir", lat: 39.7767, lng: 30.5206 },
+  { plate: 27, name: "Gaziantep", lat: 37.0662, lng: 37.3833 },
+  { plate: 28, name: "Giresun", lat: 40.9128, lng: 38.3895 },
+  { plate: 29, name: "Gümüşhane", lat: 40.4603, lng: 39.4814 },
+  { plate: 30, name: "Hakkari", lat: 37.5744, lng: 43.7408 },
+  { plate: 31, name: "Hatay", lat: 36.4018, lng: 36.3498 },
+  { plate: 32, name: "Isparta", lat: 37.7648, lng: 30.5566 },
+  { plate: 33, name: "Mersin", lat: 36.8121, lng: 34.6415 },
+  { plate: 34, name: "İstanbul", lat: 41.0082, lng: 28.9784 },
+  { plate: 35, name: "İzmir", lat: 38.4237, lng: 27.1428 },
+  { plate: 36, name: "Kars", lat: 40.6167, lng: 43.1 },
+  { plate: 37, name: "Kastamonu", lat: 41.3887, lng: 33.7827 },
+  { plate: 38, name: "Kayseri", lat: 38.7312, lng: 35.4787 },
+  { plate: 39, name: "Kırklareli", lat: 41.7333, lng: 27.2167 },
+  { plate: 40, name: "Kırşehir", lat: 39.1425, lng: 34.1709 },
+  { plate: 41, name: "Kocaeli", lat: 40.8533, lng: 29.8815 },
+  { plate: 42, name: "Konya", lat: 37.8746, lng: 32.4932 },
+  { plate: 43, name: "Kütahya", lat: 39.4242, lng: 29.9833 },
+  { plate: 44, name: "Malatya", lat: 38.3552, lng: 38.3095 },
+  { plate: 45, name: "Manisa", lat: 38.6191, lng: 27.4289 },
+  { plate: 46, name: "Kahramanmaraş", lat: 37.5858, lng: 36.9371 },
+  { plate: 47, name: "Mardin", lat: 37.3122, lng: 40.7351 },
+  { plate: 48, name: "Muğla", lat: 37.2153, lng: 28.3636 },
+  { plate: 49, name: "Muş", lat: 38.9462, lng: 41.7539 },
+  { plate: 50, name: "Nevşehir", lat: 38.6939, lng: 34.6857 },
+  { plate: 51, name: "Niğde", lat: 37.9667, lng: 34.6833 },
+  { plate: 52, name: "Ordu", lat: 40.9839, lng: 37.8764 },
+  { plate: 53, name: "Rize", lat: 41.0201, lng: 40.5234 },
+  { plate: 54, name: "Sakarya", lat: 40.7569, lng: 30.3781 },
+  { plate: 55, name: "Samsun", lat: 41.2867, lng: 36.33 },
+  { plate: 56, name: "Siirt", lat: 37.9333, lng: 41.95 },
+  { plate: 57, name: "Sinop", lat: 42.0264, lng: 35.1551 },
+  { plate: 58, name: "Sivas", lat: 39.7477, lng: 37.0179 },
+  { plate: 59, name: "Tekirdağ", lat: 40.9833, lng: 27.5167 },
+  { plate: 60, name: "Tokat", lat: 40.3167, lng: 36.5544 },
+  { plate: 61, name: "Trabzon", lat: 41.0015, lng: 39.7178 },
+  { plate: 62, name: "Tunceli", lat: 39.1079, lng: 39.5401 },
+  { plate: 63, name: "Şanlıurfa", lat: 37.1591, lng: 38.7969 },
+  { plate: 64, name: "Uşak", lat: 38.6823, lng: 29.4082 },
+  { plate: 65, name: "Van", lat: 38.4891, lng: 43.4089 },
+  { plate: 66, name: "Yozgat", lat: 39.8181, lng: 34.8147 },
+  { plate: 67, name: "Zonguldak", lat: 41.4564, lng: 31.7987 },
+  { plate: 68, name: "Aksaray", lat: 38.3687, lng: 34.037 },
+  { plate: 69, name: "Bayburt", lat: 40.2552, lng: 40.2249 },
+  { plate: 70, name: "Karaman", lat: 37.1759, lng: 33.2287 },
+  { plate: 71, name: "Kırıkkale", lat: 39.8468, lng: 33.5153 },
+  { plate: 72, name: "Batman", lat: 37.8812, lng: 41.1351 },
+  { plate: 73, name: "Şırnak", lat: 37.5164, lng: 42.4611 },
+  { plate: 74, name: "Bartın", lat: 41.6344, lng: 32.3375 },
+  { plate: 75, name: "Ardahan", lat: 41.1105, lng: 42.7022 },
+  { plate: 76, name: "Iğdır", lat: 39.888, lng: 44.0048 },
+  { plate: 77, name: "Yalova", lat: 40.65, lng: 29.2667 },
+  { plate: 78, name: "Karabük", lat: 41.2061, lng: 32.6204 },
+  { plate: 79, name: "Kilis", lat: 36.7184, lng: 37.1212 },
+  { plate: 80, name: "Osmaniye", lat: 37.0742, lng: 36.2466 },
+  { plate: 81, name: "Düzce", lat: 40.8438, lng: 31.1565 },
+]
+
+/** 81 il, Türkçe alfabetik sırada (combobox listesi için). */
+export const TR_PROVINCES: Province[] = [...RAW].sort((a, b) =>
+  a.name.localeCompare(b.name, "tr"),
+)

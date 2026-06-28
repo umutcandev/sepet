@@ -4,7 +4,6 @@ import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
-import { DropdownMenuLabel } from "@/components/ui/dropdown-menu"
 import { useMounted } from "@/hooks/use-mounted"
 import { cn } from "@/lib/utils"
 
@@ -28,9 +27,9 @@ export function ThemeMenuItems() {
 
   return (
     <>
-      <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">
+      <span className="px-1.5 py-1 text-xs font-normal text-muted-foreground">
         Tema
-      </DropdownMenuLabel>
+      </span>
       <div className="px-1 pb-1">
         <div
           role="radiogroup"

@@ -14,6 +14,7 @@ type SubscriptionLike = {
   status: string
   customerId: string
   productId: string
+  currentPeriodStart: Date | null
   currentPeriodEnd: Date | null
   cancelAtPeriodEnd: boolean
   customer?: { externalId?: string | null } | null
@@ -96,6 +97,7 @@ async function syncSubscription(sub: SubscriptionLike): Promise<void> {
       polarSubscriptionId: sub.id,
       subscriptionStatus: sub.status,
       subscriptionInterval: interval,
+      subscriptionCurrentPeriodStart: sub.currentPeriodStart ?? null,
       subscriptionCurrentPeriodEnd: sub.currentPeriodEnd ?? null,
       subscriptionCancelAtPeriodEnd: sub.cancelAtPeriodEnd,
     })

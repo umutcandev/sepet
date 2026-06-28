@@ -51,6 +51,13 @@ export const users = pgTable("user", {
   polarSubscriptionId: text("polarSubscriptionId"),
   subscriptionStatus: text("subscriptionStatus"),
   subscriptionInterval: text("subscriptionInterval").$type<"month" | "year">(),
+  // Dönem başı (= yenileme günü). Kullanım kotası takvim ayına değil, bu günün
+  // gün-of-month'una sabitli aylık pencereye göre sıfırlanır (bkz.
+  // lib/usage/period.ts billingPeriod). Aylık/yıllık fark etmez: anchorDay
+  // yenilemeler boyunca sabit kaldığından kota her zaman aylık sıfırlanır.
+  subscriptionCurrentPeriodStart: timestamp("subscriptionCurrentPeriodStart", {
+    mode: "date",
+  }),
   subscriptionCurrentPeriodEnd: timestamp("subscriptionCurrentPeriodEnd", {
     mode: "date",
   }),

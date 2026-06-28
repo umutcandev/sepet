@@ -528,7 +528,7 @@ export async function POST(req: Request) {
       createdTitle = created.title
       createdNewConversation = true
     } catch (err) {
-      await refundQuota(userId, meteredMetric).catch(() => {})
+      await refundQuota(userId, meteredMetric, reservation.period).catch(() => {})
       throw err
     }
   }
@@ -637,13 +637,13 @@ export async function POST(req: Request) {
       } catch (err) {
         // Sert hata (örn. lookupProducts exception) çıktı üretilmeden düştü →
         // rezerve edilen slotu iade et, sonra hatayı stream onError'a ilet.
-        await refundQuota(userId, meteredMetric).catch(() => {})
+        await refundQuota(userId, meteredMetric, reservation.period).catch(() => {})
         throw err
       }
       // Turn içeride yakalanan bir sert AI hatasıyla (model 503/429, parse
       // exception) bittiyse de slotu iade et — başarısız istek kotayı yakmasın.
       if (turn.hardError) {
-        await refundQuota(userId, meteredMetric).catch(() => {})
+        await refundQuota(userId, meteredMetric, reservation.period).catch(() => {})
       }
 
       // Persist the assistant message before signalling finish.
