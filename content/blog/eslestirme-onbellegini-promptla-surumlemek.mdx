@@ -1,0 +1,97 @@
+---
+title: Eşleştirme Önbelleğini Prompt'un Kendisiyle Sürümlemek
+description: Eşleştirme kuralları değiştiğinde eski ve yanlış seçimler önbellekte kalmasın diye, önbellek anahtarını prompt metninin hash'ine bağladık. Küçük ama kurtarıcı bir karar.
+publishedAt: 2026-06-22T10:00:00+03:00
+authors:
+  - umutcan
+category: teknik
+tags:
+  - önbellek
+  - llm
+  - mühendislik günlüğü
+---
+
+Bir kalemi doğru ürüne eşlerken bir dil modeli çağırıyoruz. Bu çağrı hem para
+hem zaman maliyeti taşır. Aynı kalemi her seferinde yeniden hesaplamamak için
+seçimleri önbelleğe alıyoruz. Mantıklı görünen bu kararın içinde, fark etmesi
+zor bir tuzak vardı. Bu yazıda o tuzağı ve çözümünü anlatıyorum.
+
+## Sorun: kurala bağlı önbellek, kuralı bilmiyordu
+
+Önbellek anahtarını başta şu parçalardan kuruyorduk: kalemin ham adı, istenen
+miktar, birim ve aday ürünlerin kimlikleri. Aynı kalem aynı adaylarla geldiğinde
+anahtar aynı çıkıyor, model tekrar çağrılmadan önceki seçim dönüyordu.
+
+Eksik olan şuydu: seçimi belirleyen asıl şey eşleştirme kurallarıdır, ama
+kurallar anahtarın hiçbir yerinde yoktu. Kuralı değiştirip "sade yoğurt isteğine
+aromalı varyant seçme" gibi bir madde eklediğimde, önbellekteki eski ve artık
+yanlış sayılan seçimler ömrü dolana kadar servis edilmeye devam ediyordu.
+
+## Elle sürüm bump'ı neden yetersiz
+
+İlk akla gelen çözüm, anahtara elle bir sürüm eklemekti:
+
+```ts
+const VERSION = "v4" // kural değişince elle artır
+const key = `mf:match:${VERSION}:${hash(payload)}`
+```
+
+Bu işe yarar ama tek bir koşulla: kuralı her değiştirdiğinde bu sayıyı
+artırmayı hatırlaman gerekir. Pratikte bunu unutmak çok kolay. Üstelik unutmanın
+cezası sessizdir: ortada hata mesajı yoktur, sadece yanlış seçimler bir süre
+daha gösterilmeye devam eder. En kötü hata türü, kendini belli etmeyenidir.
+
+## Çözüm: prompt'u anahtara katmak
+
+İnsanın hatırlamasına bağlı her adım, eninde sonunda atlanır. Bu yüzden sürümü
+elle tutmayı bıraktık ve doğrudan prompt metninin kendisinden türettik:
+
+```ts
+import { createHash } from "node:crypto"
+
+// MATCH_PROMPT([]) boş aday listesiyle çağrılır: dönen metin yalnızca kural
+// bölümüdür, kaleme özel hiçbir şey içermez. Yani hash sadece kuralları yansıtır.
+const MATCH_PROMPT_VERSION = createHash("sha1")
+  .update(MATCH_PROMPT([]))
+  .digest("hex")
+  .slice(0, 12)
+
+function matchCacheKey(item, candidates) {
+  const payload = JSON.stringify({
+    rawName: item.name.toLocaleLowerCase("tr-TR"),
+    quantity: item.quantity,
+    unit: item.unit,
+    candidates: candidates.map((c) => c.productId).sort(),
+  })
+  return `mf:match:${MATCH_PROMPT_VERSION}:${createHash("sha1")
+    .update(payload)
+    .digest("hex")}`
+}
+```
+
+Mantık basit. Kural metni değişince hash değişir, hash değişince anahtar değişir,
+anahtar değişince eski önbellek kayıtlarına hiç ulaşılmaz. Önbellek kendi
+kendini geçersiz kılar. Kimsenin bir şeyi hatırlamasına gerek kalmaz.
+
+## Neden boş aday listesi
+
+İncelik, sürümü hesaplarken prompt'u boş aday listesiyle çağırmakta. Eşleştirme
+talimatı iki bölümden oluşur: değişmeyen kural metni ve o çağrıya özel aday
+listesi. Sürüme yalnızca kuralların etkilemesini istiyoruz.
+
+Aday listesini boş geçince geriye sadece kural metni kalır. Böylece hash, aday
+kümesinden bağımsız olur ama kuralların her değişiminde hareket eder. Tam
+istediğimiz davranış budur.
+
+## Bedava gelen yan faydalar
+
+Bu küçük karar, hedeflemediğimiz birkaç faydayı da getirdi:
+
+- Kuralları geri aldığında hash eski değerine döner ve önceki önbellek yeniden
+  geçerli olur. Yani geri alma, ücretsiz bir önbellek geri kazanımıdır.
+- Farklı kural sürümleri yan yana yaşayabilir; anahtarları çakışmaz.
+- "Kural değişti mi" sorusunun cevabı artık bir karşılaştırmadır, kişinin
+  hafızası değil.
+
+Bazı en sağlam kararlar en küçük olanlardır. Tek satırlık bir hash, sessizce
+yanlış sonuç üreten bir sınıf hatayı tamamen ortadan kaldırdı.

@@ -3,6 +3,9 @@
 @import "shadcn/tailwind.css";
 @import "./style-nova.css";
 
+/* Blog makale tipografisi (prose) — token'lara bağlanır (aşağıda). */
+@plugin "@tailwindcss/typography";
+
 /* Dark variants activate when next-themes adds .dark class to <html>; system pref is opt-in via the theme toggle ("Sistem" option). */
 @custom-variant dark (&:is(.dark *));
 
@@ -82,6 +85,14 @@
     --sidebar-accent-foreground: #3D2418;
     --sidebar-border: #E8DDD0;
     --sidebar-ring: #C08552;
+    /* Ana sayfa hero→blog geçişinin dip rengi (gerçek temaya bağlı).
+       Gündüz: koyu yeşilimsi-siyah; gece: koyu kahve. */
+    --home-base: #0d0f0c;
+    --home-base-soft: rgba(13, 15, 12, 0.5);
+    /* Fade'in saydam ucu: bare `transparent` (= saydam SİYAH) yerine aynı rengin
+       0 alfası. Geçiş boyunca ton sabit kalır, "çamurlu/yeşilimsi" interpolasyon
+       bandı oluşmaz. */
+    --home-base-clear: rgba(13, 15, 12, 0);
 }
 
 .dark {
@@ -116,6 +127,29 @@
     --sidebar-accent-foreground: #F5E8DA;
     --sidebar-border: #2D2218;
     --sidebar-ring: #C08552;
+    --home-base: #1b0e08;
+    --home-base-soft: rgba(27, 14, 8, 0.5);
+    --home-base-clear: rgba(27, 14, 8, 0);
+}
+
+/* Hero görselinin alt kenarını blog dip rengine dikişsiz bağlayan fade.
+   Görselin dibi koyu bir manzara (gündüz yeşil tepeler / gece kahve tepeler);
+   fade yarı-saydam olduğu yerde o tepe siluetinin üst kenarı "çizgi" gibi
+   seçiliyordu. Bunu önlemek için:
+   • Tek hue (--home-base) üzerinde 1→0 alfa rampası; ara opaklıklar color-mix ile
+     üretilir → ne saydam-siyaha kayma ne de yeşilimsi ton oynaması olur.
+   • Duraklar arası eğim kademeli (Mach bandı / keskin çizgi oluşmaz) ve orta
+     bölge daha opak tutulur ki tepe silueti yedirilsin. */
+.home-hero-fade {
+  background-image: linear-gradient(
+    to top,
+    var(--home-base) 0%,
+    var(--home-base) 65%,
+    color-mix(in srgb, var(--home-base) 80%, var(--home-base-clear)) 76%,
+    var(--home-base-soft) 85%,
+    color-mix(in srgb, var(--home-base) 24%, var(--home-base-clear)) 93%,
+    var(--home-base-clear) 100%
+  );
 }
 
 @layer base {
@@ -128,6 +162,84 @@
   html {
     @apply font-sans;
     }
+}
+
+/* Blog `prose`'unu mevcut palete bağla: token'lar light/dark'ta zaten flip
+   ettiği için ayrı `prose-invert` gerekmez, renk her iki temada da uyumlu.
+   Gövde metni okunabilir ama başlıklardan soluk: foreground'un yumuşatılmış
+   karışımı (tam muted yerine), başlıklar tam foreground. */
+.prose {
+  --tw-prose-body: color-mix(in oklab, var(--foreground) 82%, var(--background));
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: var(--muted-foreground);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--border);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-pre-bg: var(--muted);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+/* rehype-pretty-code çift tema: token rengi varsayılan olarak light, dark'ta
+   --shiki-dark'a geçer (keepBackground:false → arka plan prose-pre-bg'den). */
+.prose [data-rehype-pretty-code-figure] pre {
+  padding-block: 0.875rem;
+  border: 1px solid var(--border);
+}
+.dark .prose [data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-dark) !important;
+}
+
+/* Başlık çapaları — başlık metni LİNK DEĞİL. Anchor başlığın önüne eklenir;
+   hover'da başlığın solunda link simgesi belirir, tıklanınca #id'ye gider.
+   Offset rem tabanlı (başlık font boyutundan bağımsız) ki dar gutter'da kırpılma
+   olmasın; yalnız hover yeteneği olan cihazlarda görünür (dokunmatikte gizli). */
+.prose :where(h1, h2, h3, h4, h5, h6) {
+  position: relative;
+  scroll-margin-top: 2rem;
+}
+.prose .heading-anchor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1.45rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.45rem;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.prose .heading-anchor-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  background-color: var(--muted-foreground);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='2.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M10%2013a5%205%200%200%200%207.54.54l3-3a5%205%200%200%200-7.07-7.07l-1.72%201.71'/%3E%3Cpath%20d='M14%2011a5%205%200%200%200-7.54-.54l-3%203a5%205%200%200%200%207.07%207.07l1.71-1.71'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='2.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M10%2013a5%205%200%200%200%207.54.54l3-3a5%205%200%200%200-7.07-7.07l-1.72%201.71'/%3E%3Cpath%20d='M14%2011a5%205%200%200%200-7.54-.54l-3%203a5%205%200%200%200%207.07%207.07l1.71-1.71'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+/* Sadece hover yeteneği olan cihazlarda etkin; mobilde (hover yok) gizli. */
+@media (hover: hover) {
+  .prose .heading-anchor {
+    display: inline-flex;
+  }
+  .prose :where(h1, h2, h3, h4, h5, h6):hover .heading-anchor,
+  .prose .heading-anchor:hover,
+  .prose .heading-anchor:focus-visible {
+    opacity: 1;
+  }
+}
+.prose .heading-anchor:hover .heading-anchor-icon {
+  background-color: var(--primary);
 }
 
 /* Prevent sticky hover on touch devices */

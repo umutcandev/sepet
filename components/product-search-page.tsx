@@ -88,8 +88,8 @@ export function ProductSearchPage() {
       <div className="mb-6 flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">Ürün Ara</h1>
         <p className="text-sm text-muted-foreground">
-          Ürün adı ya da barkod ile 6 markette (BİM, A101, Migros, Şok,
-          CarrefourSA, Tarım Kredi) güncel fiyatları karşılaştır.
+          Ürün adı ya da barkod ile BİM, A101, Migros, Şok,
+          CarrefourSA ve Tarım Kredi marketlerinde güncel fiyatları karşılaştır.
         </p>
       </div>
 
@@ -116,8 +116,9 @@ export function ProductSearchPage() {
         <Button
           type="button"
           variant="outline"
-          size="icon-lg"
+          size="sm"
           aria-label="Barkod tara"
+          className="h-9 px-3"
           onClick={(e) => {
             // Dialog açılınca Radix dış ağaca aria-hidden koyuyor; tetikleyici
             // buton focus'lu kalırsa erişilebilirlik uyarısı çıkar. Önce blur
@@ -127,6 +128,7 @@ export function ProductSearchPage() {
           }}
         >
           <ScanBarcodeIcon className="size-4" />
+          Barkod
         </Button>
         <Button
           type="submit"

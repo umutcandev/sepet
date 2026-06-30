@@ -22,6 +22,10 @@ import {
   type ConversationListItem,
 } from "@/components/assistant/assistant-conversations-group"
 import {
+  BlogPostsGroup,
+  type BlogNavItem,
+} from "@/components/blog/blog-posts-group"
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -66,11 +70,13 @@ const nav: NavItem[] = [
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: CurrentUser | null
   conversations?: ConversationListItem[]
+  blogPosts?: BlogNavItem[]
 }
 
 export function AppSidebar({
   user,
   conversations,
+  blogPosts,
   ...props
 }: AppSidebarProps) {
   const pathname = usePathname()
@@ -217,6 +223,8 @@ export function AppSidebar({
             conversations={conversations ?? []}
           />
         ) : null}
+
+        <BlogPostsGroup posts={blogPosts ?? []} />
       </SidebarContent>
 
       <SidebarFooter>
