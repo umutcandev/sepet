@@ -25,7 +25,8 @@ export function HomeBlogSection() {
               Blog Gönderileri
             </h2>
             <p className="text-sm text-muted-foreground">
-              Sepet'in sağlık, beslenme ve tekniği üzerine yazdığımız son yazılar.
+              Sepet&apos;in sağlık, beslenme ve tekniği üzerine yazdığımız son
+              yazılar.
             </p>
           </div>
           <Button

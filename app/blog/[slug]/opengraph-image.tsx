@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og"
+import { notFound } from "next/navigation"
 
 import { getAuthor, formatAuthorNames } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
@@ -69,14 +70,17 @@ export default async function Image({
 }) {
   const { slug } = await params
   const post = getPostBySlug(slug)
+  // Bilinmeyen slug'da sayfa (page.tsx) 404 veriyor; OG görseli de tutarlı
+  // olsun diye 200 + generic görsel yerine 404 döndürüyoruz.
+  if (!post) notFound()
 
-  const title = post?.title ?? "Sepet Blog"
-  const categoryLabel = post ? getCategory(post.category).label : "Blog"
-  const authorNames = post ? formatAuthorNames(post.authors) : "Sepet"
-  const readingTime = post?.metadata.readingTime ?? 0
+  const title = post.title
+  const categoryLabel = getCategory(post.category).label
+  const authorNames = formatAuthorNames(post.authors)
+  const readingTime = post.metadata.readingTime
   // İlk yazarın rolü (tek yazarda alt satır olarak gösterilir).
   const primaryRole =
-    post && post.authors.length === 1 ? getAuthor(post.authors[0]).role : ""
+    post.authors.length === 1 ? getAuthor(post.authors[0]).role : ""
 
   const text = `${title}${categoryLabel}${authorNames}${primaryRole}Sepet${readingTime} dk okuma·trysepet.com`
   const [regular, semibold] = await Promise.all([

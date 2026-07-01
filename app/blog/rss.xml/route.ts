@@ -31,7 +31,9 @@ export function GET() {
 
   const items = posts
     .map((post) => {
-      const link = absoluteUrl(post.permalink)
+      // URL de XML metnine gömüldüğü için kaçırılır (slug'da & vb. çıkarsa
+      // akışı bozmasın); absoluteUrl normalde güvenli üretir, bu ek güvence.
+      const link = escapeXml(absoluteUrl(post.permalink))
       return `    <item>
       <title>${escapeXml(post.title)}</title>
       <link>${link}</link>

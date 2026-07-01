@@ -24,9 +24,17 @@ function MdxLink({
   href = "",
   ...props
 }: React.ComponentProps<"a">) {
-  const isInternal = href.startsWith("/") || href.startsWith("#")
+  // İç bağlantı: kök-göreli ("/…", ama protokol-göreli "//…" DEĞİL) veya çapa.
+  const isInternal =
+    (href.startsWith("/") && !href.startsWith("//")) || href.startsWith("#")
   if (isInternal) {
     return <Link href={href} {...props} />
+  }
+  // Dış bağlantı yalnız güvenli şemalara izinli; javascript:/data: gibi şemalar
+  // (ileride dış katkı gelirse XSS vektörü) href'siz düz metne indirgenir.
+  const isSafeExternal = /^(https?:|mailto:)/i.test(href)
+  if (!isSafeExternal) {
+    return <a {...props} />
   }
   return <a href={href} target="_blank" rel="noopener noreferrer" {...props} />
 }

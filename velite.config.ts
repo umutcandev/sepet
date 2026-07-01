@@ -11,7 +11,10 @@ import { CATEGORY_IDS } from "./lib/blog/categories"
 // çalışır; runtime'a yük binmez. readingTime/toc/derlenmiş MDX otomatik eklenir.
 const posts = {
   name: "Post",
-  pattern: "blog/**/*.mdx",
+  // Yalnız düz dosyalar (content/blog/*.mdx). Alt klasör KULLANILMAZ: slug tek
+  // segmentli `app/blog/[slug]` rotasına gider; iç içe yol slug'a "/" katıp
+  // rotayı bozardı. Glob'u düz tutmak bu sözleşmeyi zorunlu kılar.
+  pattern: "blog/*.mdx",
   schema: s
     .object({
       title: s.string().max(120),

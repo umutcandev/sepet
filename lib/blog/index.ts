@@ -5,7 +5,6 @@
 // elle: `pnpm exec velite build`). Üretilmeden tip/derleme hatası beklenir.
 import { posts as allPosts, type Post } from "@/.velite"
 
-import { type AuthorId } from "@/lib/blog/authors"
 import { CATEGORIES, type CategoryId } from "@/lib/blog/categories"
 import { formatPostDateMedium } from "@/lib/blog/format"
 import { type SearchDoc } from "@/lib/blog/search"
@@ -47,10 +46,6 @@ export function getPostsByCategory(category: CategoryId): Post[] {
   return getAllPosts().filter((post) => post.category === category)
 }
 
-export function getPostsByAuthor(author: AuthorId): Post[] {
-  return getAllPosts().filter((post) => post.authors.includes(author))
-}
-
 /** Yazı sonu "ilgili yazılar": aynı kategori öncelikli, sonra ortak etiket. */
 export function getRelatedPosts(post: Post, limit = 2): Post[] {
   const others = getAllPosts().filter((p) => p.slug !== post.slug)
@@ -82,13 +77,4 @@ export function getSearchDocs(): SearchDoc[] {
     publishedAt: post.publishedAt,
     tags: post.tags,
   }))
-}
-
-/** Index kategori sayımları (Tümü dâhil tab rozetleri için). */
-export function getCategoryCounts(): Record<CategoryId, number> {
-  const counts = {} as Record<CategoryId, number>
-  for (const post of getAllPosts()) {
-    counts[post.category] = (counts[post.category] ?? 0) + 1
-  }
-  return counts
 }
