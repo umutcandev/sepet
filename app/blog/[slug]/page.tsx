@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { ArticleActions } from "@/components/blog/article-actions"
@@ -8,6 +9,14 @@ import { MobileArticleBar } from "@/components/blog/mobile-article-bar"
 import { PostHeader } from "@/components/blog/post-header"
 import { RelatedPosts } from "@/components/blog/related-posts"
 import { TableOfContents } from "@/components/blog/table-of-contents"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/blog"
 import { getAuthor } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
@@ -83,6 +92,22 @@ export default async function BlogPostPage({
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-12 xl:gap-16">
         <article className="min-w-0 max-w-2xl">
+          <Breadcrumb className="mb-6">
+            <BreadcrumbList className="flex-nowrap">
+              <BreadcrumbItem className="shrink-0">
+                <BreadcrumbLink asChild>
+                  <Link href="/blog">Blog</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="shrink-0" />
+              <BreadcrumbItem className="min-w-0">
+                <BreadcrumbPage className="min-w-0 truncate">
+                  {post.title}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+
           <PostHeader post={post} />
 
           {/* Mobilde içerik üstüne gelen yatay eylem satırı; masaüstünde kenar

@@ -58,8 +58,8 @@ export default async function BlogIndexPage({
       <div className="mb-6 flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">Blog</h1>
         <p className="text-sm text-muted-foreground">
-          Tekniğimizden hareket sağlığına ve bütçeyle sağlıklı yaşama, üzerine
-          düşündüğümüz her şey.
+          Sepet&apos;in tekniği, sağlıklı yaşam ve ikisinin kesiştiği yer
+          üzerine yazdıklarımız.
         </p>
       </div>
 

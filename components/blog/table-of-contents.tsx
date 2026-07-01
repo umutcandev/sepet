@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 
 export type TocEntry = { title: string; url: string; items: TocEntry[] }
 type FlatEntry = { title: string; url: string; depth: number }
+export type NumberedTocEntry = FlatEntry & { number: string }
 
 function flatten(entries: TocEntry[], depth = 0): FlatEntry[] {
   return entries.flatMap((entry) => [
@@ -19,6 +20,19 @@ function flatten(entries: TocEntry[], depth = 0): FlatEntry[] {
 // gösterilmeyeceği de bunun uzunluğuna göre belirlenir.
 export function getTocItems(toc: TocEntry[]): FlatEntry[] {
   return flatten(toc).filter((item) => item.url.startsWith("#"))
+}
+
+// Başlıklara hiyerarşik sıra numarası ekler (1, 1.1, 1.2, 2, 3 ...). Her derinlik
+// için bir sayaç tutulur; daha üst bir başlığa dönüldüğünde altındaki sayaçlar
+// sıfırlanır (counters.length kısaltması). Numara, kök başlıktan o başlığa kadar
+// olan sayaçların noktayla birleşimidir.
+export function getNumberedTocItems(toc: TocEntry[]): NumberedTocEntry[] {
+  const counters: number[] = []
+  return getTocItems(toc).map((item) => {
+    counters[item.depth] = (counters[item.depth] ?? 0) + 1
+    counters.length = item.depth + 1
+    return { ...item, number: counters.join(".") }
+  })
 }
 
 // İçeriğin gerçek kaydırma kabını bul. AppShell içeriği `window` yerine

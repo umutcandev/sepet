@@ -7,7 +7,11 @@ import {
   CopyArticleMenuItems,
   getShareTargets,
 } from "@/components/blog/article-actions"
-import { getTocItems, type TocEntry } from "@/components/blog/table-of-contents"
+import {
+  getNumberedTocItems,
+  getTocItems,
+  type TocEntry,
+} from "@/components/blog/table-of-contents"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -26,7 +30,7 @@ import { cn } from "@/lib/utils"
 // başlığa dokununca o başlığa kaydırır ve pencereyi kapatır.
 function TocMenu({ toc }: { toc: TocEntry[] }) {
   const [open, setOpen] = React.useState(false)
-  const items = React.useMemo(() => getTocItems(toc), [toc])
+  const items = React.useMemo(() => getNumberedTocItems(toc), [toc])
 
   const handleClick = (id: string) => (event: React.MouseEvent) => {
     event.preventDefault()
@@ -67,9 +71,12 @@ function TocMenu({ toc }: { toc: TocEntry[] }) {
                     href={item.url}
                     onClick={handleClick(id)}
                     style={{ paddingLeft: 8 + item.depth * 14 }}
-                    className="block rounded-md py-1.5 pr-2 text-sm leading-snug text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    className="flex gap-2 rounded-md py-1.5 pr-2 text-sm leading-snug text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                   >
-                    {item.title}
+                    <span className="shrink-0 tabular-nums text-muted-foreground/60">
+                      {item.number}
+                    </span>
+                    <span className="min-w-0">{item.title}</span>
                   </a>
                 </li>
               )
@@ -105,7 +112,7 @@ function CopyMenu({
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-72">
+      <DropdownMenuContent align="start" className="w-56">
         <CopyArticleMenuItems
           markdown={markdown}
           markdownUrl={markdownUrl}
