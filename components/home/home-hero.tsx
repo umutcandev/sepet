@@ -117,27 +117,27 @@ export function HomeHero() {
       <link
         rel="preload"
         as="image"
-        href="/background-image.avif"
+        href="/backgrounds/background-image.avif"
         type="image/avif"
         fetchPriority="high"
       />
       <link
         rel="preload"
         as="image"
-        href="/background-image.webp"
+        href="/backgrounds/background-image.webp"
         type="image/webp"
         fetchPriority="high"
       />
       <link
         rel="preload"
         as="image"
-        href="/background-image-dark.avif"
+        href="/backgrounds/background-image-dark.avif"
         type="image/avif"
       />
       <link
         rel="preload"
         as="image"
-        href="/background-image-dark.webp"
+        href="/backgrounds/background-image-dark.webp"
         type="image/webp"
       />
       <link rel="preload" as="image" href="/market-logos/a101.webp" />
@@ -149,11 +149,11 @@ export function HomeHero() {
       <div className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16">
         <div
           aria-hidden
-          className="dark:hidden pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image.avif')_type('image/avif'),url('/background-image.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
+          className="dark:hidden pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/backgrounds/background-image.avif')_type('image/avif'),url('/backgrounds/background-image.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
         />
         <div
           aria-hidden
-          className="hidden dark:block pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/background-image-dark.avif')_type('image/avif'),url('/background-image-dark.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
+          className="hidden dark:block pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/backgrounds/background-image-dark.avif')_type('image/avif'),url('/backgrounds/background-image-dark.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
         />
         {/* Görselin alt kenarını blog bölümünün dip rengine (--home-base, temaya
             bağlı) yumuşak fade ile bağlar: dipte tam renk, yukarı doğru saydamlaşır.

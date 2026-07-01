@@ -138,7 +138,7 @@ export function AppShell({ user, conversations, blogPosts, children }: Props) {
             ) : (
               <>
                 <Image
-                  src="/sepet-dark.svg"
+                  src="/brand/sepet-dark.svg"
                   alt="Sepet"
                   width={846}
                   height={178}
@@ -146,7 +146,7 @@ export function AppShell({ user, conversations, blogPosts, children }: Props) {
                   className="h-5 w-auto md:hidden dark:hidden"
                 />
                 <Image
-                  src="/sepet-light.svg"
+                  src="/brand/sepet-light.svg"
                   alt=""
                   aria-hidden
                   width={846}

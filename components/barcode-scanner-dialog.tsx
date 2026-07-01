@@ -95,7 +95,7 @@ function ScannerSession({
 
         setZXingModuleOverrides({
           locateFile: (path: string, prefix: string) =>
-            path.endsWith(".wasm") ? "/zxing_reader.wasm" : prefix + path,
+            path.endsWith(".wasm") ? "/wasm/zxing_reader.wasm" : prefix + path,
         })
 
         const detector = new BarcodeDetector({ formats: [...FORMATS] })

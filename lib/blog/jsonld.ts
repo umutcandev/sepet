@@ -18,7 +18,7 @@ export function organizationLd() {
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",
-      url: absoluteUrl("/sepet-light.svg"),
+      url: absoluteUrl("/brand/sepet-light.svg"),
     },
     sameAs: [SITE_X],
   }

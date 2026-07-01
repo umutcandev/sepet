@@ -28,7 +28,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/zxing_reader.wasm",
+        source: "/wasm/zxing_reader.wasm",
         headers: [
           {
             key: "Content-Type",
