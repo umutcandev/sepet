@@ -1,0 +1,93 @@
+---
+title: "Bir Listenin En Uygun Sepete Yolculuğu: Beş Aşamalı Pipeline"
+description: Sepet, yazdığın listeyi en uygun sepete nasıl çeviriyor? Parse, Lookup, Match, Optimize ve Summary aşamalarından oluşan pipeline'ı adım adım anlatıyoruz.
+publishedAt: 2026-06-12T10:00:00+03:00
+authors:
+  - umutcan
+category: teknik
+tags:
+  - mimari
+  - yapay zeka
+  - pipeline
+featured: true
+---
+
+"Bir kilo domates, yarım kilo kıyma, bir paket makarna" yazdığında bu tek bir
+işlem gibi görünür. Oysa perde arkasında listen birbirini izleyen beş ayrı
+aşamadan geçer. Her aşamanın tek bir görevi var ve bu ayrım, sistemi hem
+anlaşılır hem de güvenilir tutuyor. Bu yazıda o yolculuğu baştan sona
+anlatıyorum.
+
+## Aşama 1: Parse, yani listeyi anlamak
+
+İlk iş, serbest metni yapılandırılmış veriye çevirmektir. Kullanıcı her şeyi
+tek satırda, kısaltmalarla, dağınık yazabilir. Bu aşamada bir dil modeli
+(Gemini 2.5 Flash Lite) metni okur ve her kalemi üç parçaya ayırır: ürün adı,
+miktar ve birim. Ayrıca her kalem için bir arama sorgusu üretir.
+
+Çıktı serbest metin değil, şemaya uyan bir nesnedir. Modeli düşük sıcaklıkla ve
+sabit bir şemaya bağlı çalıştırırız, böylece sonuç tahmin edilebilir kalır.
+
+Fotoğraflar da buraya bağlanır. Bir yemek ya da fiş fotoğrafı önce görme
+yeteneği olan bir modelden (Gemini 2.5 Flash) geçer, yapılandırılmış bir listeye
+çevrilir ve aynı akışa katılır. Yani metinle başlasan da fotoğrafla başlasan da
+sonraki aşamalar değişmez.
+
+## Aşama 2: Lookup, gerçek ürünleri bulmak
+
+Elimizde temiz bir liste var ama bunlar henüz birer kelime. İkinci aşamada her
+kalem için marketlerdeki gerçek ürün adaylarını getiririz.
+
+Burada önemli bir eleme yapılır: hiçbir markette gerçek bir fiyatı olmayan aday
+listeden çıkarılır. Fiyatı olmayan bir ürün optimizasyona katkı veremez, çünkü
+karşılaştıracak bir sayısı yoktur. Bu kural baştan uygulanınca sonraki
+aşamalar yalnız anlamlı verilerle çalışır.
+
+## Aşama 3: Match, doğru ürünü seçmek
+
+Bir kalem için çoğu zaman birden fazla aday döner. "Yoğurt" yazdığında karşına
+sade yoğurtla birlikte meyveli ve aromalı çeşitleri de gelir. Üçüncü aşamada bir
+model, adaylar arasından kalemin gerçekten karşılık geldiği ürünü seçer.
+
+Seçim keyfi değildir, kurallara bağlıdır. Sade bir ürün istendiğinde aromalı
+varyant seçilmez. Taze bir malzeme gerekiyorsa turşusu ya da konservesi tercih
+edilmez. Bu kurallar tek bir yerde, eşleştirme talimatında toplanır.
+
+Aynı eşleştirmeyi tekrar tekrar hesaplamamak için seçimleri önbelleğe alırız.
+Aynı kalem, aynı aday kümesiyle yeniden geldiğinde modeli tekrar çağırmaya gerek
+kalmaz. Bu önbelleğin kurallarla nasıl senkron tutulduğunu ayrı bir yazıda
+anlattım.
+
+## Aşama 4: Optimize, en az parayla toplamak
+
+Dördüncü aşamada artık yapay zeka yok. Bu tamamen deterministik bir hesaptır,
+yani aynı girdi her zaman aynı sonucu verir.
+
+Önce her market için o markette en hesaplı seçenek bulunur. Karşılaştırma birim
+fiyat üzerinden yapılır, çünkü farklı gramajları adil kıyaslamanın tek yolu
+budur. Ardından iki olasılık değerlendirilir: tüm listeyi tek markette mi
+toplamak daha ucuz, yoksa iki markete bölmek mi. Listeyi bir bütün olarak
+optimize etmenin asıl kazancı çoğu zaman buradan çıkar.
+
+Tek bir incelik daha var: istenen miktar fiyatı çarpmaz. "Altı limon" yazsan da
+bir kiloluk limon paketinin raf fiyatı neyse o yazılır. Miktar yalnızca doğru
+ürünü seçmek içindir, kasadaki tutarı belirlemek için değil.
+
+## Aşama 5: Summary, sonucu anlatmak
+
+Son aşamada sayılar insanın okuyabileceği kısa bir özete dönüşür. Hangi market,
+ne kadar tutar, nereden ne kadar tasarruf edildiği birkaç cümleyle anlatılır.
+Kullanıcı tablo okumak zorunda kalmadan kararı görür.
+
+## Neden beş ayrı aşama
+
+Tek bir dev adım yerine beş küçük adım kurmanın somut nedenleri var:
+
+- Her aşama ayrı ayrı test edilebilir. Bir sorun çıktığında hangi adımda
+  olduğunu bilirsin.
+- Yapay zeka yalnızca yargı gereken yerde çalışır (anlama ve eşleştirme).
+  Hesabın matematiksel kısmı deterministiktir.
+- Her aşama bağımsız olarak iyileştirilebilir ya da önbelleğe alınabilir.
+
+Sade görünen bir akışın altında, her biri tek bir işi iyi yapan beş parça var.
+Hepsinin ortak amacı tek: kasada en az parayı ödemen.

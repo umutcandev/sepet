@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
+import type { BlogNavItem } from "@/components/blog/blog-posts-group"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -28,6 +29,7 @@ import { assistantConversations } from "@/lib/stores/assistant-conversations"
 type Props = {
   user: CurrentUser | null
   conversations?: ConversationListItem[]
+  blogPosts?: BlogNavItem[]
   children: React.ReactNode
 }
 
@@ -98,10 +100,11 @@ function NewConversationButton() {
   )
 }
 
-export function AppShell({ user, conversations, children }: Props) {
+export function AppShell({ user, conversations, blogPosts, children }: Props) {
   const pathname = usePathname()
   const { title, loading, conversationId } = useAssistantTitle()
   const isAssistantRoute = pathname?.startsWith("/asistan") ?? false
+  const isHome = pathname === "/"
 
   // Sidebar listesi (AssistantConversationsGroup) mobilde Sheet kapalıyken
   // unmount oluyor; o yüzden hidrasyonu burada — her zaman mount olan
@@ -114,7 +117,11 @@ export function AppShell({ user, conversations, children }: Props) {
 
   return (
     <SidebarProvider>
-      <AppSidebar user={user} conversations={conversations} />
+      <AppSidebar
+        user={user}
+        conversations={conversations}
+        blogPosts={blogPosts}
+      />
       <SidebarInset className="min-h-0 overflow-hidden">
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex shrink-0 items-center gap-2 px-4">
@@ -131,7 +138,7 @@ export function AppShell({ user, conversations, children }: Props) {
             ) : (
               <>
                 <Image
-                  src="/sepet-dark.svg"
+                  src="/brand/sepet-dark.svg"
                   alt="Sepet"
                   width={846}
                   height={178}
@@ -139,7 +146,7 @@ export function AppShell({ user, conversations, children }: Props) {
                   className="h-5 w-auto md:hidden dark:hidden"
                 />
                 <Image
-                  src="/sepet-light.svg"
+                  src="/brand/sepet-light.svg"
                   alt=""
                   aria-hidden
                   width={846}
@@ -182,7 +189,22 @@ export function AppShell({ user, conversations, children }: Props) {
             )}
           </div>
         </header>
-        <div className="no-scrollbar flex min-h-0 flex-1 flex-col overflow-y-auto">
+        <div
+          className={cn(
+            "flex min-h-0 flex-1 flex-col overflow-y-auto",
+            isHome ? "no-scrollbar" : "cn-scrollbar-thin"
+          )}
+        >
+          {/* Ana sayfada hero görseli, scroll edilince header'ın hemen altında
+              tam opaklıkta görünüp keskin yatay bir çizgi oluşturuyordu. Bu
+              sticky fade header'ın zemin rengini içeriğe yumuşatarak o kesik
+              geçişi kaldırır; -mb ile yer kaplamaz, scroll'da üstte sabit kalır. */}
+          {isHome ? (
+            <div
+              aria-hidden
+              className="pointer-events-none sticky top-0 z-20 -mb-12 h-12 shrink-0 bg-[linear-gradient(to_bottom,var(--background)_0%,color-mix(in_srgb,var(--background)_70%,transparent)_40%,color-mix(in_srgb,var(--background)_28%,transparent)_70%,transparent_100%)]"
+            />
+          ) : null}
           {children}
         </div>
       </SidebarInset>

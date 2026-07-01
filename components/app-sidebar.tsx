@@ -22,6 +22,10 @@ import {
   type ConversationListItem,
 } from "@/components/assistant/assistant-conversations-group"
 import {
+  BlogPostsGroup,
+  type BlogNavItem,
+} from "@/components/blog/blog-posts-group"
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -66,11 +70,13 @@ const nav: NavItem[] = [
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: CurrentUser | null
   conversations?: ConversationListItem[]
+  blogPosts?: BlogNavItem[]
 }
 
 export function AppSidebar({
   user,
   conversations,
+  blogPosts,
   ...props
 }: AppSidebarProps) {
   const pathname = usePathname()
@@ -109,7 +115,7 @@ export function AppSidebar({
             <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent">
               <Link href="/">
                 <Image
-                  src="/sepet-dark.svg"
+                  src="/brand/sepet-dark.svg"
                   alt="Sepet"
                   width={846}
                   height={178}
@@ -117,7 +123,7 @@ export function AppSidebar({
                   className="h-6 w-auto dark:hidden"
                 />
                 <Image
-                  src="/sepet-light.svg"
+                  src="/brand/sepet-light.svg"
                   alt=""
                   aria-hidden
                   width={846}
@@ -217,6 +223,8 @@ export function AppSidebar({
             conversations={conversations ?? []}
           />
         ) : null}
+
+        <BlogPostsGroup posts={blogPosts ?? []} />
       </SidebarContent>
 
       <SidebarFooter>

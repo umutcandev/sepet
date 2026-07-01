@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 import { AppShell } from "@/components/app-shell"
+import { JsonLd } from "@/components/blog/json-ld"
+import { organizationLd, websiteLd } from "@/lib/blog/jsonld"
 import { LoginDialogHost } from "@/components/auth/login-dialog-host"
 import { LocationHost } from "@/components/location/location-host"
 import { OnboardingHost } from "@/components/onboarding/onboarding-host"
@@ -13,6 +15,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { getCurrentUser } from "@/lib/auth/session"
 import { listConversations } from "@/lib/actions/conversations"
+import { getLatestPosts } from "@/lib/blog"
 import { cn } from "@/lib/utils"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
@@ -47,7 +50,7 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: "/opengraph-image.png",
+        url: "/brand/opengraph-image.png",
         width: 957,
         height: 410,
         alt: siteTitle,
@@ -58,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/opengraph-image.png"],
+    images: ["/brand/opengraph-image.png"],
   },
 }
 
@@ -69,6 +72,12 @@ export default async function RootLayout({
 }>) {
   const user = await getCurrentUser()
   const conversations = user ? await listConversations() : []
+  // Sidebar "Blog Gönderileri" grubu için son 4 yazı (başlık + link + yazar).
+  const blogPosts = getLatestPosts(4).map((post) => ({
+    title: post.title,
+    permalink: post.permalink,
+    authors: post.authors,
+  }))
   return (
     <html
       lang="tr"
@@ -76,6 +85,8 @@ export default async function RootLayout({
       className={cn("style-nova antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
       <body>
+        {/* Site geneli kök JSON-LD: Organization + WebSite (Rich Snippet). */}
+        <JsonLd data={[organizationLd(), websiteLd()]} />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -84,7 +95,11 @@ export default async function RootLayout({
         >
           <TooltipProvider>
             <SessionProvider user={user}>
-              <AppShell user={user} conversations={conversations}>
+              <AppShell
+                user={user}
+                conversations={conversations}
+                blogPosts={blogPosts}
+              >
                 {children}
               </AppShell>
               <LoginDialogHost />

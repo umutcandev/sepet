@@ -16,6 +16,10 @@
 /out/
 /certificates/
 
+# velite (içerik katmanı çıktısı + işlenmiş statik varlıklar)
+/.velite/
+/public/static/
+
 #claude
 /.claude/
 

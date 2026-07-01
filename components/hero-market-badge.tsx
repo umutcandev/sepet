@@ -51,7 +51,7 @@ export function HeroMarketBadge() {
       href="/asistan"
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
-      className="group inline-flex select-none items-center gap-2 rounded-full border border-border bg-background/70 py-1 pl-1.5 pr-2.5 backdrop-blur-md transition-colors hover:border-foreground/20 dark:border-muted-foreground/20 dark:bg-muted/55 dark:hover:border-muted-foreground/35"
+      className="group inline-flex select-none items-center gap-2 rounded-full border border-border bg-muted py-1 pl-1.5 pr-2.5 transition-colors hover:border-foreground/20 dark:border-muted-foreground/20 dark:bg-muted dark:hover:border-muted-foreground/35"
     >
       <div className="flex -space-x-2">
         <AnimatePresence mode="popLayout" initial={false}>
@@ -64,7 +64,7 @@ export function HeroMarketBadge() {
               exit={{ opacity: 0, scale: 0.5, x: -12 }}
               // Giren/çıkan logo aynı anda küçülürken silikleşsin: opacity'ye ayrı tween.
               transition={{ ...slide, opacity: { duration: 0.2, ease: "easeOut" } }}
-              className="relative size-6 shrink-0 rounded-full ring-2 ring-background dark:ring-muted"
+              className="relative size-6 shrink-0 rounded-full ring-2 ring-muted"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

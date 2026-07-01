@@ -3,6 +3,18 @@ import { dirname } from "node:path"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
+// Velite içerik katmanını (content/blog → .velite) Next başlamadan derle.
+// Turbopack'te webpack plugin çalışmadığından önerilen yöntem budur; tek sefer
+// çalışması için VELITE_STARTED guard'ı kullanılır (next.config birden çok kez
+// yüklenebilir).
+const isDev = process.argv.includes("dev")
+const isBuild = process.argv.includes("build")
+if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
+  process.env.VELITE_STARTED = "1"
+  const { build } = await import("velite")
+  await build({ watch: isDev, clean: !isDev })
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: { root: __dirname },
@@ -16,7 +28,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/zxing_reader.wasm",
+        source: "/wasm/zxing_reader.wasm",
         headers: [
           {
             key: "Content-Type",

@@ -29,14 +29,14 @@ export function LoginForm({ callbackUrl }: Props) {
   return (
     <div className="flex w-full max-w-[402px] flex-col items-center px-6 pt-10 pb-6 text-center md:pt-12">
       <Image
-        src="/sepet-square-dark.webp"
+        src="/brand/sepet-square-dark.webp"
         alt="Sepet"
         width={256}
         height={256}
         className="h-16 w-16 rounded-xl dark:hidden"
       />
       <Image
-        src="/sepet-square-light.webp"
+        src="/brand/sepet-square-light.webp"
         alt=""
         aria-hidden
         width={256}
