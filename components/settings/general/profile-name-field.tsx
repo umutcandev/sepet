@@ -8,11 +8,12 @@ import { Input } from "@/components/ui/input"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { updateProfileName } from "@/lib/actions/profile"
 
-// Tam ad düzenleme: input + "Kaydet". Kayıt sonrası router.refresh() ile RSC
-// yeniden çalışır; getCurrentUser adı DB'den okuduğu için nav menüsü de güncellenir.
+// Tam ad düzenleme: input + "Kaydet". Kayıt sonrası oturum `refresh()` ile
+// `/api/me` yeniden çekilir; getCurrentUser adı DB'den okuduğu için nav menüsü
+// ve bu input senkronlanır. router.refresh() sayfanın diğer RSC verisi için.
 export function ProfileNameField() {
   const router = useRouter()
-  const { user } = useCurrentUser()
+  const { user, refresh } = useCurrentUser()
   const serverName = user?.name ?? ""
 
   const [value, setValue] = React.useState(serverName)
@@ -40,8 +41,9 @@ export function ProfileNameField() {
       setError(res.error ?? "Kaydedilemedi.")
       return
     }
+    void refresh()
     router.refresh()
-  }, [dirty, saving, trimmed, router])
+  }, [dirty, saving, trimmed, router, refresh])
 
   return (
     <div className="flex flex-col items-end gap-1">

@@ -17,7 +17,7 @@ const MAX_BYTES = 8 * 1024 * 1024 // 8 MB
 // varken avatarın sağında "Kaldır" butonu Google fotoğrafına döndürür.
 export function AvatarChanger() {
   const router = useRouter()
-  const { user } = useCurrentUser()
+  const { user, refresh } = useCurrentUser()
   const fileRef = React.useRef<HTMLInputElement>(null)
 
   const [opt, setOpt] = React.useState<{ src: string; isCustom: boolean } | null>(
@@ -69,6 +69,7 @@ export function AvatarChanger() {
       const saved = await setAvatar(publicUrl)
       if (!saved.ok) throw new Error(saved.error ?? "Kaydedilemedi.")
       setOpt({ src: publicUrl, isCustom: true })
+      void refresh()
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : "Bir hata oluştu.")
@@ -84,6 +85,7 @@ export function AvatarChanger() {
       const res = await resetAvatar()
       if (!res.ok) throw new Error("İşlem başarısız.")
       setOpt({ src: user?.googleAvatar ?? "", isCustom: false })
+      void refresh()
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : "Bir hata oluştu.")

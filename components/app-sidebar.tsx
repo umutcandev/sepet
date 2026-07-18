@@ -17,10 +17,7 @@ import { NavGuest } from "@/components/nav-guest"
 import { NavGuestInfo } from "@/components/nav-guest-info"
 import { NavUser } from "@/components/nav-user"
 import { Button } from "@/components/ui/button"
-import {
-  AssistantConversationsGroup,
-  type ConversationListItem,
-} from "@/components/assistant/assistant-conversations-group"
+import { AssistantConversationsGroup } from "@/components/assistant/assistant-conversations-group"
 import {
   BlogPostsGroup,
   type BlogNavItem,
@@ -69,13 +66,11 @@ const nav: NavItem[] = [
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: CurrentUser | null
-  conversations?: ConversationListItem[]
   blogPosts?: BlogNavItem[]
 }
 
 export function AppSidebar({
   user,
-  conversations,
   blogPosts,
   ...props
 }: AppSidebarProps) {
@@ -219,9 +214,10 @@ export function AppSidebar({
         </SidebarGroup>
 
         {showAssistantConversations ? (
-          <AssistantConversationsGroup
-            conversations={conversations ?? []}
-          />
+          // Liste assistantConversations store'undan okunur; store hidrasyonunu
+          // SessionProvider `/api/me` sonrası yapar. Buradaki fallback yalnızca
+          // hidrasyondan önceki ilk render için (boş).
+          <AssistantConversationsGroup conversations={[]} />
         ) : null}
 
         <BlogPostsGroup posts={blogPosts ?? []} />
