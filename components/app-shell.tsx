@@ -9,7 +9,6 @@ import { CommandIcon, PanelLeftIcon, PlusIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
-import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
 import type { BlogNavItem } from "@/components/blog/blog-posts-group"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -21,14 +20,11 @@ import {
   SidebarProvider,
   useSidebar,
 } from "@/components/ui/sidebar"
-import type { CurrentUser } from "@/lib/auth/session"
+import { useCurrentUser } from "@/components/providers/session-provider"
 import { loginDialog } from "@/lib/stores/login-dialog"
 import { useAssistantTitle } from "@/lib/stores/assistant-title"
-import { assistantConversations } from "@/lib/stores/assistant-conversations"
 
 type Props = {
-  user: CurrentUser | null
-  conversations?: ConversationListItem[]
   blogPosts?: BlogNavItem[]
   children: React.ReactNode
 }
@@ -100,28 +96,20 @@ function NewConversationButton() {
   )
 }
 
-export function AppShell({ user, conversations, blogPosts, children }: Props) {
+export function AppShell({ blogPosts, children }: Props) {
   const pathname = usePathname()
   const { title, loading, conversationId } = useAssistantTitle()
+  // Kullanıcı/sohbet listesi artık kök layout prop'undan değil, istemci
+  // tarafı SessionProvider'dan gelir (paylaşımlı rotalar statik cache'lenebilsin
+  // diye). Sidebar sohbet listesi assistantConversations store'undan okunur ve
+  // hidrasyonu SessionProvider `/api/me` sonrası bir kez yapar.
+  const { user, loading: sessionLoading } = useCurrentUser()
   const isAssistantRoute = pathname?.startsWith("/asistan") ?? false
   const isHome = pathname === "/"
 
-  // Sidebar listesi (AssistantConversationsGroup) mobilde Sheet kapalıyken
-  // unmount oluyor; o yüzden hidrasyonu burada — her zaman mount olan
-  // AppShell'de — yapıyoruz. Böylece stream sırasında store'a yazılan
-  // upsert/setTitle mutasyonları sidebar kapalıyken de korunur ve menü
-  // açılınca listede görünür.
-  React.useEffect(() => {
-    assistantConversations.hydrate(conversations ?? [])
-  }, [conversations])
-
   return (
     <SidebarProvider>
-      <AppSidebar
-        user={user}
-        conversations={conversations}
-        blogPosts={blogPosts}
-      />
+      <AppSidebar user={user} blogPosts={blogPosts} />
       <SidebarInset className="min-h-0 overflow-hidden">
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex shrink-0 items-center gap-2 px-4">
@@ -177,7 +165,11 @@ export function AppShell({ user, conversations, blogPosts, children }: Props) {
           </div>
           <div className="flex shrink-0 items-center justify-end gap-1 px-4">
             <ThemeToggleButton />
-            {user ? (
+            {sessionLoading ? (
+              // Oturum `/api/me`'den çözülene kadar giriş butonu ↔ avatar
+              // çakmasını önlemek için nötr yer tutucu.
+              <Skeleton className="h-8 w-20 rounded-md" />
+            ) : user ? (
               <HeaderUserMenu user={user} className="md:hidden" />
             ) : (
               <Button

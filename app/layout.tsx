@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
@@ -13,8 +14,6 @@ import { SessionProvider } from "@/components/providers/session-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { getCurrentUser } from "@/lib/auth/session"
-import { listConversations } from "@/lib/actions/conversations"
 import { getLatestPosts } from "@/lib/blog"
 import { cn } from "@/lib/utils"
 
@@ -65,13 +64,16 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+// Kök layout kasıtlı olarak `auth()`/cookie okumaz: böylece paylaşımlı rotalar
+// (ana sayfa, blog, yasal sayfalar) statik/ISR olarak CDN'de cache'lenebilir.
+// Kullanıcıya özel durum (avatar, konum, sohbet listesi) SessionProvider
+// tarafından mount sonrası `/api/me`'den çekilir. blogPosts velite'tan gelir
+// (statik içerik, cookie yok).
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const user = await getCurrentUser()
-  const conversations = user ? await listConversations() : []
   // Sidebar "Blog Gönderileri" grubu için son 4 yazı (başlık + link + yazar).
   const blogPosts = getLatestPosts(4).map((post) => ({
     title: post.title,
@@ -94,15 +96,13 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <TooltipProvider>
-            <SessionProvider user={user}>
-              <AppShell
-                user={user}
-                conversations={conversations}
-                blogPosts={blogPosts}
-              >
-                {children}
-              </AppShell>
-              <LoginDialogHost />
+            <SessionProvider>
+              <AppShell blogPosts={blogPosts}>{children}</AppShell>
+              {/* useSearchParams okur → statik prerender'ın CSR bailout
+                  vermemesi için Suspense sınırı (görünür fallback yok). */}
+              <Suspense fallback={null}>
+                <LoginDialogHost />
+              </Suspense>
               <OnboardingHost />
               <LocationHost />
               <CheckoutResultHost />

@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import { NextResponse } from "next/server"
+import type { NextRequest, NextFetchEvent } from "next/server"
 
 import { authConfig } from "./auth.config"
 import {
@@ -29,7 +30,11 @@ function tooManyResponse(reset: number) {
   )
 }
 
-export default withAuth(async (req) => {
+// Yalnızca /api rotaları için: hız limiti için `req.auth` (userId) gerektiğinden
+// NextAuth `withAuth` sarmalayıcısı burada uygulanır. Bu sarmalayıcı her yanıta
+// CSRF cookie ekler; bu yüzden SAYFA rotalarına UYGULANMAZ — aksi halde ana
+// sayfa/blog gibi statik rotalar Set-Cookie yüzünden CDN'de cache'lenemez.
+const apiMiddleware = withAuth(async (req) => {
   const { nextUrl } = req
   const path = nextUrl.pathname
   const ip =
@@ -81,6 +86,24 @@ export default withAuth(async (req) => {
   applySecurityHeaders(res.headers)
   return res
 })
+
+// Sayfa rotaları auth okumaz → CSRF cookie set edilmez → statik/ISR yanıtları
+// CDN'de cache'lenebilir. Yalnızca güvenlik başlıkları eklenir (CSP tek kaynak
+// burada kalır). /api rotaları auth gerektiren hız-limiti sarmalayıcısına gider.
+export default function proxy(req: NextRequest, ev: NextFetchEvent) {
+  if (req.nextUrl.pathname.startsWith("/api")) {
+    // NextAuth `withAuth` sarmalayıcısı ikinci argümanı route-handler context'i
+    // olarak tipler; middleware olarak çağrıldığında runtime NextFetchEvent
+    // geçer (NextAuth bunu işler), o yüzden beklenen tipe daraltıyoruz.
+    return apiMiddleware(
+      req,
+      ev as unknown as Parameters<typeof apiMiddleware>[1],
+    )
+  }
+  const res = NextResponse.next()
+  applySecurityHeaders(res.headers)
+  return res
+}
 
 export const config = {
   matcher: [
