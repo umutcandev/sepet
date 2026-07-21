@@ -103,13 +103,15 @@ export function AppShell({ blogPosts, children }: Props) {
   // tarafı SessionProvider'dan gelir (paylaşımlı rotalar statik cache'lenebilsin
   // diye). Sidebar sohbet listesi assistantConversations store'undan okunur ve
   // hidrasyonu SessionProvider `/api/me` sonrası bir kez yapar.
-  const { user, loading: sessionLoading } = useCurrentUser()
+  // displayUser: çözümlenmiş kullanıcı, yoksa localStorage snapshot'ı —
+  // dönen ziyaretlerde avatar hidrasyonla birlikte anında görünür.
+  const { displayUser, loading: sessionLoading } = useCurrentUser()
   const isAssistantRoute = pathname?.startsWith("/asistan") ?? false
   const isHome = pathname === "/"
 
   return (
     <SidebarProvider>
-      <AppSidebar user={user} blogPosts={blogPosts} />
+      <AppSidebar blogPosts={blogPosts} />
       <SidebarInset className="min-h-0 overflow-hidden">
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex shrink-0 items-center gap-2 px-4">
@@ -165,20 +167,27 @@ export function AppShell({ blogPosts, children }: Props) {
           </div>
           <div className="flex shrink-0 items-center justify-end gap-1 px-4">
             <ThemeToggleButton />
-            {sessionLoading ? (
-              // Oturum `/api/me`'den çözülene kadar giriş butonu ↔ avatar
-              // çakmasını önlemek için nötr yer tutucu.
-              <Skeleton className="h-8 w-20 rounded-md" />
-            ) : user ? (
-              <HeaderUserMenu user={user} className="md:hidden" />
-            ) : (
-              <Button
-                size="sm"
-                onClick={() => loginDialog.open()}
-              >
+            {/* İki varyant da her zaman render edilir; hangisinin görüneceğine
+                ilk boyamada <html data-session> ipucu üzerinden CSS karar verir
+                (globals.css), oturum çözümlenince ipucu gerçekle senkronlanır.
+                Böylece "skeleton → giriş butonu / avatar" çakması yaşanmaz:
+                misafir statik HTML'de doğrudan "Hemen Başla" görür, dönen
+                kullanıcı avatarını görür. */}
+            <span data-session-guest>
+              <Button size="sm" onClick={() => loginDialog.open()}>
                 Hemen Başla
               </Button>
-            )}
+            </span>
+            <span data-session-authed>
+              {displayUser ? (
+                <HeaderUserMenu user={displayUser} className="md:hidden" />
+              ) : sessionLoading ? (
+                // Snapshot yok (ör. OAuth dönüşündeki ilk yükleniş) → /api/me
+                // gelene kadar avatarla aynı boyutta nötr yer tutucu. Masaüstünde
+                // avatar sidebar'da olduğundan menü gibi bu da md:hidden.
+                <Skeleton className="size-7 rounded-full md:hidden" />
+              ) : null}
+            </span>
           </div>
         </header>
         <div

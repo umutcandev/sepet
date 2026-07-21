@@ -35,6 +35,13 @@ export const assistantConversations = {
     hydrated = true
     setState(items)
   },
+  // Çıkışta listeyi anında boşalt. `hydrated` true kalır: sonraki bir
+  // hydrate() çağrısı (ör. sekmeler arası senkron) eski listeyi geri
+  // getirmesin — yeni oturum zaten tam sayfa yüklenişiyle başlar.
+  reset() {
+    hydrated = true
+    setState([])
+  },
   upsert(item: ConversationListItem) {
     const existing = state.find((c) => c.id === item.id)
     const rest = state.filter((c) => c.id !== item.id)

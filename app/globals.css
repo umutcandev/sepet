@@ -448,3 +448,22 @@
 .cn-scrollbar-thin-table [data-slot="table-container"]:hover::-webkit-scrollbar-thumb {
   background: var(--muted-foreground);
 }
+
+/* Oturum ipucu kapıları — bkz. lib/auth/session-snapshot.ts.
+   Layout'taki inline script ilk boyamadan ÖNCE <html data-session> yazar;
+   header/sidebar hem misafir hem oturum varyantını statik HTML'e basar, bu
+   kurallar yanlış olanı gizler. Böylece statik sayfalarda "skeleton → doğru
+   durum" çakması yaşanmaz. Attribute sonrasında SessionProvider tarafından
+   çözümlenen gerçek durumla senkron tutulur. display:contents ile
+   sarmalayıcılar flex/gap düzenini bozmaz. */
+[data-session-guest],
+[data-session-authed] {
+  display: contents;
+}
+html[data-session="authed"] [data-session-guest] {
+  display: none;
+}
+/* Attribute yokken (JS kapalı / script engellendi) misafir varyantı görünür. */
+html:not([data-session="authed"]) [data-session-authed] {
+  display: none;
+}

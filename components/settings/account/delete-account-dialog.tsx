@@ -13,18 +13,23 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { useCurrentUser } from "@/components/providers/session-provider"
 import { archiveAccount } from "@/lib/actions/profile"
 
 // "Hesabımı sil" → arşivleme onayı. Onaylanınca archiveAccount hesabı arşivler,
 // oturumları kapatır ve çıkış yaptırır (signOut redirect). 14 gün içinde tekrar
 // giriş yapılmazsa veriler kalıcı silinir.
 export function DeleteAccountDialog() {
+  const { clearClientSession } = useCurrentUser()
   const [open, setOpen] = React.useState(false)
   const [busy, setBusy] = React.useState(false)
 
   async function confirm() {
     setBusy(true)
     try {
+      // Redirect gelmeden önce istemci oturumunu temizle; yoksa çıkış sonrası
+      // avatar/nav ekranda kalır (bkz. SessionProvider.clearClientSession).
+      clearClientSession()
       await archiveAccount()
     } finally {
       setBusy(false)
