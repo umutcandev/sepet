@@ -36,9 +36,13 @@ export function HomeHero() {
   const router = useRouter()
   const guard = useRequireAuth()
   const locationGuard = useRequireLocation()
-  const { user } = useCurrentUser()
+  // displayUser: çözümlenmiş kullanıcı ya da localStorage snapshot'ı — isim
+  // /api/me beklenmeden hidrasyonla birlikte gelir, başlık geç swap yapmaz.
+  const { displayUser } = useCurrentUser()
 
-  const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : ""
+  const firstName = displayUser?.name
+    ? displayUser.name.trim().split(/\s+/)[0]
+    : ""
 
   const headings = React.useMemo(() => {
     if (!firstName) return ROTATING_HEADINGS
@@ -169,8 +173,11 @@ export function HomeHero() {
             <HeroMarketBadge />
             <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
               <AnimatePresence mode="wait" initial={false}>
+                {/* Anahtar index değil metnin kendisi: isim sonradan
+                    çözümlenirse (snapshot yoksa) başlık sert bir metin
+                    swap'ı yerine rotasyonla aynı blur geçişiyle güncellenir. */}
                 <motion.span
-                  key={headingIndex}
+                  key={headings[headingIndex]}
                   initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}

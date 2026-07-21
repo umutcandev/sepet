@@ -14,6 +14,7 @@ import { SessionProvider } from "@/components/providers/session-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { SESSION_HINT_SCRIPT } from "@/lib/auth/session-snapshot"
 import { getLatestPosts } from "@/lib/blog"
 import { cn } from "@/lib/utils"
 
@@ -87,6 +88,12 @@ export default function RootLayout({
       className={cn("style-nova antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
       <body>
+        {/* Son bilinen oturum ipucunu ilk boyamadan önce <html data-session>'a
+            yazar (next-themes'in tema scriptiyle aynı kalıp). Header/sidebar
+            iki varyantı da render eder; globals.css'teki [data-session-*]
+            kuralları yanlış olanı gizler → statik sayfada oturum flicker'ı
+            yaşanmaz. Kaynak: lib/auth/session-snapshot.ts */}
+        <script dangerouslySetInnerHTML={{ __html: SESSION_HINT_SCRIPT }} />
         {/* Site geneli kök JSON-LD: Organization + WebSite (Rich Snippet). */}
         <JsonLd data={[organizationLd(), websiteLd()]} />
         <ThemeProvider

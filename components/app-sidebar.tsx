@@ -34,7 +34,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import type { CurrentUser } from "@/lib/auth/session"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useCurrentUser } from "@/components/providers/session-provider"
 
 type NavItem = {
   title: string
@@ -65,17 +66,18 @@ const nav: NavItem[] = [
 ]
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-  user: CurrentUser | null
   blogPosts?: BlogNavItem[]
 }
 
-export function AppSidebar({
-  user,
-  blogPosts,
-  ...props
-}: AppSidebarProps) {
+export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
   const pathname = usePathname()
   const { isMobile, setOpenMobile } = useSidebar()
+  // Görüntü için displayUser (çözümlenmiş kullanıcı ya da localStorage
+  // snapshot'ı): dönen ziyaretlerde ad/avatar hidrasyonla birlikte anında
+  // görünür, /api/me beklenmez. İlk boyamada (hidrasyondan önce) hangi
+  // varyantın görüneceğine <html data-session> ipucu üzerinden CSS karar
+  // verir — aşağıdaki [data-session-*] sarmalayıcıları.
+  const { displayUser, loading: sessionLoading } = useCurrentUser()
 
   const handleNavClick = () => {
     if (isMobile) setOpenMobile(false)
@@ -100,7 +102,7 @@ export function AppSidebar({
     }
   }
 
-  const showAssistantConversations = !!user
+  const showAssistantConversations = !!displayUser
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -153,7 +155,10 @@ export function AppSidebar({
       </SidebarHeader>
 
       <SidebarContent className="overflow-hidden">
-        {user ? (
+        {/* Her zaman render edilir; misafirlerde CSS gizler (data-session
+            ipucu). Böylece oturumlu kullanıcı statik HTML'in ilk boyamasında
+            bile butonu görür, sidebar hidrasyonda zıplamaz. */}
+        <div data-session-authed>
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
@@ -173,7 +178,7 @@ export function AppSidebar({
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-        ) : null}
+        </div>
 
         <SidebarGroup>
           <SidebarGroupContent>
@@ -224,14 +229,21 @@ export function AppSidebar({
       </SidebarContent>
 
       <SidebarFooter>
-        {user ? (
-          <NavUser user={user} />
-        ) : (
-          <>
-            <NavGuestInfo />
-            <NavGuest />
-          </>
-        )}
+        {/* Footer kimlik alanı: iki varyant da render edilir, ilk boyamada
+            data-session ipucu üzerinden CSS doğru olanı gösterir. Oturumlu
+            kullanıcı "Giriş Yap" flash'ı görmez; snapshot varsa ad/avatar
+            hidrasyonla birlikte gelir, yoksa /api/me'ye kadar iskelet. */}
+        <div data-session-guest>
+          <NavGuestInfo />
+          <NavGuest />
+        </div>
+        <div data-session-authed>
+          {displayUser ? (
+            <NavUser user={displayUser} />
+          ) : sessionLoading ? (
+            <NavUserSkeleton />
+          ) : null}
+        </div>
         <div className="flex items-center justify-center gap-1.5 px-2 pb-0.5 text-[11px] text-muted-foreground/60 group-data-[collapsible=icon]:hidden">
           <Link
             href="/gizlilik"
@@ -251,5 +263,24 @@ export function AppSidebar({
         </div>
       </SidebarFooter>
     </Sidebar>
+  )
+}
+
+// NavUser'ın SidebarMenuButton size="lg" düzeniyle birebir aynı boyutlarda
+// yer tutucu: snapshot henüz yokken (ör. OAuth dönüşündeki ilk yükleniş)
+// /api/me çözülene kadar footer zıplamadan bekler.
+function NavUserSkeleton() {
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <div className="flex h-12 items-center gap-2 rounded-md p-2">
+          <Skeleton className="h-8 w-8 rounded-lg" />
+          <div className="grid flex-1 gap-1">
+            <Skeleton className="h-3.5 w-24 rounded" />
+            <Skeleton className="h-3 w-32 rounded" />
+          </div>
+        </div>
+      </SidebarMenuItem>
+    </SidebarMenu>
   )
 }

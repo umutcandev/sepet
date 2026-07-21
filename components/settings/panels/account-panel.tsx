@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
+import { useCurrentUser } from "@/components/providers/session-provider"
 import { revokeAllSessions } from "@/lib/actions/sessions"
 
 import { PanelHeader, SettingGroup, SettingRow } from "../settings-row"
@@ -11,6 +12,7 @@ import { DeleteAccountDialog } from "../account/delete-account-dialog"
 
 // Hesap: tüm cihazlardan çıkış + hesap arşivleme, ardından aktif oturumlar tablosu.
 export function AccountPanel() {
+  const { clearClientSession } = useCurrentUser()
   const [signingOut, setSigningOut] = React.useState(false)
 
   return (
@@ -32,6 +34,10 @@ export function AccountPanel() {
             disabled={signingOut}
             onClick={() => {
               setSigningOut(true)
+              // Oturum istemcide tutulur: action'ın redirect'i gelmeden önce
+              // istemci durumu temizlenmezse çıkış sonrası avatar/nav ekranda
+              // kalır (bkz. SessionProvider.clearClientSession).
+              clearClientSession()
               void revokeAllSessions()
             }}
           >

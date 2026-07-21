@@ -19,7 +19,7 @@ import {
   LogOutIcon,
   SettingsIcon,
 } from "lucide-react"
-import { signOutAction } from "@/lib/actions/auth"
+import { useCurrentUser } from "@/components/providers/session-provider"
 import { ThemeMenuItems } from "@/components/theme-toggle"
 import { SettingsDialog } from "@/components/settings/settings-dialog"
 import type { TabKey } from "@/components/settings/search-registry"
@@ -35,6 +35,10 @@ export function NavUser({
   }
 }) {
   const { isMobile: _isMobile } = useSidebar()
+  // Çıkış server action'ı doğrudan değil provider üzerinden: oturum istemcide
+  // tutulduğu için önce istemci durumu temizlenmeli, yoksa redirect sonrası
+  // avatar/nav ekranda kalır (bkz. SessionProvider.signOut).
+  const { signOut } = useCurrentUser()
   const [settingsOpen, setSettingsOpen] = React.useState(false)
   const [settingsTab, setSettingsTab] = React.useState<TabKey>("genel")
   const [menuOpen, setMenuOpen] = React.useState(false)
@@ -145,7 +149,7 @@ export function NavUser({
                 <NavMenuItem
                   onClick={() => {
                     setMenuOpen(false)
-                    void signOutAction()
+                    void signOut()
                   }}
                 >
                   <LogOutIcon />

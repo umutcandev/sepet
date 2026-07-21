@@ -21,7 +21,7 @@ import {
   LogOutIcon,
   SettingsIcon,
 } from "lucide-react"
-import { signOutAction } from "@/lib/actions/auth"
+import { useCurrentUser } from "@/components/providers/session-provider"
 import { ThemeMenuItems } from "@/components/theme-toggle"
 import { SettingsDialog } from "@/components/settings/settings-dialog"
 import type { TabKey } from "@/components/settings/search-registry"
@@ -38,6 +38,9 @@ export function HeaderUserMenu({
   }
   className?: string
 }) {
+  // Çıkış provider üzerinden: önce istemci oturumunu temizler (bkz.
+  // SessionProvider.signOut), sonra server action cookie'yi siler.
+  const { signOut } = useCurrentUser()
   const [settingsOpen, setSettingsOpen] = React.useState(false)
   const [settingsTab, setSettingsTab] = React.useState<TabKey>("genel")
 
@@ -118,7 +121,7 @@ export function HeaderUserMenu({
         <DropdownMenuItem
           onSelect={(event) => {
             event.preventDefault()
-            void signOutAction()
+            void signOut()
           }}
         >
           <LogOutIcon />

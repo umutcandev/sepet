@@ -20,6 +20,7 @@ import {
   TermsContent,
 } from "@/components/legal/legal-content"
 import { signInWithGoogleAction } from "@/lib/actions/auth"
+import { sessionSnapshot } from "@/lib/auth/session-snapshot"
 
 type Props = {
   callbackUrl?: string
@@ -54,6 +55,10 @@ export function LoginForm({ callbackUrl }: Props) {
       <form
         className="mt-7 w-full"
         action={async () => {
+          // OAuth dönüşündeki ilk boyama için iyimser "authed" ipucu: callback
+          // sonrası kullanıcı "Hemen Başla" flash'ı yerine avatar yer tutucusu
+          // görür. Giriş iptal edilirse /api/me null döner ve ipucu temizlenir.
+          sessionSnapshot.markPending()
           await signInWithGoogleAction(callbackUrl)
         }}
       >
