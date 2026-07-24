@@ -30,6 +30,11 @@ import { toast } from "sonner"
 import { signInWithGoogleAction } from "@/lib/actions/auth"
 import { sessionSnapshot } from "@/lib/auth/session-snapshot"
 import {
+  getLastLoginMethod,
+  setLastLoginMethod,
+  type LastLoginMethod,
+} from "@/lib/auth/last-login-method"
+import {
   registerAction,
   loginAction,
   verifySignupAction,
@@ -138,6 +143,12 @@ export function LoginForm({ callbackUrl }: Props) {
   const [error, setError] = React.useState("")
   const [busy, setBusy] = React.useState(false)
   const [resendIn, setResendIn] = React.useState(0)
+  // "Son kullanılan" rozeti. Lazy initializer güvenli: dialog içeriği yalnız
+  // istemcide (kullanıcı açınca) mount olur, SSR/hidrasyon uyuşmazlığı olamaz;
+  // getLastLoginMethod window yokken zaten null döner.
+  const [lastMethod] = React.useState<LastLoginMethod | null>(() =>
+    getLastLoginMethod(),
+  )
 
   const { title, subtitle } = stageHeader(stage, email)
   const back = backTarget(stage)
@@ -160,6 +171,7 @@ export function LoginForm({ callbackUrl }: Props) {
   // markPending: navigasyon sonrası ilk boyamada iyimser "authed" ipucu — Google
   // akışıyla aynı; /api/me gerçeği yazana dek avatar skeleton'ı gösterilir.
   function completeLogin(target: string) {
+    setLastLoginMethod("email")
     sessionSnapshot.markPending()
     window.location.assign(target)
   }
@@ -364,9 +376,11 @@ export function LoginForm({ callbackUrl }: Props) {
               {stage === "method" ? (
                 <div className="flex w-full flex-col gap-3">
                   <form
+                    className="relative"
                     action={async () => {
                       // OAuth dönüşündeki ilk boyama için iyimser "authed" ipucu
                       // (callback sonrası /api/me gerçeği yazana dek).
+                      setLastLoginMethod("google")
                       sessionSnapshot.markPending()
                       await signInWithGoogleAction(callbackUrl)
                     }}
@@ -382,6 +396,7 @@ export function LoginForm({ callbackUrl }: Props) {
                       </span>
                       Google ile devam et
                     </Button>
+                    {lastMethod === "google" ? <LastUsedBadge /> : null}
                   </form>
 
                   <div className="flex items-center gap-3" aria-hidden>
@@ -414,13 +429,16 @@ export function LoginForm({ callbackUrl }: Props) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="h-[44px] w-full rounded-xl text-[14px] font-medium tracking-[-0.01em]"
-                    >
-                      E-posta ile devam et
-                    </Button>
+                    <div className="relative">
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="h-[44px] w-full rounded-xl text-[14px] font-medium tracking-[-0.01em]"
+                      >
+                        E-posta ile devam et
+                      </Button>
+                      {lastMethod === "email" ? <LastUsedBadge /> : null}
+                    </div>
                   </form>
                 </div>
               ) : null}
@@ -748,6 +766,16 @@ export function LoginForm({ callbackUrl }: Props) {
         ) : null}
       </div>
     </div>
+  )
+}
+
+// Method aşamasında son kullanılan yöntemin butonuna iliştirilen küçük rozet
+// (buton kenarının üstüne taşar; tıklamayı engellemesin diye pointer-events-none).
+function LastUsedBadge() {
+  return (
+    <span className="pointer-events-none absolute -top-2 right-3 z-10 rounded-full bg-primary px-2 py-0.5 text-[10px] leading-4 font-medium tracking-[-0.005em] text-primary-foreground ring-2 ring-background">
+      Son kullanılan
+    </span>
   )
 }
 
