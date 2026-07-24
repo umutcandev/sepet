@@ -325,13 +325,15 @@ export function LoginForm({ callbackUrl }: Props) {
         </Button>
       ) : null}
 
-      <div className="flex w-full max-w-[402px] flex-col items-center px-6 pt-10 pb-6 text-center md:pt-12">
+      {/* Mobil (tam ekran): sola hizalı, büyük başlık, küçük logo — auth sayfası
+          hissi. Masaüstü (dialog kartı): mevcut ortalanmış düzen aynen. */}
+      <div className="flex w-full max-w-[402px] flex-col items-start px-6 pt-10 pb-6 text-left md:items-center md:pt-12 md:text-center">
         <Image
           src="/brand/sepet-square-dark.webp"
           alt="Sepet"
           width={256}
           height={256}
-          className="h-16 w-16 rounded-xl dark:hidden"
+          className="h-12 w-12 rounded-xl md:h-16 md:w-16 dark:hidden"
         />
         <Image
           src="/brand/sepet-square-light.webp"
@@ -339,13 +341,13 @@ export function LoginForm({ callbackUrl }: Props) {
           aria-hidden
           width={256}
           height={256}
-          className="hidden h-16 w-16 rounded-xl dark:block"
+          className="hidden h-12 w-12 rounded-xl md:h-16 md:w-16 dark:block"
         />
 
-        <h1 className="mt-5 text-[22px] leading-tight font-semibold tracking-[-0.02em] text-foreground">
+        <h1 className="mt-6 text-[28px] leading-tight font-semibold tracking-[-0.02em] text-foreground md:mt-5 md:text-[22px]">
           {title}
         </h1>
-        <p className="mt-2 max-w-[300px] text-[14px] leading-[1.4] tracking-[-0.01em] text-muted-foreground">
+        <p className="mt-2 max-w-[320px] text-[14px] leading-[1.4] tracking-[-0.01em] text-muted-foreground md:max-w-[300px]">
           {subtitle}
         </p>
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
 import { Geist, Geist_Mono } from "next/font/google"
 
@@ -33,6 +33,13 @@ const siteName = "Sepet"
 const siteTitle = "Sepet - Yapay Zekâ Destekli Akıllı Alışveriş Asistanı"
 const siteDescription =
   "Alışveriş listeni yaz, marketlerdeki en uygun fiyatları karşılaştır ve en ucuz sepeti saniyeler içinde oluştur."
+
+export const viewport: Viewport = {
+  // Klavye açıldığında Android Chrome içeriği örtmek yerine viewport'u küçültür;
+  // tam ekran login'de (mobil) dvh davranışı iOS'un kaydırma davranışıyla tutarlı
+  // kalır ve odaklanan input klavyenin altında kalmaz.
+  interactiveWidget: "resizes-content",
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
