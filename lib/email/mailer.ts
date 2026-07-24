@@ -1,3 +1,4 @@
+import { after } from "next/server"
 import type { Transporter } from "nodemailer"
 
 // Sağlayıcı-bağımsız e-posta gönderimi. SMTP env doluysa nodemailer (smtp.gmail.com
@@ -38,6 +39,22 @@ function getTransporter(): Promise<Transporter> {
 }
 
 export async function sendMail({
+  to,
+  subject,
+  html,
+  text,
+}: SendMailArgs): Promise<void> {
+  // Çağıranlar enumeration'ı önlemek için fire-and-forget (void) kullanır: yanıt
+  // dönmesini geciktirmemeli. Ancak Vercel serverless'ta yanıt döner dönmez
+  // fonksiyon donar ve await edilmemiş SMTP el sıkışması yarıda kesilir → mail
+  // hiç gitmez. after(), işi yanıt gönderildikten SONRA çalıştırır (timing
+  // güvenliği korunur) ve Vercel bu işin bitmesini garanti eder.
+  after(async () => {
+    await deliver({ to, subject, html, text })
+  })
+}
+
+async function deliver({
   to,
   subject,
   html,
