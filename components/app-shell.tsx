@@ -105,7 +105,7 @@ export function AppShell({ blogPosts, children }: Props) {
   // hidrasyonu SessionProvider `/api/me` sonrası bir kez yapar.
   // displayUser: çözümlenmiş kullanıcı, yoksa localStorage snapshot'ı —
   // dönen ziyaretlerde avatar hidrasyonla birlikte anında görünür.
-  const { displayUser, loading: sessionLoading } = useCurrentUser()
+  const { displayUser, pendingAuth } = useCurrentUser()
   const isAssistantRoute = pathname?.startsWith("/asistan") ?? false
   const isHome = pathname === "/"
 
@@ -181,10 +181,11 @@ export function AppShell({ blogPosts, children }: Props) {
             <span data-session-authed>
               {displayUser ? (
                 <HeaderUserMenu user={displayUser} className="md:hidden" />
-              ) : sessionLoading ? (
-                // Snapshot yok (ör. OAuth dönüşündeki ilk yükleniş) → /api/me
-                // gelene kadar avatarla aynı boyutta nötr yer tutucu. Masaüstünde
-                // avatar sidebar'da olduğundan menü gibi bu da md:hidden.
+              ) : pendingAuth ? (
+                // Yalnızca yeni giriş / OAuth dönüşünde (pending ipucu): /api/me
+                // gelene kadar avatarla aynı boyutta nötr yer tutucu. Misafirde
+                // ya da bayat ipucunda gösterilmez. Masaüstünde avatar sidebar'da
+                // olduğundan menü gibi bu da md:hidden.
                 <Skeleton className="size-7 rounded-full md:hidden" />
               ) : null}
             </span>

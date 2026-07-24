@@ -36,10 +36,7 @@ import {
   resendSignupCodeAction,
   verifyTwoFactorAction,
 } from "@/lib/actions/credentials-auth"
-import {
-  forgotPasswordAction,
-  resetPasswordAction,
-} from "@/lib/actions/password"
+import { forgotPasswordAction } from "@/lib/actions/password"
 
 // Sekiz aşamalı durum makinesi. Paylaşılan email/password/pendingToken state'i
 // aşamalar arası taşınır. forgot* aşamaları Faz 6'da, two-factor/recovery Faz 7'de
@@ -52,7 +49,7 @@ type Stage =
   | "two-factor"
   | "recovery"
   | "forgot"
-  | "forgot-verify"
+  | "forgot-sent"
 
 type Props = {
   callbackUrl?: string
@@ -98,14 +95,14 @@ function stageHeader(
     case "forgot":
       return {
         title: "Şifreni sıfırla",
-        subtitle: "E-postanı gir, sana bir sıfırlama kodu gönderelim.",
+        subtitle: "E-postanı gir, sana bir sıfırlama bağlantısı gönderelim.",
       }
-    case "forgot-verify":
+    case "forgot-sent":
       return {
-        title: "Şifreni sıfırla",
+        title: "E-postanı kontrol et",
         subtitle: email
-          ? `${email} adresine gönderdiğimiz kodu ve yeni şifreni gir.`
-          : "Sana gönderdiğimiz kodu ve yeni şifreni gir.",
+          ? `${email} adresine bir sıfırlama bağlantısı gönderdik. Yeni şifreni oradaki bağlantıdan belirle.`
+          : "Sana bir sıfırlama bağlantısı gönderdik. Yeni şifreni oradaki bağlantıdan belirle.",
       }
   }
 }
@@ -125,8 +122,8 @@ function backTarget(stage: Stage): Stage | null {
       return "email-login"
     case "recovery":
       return "two-factor"
-    case "forgot-verify":
-      return "forgot"
+    case "forgot-sent":
+      return "email-login"
   }
 }
 
@@ -242,45 +239,15 @@ export function LoginForm({ callbackUrl }: Props) {
     setBusy(true)
     await forgotPasswordAction({ email })
     setBusy(false)
-    // Enumeration yok: kayıtlı olsun olmasın aynı bilgi + kod aşaması.
-    toast.message("Bu e-posta kayıtlıysa bir kod gönderdik.")
-    setPassword("")
-    setConfirmPassword("")
-    goStage("forgot-verify")
+    // Enumeration yok: kayıtlı olsun olmasın aynı bilgi + onay aşaması.
+    toast.message("Bu e-posta kayıtlıysa bir sıfırlama bağlantısı gönderdik.")
+    goStage("forgot-sent")
   }
 
   async function resendReset() {
     setError("")
     await forgotPasswordAction({ email })
-    toast.message("Kod tekrar gönderildi.")
-  }
-
-  async function submitReset(e: React.FormEvent) {
-    e.preventDefault()
-    setError("")
-    if (otp.length !== 6) {
-      setError("6 haneli kodu gir.")
-      return
-    }
-    if (password !== confirmPassword) {
-      setError("Şifreler eşleşmiyor.")
-      return
-    }
-    setBusy(true)
-    const res = await resetPasswordAction({
-      email,
-      code: otp,
-      newPassword: password,
-    })
-    setBusy(false)
-    if (res.ok) {
-      setPassword("")
-      setConfirmPassword("")
-      toast.success("Şifren güncellendi. Yeni şifrenle giriş yap.")
-      goStage("email-login")
-    } else {
-      setError(res.error)
-    }
+    toast.message("Bağlantı tekrar gönderildi.")
   }
 
   async function submitTwoFactor(codeValue?: string) {
@@ -317,7 +284,10 @@ export function LoginForm({ callbackUrl }: Props) {
   }
 
   return (
-    <div className="relative flex w-full max-w-[402px] flex-col items-center px-6 pt-10 pb-6 text-center md:pt-12">
+    // Dış sarmalayıcı dialog genişliğini kaplar; geri butonu buna göre
+    // konumlanır ki sağdaki kapat (X) ile tam aynı hizada dursun. İçerik kartı
+    // ise ayrı bir iç sarmalayıcıda 402px'te tutulur.
+    <div className="relative flex w-full flex-col items-center">
       {back ? (
         <Button
           type="button"
@@ -331,424 +301,426 @@ export function LoginForm({ callbackUrl }: Props) {
         </Button>
       ) : null}
 
-      <Image
-        src="/brand/sepet-square-dark.webp"
-        alt="Sepet"
-        width={256}
-        height={256}
-        className="h-16 w-16 rounded-xl dark:hidden"
-      />
-      <Image
-        src="/brand/sepet-square-light.webp"
-        alt=""
-        aria-hidden
-        width={256}
-        height={256}
-        className="hidden h-16 w-16 rounded-xl dark:block"
-      />
+      <div className="flex w-full max-w-[402px] flex-col items-center px-6 pt-10 pb-6 text-center md:pt-12">
+        <Image
+          src="/brand/sepet-square-dark.webp"
+          alt="Sepet"
+          width={256}
+          height={256}
+          className="h-16 w-16 rounded-xl dark:hidden"
+        />
+        <Image
+          src="/brand/sepet-square-light.webp"
+          alt=""
+          aria-hidden
+          width={256}
+          height={256}
+          className="hidden h-16 w-16 rounded-xl dark:block"
+        />
 
-      <h1 className="mt-5 text-[22px] leading-tight font-semibold tracking-[-0.02em] text-foreground">
-        {title}
-      </h1>
-      <p className="mt-2 max-w-[300px] text-[14px] leading-[1.4] tracking-[-0.01em] text-muted-foreground">
-        {subtitle}
-      </p>
+        <h1 className="mt-5 text-[22px] leading-tight font-semibold tracking-[-0.02em] text-foreground">
+          {title}
+        </h1>
+        <p className="mt-2 max-w-[300px] text-[14px] leading-[1.4] tracking-[-0.01em] text-muted-foreground">
+          {subtitle}
+        </p>
 
-      <div className="mt-7 w-full">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={stage}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.2 }}
-            className="w-full"
-          >
-            {stage === "method" ? (
-              <div className="flex w-full flex-col gap-2.5">
+        <div className="mt-7 w-full">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={stage}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.2 }}
+              className="w-full"
+            >
+              {stage === "method" ? (
+                <div className="flex w-full flex-col gap-3">
+                  <form
+                    action={async () => {
+                      // OAuth dönüşündeki ilk boyama için iyimser "authed" ipucu
+                      // (callback sonrası /api/me gerçeği yazana dek).
+                      sessionSnapshot.markPending()
+                      await signInWithGoogleAction(callbackUrl)
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      size="lg"
+                      className="h-[44px] w-full gap-2 rounded-xl px-[6px] text-[14px] font-medium tracking-[-0.01em]"
+                    >
+                      <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full">
+                        <GoogleIcon />
+                      </span>
+                      Google ile devam et
+                    </Button>
+                  </form>
+
+                  <div className="flex items-center gap-3" aria-hidden>
+                    <span className="h-px flex-1 bg-border" />
+                    <span className="text-[12px] tracking-[-0.01em] text-muted-foreground/60">
+                      veya
+                    </span>
+                    <span className="h-px flex-1 bg-border" />
+                  </div>
+
+                  {/* E-posta buraya girilir; paylaşılan `email` state'i sayesinde
+                      giriş ve kayıt aşamalarına doldurulmuş olarak taşınır. */}
+                  <form
+                    className="flex w-full flex-col gap-2.5 text-left"
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      goStage("email-login")
+                    }}
+                  >
+                    <Input
+                      id="method-email"
+                      name="email"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      aria-label="E-posta adresin"
+                      required
+                      placeholder="E-posta adresin"
+                      className="h-[44px] rounded-xl px-3"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="h-[44px] w-full rounded-xl text-[14px] font-medium tracking-[-0.01em]"
+                    >
+                      E-posta ile devam et
+                    </Button>
+                  </form>
+                </div>
+              ) : null}
+
+              {stage === "email-login" ? (
                 <form
-                  action={async () => {
-                    // OAuth dönüşündeki ilk boyama için iyimser "authed" ipucu
-                    // (callback sonrası /api/me gerçeği yazana dek).
-                    sessionSnapshot.markPending()
-                    await signInWithGoogleAction(callbackUrl)
-                  }}
+                  className="flex w-full flex-col gap-3 text-left"
+                  onSubmit={submitLogin}
                 >
+                  <Field>
+                    <FieldLabel htmlFor="login-email">E-posta</FieldLabel>
+                    <Input
+                      id="login-email"
+                      name="email"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      required
+                      autoFocus={!email}
+                      className="h-[42px] rounded-xl px-3"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="login-password">Şifre</FieldLabel>
+                    <Input
+                      id="login-password"
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      autoFocus={!!email}
+                      className="h-[42px] rounded-xl px-3"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Field>
+                  {error ? (
+                    <p className="text-xs text-destructive">{error}</p>
+                  ) : null}
                   <Button
                     type="submit"
                     size="lg"
-                    className="h-[44px] w-full gap-2 rounded-xl px-[6px] text-[14px] font-medium tracking-[-0.01em]"
+                    disabled={busy}
+                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
                   >
-                    <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full">
-                      <GoogleIcon />
-                    </span>
-                    Google ile devam et
+                    {busy ? <Spinner /> : null}
+                    Giriş yap
                   </Button>
+                  <div className="mt-1 flex flex-col items-center gap-1.5 text-[13px]">
+                    <button
+                      type="button"
+                      className="text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                      onClick={() => {
+                        setPassword("")
+                        setConfirmPassword("")
+                        goStage("forgot")
+                      }}
+                    >
+                      Şifreni mi unuttun?
+                    </button>
+                    <button
+                      type="button"
+                      className="text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                      onClick={() => goStage("register")}
+                    >
+                      Hesabın yok mu? Kayıt ol
+                    </button>
+                  </div>
                 </form>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  className="h-[44px] w-full rounded-xl text-[14px] font-medium tracking-[-0.01em]"
-                  onClick={() => goStage("email-login")}
-                >
-                  E-posta ile devam et
-                </Button>
-              </div>
-            ) : null}
+              ) : null}
 
-            {stage === "email-login" ? (
-              <form
-                className="flex w-full flex-col gap-3 text-left"
-                onSubmit={submitLogin}
-              >
-                <Field>
-                  <FieldLabel htmlFor="login-email">E-posta</FieldLabel>
-                  <Input
-                    id="login-email"
-                    type="email"
-                    inputMode="email"
-                    autoComplete="email"
-                    required
-                    className="h-[42px] rounded-xl px-3"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="login-password">Şifre</FieldLabel>
-                  <Input
-                    id="login-password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="h-[42px] rounded-xl px-3"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Field>
-                {error ? (
-                  <p className="text-xs text-destructive">{error}</p>
-                ) : null}
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={busy}
-                  className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+              {stage === "register" ? (
+                <form
+                  className="flex w-full flex-col gap-3 text-left"
+                  onSubmit={submitRegister}
                 >
-                  {busy ? <Spinner /> : null}
-                  Giriş yap
-                </Button>
-                <div className="mt-1 flex flex-col items-center gap-1.5 text-[13px]">
+                  <Field>
+                    <FieldLabel htmlFor="reg-email">E-posta</FieldLabel>
+                    <Input
+                      id="reg-email"
+                      name="email"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      required
+                      className="h-[42px] rounded-xl px-3"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="reg-password">Şifre</FieldLabel>
+                    <Input
+                      id="reg-password"
+                      name="new-password"
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      autoFocus={!!email}
+                      className="h-[42px] rounded-xl px-3"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="reg-password2">Şifre (tekrar)</FieldLabel>
+                    <Input
+                      id="reg-password2"
+                      name="confirm-password"
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      className="h-[42px] rounded-xl px-3"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                  </Field>
+                  <p className="text-[11px] leading-[1.5] text-muted-foreground/70">
+                    En az 8 karakter, bir harf ve bir rakam.
+                  </p>
+                  {error ? (
+                    <p className="text-xs text-destructive">{error}</p>
+                  ) : null}
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={busy}
+                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                  >
+                    {busy ? <Spinner /> : null}
+                    Devam et
+                  </Button>
                   <button
                     type="button"
-                    className="text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                    onClick={() => {
-                      setPassword("")
-                      setConfirmPassword("")
-                      goStage("forgot")
-                    }}
+                    className="mt-1 text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    onClick={() => goStage("email-login")}
                   >
-                    Şifreni mi unuttun?
+                    Zaten hesabın var mı? Giriş yap
                   </button>
-                  <button
-                    type="button"
-                    className="text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                    onClick={() => goStage("register")}
-                  >
-                    Hesabın yok mu? Kayıt ol
-                  </button>
-                </div>
-              </form>
-            ) : null}
+                </form>
+              ) : null}
 
-            {stage === "register" ? (
-              <form
-                className="flex w-full flex-col gap-3 text-left"
-                onSubmit={submitRegister}
-              >
-                <Field>
-                  <FieldLabel htmlFor="reg-email">E-posta</FieldLabel>
-                  <Input
-                    id="reg-email"
-                    type="email"
-                    inputMode="email"
-                    autoComplete="email"
-                    required
-                    className="h-[42px] rounded-xl px-3"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="reg-password">Şifre</FieldLabel>
-                  <Input
-                    id="reg-password"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    className="h-[42px] rounded-xl px-3"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="reg-password2">Şifre (tekrar)</FieldLabel>
-                  <Input
-                    id="reg-password2"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    className="h-[42px] rounded-xl px-3"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </Field>
-                <p className="text-[11px] leading-[1.5] text-muted-foreground/70">
-                  En az 8 karakter, bir harf ve bir rakam.
-                </p>
-                {error ? (
-                  <p className="text-xs text-destructive">{error}</p>
-                ) : null}
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={busy}
-                  className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
-                >
-                  {busy ? <Spinner /> : null}
-                  Devam et
-                </Button>
-                <button
-                  type="button"
-                  className="mt-1 text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                  onClick={() => goStage("email-login")}
-                >
-                  Zaten hesabın var mı? Giriş yap
-                </button>
-              </form>
-            ) : null}
-
-            {stage === "verify-email" ? (
-              <div className="flex w-full flex-col items-center gap-4">
-                <OtpField
-                  value={otp}
-                  onChange={setOtp}
-                  onComplete={(v) => submitVerify(v)}
-                  disabled={busy}
-                />
-                {error ? (
-                  <p className="text-xs text-destructive">{error}</p>
-                ) : null}
-                <Button
-                  type="button"
-                  size="lg"
-                  disabled={busy || otp.length !== 6}
-                  className="h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
-                  onClick={() => submitVerify()}
-                >
-                  {busy ? <Spinner /> : null}
-                  Doğrula
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  disabled={resendIn > 0}
-                  onClick={resendCode}
-                  className="text-[13px] text-muted-foreground"
-                >
-                  {resendIn > 0
-                    ? `Kodu tekrar gönder (${resendIn})`
-                    : "Kodu tekrar gönder"}
-                </Button>
-              </div>
-            ) : null}
-
-            {stage === "forgot" ? (
-              <form
-                className="flex w-full flex-col gap-3 text-left"
-                onSubmit={submitForgot}
-              >
-                <Field>
-                  <FieldLabel htmlFor="forgot-email">E-posta</FieldLabel>
-                  <Input
-                    id="forgot-email"
-                    type="email"
-                    inputMode="email"
-                    autoComplete="email"
-                    required
-                    className="h-[42px] rounded-xl px-3"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Field>
-                {error ? (
-                  <p className="text-xs text-destructive">{error}</p>
-                ) : null}
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={busy}
-                  className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
-                >
-                  {busy ? <Spinner /> : null}
-                  Kod gönder
-                </Button>
-                <button
-                  type="button"
-                  className="mt-1 text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                  onClick={() => goStage("email-login")}
-                >
-                  Girişe dön
-                </button>
-              </form>
-            ) : null}
-
-            {stage === "forgot-verify" ? (
-              <form
-                className="flex w-full flex-col gap-4 text-left"
-                onSubmit={submitReset}
-              >
-                <div className="flex flex-col items-center">
+              {stage === "verify-email" ? (
+                <div className="flex w-full flex-col items-center gap-4">
                   <OtpField
                     value={otp}
                     onChange={setOtp}
-                    onComplete={() => {}}
+                    onComplete={(v) => submitVerify(v)}
                     disabled={busy}
                   />
+                  {error ? (
+                    <p className="text-xs text-destructive">{error}</p>
+                  ) : null}
+                  <Button
+                    type="button"
+                    size="lg"
+                    disabled={busy || otp.length !== 6}
+                    className="h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    onClick={() => submitVerify()}
+                  >
+                    {busy ? <Spinner /> : null}
+                    Doğrula
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={resendIn > 0}
+                    onClick={resendCode}
+                    className="text-[13px] text-muted-foreground"
+                  >
+                    {resendIn > 0
+                      ? `Kodu tekrar gönder (${resendIn})`
+                      : "Kodu tekrar gönder"}
+                  </Button>
                 </div>
-                <Field>
-                  <FieldLabel htmlFor="fv-password">Yeni şifre</FieldLabel>
-                  <Input
-                    id="fv-password"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    className="h-[42px] rounded-xl px-3"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="fv-password2">
-                    Yeni şifre (tekrar)
-                  </FieldLabel>
-                  <Input
-                    id="fv-password2"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    className="h-[42px] rounded-xl px-3"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </Field>
-                <p className="text-[11px] leading-[1.5] text-muted-foreground/70">
-                  En az 8 karakter, bir harf ve bir rakam.
-                </p>
-                {error ? (
-                  <p className="text-xs text-destructive">{error}</p>
-                ) : null}
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={busy}
-                  className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
-                >
-                  {busy ? <Spinner /> : null}
-                  Şifreyi güncelle
-                </Button>
-                <button
-                  type="button"
-                  className="text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                  onClick={resendReset}
-                >
-                  Kod gelmedi mi? Tekrar gönder
-                </button>
-              </form>
-            ) : null}
+              ) : null}
 
-            {stage === "two-factor" ? (
-              <div className="flex w-full flex-col items-center gap-4">
-                <OtpField
-                  value={otp}
-                  onChange={setOtp}
-                  onComplete={(v) => submitTwoFactor(v)}
-                  disabled={busy}
-                />
-                {error ? (
-                  <p className="text-xs text-destructive">{error}</p>
-                ) : null}
-                <Button
-                  type="button"
-                  size="lg"
-                  disabled={busy || otp.length !== 6}
-                  className="h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
-                  onClick={() => submitTwoFactor()}
+              {stage === "forgot" ? (
+                <form
+                  className="flex w-full flex-col gap-3 text-left"
+                  onSubmit={submitForgot}
                 >
-                  {busy ? <Spinner /> : null}
-                  Doğrula
-                </Button>
-                <button
-                  type="button"
-                  className="text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                  onClick={() => goStage("recovery")}
-                >
-                  Kurtarma kodu kullan
-                </button>
-              </div>
-            ) : null}
+                  <Field>
+                    <FieldLabel htmlFor="forgot-email">E-posta</FieldLabel>
+                    <Input
+                      id="forgot-email"
+                      name="email"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      required
+                      className="h-[42px] rounded-xl px-3"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Field>
+                  {error ? (
+                    <p className="text-xs text-destructive">{error}</p>
+                  ) : null}
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={busy}
+                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                  >
+                    {busy ? <Spinner /> : null}
+                    Sıfırlama bağlantısı gönder
+                  </Button>
+                  <button
+                    type="button"
+                    className="mt-1 text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    onClick={() => goStage("email-login")}
+                  >
+                    Girişe dön
+                  </button>
+                </form>
+              ) : null}
 
-            {stage === "recovery" ? (
-              <form
-                className="flex w-full flex-col gap-3 text-left"
-                onSubmit={submitRecovery}
-              >
-                <Field>
-                  <FieldLabel htmlFor="recovery-code">Kurtarma kodu</FieldLabel>
-                  <Input
-                    id="recovery-code"
-                    type="text"
-                    autoComplete="one-time-code"
-                    required
-                    placeholder="XXXXX-XXXXX"
-                    className="h-[42px] rounded-xl px-3 tracking-[0.1em]"
-                    value={recoveryCode}
-                    onChange={(e) => setRecoveryCode(e.target.value)}
+              {stage === "forgot-sent" ? (
+                <div className="flex w-full flex-col gap-4 text-left">
+                  <p className="text-[13px] leading-[1.5] text-muted-foreground">
+                    Bağlantı birkaç dakika içinde gelmezse spam klasörünü kontrol
+                    et. Bağlantı 15 dakika geçerlidir.
+                  </p>
+                  <Button
+                    type="button"
+                    size="lg"
+                    onClick={() => goStage("email-login")}
+                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                  >
+                    Girişe dön
+                  </Button>
+                  <button
+                    type="button"
+                    className="text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    onClick={resendReset}
+                  >
+                    Bağlantı gelmedi mi? Tekrar gönder
+                  </button>
+                </div>
+              ) : null}
+
+              {stage === "two-factor" ? (
+                <div className="flex w-full flex-col items-center gap-4">
+                  <OtpField
+                    value={otp}
+                    onChange={setOtp}
+                    onComplete={(v) => submitTwoFactor(v)}
+                    disabled={busy}
                   />
-                </Field>
-                {error ? (
-                  <p className="text-xs text-destructive">{error}</p>
-                ) : null}
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={busy}
-                  className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                  {error ? (
+                    <p className="text-xs text-destructive">{error}</p>
+                  ) : null}
+                  <Button
+                    type="button"
+                    size="lg"
+                    disabled={busy || otp.length !== 6}
+                    className="h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    onClick={() => submitTwoFactor()}
+                  >
+                    {busy ? <Spinner /> : null}
+                    Doğrula
+                  </Button>
+                  <button
+                    type="button"
+                    className="text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    onClick={() => goStage("recovery")}
+                  >
+                    Kurtarma kodu kullan
+                  </button>
+                </div>
+              ) : null}
+
+              {stage === "recovery" ? (
+                <form
+                  className="flex w-full flex-col gap-3 text-left"
+                  onSubmit={submitRecovery}
                 >
-                  {busy ? <Spinner /> : null}
-                  Doğrula
-                </Button>
-                <button
-                  type="button"
-                  className="text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                  onClick={() => goStage("two-factor")}
-                >
-                  Doğrulama koduna dön
-                </button>
-              </form>
-            ) : null}
-          </motion.div>
-        </AnimatePresence>
+                  <Field>
+                    <FieldLabel htmlFor="recovery-code">Kurtarma kodu</FieldLabel>
+                    <Input
+                      id="recovery-code"
+                      type="text"
+                      autoComplete="one-time-code"
+                      required
+                      placeholder="XXXXX-XXXXX"
+                      className="h-[42px] rounded-xl px-3 tracking-[0.1em]"
+                      value={recoveryCode}
+                      onChange={(e) => setRecoveryCode(e.target.value)}
+                    />
+                  </Field>
+                  {error ? (
+                    <p className="text-xs text-destructive">{error}</p>
+                  ) : null}
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={busy}
+                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                  >
+                    {busy ? <Spinner /> : null}
+                    Doğrula
+                  </Button>
+                  <button
+                    type="button"
+                    className="text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    onClick={() => goStage("two-factor")}
+                  >
+                    Doğrulama koduna dön
+                  </button>
+                </form>
+              ) : null}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {stage === "method" ? (
+          <p className="mt-3.5 text-[11px] leading-[1.5] tracking-[-0.005em] text-muted-foreground/60">
+            Devam ederek <TermsDialog /> ve <PrivacyDialog />
+            &apos;i kabul ediyorsun.
+          </p>
+        ) : null}
       </div>
-
-      {stage === "method" ? (
-        <p className="mt-3.5 text-[11px] leading-[1.5] tracking-[-0.005em] text-muted-foreground/60">
-          Devam ederek <TermsDialog /> ve <PrivacyDialog />
-          &apos;i kabul ediyorsun.
-        </p>
-      ) : null}
     </div>
   )
 }

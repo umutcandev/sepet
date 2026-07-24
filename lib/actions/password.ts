@@ -69,6 +69,8 @@ export async function forgotPasswordAction(input: {
   const loginUrl = await appUrl("/")
 
   if (user && user.passwordHash) {
+    // Sıfırlama yalnız link (token) ile; code artık maile konmaz, sadece
+    // codeHash notNull kısıtını doldurmak için üretilir.
     const code = generateCode()
     const token = generateToken()
     const expiresAt = new Date(Date.now() + RESET_TTL_MS)
@@ -81,7 +83,7 @@ export async function forgotPasswordAction(input: {
       expiresAt,
     })
     const url = await appUrl(`/sifre-sifirla?token=${encodeURIComponent(token)}`)
-    void sendMail({ to: email, ...passwordResetEmail({ code, url }) })
+    void sendMail({ to: email, ...passwordResetEmail({ url }) })
   } else if (user) {
     // Google-only (şifresi yok): sıfırlama değil, yönlendirme bilgisi.
     void sendMail({ to: email, ...googleSignInEmail({ loginUrl }) })
@@ -90,11 +92,9 @@ export async function forgotPasswordAction(input: {
   return { ok: true }
 }
 
-// ─── Şifreyi sıfırla: token VEYA (email + code) + yeni şifre ───
+// ─── Şifreyi sıfırla: e-postadaki link token'ı + yeni şifre ───
 export async function resetPasswordAction(input: {
   token?: string
-  email?: string
-  code?: string
   newPassword: string
 }): Promise<ActionResult> {
   const pw = passwordSchema.safeParse(input?.newPassword)
@@ -104,72 +104,27 @@ export async function resetPasswordAction(input: {
   const newPassword = pw.data
 
   const token = typeof input?.token === "string" ? input.token : ""
-  if (token) {
-    const limit = await checkLimit(codeVerifyLimiter, `reset:${hashSecret(token)}`)
-    if (!limit.ok) return limit
+  if (!token) return { ok: false, error: "Bağlantı geçersiz ya da süresi dolmuş." }
 
-    const [row] = await db
-      .select({
-        id: passwordReset.id,
-        userId: passwordReset.userId,
-        expiresAt: passwordReset.expiresAt,
-      })
-      .from(passwordReset)
-      .where(eq(passwordReset.tokenHash, hashSecret(token)))
-      .limit(1)
-
-    if (!row) return { ok: false, error: "Bağlantı geçersiz ya da süresi dolmuş." }
-    if (row.expiresAt.getTime() < Date.now()) {
-      await db.delete(passwordReset).where(eq(passwordReset.id, row.id))
-      return { ok: false, error: "Bağlantının süresi doldu. Yeni kod iste." }
-    }
-    return applyReset(row.userId, newPassword)
-  }
-
-  // Kod yolu.
-  const emailParsed = emailField.safeParse(input?.email)
-  const code = typeof input?.code === "string" ? input.code.trim() : ""
-  if (!emailParsed.success || !/^\d{6}$/.test(code)) {
-    return { ok: false, error: "Kod ya da e-posta hatalı." }
-  }
-  const email = normalizeEmail(emailParsed.data)
-  const limit = await checkLimit(codeVerifyLimiter, `reset:${email}`)
+  const limit = await checkLimit(codeVerifyLimiter, `reset:${hashSecret(token)}`)
   if (!limit.ok) return limit
 
-  const [user] = await db
-    .select({ id: users.id })
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1)
-  // Kullanıcı yoksa da jenerik "kod hatalı" (enumeration yok — kod yolu zaten
-  // koda erişimi olanlar içindir).
-  if (!user) return { ok: false, error: "Kod hatalı ya da süresi dolmuş." }
-
-  // Atomik attempts++ (tek aktif satır invariant'ı forgot'ta korunur).
   const [row] = await db
-    .update(passwordReset)
-    .set({ attempts: sql`${passwordReset.attempts} + 1` })
-    .where(eq(passwordReset.userId, user.id))
-    .returning({
+    .select({
       id: passwordReset.id,
-      codeHash: passwordReset.codeHash,
+      userId: passwordReset.userId,
       expiresAt: passwordReset.expiresAt,
-      attempts: passwordReset.attempts,
     })
+    .from(passwordReset)
+    .where(eq(passwordReset.tokenHash, hashSecret(token)))
+    .limit(1)
 
-  if (!row) return { ok: false, error: "Kod hatalı ya da süresi dolmuş." }
-  if (row.attempts > MAX_ATTEMPTS) {
-    await db.delete(passwordReset).where(eq(passwordReset.id, row.id))
-    return { ok: false, error: "Çok fazla yanlış deneme. Yeni kod iste." }
-  }
+  if (!row) return { ok: false, error: "Bağlantı geçersiz ya da süresi dolmuş." }
   if (row.expiresAt.getTime() < Date.now()) {
     await db.delete(passwordReset).where(eq(passwordReset.id, row.id))
-    return { ok: false, error: "Kodun süresi doldu. Yeni kod iste." }
+    return { ok: false, error: "Bağlantının süresi doldu. Yeni bağlantı iste." }
   }
-  if (!safeEqual(hashSecret(code), row.codeHash)) {
-    return { ok: false, error: "Kod hatalı. Tekrar dene." }
-  }
-  return applyReset(user.id, newPassword)
+  return applyReset(row.userId, newPassword)
 }
 
 // Şifreyi güncelle, TÜM cihaz oturumlarını düşür (60 sn içinde), reset satırlarını

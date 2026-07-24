@@ -48,11 +48,14 @@ export function SettingGroup({
 // input, switch…). Kart yok; satırlar arası <Separator /> ile ayrılır.
 export function SettingRow({
   title,
+  titleAccessory,
   description,
   target,
   children,
 }: {
   title: string
+  // Başlığın hemen sağında görünen küçük öğe (ör. durum rozeti).
+  titleAccessory?: React.ReactNode
   description?: React.ReactNode
   target?: string
   children: React.ReactNode
@@ -63,7 +66,10 @@ export function SettingRow({
       className="flex items-center justify-between gap-3 py-3 sm:gap-7"
     >
       <div className="flex min-w-0 flex-col gap-0.5">
-        <span className="text-sm font-normal">{title}</span>
+        <span className="flex items-center gap-2 text-sm font-normal">
+          {title}
+          {titleAccessory}
+        </span>
         {description ? (
           <span className="truncate text-xs text-muted-foreground">
             {description}

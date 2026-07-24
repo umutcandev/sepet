@@ -100,26 +100,22 @@ export function verificationEmail(args: { code: string; url: string }): Email {
 }
 
 // ─── Şifre sıfırlama (kod + link) ───
-export function passwordResetEmail(args: { code: string; url: string }): Email {
+export function passwordResetEmail(args: { url: string }): Email {
   const heading = "Şifreni sıfırla"
   const body =
-    p("Şifreni sıfırlamak için kodun:") +
-    codeBlock(args.code) +
-    p("Kodu uygulamaya girebilir ya da aşağıdaki bağlantıdan yeni şifreni belirleyebilirsin.") +
+    p("Yeni şifreni belirlemek için aşağıdaki bağlantıya tıkla.") +
     button(args.url, "Şifremi sıfırla") +
-    p("Bu kod 15 dakika geçerli. Bu isteği sen yapmadıysan şifren değişmez, e-postayı yok sayabilirsin.")
+    p("Bu bağlantı 15 dakika geçerli. Bu isteği sen yapmadıysan şifren değişmez, e-postayı yok sayabilirsin.")
   const text = textBlock([
     "Şifreni sıfırla",
     "",
-    `Sıfırlama kodun: ${args.code}`,
+    `Yeni şifreni belirlemek için bu bağlantıyı aç: ${args.url}`,
     "",
-    `Ya da bu bağlantıyı aç: ${args.url}`,
-    "",
-    "Bu kod 15 dakika geçerli. Bu isteği sen yapmadıysan şifren değişmez, e-postayı yok sayabilirsin.",
+    "Bu bağlantı 15 dakika geçerli. Bu isteği sen yapmadıysan şifren değişmez, e-postayı yok sayabilirsin.",
   ])
   return {
     subject: "Sepet şifre sıfırlama",
-    html: layout({ heading, body, preview: `Sıfırlama kodun: ${args.code}` }),
+    html: layout({ heading, body, preview: "Şifreni sıfırlamak için bağlantına tıkla." }),
     text,
   }
 }

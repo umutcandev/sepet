@@ -13,6 +13,10 @@ export function LoginDialogHost() {
 
   const callbackUrl = React.useMemo(() => {
     if (!pathname) return "/"
+    // Token sayfalarından (şifre sıfırlama, e-posta doğrulama) giriş sonrası aynı
+    // sayfaya dönmek anlamsız: tek kullanımlık token zaten tükenmiş olur, kullanıcı
+    // yeniden forma bakar. Bu sayfalarda her zaman ana sayfaya yönlendir.
+    if (pathname === "/sifre-sifirla" || pathname === "/dogrula") return "/"
     const qs = searchParams?.toString()
     return qs ? `${pathname}?${qs}` : pathname
   }, [pathname, searchParams])

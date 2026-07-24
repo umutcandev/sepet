@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { toast } from "sonner"
 
 import type { CurrentUser } from "@/lib/auth/session"
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
@@ -23,6 +24,13 @@ type SessionContextValue = {
   hasLocation: boolean
   /** Oturum verisi (`/api/me`) henüz çözülmedi. */
   loading: boolean
+  /** İyimser "authed" beklentisi: kullanıcı yeni giriş yaptı / OAuth'tan
+   *  dönüyor (snapshot `pending`) ve `/api/me` henüz çözülmedi, gösterecek
+   *  ad/avatar da yok. SALT bu durumda profil yer tutucusu (skeleton) gösterilir
+   *  — genel `loading` DEĞİL. Aksi halde misafirde de (ilk yüklemede loading
+   *  herkes için true) veya bayat/pending ipucunda gereksiz iskelet flash'ı
+   *  olur. Snapshot'lı dönen kullanıcı zaten `displayUser` ile NavUser görür. */
+  pendingAuth: boolean
   /** Header/sidebar/hero gibi SALT GÖRÜNTÜ yerleri için kullanıcı: /api/me
    *  çözülmüşse gerçek kullanıcı, henüz yükleniyorsa localStorage'daki son
    *  bilinen snapshot. Böylece dönen ziyaretlerde avatar/ad hidrasyonla
@@ -34,10 +42,12 @@ type SessionContextValue = {
    *  istemcide tutulduğundan güncelleme bu yolla yapılır. */
   refresh: () => Promise<void>
   /** Menülerden çıkış: önce istemci oturumunu iyimser temizler (avatar/nav
-   *  anında misafir durumuna döner), sonra signOutAction cookie'yi silip
-   *  "/"a yönlendirir. Oturum istemcide tutulduğu için server action tek
-   *  başına yeterli DEĞİLDİR — aksi halde çıkıştan sonra header/sidebar'da
-   *  eski profil görünmeye devam eder (tam sayfa yenilemeye kadar). */
+   *  anında misafir durumuna döner), sonra signOutAction httpOnly cookie'yi
+   *  siler (redirect: false → await'lenir), en son client "/"a tam navigasyon
+   *  yapar. Oturum istemcide tutulduğu için client temizliği tek başına
+   *  yeterli DEĞİL; cookie silme başarısız olursa (yutulmaz) gerçek durum geri
+   *  yüklenir ve kullanıcı uyarılır — aksi halde UI "çıkış" der ama oturum
+   *  sunucuda açık kalır. */
   signOut: () => Promise<void>
   /** signOut'un yalnızca istemci temizliği: kendi server action'ını çağıran
    *  akışlar için (tüm cihazlardan çıkış, hesabı silme). Action'dan ÖNCE
@@ -117,15 +127,24 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = React.useCallback(async () => {
     // Önce iyimser istemci temizliği: kullanıcı tıklar tıklamaz UI misafir
-    // durumuna döner. Ardından server action cookie'yi siler ve "/"a
-    // yönlendirir (statik sayfa, oturumsuz durumla tutarlı).
+    // durumuna döner (sadece localStorage/React state — httpOnly cookie'ye
+    // dokunamaz).
     clearClientSession()
     try {
+      // Cookie'yi GERÇEKTEN silen adım. redirect: false olduğundan bu await
+      // cookie silinene kadar bekler; patlarsa aşağıdaki catch'e düşer.
       await signOutAction()
     } catch {
-      // Çıkış sunucuda başarısız olduysa gerçek durumu geri yükle.
+      // Cookie silinemedi → UI "çıkış yapıldı" derken oturum sunucuda hâlâ
+      // açık kalır (Google girişinde OAuthAccountNotLinked'e yol açan durum).
+      // Sessizce yutma: gerçeği geri yükle ve kullanıcıyı uyar.
       void refresh()
+      toast.error("Çıkış yapılamadı, lütfen tekrar dene.")
+      return
     }
+    // Sunucu cookie'yi sildi; tam sayfa navigasyonuyla oturumsuz "/"a geç
+    // (statik sayfa, misafir durumuyla tutarlı; bayat client cache bırakmaz).
+    window.location.assign("/")
   }, [clearClientSession, refresh])
 
   React.useEffect(() => {
@@ -176,11 +195,16 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   const value = React.useMemo<SessionContextValue>(() => {
     const snapshotUser =
       storedSnapshot && "user" in storedSnapshot ? storedSnapshot.user : null
+    const snapshotIsPending =
+      storedSnapshot !== null && "pending" in storedSnapshot
     return {
       user,
       isAuthenticated: user !== null,
       hasLocation: user?.location != null,
       loading,
+      // Yalnızca gerçek giriş beklentisinde (pending ipucu) ve henüz veri
+      // yokken true → skeleton bu duruma bağlanır. Misafir/bayat ipucunda false.
+      pendingAuth: user === null && loading && snapshotIsPending,
       displayUser: user
         ? toDisplayUser(user)
         : loading || failed

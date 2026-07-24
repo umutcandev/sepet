@@ -63,22 +63,24 @@ export function SecurityGroup() {
       </SettingRow>
       <SettingRow
         title="İki adımlı doğrulama"
+        titleAccessory={
+          loading ? null : (
+            <Badge variant={twoFactorEnabled ? "default" : "secondary"}>
+              {twoFactorEnabled ? "Açık" : "Kapalı"}
+            </Badge>
+          )
+        }
         target="iki-adimli-dogrulama"
-        description="Girişte şifrenin yanında bir kod da iste"
+        description="Hesabınız için ek güvenlik katmanı ekleyin"
       >
         {loading ? (
           <Skeleton className="h-7 w-28" />
         ) : (
-          <div className="flex items-center gap-2">
-            <Badge variant={twoFactorEnabled ? "default" : "secondary"}>
-              {twoFactorEnabled ? "Açık" : "Kapalı"}
-            </Badge>
-            <TwoFactorDialog
-              enabled={twoFactorEnabled}
-              hasPassword={hasPassword}
-              onChanged={refresh}
-            />
-          </div>
+          <TwoFactorDialog
+            enabled={twoFactorEnabled}
+            hasPassword={hasPassword}
+            onChanged={refresh}
+          />
         )}
       </SettingRow>
     </SettingGroup>
