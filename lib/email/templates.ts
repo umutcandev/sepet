@@ -141,6 +141,29 @@ export function setPasswordCodeEmail(args: { code: string }): Email {
   }
 }
 
+// ─── Google-only hesapta 2FA kurulumu için yeniden doğrulama kodu ───
+export function totpSetupCodeEmail(args: { code: string }): Email {
+  const heading = "İki adımlı doğrulama kurulum kodun"
+  const body =
+    p("Hesabında iki adımlı doğrulamayı kurmak için doğrulama kodun:") +
+    codeBlock(args.code) +
+    p("Bu kodu Sepet'te açık olan pencereye gir. Kod 15 dakika geçerli.") +
+    p("Bu isteği sen yapmadıysan e-postayı yok sayabilirsin; hesabında bir değişiklik yapılmaz.")
+  const text = textBlock([
+    "İki adımlı doğrulama kurulum kodun",
+    "",
+    `Kodun: ${args.code}`,
+    "",
+    "Bu kodu Sepet'te açık olan pencereye gir. Kod 15 dakika geçerli.",
+    "Bu isteği sen yapmadıysan e-postayı yok sayabilirsin; hesabında bir değişiklik yapılmaz.",
+  ])
+  return {
+    subject: "Sepet iki adımlı doğrulama kodu",
+    html: layout({ heading, body, preview: `Kurulum kodun: ${args.code}` }),
+    text,
+  }
+}
+
 // ─── Bildirim: şifre değişti ───
 export function passwordChangedEmail(): Email {
   const heading = "Şifren değişti"

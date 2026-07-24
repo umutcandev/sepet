@@ -178,6 +178,15 @@ export function LoginForm({ callbackUrl }: Props) {
       completeLogin(res.callbackUrl)
       return true // busy kalır; sayfa yönleniyor
     }
+    // pending_login süresi doldu/tüketildi: 2FA aşamasında sıkışmak yerine
+    // kullanıcıyı girişe döndür (token bir daha işe yaramaz).
+    if (res.code === "pending_expired") {
+      setBusy(false)
+      setPendingToken("")
+      toast.error(res.error)
+      goStage("email-login")
+      return false
+    }
     setBusy(false)
     setError(res.error)
     return false
@@ -229,7 +238,12 @@ export function LoginForm({ callbackUrl }: Props) {
   async function resendCode() {
     if (resendIn > 0) return
     setError("")
-    await resendSignupCodeAction({ email })
+    const res = await resendSignupCodeAction({ email })
+    // Limit aşımında "gönderildi" yalanı söyleme: hatayı göster, sayacı başlatma.
+    if (!res.ok) {
+      setError(res.error)
+      return
+    }
     setResendIn(30)
   }
 
@@ -237,8 +251,13 @@ export function LoginForm({ callbackUrl }: Props) {
     e.preventDefault()
     setError("")
     setBusy(true)
-    await forgotPasswordAction({ email })
+    const res = await forgotPasswordAction({ email })
     setBusy(false)
+    // Limit aşımında "gönderdik" deme; hatayı göster ve aşamada kal.
+    if (!res.ok) {
+      setError(res.error)
+      return
+    }
     // Enumeration yok: kayıtlı olsun olmasın aynı bilgi + onay aşaması.
     toast.message("Bu e-posta kayıtlıysa bir sıfırlama bağlantısı gönderdik.")
     goStage("forgot-sent")
@@ -246,7 +265,12 @@ export function LoginForm({ callbackUrl }: Props) {
 
   async function resendReset() {
     setError("")
-    await forgotPasswordAction({ email })
+    const res = await forgotPasswordAction({ email })
+    // Limit aşımında "gönderildi" yalanı söyleme.
+    if (!res.ok) {
+      toast.error(res.error)
+      return
+    }
     toast.message("Bağlantı tekrar gönderildi.")
   }
 

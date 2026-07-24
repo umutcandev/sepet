@@ -5,7 +5,9 @@ import {
   randomInt,
 } from "node:crypto"
 import * as OTPAuth from "otpauth"
+import { and, eq, isNull, lt, or } from "drizzle-orm"
 
+import { db, users, twoFactorRecoveryCode } from "@/lib/db"
 import { hashSecret } from "@/lib/auth/codes"
 
 const ISSUER = "Sepet"
@@ -86,6 +88,47 @@ export function verifyTotp(secretB32: string, token: string): number | null {
   const delta = totp.validate({ token, window: 1 })
   if (delta === null) return null
   return currentTotpStep() + delta
+}
+
+// Atomik TOTP adım talebi: adım daha önce kullanılmadıysa (< step) yazar ve true
+// döner → aynı kod ikinci kez oynatılamaz. Giriş (authorize) ve ayarlardaki
+// yeniden doğrulama (requireReauth) aynı korumayı bu tek yerden kullanır.
+export async function claimTotpStep(
+  userId: string,
+  step: number,
+): Promise<boolean> {
+  const [claimed] = await db
+    .update(users)
+    .set({ totpLastUsedStep: step })
+    .where(
+      and(
+        eq(users.id, userId),
+        or(isNull(users.totpLastUsedStep), lt(users.totpLastUsedStep, step)),
+      ),
+    )
+    .returning({ id: users.id })
+  return Boolean(claimed)
+}
+
+// Atomik tek kullanımlık kurtarma kodu tüketimi: usedAt IS NULL iken işaretler.
+// true dönerse kod geçerliydi ve artık yakıldı.
+export async function consumeRecoveryCode(
+  userId: string,
+  code: string,
+): Promise<boolean> {
+  const codeHash = hashSecret(normalizeRecoveryCode(code))
+  const [used] = await db
+    .update(twoFactorRecoveryCode)
+    .set({ usedAt: new Date() })
+    .where(
+      and(
+        eq(twoFactorRecoveryCode.userId, userId),
+        eq(twoFactorRecoveryCode.codeHash, codeHash),
+        isNull(twoFactorRecoveryCode.usedAt),
+      ),
+    )
+    .returning({ id: twoFactorRecoveryCode.id })
+  return Boolean(used)
 }
 
 // Kurtarma kodu alfabesi: karışan karakterler (I, O, 0, 1) yok.

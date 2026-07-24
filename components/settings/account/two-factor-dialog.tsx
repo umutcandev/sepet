@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog"
 import {
   beginTotpSetupAction,
+  requestTotpSetupCodeAction,
   confirmTotpSetupAction,
   disableTotpAction,
   regenerateRecoveryCodesAction,
@@ -52,7 +53,7 @@ export function TwoFactorDialog({ enabled, hasPassword, onChanged }: Props) {
           ) : (
             <SetupTwoFactor
               key={open ? "open" : "closed"}
-              open={open}
+              hasPassword={hasPassword}
               onDone={() => {
                 setOpen(false)
                 onChanged()
@@ -66,48 +67,59 @@ export function TwoFactorDialog({ enabled, hasPassword, onChanged }: Props) {
 }
 
 function SetupTwoFactor({
-  open,
+  hasPassword,
   onDone,
 }: {
-  open: boolean
+  hasPassword: boolean
   onDone: () => void
 }) {
+  // Kurulum yeniden doğrulamayla başlar (reauth): şifreli hesap şifresini girer,
+  // şifresiz (Google-only) hesap e-postasına gelen kodu girer. Salt oturum
+  // cookie'siyle 2FA kurulamaz (çalınmış oturum + kurtarma kodları = kilitleme).
   const [step, setStep] = React.useState<
-    "loading" | "qr" | "confirm" | "recovery" | "error"
-  >("loading")
+    "reauth" | "qr" | "confirm" | "recovery"
+  >("reauth")
   const [setup, setSetup] = React.useState<{
     otpauthUri: string
     secretB32: string
   } | null>(null)
+  const [reauthValue, setReauthValue] = React.useState("")
+  const [codeSent, setCodeSent] = React.useState(false)
   const [code, setCode] = React.useState("")
   const [codes, setCodes] = React.useState<string[]>([])
   const [busy, setBusy] = React.useState(false)
   const [error, setError] = React.useState("")
 
-  React.useEffect(() => {
-    if (!open) return
-    let active = true
-    beginTotpSetupAction()
-      .then((res) => {
-        if (!active) return
-        if (res.ok) {
-          setSetup({ otpauthUri: res.otpauthUri, secretB32: res.secretB32 })
-          setStep("qr")
-        } else {
-          setError(res.error)
-          setStep("error")
-        }
-      })
-      .catch(() => {
-        if (active) {
-          setError("Bir şeyler ters gitti.")
-          setStep("error")
-        }
-      })
-    return () => {
-      active = false
+  async function sendSetupCode() {
+    setError("")
+    setBusy(true)
+    const res = await requestTotpSetupCodeAction()
+    setBusy(false)
+    if (res.ok) {
+      toast.message("E-postana bir kod gönderdik.")
+      setCodeSent(true)
+    } else {
+      setError(res.error)
     }
-  }, [open])
+  }
+
+  async function begin(value?: string) {
+    const v = value ?? reauthValue
+    if (!v || busy) return
+    setError("")
+    setBusy(true)
+    const res = await beginTotpSetupAction(
+      hasPassword ? { password: v } : { emailCode: v },
+    )
+    setBusy(false)
+    if (res.ok) {
+      setSetup({ otpauthUri: res.otpauthUri, secretB32: res.secretB32 })
+      setStep("qr")
+    } else {
+      setError(res.error)
+      if (!hasPassword) setReauthValue("")
+    }
+  }
 
   async function confirm(codeValue?: string) {
     const c = codeValue ?? code
@@ -125,28 +137,107 @@ function SetupTwoFactor({
     }
   }
 
-  if (step === "loading") {
+  if (step === "reauth") {
+    if (hasPassword) {
+      return (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            void begin()
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>İki adımlı doğrulamayı kur</DialogTitle>
+            <DialogDescription>
+              Devam etmek için önce şifreni gir.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 py-2">
+            <Field>
+              <FieldLabel htmlFor="setup-password">Şifren</FieldLabel>
+              <Input
+                id="setup-password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={reauthValue}
+                onChange={(e) => setReauthValue(e.target.value)}
+              />
+            </Field>
+            {error ? <p className="text-xs text-destructive">{error}</p> : null}
+          </div>
+          <DialogFooter>
+            <Button type="submit" disabled={busy || !reauthValue} className="gap-2">
+              {busy ? <Spinner /> : null}
+              Devam
+            </Button>
+          </DialogFooter>
+        </form>
+      )
+    }
+    if (!codeSent) {
+      return (
+        <>
+          <DialogHeader>
+            <DialogTitle>İki adımlı doğrulamayı kur</DialogTitle>
+            <DialogDescription>
+              Hesabının bir şifresi olmadığı için önce e-postana bir doğrulama
+              kodu gönderelim.
+            </DialogDescription>
+          </DialogHeader>
+          {error ? (
+            <p className="py-1 text-xs text-destructive">{error}</p>
+          ) : null}
+          <DialogFooter>
+            <Button onClick={sendSetupCode} disabled={busy} className="gap-2">
+              {busy ? <Spinner /> : null}
+              Kod gönder
+            </Button>
+          </DialogFooter>
+        </>
+      )
+    }
     return (
-      <>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          void begin()
+        }}
+      >
         <DialogHeader>
-          <DialogTitle>İki adımlı doğrulama</DialogTitle>
-          <DialogDescription>Kurulum hazırlanıyor…</DialogDescription>
+          <DialogTitle>İki adımlı doğrulamayı kur</DialogTitle>
+          <DialogDescription>
+            E-postana gelen 6 haneli kodu gir.
+          </DialogDescription>
         </DialogHeader>
-        <div className="flex justify-center py-8">
-          <Spinner className="size-5" />
+        <div className="flex flex-col items-center gap-3 py-4">
+          <OtpField
+            value={reauthValue}
+            onChange={setReauthValue}
+            onComplete={(v) => begin(v)}
+            disabled={busy}
+          />
+          {error ? <p className="text-xs text-destructive">{error}</p> : null}
         </div>
-      </>
-    )
-  }
-
-  if (step === "error") {
-    return (
-      <>
-        <DialogHeader>
-          <DialogTitle>İki adımlı doğrulama</DialogTitle>
-          <DialogDescription>{error}</DialogDescription>
-        </DialogHeader>
-      </>
+        <DialogFooter className="sm:justify-between">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={sendSetupCode}
+            disabled={busy}
+          >
+            Kodu tekrar gönder
+          </Button>
+          <Button
+            type="submit"
+            disabled={busy || reauthValue.length !== 6}
+            className="gap-2"
+          >
+            {busy ? <Spinner /> : null}
+            Devam
+          </Button>
+        </DialogFooter>
+      </form>
     )
   }
 
@@ -241,16 +332,26 @@ function ManageTwoFactor({
   onClose: () => void
 }) {
   const [secret, setSecret] = React.useState("")
+  // Telefonu (doğrulama uygulamasını) kaybetmiş kullanıcı için kurtarma koduyla
+  // yeniden doğrulama alternatifi; şifresiz hesabın tek çıkış yolu budur.
+  const [useRecovery, setUseRecovery] = React.useState(false)
   const [busy, setBusy] = React.useState<"disable" | "regen" | null>(null)
   const [error, setError] = React.useState("")
   const [codes, setCodes] = React.useState<string[] | null>(null)
 
   function creds() {
+    if (useRecovery) return { recoveryCode: secret }
     return hasPassword ? { password: secret } : { otp: secret }
   }
   function missing() {
+    if (useRecovery) return "Kurtarma kodunu gir."
     return hasPassword ? "Şifreni gir." : "Doğrulama kodunu gir."
   }
+  const inputLabel = useRecovery
+    ? "Kurtarma kodu"
+    : hasPassword
+      ? "Şifren"
+      : "Doğrulama kodu"
 
   async function regen() {
     if (!secret) {
@@ -290,23 +391,44 @@ function ManageTwoFactor({
         <DialogTitle>İki adımlı doğrulama</DialogTitle>
         <DialogDescription>
           Kurtarma kodlarını yenilemek ya da iki adımlı doğrulamayı kapatmak için{" "}
-          {hasPassword ? "şifreni" : "doğrulama kodunu"} gir.
+          {useRecovery
+            ? "kurtarma kodlarından birini"
+            : hasPassword
+              ? "şifreni"
+              : "doğrulama kodunu"}{" "}
+          gir.
         </DialogDescription>
       </DialogHeader>
       <div className="flex flex-col gap-3 py-2">
         <Field>
-          <FieldLabel htmlFor="reauth">
-            {hasPassword ? "Şifren" : "Doğrulama kodu"}
-          </FieldLabel>
+          <FieldLabel htmlFor="reauth">{inputLabel}</FieldLabel>
           <Input
             id="reauth"
-            type={hasPassword ? "password" : "text"}
-            inputMode={hasPassword ? undefined : "numeric"}
-            autoComplete={hasPassword ? "current-password" : "one-time-code"}
+            type={!useRecovery && hasPassword ? "password" : "text"}
+            inputMode={useRecovery || hasPassword ? undefined : "numeric"}
+            autoComplete={
+              !useRecovery && hasPassword ? "current-password" : "one-time-code"
+            }
+            placeholder={useRecovery ? "XXXXX-XXXXX" : undefined}
             value={secret}
             onChange={(e) => setSecret(e.target.value)}
           />
         </Field>
+        <button
+          type="button"
+          className="self-start text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+          onClick={() => {
+            setSecret("")
+            setError("")
+            setUseRecovery((v) => !v)
+          }}
+        >
+          {useRecovery
+            ? hasPassword
+              ? "Şifre kullan"
+              : "Doğrulama kodu kullan"
+            : "Kurtarma kodu kullan"}
+        </button>
         {error ? <p className="text-xs text-destructive">{error}</p> : null}
       </div>
       <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between">

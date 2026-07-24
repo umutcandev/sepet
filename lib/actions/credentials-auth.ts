@@ -19,7 +19,9 @@ import {
   isAuthError,
   authErrorCode,
 } from "@/lib/auth/auth-errors"
-import { appUrl } from "@/lib/auth/urls"
+// E-posta linkleri Host başlığından DEĞİL, yalnız env tabanlı SITE_URL'den üretilir
+// (Host header poisoning ile sıfırlama/doğrulama linki zehirlenemesin).
+import { absoluteUrl } from "@/lib/site"
 import { sendMail } from "@/lib/email/mailer"
 import { verificationEmail, accountExistsEmail } from "@/lib/email/templates"
 import { getClientIp, checkLimit } from "@/lib/security/action-rate-limit"
@@ -42,7 +44,9 @@ export type ActionResult = { ok: true } | { ok: false; error: string }
 export type LoginResult =
   | { ok: true; twoFactor?: false; callbackUrl: string }
   | { ok: true; twoFactor: true; pendingToken: string }
-  | { ok: false; error: string }
+  // code: authorize'un CredentialsSignin kodu (ör. "pending_expired") — istemci
+  // bazı durumlarda akışı buna göre yönlendirir (2FA aşamasından girişe dönüş).
+  | { ok: false; error: string; code?: string }
 
 // ─── Zod şemaları ───
 // Email format kontrolü sürüm-bağımsız basit regex ile (Zod .email() deprecation'ından
@@ -102,7 +106,7 @@ export async function registerAction(input: {
   // Zaten kayıtlı: durumu forma AÇMA (yine { ok: true }); bilgi e-postası yalnız
   // posta kutusu sahibine gider.
   if (existing) {
-    const loginUrl = await appUrl("/")
+    const loginUrl = absoluteUrl("/")
     void sendMail({ to: email, ...accountExistsEmail({ loginUrl }) })
     return { ok: true }
   }
@@ -136,7 +140,7 @@ export async function registerAction(input: {
       },
     })
 
-  const url = await appUrl(`/dogrula?token=${encodeURIComponent(token)}`)
+  const url = absoluteUrl(`/dogrula?token=${encodeURIComponent(token)}`)
   void sendMail({ to: email, ...verificationEmail({ code, url }) })
   return { ok: true }
 }
@@ -163,8 +167,16 @@ export async function verifySignupByTokenAction(input: {
   const token = typeof input?.token === "string" ? input.token : ""
   if (!token) return { ok: false, error: "Bağlantı geçersiz." }
   const tokenHash = hashSecret(token)
-  const limit = await checkLimit(codeVerifyLimiter, `signuptoken:${tokenHash}`)
-  if (!limit.ok) return limit
+  // İki eksen: token başına (aynı token'ı yeniden deneme) + IP başına (her
+  // tahminde taze bucket açan token-anahtarlı limiti aşan cross-token taramaya
+  // karşı derinlemesine savunma).
+  const ip = await getClientIp()
+  for (const check of [
+    await checkLimit(codeVerifyLimiter, `signuptoken:${tokenHash}`),
+    await checkLimit(codeVerifyLimiter, `signuptoken:ip:${ip}`),
+  ]) {
+    if (!check.ok) return check
+  }
 
   const [row] = await db
     .select({
@@ -227,7 +239,7 @@ export async function resendSignupCodeAction(input: {
     .returning({ id: emailVerification.id })
 
   if (row) {
-    const url = await appUrl(`/dogrula?token=${encodeURIComponent(token)}`)
+    const url = absoluteUrl(`/dogrula?token=${encodeURIComponent(token)}`)
     void sendMail({ to: email, ...verificationEmail({ code, url }) })
   }
   return { ok: true }
@@ -267,7 +279,11 @@ export async function loginAction(input: {
       }
       return { ok: true, twoFactor: true, pendingToken }
     }
-    return { ok: false, error: mapCredentialsError(error) }
+    return {
+      ok: false,
+      error: mapCredentialsError(error),
+      code: authErrorCode(error),
+    }
   }
   return { ok: true, callbackUrl: sanitizeCallback(parsed.data.callbackUrl) }
 }
@@ -295,7 +311,11 @@ export async function verifyTwoFactorAction(input: {
     })
   } catch (error) {
     if (!isAuthError(error)) throw error
-    return { ok: false, error: mapCredentialsError(error) }
+    return {
+      ok: false,
+      error: mapCredentialsError(error),
+      code: authErrorCode(error),
+    }
   }
   return { ok: true, callbackUrl: sanitizeCallback(input?.callbackUrl) }
 }
@@ -372,18 +392,29 @@ async function finalizeSignup(id: string): Promise<ActionResult> {
   if (!row || !passwordHash) {
     return { ok: false, error: "Doğrulama tamamlanamadı. Baştan dene." }
   }
-  await completeSignup(row.email, passwordHash)
+  const completed = await completeSignup(row.email, passwordHash)
+  if (!completed) {
+    // Yarış: doğrulama sürerken aynı e-posta şifreli hesap olarak oluşmuş.
+    // Kod doğrulandığı için e-posta sahipliği kanıtlı → durumu söylemek
+    // enumeration riski taşımaz; sessiz ok + başarısız otomatik giriş yerine
+    // net yönlendirme.
+    return {
+      ok: false,
+      error: "Bu e-posta ile zaten bir hesabın var. Giriş yapmayı dene.",
+    }
+  }
   return { ok: true }
 }
 
 // Kullanıcıyı oluştur (emailVerified = now). Aynı e-posta Google-only olarak zaten
 // varsa (yarış), yalnız passwordHash null'ken şifreyi bağla → güvenli birleştirme;
-// şifresi olan mevcut satır no-op (setWhere false).
+// şifresi olan mevcut satır no-op (setWhere false → false döner, çağıran kullanıcıya
+// söyler).
 async function completeSignup(
   email: string,
   passwordHash: string,
-): Promise<void> {
-  await db
+): Promise<boolean> {
+  const [row] = await db
     .insert(users)
     .values({ email, emailVerified: new Date(), passwordHash })
     .onConflictDoUpdate({
@@ -394,4 +425,6 @@ async function completeSignup(
       },
       setWhere: sql`${users.passwordHash} IS NULL`,
     })
+    .returning({ id: users.id })
+  return Boolean(row)
 }

@@ -2,7 +2,7 @@ import NextAuth, { CredentialsSignin } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
-import { and, eq, isNull, lt, or, sql } from "drizzle-orm"
+import { eq, sql } from "drizzle-orm"
 import {
   db,
   users,
@@ -11,13 +11,17 @@ import {
   verificationTokens,
   userSessions,
   pendingLogin,
-  twoFactorRecoveryCode,
 } from "@/lib/db"
 import { authConfig } from "./auth.config"
 import { readRequestDeviceInfo } from "@/lib/auth/device"
 import { normalizeEmail, hashSecret } from "@/lib/auth/codes"
 import { dummyHash, verifyPassword } from "@/lib/auth/password"
-import { decryptSecret, verifyTotp, normalizeRecoveryCode } from "@/lib/auth/totp"
+import {
+  decryptSecret,
+  verifyTotp,
+  claimTotpStep,
+  consumeRecoveryCode,
+} from "@/lib/auth/totp"
 
 // Revoke kontrolü her istekte değil, en fazla bu aralıkla bir kez DB'ye gider.
 const SID_CHECK_INTERVAL_MS = 60_000
@@ -90,39 +94,11 @@ async function authorizeTwoFactor(
   let verified = false
   if (otp) {
     const step = verifyTotp(decryptSecret(u.totpSecretEnc), otp)
-    if (step !== null) {
-      // Atomik adım talebi: adım daha önce kullanılmadıysa (< step) yaz → aynı
-      // kod ikinci kez oynatılamaz.
-      const [claimed] = await db
-        .update(users)
-        .set({ totpLastUsedStep: step })
-        .where(
-          and(
-            eq(users.id, u.id),
-            or(
-              isNull(users.totpLastUsedStep),
-              lt(users.totpLastUsedStep, step),
-            ),
-          ),
-        )
-        .returning({ id: users.id })
-      if (claimed) verified = true
-    }
+    // Atomik adım talebi (claimTotpStep): aynı kod ikinci kez oynatılamaz.
+    if (step !== null && (await claimTotpStep(u.id, step))) verified = true
   } else if (recoveryCode) {
-    const codeHash = hashSecret(normalizeRecoveryCode(recoveryCode))
-    // Atomik tek kullanım: usedAt IS NULL iken işaretle.
-    const [used] = await db
-      .update(twoFactorRecoveryCode)
-      .set({ usedAt: new Date() })
-      .where(
-        and(
-          eq(twoFactorRecoveryCode.userId, u.id),
-          eq(twoFactorRecoveryCode.codeHash, codeHash),
-          isNull(twoFactorRecoveryCode.usedAt),
-        ),
-      )
-      .returning({ id: twoFactorRecoveryCode.id })
-    if (used) verified = true
+    // Atomik tek kullanım: usedAt IS NULL iken işaretlenir.
+    if (await consumeRecoveryCode(u.id, recoveryCode)) verified = true
   }
 
   if (!verified) throw new TwoFactorInvalidError()

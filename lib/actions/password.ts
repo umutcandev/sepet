@@ -13,7 +13,9 @@ import {
   safeEqual,
 } from "@/lib/auth/codes"
 import { hashPassword, verifyPassword, passwordSchema } from "@/lib/auth/password"
-import { appUrl } from "@/lib/auth/urls"
+// E-posta linkleri Host başlığından DEĞİL, yalnız env tabanlı SITE_URL'den üretilir
+// (Host header poisoning ile sıfırlama linki zehirlenemesin).
+import { absoluteUrl } from "@/lib/site"
 import { sendMail } from "@/lib/email/mailer"
 import {
   passwordResetEmail,
@@ -66,7 +68,7 @@ export async function forgotPasswordAction(input: {
     .where(eq(users.email, email))
     .limit(1)
 
-  const loginUrl = await appUrl("/")
+  const loginUrl = absoluteUrl("/")
 
   if (user && user.passwordHash) {
     // Sıfırlama yalnız link (token) ile; code artık maile konmaz, sadece
@@ -82,7 +84,7 @@ export async function forgotPasswordAction(input: {
       tokenHash: hashSecret(token),
       expiresAt,
     })
-    const url = await appUrl(`/sifre-sifirla?token=${encodeURIComponent(token)}`)
+    const url = absoluteUrl(`/sifre-sifirla?token=${encodeURIComponent(token)}`)
     void sendMail({ to: email, ...passwordResetEmail({ url }) })
   } else if (user) {
     // Google-only (şifresi yok): sıfırlama değil, yönlendirme bilgisi.
@@ -106,8 +108,15 @@ export async function resetPasswordAction(input: {
   const token = typeof input?.token === "string" ? input.token : ""
   if (!token) return { ok: false, error: "Bağlantı geçersiz ya da süresi dolmuş." }
 
-  const limit = await checkLimit(codeVerifyLimiter, `reset:${hashSecret(token)}`)
-  if (!limit.ok) return limit
+  // İki eksen: token başına + IP başına (token-anahtarlı limit tek başına
+  // cross-token taramada her tahmine taze bucket açar; IP ekseni bunu kapatır).
+  const ip = await getClientIp()
+  for (const check of [
+    await checkLimit(codeVerifyLimiter, `reset:${hashSecret(token)}`),
+    await checkLimit(codeVerifyLimiter, `reset:ip:${ip}`),
+  ]) {
+    if (!check.ok) return check
+  }
 
   const [row] = await db
     .select({

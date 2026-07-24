@@ -71,7 +71,7 @@ export function SecurityGroup() {
           )
         }
         target="iki-adimli-dogrulama"
-        description="Hesabınız için ek güvenlik katmanı ekleyin"
+        description="Hesabın için ek güvenlik katmanı ekle"
       >
         {loading ? (
           <Skeleton className="h-7 w-28" />

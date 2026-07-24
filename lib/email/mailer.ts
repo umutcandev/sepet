@@ -45,12 +45,13 @@ export async function sendMail({
 }: SendMailArgs): Promise<void> {
   if (!smtpConfigured) {
     if (process.env.NODE_ENV === "production") {
-      // Üretimde SMTP yoksa bu bir YAPILANDIRMA HATASIDIR. Kod/link üretim
-      // loglarına (drain/observability araçlarına gidebilir) ASLA yazılmaz —
-      // sırrı sızdırmadan, operatörün görebileceği şekilde sesli başarısız ol.
+      // Üretimde SMTP yoksa bu bir YAPILANDIRMA HATASIDIR. Kod/link ve alıcı
+      // adresi (PII) üretim loglarına (drain/observability araçlarına gidebilir)
+      // ASLA yazılmaz — sırrı sızdırmadan, operatörün görebileceği şekilde sesli
+      // başarısız ol.
       console.error(
-        `[mailer] SMTP yapılandırılmamış — "${subject}" e-postası GÖNDERİLEMEDİ ` +
-          `(Kime: ${to}). SMTP_* env değişkenlerini ayarla.`,
+        `[mailer] SMTP yapılandırılmamış — "${subject}" e-postası GÖNDERİLEMEDİ. ` +
+          `SMTP_* env değişkenlerini ayarla.`,
       )
       return
     }
