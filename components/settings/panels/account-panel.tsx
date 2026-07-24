@@ -8,6 +8,7 @@ import { revokeAllSessions } from "@/lib/actions/sessions"
 
 import { PanelHeader, SettingGroup, SettingRow } from "../settings-row"
 import { SessionsTable } from "../account/sessions-table"
+import { SecurityGroup } from "../account/security-group"
 import { DeleteAccountDialog } from "../account/delete-account-dialog"
 
 // Hesap: tüm cihazlardan çıkış + hesap arşivleme, ardından aktif oturumlar tablosu.
@@ -52,6 +53,8 @@ export function AccountPanel() {
           <DeleteAccountDialog />
         </SettingRow>
       </SettingGroup>
+
+      <SecurityGroup />
 
       <SettingGroup title="Aktif oturumlar">
         <SessionsTable />

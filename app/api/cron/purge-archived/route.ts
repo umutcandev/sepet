@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server"
 import { and, eq, isNotNull, lt } from "drizzle-orm"
 
-import { db, users } from "@/lib/db"
+import {
+  db,
+  users,
+  emailVerification,
+  passwordReset,
+  pendingLogin,
+} from "@/lib/db"
 import { deleteUserStorage } from "@/lib/storage/r2"
 
 export const runtime = "nodejs"
@@ -20,6 +26,13 @@ export async function GET(req: Request) {
   if (req.headers.get("authorization") !== `Bearer ${secret}`) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 })
   }
+
+  // Süresi dolmuş tek kullanımlık auth token'ları temizle (hijyen; okuma zaten
+  // süre kontrolü yapar, bunlar yalnız satır biriktirmesini önler).
+  const now = new Date()
+  await db.delete(emailVerification).where(lt(emailVerification.expiresAt, now))
+  await db.delete(passwordReset).where(lt(passwordReset.expiresAt, now))
+  await db.delete(pendingLogin).where(lt(pendingLogin.expiresAt, now))
 
   const cutoff = new Date(Date.now() - GRACE_DAYS * 24 * 60 * 60 * 1000)
   const rows = await db

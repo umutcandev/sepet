@@ -6,10 +6,12 @@ import {
   CreditCardIcon,
   DownloadIcon,
   FileTextIcon,
+  KeyRoundIcon,
   LogOutIcon,
   MapPinIcon,
   MonitorIcon,
   Settings2Icon,
+  ShieldCheckIcon,
   ShieldIcon,
   Trash2Icon,
   UserIcon,
@@ -88,6 +90,19 @@ const HESAP_SETTINGS: SettingEntry[] = [
     title: "Hesabımı sil",
     keywords: "hesap sil arsiv kapat kaldir delete",
     icon: Trash2Icon,
+  },
+  {
+    target: "sifre",
+    title: "Şifre",
+    keywords: "sifre parola password degistir belirle guvenlik hesap",
+    icon: KeyRoundIcon,
+  },
+  {
+    target: "iki-adimli-dogrulama",
+    title: "İki adımlı doğrulama",
+    keywords:
+      "iki adimli dogrulama 2fa two factor totp authenticator kod guvenlik kurtarma",
+    icon: ShieldCheckIcon,
   },
   {
     target: "oturumlar",

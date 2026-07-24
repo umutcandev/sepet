@@ -18,6 +18,10 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: { root: __dirname },
+  // argon2 (native napi binary) ve nodemailer server-only; bundle'a girmeyip
+  // Node runtime'da require edilmeleri gerekir. Aksi halde build/serverless
+  // paketleme bozulur.
+  serverExternalPackages: ["@node-rs/argon2", "nodemailer"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "lh3.googleusercontent.com" },

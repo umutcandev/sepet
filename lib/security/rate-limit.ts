@@ -78,3 +78,66 @@ export const exportLimiter = new Ratelimit({
   prefix: "rl:privacy:export",
   analytics: true,
 })
+
+// ─── E-posta/şifre kimlik doğrulama limiter'ları ───
+// Bunlar proxy.ts değil, server action'lar içinde uygulanır (bkz.
+// lib/security/action-rate-limit.ts). Derinlemesine savunma: DB `attempts`
+// kolonları asıl sert limittir (Redis flush'a dayanıklı); aşağıdakiler yumuşak
+// throttle katmanıdır.
+
+// Şifreyle giriş. Aynı limiter iki ayrı anahtarla çağrılır: hem IP hem e-posta
+// başına (brute-force iki eksenden de sınırlanır).
+export const credentialsLoginLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1 m"),
+  prefix: "rl:auth:login",
+  analytics: true,
+})
+
+// Kayıt başlatma (e-posta doğrulama). IP başına.
+export const registerLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10 m"),
+  prefix: "rl:auth:register",
+  analytics: true,
+})
+
+// E-posta gönderimi — e-posta başına sıkı tavan (posta kutusu spam'lenmesin).
+export const emailSendLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(3, "10 m"),
+  prefix: "rl:auth:email",
+  analytics: true,
+})
+
+// E-posta gönderimi — IP başına (bir IP'nin toplu mail tetiklemesini keser).
+export const emailSendIpLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1 h"),
+  prefix: "rl:auth:email:ip",
+  analytics: true,
+})
+
+// Kod doğrulama denemeleri. Anahtar: e-posta veya tokenHash.
+export const codeVerifyLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1 m"),
+  prefix: "rl:auth:code",
+  analytics: true,
+})
+
+// 2FA kod denemeleri. Anahtar: pending tokenHash.
+export const twoFactorLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "1 m"),
+  prefix: "rl:auth:2fa",
+  analytics: true,
+})
+
+// Şifre değiştirme/belirleme. Anahtar: userId.
+export const passwordChangeLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10 m"),
+  prefix: "rl:auth:pwchange",
+  analytics: true,
+})
