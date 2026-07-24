@@ -6,11 +6,6 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 
 import { Button } from "@/components/ui/button"
 import { LoginForm } from "@/components/auth/login-form"
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTitle,
-} from "@/components/ui/drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 
@@ -34,14 +29,54 @@ export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
   }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="bg-background">
-        <DrawerTitle className="sr-only">Giriş Yap</DrawerTitle>
-        <div className="flex justify-center">
-          <LoginForm callbackUrl={callbackUrl} />
-        </div>
-      </DrawerContent>
-    </Drawer>
+    <MobileDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      callbackUrl={callbackUrl}
+    />
+  )
+}
+
+// Mobil: bottom sheet DEĞİL, tam ekran takeover. Sheet (vaul) input odaklanınca
+// klavyeye göre kendini yeniden konumlandırmaya çalışıyor ve iOS'ta zıplayıp
+// gizlenebiliyordu. Tam ekranda yeniden konumlanacak bir şey yok: kapsayıcı
+// h-dvh + iç kaydırma; klavye açılınca Android viewport'u küçültür
+// (interactiveWidget: resizes-content), iOS odaklanan input'u en yakın
+// kaydırılabilir atada görünür alana getirir.
+function MobileDialog({ open, onOpenChange, callbackUrl }: Props) {
+  return (
+    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Content
+          aria-describedby={undefined}
+          className={cn(
+            "fixed inset-0 z-50 flex h-dvh w-full flex-col bg-background outline-none",
+            "data-open:animate-in data-open:fade-in-0 data-open:slide-in-from-bottom-8",
+            "data-closed:animate-out data-closed:fade-out-0 data-closed:slide-out-to-bottom-8",
+            "duration-300",
+          )}
+        >
+          <DialogPrimitive.Title className="sr-only">
+            Giriş Yap
+          </DialogPrimitive.Title>
+
+          <div className="flex-1 overflow-y-auto pt-[env(safe-area-inset-top)] pb-[max(env(safe-area-inset-bottom),1rem)]">
+            <LoginForm callbackUrl={callbackUrl} />
+          </div>
+
+          <DialogPrimitive.Close asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="absolute right-3 top-[calc(env(safe-area-inset-top)+0.75rem)] z-10"
+              aria-label="Kapat"
+            >
+              <XIcon />
+            </Button>
+          </DialogPrimitive.Close>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   )
 }
 

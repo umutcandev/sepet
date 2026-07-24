@@ -28,6 +28,21 @@ export type CurrentUser = {
   location: UserLocation | null
 }
 
+// E-posta ile kayıtta ad sorulmaz; adı olmayan kullanıcı için jenerik
+// "Kullanıcı" yerine e-postanın yerel kısmından okunaklı bir ad türet
+// (ahmet.yilmaz@… → "Ahmet Yilmaz"). Yerel kısım yoksa null.
+export function displayNameFromEmail(email: string | null | undefined): string | null {
+  const local = (email ?? "").split("@")[0]?.trim()
+  if (!local) return null
+  const name = local
+    .replace(/[._-]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toLocaleUpperCase("tr") + w.slice(1))
+    .join(" ")
+  return name || null
+}
+
 // React `cache()` ile sarılı: tek bir RSC render'ında (layout + OnboardingHost +
 // LocationHost) aynı argümanla yapılan çağrılar tek `auth()` + tek DB sorgusuna
 // indirgenir. Cache request bazlıdır → istekler arası sızıntı yok.
@@ -71,10 +86,16 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const googleAvatar = row?.image ?? session.user.image ?? ""
   const customImage = row?.customImage ?? null
 
+  const email = session.user.email ?? ""
+
   return {
     id: session.user.id,
-    name: row?.name ?? session.user.name ?? "Kullanıcı",
-    email: session.user.email ?? "",
+    name:
+      row?.name ??
+      session.user.name ??
+      displayNameFromEmail(email) ??
+      "Kullanıcı",
+    email,
     avatar: customImage ?? googleAvatar,
     googleAvatar,
     hasCustomAvatar: customImage != null,

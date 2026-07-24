@@ -77,7 +77,7 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
   // görünür, /api/me beklenmez. İlk boyamada (hidrasyondan önce) hangi
   // varyantın görüneceğine <html data-session> ipucu üzerinden CSS karar
   // verir — aşağıdaki [data-session-*] sarmalayıcıları.
-  const { displayUser, loading: sessionLoading } = useCurrentUser()
+  const { displayUser, pendingAuth } = useCurrentUser()
 
   const handleNavClick = () => {
     if (isMobile) setOpenMobile(false)
@@ -240,7 +240,7 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
         <div data-session-authed>
           {displayUser ? (
             <NavUser user={displayUser} />
-          ) : sessionLoading ? (
+          ) : pendingAuth ? (
             <NavUserSkeleton />
           ) : null}
         </div>

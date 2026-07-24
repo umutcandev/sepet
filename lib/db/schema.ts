@@ -69,6 +69,17 @@ export const users = pgTable("user", {
   // kapatır. 14 gün içinde tekrar giriş yapılmazsa cron (purge-archived) satırı
   // kalıcı siler (cascade ile tüm bağlı veriler). Re-login archivedAt'i null'lar.
   archivedAt: timestamp("archivedAt", { mode: "date" }),
+  // ─── E-posta/şifre kimlik doğrulama ───
+  // Google-only hesaplarda passwordHash null'dır — "şifresi var" testi
+  // passwordHash IS NOT NULL'dır (credentials için `accounts` satırı gerekmez).
+  // passwordHash argon2id; passwordUpdatedAt sıfırlama/değiştirmede güncellenir.
+  // TOTP 2FA: totpEnabled açıkken totpSecretEnc (AES-256-GCM) dolu; totpLastUsedStep
+  // en son kabul edilen TOTP adımıdır (aynı kodun tekrar oynatılmasını engeller).
+  passwordHash: text("passwordHash"),
+  passwordUpdatedAt: timestamp("passwordUpdatedAt", { mode: "date" }),
+  totpEnabled: boolean("totpEnabled").notNull().default(false),
+  totpSecretEnc: text("totpSecretEnc"),
+  totpLastUsedStep: integer("totpLastUsedStep"),
 })
 
 export const accounts = pgTable(
@@ -136,6 +147,106 @@ export const verificationTokens = pgTable(
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (vt) => [primaryKey({ columns: [vt.identifier, vt.token] })],
+)
+
+// ─── E-posta doğrulama (kayıt + Google hesabına şifre belirleme) ───
+// Kullanıcı satırı e-posta DOĞRULANMADAN OLUŞTURULMAZ. Kayıtta hesaplanan
+// argon2id hash'i, doğrulama tamamlanana dek burada `payload`ta bekler; böylece
+// kurbanın posta kutusuna erişmeden bir `users` satırı yaratılamaz (klasik
+// ön-kayıt/hesap-devralma saldırısı imkânsız → allowDangerousEmailAccountLinking
+// güvenli). purpose "set_password" (Google-only hesaba şifre) ve "totp_setup"
+// (şifresiz hesapta 2FA kurulumu için yeniden doğrulama) için userId dolu.
+// Kod ve token yalnız HMAC (codeHash/tokenHash) olarak saklanır. Tek satır per
+// (email, purpose): yeni istek öncekini ezer. TTL 15 dk, max 5 deneme.
+export const emailVerification = pgTable(
+  "email_verification",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    email: text("email").notNull(),
+    purpose: text("purpose")
+      .$type<"signup" | "set_password" | "totp_setup">()
+      .notNull(),
+    userId: text("userId").references(() => users.id, { onDelete: "cascade" }),
+    codeHash: text("codeHash").notNull(),
+    tokenHash: text("tokenHash").notNull(),
+    payload: jsonb("payload").$type<{ passwordHash?: string }>(),
+    attempts: integer("attempts").notNull().default(0),
+    expiresAt: timestamp("expiresAt", { mode: "date" }).notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("email_verification_email_purpose_idx").on(t.email, t.purpose),
+    uniqueIndex("email_verification_token_idx").on(t.tokenHash),
+  ],
+)
+
+// ─── Şifre sıfırlama ───
+// Yalnız `passwordHash` dolu (şifresi olan) kullanıcılar için üretilir. Kod +
+// link (token) HMAC olarak saklanır. TTL 15 dk, max 5 deneme; başarılı sıfırlama
+// kullanıcının tüm `user_session` satırlarını revoke eder (tüm cihazlar düşer).
+export const passwordReset = pgTable(
+  "password_reset",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    codeHash: text("codeHash").notNull(),
+    tokenHash: text("tokenHash").notNull(),
+    attempts: integer("attempts").notNull().default(0),
+    expiresAt: timestamp("expiresAt", { mode: "date" }).notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("password_reset_token_idx").on(t.tokenHash),
+    index("password_reset_user_idx").on(t.userId),
+  ],
+)
+
+// ─── 2FA ön-doğrulama ara durumu ───
+// Şifre doğrulandıktan sonra, TOTP kodu girilmeden önceki geçici durum. Ham token
+// yalnız istemci state'inde; DB'de sadece HMAC. TTL 5 dk, max 5 deneme. Tek
+// kullanım: başarılı doğrulamada `DELETE ... RETURNING` ile tüketilir. Yarı-
+// doğrulanmış oturum cookie'si YOKTUR — 2FA tamamlanana dek hiçbir session yazılmaz.
+export const pendingLogin = pgTable(
+  "pending_login",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    tokenHash: text("tokenHash").notNull(),
+    attempts: integer("attempts").notNull().default(0),
+    expiresAt: timestamp("expiresAt", { mode: "date" }).notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("pending_login_token_idx").on(t.tokenHash)],
+)
+
+// ─── 2FA kurtarma kodları ───
+// 2FA açılışında üretilen tek kullanımlık kodlar (yalnız HMAC saklanır; düz metin
+// kullanıcıya BİR KEZ gösterilir). Tüketim atomik: `UPDATE ... SET usedAt = now()
+// WHERE id = ? AND usedAt IS NULL RETURNING`. 2FA kapatılınca tüm satırlar silinir.
+export const twoFactorRecoveryCode = pgTable(
+  "two_factor_recovery_code",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    codeHash: text("codeHash").notNull(),
+    usedAt: timestamp("usedAt", { mode: "date" }),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [index("two_factor_recovery_user_idx").on(t.userId)],
 )
 
 // ─── Sepet: ürün / fiyat cache ───
