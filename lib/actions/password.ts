@@ -1,16 +1,15 @@
 "use server"
 
-import { and, eq, isNull, ne, sql } from "drizzle-orm"
+import { and, eq, isNull, ne } from "drizzle-orm"
 import { z } from "zod"
 
 import { auth } from "@/auth"
-import { db, users, passwordReset, userSessions, emailVerification } from "@/lib/db"
+import { db, users, passwordReset, userSessions } from "@/lib/db"
 import {
   normalizeEmail,
   generateCode,
   generateToken,
   hashSecret,
-  safeEqual,
 } from "@/lib/auth/codes"
 import { hashPassword, verifyPassword, passwordSchema } from "@/lib/auth/password"
 // E-posta linkleri Host başlığından DEĞİL, yalnız env tabanlı SITE_URL'den üretilir
@@ -20,7 +19,8 @@ import { sendMail } from "@/lib/email/mailer"
 import {
   passwordResetEmail,
   passwordChangedEmail,
-  setPasswordCodeEmail,
+  passwordSetEmail,
+  setPasswordLinkEmail,
   googleSignInEmail,
 } from "@/lib/email/templates"
 import { getClientIp, checkLimit } from "@/lib/security/action-rate-limit"
@@ -32,10 +32,14 @@ import {
 } from "@/lib/security/rate-limit"
 
 const RESET_TTL_MS = 15 * 60 * 1000
-const SET_PASSWORD_TTL_MS = 15 * 60 * 1000
-const MAX_ATTEMPTS = 5
 
 export type ActionResult = { ok: true } | { ok: false; error: string }
+// Sıfırlama/belirleme sonucu: sessionsRevoked yalnız var olan bir şifre
+// DEĞİŞTİĞİNDE true olur (ilk kez şifre belirleyen Google kullanıcısının
+// oturumları düşürülmez); başarı ekranı metnini bu belirler.
+export type ResetResult =
+  | { ok: true; sessionsRevoked: boolean }
+  | { ok: false; error: string }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const emailField = z
@@ -98,7 +102,7 @@ export async function forgotPasswordAction(input: {
 export async function resetPasswordAction(input: {
   token?: string
   newPassword: string
-}): Promise<ActionResult> {
+}): Promise<ResetResult> {
   const pw = passwordSchema.safeParse(input?.newPassword)
   if (!pw.success) {
     return { ok: false, error: pw.error.issues[0]?.message ?? "Geçersiz şifre." }
@@ -136,30 +140,46 @@ export async function resetPasswordAction(input: {
   return applyReset(row.userId, newPassword)
 }
 
-// Şifreyi güncelle, TÜM cihaz oturumlarını düşür (60 sn içinde), reset satırlarını
-// sil, bildirim gönder.
+// Şifreyi güncelle, reset satırlarını sil, bildirim gönder. Var olan bir şifre
+// DEĞİŞİYORSA (olası ele geçirme senaryosu) tüm cihaz oturumları da düşürülür
+// (60 sn içinde); Google-only hesaba İLK şifre belirlemede eski şifre olmadığı
+// için oturumlar korunur ve daha yumuşak bir bildirim gider.
 async function applyReset(
   userId: string,
   newPassword: string,
-): Promise<ActionResult> {
+): Promise<ResetResult> {
+  const [before] = await db
+    .select({ email: users.email, passwordHash: users.passwordHash })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1)
+  if (!before) return { ok: false, error: "Bağlantı geçersiz ya da süresi dolmuş." }
+  const hadPassword = before.passwordHash != null
+
   const passwordHash = await hashPassword(newPassword)
-  const [updated] = await db
+  await db
     .update(users)
     .set({ passwordHash, passwordUpdatedAt: new Date() })
     .where(eq(users.id, userId))
-    .returning({ email: users.email })
 
-  await db
-    .update(userSessions)
-    .set({ revokedAt: new Date() })
-    .where(and(eq(userSessions.userId, userId), isNull(userSessions.revokedAt)))
+  if (hadPassword) {
+    await db
+      .update(userSessions)
+      .set({ revokedAt: new Date() })
+      .where(
+        and(eq(userSessions.userId, userId), isNull(userSessions.revokedAt)),
+      )
+  }
 
   await db.delete(passwordReset).where(eq(passwordReset.userId, userId))
 
-  if (updated?.email) {
-    void sendMail({ to: updated.email, ...passwordChangedEmail() })
+  if (before.email) {
+    void sendMail({
+      to: before.email,
+      ...(hadPassword ? passwordChangedEmail() : passwordSetEmail()),
+    })
   }
-  return { ok: true }
+  return { ok: true, sessionsRevoked: hadPassword }
 }
 
 // ─── Ayarlar > Güvenlik ───
@@ -231,9 +251,10 @@ export async function changePasswordAction(input: {
   return { ok: true }
 }
 
-// Google-only hesap (passwordHash IS NULL) için şifre belirleme kodu iste. Link
-// yok, yalnız uygulama içi OTP.
-export async function requestSetPasswordCodeAction(): Promise<ActionResult> {
+// Google-only hesap (passwordHash IS NULL) için şifre belirleme bağlantısı iste.
+// "Şifremi unuttum" ile aynı altyapı: password_reset satırı + /sifre-sifirla
+// linki; kullanıcı şifreyi o sayfada belirler (diyalogda kod/form yok).
+export async function requestSetPasswordLinkAction(): Promise<ActionResult> {
   const session = await auth()
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
   const uid = session.user.id
@@ -256,106 +277,21 @@ export async function requestSetPasswordCodeAction(): Promise<ActionResult> {
     if (!check.ok) return check
   }
 
+  // codeHash yalnız notNull kısıtı için üretilir; e-postada kod yok, yalnız link.
   const code = generateCode()
-  // set_password'de link yok ama tokenHash notNull + unique → kullanılmayan bir
-  // token yine de üretilir.
   const token = generateToken()
-  const codeHash = hashSecret(code)
-  const tokenHash = hashSecret(token)
-  const expiresAt = new Date(Date.now() + SET_PASSWORD_TTL_MS)
+  const expiresAt = new Date(Date.now() + RESET_TTL_MS)
 
-  await db
-    .insert(emailVerification)
-    .values({
-      email,
-      purpose: "set_password",
-      userId: uid,
-      codeHash,
-      tokenHash,
-      expiresAt,
-    })
-    .onConflictDoUpdate({
-      target: [emailVerification.email, emailVerification.purpose],
-      set: {
-        userId: uid,
-        codeHash,
-        tokenHash,
-        attempts: 0,
-        expiresAt,
-        createdAt: new Date(),
-      },
-    })
+  // Tek aktif satır: öncekileri sil, yenisini ekle (forgot ile aynı desen).
+  await db.delete(passwordReset).where(eq(passwordReset.userId, uid))
+  await db.insert(passwordReset).values({
+    userId: uid,
+    codeHash: hashSecret(code),
+    tokenHash: hashSecret(token),
+    expiresAt,
+  })
 
-  void sendMail({ to: email, ...setPasswordCodeEmail({ code }) })
-  return { ok: true }
-}
-
-// Kodu doğrula ve Google-only hesaba şifre belirle.
-export async function setPasswordAction(input: {
-  code: string
-  newPassword: string
-}): Promise<ActionResult> {
-  const session = await auth()
-  if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
-  const uid = session.user.id
-
-  const pw = passwordSchema.safeParse(input?.newPassword)
-  if (!pw.success) {
-    return { ok: false, error: pw.error.issues[0]?.message ?? "Geçersiz şifre." }
-  }
-  const code = typeof input?.code === "string" ? input.code.trim() : ""
-  if (!/^\d{6}$/.test(code)) return { ok: false, error: "6 haneli kodu gir." }
-
-  const limit = await checkLimit(codeVerifyLimiter, `setpw:${uid}`)
-  if (!limit.ok) return limit
-
-  const [u] = await db
-    .select({ email: users.email, passwordHash: users.passwordHash })
-    .from(users)
-    .where(eq(users.id, uid))
-    .limit(1)
-  if (!u || !u.email) return { ok: false, error: "Oturum bulunamadı." }
-  if (u.passwordHash) {
-    return { ok: false, error: "Hesabının zaten bir şifresi var." }
-  }
-  const email = normalizeEmail(u.email)
-
-  // Atomik attempts++ (yalnız bu kullanıcının set_password satırı).
-  const [row] = await db
-    .update(emailVerification)
-    .set({ attempts: sql`${emailVerification.attempts} + 1` })
-    .where(
-      and(
-        eq(emailVerification.email, email),
-        eq(emailVerification.purpose, "set_password"),
-        eq(emailVerification.userId, uid),
-      ),
-    )
-    .returning({
-      id: emailVerification.id,
-      codeHash: emailVerification.codeHash,
-      expiresAt: emailVerification.expiresAt,
-      attempts: emailVerification.attempts,
-    })
-
-  if (!row) return { ok: false, error: "Kod geçersiz ya da süresi dolmuş. Baştan dene." }
-  if (row.attempts > MAX_ATTEMPTS) {
-    await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
-    return { ok: false, error: "Çok fazla yanlış deneme. Yeni kod iste." }
-  }
-  if (row.expiresAt.getTime() < Date.now()) {
-    await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
-    return { ok: false, error: "Kodun süresi doldu. Yeni kod iste." }
-  }
-  if (!safeEqual(hashSecret(code), row.codeHash)) {
-    return { ok: false, error: "Kod hatalı. Tekrar dene." }
-  }
-
-  await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
-  const passwordHash = await hashPassword(pw.data)
-  await db
-    .update(users)
-    .set({ passwordHash, passwordUpdatedAt: new Date() })
-    .where(eq(users.id, uid))
+  const url = absoluteUrl(`/sifre-sifirla?token=${encodeURIComponent(token)}`)
+  void sendMail({ to: email, ...setPasswordLinkEmail({ url }) })
   return { ok: true }
 }

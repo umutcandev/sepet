@@ -7,7 +7,10 @@ import {
 } from "@/components/ui/input-otp"
 
 // Ortak 6 haneli OTP alanı (login modalı + ayarlar diyalogları). Tamamlanınca
-// onComplete tetiklenir; slotlar aralıklı ve yuvarlatılmış.
+// onComplete tetiklenir. Slotlar sabit genişlikte DEĞİL: kapsayıcının tamamına
+// yayılır (flex-1) ki alan, altındaki tam genişlik butonlarla aynı grid'e
+// otursun; mobil, tablet ve masaüstünde kapsayıcı ne kadar genişse o kadar yer
+// kaplar.
 export function OtpField({
   value,
   onChange,
@@ -26,14 +29,14 @@ export function OtpField({
       onChange={onChange}
       onComplete={onComplete}
       disabled={disabled}
-      containerClassName="justify-center"
+      containerClassName="w-full"
     >
-      <InputOTPGroup className="gap-2">
+      <InputOTPGroup className="w-full gap-2">
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <InputOTPSlot
             key={i}
             index={i}
-            className="h-11 w-9 rounded-lg border-l text-base first:rounded-l-lg last:rounded-r-lg"
+            className="h-12 min-w-0 flex-1 rounded-lg border-l text-base first:rounded-l-lg last:rounded-r-lg"
           />
         ))}
       </InputOTPGroup>

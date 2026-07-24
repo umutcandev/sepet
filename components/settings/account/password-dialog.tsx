@@ -4,10 +4,9 @@ import * as React from "react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
-import { OtpField } from "@/components/auth/otp-field"
+import { PasswordInput } from "@/components/auth/password-input"
 import {
   Dialog,
   DialogContent,
@@ -18,8 +17,7 @@ import {
 } from "@/components/ui/dialog"
 import {
   changePasswordAction,
-  requestSetPasswordCodeAction,
-  setPasswordAction,
+  requestSetPasswordLinkAction,
 } from "@/lib/actions/password"
 
 type Props = {
@@ -49,12 +47,9 @@ export function PasswordDialog({ hasPassword, onChanged }: Props) {
             }}
           />
         ) : (
-          <SetPasswordForm
+          <SetPasswordLink
             key={open ? "open" : "closed"}
-            onDone={() => {
-              setOpen(false)
-              onChanged()
-            }}
+            onClose={() => setOpen(false)}
           />
         )}
       </DialogContent>
@@ -101,9 +96,8 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
       <div className="flex flex-col gap-3 py-2">
         <Field>
           <FieldLabel htmlFor="cur-password">Mevcut şifre</FieldLabel>
-          <Input
+          <PasswordInput
             id="cur-password"
-            type="password"
             autoComplete="current-password"
             required
             value={current}
@@ -112,9 +106,8 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
         </Field>
         <Field>
           <FieldLabel htmlFor="new-password">Yeni şifre</FieldLabel>
-          <Input
+          <PasswordInput
             id="new-password"
-            type="password"
             autoComplete="new-password"
             required
             value={next}
@@ -123,9 +116,8 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
         </Field>
         <Field>
           <FieldLabel htmlFor="new-password2">Yeni şifre (tekrar)</FieldLabel>
-          <Input
+          <PasswordInput
             id="new-password2"
-            type="password"
             autoComplete="new-password"
             required
             value={confirm}
@@ -147,66 +139,52 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
   )
 }
 
-function SetPasswordForm({ onDone }: { onDone: () => void }) {
-  const [step, setStep] = React.useState<"request" | "verify">("request")
-  const [code, setCode] = React.useState("")
-  const [next, setNext] = React.useState("")
-  const [confirm, setConfirm] = React.useState("")
+// Google-only hesap: şifre diyalogda DEĞİL, e-postaya giden bağlantıyla
+// /sifre-sifirla sayfasında belirlenir ("şifremi unuttum" ile aynı akış;
+// diyalogda kod ya da şifre alanı yok).
+function SetPasswordLink({ onClose }: { onClose: () => void }) {
+  const [sent, setSent] = React.useState(false)
   const [busy, setBusy] = React.useState(false)
   const [error, setError] = React.useState("")
 
-  async function requestCode() {
+  async function sendLink() {
     setError("")
     setBusy(true)
-    const res = await requestSetPasswordCodeAction()
+    const res = await requestSetPasswordLinkAction()
     setBusy(false)
     if (res.ok) {
-      toast.message("E-postana bir kod gönderdik.")
-      setStep("verify")
+      setSent(true)
     } else {
       setError(res.error)
     }
   }
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault()
-    setError("")
-    if (code.length !== 6) {
-      setError("6 haneli kodu gir.")
-      return
-    }
-    if (next !== confirm) {
-      setError("Şifreler eşleşmiyor.")
-      return
-    }
-    setBusy(true)
-    const res = await setPasswordAction({ code, newPassword: next })
-    setBusy(false)
-    if (res.ok) {
-      toast.success("Şifren belirlendi. Artık e-postanla da giriş yapabilirsin.")
-      onDone()
-    } else {
-      setError(res.error)
-    }
-  }
-
-  if (step === "request") {
+  if (sent) {
     return (
       <>
         <DialogHeader>
-          <DialogTitle>Şifre belirle</DialogTitle>
+          <DialogTitle>E-postanı kontrol et</DialogTitle>
           <DialogDescription>
-            Google hesabına ek olarak bir şifre belirle. Önce e-postana bir
-            doğrulama kodu gönderelim.
+            Şifre belirleme bağlantısını e-postana gönderdik. Şifreni oradaki
+            bağlantıdan belirleyebilirsin; bağlantı 15 dakika geçerli.
           </DialogDescription>
         </DialogHeader>
         {error ? (
           <p className="py-1 text-xs text-destructive">{error}</p>
         ) : null}
-        <DialogFooter>
-          <Button onClick={requestCode} disabled={busy} className="gap-2">
+        <DialogFooter className="sm:justify-between">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={sendLink}
+            disabled={busy}
+            className="gap-2"
+          >
             {busy ? <Spinner /> : null}
-            Kod gönder
+            Bağlantıyı tekrar gönder
+          </Button>
+          <Button type="button" onClick={onClose}>
+            Tamam
           </Button>
         </DialogFooter>
       </>
@@ -214,58 +192,21 @@ function SetPasswordForm({ onDone }: { onDone: () => void }) {
   }
 
   return (
-    <form onSubmit={submit}>
+    <>
       <DialogHeader>
         <DialogTitle>Şifre belirle</DialogTitle>
         <DialogDescription>
-          E-postana gelen 6 haneli kodu ve yeni şifreni gir.
+          Google hesabına ek olarak bir şifre belirle. Sana e-postanla bir
+          bağlantı gönderelim; şifreni o sayfadan belirlersin.
         </DialogDescription>
       </DialogHeader>
-      <div className="flex flex-col gap-4 py-2">
-        <div className="flex justify-center">
-          <OtpField value={code} onChange={setCode} />
-        </div>
-        <Field>
-          <FieldLabel htmlFor="set-password">Yeni şifre</FieldLabel>
-          <Input
-            id="set-password"
-            type="password"
-            autoComplete="new-password"
-            required
-            value={next}
-            onChange={(e) => setNext(e.target.value)}
-          />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="set-password2">Yeni şifre (tekrar)</FieldLabel>
-          <Input
-            id="set-password2"
-            type="password"
-            autoComplete="new-password"
-            required
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-          />
-        </Field>
-        <p className="text-xs text-muted-foreground">
-          En az 8 karakter, bir harf ve bir rakam.
-        </p>
-        {error ? <p className="text-xs text-destructive">{error}</p> : null}
-      </div>
-      <DialogFooter className="sm:justify-between">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={requestCode}
-          disabled={busy}
-        >
-          Kodu tekrar gönder
-        </Button>
-        <Button type="submit" disabled={busy} className="gap-2">
+      {error ? <p className="py-1 text-xs text-destructive">{error}</p> : null}
+      <DialogFooter>
+        <Button onClick={sendLink} disabled={busy} className="gap-2">
           {busy ? <Spinner /> : null}
-          Şifreyi belirle
+          Bağlantı gönder
         </Button>
       </DialogFooter>
-    </form>
+    </>
   )
 }

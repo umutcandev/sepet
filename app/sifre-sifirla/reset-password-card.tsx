@@ -5,9 +5,9 @@ import { AnimatePresence, motion } from "motion/react"
 import { CheckIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
+import { PasswordInput } from "@/components/auth/password-input"
 import { loginDialog } from "@/lib/stores/login-dialog"
 import { resetPasswordAction } from "@/lib/actions/password"
 
@@ -18,7 +18,12 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
   const [confirm, setConfirm] = React.useState("")
   const [busy, setBusy] = React.useState(false)
   const [error, setError] = React.useState("")
-  const [done, setDone] = React.useState(false)
+  // null = form aşamasında; dolu = başarı ekranı. sessionsRevoked yalnız var
+  // olan şifre değiştiğinde true olur (ilk belirlemede cihazlardan çıkış yok),
+  // başarı alt metni buna göre seçilir.
+  const [done, setDone] = React.useState<{ sessionsRevoked: boolean } | null>(
+    null,
+  )
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -31,7 +36,7 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
     setBusy(true)
     const res = await resetPasswordAction({ token, newPassword: password })
     setBusy(false)
-    if (res.ok) setDone(true)
+    if (res.ok) setDone({ sessionsRevoked: res.sessionsRevoked })
     else setError(res.error)
   }
 
@@ -39,7 +44,7 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
     return (
       <Content
         title="Bağlantı geçersiz"
-        subtitle="Sıfırlama bağlantısı eksik ya da hatalı görünüyor. Giriş ekranından yeni bir kod isteyebilirsin."
+        subtitle="Sıfırlama bağlantısı eksik ya da hatalı görünüyor. Giriş ekranından yeni bir bağlantı isteyebilirsin."
       >
         <Button
           variant="outline"
@@ -69,8 +74,12 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
                 <CheckIcon className="h-5 w-5" />
               </span>
             }
-            title="Şifren güncellendi"
-            subtitle="Diğer tüm cihazlar çıkış yaptı. Yeni şifrenle giriş yapabilirsin."
+            title={done.sessionsRevoked ? "Şifren güncellendi" : "Şifren belirlendi"}
+            subtitle={
+              done.sessionsRevoked
+                ? "Diğer tüm cihazlar çıkış yaptı. Yeni şifrenle giriş yapabilirsin."
+                : "Artık e-postan ve şifrenle de giriş yapabilirsin."
+            }
           >
             <Button
               className="h-[44px] w-full rounded-xl"
@@ -97,9 +106,8 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
             <div className="flex w-full flex-col gap-3 text-left">
               <Field>
                 <FieldLabel htmlFor="new-password">Yeni şifre</FieldLabel>
-                <Input
+                <PasswordInput
                   id="new-password"
-                  type="password"
                   autoComplete="new-password"
                   required
                   className="h-[42px] rounded-xl px-3"
@@ -109,9 +117,8 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
               </Field>
               <Field>
                 <FieldLabel htmlFor="new-password2">Yeni şifre (tekrar)</FieldLabel>
-                <Input
+                <PasswordInput
                   id="new-password2"
-                  type="password"
                   autoComplete="new-password"
                   required
                   className="h-[42px] rounded-xl px-3"

@@ -8,6 +8,7 @@ import { ArrowLeftIcon, ArrowUpRightIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/auth/password-input"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
 import { OtpField } from "@/components/auth/otp-field"
@@ -339,7 +340,7 @@ export function LoginForm({ callbackUrl }: Props) {
 
       {/* Mobil (tam ekran): sola hizalı, büyük başlık, küçük logo — auth sayfası
           hissi. Masaüstü (dialog kartı): mevcut ortalanmış düzen aynen. */}
-      <div className="flex w-full max-w-[402px] flex-col items-start px-6 pt-10 pb-6 text-left md:items-center md:pt-12 md:text-center">
+      <div className="flex w-full max-w-[402px] flex-col items-start px-6 pt-16 pb-6 text-left md:items-center md:pt-12 md:text-center">
         <Image
           src="/brand/sepet-square-dark.webp"
           alt="Sepet"
@@ -465,10 +466,9 @@ export function LoginForm({ callbackUrl }: Props) {
                   </Field>
                   <Field>
                     <FieldLabel htmlFor="login-password">Şifre</FieldLabel>
-                    <Input
+                    <PasswordInput
                       id="login-password"
                       name="password"
-                      type="password"
                       autoComplete="current-password"
                       required
                       autoFocus={!!email}
@@ -533,10 +533,9 @@ export function LoginForm({ callbackUrl }: Props) {
                   </Field>
                   <Field>
                     <FieldLabel htmlFor="reg-password">Şifre</FieldLabel>
-                    <Input
+                    <PasswordInput
                       id="reg-password"
                       name="new-password"
-                      type="password"
                       autoComplete="new-password"
                       required
                       autoFocus={!!email}
@@ -547,10 +546,9 @@ export function LoginForm({ callbackUrl }: Props) {
                   </Field>
                   <Field>
                     <FieldLabel htmlFor="reg-password2">Şifre (tekrar)</FieldLabel>
-                    <Input
+                    <PasswordInput
                       id="reg-password2"
                       name="confirm-password"
-                      type="password"
                       autoComplete="new-password"
                       required
                       className="h-[42px] rounded-xl px-3"

@@ -120,23 +120,43 @@ export function passwordResetEmail(args: { url: string }): Email {
   }
 }
 
-// ─── Google-only hesaba şifre belirleme kodu (link yok, yalnız uygulama içi) ───
-export function setPasswordCodeEmail(args: { code: string }): Email {
-  const heading = "Şifre belirleme kodun"
+// ─── Google-only hesaba şifre belirleme bağlantısı (kod yok, yalnız link) ───
+export function setPasswordLinkEmail(args: { url: string }): Email {
+  const heading = "Hesabına şifre belirle"
   const body =
-    p("Google hesabına bir şifre belirlemek için doğrulama kodun:") +
-    codeBlock(args.code) +
-    p("Bu kodu Sepet'te açık olan pencereye gir. Kod 15 dakika geçerli.")
+    p("Google hesabına ek bir şifre belirlemek için aşağıdaki bağlantıya tıkla.") +
+    button(args.url, "Şifre belirle") +
+    p("Bu bağlantı 15 dakika geçerli. Bu isteği sen yapmadıysan e-postayı yok sayabilirsin; hesabında bir değişiklik yapılmaz.")
   const text = textBlock([
-    "Şifre belirleme kodun",
+    "Hesabına şifre belirle",
     "",
-    `Kodun: ${args.code}`,
+    `Şifreni belirlemek için bu bağlantıyı aç: ${args.url}`,
     "",
-    "Bu kodu Sepet'te açık olan pencereye gir. Kod 15 dakika geçerli.",
+    "Bu bağlantı 15 dakika geçerli. Bu isteği sen yapmadıysan e-postayı yok sayabilirsin; hesabında bir değişiklik yapılmaz.",
   ])
   return {
-    subject: "Sepet şifre belirleme kodu",
-    html: layout({ heading, body, preview: `Şifre belirleme kodun: ${args.code}` }),
+    subject: "Sepet şifre belirleme",
+    html: layout({ heading, body, preview: "Şifreni belirlemek için bağlantına tıkla." }),
+    text,
+  }
+}
+
+// ─── Bildirim: hesaba ilk kez şifre belirlendi ───
+// passwordChangedEmail'den farkı: cihazlardan çıkış yapılmadı, metin bunu ima etmez.
+export function passwordSetEmail(): Email {
+  const heading = "Hesabına şifre belirlendi"
+  const body =
+    p("Sepet hesabına az önce bir şifre belirlendi. Artık Google'ın yanında e-posta ve şifrenle de giriş yapabilirsin.") +
+    p("Bunu sen yapmadıysan hemen giriş ekranındaki şifre sıfırlama adımıyla yeni bir şifre belirle.")
+  const text = textBlock([
+    "Hesabına şifre belirlendi",
+    "",
+    "Sepet hesabına az önce bir şifre belirlendi. Artık Google'ın yanında e-posta ve şifrenle de giriş yapabilirsin.",
+    "Bunu sen yapmadıysan hemen giriş ekranındaki şifre sıfırlama adımıyla yeni bir şifre belirle.",
+  ])
+  return {
+    subject: "Sepet hesabına şifre belirlendi",
+    html: layout({ heading, body, preview: "Hesabına bir şifre belirlendi." }),
     text,
   }
 }

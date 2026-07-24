@@ -7,6 +7,7 @@ import { QRCodeSVG } from "qrcode.react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Field, FieldLabel } from "@/components/ui/field"
+import { PasswordInput } from "@/components/auth/password-input"
 import { Spinner } from "@/components/ui/spinner"
 import { OtpField } from "@/components/auth/otp-field"
 import {
@@ -155,9 +156,8 @@ function SetupTwoFactor({
           <div className="flex flex-col gap-3 py-2">
             <Field>
               <FieldLabel htmlFor="setup-password">Şifren</FieldLabel>
-              <Input
+              <PasswordInput
                 id="setup-password"
-                type="password"
                 autoComplete="current-password"
                 required
                 value={reauthValue}
@@ -402,17 +402,24 @@ function ManageTwoFactor({
       <div className="flex flex-col gap-3 py-2">
         <Field>
           <FieldLabel htmlFor="reauth">{inputLabel}</FieldLabel>
-          <Input
-            id="reauth"
-            type={!useRecovery && hasPassword ? "password" : "text"}
-            inputMode={useRecovery || hasPassword ? undefined : "numeric"}
-            autoComplete={
-              !useRecovery && hasPassword ? "current-password" : "one-time-code"
-            }
-            placeholder={useRecovery ? "XXXXX-XXXXX" : undefined}
-            value={secret}
-            onChange={(e) => setSecret(e.target.value)}
-          />
+          {!useRecovery && hasPassword ? (
+            <PasswordInput
+              id="reauth"
+              autoComplete="current-password"
+              value={secret}
+              onChange={(e) => setSecret(e.target.value)}
+            />
+          ) : (
+            <Input
+              id="reauth"
+              type="text"
+              inputMode={useRecovery ? undefined : "numeric"}
+              autoComplete="one-time-code"
+              placeholder={useRecovery ? "XXXXX-XXXXX" : undefined}
+              value={secret}
+              onChange={(e) => setSecret(e.target.value)}
+            />
+          )}
         </Field>
         <button
           type="button"

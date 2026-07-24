@@ -171,7 +171,7 @@ export async function beginTotpSetupAction(input: {
 }
 
 // totp_setup doğrulama kodunu atomik attempts++ (cap MAX_ATTEMPTS) + süre +
-// safeEqual ile tüket (setPasswordAction ile aynı desen).
+// safeEqual ile tüket (kayıt kodu doğrulamasıyla aynı desen).
 async function consumeTotpSetupCode(
   uid: string,
   rawEmail: string | null,

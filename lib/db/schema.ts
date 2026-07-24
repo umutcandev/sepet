@@ -149,13 +149,14 @@ export const verificationTokens = pgTable(
   (vt) => [primaryKey({ columns: [vt.identifier, vt.token] })],
 )
 
-// ─── E-posta doğrulama (kayıt + Google hesabına şifre belirleme) ───
+// ─── E-posta doğrulama (kayıt + 2FA kurulum yeniden doğrulaması) ───
 // Kullanıcı satırı e-posta DOĞRULANMADAN OLUŞTURULMAZ. Kayıtta hesaplanan
 // argon2id hash'i, doğrulama tamamlanana dek burada `payload`ta bekler; böylece
 // kurbanın posta kutusuna erişmeden bir `users` satırı yaratılamaz (klasik
 // ön-kayıt/hesap-devralma saldırısı imkânsız → allowDangerousEmailAccountLinking
-// güvenli). purpose "set_password" (Google-only hesaba şifre) ve "totp_setup"
-// (şifresiz hesapta 2FA kurulumu için yeniden doğrulama) için userId dolu.
+// güvenli). purpose "totp_setup" (şifresiz hesapta 2FA kurulumu için yeniden
+// doğrulama) için userId dolu. Google hesabına şifre belirleme burada DEĞİL,
+// password_reset üzerinden link ile yürür (bkz. requestSetPasswordLinkAction).
 // Kod ve token yalnız HMAC (codeHash/tokenHash) olarak saklanır. Tek satır per
 // (email, purpose): yeni istek öncekini ezer. TTL 15 dk, max 5 deneme.
 export const emailVerification = pgTable(
@@ -165,9 +166,7 @@ export const emailVerification = pgTable(
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID()),
     email: text("email").notNull(),
-    purpose: text("purpose")
-      .$type<"signup" | "set_password" | "totp_setup">()
-      .notNull(),
+    purpose: text("purpose").$type<"signup" | "totp_setup">().notNull(),
     userId: text("userId").references(() => users.id, { onDelete: "cascade" }),
     codeHash: text("codeHash").notNull(),
     tokenHash: text("tokenHash").notNull(),
