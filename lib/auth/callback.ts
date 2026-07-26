@@ -1,5 +1,5 @@
 // Açık yönlendirme (open redirect) koruması: yalnız aynı-origin, "/" ile başlayan
-// göreli yollar kabul edilir. Hem server action (Google girişi) hem client
+// göreli yollar kabul edilir. Hem server action (sosyal giriş) hem client
 // navigasyonu (credentials girişi sonrası window.location.assign) aynı mantığı
 // paylaşsın diye tek yerde. "use server"/"server-only" YOK: saf util, iki tarafta da
 // import edilebilir.

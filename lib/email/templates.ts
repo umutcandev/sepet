@@ -120,11 +120,12 @@ export function passwordResetEmail(args: { url: string }): Email {
   }
 }
 
-// ─── Google-only hesaba şifre belirleme bağlantısı (kod yok, yalnız link) ───
+// ─── Şifresiz (sosyal giriş) hesaba şifre belirleme bağlantısı (kod yok, yalnız link) ───
+// Metin sağlayıcı adı vermez: Google ve Facebook için aynı e-posta gider.
 export function setPasswordLinkEmail(args: { url: string }): Email {
   const heading = "Hesabına şifre belirle"
   const body =
-    p("Google hesabına ek bir şifre belirlemek için aşağıdaki bağlantıya tıkla.") +
+    p("Hesabına ek bir şifre belirlemek için aşağıdaki bağlantıya tıkla.") +
     button(args.url, "Şifre belirle") +
     p("Bu bağlantı 15 dakika geçerli. Bu isteği sen yapmadıysan e-postayı yok sayabilirsin; hesabında bir değişiklik yapılmaz.")
   const text = textBlock([
@@ -146,12 +147,12 @@ export function setPasswordLinkEmail(args: { url: string }): Email {
 export function passwordSetEmail(): Email {
   const heading = "Hesabına şifre belirlendi"
   const body =
-    p("Sepet hesabına az önce bir şifre belirlendi. Artık Google'ın yanında e-posta ve şifrenle de giriş yapabilirsin.") +
+    p("Sepet hesabına az önce bir şifre belirlendi. Artık mevcut giriş yönteminin yanında e-posta ve şifrenle de giriş yapabilirsin.") +
     p("Bunu sen yapmadıysan hemen giriş ekranındaki şifre sıfırlama adımıyla yeni bir şifre belirle.")
   const text = textBlock([
     "Hesabına şifre belirlendi",
     "",
-    "Sepet hesabına az önce bir şifre belirlendi. Artık Google'ın yanında e-posta ve şifrenle de giriş yapabilirsin.",
+    "Sepet hesabına az önce bir şifre belirlendi. Artık mevcut giriş yönteminin yanında e-posta ve şifrenle de giriş yapabilirsin.",
     "Bunu sen yapmadıysan hemen giriş ekranındaki şifre sıfırlama adımıyla yeni bir şifre belirle.",
   ])
   return {
@@ -161,7 +162,7 @@ export function passwordSetEmail(): Email {
   }
 }
 
-// ─── Google-only hesapta 2FA kurulumu için yeniden doğrulama kodu ───
+// ─── Şifresiz (sosyal giriş) hesapta 2FA kurulumu için yeniden doğrulama kodu ───
 export function totpSetupCodeEmail(args: { code: string }): Email {
   const heading = "İki adımlı doğrulama kurulum kodun"
   const body =
@@ -264,23 +265,34 @@ export function accountExistsEmail(args: { loginUrl: string }): Email {
   }
 }
 
-// ─── Bilgi: Google-only hesap için şifre sıfırlama istendi (şifresi yok). ───
-export function googleSignInEmail(args: { loginUrl: string }): Email {
-  const heading = "Google ile giriş yapıyorsun"
+// ─── Bilgi: sosyal giriş kullanan (şifresiz) hesap için şifre sıfırlama istendi. ───
+// providerLabel null olabilir: sağlayıcı satırı okunamazsa metin sağlayıcı adı
+// vermeden kurulur ("sosyal hesabınla"), yanlış sağlayıcı adı yazmaktan iyidir.
+export function socialSignInEmail(args: {
+  loginUrl: string
+  providerLabel: string | null
+}): Email {
+  const label = args.providerLabel
+  const heading = label
+    ? `${label} ile giriş yapıyorsun`
+    : "Sosyal hesabınla giriş yapıyorsun"
+  const lead = label
+    ? `Bu hesaba ${label} ile giriş yapıyorsun, ayrı bir şifren yok. Giriş ekranından ${label} ile devam edebilirsin.`
+    : "Bu hesaba sosyal hesabınla giriş yapıyorsun, ayrı bir şifren yok. Giriş ekranından aynı yöntemle devam edebilirsin."
   const body =
-    p("Bu hesaba Google ile giriş yapıyorsun, ayrı bir şifren yok. Giriş ekranından Google ile devam edebilirsin.") +
+    p(lead) +
     p("İstersen ayarlardan hesabına bir şifre de belirleyebilirsin.") +
     button(args.loginUrl, "Giriş yap")
   const text = textBlock([
-    "Google ile giriş yapıyorsun",
+    heading,
     "",
-    "Bu hesaba Google ile giriş yapıyorsun, ayrı bir şifren yok. Giriş ekranından Google ile devam edebilirsin.",
+    lead,
     `Giriş yap: ${args.loginUrl}`,
     "İstersen ayarlardan hesabına bir şifre de belirleyebilirsin.",
   ])
   return {
     subject: "Sepet giriş yardımı",
-    html: layout({ heading, body, preview: "Bu hesaba Google ile giriş yapıyorsun." }),
+    html: layout({ heading, body, preview: lead }),
     text,
   }
 }

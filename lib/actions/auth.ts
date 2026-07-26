@@ -32,3 +32,11 @@ export async function signInWithGoogleAction(callbackUrl?: string) {
   const safe = sanitizeCallback(callbackUrl)
   await signIn("google", { redirectTo: safe })
 }
+
+// Sağlayıcı id'si parametre DEĞİL: server action'lar dışarıdan çağrılabilir
+// uçlardır, her sağlayıcı için ayrı action tutmak allowlist derdini tamamen
+// ortadan kaldırır.
+export async function signInWithFacebookAction(callbackUrl?: string) {
+  const safe = sanitizeCallback(callbackUrl)
+  await signIn("facebook", { redirectTo: safe })
+}

@@ -14,7 +14,7 @@ const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
 const MAX_BYTES = 8 * 1024 * 1024 // 8 MB
 
 // PPCHANGER: avatara tıklamak = yükle (hover'da kamera overlay'i). Özel görsel
-// varken avatarın sağında "Kaldır" butonu Google fotoğrafına döndürür.
+// varken avatarın sağında "Kaldır" butonu sağlayıcı fotoğrafına döndürür.
 export function AvatarChanger() {
   const router = useRouter()
   const { user, refresh } = useCurrentUser()
@@ -84,7 +84,7 @@ export function AvatarChanger() {
     try {
       const res = await resetAvatar()
       if (!res.ok) throw new Error("İşlem başarısız.")
-      setOpt({ src: user?.googleAvatar ?? "", isCustom: false })
+      setOpt({ src: user?.providerAvatar ?? "", isCustom: false })
       void refresh()
       router.refresh()
     } catch (err) {
@@ -121,7 +121,7 @@ export function AvatarChanger() {
           </button>
         </div>
 
-        {/* Özel görsel varken Google fotoğrafına döndüren buton */}
+        {/* Özel görsel varken sağlayıcı fotoğrafına döndüren buton */}
         {isCustom && !busy ? (
           <Button
             variant="outline"

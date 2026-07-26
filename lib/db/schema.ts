@@ -21,8 +21,8 @@ export const users = pgTable("user", {
   name: text("name"),
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
-  // Google sağlayıcı fotoğrafı. customImage doluysa görüntülenen avatar onu
-  // ezer; "Google'a dön" customImage'i null'lar.
+  // Sosyal sağlayıcı (Google/Facebook) fotoğrafı. customImage doluysa
+  // görüntülenen avatar onu ezer; "Kaldır" customImage'i null'lar.
   image: text("image"),
   customImage: text("customImage"),
   onboardingCompletedAt: timestamp("onboardingCompletedAt", { mode: "date" }),
@@ -70,7 +70,7 @@ export const users = pgTable("user", {
   // kalıcı siler (cascade ile tüm bağlı veriler). Re-login archivedAt'i null'lar.
   archivedAt: timestamp("archivedAt", { mode: "date" }),
   // ─── E-posta/şifre kimlik doğrulama ───
-  // Google-only hesaplarda passwordHash null'dır — "şifresi var" testi
+  // Yalnız sosyal girişle açılan hesaplarda passwordHash null'dır — "şifresi var" testi
   // passwordHash IS NOT NULL'dır (credentials için `accounts` satırı gerekmez).
   // passwordHash argon2id; passwordUpdatedAt sıfırlama/değiştirmede güncellenir.
   // TOTP 2FA: totpEnabled açıkken totpSecretEnc (AES-256-GCM) dolu; totpLastUsedStep
@@ -150,12 +150,21 @@ export const verificationTokens = pgTable(
 )
 
 // ─── E-posta doğrulama (kayıt + 2FA kurulum yeniden doğrulaması) ───
-// Kullanıcı satırı e-posta DOĞRULANMADAN OLUŞTURULMAZ. Kayıtta hesaplanan
-// argon2id hash'i, doğrulama tamamlanana dek burada `payload`ta bekler; böylece
-// kurbanın posta kutusuna erişmeden bir `users` satırı yaratılamaz (klasik
-// ön-kayıt/hesap-devralma saldırısı imkânsız → allowDangerousEmailAccountLinking
-// güvenli). purpose "totp_setup" (şifresiz hesapta 2FA kurulumu için yeniden
-// doğrulama) için userId dolu. Google hesabına şifre belirleme burada DEĞİL,
+// Credentials kaydında kullanıcı satırı e-posta DOĞRULANMADAN OLUŞTURULMAZ.
+// Kayıtta hesaplanan argon2id hash'i, doğrulama tamamlanana dek burada
+// `payload`ta bekler; böylece kurbanın posta kutusuna erişmeden credentials
+// yoluyla bir `users` satırı yaratılamaz. Google için de aynısı geçerli
+// (email_verified zorunlu) → allowDangerousEmailAccountLinking güvenli.
+//
+// TEK İSTİSNA Facebook: Graph /me e-posta doğrulama bilgisi vermiyor, dolayısıyla
+// bir Facebook satırının e-postası kanıtlanmış SAYILMAZ. Bu yüzden (a) Facebook'ta
+// otomatik hesap bağlama kapalı, (b) Facebook'la açılmış şifresiz bir satır
+// credentials kaydını ememez — bkz. lib/auth/providers.ts → UNPROVEN_EMAIL_PROVIDERS
+// ve lib/actions/credentials-auth.ts → completeSignup. İkisi birlikte ön-kayıt /
+// hesap devralma senaryosunu kapatır.
+//
+// purpose "totp_setup" (şifresiz hesapta 2FA kurulumu için yeniden
+// doğrulama) için userId dolu. Sosyal giriş hesabına şifre belirleme burada DEĞİL,
 // password_reset üzerinden link ile yürür (bkz. requestSetPasswordLinkAction).
 // Kod ve token yalnız HMAC (codeHash/tokenHash) olarak saklanır. Tek satır per
 // (email, purpose): yeni istek öncekini ezer. TTL 15 dk, max 5 deneme.

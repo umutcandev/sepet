@@ -21,8 +21,10 @@ import {
   passwordChangedEmail,
   passwordSetEmail,
   setPasswordLinkEmail,
-  googleSignInEmail,
+  socialSignInEmail,
 } from "@/lib/email/templates"
+import { getLinkedProvider } from "@/lib/auth/linked-provider"
+import { providerLabel, type OAuthProviderId } from "@/lib/auth/providers"
 import { getClientIp, checkLimit } from "@/lib/security/action-rate-limit"
 import {
   emailSendLimiter,
@@ -35,7 +37,7 @@ const RESET_TTL_MS = 15 * 60 * 1000
 
 export type ActionResult = { ok: true } | { ok: false; error: string }
 // Sıfırlama/belirleme sonucu: sessionsRevoked yalnız var olan bir şifre
-// DEĞİŞTİĞİNDE true olur (ilk kez şifre belirleyen Google kullanıcısının
+// DEĞİŞTİĞİNDE true olur (ilk kez şifre belirleyen sosyal giriş kullanıcısının
 // oturumları düşürülmez); başarı ekranı metnini bu belirler.
 export type ResetResult =
   | { ok: true; sessionsRevoked: boolean }
@@ -91,8 +93,13 @@ export async function forgotPasswordAction(input: {
     const url = absoluteUrl(`/sifre-sifirla?token=${encodeURIComponent(token)}`)
     void sendMail({ to: email, ...passwordResetEmail({ url }) })
   } else if (user) {
-    // Google-only (şifresi yok): sıfırlama değil, yönlendirme bilgisi.
-    void sendMail({ to: email, ...googleSignInEmail({ loginUrl }) })
+    // Sosyal giriş (şifresi yok): sıfırlama değil, yönlendirme bilgisi. Hangi
+    // sağlayıcıyla girdiğini yazabilmek için accounts'tan okunur.
+    const label = providerLabel(await getLinkedProvider(user.id))
+    void sendMail({
+      to: email,
+      ...socialSignInEmail({ loginUrl, providerLabel: label }),
+    })
   }
   // Kullanıcı yoksa hiçbir şey; her durumda:
   return { ok: true }
@@ -142,7 +149,7 @@ export async function resetPasswordAction(input: {
 
 // Şifreyi güncelle, reset satırlarını sil, bildirim gönder. Var olan bir şifre
 // DEĞİŞİYORSA (olası ele geçirme senaryosu) tüm cihaz oturumları da düşürülür
-// (60 sn içinde); Google-only hesaba İLK şifre belirlemede eski şifre olmadığı
+// (60 sn içinde); şifresiz hesaba İLK şifre belirlemede eski şifre olmadığı
 // için oturumlar korunur ve daha yumuşak bir bildirim gider.
 async function applyReset(
   userId: string,
@@ -188,16 +195,28 @@ async function applyReset(
 export async function getSecurityStateAction(): Promise<{
   hasPassword: boolean
   twoFactorEnabled: boolean
+  provider: OAuthProviderId | null
 } | null> {
   const session = await auth()
   if (!session?.user?.id) return null
-  const [u] = await db
-    .select({ passwordHash: users.passwordHash, totpEnabled: users.totpEnabled })
-    .from(users)
-    .where(eq(users.id, session.user.id))
-    .limit(1)
+  const [rows, provider] = await Promise.all([
+    db
+      .select({
+        passwordHash: users.passwordHash,
+        totpEnabled: users.totpEnabled,
+      })
+      .from(users)
+      .where(eq(users.id, session.user.id))
+      .limit(1),
+    getLinkedProvider(session.user.id),
+  ])
+  const u = rows[0]
   if (!u) return null
-  return { hasPassword: u.passwordHash != null, twoFactorEnabled: u.totpEnabled }
+  return {
+    hasPassword: u.passwordHash != null,
+    twoFactorEnabled: u.totpEnabled,
+    provider,
+  }
 }
 
 // Şifresi olan kullanıcı için: mevcut şifreyi doğrula, güncelle, bu cihaz HARİÇ
@@ -251,7 +270,7 @@ export async function changePasswordAction(input: {
   return { ok: true }
 }
 
-// Google-only hesap (passwordHash IS NULL) için şifre belirleme bağlantısı iste.
+// Şifresiz sosyal giriş hesabı (passwordHash IS NULL) için şifre belirleme bağlantısı iste.
 // "Şifremi unuttum" ile aynı altyapı: password_reset satırı + /sifre-sifirla
 // linki; kullanıcı şifreyi o sayfada belirler (diyalogda kod/form yok).
 export async function requestSetPasswordLinkAction(): Promise<ActionResult> {

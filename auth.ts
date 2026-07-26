@@ -1,6 +1,7 @@
 import NextAuth, { CredentialsSignin } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
+import Facebook from "next-auth/providers/facebook"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { eq, sql } from "drizzle-orm"
 import {
@@ -25,6 +26,13 @@ import {
 
 // Revoke kontrolü her istekte değil, en fazla bu aralıkla bir kez DB'ye gider.
 const SID_CHECK_INTERVAL_MS = 60_000
+
+// Facebook Graph API sürümü. @auth/core'un yerleşik Facebook provider'ı v19.0'a
+// sabitlenmiş durumda ve v19.0 21.05.2026'da EXPIRE OLDU — bu yüzden aşağıda
+// authorization/token/userinfo uçlarının üçü de override ediliyor. Meta her
+// sürümü çıkışından en az 2 yıl yaşatıyor; v25.0 (18.02.2026) → ~Şubat 2028.
+// O tarihten önce buradan güncelle, başka yerde sürüm tutulmuyor.
+const FACEBOOK_GRAPH_VERSION = "v25.0"
 
 // ─── Credentials hata sınıfları ───
 // NextAuth beta.31: authorize içinde CredentialsSignin türevi fırlatılır; action
@@ -113,6 +121,33 @@ async function authorizeTwoFactor(
   return { id: u.id, email: u.email, name: u.name, image: u.image }
 }
 
+// ─── Sağlayıcı profilindeki fotoğraf URL'i ───
+// users.image HER girişte bununla tazelenir (bkz. jwt callback). Adapter image'ı
+// yalnız createUser sırasında yazıyor; Facebook'un platform-lookaside URL'i ise
+// imzalı ve SÜRELİ (`ext` parametresi bir bitiş zaman damgası). Bir kez yazılıp
+// bırakılırsa kullanıcının avatarı birkaç hafta içinde 404'e düşer ve sessizce
+// baş harflere (AvatarFallback) iner. Google'ın lh3 URL'i kalıcı, ama tazelemek
+// orada da bayat fotoğrafı düzeltir. customImage'a dokunulmaz: özel avatar
+// yükleyen kullanıcının görseli bu alandan bağımsız.
+function providerImage(
+  provider: string | undefined,
+  profile: unknown,
+): string | null {
+  if (!provider || typeof profile !== "object" || profile === null) return null
+  const picture = (profile as { picture?: unknown }).picture
+
+  if (provider === "google") {
+    return typeof picture === "string" ? picture : null
+  }
+  if (provider === "facebook") {
+    // Graph: picture.data.url — alanların hiçbiri garanti değil.
+    if (typeof picture !== "object" || picture === null) return null
+    const url = (picture as { data?: { url?: unknown } }).data?.url
+    return typeof url === "string" ? url : null
+  }
+  return null
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: DrizzleAdapter(db, {
@@ -122,6 +157,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     verificationTokensTable: verificationTokens,
   }),
   session: { strategy: "jwt" },
+  // Auth hataları NextAuth'un varsayılan (İngilizce) sayfalarına değil ana
+  // sayfaya döner; LoginDialogHost ?error= kodunu Türkçe mesaja çevirip modalı
+  // yeniden açar. Bkz. components/auth/login-dialog-host.tsx.
+  //
+  // İKİSİ de gerekli: @auth/core hatayı sınıfının `kind`'ine göre yönlendiriyor
+  // (pageKind = error.kind, pagePath = pages[pageKind]). AccessDenied/Verification
+  // "error" kind'ında, ama SignInError türevleri — OAuthAccountNotLinked,
+  // OAuthCallbackError, MissingCSRF — "signIn" kind'ında. Yalnız `error`
+  // verilseydi en sık karşılaşılan hata olan OAuthAccountNotLinked (aynı
+  // e-postayla ikinci bir sağlayıcı denemesi) hâlâ İngilizce /api/auth/signin
+  // sayfasına düşerdi.
+  pages: { signIn: "/", error: "/" },
   // Sağlayıcılar auth.ts'te komple override edilir (auth.config.ts middleware
   // listesi [Google] aynen kalır; middleware provider çalıştırmaz). Google
   // allowDangerousEmailAccountLinking GÜVENLİDİR çünkü: (a) credentials kullanıcısı
@@ -130,6 +177,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // sahipliğini kanıtladığından aynı users satırına bağlanma güvenli.
   providers: [
     Google({ allowDangerousEmailAccountLinking: true }),
+    // Facebook'ta allowDangerousEmailAccountLinking BİLEREK YOK: Google için
+    // geçerli olan gerekçe (profil yalnız email_verified === true ile kabul
+    // edilir) burada işlemiyor, çünkü Graph /me yanıtında email_verified diye
+    // bir alan hiç bulunmuyor — e-posta sahipliği kanıtlanamaz. Aynı e-postaya
+    // sahip bir hesap varsa adapter OAuthAccountNotLinked fırlatır ve kullanıcı
+    // mevcut yöntemiyle girmeye yönlendirilir.
+    Facebook({
+      authorization: {
+        url: `https://www.facebook.com/${FACEBOOK_GRAPH_VERSION}/dialog/oauth`,
+        params: { scope: "email,public_profile" },
+      },
+      token: `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/oauth/access_token`,
+      // Yalnız url override ediliyor: @auth/core provider seçeneklerini DERİN
+      // birleştirdiğinden (lib/utils/merge.js) varsayılan `request` (Bearer
+      // token'la fetch) olduğu gibi korunur, kopyalamaya gerek yok.
+      userinfo: {
+        url: `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/me?fields=id,name,email,picture.type(large)`,
+      },
+      // Yerleşik profile() doğrudan `profile.picture.data.url` okuyor; picture
+      // dönmediğinde TypeError ile callback'i patlatır. Alanların hiçbiri
+      // garanti değil → hepsi opsiyonel zincirle okunur.
+      profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.name ?? null,
+          email: profile.email ?? null,
+          image: profile.picture?.data?.url ?? null,
+        }
+      },
+    }),
     Credentials({
       credentials: {
         email: {},
@@ -181,7 +258,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           .where(eq(users.email, email))
           .limit(1)
 
-        // Kullanıcı yok VEYA şifresi yok (Google-only): sabit-süreli dummy verify
+        // Kullanıcı yok VEYA şifresi yok (sosyal giriş): sabit-süreli dummy verify
         // sonra jenerik hata (enumeration yok, timing yok).
         if (!user || !user.passwordHash) {
           await verifyPassword(await dummyHash(), password)
@@ -208,27 +285,46 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig.callbacks,
     // Google hesapları yalnız e-posta doğrulanmışsa kabul edilir (güvenli otomatik
     // bağlamanın önkoşulu). Credentials ve diğer akışlar için engel yok.
-    async signIn({ account, profile }) {
+    async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
         return profile?.email_verified === true
       }
+      if (account?.provider === "facebook") {
+        // Facebook e-posta döndürmeyebilir: mobilde açılan hesaplarda e-posta
+        // hiç olmayabilir, ya da kullanıcı izin ekranından e-postayı kaldırır.
+        // Sistemin tamamı e-postaya dayalı (şifre sıfırlama, 2FA, oturum
+        // snapshot'ı) → e-postasız kullanıcı yaratmak yerine anlaşılır bir
+        // mesajla geri gönder. String dönüş = yönlendirme (@auth/core
+        // handleAuthorized: string ise redirect callback'ine geçirilir).
+        //
+        // Kontrol `profile` değil `user` üzerinden: @auth/core buraya KAYITLI
+        // kullanıcıda adapter'ın getUserByAccount ile bulduğu satırı, ilk
+        // girişte provider'ın profile() çıktısını geçirir. Böylece e-posta
+        // iznini sonradan geri çeken kayıtlı kullanıcı kendi hesabından
+        // kilitlenmez — adresi zaten bizde, yeniden almaya ihtiyaç yok.
+        if (!user?.email) return "/?error=FacebookNoEmail"
+        return true
+      }
       return true
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
       // ─── İlk giriş ───
       // Kullanıcı kimliğini göm, varsa arşivi iptal et (14 günlük silmeyi
-      // durdurur) ve bu cihaz için bir oturum kaydı oluşturup id'sini token'a
-      // `sid` olarak yaz.
+      // durdurur), sağlayıcı fotoğrafını tazele ve bu cihaz için bir oturum
+      // kaydı oluşturup id'sini token'a `sid` olarak yaz.
       if (user?.id) {
         token.id = user.id
         const uid = user.id
+        // Aynı UPDATE'e biner: ek round-trip yok. Fotoğraf okunamazsa alan
+        // set'e hiç girmez, mevcut değer korunur.
+        const image = providerImage(account?.provider, profile)
         try {
           await db
             .update(users)
-            .set({ archivedAt: null })
+            .set({ archivedAt: null, ...(image ? { image } : {}) })
             .where(eq(users.id, uid))
         } catch {
-          // Arşiv iptali başarısız olsa da girişi engelleme.
+          // Arşiv iptali / avatar tazeleme başarısız olsa da girişi engelleme.
         }
         try {
           const info = await readRequestDeviceInfo()

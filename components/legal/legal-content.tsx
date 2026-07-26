@@ -1,12 +1,7 @@
-// Gizlilik Politikası ve Kullanım Şartları metinlerinin tek kaynağı.
-// Hem giriş ekranındaki modal (login-form.tsx) hem de public sayfalar
-// (/gizlilik, /kullanim-sartlari) bu bileşenleri kullanır. Google OAuth
-// onayı için bu metinlerin gerçek, herkese açık URL'lerde yayınlanması şart.
-
 import * as React from "react"
 import Link from "next/link"
 
-export const LEGAL_LAST_UPDATED = "18 Mayıs 2026"
+export const LEGAL_LAST_UPDATED = "26 Temmuz 2026"
 // Ödeme sözleşmeleri (Mesafeli Satış + İptal & İade) Polar entegrasyonuyla
 // birlikte yayınlandı; Gizlilik/Kullanım metinlerinden ayrı bir tarih taşırlar.
 export const LEGAL_PAYMENTS_LAST_UPDATED = "25 Haziran 2026"
@@ -61,8 +56,9 @@ export function TermsContent() {
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">2. Hesap</h2>
         <p>
-          Sepet&apos;e Google hesabınla giriş yaparsın. Hesabının güvenliği
-          senin sorumluluğundadır. Hesabını başkasıyla paylaşmamalısın.
+          Sepet&apos;e Google hesabınla, Facebook hesabınla ya da e-posta ve
+          şifrenle giriş yaparsın. Hesabının güvenliği senin sorumluluğundadır.
+          Hesabını başkasıyla paylaşmamalısın.
         </p>
       </section>
       <section className="space-y-2">
@@ -125,10 +121,11 @@ export function PrivacyContent() {
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">1. Topladığımız Veriler</h2>
         <p>
-          Google ile giriş yaptığında adın, e-posta adresin ve profil fotoğrafın
-          bize aktarılır. Bunun dışında oluşturduğun alışveriş listeleri, sohbet
-          geçmişlerin ve yüklediğin fiş fotoğrafları hizmet sağlamak için
-          saklanır.
+          Google ya da Facebook ile giriş yaptığında adın, e-posta adresin ve
+          profil fotoğrafın bize aktarılır. E-posta ile kayıt olduğunda yalnızca
+          e-posta adresin alınır. Bunun dışında oluşturduğun alışveriş
+          listeleri, sohbet geçmişlerin ve yüklediğin fiş fotoğrafları hizmet
+          sağlamak için saklanır.
         </p>
       </section>
       <section className="space-y-2">
@@ -172,8 +169,40 @@ export function PrivacyContent() {
           saklanabilir.
         </p>
       </section>
+      <section id="veri-silme" className="scroll-mt-24 space-y-2">
+        <h2 className="font-medium text-foreground">7. Veri Silme Talebi</h2>
+        <p>
+          Verilerini silmek için hesabını uygulama içinden kendin
+          kapatabilirsin: Ayarlar &gt; Hesap &gt; Hesabı sil adımını izle ve
+          onayla.
+        </p>
+        <p>
+          Hesabın kapatıldığı anda tüm cihazlardaki oturumların sonlandırılır ve
+          hesabın erişime kapatılır. Fikrini değiştirirsen 14 gün içinde tekrar
+          giriş yaparak hesabını geri açabilirsin. Bu süre sonunda hesabın ve
+          ona bağlı alışveriş listeleri, sohbet geçmişleri ve fiş görselleri
+          otomatik olarak kalıcı biçimde silinir.
+        </p>
+        <p>
+          Facebook ile giriş yaptıysan Sepet&apos;in Facebook hesabına
+          erişimini Facebook &gt; Ayarlar ve Gizlilik &gt; Ayarlar &gt;
+          Uygulamalar ve Web Siteleri bölümünden de kaldırabilirsin. Bu işlem
+          bağlantıyı koparır; Sepet hesabındaki verilerin silinmesi için
+          yukarıdaki hesap silme adımını da uygulaman gerekir.
+        </p>
+        <p>
+          Hesabına erişemiyorsan ya da silme talebini bize iletmek istersen{" "}
+          <a
+            href={`mailto:${LEGAL_PRIVACY_EMAIL}`}
+            className="text-foreground underline underline-offset-2"
+          >
+            {LEGAL_PRIVACY_EMAIL}
+          </a>{" "}
+          adresine yazabilirsin; talebini 30 gün içinde sonuçlandırırız.
+        </p>
+      </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">7. İletişim</h2>
+        <h2 className="font-medium text-foreground">8. İletişim</h2>
         <p>
           Gizlilikle ilgili sorularını{" "}
           <a

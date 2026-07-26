@@ -185,7 +185,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 │ /api/transcribe       Gemini Flash Lite ile ses → metin          │
 │ /api/receipts/upload  Cloudflare R2'ye direkt upload             │
 │ /api/products/...     marketfiyati arama proxy + cache           │
-│ /api/auth/...         NextAuth.js v5 (Google OAuth)              │
+│ /api/auth/...         NextAuth.js v5 (Google + Facebook OAuth)   │
 └──────────────────────────────────────────────────────────────────┘
                                  │
         ┌────────────────────────┼────────────────────────┐
@@ -254,7 +254,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
 | Bileşen | Teknoloji |
 |---|---|
 | Kimlik Doğrulama | **NextAuth.js v5 (Auth.js)** + Drizzle Adapter |
-| Sağlayıcı | Google OAuth |
+| Sağlayıcı | Google OAuth · Facebook OAuth · E-posta + şifre |
 | Oturum | JWT strategy |
 | Güvenlik Başlıkları | `lib/security/headers.ts` |
 
@@ -297,6 +297,7 @@ Kullanıcı girdisi (metin / fiş / yemek görseli / ses)
   - Upstash (Redis)
   - Cloudflare R2 (opsiyonel, fiş özelliği için)
   - Google Cloud (OAuth client)
+  - Meta for Developers (Facebook Login app)
   - Vercel AI Gateway
   - marketfiyati.org.tr (API)
   - Polar (opsiyonel, abonelik / Pro özelliği için)
