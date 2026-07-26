@@ -1,10 +1,11 @@
 "use server"
 
-import { and, eq, sql } from "drizzle-orm"
+import { and, eq, inArray, sql } from "drizzle-orm"
 import { z } from "zod"
 
 import { signIn } from "@/auth"
-import { db, users, emailVerification, pendingLogin } from "@/lib/db"
+import { db, users, accounts, emailVerification, pendingLogin } from "@/lib/db"
+import { UNPROVEN_EMAIL_PROVIDERS } from "@/lib/auth/providers"
 import {
   normalizeEmail,
   generateCode,
@@ -394,7 +395,11 @@ async function finalizeSignup(id: string): Promise<ActionResult> {
   }
   const completed = await completeSignup(row.email, passwordHash)
   if (!completed) {
-    // Yarış: doğrulama sürerken aynı e-posta şifreli hesap olarak oluşmuş.
+    // İki durum: (a) yarış — doğrulama sürerken aynı e-posta şifreli hesap
+    // olarak oluşmuş; (b) adres, e-postasını kanıtlayamayan bir sağlayıcıyla
+    // (Facebook) açılmış şifresiz bir hesaba ait ve birleştirme bilerek
+    // engellendi. İkisinde de doğru yönlendirme aynı: mevcut hesaba giriş yap
+    // (şifre isteyen kullanıcı Ayarlar > Güvenlik > Şifre belirle ile koyar).
     // Kod doğrulandığı için e-posta sahipliği kanıtlı → durumu söylemek
     // enumeration riski taşımaz; sessiz ok + başarısız otomatik giriş yerine
     // net yönlendirme.
@@ -410,6 +415,15 @@ async function finalizeSignup(id: string): Promise<ActionResult> {
 // varsa (yarış), yalnız passwordHash null'ken şifreyi bağla → güvenli birleştirme;
 // şifresi olan mevcut satır no-op (setWhere false → false döner, çağıran kullanıcıya
 // söyler).
+//
+// Birleştirme yalnız mevcut satırın e-postası KANITLIYSA güvenli. Google bunu
+// email_verified ile kanıtlıyor, Facebook kanıtlayamıyor (bkz.
+// UNPROVEN_EMAIL_PROVIDERS). Kanıtlanmamış bir sağlayıcıyla açılmış satır
+// birleştirmeden muaf tutulmazsa şu senaryo açılır: saldırgan kurbanın adresini
+// taşıyan bir Facebook hesabıyla önden `users` satırını yaratır, kurban sonra
+// e-posta+şifre ile kaydolur, kayıt o satırın içine akar ve iki taraf aynı hesabı
+// paylaşır (klasik ön-kayıt / hesap devralma). NOT EXISTS koşulu bunu, ayrı bir
+// SELECT'e gerek kalmadan tek ifadede ve yarışa kapalı biçimde engeller.
 async function completeSignup(
   email: string,
   passwordHash: string,
@@ -423,7 +437,11 @@ async function completeSignup(
         passwordHash,
         emailVerified: sql`COALESCE(${users.emailVerified}, now())`,
       },
-      setWhere: sql`${users.passwordHash} IS NULL`,
+      setWhere: sql`${users.passwordHash} IS NULL AND NOT EXISTS (
+        SELECT 1 FROM ${accounts}
+        WHERE ${accounts.userId} = ${users.id}
+          AND ${inArray(accounts.provider, [...UNPROVEN_EMAIL_PROVIDERS])}
+      )`,
     })
     .returning({ id: users.id })
   return Boolean(row)

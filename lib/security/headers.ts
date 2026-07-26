@@ -18,8 +18,11 @@ const CSP = [
   "frame-ancestors 'none'",
   // Sosyal giriş butonları gerçek form POST'u (JS kapalıyken de çalışır) ve
   // cross-origin redirect ile biter; form-action redirect zinciri boyunca
-  // uygulandığından sağlayıcı origin'i burada da olmak zorunda.
-  "form-action 'self' https://accounts.google.com https://www.facebook.com",
+  // uygulandığından (Firefox/Safari) sağlayıcı origin'i burada da olmak zorunda.
+  // Facebook OAuth dialog'u mobil UA'da m.facebook.com'a, bazı bölgelerde
+  // web.facebook.com'a yönlendiriyor — üçü de listede olmazsa akış o
+  // tarayıcılarda sessizce blok yer.
+  "form-action 'self' https://accounts.google.com https://www.facebook.com https://m.facebook.com https://web.facebook.com",
   "base-uri 'self'",
 ].join("; ")
 

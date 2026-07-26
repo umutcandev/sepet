@@ -150,11 +150,20 @@ export const verificationTokens = pgTable(
 )
 
 // ─── E-posta doğrulama (kayıt + 2FA kurulum yeniden doğrulaması) ───
-// Kullanıcı satırı e-posta DOĞRULANMADAN OLUŞTURULMAZ. Kayıtta hesaplanan
-// argon2id hash'i, doğrulama tamamlanana dek burada `payload`ta bekler; böylece
-// kurbanın posta kutusuna erişmeden bir `users` satırı yaratılamaz (klasik
-// ön-kayıt/hesap-devralma saldırısı imkânsız → allowDangerousEmailAccountLinking
-// güvenli). purpose "totp_setup" (şifresiz hesapta 2FA kurulumu için yeniden
+// Credentials kaydında kullanıcı satırı e-posta DOĞRULANMADAN OLUŞTURULMAZ.
+// Kayıtta hesaplanan argon2id hash'i, doğrulama tamamlanana dek burada
+// `payload`ta bekler; böylece kurbanın posta kutusuna erişmeden credentials
+// yoluyla bir `users` satırı yaratılamaz. Google için de aynısı geçerli
+// (email_verified zorunlu) → allowDangerousEmailAccountLinking güvenli.
+//
+// TEK İSTİSNA Facebook: Graph /me e-posta doğrulama bilgisi vermiyor, dolayısıyla
+// bir Facebook satırının e-postası kanıtlanmış SAYILMAZ. Bu yüzden (a) Facebook'ta
+// otomatik hesap bağlama kapalı, (b) Facebook'la açılmış şifresiz bir satır
+// credentials kaydını ememez — bkz. lib/auth/providers.ts → UNPROVEN_EMAIL_PROVIDERS
+// ve lib/actions/credentials-auth.ts → completeSignup. İkisi birlikte ön-kayıt /
+// hesap devralma senaryosunu kapatır.
+//
+// purpose "totp_setup" (şifresiz hesapta 2FA kurulumu için yeniden
 // doğrulama) için userId dolu. Sosyal giriş hesabına şifre belirleme burada DEĞİL,
 // password_reset üzerinden link ile yürür (bkz. requestSetPasswordLinkAction).
 // Kod ve token yalnız HMAC (codeHash/tokenHash) olarak saklanır. Tek satır per

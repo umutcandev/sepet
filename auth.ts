@@ -121,6 +121,33 @@ async function authorizeTwoFactor(
   return { id: u.id, email: u.email, name: u.name, image: u.image }
 }
 
+// ─── Sağlayıcı profilindeki fotoğraf URL'i ───
+// users.image HER girişte bununla tazelenir (bkz. jwt callback). Adapter image'ı
+// yalnız createUser sırasında yazıyor; Facebook'un platform-lookaside URL'i ise
+// imzalı ve SÜRELİ (`ext` parametresi bir bitiş zaman damgası). Bir kez yazılıp
+// bırakılırsa kullanıcının avatarı birkaç hafta içinde 404'e düşer ve sessizce
+// baş harflere (AvatarFallback) iner. Google'ın lh3 URL'i kalıcı, ama tazelemek
+// orada da bayat fotoğrafı düzeltir. customImage'a dokunulmaz: özel avatar
+// yükleyen kullanıcının görseli bu alandan bağımsız.
+function providerImage(
+  provider: string | undefined,
+  profile: unknown,
+): string | null {
+  if (!provider || typeof profile !== "object" || profile === null) return null
+  const picture = (profile as { picture?: unknown }).picture
+
+  if (provider === "google") {
+    return typeof picture === "string" ? picture : null
+  }
+  if (provider === "facebook") {
+    // Graph: picture.data.url — alanların hiçbiri garanti değil.
+    if (typeof picture !== "object" || picture === null) return null
+    const url = (picture as { data?: { url?: unknown } }).data?.url
+    return typeof url === "string" ? url : null
+  }
+  return null
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: DrizzleAdapter(db, {
@@ -130,10 +157,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     verificationTokensTable: verificationTokens,
   }),
   session: { strategy: "jwt" },
-  // Auth hataları NextAuth'un varsayılan (İngilizce) /api/auth/error sayfasına
-  // değil ana sayfaya döner; LoginDialogHost ?error= kodunu Türkçe mesaja
-  // çevirip modalı yeniden açar. Bkz. components/auth/login-dialog-host.tsx.
-  pages: { error: "/" },
+  // Auth hataları NextAuth'un varsayılan (İngilizce) sayfalarına değil ana
+  // sayfaya döner; LoginDialogHost ?error= kodunu Türkçe mesaja çevirip modalı
+  // yeniden açar. Bkz. components/auth/login-dialog-host.tsx.
+  //
+  // İKİSİ de gerekli: @auth/core hatayı sınıfının `kind`'ine göre yönlendiriyor
+  // (pageKind = error.kind, pagePath = pages[pageKind]). AccessDenied/Verification
+  // "error" kind'ında, ama SignInError türevleri — OAuthAccountNotLinked,
+  // OAuthCallbackError, MissingCSRF — "signIn" kind'ında. Yalnız `error`
+  // verilseydi en sık karşılaşılan hata olan OAuthAccountNotLinked (aynı
+  // e-postayla ikinci bir sağlayıcı denemesi) hâlâ İngilizce /api/auth/signin
+  // sayfasına düşerdi.
+  pages: { signIn: "/", error: "/" },
   // Sağlayıcılar auth.ts'te komple override edilir (auth.config.ts middleware
   // listesi [Google] aynen kalır; middleware provider çalıştırmaz). Google
   // allowDangerousEmailAccountLinking GÜVENLİDİR çünkü: (a) credentials kullanıcısı
@@ -250,7 +285,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig.callbacks,
     // Google hesapları yalnız e-posta doğrulanmışsa kabul edilir (güvenli otomatik
     // bağlamanın önkoşulu). Credentials ve diğer akışlar için engel yok.
-    async signIn({ account, profile }) {
+    async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
         return profile?.email_verified === true
       }
@@ -261,26 +296,35 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // snapshot'ı) → e-postasız kullanıcı yaratmak yerine anlaşılır bir
         // mesajla geri gönder. String dönüş = yönlendirme (@auth/core
         // handleAuthorized: string ise redirect callback'ine geçirilir).
-        if (!profile?.email) return "/?error=FacebookNoEmail"
+        //
+        // Kontrol `profile` değil `user` üzerinden: @auth/core buraya KAYITLI
+        // kullanıcıda adapter'ın getUserByAccount ile bulduğu satırı, ilk
+        // girişte provider'ın profile() çıktısını geçirir. Böylece e-posta
+        // iznini sonradan geri çeken kayıtlı kullanıcı kendi hesabından
+        // kilitlenmez — adresi zaten bizde, yeniden almaya ihtiyaç yok.
+        if (!user?.email) return "/?error=FacebookNoEmail"
         return true
       }
       return true
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
       // ─── İlk giriş ───
       // Kullanıcı kimliğini göm, varsa arşivi iptal et (14 günlük silmeyi
-      // durdurur) ve bu cihaz için bir oturum kaydı oluşturup id'sini token'a
-      // `sid` olarak yaz.
+      // durdurur), sağlayıcı fotoğrafını tazele ve bu cihaz için bir oturum
+      // kaydı oluşturup id'sini token'a `sid` olarak yaz.
       if (user?.id) {
         token.id = user.id
         const uid = user.id
+        // Aynı UPDATE'e biner: ek round-trip yok. Fotoğraf okunamazsa alan
+        // set'e hiç girmez, mevcut değer korunur.
+        const image = providerImage(account?.provider, profile)
         try {
           await db
             .update(users)
-            .set({ archivedAt: null })
+            .set({ archivedAt: null, ...(image ? { image } : {}) })
             .where(eq(users.id, uid))
         } catch {
-          // Arşiv iptali başarısız olsa da girişi engelleme.
+          // Arşiv iptali / avatar tazeleme başarısız olsa da girişi engelleme.
         }
         try {
           const info = await readRequestDeviceInfo()
