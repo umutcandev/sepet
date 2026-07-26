@@ -12,11 +12,11 @@ export function NavGuest() {
         <SidebarMenuButton
           size="default"
           variant="outline"
-          tooltip="Giriş Yap"
+          tooltip="Oturum Açın"
           onClick={() => loginDialog.open()}
           className="h-9 justify-center font-medium"
         >
-          <span>Giriş Yap</span>
+          <span>Oturum Açın</span>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>

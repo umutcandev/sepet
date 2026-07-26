@@ -57,7 +57,7 @@ function MobileDialog({ open, onOpenChange, callbackUrl }: Props) {
           )}
         >
           <DialogPrimitive.Title className="sr-only">
-            Giriş Yap
+            Oturum Açın
           </DialogPrimitive.Title>
 
           <div className="flex-1 overflow-y-auto pt-[env(safe-area-inset-top)] pb-[max(env(safe-area-inset-bottom),1rem)]">
@@ -103,7 +103,7 @@ function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
           )}
         >
           <DialogPrimitive.Title className="sr-only">
-            Giriş Yap
+            Oturum Açın
           </DialogPrimitive.Title>
 
           <div className="relative flex w-full justify-center">
