@@ -75,7 +75,7 @@ function SetupTwoFactor({
   onDone: () => void
 }) {
   // Kurulum yeniden doğrulamayla başlar (reauth): şifreli hesap şifresini girer,
-  // şifresiz (Google-only) hesap e-postasına gelen kodu girer. Salt oturum
+  // şifresiz (sosyal giriş) hesap e-postasına gelen kodu girer. Salt oturum
   // cookie'siyle 2FA kurulamaz (çalınmış oturum + kurtarma kodları = kilitleme).
   const [step, setStep] = React.useState<
     "reauth" | "qr" | "confirm" | "recovery"

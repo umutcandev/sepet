@@ -44,7 +44,7 @@ type CodesResult =
   | { ok: true; recoveryCodes: string[] }
   | { ok: false; error: string }
 
-// ─── Google-only (şifresiz) hesap için kurulum doğrulama kodu iste ───
+// ─── Sosyal giriş (şifresiz) hesap için kurulum doğrulama kodu iste ───
 // Kurulum, çalınmış bir oturum cookie'siyle yapılamamalı: şifreli hesap şifresini
 // girer; şifresiz hesapta sahiplik e-postaya giden kodla kanıtlanır.
 export async function requestTotpSetupCodeAction(): Promise<ActionResult> {

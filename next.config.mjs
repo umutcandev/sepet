@@ -25,6 +25,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      // Facebook profil fotoğrafı CDN'leri (Graph /me?fields=picture)
+      { protocol: "https", hostname: "platform-lookaside.fbsbx.com" },
+      { protocol: "https", hostname: "**.fbcdn.net" },
       // marketfiyati ürün görselleri CDN'i
       { protocol: "https", hostname: "cdn.marketfiyati.org.tr" },
     ],

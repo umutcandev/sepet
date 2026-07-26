@@ -9,13 +9,17 @@ const CSP = [
   `script-src ${scriptSrc}`,
   "style-src 'self' 'unsafe-inline'",
   // *.tile.openstreetmap.org: Leaflet OSM raster döşemeleri (<img> olarak yüklenir).
-  "img-src 'self' data: blob: https://lh3.googleusercontent.com https://cdn.marketfiyati.org.tr https://cdn.trysepet.com https://pub-35b1290eb3ac4f07b50824e8f7d12f48.r2.dev https://*.tile.openstreetmap.org",
+  // platform-lookaside.fbsbx.com + *.fbcdn.net: Facebook profil fotoğrafı CDN'leri.
+  "img-src 'self' data: blob: https://lh3.googleusercontent.com https://platform-lookaside.fbsbx.com https://*.fbcdn.net https://cdn.marketfiyati.org.tr https://cdn.trysepet.com https://pub-35b1290eb3ac4f07b50824e8f7d12f48.r2.dev https://*.tile.openstreetmap.org",
   "font-src 'self' data:",
   // nominatim.openstreetmap.org: pin oturunca reverse geocode (ücretsiz, anahtarsız).
   "connect-src 'self' https://accounts.google.com https://*.upstash.io https://nominatim.openstreetmap.org",
   "frame-src https://accounts.google.com",
   "frame-ancestors 'none'",
-  "form-action 'self' https://accounts.google.com",
+  // Sosyal giriş butonları gerçek form POST'u (JS kapalıyken de çalışır) ve
+  // cross-origin redirect ile biter; form-action redirect zinciri boyunca
+  // uygulandığından sağlayıcı origin'i burada da olmak zorunda.
+  "form-action 'self' https://accounts.google.com https://www.facebook.com",
   "base-uri 'self'",
 ].join("; ")
 

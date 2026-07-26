@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm"
 
 import { auth } from "@/auth"
 import { db, users } from "@/lib/db"
+import { getLinkedProvider } from "@/lib/auth/linked-provider"
+import { type OAuthProviderId } from "@/lib/auth/providers"
 import { MF_DEFAULT_COORDS } from "@/lib/marketfiyati/client"
 
 export type UserLocation = {
@@ -18,12 +20,15 @@ export type CurrentUser = {
   id: string
   name: string
   email: string
-  /** Görüntülenen avatar: customImage varsa o, yoksa Google fotoğrafı. */
+  /** Görüntülenen avatar: customImage varsa o, yoksa sağlayıcı fotoğrafı. */
   avatar: string
-  /** Google sağlayıcı fotoğrafı — "Google'a dön" sonrası gösterilecek görsel. */
-  googleAvatar: string
-  /** Kullanıcı özel bir avatar yüklemiş mi (avatar !== Google fotoğrafı). */
+  /** Sosyal sağlayıcıdan (Google/Facebook) gelen fotoğraf — özel avatar
+   *  kaldırıldığında geri dönülecek görsel. */
+  providerAvatar: string
+  /** Kullanıcı özel bir avatar yüklemiş mi (avatar !== sağlayıcı fotoğrafı). */
   hasCustomAvatar: boolean
+  /** Bağlı sosyal giriş sağlayıcısı; yalnız e-posta + şifre kullanıcısında null. */
+  authProvider: OAuthProviderId | null
   onboardingCompletedAt: Date | null
   location: UserLocation | null
 }
@@ -50,22 +55,27 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const session = await auth()
   if (!session?.user) return null
 
-  const [row] = await db
-    .select({
-      name: users.name,
-      image: users.image,
-      customImage: users.customImage,
-      onboardingCompletedAt: users.onboardingCompletedAt,
-      locationLat: users.locationLat,
-      locationLng: users.locationLng,
-      locationDistance: users.locationDistance,
-      locationLabel: users.locationLabel,
-      selectedDepotIds: users.selectedDepotIds,
-      locationUpdatedAt: users.locationUpdatedAt,
-    })
-    .from(users)
-    .where(eq(users.id, session.user.id))
-    .limit(1)
+  // İki sorgu birbirinden bağımsız → seri beklemeyi önlemek için paralel.
+  const [rows, authProvider] = await Promise.all([
+    db
+      .select({
+        name: users.name,
+        image: users.image,
+        customImage: users.customImage,
+        onboardingCompletedAt: users.onboardingCompletedAt,
+        locationLat: users.locationLat,
+        locationLng: users.locationLng,
+        locationDistance: users.locationDistance,
+        locationLabel: users.locationLabel,
+        selectedDepotIds: users.selectedDepotIds,
+        locationUpdatedAt: users.locationUpdatedAt,
+      })
+      .from(users)
+      .where(eq(users.id, session.user.id))
+      .limit(1),
+    getLinkedProvider(session.user.id),
+  ])
+  const row = rows[0]
 
   // numeric kolonlar Drizzle'da string döner → Number'a çevir. lat/lng dolu
   // değilse konum yok say.
@@ -83,7 +93,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 
   // Ad/avatar düzenlemelerinin otoriter olması için DB'yi esas al; satır
   // bulunamazsa session (JWT) değerlerine düş.
-  const googleAvatar = row?.image ?? session.user.image ?? ""
+  const providerAvatar = row?.image ?? session.user.image ?? ""
   const customImage = row?.customImage ?? null
 
   const email = session.user.email ?? ""
@@ -96,9 +106,10 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
       displayNameFromEmail(email) ??
       "Kullanıcı",
     email,
-    avatar: customImage ?? googleAvatar,
-    googleAvatar,
+    avatar: customImage ?? providerAvatar,
+    providerAvatar,
     hasCustomAvatar: customImage != null,
+    authProvider,
     onboardingCompletedAt: row?.onboardingCompletedAt ?? null,
     location,
   }

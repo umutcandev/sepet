@@ -28,7 +28,10 @@ import {
 } from "@/components/legal/legal-content"
 import { toast } from "sonner"
 
-import { signInWithGoogleAction } from "@/lib/actions/auth"
+import {
+  signInWithFacebookAction,
+  signInWithGoogleAction,
+} from "@/lib/actions/auth"
 import { sessionSnapshot } from "@/lib/auth/session-snapshot"
 import {
   getLastLoginMethod,
@@ -398,6 +401,28 @@ export function LoginForm({ callbackUrl }: Props) {
                       Google ile devam et
                     </Button>
                     {lastMethod === "google" ? <LastUsedBadge /> : null}
+                  </form>
+
+                  <form
+                    className="relative"
+                    action={async () => {
+                      setLastLoginMethod("facebook")
+                      sessionSnapshot.markPending()
+                      await signInWithFacebookAction(callbackUrl)
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      size="lg"
+                      className="h-[44px] w-full gap-2 rounded-xl px-[6px] text-[14px] font-medium tracking-[-0.01em]"
+                    >
+                      <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full">
+                        <FacebookIcon />
+                      </span>
+                      Facebook ile devam et
+                    </Button>
+                    {lastMethod === "facebook" ? <LastUsedBadge /> : null}
                   </form>
 
                   <div className="flex items-center gap-3" aria-hidden>
@@ -865,6 +890,17 @@ function GoogleIcon() {
       <path
         fill="#EA4335"
         d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z"
+      />
+    </svg>
+  )
+}
+
+function FacebookIcon() {
+  return (
+    <svg viewBox="0 0 18 18" className="h-[18px] w-[18px]" aria-hidden="true">
+      <path
+        fill="#0866FF"
+        d="M18 9A9 9 0 1 0 7.594 17.89v-6.29H5.309V9h2.285V7.017c0-2.255 1.343-3.5 3.4-3.5.984 0 2.014.175 2.014.175v2.215h-1.135c-1.118 0-1.467.694-1.467 1.406V9h2.497l-.4 2.6h-2.097v6.29A9.002 9.002 0 0 0 18 9z"
       />
     </svg>
   )

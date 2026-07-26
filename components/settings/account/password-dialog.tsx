@@ -139,7 +139,7 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
   )
 }
 
-// Google-only hesap: şifre diyalogda DEĞİL, e-postaya giden bağlantıyla
+// Şifresiz (sosyal giriş) hesap: şifre diyalogda DEĞİL, e-postaya giden bağlantıyla
 // /sifre-sifirla sayfasında belirlenir ("şifremi unuttum" ile aynı akış;
 // diyalogda kod ya da şifre alanı yok).
 function SetPasswordLink({ onClose }: { onClose: () => void }) {
@@ -196,8 +196,8 @@ function SetPasswordLink({ onClose }: { onClose: () => void }) {
       <DialogHeader>
         <DialogTitle>Şifre belirle</DialogTitle>
         <DialogDescription>
-          Google hesabına ek olarak bir şifre belirle. Sana e-postanla bir
-          bağlantı gönderelim; şifreni o sayfadan belirlersin.
+          Mevcut giriş yöntemine ek olarak bir şifre belirle. Sana e-postanla
+          bir bağlantı gönderelim; şifreni o sayfadan belirlersin.
         </DialogDescription>
       </DialogHeader>
       {error ? <p className="py-1 text-xs text-destructive">{error}</p> : null}

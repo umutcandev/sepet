@@ -1,6 +1,7 @@
 import NextAuth, { CredentialsSignin } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
+import Facebook from "next-auth/providers/facebook"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { eq, sql } from "drizzle-orm"
 import {
@@ -25,6 +26,13 @@ import {
 
 // Revoke kontrolü her istekte değil, en fazla bu aralıkla bir kez DB'ye gider.
 const SID_CHECK_INTERVAL_MS = 60_000
+
+// Facebook Graph API sürümü. @auth/core'un yerleşik Facebook provider'ı v19.0'a
+// sabitlenmiş durumda ve v19.0 21.05.2026'da EXPIRE OLDU — bu yüzden aşağıda
+// authorization/token/userinfo uçlarının üçü de override ediliyor. Meta her
+// sürümü çıkışından en az 2 yıl yaşatıyor; v25.0 (18.02.2026) → ~Şubat 2028.
+// O tarihten önce buradan güncelle, başka yerde sürüm tutulmuyor.
+const FACEBOOK_GRAPH_VERSION = "v25.0"
 
 // ─── Credentials hata sınıfları ───
 // NextAuth beta.31: authorize içinde CredentialsSignin türevi fırlatılır; action
@@ -122,6 +130,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     verificationTokensTable: verificationTokens,
   }),
   session: { strategy: "jwt" },
+  // Auth hataları NextAuth'un varsayılan (İngilizce) /api/auth/error sayfasına
+  // değil ana sayfaya döner; LoginDialogHost ?error= kodunu Türkçe mesaja
+  // çevirip modalı yeniden açar. Bkz. components/auth/login-dialog-host.tsx.
+  pages: { error: "/" },
   // Sağlayıcılar auth.ts'te komple override edilir (auth.config.ts middleware
   // listesi [Google] aynen kalır; middleware provider çalıştırmaz). Google
   // allowDangerousEmailAccountLinking GÜVENLİDİR çünkü: (a) credentials kullanıcısı
@@ -130,6 +142,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // sahipliğini kanıtladığından aynı users satırına bağlanma güvenli.
   providers: [
     Google({ allowDangerousEmailAccountLinking: true }),
+    // Facebook'ta allowDangerousEmailAccountLinking BİLEREK YOK: Google için
+    // geçerli olan gerekçe (profil yalnız email_verified === true ile kabul
+    // edilir) burada işlemiyor, çünkü Graph /me yanıtında email_verified diye
+    // bir alan hiç bulunmuyor — e-posta sahipliği kanıtlanamaz. Aynı e-postaya
+    // sahip bir hesap varsa adapter OAuthAccountNotLinked fırlatır ve kullanıcı
+    // mevcut yöntemiyle girmeye yönlendirilir.
+    Facebook({
+      authorization: {
+        url: `https://www.facebook.com/${FACEBOOK_GRAPH_VERSION}/dialog/oauth`,
+        params: { scope: "email,public_profile" },
+      },
+      token: `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/oauth/access_token`,
+      // Yalnız url override ediliyor: @auth/core provider seçeneklerini DERİN
+      // birleştirdiğinden (lib/utils/merge.js) varsayılan `request` (Bearer
+      // token'la fetch) olduğu gibi korunur, kopyalamaya gerek yok.
+      userinfo: {
+        url: `https://graph.facebook.com/${FACEBOOK_GRAPH_VERSION}/me?fields=id,name,email,picture.type(large)`,
+      },
+      // Yerleşik profile() doğrudan `profile.picture.data.url` okuyor; picture
+      // dönmediğinde TypeError ile callback'i patlatır. Alanların hiçbiri
+      // garanti değil → hepsi opsiyonel zincirle okunur.
+      profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.name ?? null,
+          email: profile.email ?? null,
+          image: profile.picture?.data?.url ?? null,
+        }
+      },
+    }),
     Credentials({
       credentials: {
         email: {},
@@ -181,7 +223,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           .where(eq(users.email, email))
           .limit(1)
 
-        // Kullanıcı yok VEYA şifresi yok (Google-only): sabit-süreli dummy verify
+        // Kullanıcı yok VEYA şifresi yok (sosyal giriş): sabit-süreli dummy verify
         // sonra jenerik hata (enumeration yok, timing yok).
         if (!user || !user.passwordHash) {
           await verifyPassword(await dummyHash(), password)
@@ -211,6 +253,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ account, profile }) {
       if (account?.provider === "google") {
         return profile?.email_verified === true
+      }
+      if (account?.provider === "facebook") {
+        // Facebook e-posta döndürmeyebilir: mobilde açılan hesaplarda e-posta
+        // hiç olmayabilir, ya da kullanıcı izin ekranından e-postayı kaldırır.
+        // Sistemin tamamı e-postaya dayalı (şifre sıfırlama, 2FA, oturum
+        // snapshot'ı) → e-postasız kullanıcı yaratmak yerine anlaşılır bir
+        // mesajla geri gönder. String dönüş = yönlendirme (@auth/core
+        // handleAuthorized: string ise redirect callback'ine geçirilir).
+        if (!profile?.email) return "/?error=FacebookNoEmail"
+        return true
       }
       return true
     },

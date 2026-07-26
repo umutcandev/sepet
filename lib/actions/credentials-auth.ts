@@ -406,7 +406,7 @@ async function finalizeSignup(id: string): Promise<ActionResult> {
   return { ok: true }
 }
 
-// Kullanıcıyı oluştur (emailVerified = now). Aynı e-posta Google-only olarak zaten
+// Kullanıcıyı oluştur (emailVerified = now). Aynı e-posta sosyal giriş (şifresiz) olarak zaten
 // varsa (yarış), yalnız passwordHash null'ken şifreyi bağla → güvenli birleştirme;
 // şifresi olan mevcut satır no-op (setWhere false → false döner, çağıran kullanıcıya
 // söyler).

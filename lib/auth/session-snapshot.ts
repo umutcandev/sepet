@@ -124,7 +124,7 @@ export const sessionSnapshot = {
     notify()
   },
 
-  /** Google ile giriş tıklandığında: OAuth dönüşündeki ilk boyama için
+  /** Sosyal giriş (Google/Facebook) tıklandığında: OAuth dönüşündeki ilk boyama için
    *  "authed" ipucunu iyimser bırak. */
   markPending() {
     if (typeof window === "undefined") return

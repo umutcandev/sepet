@@ -50,7 +50,7 @@ export async function setAvatar(
   return { ok: true }
 }
 
-/** Özel avatarı kaldırır → görünen avatar tekrar Google fotoğrafına döner. */
+/** Özel avatarı kaldırır → görünen avatar tekrar sağlayıcı fotoğrafına döner. */
 export async function resetAvatar(): Promise<{ ok: boolean }> {
   const session = await auth()
   if (!session?.user?.id) return { ok: false }
