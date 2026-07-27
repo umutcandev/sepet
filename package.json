@@ -24,6 +24,8 @@
     "@base-ui/react": "^1.4.1",
     "@neondatabase/serverless": "^1.1.0",
     "@node-rs/argon2": "^2.0.2",
+    "@number-flow/react": "^0.6.2",
+    "@paper-design/shaders-react": "^0.0.77",
     "@polar-sh/nextjs": "^0.9.6",
     "@polar-sh/sdk": "^0.48.1",
     "@radix-ui/react-use-controllable-state": "^1.2.2",
