@@ -7,6 +7,9 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { GitHubLogo, XLogo } from "@/components/blog/brand-icons"
+import { FooterLink } from "@/components/site-footer-link"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { CATEGORY_LIST } from "@/lib/blog/categories"
 import { SITE_X } from "@/lib/site"
 import { cn } from "@/lib/utils"
@@ -50,7 +53,8 @@ function FooterColumn({
   )
 }
 
-function FooterLink({
+// Sütun bağlantısı: liste öğesi kabuğu burada, hover alt çizgisi FooterLink'te.
+function FooterListLink({
   href,
   external,
   children,
@@ -59,25 +63,11 @@ function FooterLink({
   external?: boolean
   children: React.ReactNode
 }) {
-  const className =
-    "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-
   return (
     <li>
-      {external ? (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={className}
-        >
-          {children}
-        </a>
-      ) : (
-        <Link href={href} className={className}>
-          {children}
-        </Link>
-      )}
+      <FooterLink href={href} external={external}>
+        {children}
+      </FooterLink>
     </li>
   )
 }
@@ -87,7 +77,9 @@ export function SiteFooter({ className }: { className?: string }) {
 
   return (
     <footer className={cn("mt-16", className)}>
-      <div className="mx-auto w-full max-w-5xl px-4 py-10 md:py-14">
+      {/* Üst/alt boşluk asimetrik: alt şerit sayfanın dibine daha yakın dursun
+          diye pb üstteki pt'nin yarısı kadar. */}
+      <div className="mx-auto w-full max-w-5xl px-4 pt-10 pb-5 md:pt-14 md:pb-7">
         <div className="flex flex-col gap-10 md:flex-row md:justify-between md:gap-16">
           {/* Marka sütunu */}
           <div className="flex flex-col gap-6 md:max-w-xs">
@@ -112,18 +104,20 @@ export function SiteFooter({ className }: { className?: string }) {
               Alışveriş listeni yaz, marketlerdeki en uygun fiyatları
               karşılaştır ve en ucuz sepeti saniyeler içinde oluştur.
             </p>
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-2">
               {socials.map(({ label, href, icon: Icon }) => (
-                <a
+                <Button
                   key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  asChild
+                  variant="outline"
+                  size="icon"
                   aria-label={label}
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground"
                 >
-                  <Icon className="size-5" />
-                </a>
+                  <a href={href} target="_blank" rel="noopener noreferrer">
+                    <Icon className="size-4" />
+                  </a>
+                </Button>
               ))}
             </div>
           </div>
@@ -132,66 +126,68 @@ export function SiteFooter({ className }: { className?: string }) {
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 md:gap-x-12 lg:gap-x-16">
             <FooterColumn title="Ürün">
               {productLinks.map((link) => (
-                <FooterLink key={link.href} href={link.href}>
+                <FooterListLink key={link.href} href={link.href}>
                   {link.label}
-                </FooterLink>
+                </FooterListLink>
               ))}
             </FooterColumn>
 
             <FooterColumn title="Blog">
-              <FooterLink href="/blog">Tüm Yazılar</FooterLink>
+              <FooterListLink href="/blog">Tüm Yazılar</FooterListLink>
               {CATEGORY_LIST.map((category) => (
-                <FooterLink
+                <FooterListLink
                   key={category.id}
                   href={`/blog?kategori=${category.slug}`}
                 >
                   {category.label}
-                </FooterLink>
+                </FooterListLink>
               ))}
             </FooterColumn>
 
             <FooterColumn title="Destek">
-              <FooterLink href={STATUS_URL} external>
+              <FooterListLink href={STATUS_URL} external>
                 Sistem Durumu
-              </FooterLink>
-              <FooterLink href={GITHUB_URL} external>
+              </FooterListLink>
+              <FooterListLink href={GITHUB_URL} external>
                 Geri Bildirim
-              </FooterLink>
-              <FooterLink href="mailto:support@trysepet.com" external>
+              </FooterListLink>
+              <FooterListLink href="mailto:support@trysepet.com" external>
                 Destek
-              </FooterLink>
+              </FooterListLink>
             </FooterColumn>
           </div>
         </div>
 
         {/* Alt şerit */}
         <div className="mt-10 flex flex-col gap-4 border-t border-border pt-6 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+          <div className="flex flex-wrap items-center gap-3">
             <p className="text-xs font-medium text-muted-foreground">
-              © {year} Sepet. Tüm hakları saklıdır.
+              © {year}, Sepet.
             </p>
-            <a
-              href={STATUS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-fit items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            {/* Varsayılan rozetten biraz daha dar (px-1.5) ve bir tık daha
+                yüksek (h-6): yanındaki telif satırıyla optik olarak eşitlenir. */}
+            <Badge
+              asChild
+              variant="outline"
+              className="h-6 w-fit gap-1.5 bg-primary/5 px-1.5 text-primary"
             >
-              <span
-                aria-hidden
-                className="size-1.5 rounded-full bg-emerald-500"
-              />
-              Sistem durumu
-            </a>
+              <a href={STATUS_URL} target="_blank" rel="noopener noreferrer">
+                {/* Canlı sinyali: sabit nokta + üzerinde dışa açılan halka.
+                    motion-safe, hareket azaltma tercihinde nokta sabit kalır. */}
+                <span aria-hidden className="relative flex size-1.5 shrink-0">
+                  <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-75 motion-safe:animate-ping" />
+                  <span className="relative size-1.5 rounded-full bg-emerald-500" />
+                </span>
+                Sistem Durumu
+              </a>
+            </Badge>
           </div>
           <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
             {legalLinks.map((link) => (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
+                <FooterLink href={link.href} className="text-xs">
                   {link.label}
-                </Link>
+                </FooterLink>
               </li>
             ))}
           </ul>
