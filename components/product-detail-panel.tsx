@@ -198,7 +198,7 @@ function DetailThumb({ url }: { url: string | null }) {
     )
   }
   return (
-    <div className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-muted">
+    <div className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-muted outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
       <Image
         src={url}
         alt=""

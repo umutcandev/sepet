@@ -690,7 +690,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                                 variant="ghost"
                                 size="icon-xs"
                                 aria-label="Fiş eylemleri"
-                                className="text-muted-foreground"
+                                className="relative text-muted-foreground after:absolute after:-inset-2"
                               >
                                 <MoreHorizontalIcon className="size-4" />
                               </Button>
@@ -702,7 +702,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                                   enterSelect(r.id)
                                 }}
                               >
-                                <CheckSquareIcon className="mr-2 size-4" />
+                                <CheckSquareIcon className="size-4" />
                                 Seç
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
@@ -713,7 +713,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                                   setSingleDeleteTarget(r)
                                 }}
                               >
-                                <Trash2Icon className="mr-2 size-4" />
+                                <Trash2Icon className="size-4" />
                                 Sil
                               </DropdownMenuItem>
                             </DropdownMenuContent>

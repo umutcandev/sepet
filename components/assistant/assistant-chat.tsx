@@ -458,7 +458,7 @@ export function AssistantChat({
                       <MessageResponse>{pendingSeed.text}</MessageResponse>
                     )}
                     {pendingSeed.file?.mediaType.startsWith("image/") && (
-                      <div className="overflow-hidden rounded-lg border border-border max-w-[280px]">
+                      <div className="max-w-[280px] overflow-hidden rounded-lg outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={pendingSeed.file.url}
@@ -698,7 +698,7 @@ export function AssistantChat({
                           return (
                             <div
                               key={key}
-                              className="overflow-hidden rounded-lg border border-border max-w-[280px]"
+                              className="max-w-[280px] overflow-hidden rounded-lg outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
                             >
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img

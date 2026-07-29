@@ -9,6 +9,7 @@ import {
   FileTextIcon,
   LinkIcon,
 } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
 import { toast } from "sonner"
 
 import {
@@ -52,6 +53,50 @@ export async function copyText(text: string): Promise<boolean> {
   } catch {
     return false
   }
+}
+
+/**
+ * Kopyalama geri bildirimi için ikon takası. Sert bir koşullu render yerine
+ * ölçek + opaklık + bulanıklık ile geçiş yapar; kopyalama onayının tamamı bu
+ * ikon olduğu için tek karelik bir takas kaçırılabiliyordu.
+ *
+ * `initial={false}` ilk render'da animasyonu bastırır — ikon sayfa açılışında
+ * belirmez, yalnızca durum değişiminde animasyon oynar.
+ */
+export function CopiedIconSwap({
+  copied,
+  idleIcon: IdleIcon,
+  className,
+  copiedClassName,
+}: {
+  copied: boolean
+  idleIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  className?: string
+  copiedClassName?: string
+}) {
+  return (
+    // `popLayout` çıkan öğeyi position:absolute yapar; konumlanmış atayı
+    // burada garantiliyoruz ki çağıran düğmenin `relative` olup olmaması
+    // sonucu değiştirmesin. Giren ikon (akışta kalan) kabın boyutunu verir.
+    <span className="relative inline-flex">
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span
+          key={copied ? "copied" : "idle"}
+          initial={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+          transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+          className="inline-flex"
+        >
+          {copied ? (
+            <CheckIcon className={cn(className, copiedClassName)} />
+          ) : (
+            <IdleIcon className={className} />
+          )}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  )
 }
 
 export type ShareTarget = {
@@ -121,11 +166,12 @@ function SocialShare({ url, title }: { url: string; title: string }) {
           aria-label="Bağlantıyı kopyala"
           title="Bağlantıyı kopyala"
         >
-          {copied ? (
-            <CheckIcon className="size-3.5 text-emerald-600 dark:text-emerald-500" />
-          ) : (
-            <LinkIcon className="size-3.5" />
-          )}
+          <CopiedIconSwap
+            copied={copied}
+            idleIcon={LinkIcon}
+            className="size-3.5"
+            copiedClassName="text-emerald-600 dark:text-emerald-500"
+          />
         </Button>
       </div>
     </div>

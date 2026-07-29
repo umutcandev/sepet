@@ -35,7 +35,7 @@ export function HomeBlogSection() {
           tamamlıyor, bu yüzden burada eskisinden dar. */}
       <div className="dark mx-auto w-full max-w-5xl px-4 pt-8 pb-14 text-foreground md:pt-12">
         <div className="mb-5 flex items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+          <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
             Blog Gönderileri
           </h2>
           <Button asChild size="sm" className="group shrink-0">

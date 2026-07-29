@@ -187,7 +187,7 @@ export default async function ReceiptDetailPage({
 
       <div className="grid gap-5 md:grid-cols-[280px_minmax(0,1fr)]">
         <div className="min-w-0 space-y-3">
-          <div className="overflow-hidden rounded-xl border bg-muted/30">
+          <div className="overflow-hidden rounded-xl bg-muted/30 outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
             <a
               href={receipt.imageUrl}
               target="_blank"

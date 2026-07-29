@@ -23,7 +23,7 @@ import { useCurrentUser } from "@/components/providers/session-provider"
 import { ThemeMenuItems } from "@/components/theme-toggle"
 import { SettingsDialog } from "@/components/settings/settings-dialog"
 import type { TabKey } from "@/components/settings/search-registry"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 
 export function NavUser({
   user,
@@ -184,7 +184,8 @@ function NavMenuItem({
     <button
       type="button"
       onClick={onClick}
-      className="relative flex w-full cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg]:opacity-60"
+      // İkon hizası DropdownMenuItem ile birebir aynı: sağa bitişik, soluk.
+      className="relative flex w-full cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground [&>svg]:order-last [&>svg]:ms-auto [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg]:opacity-60"
     >
       {children}
     </button>

@@ -70,7 +70,7 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
           <Button
             variant="ghost"
             size="icon-xs"
-            className="ml-1 size-6 text-muted-foreground hover:text-foreground"
+            className="relative ml-1 size-6 text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
             aria-label="Sohbet eylemleri"
           >
             <ChevronDownIcon className="size-4" />
@@ -85,12 +85,12 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
           >
             {starred ? (
               <>
-                <StarOffIcon className="mr-2 size-4" />
+                <StarOffIcon className="size-4" />
                 Favorilerden çıkar
               </>
             ) : (
               <>
-                <StarIcon className="mr-2 size-4" />
+                <StarIcon className="size-4" />
                 Favorilere ekle
               </>
             )}
@@ -101,7 +101,7 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
               setRenameOpen(true)
             }}
           >
-            <PencilIcon className="mr-2 size-4" />
+            <PencilIcon className="size-4" />
             Yeniden adlandır
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -112,7 +112,7 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
               setDeleteOpen(true)
             }}
           >
-            <Trash2Icon className="mr-2 size-4" />
+            <Trash2Icon className="size-4" />
             Sil
           </DropdownMenuItem>
         </DropdownMenuContent>

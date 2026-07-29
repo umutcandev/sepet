@@ -655,7 +655,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                                 variant="ghost"
                                 size="icon-xs"
                                 aria-label="Sepet eylemleri"
-                                className="text-muted-foreground"
+                                className="relative text-muted-foreground after:absolute after:-inset-2"
                               >
                                 <MoreHorizontalIcon className="size-4" />
                               </Button>
@@ -667,7 +667,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                                   enterSelect(b.id)
                                 }}
                               >
-                                <CheckSquareIcon className="mr-2 size-4" />
+                                <CheckSquareIcon className="size-4" />
                                 Seç
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
@@ -678,7 +678,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                                   setSingleDeleteTarget(b)
                                 }}
                               >
-                                <Trash2Icon className="mr-2 size-4" />
+                                <Trash2Icon className="size-4" />
                                 Sil
                               </DropdownMenuItem>
                             </DropdownMenuContent>

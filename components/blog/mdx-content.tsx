@@ -3,8 +3,9 @@
 import * as React from "react"
 import * as runtime from "react/jsx-runtime"
 import Link from "next/link"
-import { CheckIcon, CopyIcon } from "lucide-react"
+import { CopyIcon } from "lucide-react"
 
+import { CopiedIconSwap } from "@/components/blog/article-actions"
 import { cn } from "@/lib/utils"
 
 type MdxComponents = Record<string, React.ComponentType<unknown>>
@@ -49,7 +50,13 @@ function MdxImage({
     <img
       alt={alt}
       loading="lazy"
-      className={cn("rounded-lg border border-border", className)}
+      // Görsel kenarı nötr siyah/beyaz outline: `--border` tonlu bir nötr
+      // olduğu için görselin üstünde kir gibi okunuyordu. `outline` ayrıca
+      // layout'a genişlik eklemez, `-outline-offset-1` ile içeri gömülür.
+      className={cn(
+        "rounded-lg outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10",
+        className,
+      )}
       {...props}
     />
   )
@@ -106,16 +113,17 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
         onClick={copy}
         aria-label={copied ? "Kopyalandı" : "Kodu kopyala"}
         className={cn(
-          "absolute right-2.5 top-2.5 inline-flex size-7 items-center justify-center rounded-md border border-border bg-background/70 text-muted-foreground backdrop-blur transition-all",
+          "absolute right-2.5 top-2.5 inline-flex size-7 items-center justify-center rounded-md border border-border bg-background/70 text-muted-foreground backdrop-blur transition-[opacity,color,border-color]",
           "opacity-0 group-hover/code:opacity-100 focus-visible:opacity-100 max-md:opacity-100",
           "hover:border-foreground/30 hover:text-foreground",
         )}
       >
-        {copied ? (
-          <CheckIcon className="size-3.5 text-primary" />
-        ) : (
-          <CopyIcon className="size-3.5" />
-        )}
+        <CopiedIconSwap
+          copied={copied}
+          idleIcon={CopyIcon}
+          className="size-3.5"
+          copiedClassName="text-primary"
+        />
       </button>
     </div>
   )

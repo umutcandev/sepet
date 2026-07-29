@@ -362,7 +362,8 @@ function ContractsMenu() {
               rel="noopener noreferrer"
             >
               {contract.label}
-              <ExternalLinkIcon className="ml-auto size-3.5 text-muted-foreground" />
+              {/* Sağa yaslama artık DropdownMenuItem'dan geliyor (ms-auto). */}
+              <ExternalLinkIcon className="size-3.5 text-muted-foreground" />
             </Link>
           </DropdownMenuItem>
         ))}

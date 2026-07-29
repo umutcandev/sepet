@@ -45,7 +45,7 @@ function FooterColumn({
 }) {
   return (
     <div className="min-w-0">
-      <h2 className="mb-4 text-sm font-semibold tracking-tight text-foreground">
+      <h2 className="mb-4 text-sm font-semibold tracking-tight text-balance text-foreground">
         {title}
       </h2>
       <ul className="flex flex-col gap-3">{children}</ul>

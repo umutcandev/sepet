@@ -623,7 +623,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                               variant="ghost"
                               size="icon-xs"
                               aria-label="Sohbet eylemleri"
-                              className="absolute right-2 text-muted-foreground opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 aria-expanded:opacity-100"
+                              className="absolute right-2 text-muted-foreground opacity-0 transition-opacity after:absolute after:-inset-2 group-focus-within:opacity-100 group-hover:opacity-100 aria-expanded:opacity-100"
                             >
                               <MoreHorizontalIcon className="size-4" />
                             </Button>
@@ -635,7 +635,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                                 enterSelect(c.id)
                               }}
                             >
-                              <CheckSquareIcon className="mr-2 size-4" />
+                              <CheckSquareIcon className="size-4" />
                               Seç
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
@@ -647,12 +647,12 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                             >
                               {c.starred ? (
                                 <>
-                                  <StarOffIcon className="mr-2 size-4" />
+                                  <StarOffIcon className="size-4" />
                                   Favorilerden çıkar
                                 </>
                               ) : (
                                 <>
-                                  <StarIcon className="mr-2 size-4" />
+                                  <StarIcon className="size-4" />
                                   Favorilere ekle
                                 </>
                               )}
@@ -663,7 +663,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                                 setRenameTarget(c)
                               }}
                             >
-                              <PencilIcon className="mr-2 size-4" />
+                              <PencilIcon className="size-4" />
                               Yeniden adlandır
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
@@ -674,7 +674,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                                 setSingleDeleteTarget(c)
                               }}
                             >
-                              <Trash2Icon className="mr-2 size-4" />
+                              <Trash2Icon className="size-4" />
                               Sil
                             </DropdownMenuItem>
                           </DropdownMenuContent>
