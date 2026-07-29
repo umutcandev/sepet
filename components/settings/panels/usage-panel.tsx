@@ -158,7 +158,10 @@ export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
             </div>
           </section>
 
-          <div className="flex items-center gap-1 pt-2">
+          {/* gap-3: refresh butonunun 8px'lik genişletilmiş hedefi 4px'lik
+              boşlukta komşu metnin üstüne taşıyor, zaman damgasının sonuna
+              tıklamak yenilemeyi tetikliyordu. */}
+          <div className="flex items-center gap-3 pt-2">
             <span className="text-xs text-muted-foreground">
               {updatedAt
                 ? `Son güncelleme: ${timeFmt.format(updatedAt)}`

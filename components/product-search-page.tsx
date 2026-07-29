@@ -86,7 +86,7 @@ export function ProductSearchPage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
       <div className="mb-6 flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Ürün Ara</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-balance">Ürün Ara</h1>
         <p className="text-sm text-muted-foreground">
           Ürün adı ya da barkod ile BİM, A101, Migros, Şok,
           CarrefourSA ve Tarım Kredi marketlerinde güncel fiyatları karşılaştır.

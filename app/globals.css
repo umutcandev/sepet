@@ -209,11 +209,13 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -1.45rem;
+  /* 1.5rem = 24px: WCAG 2.5.8 (AA) hedef boyutu tabanı. 1.45rem'de genişlik
+     23px'e düşüyor ve tabanın altında kalıyordu. */
+  inset-inline-start: -1.5rem;
   display: none;
   align-items: center;
   justify-content: center;
-  width: 1.45rem;
+  width: 1.5rem;
   text-decoration: none;
   opacity: 0;
   transition: opacity 0.15s ease;

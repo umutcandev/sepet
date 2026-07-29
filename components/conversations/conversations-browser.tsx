@@ -417,7 +417,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18, ease: "easeOut" }}
-              className="text-2xl font-semibold tracking-tight"
+              className="text-2xl font-semibold tracking-tight text-balance"
             >
               Sohbetler
             </motion.h1>

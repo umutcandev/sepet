@@ -5,7 +5,7 @@ import * as runtime from "react/jsx-runtime"
 import Link from "next/link"
 import { CopyIcon } from "lucide-react"
 
-import { CopiedIconSwap } from "@/components/blog/article-actions"
+import { CopiedIconSwap, copyText } from "@/components/blog/article-actions"
 import { cn } from "@/lib/utils"
 
 type MdxComponents = Record<string, React.ComponentType<unknown>>
@@ -94,13 +94,13 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
   const ref = React.useRef<HTMLPreElement>(null)
   const [copied, setCopied] = React.useState(false)
 
-  const copy = React.useCallback(() => {
+  const copy = React.useCallback(async () => {
     const text = ref.current?.textContent ?? ""
     if (!text) return
-    navigator.clipboard?.writeText(text).then(() => {
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1600)
-    })
+    // Paylaş butonuyla aynı yardımcı: güvenli bağlam yoksa textarea'ya düşer.
+    if (!(await copyText(text))) return
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 1600)
   }, [])
 
   return (
@@ -111,9 +111,15 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
       <button
         type="button"
         onClick={copy}
-        aria-label={copied ? "Kopyalandı" : "Kodu kopyala"}
+        // Etiket sabit kalır: odaklı bir düğmenin `aria-label`'ını değiştirmek
+        // ekran okuyucularda güvenilir seslendirilmiyor. Onay aşağıdaki sabit
+        // durum bölgesinden duyuruluyor (paylaş butonundaki toast'un karşılığı).
+        aria-label="Kodu kopyala"
         className={cn(
           "absolute right-2.5 top-2.5 inline-flex size-7 items-center justify-center rounded-md border border-border bg-background/70 text-muted-foreground backdrop-blur transition-[opacity,color,border-color]",
+          // Görünen kutu 28px; dokunma hedefi 40px'e genişletilir. Kod bloğunun
+          // köşesinde komşu kontrol yok, genişletme hiçbir hedefle çakışmıyor.
+          "after:absolute after:-inset-1.5",
           "opacity-0 group-hover/code:opacity-100 focus-visible:opacity-100 max-md:opacity-100",
           "hover:border-foreground/30 hover:text-foreground",
         )}
@@ -125,6 +131,9 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
           copiedClassName="text-primary"
         />
       </button>
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? "Kod kopyalandı" : ""}
+      </span>
     </div>
   )
 }

@@ -322,7 +322,7 @@ export function LocationModal() {
           <ResponsiveDialogBody className="pt-1.5">
             {/* Harita (solda, kendi çerçevesinde) + market paneli (sağda, borderless) */}
             <div className="grid gap-2 sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-              <div className="h-48 overflow-hidden rounded-lg border bg-muted sm:h-80">
+              <div className="h-48 overflow-hidden rounded-lg bg-muted outline outline-1 -outline-offset-1 outline-black/10 sm:h-80 dark:outline-white/10">
                 <LocationMap
                   center={center}
                   onMove={handleMapMove}

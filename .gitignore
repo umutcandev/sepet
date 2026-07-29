@@ -45,3 +45,6 @@ next-env.d.ts
 
 #drizzle
 /drizzle
+# skills (npx skills add) — yerelde kurulur, repoya girmez
+.agents/
+skills-lock.json

@@ -16,7 +16,7 @@ export default async function ReceiptsHistoryPage() {
     return (
       <div className="mx-auto w-full max-w-5xl px-4 py-6">
         <div className="mb-6 flex flex-col gap-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Fişlerim</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-balance">Fişlerim</h1>
           <p className="text-sm text-muted-foreground">
             Yüklediğin fişleri ve potansiyel tasarruflarını tek yerden takip et.
           </p>
