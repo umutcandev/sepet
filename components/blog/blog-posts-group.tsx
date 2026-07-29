@@ -123,7 +123,7 @@ export function BlogPostsGroup({ posts }: Props) {
             <span>Blog Gönderileri</span>
             <ChevronDownIcon
               className={cn(
-                "size-3.5 opacity-0 transition-all duration-200",
+                "size-3.5 opacity-0 transition-[opacity,rotate] duration-200",
                 collapsed && "-rotate-90"
               )}
             />

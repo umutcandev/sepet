@@ -38,7 +38,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
         return (
           <div key={`${m.searchQuery}-${i}`} className="overflow-hidden">
             <div className="flex items-center gap-3 p-3">
-              <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted">
+              <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
                 {m.bestMatch?.imageUrl ? (
                   <Image
                     src={m.bestMatch.imageUrl}

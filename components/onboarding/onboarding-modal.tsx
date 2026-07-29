@@ -171,16 +171,20 @@ function OnboardingStepContent({
   )
 }
 
-export function OnboardingModal({ enabled }: { enabled: boolean }) {
+/**
+ * Yalnızca OnboardingHost tarafından, kapı koşulu sağlandığında mount edilir
+ * (bkz. onboarding-host.tsx). Bu yüzden `open` doğrudan true başlar: kapıyı
+ * prop olarak alıp `useState(prop)` ile okumak, oturum asenkron geldiği için
+ * modalı kalıcı olarak kapalıya kilitliyordu.
+ */
+export function OnboardingModal() {
   const isMobile = useIsMobile()
-  const [open, setOpen] = React.useState(enabled)
+  const [open, setOpen] = React.useState(true)
   const [currentStep, setCurrentStep] = React.useState(0)
   const [isClosing, setIsClosing] = React.useState(false)
   const [videosReady, setVideosReady] = React.useState(false)
 
   React.useEffect(() => {
-    if (!enabled) return
-
     let cancelled = false
     const videos: HTMLVideoElement[] = []
     const promises = ONBOARDING_STEPS.map(
@@ -209,7 +213,7 @@ export function OnboardingModal({ enabled }: { enabled: boolean }) {
         v.load()
       })
     }
-  }, [enabled])
+  }, [])
 
   const handleComplete = React.useCallback(async () => {
     if (isClosing) return
@@ -229,7 +233,7 @@ export function OnboardingModal({ enabled }: { enabled: boolean }) {
     setCurrentStep((prev) => Math.min(prev + 1, ONBOARDING_STEPS.length - 1))
   }, [])
 
-  if (!enabled || !videosReady || !open) return null
+  if (!videosReady || !open) return null
 
   const stepContent = (
     <OnboardingStepContent

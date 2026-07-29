@@ -170,7 +170,7 @@ export function ReceiptComparisonCard({
                                 ? "Diğer market fiyatlarını gizle"
                                 : "Diğer market fiyatlarını göster"
                             }
-                            className="-ml-1 mt-0.5 text-muted-foreground hover:text-foreground"
+                            className="relative -ml-1 mt-0.5 text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
                           >
                             <ChevronDownIcon
                               className={`transition-transform ${

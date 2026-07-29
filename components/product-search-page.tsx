@@ -86,7 +86,7 @@ export function ProductSearchPage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
       <div className="mb-6 flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Ürün Ara</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-balance">Ürün Ara</h1>
         <p className="text-sm text-muted-foreground">
           Ürün adı ya da barkod ile BİM, A101, Migros, Şok,
           CarrefourSA ve Tarım Kredi marketlerinde güncel fiyatları karşılaştır.
@@ -247,12 +247,12 @@ function ProductCard({
       type="button"
       onClick={onSelect}
       className={cn(
-        "group flex flex-col gap-2 rounded-xl border border-border/60 bg-card p-2.5 text-left",
+        "group flex flex-col gap-2 rounded-2xl border border-border/60 bg-card p-2.5 text-left",
         "transition-colors hover:border-border hover:bg-muted/20",
         "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
       )}
     >
-      <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted">
+      <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
         {hit.imageUrl ? (
           <Image
             src={hit.imageUrl}
@@ -300,7 +300,7 @@ function ProductCard({
 
 function SkeletonCard() {
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-border/60 bg-card p-2.5">
+    <div className="flex flex-col gap-2 rounded-2xl border border-border/60 bg-card p-2.5">
       <Skeleton className="aspect-square w-full rounded-lg" />
       <div className="space-y-1.5">
         <Skeleton className="h-3 w-full" />

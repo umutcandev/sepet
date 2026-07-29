@@ -179,7 +179,7 @@ function ScannerSession({
   }, [])
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-border/60 bg-black sm:aspect-video">
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-black outline outline-1 -outline-offset-1 outline-black/10 sm:aspect-video dark:outline-white/10">
       <video
         ref={videoRef}
         className="h-full w-full object-cover"

@@ -341,7 +341,7 @@ function CategoryDrawer({
           <DrawerClose asChild>
             <Link href="/blog" className={drawerItemClass(!active)}>
               Tümü
-              {!active && <CheckIcon className="ml-auto size-4" />}
+              {!active && <CheckIcon className="ms-auto size-4" />}
             </Link>
           </DrawerClose>
           {CATEGORY_LIST.map((category) => (
@@ -352,7 +352,7 @@ function CategoryDrawer({
               >
                 {category.label}
                 {active === category.id && (
-                  <CheckIcon className="ml-auto size-4" />
+                  <CheckIcon className="ms-auto size-4" />
                 )}
               </Link>
             </DrawerClose>

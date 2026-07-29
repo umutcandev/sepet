@@ -281,12 +281,12 @@ function ConversationRow({
           >
             {c.starred ? (
               <>
-                <StarOffIcon className="mr-2 size-4" />
+                <StarOffIcon className="size-4" />
                 Favorilerden çıkar
               </>
             ) : (
               <>
-                <StarIcon className="mr-2 size-4" />
+                <StarIcon className="size-4" />
                 Favorilere ekle
               </>
             )}
@@ -297,7 +297,7 @@ function ConversationRow({
               onRename(c)
             }}
           >
-            <PencilIcon className="mr-2 size-4" />
+            <PencilIcon className="size-4" />
             Yeniden adlandır
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -308,7 +308,7 @@ function ConversationRow({
               onDelete(c)
             }}
           >
-            <Trash2Icon className="mr-2 size-4" />
+            <Trash2Icon className="size-4" />
             Sil
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -386,7 +386,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                 <span>Favoriler</span>
                 <ChevronDownIcon
                   className={cn(
-                    "size-3.5 opacity-0 transition-all duration-200",
+                    "size-3.5 opacity-0 transition-[opacity,rotate] duration-200",
                     favoritesCollapsed && "-rotate-90"
                   )}
                 />
@@ -432,7 +432,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
               <span>Geçmiş Sohbetler</span>
               <ChevronDownIcon
                 className={cn(
-                  "size-3.5 opacity-0 transition-all duration-200",
+                  "size-3.5 opacity-0 transition-[opacity,rotate] duration-200",
                   historyCollapsed && "-rotate-90"
                 )}
               />

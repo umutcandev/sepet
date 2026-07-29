@@ -22,7 +22,7 @@ export function LegalPageShell({
   return (
     <div className="mx-auto w-full max-w-2xl px-6 py-12 md:py-16">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
           {title}
         </h1>
         <p className="mt-1.5 text-sm text-muted-foreground">

@@ -131,7 +131,7 @@ export function SessionsTable() {
                       aria-label="Oturum eylemleri"
                       disabled={busyId === r.id}
                       // Mobilde her zaman görünür; masaüstünde hover/açıkken belirir.
-                      className="text-muted-foreground transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
+                      className="relative text-muted-foreground transition-opacity after:absolute after:-inset-2 sm:opacity-0 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
                     >
                       <MoreHorizontalIcon />
                     </Button>

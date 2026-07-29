@@ -54,7 +54,7 @@ export function HomePricingSection() {
   return (
     <section className="relative z-20 bg-[var(--home-base)]">
       <div className="dark mx-auto w-full max-w-5xl px-4 pt-2 pb-16 text-foreground">
-        <h2 className="mb-5 text-2xl font-semibold tracking-tight text-foreground">
+        <h2 className="mb-5 text-2xl font-semibold tracking-tight text-balance text-foreground">
           Fiyatlandırma
         </h2>
 

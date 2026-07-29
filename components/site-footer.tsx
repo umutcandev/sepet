@@ -43,13 +43,16 @@ function FooterColumn({
   title: string
   children: React.ReactNode
 }) {
+  // Sütun etiketi başlık değil: `<h2>` olduğunda üç footer etiketi her sayfanın
+  // başlık taslağına makale bölümleriyle aynı seviyede giriyordu. Etiketli bir
+  // `<nav>` landmark'ı gezinme değerini koruyor, taslağı kirletmiyor.
   return (
-    <div className="min-w-0">
-      <h2 className="mb-4 text-sm font-semibold tracking-tight text-foreground">
+    <nav aria-label={title} className="min-w-0">
+      <p className="mb-4 text-sm font-semibold tracking-tight text-balance text-foreground">
         {title}
-      </h2>
+      </p>
       <ul className="flex flex-col gap-3">{children}</ul>
-    </div>
+    </nav>
   )
 }
 

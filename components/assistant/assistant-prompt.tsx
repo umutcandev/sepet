@@ -331,7 +331,7 @@ function AddAttachmentMenu() {
       </PromptInputActionMenuTrigger>
       <PromptInputActionMenuContent>
         <PromptInputActionMenuItem onSelect={() => att.openFileDialog()}>
-          <ImageIcon className="mr-2 size-4" />
+          <ImageIcon className="size-4" />
           Resim yükle
         </PromptInputActionMenuItem>
       </PromptInputActionMenuContent>

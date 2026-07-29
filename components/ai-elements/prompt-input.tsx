@@ -411,7 +411,7 @@ export const PromptInputActionAddAttachments = ({
 
   return (
     <DropdownMenuItem {...props} onSelect={handleSelect}>
-      <ImageIcon className="mr-2 size-4" /> {label}
+      <ImageIcon className="size-4" /> {label}
     </DropdownMenuItem>
   );
 };
@@ -456,7 +456,7 @@ export const PromptInputActionAddScreenshot = ({
 
   return (
     <DropdownMenuItem {...props} onSelect={handleSelect}>
-      <Monitor className="mr-2 size-4" />
+      <Monitor className="size-4" />
       {label}
     </DropdownMenuItem>
   );
