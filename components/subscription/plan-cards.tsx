@@ -216,9 +216,12 @@ export function ProCard({
   )
 }
 
-// ₺ simgesinin ortak stili: ana fonta (sans) alınır çünkü Geist Mono'nun ₺
-// glyph'i bozuk görünüyor. Rakamlardan hafifçe ayrılır ve bir tık küçülür —
-// em cinsinden olduğu için hangi punto ile kullanılırsa kullanılsın oran korunur.
+// ₺ (U+20BA) simgesinin ortak stili. Simge NE Geist'te NE Geist Mono'da var;
+// her iki ailede de sistem yedeğine düşüyor. Yani buradaki `font-sans`
+// Geist'in ₺'sini seçmiyor — mono yedeği yerine sans yedeğinin çizmesini
+// sağlıyor, çevresindeki metinle tutarlı duran da o. Rakamlardan hafifçe
+// ayrılır ve bir tık küçülür; em cinsinden olduğu için hangi punto ile
+// kullanılırsa kullanılsın oran korunur.
 const LIRA = "ml-0.5 font-sans text-[0.8em]"
 
 // Fiyat tutarı. Simge tr-TR yazımındaki gibi tutarın sonunda durur (990₺).
