@@ -5,12 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { CommandIcon, PanelLeftIcon, PlusIcon } from "lucide-react"
-import {
-  motion,
-  useMotionValue,
-  useMotionValueEvent,
-  useTransform,
-} from "motion/react"
+import { motion, useMotionValue, useMotionValueEvent } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import { AppSidebar } from "@/components/app-sidebar"
@@ -131,7 +126,6 @@ export function AppShell({ blogPosts, children }: Props) {
   // Değer MotionValue'da tutulur: her scroll karesinde React re-render'ı
   // tetiklemeden doğrudan style'a yazılır.
   const darkness = useMotionValue(0)
-  const lightness = useTransform(darkness, (v) => 1 - v)
   // Metin/ikon paleti interpolate edilemez (token'lar `dark` sınıfıyla topluca
   // değişir); rampanın ortasında yumuşak bir transition ile flip eder.
   const [paletteDark, setPaletteDark] = React.useState(false)
@@ -299,21 +293,26 @@ export function AppShell({ blogPosts, children }: Props) {
               z-30: blog bölümü hero'nun üstünde kalmak için z-20 taşıyor; aynı
               seviyede olsaydı DOM'da sonra geldiği için fade'in üstüne binerdi. */}
           {isHome ? (
-            // İki katman çapraz sönümlenir: gradient'ler CSS'te animate
-            // edilemediği için renk geçişini opacity ile yapıyoruz. Alt katman
-            // da sönmeli — yoksa koyu bölgede iki yarı saydam rampa üst üste
-            // binip gündüz modunda açık bir pus bırakırdı.
+            // Rampa artık gradient'in RENK DURAKLARINDA değil, kabın
+            // maskesinde. Eskiden iki yarı saydam gradient çapraz sönümleniyordu
+            // ve rampanın ortasında bileşik alfa `d + (1-d)²` oluyordu: iki uçta
+            // 1, ama d=0.5'te 0.75. Yani blog bölümüne girerken fade'in tepesi
+            // delinip header'ın sert alt kenarı görünüyordu — sonra tekrar
+            // kapanıyordu. Şimdi iki katman da DÜZ RENK: alttaki her zaman tam
+            // opak, üstteki opacity ile geliyor, bileşim her karede tam opak
+            // kalıyor. Alfa rampasını maske veriyor; maske sabit olduğu için
+            // hangi ara değerde olursak olalım profil aynı.
+            //
+            // Renk yerine opacity animasyonu bilinçli: compositor'da kalıyor,
+            // her scroll karesinde gradient yeniden boyanmıyor.
             <div
               aria-hidden
-              className="pointer-events-none sticky top-0 z-30 -mb-12 h-12 shrink-0"
+              className="home-header-fade pointer-events-none sticky top-0 z-30 -mb-12 h-12 shrink-0"
             >
-              <motion.div
-                style={{ opacity: lightness }}
-                className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--background)_0%,color-mix(in_srgb,var(--background)_70%,transparent)_40%,color-mix(in_srgb,var(--background)_28%,transparent)_70%,transparent_100%)]"
-              />
+              <div className="absolute inset-0 bg-background" />
               <motion.div
                 style={{ opacity: darkness }}
-                className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--home-base)_0%,color-mix(in_srgb,var(--home-base)_70%,transparent)_40%,color-mix(in_srgb,var(--home-base)_28%,transparent)_70%,transparent_100%)]"
+                className="absolute inset-0 bg-[var(--home-base)]"
               />
             </div>
           ) : null}

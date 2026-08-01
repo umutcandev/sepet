@@ -427,6 +427,22 @@
   background-color: var(--primary);
 }
 
+/* Header'ın altındaki yumuşatma bandı (components/app-shell.tsx).
+   İçerideki katmanlar DÜZ RENK ve bileşimleri her zaman tam opak; alfa
+   rampasını burası veriyor. Rampa maskede olduğu için renk geçişinin neresinde
+   olursak olalım profil değişmez — eskiden iki yarı saydam gradient çapraz
+   sönümlenirken rampanın ortasında tepe alfası 0.75'e düşüp header'ın sert
+   kenarını açığa çıkarıyordu. */
+@utility home-header-fade {
+  mask-image: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.7) 40%,
+    rgb(0 0 0 / 0.28) 70%,
+    rgb(0 0 0 / 0) 100%
+  );
+}
+
 /* ---------------------------------------------------------------------------
    Logo şeridi (components/home/logo-marquee.tsx)
 
