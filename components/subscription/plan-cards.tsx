@@ -127,7 +127,7 @@ export function BillingToggle({
               "flex items-center self-stretch rounded-md font-medium transition-colors",
               sm ? "gap-0.5 px-2" : "gap-1 px-3",
               active
-                ? "bg-background text-foreground shadow-sm"
+                ? "bg-background text-foreground smooth-shadow-xs"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >

@@ -158,6 +158,9 @@ importers:
       shadcn:
         specifier: ^4.7.0
         version: 4.7.0(@types/node@25.6.2)(typescript@5.9.3)
+      shadow-plugin:
+        specifier: ^1.2.6
+        version: 1.2.6
       shiki:
         specifier: ^4.0.2
         version: 4.0.2
@@ -5982,6 +5985,9 @@ packages:
   shadcn@4.7.0:
     resolution: {integrity: sha512-70fwnesNrY1GgeD7Kdzn+3SsYeyfibm8immsA5L68+OusoPTvYF01oWExl8/latKpMpvVXcbgdbbE6VFBJQ38w==}
     hasBin: true
+
+  shadow-plugin@1.2.6:
+    resolution: {integrity: sha512-S9WeEzf8q3s4u78t8LXij4+dy2chcmGWlOXUdF84UYGj6UeRkGv1Ku7EOpySzbRje6PhvzkkRAJBNVHtpj9Egw==}
 
   sharp@0.34.5:
     resolution: {integrity: sha512-Ou9I5Ft9WNcCbXrU9cMgPBcCK8LiwLqcbywW3t4oDV37n1pzpuNLsYiAV8eODnjbtQlSDwZ2cUEeQz4E54Hltg==}
@@ -13171,6 +13177,8 @@ snapshots:
       - babel-plugin-macros
       - supports-color
       - typescript
+
+  shadow-plugin@1.2.6: {}
 
   sharp@0.34.5:
     dependencies:

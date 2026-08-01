@@ -27,13 +27,26 @@ const Toaster = ({ ...props }: ToasterProps) => {
         {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
           "--border-radius": "var(--radius)",
+          // Kenar `smooth-shadow-ring-md`in içindeki hairline'dan geliyor.
+          // Sonner'ın kendi 1px border'ı açık kalsaydı gölgenin hemen içinde
+          // ikinci bir sert çizgi olarak dururdu — düzeltmeye çalıştığımız
+          // çift kenarın ta kendisi. `richColors` açık olduğu için nötr
+          // `--normal-border` yetmiyor, durum renklerinin kenarları da
+          // kapatılıyor. Anlamı zaten zemin tonu, ikon ve metin rengi taşıyor;
+          // kenar yalnız çerçeve çiziyordu.
+          "--normal-border": "transparent",
+          "--success-border": "transparent",
+          "--error-border": "transparent",
+          "--warning-border": "transparent",
+          "--info-border": "transparent",
         } as React.CSSProperties
       }
       toastOptions={{
         classNames: {
-          toast: "cn-toast",
+          // Plugin'in box-shadow'u `!important`, sonner'ın kendi gölgesini
+          // sınıf sırasından bağımsız olarak devralır.
+          toast: "cn-toast smooth-shadow-ring-md",
         },
       }}
       {...props}

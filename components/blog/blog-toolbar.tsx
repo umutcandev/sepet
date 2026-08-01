@@ -204,7 +204,7 @@ export function BlogToolbar({
           </div>
 
           {showPanel && (
-            <div className="absolute top-[calc(100%+8px)] right-0 left-0 z-50 overflow-hidden rounded-xl border border-border bg-popover p-1.5 shadow-lg shadow-foreground/5 sm:left-auto sm:w-[28rem] sm:max-w-[calc(100vw-2rem)]">
+            <div className="absolute top-[calc(100%+8px)] right-0 left-0 z-50 overflow-hidden rounded-xl bg-popover p-1.5 smooth-shadow-ring-lg sm:left-auto sm:w-[28rem] sm:max-w-[calc(100vw-2rem)]">
               <Command.List className="cn-scrollbar-thin max-h-[min(60vh,22rem)] overflow-x-hidden overflow-y-auto">
                 {loading ? (
                   <SearchSkeletons />

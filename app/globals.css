@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* Yükseltilmiş yüzeylerin gölgesi: `smooth-shadow-ring-*` katmanlı yumuşak
+   gölgenin SON katmanı olarak 1px'lik hairline'ı da içerir. Böylece kenar
+   gölgenin içinde erir; `border`/`ring` + `shadow` ikilisinin çizdiği "önce
+   sert çizgi, hemen dışında yumuşak gölge" çift kenarı oluşmaz.
+   Bu yüzeylerde ASLA ayrıca `border`/`ring` kullanma — halka zaten içinde. */
+@import "shadow-plugin";
 @import "./style-nova.css";
 
 /* Blog makale tipografisi (prose) — token'lara bağlanır (aşağıda). */
@@ -137,6 +143,41 @@
     --home-base: #1b0e08;
     --home-base-soft: rgba(27, 14, 8, 0.5);
     --home-base-clear: rgba(27, 14, 8, 0);
+}
+
+/* shadow-plugin'in hairline'ı varsayılan olarak nötrdür (siyah %5 / beyaz %18).
+   Palet sıcak olduğu için halkayı `--foreground`dan türetiyoruz: tonu temayla
+   birlikte döner ve kenar nötr griye kaymaz.
+
+   Alfalar kasıtlı olarak asimetrik. Halka DIŞ katman: yüzeyin değil, arkasındaki
+   sayfanın üstüne boyanır, yani görünen rengini sayfa zemini belirler. Light'ta
+   koyu bir hairline açık zeminden UZAKLAŞIR, düşük alfa yeter. Dark'ta açık bir
+   hairline yükseltilmiş yüzeye DOĞRU açılır; alfa düşükse halka yüzeyin kendi
+   rengine oturup kaybolur. Ölçtük: dark'ta %18, sayfanın (#1A130E) üstünde
+   rgb(65,57,51) veriyor, popover yüzeyi (#221A14) rgb(34,26,20) — yaklaşık 31
+   seviyelik ayrım, kenar rahat okunuyor.
+
+   İki bildirim de aynı formülü kurar, yalnız `--smooth-ring-alpha` değişir.
+   Sebebi plugin'in `prefers-color-scheme` kuralının (0,3,0) bir `.dark`
+   sınıfından (0,1,0) daha özgül olması: aynı seçicileri birebir yeniden yazıp
+   formülü sabit tutmasak, sistem teması koyu olan bir ziyaretçide site açık
+   temadayken beyaz halka sızardı. */
+:root {
+  --smooth-ring-alpha: 8%;
+  --smooth-ring-color: color-mix(in oklab, var(--foreground) var(--smooth-ring-alpha), transparent);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not([data-theme="light"]) {
+    --smooth-ring-color: color-mix(
+      in oklab,
+      var(--foreground) var(--smooth-ring-alpha),
+      transparent
+    );
+  }
+}
+.dark,
+[data-theme="dark"] {
+  --smooth-ring-alpha: 18%;
 }
 
 /* Hero görselinin alt kenarını blog dip rengine dikişsiz bağlayan fade.

@@ -227,7 +227,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
   // Opak arka plan + net border: harita döşemeleri üstünde saydam buton berbat
   // göründüğü için bg-background'ı her iki temada da zorluyoruz.
   const controlClass =
-    "size-7 border-border bg-background text-foreground shadow-sm hover:bg-muted dark:bg-background dark:border-border dark:hover:bg-muted"
+    "size-7 bg-background text-foreground smooth-shadow-ring-xs hover:bg-muted dark:bg-background dark:hover:bg-muted"
 
   return (
     <div className="relative h-full w-full">

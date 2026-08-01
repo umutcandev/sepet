@@ -5,7 +5,7 @@ import Image from "next/image"
 export function AuthPageShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-[70dvh] w-full items-center justify-center px-4 py-12">
-      <div className="flex w-full max-w-[402px] flex-col items-center rounded-xl bg-background px-6 pt-10 pb-8 text-center ring-1 ring-foreground/10">
+      <div className="flex w-full max-w-[402px] flex-col items-center rounded-xl bg-background px-6 pt-10 pb-8 text-center smooth-shadow-ring-lg">
         <Image
           src="/brand/sepet-square-dark.webp"
           alt="Sepet"
