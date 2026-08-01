@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm"
 
 import { AUTHOR_IDS } from "./lib/blog/authors"
 import { CATEGORY_IDS } from "./lib/blog/categories"
+import { codeThemeDark, codeThemeLight } from "./lib/blog/code-theme"
 
 // İçerik katmanı: content/blog/*.mdx → typed veri (.velite/). Tümü build-time
 // çalışır; runtime'a yük binmez. readingTime/toc/derlenmiş MDX otomatik eklenir.
@@ -74,9 +75,14 @@ export default defineConfig({
       [
         rehypePrettyCode,
         {
-          // Çift tema: light/dark token'a CSS ile bağlanır (globals.css).
-          theme: { light: "github-light", dark: "github-dark" },
+          // Çift tema: token'lar `--shiki-light` / `--shiki-dark` özel
+          // değişkenleri olarak yazılır, rengi globals.css seçer. Temalar
+          // sitenin paletinden türetilmiştir (lib/blog/code-theme.ts).
+          theme: { light: codeThemeLight, dark: codeThemeDark },
+          // Zemin figürün kendi `--code-surface`ından gelir.
           keepBackground: false,
+          // Dilsiz ``` blokları da satır yapısı ve gutter kazansın.
+          defaultLang: { block: "plaintext" },
         },
       ],
     ],

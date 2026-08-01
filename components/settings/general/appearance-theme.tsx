@@ -36,7 +36,7 @@ export function AppearanceTheme() {
             className={cn(
               "rounded-sm px-2.5 py-1 text-xs transition-colors",
               selected
-                ? "bg-background text-foreground shadow-xs"
+                ? "bg-background text-foreground smooth-shadow-xs"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >

@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* Yükseltilmiş yüzeylerin gölgesi: `smooth-shadow-ring-*` katmanlı yumuşak
+   gölgenin SON katmanı olarak 1px'lik hairline'ı da içerir. Böylece kenar
+   gölgenin içinde erir; `border`/`ring` + `shadow` ikilisinin çizdiği "önce
+   sert çizgi, hemen dışında yumuşak gölge" çift kenarı oluşmaz.
+   Bu yüzeylerde ASLA ayrıca `border`/`ring` kullanma — halka zaten içinde. */
+@import "shadow-plugin";
 @import "./style-nova.css";
 
 /* Blog makale tipografisi (prose) — token'lara bağlanır (aşağıda). */
@@ -12,6 +18,13 @@
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: var(--font-sans);
+    /* `font-mono` bugüne dek kazara ayaktaydı: tema tarafında tanımlı değildi,
+       yalnız preflight'ın `--default-mono-font-family` → `var(--font-mono)`
+       zincirine ve next/font'un katmansız `.variable` sınıfının `@layer theme`i
+       yenmesine bağlıydı. Burada açıkça tanımlanıyor; `inline` sayesinde
+       Tailwind `:root`'a kendi değerini yazmaz, utility doğrudan çalışma
+       zamanındaki `--font-mono`ya bağlanır (sans ile aynı desen). */
+    --font-mono: var(--font-mono);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -132,6 +145,41 @@
     --home-base-clear: rgba(27, 14, 8, 0);
 }
 
+/* shadow-plugin'in hairline'ı varsayılan olarak nötrdür (siyah %5 / beyaz %18).
+   Palet sıcak olduğu için halkayı `--foreground`dan türetiyoruz: tonu temayla
+   birlikte döner ve kenar nötr griye kaymaz.
+
+   Alfalar kasıtlı olarak asimetrik. Halka DIŞ katman: yüzeyin değil, arkasındaki
+   sayfanın üstüne boyanır, yani görünen rengini sayfa zemini belirler. Light'ta
+   koyu bir hairline açık zeminden UZAKLAŞIR, düşük alfa yeter. Dark'ta açık bir
+   hairline yükseltilmiş yüzeye DOĞRU açılır; alfa düşükse halka yüzeyin kendi
+   rengine oturup kaybolur. Ölçtük: dark'ta %18, sayfanın (#1A130E) üstünde
+   rgb(65,57,51) veriyor, popover yüzeyi (#221A14) rgb(34,26,20) — yaklaşık 31
+   seviyelik ayrım, kenar rahat okunuyor.
+
+   İki bildirim de aynı formülü kurar, yalnız `--smooth-ring-alpha` değişir.
+   Sebebi plugin'in `prefers-color-scheme` kuralının (0,3,0) bir `.dark`
+   sınıfından (0,1,0) daha özgül olması: aynı seçicileri birebir yeniden yazıp
+   formülü sabit tutmasak, sistem teması koyu olan bir ziyaretçide site açık
+   temadayken beyaz halka sızardı. */
+:root {
+  --smooth-ring-alpha: 8%;
+  --smooth-ring-color: color-mix(in oklab, var(--foreground) var(--smooth-ring-alpha), transparent);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not([data-theme="light"]) {
+    --smooth-ring-color: color-mix(
+      in oklab,
+      var(--foreground) var(--smooth-ring-alpha),
+      transparent
+    );
+  }
+}
+.dark,
+[data-theme="dark"] {
+  --smooth-ring-alpha: 18%;
+}
+
 /* Hero görselinin alt kenarını blog dip rengine dikişsiz bağlayan fade.
    Görselin dibi koyu bir manzara (gündüz yeşil tepeler / gece kahve tepeler);
    fade yarı-saydam olduğu yerde o tepe siluetinin üst kenarı "çizgi" gibi
@@ -150,6 +198,15 @@
     color-mix(in srgb, var(--home-base) 24%, var(--home-base-clear)) 93%,
     var(--home-base-clear) 100%
   );
+}
+
+/* Bir düzine bileşen `cn-font-heading` kullanıyordu ama sınıf hiçbir yerde
+   tanımlı değildi (shadcn'in bundle'ında da yok). `--font-heading` şu an
+   `--font-sans`a eşit olduğu için görsel etki sıfır; sınıfın karşılıksız
+   kalmaması ve başlık yüzü ileride ayrışırsa tek yerden dönebilmesi için
+   burada tanımlanıyor. */
+@utility cn-font-heading {
+  font-family: var(--font-heading);
 }
 
 @layer base {
@@ -187,14 +244,140 @@
   --tw-prose-td-borders: var(--border);
 }
 
-/* rehype-pretty-code çift tema: token rengi varsayılan olarak light, dark'ta
-   --shiki-dark'a geçer (keepBackground:false → arka plan prose-pre-bg'den). */
+/* ---------------------------------------------------------------------------
+   Kod blokları (rehype-pretty-code + lib/blog/code-theme.ts)
+
+   Çerçeve, başlık çubuğu ve kopyala butonu React tarafında
+   (components/blog/mdx-content.tsx, [data-slot="code-block"]); burada kalan
+   iş yüzeyler, token renkleri ve satır numarası gutter'ı.
+
+   Yüzey hiyerarşisi her iki temada da aynı yönde okunur: sayfa < kod alanı <
+   chrome. Light'ta kod alanı `--muted`ten açılır, dark'ta koyulaşır; chrome
+   ise ikisinde de `--muted`. Böylece "chrome, kod alanından bir tık daha
+   belirgin" ilişkisi tema değişince ters dönmez.
+--------------------------------------------------------------------------- */
+.prose [data-slot="code-block"] {
+  --code-surface: color-mix(in oklab, var(--muted) 45%, var(--background));
+  --code-chrome: var(--muted);
+  /* Satır numaraları yardımcı bir işaret: kodun önüne geçmesin diye yorum
+     renginin altında, ama ≥3:1 kontrastta tutulur. */
+  --code-gutter: #957e6a;
+  --code-rule: color-mix(in oklab, var(--border) 70%, var(--code-surface));
+  --code-highlight: color-mix(in oklab, var(--primary) 10%, var(--code-surface));
+}
+.dark .prose [data-slot="code-block"] {
+  --code-gutter: #877260;
+}
+
+.prose [data-rehype-pretty-code-figure] {
+  margin-block: 1.75em;
+}
+
 .prose [data-rehype-pretty-code-figure] pre {
-  padding-block: 0.875rem;
-  border: 1px solid var(--border);
+  margin: 0;
+  /* Yatay iç boşluğu satırlar taşır: gutter sola yapışık kalabilsin. */
+  padding: 0.75rem 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+/* rehype `display:grid`i satır içi stille verir. Kolonu `max-content`a
+   sabitliyoruz: aksi hâlde satırlar kaydırma alanı kadar genişlikte kalır,
+   yatay kaydırmada hem yapışkan gutter hem de vurgulu satır zeminleri
+   görünür alanın kenarında kesilirdi. `minmax(100%, …)` kısa bloklarda
+   satırların yine tam genişliği kaplamasını sağlar. */
+.prose [data-rehype-pretty-code-figure] pre > code {
+  display: grid;
+  grid-template-columns: minmax(100%, max-content);
+  counter-reset: line;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.prose [data-rehype-pretty-code-figure] [data-line] {
+  padding-right: 1.25rem;
+}
+
+/* Satır numarası gutter'ı. İçerik CSS sayacından geldiği için DOM'da yok:
+   `pre.textContent` (kopyala butonu) ve kullanıcı seçimi numaraları almaz.
+   Yatay kaydırmada sola yapışır ki uzun satırlarda kaybolmasın. */
+.prose [data-rehype-pretty-code-figure] [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  display: inline-block;
+  /* Hane sayısı React'ten gelir; 100+ satırlık blokta gutter kendiliğinden
+     genişler, iki haneli blokta boşuna yer kaplamaz. */
+  width: calc(var(--code-gutter-digits, 2) * 1ch + 2.75rem);
+  padding-inline: 0.875rem 1.75rem;
+  text-align: right;
+  color: var(--code-gutter);
+  /* Ayraç çizgisi kenarlık değil, zeminin içine çizilen 1px'lik bir bant:
+     sağda 1rem'lik boşluk gutter'ın OPAK alanı içinde kalır, böylece yatay
+     kaydırmada kod çizginin dibinde yarım harf göstermeden tamamen altına
+     girer. (`border-right` kutunun en sağına düştüğü için bunu yapamıyordu.) */
+  background:
+    linear-gradient(var(--code-rule), var(--code-rule)) no-repeat calc(100% - 1rem) 0 /
+      1px 100%,
+    var(--code-gutter-bg, var(--code-surface));
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Çift tema: rehype token başına `--shiki-light` / `--shiki-dark` yazar,
+   rengi seçmek CSS'in işi. Light kuralı eksikti — light temada bütün
+   token'lar tek renge (prose foreground) düşüyor, yani vurgulama yalnız
+   dark'ta çalışıyordu. */
+.prose [data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-light);
 }
 .dark .prose [data-rehype-pretty-code-figure] code span {
-  color: var(--shiki-dark) !important;
+  color: var(--shiki-dark);
+}
+
+/* `{1,4-6}` meta'sıyla vurgulanan satırlar: sol kenarda ince bir accent
+   çubuğu + hafif zemin. Gutter zemini de eşleşsin, şerit kesintisiz görünsün. */
+.prose [data-rehype-pretty-code-figure] [data-highlighted-line] {
+  background: var(--code-highlight);
+}
+/* Accent çubuğu satırın değil gutter'ın üstünde: gutter yapışkan ve opak
+   olduğu için satırın kendi sol kenarına çizilen bir şerit altında kalırdı. */
+.prose [data-rehype-pretty-code-figure] [data-highlighted-line]::before {
+  --code-gutter-bg: var(--code-highlight);
+  box-shadow: inset 2px 0 0 var(--primary);
+  color: color-mix(in oklab, var(--code-gutter) 60%, var(--foreground));
+}
+
+/* `/kelime/` meta'sıyla vurgulanan karakterler. */
+.prose [data-rehype-pretty-code-figure] [data-highlighted-chars] {
+  border-radius: 0.25rem;
+  padding: 0.1em 0.25em;
+  background: color-mix(in oklab, var(--primary) 16%, var(--code-surface));
+}
+
+/* Satır içi `kod` — blok değil; prose'un tırnak eklemesini kapatır. */
+.prose :not(pre) > code {
+  border-radius: 0.3rem;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--muted) 60%, var(--background));
+  padding: 0.15em 0.35em;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  font-weight: 450;
+}
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none;
 }
 
 /* Başlık çapaları — başlık metni LİNK DEĞİL. Anchor başlığın önüne eklenir;
@@ -242,6 +425,67 @@
 }
 .prose .heading-anchor:hover .heading-anchor-icon {
   background-color: var(--primary);
+}
+
+/* Header'ın altındaki yumuşatma bandı (components/app-shell.tsx).
+   İçerideki katmanlar DÜZ RENK ve bileşimleri her zaman tam opak; alfa
+   rampasını burası veriyor. Rampa maskede olduğu için renk geçişinin neresinde
+   olursak olalım profil değişmez — eskiden iki yarı saydam gradient çapraz
+   sönümlenirken rampanın ortasında tepe alfası 0.75'e düşüp header'ın sert
+   kenarını açığa çıkarıyordu. */
+@utility home-header-fade {
+  mask-image: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.7) 40%,
+    rgb(0 0 0 / 0.28) 70%,
+    rgb(0 0 0 / 0) 100%
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Logo şeridi (components/home/logo-marquee.tsx)
+
+   Şerit logo setini iki kez basar; -50%'ye kadar kaydırınca ikinci kopya tam
+   birincinin yerine oturur, yani döngü başa dönerken sıçrama görünmez.
+--------------------------------------------------------------------------- */
+@theme inline {
+  @keyframes logo-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  --animate-logo-marquee: logo-marquee var(--logo-marquee-duration, 46s) linear
+    infinite;
+}
+
+/* İki uçta sert kesim yerine erime. Kısa ve dik tutuluyor: şerit kart
+   gridiyle aynı kapta (992px) ve içindeki kartların kendi kenarı var; uzun bir
+   rampa uçtaki kartı yarı yarıya soldurup "yanlış boyanmış kart" gibi
+   gösteriyordu. Kısa mesafe hem kartları temiz bırakıyor hem geçişi netleştiriyor. */
+@utility logo-marquee-fade {
+  --_fade: 0.75rem;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black var(--_fade),
+    black calc(100% - var(--_fade)),
+    transparent
+  );
+  @media (width >= 48rem) {
+    --_fade: 1.5rem;
+  }
+}
+
+/* Hareket azaltma tercihinde şerit durur; iki kopyadan ilki sabit bir logo
+   sırası olarak görünmeye devam eder. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-logo-marquee {
+    animation: none;
+  }
 }
 
 /* Prevent sticky hover on touch devices */

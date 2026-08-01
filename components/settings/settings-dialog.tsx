@@ -205,7 +205,7 @@ export function SettingsDialog({
             </ul>
 
             {trimmed && (
-              <div className="absolute top-12 left-1.5 z-30 w-[min(18rem,calc(100vw-4rem))] overflow-hidden rounded-xl border bg-popover shadow-lg ring-1 ring-foreground/10">
+              <div className="absolute top-12 left-1.5 z-30 w-[min(18rem,calc(100vw-4rem))] overflow-hidden rounded-xl bg-popover smooth-shadow-ring-lg">
                 {results.length === 0 ? (
                   <div className="px-3 py-6 text-center text-xs text-muted-foreground">
                     “{trimmed}” için sonuç bulunamadı

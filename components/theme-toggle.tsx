@@ -90,7 +90,7 @@ export function ThemeMenuItems() {
                 className={cn(
                   "flex flex-1 items-center justify-center gap-1 rounded-sm px-1.5 py-1 text-xs transition-colors",
                   selected
-                    ? "bg-background text-foreground shadow-xs"
+                    ? "bg-background text-foreground smooth-shadow-xs"
                     : "text-muted-foreground hover:text-foreground",
                 )}
               >

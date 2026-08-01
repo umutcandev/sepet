@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
-import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 import { AppShell } from "@/components/app-shell"
@@ -16,14 +15,8 @@ import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { SESSION_HINT_SCRIPT } from "@/lib/auth/session-snapshot"
 import { getLatestPosts } from "@/lib/blog"
+import { geistMono, geistSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
-
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -92,7 +85,7 @@ export default function RootLayout({
     <html
       lang="tr"
       suppressHydrationWarning
-      className={cn("style-nova antialiased", fontMono.variable, "font-sans", geist.variable)}
+      className={cn("style-nova antialiased", geistSans.variable, geistMono.variable, "font-sans")}
     >
       <body>
         {/* Son bilinen oturum ipucunu ilk boyamadan önce <html data-session>'a

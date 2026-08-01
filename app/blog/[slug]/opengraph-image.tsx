@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises"
+import { fileURLToPath } from "node:url"
+
 import { ImageResponse } from "next/og"
 import { notFound } from "next/navigation"
 
@@ -17,45 +20,59 @@ export const contentType = "image/png"
 
 type FontData = { name: "Geist"; data: ArrayBuffer; weight: 400 | 600; style: "normal" }
 
-// Geist'i Google Fonts'tan TTF olarak çek (yedek yol). Özel UA YOK: varsayılan
-// fetch UA'sına Google css2 truetype döndürür (Next.js resmi örneği). Satori
-// woff2 okuyamaz; ttf/otf/woff kabul eder.
-async function loadGeistFromGoogle(
-  text: string,
-  weight: 400 | 600,
-): Promise<FontData | null> {
+// Satori woff2 çözemez (yalnız ttf/otf/woff), o yüzden burada `fonts/`
+// altındaki statik TTF'ler kullanılır — tarayıcıya giden variable woff2'ler
+// değil. Bkz. fonts/README.md.
+//
+// `new URL(..., import.meta.url)` ÇAĞRI BAŞINA BİR SABİT LİTERAL ile kurulmak
+// zorunda: bundler bu ifadeyi statik olarak tarayıp varlığı çıktıya kopyalar.
+// Yol değişkenle (`../_fonts/${file}`) kurulduğunda Turbopack tek bir varlığa
+// bağlıyor ve 400 ile 600 aynı dosyaya çözülüyordu; SemiBold girdisi ölüydü.
+// Bu yüzden iki URL de ayrı ayrı, modül düzeyinde yazılı.
+const GEIST_REGULAR = new URL("../../../fonts/Geist-Regular.ttf", import.meta.url)
+const GEIST_SEMIBOLD = new URL("../../../fonts/Geist-SemiBold.ttf", import.meta.url)
+
+// Çözülen değer `file:///…/.next/server/assets/…` biçimindedir ve Node'un
+// fetch'i `file:` şemasını desteklemez — eski kod tam da bu yüzden her istekte
+// patlayıp sessizce Google Fonts'a düşüyordu (dinamik rota olduğu için istek
+// başına iki ağ turu). Dosyayı diskten okuyoruz; ağ yok.
+async function readFontFile(url: URL): Promise<ArrayBuffer | null> {
   try {
-    const url = `https://fonts.googleapis.com/css2?family=Geist:wght@${weight}&text=${encodeURIComponent(
-      text,
-    )}`
-    const css = await fetch(url).then((res) => res.text())
-    const src = css.match(
-      /src:\s*url\((.+?)\)\s*format\('(?:opentype|truetype|woff)'\)/,
-    )?.[1]
-    if (!src) return null
-    const data = await fetch(src).then((res) => res.arrayBuffer())
-    return { name: "Geist", data, weight, style: "normal" }
+    if (url.protocol === "file:") {
+      const buf = await readFile(fileURLToPath(url))
+      return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer
+    }
+    // Edge benzeri bir runtime'da varlık http(s) üzerinden sunulur.
+    const res = await fetch(url)
+    return res.ok ? await res.arrayBuffer() : null
   } catch {
     return null
   }
 }
 
-// Önce repo-içi yerel font (app/blog/_fonts/, import.meta.url ile bundle'lanır;
-// ağ gerektirmez), yoksa Google'a düş.
-async function loadGeist(
-  weight: 400 | 600,
-  localFile: string,
-  text: string,
-): Promise<FontData | null> {
-  try {
-    const data = await fetch(
-      new URL(`../_fonts/${localFile}`, import.meta.url),
-    ).then((res) => res.arrayBuffer())
-    if (data.byteLength > 0) return { name: "Geist", data, weight, style: "normal" }
-  } catch {
-    // yerel font yoksa Google'a düş
-  }
-  return loadGeistFromGoogle(text, weight)
+// Aynı lambda içindeki sonraki render'lar diski tekrar okumasın diye modül
+// düzeyinde tutulur. Font dosyaları build çıktısıyla birlikte geldiği için
+// içerik istekler arasında değişmez.
+let fontsPromise: Promise<FontData[]> | null = null
+
+function loadGeist(): Promise<FontData[]> {
+  fontsPromise ??= Promise.all([
+    readFontFile(GEIST_REGULAR),
+    readFontFile(GEIST_SEMIBOLD),
+  ]).then(([regular, semibold]) => {
+    const loaded: FontData[] = []
+    if (regular) loaded.push({ name: "Geist", data: regular, weight: 400, style: "normal" })
+    if (semibold) loaded.push({ name: "Geist", data: semibold, weight: 600, style: "normal" })
+    if (loaded.length < 2) {
+      // Yedeğe sessizce düşmek eski kusurun ta kendisiydi. Font olmadan
+      // ImageResponse sistem yüzüyle çizer; en azından log'a düşsün.
+      console.warn(
+        `[opengraph-image] Geist TTF okunamadı (${loaded.length}/2); OG görseli sistem fontuna düşecek.`,
+      )
+    }
+    return loaded
+  })
+  return fontsPromise
 }
 
 // Satori `/blog/authors/x.jpg` gibi göreli yolları çözemez; avatarı okuyup data
@@ -132,10 +149,8 @@ export default async function Image({
   const primaryRole =
     post.authors.length === 1 ? getAuthor(post.authors[0]).role : ""
 
-  const text = `${title}${categoryLabel}${authorNames}${primaryRole}Sepet${readingTime} dk okuma·trysepet.com`
-  const [regular, semibold, avatars] = await Promise.all([
-    loadGeist(400, "Geist-Regular.ttf", text),
-    loadGeist(600, "Geist-SemiBold.ttf", text),
+  const [fonts, avatars] = await Promise.all([
+    loadGeist(),
     Promise.all(
       post.authors.map(async (id) => ({
         name: getAuthor(id).name,
@@ -143,9 +158,6 @@ export default async function Image({
       })),
     ),
   ])
-  const fonts = [regular, semibold].filter(
-    (f): f is NonNullable<typeof f> => f != null,
-  )
 
   return new ImageResponse(
     (
