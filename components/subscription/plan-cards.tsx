@@ -216,9 +216,11 @@ export function ProCard({
   )
 }
 
-// ₺ simgesinin ortak stili: ana fonta (sans) alınır çünkü Geist Mono'nun ₺
-// glyph'i bozuk görünüyor. Rakamlardan hafifçe ayrılır ve bir tık küçülür —
-// em cinsinden olduğu için hangi punto ile kullanılırsa kullanılsın oran korunur.
+// ₺ simgesinin ortak stili: ana fonta (sans) alınır. Hasköy'de de Geist Mono'da
+// da U+20BA glyph'i yok (bkz. app/_fonts/README.md), simge yedek fonta düşüyor
+// ve sans yedeği mono yedeğinden düzgün çiziyor.
+// Rakamlardan hafifçe ayrılır ve bir tık küçülür; em cinsinden olduğu için
+// hangi punto ile kullanılırsa kullanılsın oran korunur.
 const LIRA = "ml-0.5 font-sans text-[0.8em]"
 
 // Fiyat tutarı. Simge tr-TR yazımındaki gibi tutarın sonunda durur (990₺).

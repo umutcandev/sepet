@@ -15,47 +15,44 @@ export const alt = "Sepet Blog"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
-type FontData = { name: "Geist"; data: ArrayBuffer; weight: 400 | 600; style: "normal" }
+// Arayüzle aynı yüz. Satori woff2 okuyamaz ve değişken ekseni interpole edemez;
+// bu yüzden `app/_fonts/og/` altındaki statik otf'ler kullanılır (aynı yüzün
+// ttf'sinin üçte biri kadar yer tutuyorlar).
+const OG_FONT = "Haskoy"
 
-// Geist'i Google Fonts'tan TTF olarak çek (yedek yol). Özel UA YOK: varsayılan
-// fetch UA'sına Google css2 truetype döndürür (Next.js resmi örneği). Satori
-// woff2 okuyamaz; ttf/otf/woff kabul eder.
-async function loadGeistFromGoogle(
-  text: string,
-  weight: 400 | 600,
-): Promise<FontData | null> {
-  try {
-    const url = `https://fonts.googleapis.com/css2?family=Geist:wght@${weight}&text=${encodeURIComponent(
-      text,
-    )}`
-    const css = await fetch(url).then((res) => res.text())
-    const src = css.match(
-      /src:\s*url\((.+?)\)\s*format\('(?:opentype|truetype|woff)'\)/,
-    )?.[1]
-    if (!src) return null
-    const data = await fetch(src).then((res) => res.arrayBuffer())
-    return { name: "Geist", data, weight, style: "normal" }
-  } catch {
-    return null
-  }
+// `new URL(..., import.meta.url)` yalnız SABİT yolda çözülür: yolu değişkenle
+// kurarsan Turbopack tek bir varlığa bağlanıp her ağırlık için aynı dosyayı
+// döndürüyor. Bu yüzden ikisi de tek tek yazılı.
+const OG_FONT_FILES = {
+  400: new URL("../../_fonts/og/Haskoy-Regular.otf", import.meta.url),
+  600: new URL("../../_fonts/og/Haskoy-SemiBold.otf", import.meta.url),
+} as const
+
+type FontData = {
+  name: typeof OG_FONT
+  data: ArrayBuffer
+  weight: 400 | 600
+  style: "normal"
 }
 
-// Önce repo-içi yerel font (app/blog/_fonts/, import.meta.url ile bundle'lanır;
-// ağ gerektirmez), yoksa Google'a düş.
-async function loadGeist(
-  weight: 400 | 600,
-  localFile: string,
-  text: string,
-): Promise<FontData | null> {
+// Font repoda barındığı için görsel üretimi çalışma anında dış origin'e istek
+// atmaz. Dosya `fetch` ile DEĞİL diskten okunur: Turbopack varlığı `file:`
+// URL'i olarak veriyor, Node'un fetch'i bu şemayı desteklemiyor.
+async function loadOgFont(weight: 400 | 600): Promise<FontData | null> {
   try {
-    const data = await fetch(
-      new URL(`../_fonts/${localFile}`, import.meta.url),
-    ).then((res) => res.arrayBuffer())
-    if (data.byteLength > 0) return { name: "Geist", data, weight, style: "normal" }
+    const { readFile } = await import("node:fs/promises")
+    const { fileURLToPath } = await import("node:url")
+    const buf = await readFile(fileURLToPath(OG_FONT_FILES[weight]))
+    if (buf.byteLength === 0) return null
+    const data = buf.buffer.slice(
+      buf.byteOffset,
+      buf.byteOffset + buf.byteLength,
+    ) as ArrayBuffer
+    return { name: OG_FONT, data, weight, style: "normal" }
   } catch {
-    // yerel font yoksa Google'a düş
+    // font okunamazsa Satori kendi gömülü yedeğiyle çizer
+    return null
   }
-  return loadGeistFromGoogle(text, weight)
 }
 
 // Satori `/blog/authors/x.jpg` gibi göreli yolları çözemez; avatarı okuyup data
@@ -132,10 +129,9 @@ export default async function Image({
   const primaryRole =
     post.authors.length === 1 ? getAuthor(post.authors[0]).role : ""
 
-  const text = `${title}${categoryLabel}${authorNames}${primaryRole}Sepet${readingTime} dk okuma·trysepet.com`
   const [regular, semibold, avatars] = await Promise.all([
-    loadGeist(400, "Geist-Regular.ttf", text),
-    loadGeist(600, "Geist-SemiBold.ttf", text),
+    loadOgFont(400),
+    loadOgFont(600),
     Promise.all(
       post.authors.map(async (id) => ({
         name: getAuthor(id).name,
@@ -160,7 +156,7 @@ export default async function Image({
           background:
             "linear-gradient(135deg, #FFFBF5 0%, #F7ECDC 52%, #F0E0CB 100%)",
           color: "#3D2418",
-          fontFamily: fonts.length ? "Geist" : undefined,
+          fontFamily: fonts.length ? OG_FONT : undefined,
           position: "relative",
         }}
       >

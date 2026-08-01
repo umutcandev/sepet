@@ -10,8 +10,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    /* Değişkenleri <html>'e next/font yazar (app/_fonts/index.ts). --font-mono'yu
+       burada da bildirmek Tailwind'in varsayılan mono yığınını devre dışı bırakır:
+       `font-mono` yardımcı sınıfı ile preflight'ın `code, kbd, samp, pre` kuralı
+       aynı değişkende buluşur. */
     --font-heading: var(--font-sans);
     --font-sans: var(--font-sans);
+    --font-mono: var(--font-mono);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
