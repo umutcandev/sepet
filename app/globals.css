@@ -427,6 +427,50 @@
   background-color: var(--primary);
 }
 
+/* ---------------------------------------------------------------------------
+   Logo şeridi (components/home/logo-marquee.tsx)
+
+   Şerit logo setini iki kez basar; -50%'ye kadar kaydırınca ikinci kopya tam
+   birincinin yerine oturur, yani döngü başa dönerken sıçrama görünmez.
+--------------------------------------------------------------------------- */
+@theme inline {
+  @keyframes logo-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  --animate-logo-marquee: logo-marquee var(--logo-marquee-duration, 46s) linear
+    infinite;
+}
+
+/* İki uçta sert kesim yerine erime. Şerit artık tam genişlik değil, kart
+   gridiyle aynı kapta duruyor; erime payı da o yüzden dar tutuldu — geniş
+   olsaydı 992px'lik kabın iki ucundaki logoları yiyordu. */
+@utility logo-marquee-fade {
+  --_fade: 1.5rem;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black var(--_fade),
+    black calc(100% - var(--_fade)),
+    transparent
+  );
+  @media (width >= 48rem) {
+    --_fade: 3rem;
+  }
+}
+
+/* Hareket azaltma tercihinde şerit durur; iki kopyadan ilki sabit bir logo
+   sırası olarak görünmeye devam eder. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-logo-marquee {
+    animation: none;
+  }
+}
+
 /* Prevent sticky hover on touch devices */
 @media (hover: none) {
   [data-sidebar="menu-button"]:not([data-active="true"]):hover {

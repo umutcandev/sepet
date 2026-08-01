@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react"
 
 import { AuthorAvatarGroup } from "@/components/blog/author-meta"
 import { BlogDitherCard } from "@/components/home/blog-dither-card"
+import { LogoMarquee } from "@/components/home/logo-marquee"
 import { getLatestPosts } from "@/lib/blog"
 import { formatAuthorNames } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
@@ -31,9 +32,24 @@ export function HomeBlogSection() {
         data-home-dark-start
         className="absolute inset-x-0 top-0 h-px"
       />
+      {/* Logo şeridi. Kap aşağıdaki kart gridiyle BİREBİR aynı: aynı max-w,
+          aynı px — şerit kartların sol/sağ hizasında başlayıp bitiyor.
+
+          Üst boşluk kasıtlı olarak dar. Bölüm hero'nun üstüne -mt ile biniyor
+          ve hero fade'i bu bölümün üst kenarından önce zaten tam opak
+          --home-base'e ulaşıyor; yani şeridin üstünde ölçülen boşluğa, gözün
+          aynı koyu bandın parçası saydığı fade payı da ekleniyor. Buraya
+          gridin dikey ritmini uygulasak şerit bandın ortasında asılı kalıyor,
+          hero'nun hemen ardına iliştirilmiş gibi durmuyordu.
+
+          Rengini `dark` sarmalayıcıdan alır — bu bölüm her iki temada da koyu,
+          o yüzden logolar tek renk krem olarak oturur. */}
+      <div className="dark mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
+        <LogoMarquee className="text-foreground/45" />
+      </div>
       {/* pb: altında footer var; sayfa dibi boşluğunu footer'ın kendi padding'i
           tamamlıyor, bu yüzden burada eskisinden dar. */}
-      <div className="dark mx-auto w-full max-w-5xl px-4 pt-8 pb-14 text-foreground md:pt-12">
+      <div className="dark mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
         <div className="mb-5 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
             Blog Gönderileri
