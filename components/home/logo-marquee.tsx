@@ -27,24 +27,33 @@ export function LogoMarquee({ className }: { className?: string }) {
   return (
     <div className={cn("group/marquee relative", className)}>
       <h2 className="sr-only">Fiyatları karşılaştırılan marketler</h2>
-      {/* Maske kaydırma kabında: animasyon iç şeritte olduğu için maske
-          sabit kalır ve logolar iki uçta sert kesilmek yerine erir. */}
-      <div className="logo-marquee-fade overflow-hidden">
-        <div className="flex w-max animate-logo-marquee items-center group-hover/marquee:[animation-play-state:paused]">
+      {/* Maske kaydırma kabında: animasyon iç şeritte olduğu için maske sabit
+          kalır ve kartlar iki uçta sert kesilmek yerine erir. Dikey `py`,
+          kartların gölgesine yer açmak için — `overflow-hidden` yatayda
+          kırpıyor, gölge de kırpılmasın. */}
+      <div className="logo-marquee-fade overflow-hidden py-3">
+        <div className="flex w-max animate-logo-marquee items-stretch group-hover/marquee:[animation-play-state:paused]">
           {[0, 1].map((copy) => (
             <ul
               key={copy}
               // İkinci kopya yalnız görsel süreklilik için; ekran okuyucu
               // market adlarını iki kez okumasın.
               aria-hidden={copy === 1 || undefined}
-              className="flex shrink-0 items-center gap-14 pe-14 md:gap-20 md:pe-20"
+              className="flex shrink-0 items-stretch gap-3 pe-3 md:gap-4 md:pe-4"
             >
               {MARKETS.map(({ Logo, name }) => (
-                <li key={name} className="flex shrink-0 items-center">
+                <li
+                  key={name}
+                  // Kenar + gölge tek katmanda: `smooth-shadow-ring-*` 1px'lik
+                  // hairline'ı gölgenin son katmanı olarak taşıyor. Ayrıca
+                  // `border`/`ring` EKLENMEZ — halka zaten içinde, ikincisi
+                  // çift kenar yapardı (bkz. app/globals.css'teki not).
+                  className="flex h-14 min-w-36 shrink-0 items-center justify-center rounded-xl bg-card px-6 smooth-shadow-ring-xs md:h-16 md:min-w-40 md:px-7"
+                >
                   {/* Tek ölçü: yükseklik. Genişlik en/boy oranından gelir,
                       viewBox'lar mürekkebe kırpılı olduğu için hepsi
                       gerçekten aynı yükseklikte oturur. */}
-                  <Logo className="h-6 w-auto md:h-7" />
+                  <Logo className="h-5 w-auto md:h-6" />
                 </li>
               ))}
             </ul>

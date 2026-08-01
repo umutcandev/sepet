@@ -462,11 +462,12 @@
     infinite;
 }
 
-/* İki uçta sert kesim yerine erime. Şerit artık tam genişlik değil, kart
-   gridiyle aynı kapta duruyor; erime payı da o yüzden dar tutuldu — geniş
-   olsaydı 992px'lik kabın iki ucundaki logoları yiyordu. */
+/* İki uçta sert kesim yerine erime. Kısa ve dik tutuluyor: şerit kart
+   gridiyle aynı kapta (992px) ve içindeki kartların kendi kenarı var; uzun bir
+   rampa uçtaki kartı yarı yarıya soldurup "yanlış boyanmış kart" gibi
+   gösteriyordu. Kısa mesafe hem kartları temiz bırakıyor hem geçişi netleştiriyor. */
 @utility logo-marquee-fade {
-  --_fade: 1.5rem;
+  --_fade: 0.75rem;
   mask-image: linear-gradient(
     to right,
     transparent,
@@ -475,7 +476,7 @@
     transparent
   );
   @media (width >= 48rem) {
-    --_fade: 3rem;
+    --_fade: 1.5rem;
   }
 }
 
