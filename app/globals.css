@@ -157,27 +157,24 @@
    rgb(65,57,51) veriyor, popover yüzeyi (#221A14) rgb(34,26,20) — yaklaşık 31
    seviyelik ayrım, kenar rahat okunuyor.
 
-   İki bildirim de aynı formülü kurar, yalnız `--smooth-ring-alpha` değişir.
-   Sebebi plugin'in `prefers-color-scheme` kuralının (0,3,0) bir `.dark`
-   sınıfından (0,1,0) daha özgül olması: aynı seçicileri birebir yeniden yazıp
-   formülü sabit tutmasak, sistem teması koyu olan bir ziyaretçide site açık
-   temadayken beyaz halka sızardı. */
-:root {
+   Seçici kümesi plugin'inkiyle BİREBİR aynı olmalı ve her blok `--smooth-ring-color`ı
+   yeniden bildirmeli. İkisi de eşit özgüllükte (0,1,0); plugin daha önce import
+   edildiği için kaynak sırasıyla buradaki kazanır. Yalnız `--smooth-ring-alpha`
+   set etmek YETMEZ: `--smooth-ring-color` bildirildiği elemanda hesaplanıp aşağı
+   inen bir değer, alfayı iç içe bir sarmalayıcıda değiştirmek onu geri
+   hesaplatmaz. `:root`ta alfa set etmek işe yarar (aynı eleman), ama sayfa
+   içindeki bir `.dark` sarmalayıcıda plugin'in nötr beyaz kuralı kazanır ve
+   kenar griye kayardı — ana sayfa bölümleri tam olarak öyle sarmalanıyor. */
+:root,
+.light,
+[data-theme="light"] {
   --smooth-ring-alpha: 8%;
   --smooth-ring-color: color-mix(in oklab, var(--foreground) var(--smooth-ring-alpha), transparent);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not(.light):not([data-theme="light"]) {
-    --smooth-ring-color: color-mix(
-      in oklab,
-      var(--foreground) var(--smooth-ring-alpha),
-      transparent
-    );
-  }
 }
 .dark,
 [data-theme="dark"] {
   --smooth-ring-alpha: 18%;
+  --smooth-ring-color: color-mix(in oklab, var(--foreground) var(--smooth-ring-alpha), transparent);
 }
 
 /* Hero görselinin alt kenarını blog dip rengine dikişsiz bağlayan fade.

@@ -44,9 +44,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }
       toastOptions={{
         classNames: {
-          // Plugin'in box-shadow'u `!important`, sonner'ın kendi gölgesini
-          // sınıf sırasından bağımsız olarak devralır.
-          toast: "cn-toast smooth-shadow-ring-md",
+          // `!` şart: sonner kendi `box-shadow`unu KATMANSIZ bir <style> ile
+          // enjekte ediyor, Tailwind utility'leri ise `@layer utilities`te —
+          // katmansız CSS katmanlıyı yener, yani plugin'in gölgesi (halkasıyla
+          // birlikte) sessizce düşerdi. Önemli değiştirici bunu geri alır.
+          // (shadow-plugin v1 tüm utility'lere `!important` basıyordu ve bu
+          // gerekmiyordu; v2 onu kaldırdı, kural artık burada açık yazılı.)
+          toast: "cn-toast smooth-shadow-ring-md!",
         },
       }}
       {...props}
