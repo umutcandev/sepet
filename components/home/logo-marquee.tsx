@@ -48,7 +48,22 @@ export function LogoMarquee({ className }: { className?: string }) {
                   // hairline'ı gölgenin son katmanı olarak taşıyor. Ayrıca
                   // `border`/`ring` EKLENMEZ — halka zaten içinde, ikincisi
                   // çift kenar yapardı (bkz. app/globals.css'teki not).
-                  className="flex h-14 min-w-36 shrink-0 items-center justify-center rounded-xl bg-card px-6 smooth-shadow-ring-xs md:h-16 md:min-w-40 md:px-7"
+                  //
+                  // Halka rengi `smooth-ring-*` ile `--border`a sabitleniyor.
+                  // Sebebi globals.css'teki sıcak halka override'ının BURAYA
+                  // ULAŞMAMASI: o override `--smooth-ring-color`ı `:root`ta
+                  // kurar, ama plugin kendi `.dark` kuralında aynı değişkeni
+                  // nötr `rgba(255,255,255,.18)` yapar. Bu bölüm `dark`
+                  // sarmalayıcı içinde (bkz. home-blog-section), dolayısıyla
+                  // plugin'in kuralı kazanıyordu ve kart kenarı her iki temada
+                  // da nötr griye kayıyordu. globals.css'in `.dark` bloğu
+                  // yalnız `--smooth-ring-alpha`yı set ettiği için de bunu
+                  // düzeltmiyor: `--smooth-ring-color` zaten `:root`ta
+                  // hesaplanıp indiği için alfayı sonradan değiştirmek etkisiz.
+                  //
+                  // `--border` ise yanındaki blog kartlarının kenarıyla aynı
+                  // token: iki kart tipi tek kenar dilinde buluşuyor.
+                  className="flex h-14 min-w-36 shrink-0 items-center justify-center rounded-xl bg-card px-6 smooth-shadow-ring-xs smooth-ring-border md:h-16 md:min-w-40 md:px-7"
                 >
                   {/* Tek ölçü: yükseklik. Genişlik en/boy oranından gelir,
                       viewBox'lar mürekkebe kırpılı olduğu için hepsi
