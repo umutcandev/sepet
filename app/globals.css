@@ -430,6 +430,39 @@
    olursak olalım profil değişmez — eskiden iki yarı saydam gradient çapraz
    sönümlenirken rampanın ortasında tepe alfası 0.75'e düşüp header'ın sert
    kenarını açığa çıkarıyordu. */
+/* ---------------------------------------------------------------------------
+   Header logosunun açık/koyu varyant takası (components/app-shell.tsx)
+
+   Ana sayfada header zemini scroll'a BAĞLI olarak --home-base'e akıyor
+   (0 → 1 arası sürekli bir rampa). Logo ise eskiden `dark:` varyantıyla takas
+   ediliyordu: `dark` sınıfı rampanın tam ortasında (0.5) bir anda düştüğü için
+   logo, zemin yumuşakça kararırken BASAMAK yapıp zıplıyordu. Ölçüldü: zemin
+   0.47 → 0.60 arasında ilerlerken logo 1.00'dan 0.00'a tek karede geçiyordu.
+
+   Çözüm: takas oranı da aynı rampadan beslenir. `--logo-swap` 0 iken koyu
+   mürekkepli logo, 1 iken açık mürekkepli logo görünür; ara değerlerde ikisi
+   çapraz sönümlenir.
+
+   Değişkenin CSS'te varsayılanı olmalı ki JS çalışmadan da (ilk boyama, JS
+   kapalı) doğru logo görünsün. Rampanın başında CSS varsayılanı ile JS'in
+   yazacağı değer zaten aynıdır, o yüzden JS devreye girince sıçrama olmaz. */
+:root {
+  --logo-swap: 0;
+}
+.dark {
+  --logo-swap: 1;
+}
+
+@utility logo-on-light {
+  /* Koyu mürekkepli logo: açık zeminde görünür. */
+  opacity: calc(1 - var(--logo-swap));
+}
+
+@utility logo-on-dark {
+  /* Açık mürekkepli logo: koyu zeminde görünür. */
+  opacity: var(--logo-swap);
+}
+
 @utility home-header-fade {
   mask-image: linear-gradient(
     to bottom,
@@ -438,6 +471,89 @@
     rgb(0 0 0 / 0.28) 70%,
     rgb(0 0 0 / 0) 100%
   );
+}
+
+/* ---------------------------------------------------------------------------
+   Giriş / scroll reveal (components/motion/animate-enter.tsx)
+
+   Animasyon BİLEREK CSS'te, JS'te değil. Motion yalnızca "ne zaman" kararını
+   verir; "nasıl"ı buradaki kurallar yapar. İki sebebi var:
+
+   1. CSS animasyonları compositor'da koşar. `initial={{opacity:0}}` ile
+      kurulan bir JS reveal'de main thread tıkanırsa animasyon hiç başlamaz ve
+      içerik SONSUZA KADAR görünmez kalır. Burada böyle bir durum yok.
+   2. Dinlenme hâli (SSR'den gelen hâl) zaten görünürdür. JS hiç çalışmazsa
+      sayfa animasyonsuz ama eksiksiz görünür.
+
+   Eğri `EASE_OUT_EXPO` ile aynı sayıdır (lib/motion.ts) — biri değişirse
+   diğeri de değişmelidir.
+
+   `filter` bitiş değeri `blur(0)` değil `none`: `blur(0)` bile bir filtre
+   değeridir ve elemanda kalıcı bir stacking/containing block yaratır. `none`
+   ile interpolasyon spec'te tanımlı (identity = blur(0)), dolayısıyla geçiş
+   aynı görünür ama animasyon bittiğinde eleman tertemiz kalır.
+--------------------------------------------------------------------------- */
+@utility enter-fx {
+  /* Sayfa açılışı girişi: yüksel + netleş. */
+  animation: enter-fx 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @media (prefers-reduced-motion: reduce) {
+    animation-name: enter-fx-fade;
+    animation-duration: 0.2s;
+  }
+}
+
+@utility reveal-fx {
+  /* Scroll reveal: dinlenme hâli GÖRÜNÜR. AnimateEnter yalnızca fold'un
+     altında başlayan elemanlara, ilk boyamadan önce data-reveal="pending"
+     ekler; kesişimde "shown"a çevirir ve aşağıdaki transition koşar.
+     Ekranda zaten görünen bir eleman hiçbir zaman gizlenmez. */
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &[data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+    /* Gizlenme anı animasyonlu OLMAMALI: aksi hâlde eleman önce görünür
+       boyanıp sonra süzülerek kaybolur. */
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &[data-reveal="pending"] {
+      transform: none;
+      filter: none;
+    }
+  }
+}
+
+/* Keyframe'ler `@theme` DIŞINDA: Tailwind v4 `@theme` içindeki keyframe'leri
+   yalnızca eşleşen bir `--animate-*` değişkeni kullanıldığında çıktıya yazar.
+   Burada `--animate-*` üretmiyoruz (animasyon doğrudan utility içinde
+   kuruluyor), o yüzden düz üst seviye tanım kullanılır. */
+@keyframes enter-fx {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: none;
+  }
+}
+
+/* Hareket azaltma tercihinde yalnızca sönümleme kalır. */
+@keyframes enter-fx-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ---------------------------------------------------------------------------

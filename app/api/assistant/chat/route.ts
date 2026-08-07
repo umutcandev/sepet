@@ -32,6 +32,7 @@ import {
   dataPart,
 } from "@/lib/assistant/ui-chunks"
 import { computeOptimization } from "@/lib/ai/optimize"
+import { isAbortError } from "@/lib/ai/telemetry"
 import { getUserLocationContext } from "@/lib/auth/location"
 import type { LocationContext } from "@/lib/marketfiyati/client"
 import { STALE_DAY_THRESHOLD } from "@/lib/receipt-staleness"
@@ -450,11 +451,16 @@ export async function POST(req: Request) {
   }
 
   // Onay payload'larını hesaba/kayda almadan önce runtime'da doğrula.
-  if (
-    mode.kind === "receiptApproval" &&
-    !receiptApprovalPayloadSchema.safeParse(mode.payload).success
-  ) {
-    return NextResponse.json({ error: "invalid_payload" }, { status: 400 })
+  if (mode.kind === "receiptApproval") {
+    if (!receiptApprovalPayloadSchema.safeParse(mode.payload).success) {
+      return NextResponse.json({ error: "invalid_payload" }, { status: 400 })
+    }
+    // Onay turunda sunucu görseli fetch etmez, ama aynı URL tool çıktısıyla
+    // istemciye geri döner ve oradan saveReceipt'e gider. Sahiplik burada da
+    // zorlanır ki iki uçtan biri atlanamasın.
+    if (!isOwnedReceiptUrl(mode.payload.receiptImageUrl, userId)) {
+      return NextResponse.json({ error: "invalid_image_url" }, { status: 400 })
+    }
   }
   if (
     mode.kind === "basketApproval" &&
@@ -551,6 +557,22 @@ export async function POST(req: Request) {
   // yakılmasın (özellikle onay turundaki selectMatches).
   const requestSignal = req.signal
 
+  /**
+   * Kota iadesi — YALNIZCA bizim tarafımızdan kaynaklanan başarısızlıklarda.
+   *
+   * İstek iptal edildiyse iade YOK: model çağrısı çoktan gönderilmiştir ve
+   * token faturası yanmıştır. İade edilseydi "istek at → hemen abort et"
+   * döngüsü kotayı hiç tüketmeden sınırsız AI maliyeti üretirdi (kota bu
+   * uçtaki tek maliyet tavanı olduğu için bu delik kritikti).
+   *
+   * Model 503/429 ve parse istisnaları iade ALIR — orada kullanıcı bir çıktı
+   * almadı ve hatanın sahibi biziz.
+   */
+  const refundReservation = async (err?: unknown) => {
+    if (requestSignal?.aborted || isAbortError(err)) return
+    await refundQuota(userId, meteredMetric, reservation.period).catch(() => {})
+  }
+
   const newConversationId = conversationId
   const stream = createUIMessageStream({
     execute: async ({ writer }) => {
@@ -637,13 +659,15 @@ export async function POST(req: Request) {
       } catch (err) {
         // Sert hata (örn. lookupProducts exception) çıktı üretilmeden düştü →
         // rezerve edilen slotu iade et, sonra hatayı stream onError'a ilet.
-        await refundQuota(userId, meteredMetric, reservation.period).catch(() => {})
+        // İptal kaynaklı hatalar refundReservation içinde elenir.
+        await refundReservation(err)
         throw err
       }
       // Turn içeride yakalanan bir sert AI hatasıyla (model 503/429, parse
       // exception) bittiyse de slotu iade et — başarısız istek kotayı yakmasın.
+      // runAssistantTurn iptali `hardError` saymaz (bkz. isAbortError).
       if (turn.hardError) {
-        await refundQuota(userId, meteredMetric, reservation.period).catch(() => {})
+        await refundReservation()
       }
 
       // Persist the assistant message before signalling finish.
@@ -869,8 +893,11 @@ async function runAssistantTurn({
         ),
       )
       if (onImageKind) await onImageKind("unknown")
-      // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir.
-      return { awaiting: false, hardError: true }
+      // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir. İptal
+      // (kullanıcı sekmeyi kapattı / stream'i kesti) hardError DEĞİLDİR: model
+      // çağrısı gitti, token yandı — iade edilirse kota maliyet tavanı olmaktan
+      // çıkar.
+      return { awaiting: false, hardError: !isAbortError(err) }
     }
 
     if (parseReasoning) {
@@ -1044,8 +1071,9 @@ async function runAssistantTurn({
       ),
     )
     await emitText(writer, busy ? MODEL_BUSY_TEXT : FALLBACK_TEXT)
-    // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir.
-    return { awaiting: false, hardError: true }
+    // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir. İptal
+    // hardError DEĞİLDİR (bkz. receiptImage kolundaki aynı gerekçe).
+    return { awaiting: false, hardError: !isAbortError(err) }
   }
 
   if (parseReasoning) {

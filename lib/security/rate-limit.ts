@@ -42,10 +42,23 @@ export const avatarUploadLimiter = new Ratelimit({
   analytics: true,
 })
 
-// NOT: assistantBurstLimiter / assistantDailyLimiter kaldırıldı. AI asistanı
-// (/api/assistant/chat) artık hesap özelinde aylık kota + atomik rezervasyon
-// ile sınırlanıyor (bkz. lib/usage). Yukarıdaki limiter'lar yalnızca altyapı
-// korumasıdır.
+// /api/assistant/chat — hacim sınırı aylık kotadır (bkz. lib/usage), bu limiter
+// onun yerini almaz; ALTYAPI korumasıdır ve iki ayrı deliği kapatır:
+//
+//  1. Kota dolduğunda uç 402 döner ama her istek yine reserveQuota'nın iki DB
+//     sorgusunu çalıştırır — sınırsız hammer'lama DB'yi meşgul eder.
+//  2. Kotası olan bir hesapta "istek at → iptal et" döngüsü. İptal artık iade
+//     almıyor (bkz. route.ts refundReservation), ama döngüyü tamamen kırmak
+//     için hız tavanı da gerekir.
+//
+// Dakikada 10: sürekli 6 saniyede bir mesaj demek — gerçek kullanıcı bu tavana
+// çarpmaz, otomatik döngü ilk saniyede çarpar.
+export const assistantBurstLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1 m"),
+  prefix: "rl:assistant:burst",
+  analytics: true,
+})
 
 // /api/transcribe (sesli giriş → Gemini Flash Lite audio) bilinçli olarak aylık
 // kotaya DAHİL DEĞİL ("mesaj mesajdır": üretilen metin /chat'te zaten sayılır).

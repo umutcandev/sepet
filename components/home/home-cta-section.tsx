@@ -27,6 +27,9 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { AnimateEnter } from "@/components/motion/animate-enter"
+import { PressFx } from "@/components/motion/press-fx"
+import { SPRING_SLIDE, STAGGER_STEP } from "@/lib/motion"
 
 // Sıra, kayan pencerenin sırasını belirler — HeroMarketBadge ile aynı dizilim.
 const MARKETS = [
@@ -43,7 +46,8 @@ const WINDOW_SIZE = 3
 const STEP_MS = 500
 
 // Kayma geçişi: hızlı ve net bir yay; opacity ayrı tween ile yumuşak fade.
-const slide = { type: "spring", stiffness: 460, damping: 34, mass: 0.7 } as const
+// Aynı yay hero rozetinde de kullanılır — tek kaynaktan (lib/motion.ts) gelir.
+const slide = SPRING_SLIDE
 
 export function HomeCtaSection() {
   const reduceMotion = useReducedMotion()
@@ -76,55 +80,64 @@ export function HomeCtaSection() {
   return (
     <section className="relative z-20 bg-[var(--home-base)]">
       <div className="dark mx-auto flex w-full max-w-5xl flex-col items-center gap-5 px-4 py-12 text-foreground sm:py-16">
-        <h2 {...hoverProps} className="cn-font-heading flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-center text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
-          <span>Hemen</span>
-          {/* Logo grubu ile "Sepet'i dene." tek parça: satır sarmasında
+        <AnimateEnter>
+          <h2
+            {...hoverProps}
+            className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-center cn-font-heading text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl"
+          >
+            <span>Hemen</span>
+            {/* Logo grubu ile "Sepet'i dene." tek parça: satır sarmasında
               logolar kelimeden kopup üst satırda yalnız kalmaz. */}
-          <span className="inline-flex items-center gap-[0.25em]">
-            <AvatarGroup className="-space-x-[0.28em]">
-              <AnimatePresence mode="popLayout" initial={false}>
-                {windowLogos.map((market) => (
-                  <motion.span
-                    key={market.index}
-                    layout
-                    initial={{ opacity: 0, scale: 0.5, x: 12 }}
-                    animate={{ opacity: 1, scale: 1, x: 0 }}
-                    exit={{ opacity: 0, scale: 0.5, x: -12 }}
-                    // Giren/çıkan logo aynı anda küçülürken silikleşsin.
-                    transition={{
-                      ...slide,
-                      opacity: { duration: 0.2, ease: "easeOut" },
-                    }}
-                    className="inline-flex shrink-0"
-                  >
-                    {/* Halka avatarın kendisinde: AvatarGroup'un doğrudan
+            <span className="inline-flex items-center gap-[0.25em]">
+              <AvatarGroup className="-space-x-[0.28em]">
+                <AnimatePresence mode="popLayout" initial={false}>
+                  {windowLogos.map((market) => (
+                    <motion.span
+                      key={market.index}
+                      layout
+                      initial={{ opacity: 0, scale: 0.5, x: 12 }}
+                      animate={{ opacity: 1, scale: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.5, x: -12 }}
+                      // Giren/çıkan logo aynı anda küçülürken silikleşsin.
+                      transition={{
+                        ...slide,
+                        opacity: { duration: 0.2, ease: "easeOut" },
+                      }}
+                      className="inline-flex shrink-0"
+                    >
+                      {/* Halka avatarın kendisinde: AvatarGroup'un doğrudan
                         çocukları artık motion sarmalayıcıları, grubun
                         `*:data-[slot=avatar]` seçicisi avatara ulaşmıyor. */}
-                    <Avatar
-                      className="size-[0.82em] ring-[0.05em] ring-background"
-                      title={market.alt}
-                    >
-                      <AvatarImage src={market.src} alt={market.alt} />
-                      <AvatarFallback className="text-[0.3em]">
-                        {market.short}
-                      </AvatarFallback>
-                    </Avatar>
-                  </motion.span>
-                ))}
-              </AnimatePresence>
-            </AvatarGroup>
-            <span>Sepet&apos;i dene.</span>
-          </span>
-        </h2>
+                      <Avatar
+                        className="size-[0.82em] ring-[0.05em] ring-background"
+                        title={market.alt}
+                      >
+                        <AvatarImage src={market.src} alt={market.alt} />
+                        <AvatarFallback className="text-[0.3em]">
+                          {market.short}
+                        </AvatarFallback>
+                      </Avatar>
+                    </motion.span>
+                  ))}
+                </AnimatePresence>
+              </AvatarGroup>
+              <span>Sepet&apos;i dene.</span>
+            </span>
+          </h2>
+        </AnimateEnter>
 
-        <Button
-          {...hoverProps}
-          asChild
-          size="lg"
-          className="h-10 rounded-full px-5"
-        >
-          <Link href="/asistan">Ücretsiz başla</Link>
-        </Button>
+        <AnimateEnter delay={STAGGER_STEP}>
+          <PressFx>
+            <Button
+              {...hoverProps}
+              asChild
+              size="lg"
+              className="h-10 rounded-full px-5"
+            >
+              <Link href="/asistan">Ücretsiz başla</Link>
+            </Button>
+          </PressFx>
+        </AnimateEnter>
       </div>
     </section>
   )

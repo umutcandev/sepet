@@ -1,10 +1,26 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { and, asc, count, desc, eq, exists, ilike, inArray, or, sql } from "drizzle-orm"
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  exists,
+  ilike,
+  inArray,
+  isNotNull,
+  or,
+  sql,
+} from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, receipts, receiptItems } from "@/lib/db"
-import { deleteReceiptObject, isOwnedReceiptKey } from "@/lib/storage/r2"
+import {
+  deleteReceiptObject,
+  isOwnedReceiptKey,
+  isOwnedReceiptUrl,
+} from "@/lib/storage/r2"
 import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
@@ -75,33 +91,67 @@ export async function saveReceipt(input: {
   summary: OptimizationSummary
   matches: MatchResult[]
   comparison: ReceiptComparison
+  conversationId?: string | null
+  sourceToolCallId?: string | null
 }): Promise<SaveReceiptResult> {
   const session = await auth()
   if (!session?.user?.id) throw new Error("unauthorized")
 
+  const userId = session.user.id
+  const conversationId = input.conversationId ?? null
+  const sourceToolCallId = input.sourceToolCallId ?? null
+
   // R2 key'i client'tan geliyor — yalnızca bu kullanıcının klasörüne ait bir
   // key kaydedilebilir. Aksi halde başka bir kullanıcının nesnesi bu fişe
   // bağlanıp deleteReceipt ile silinebilir (IDOR).
-  if (!isOwnedReceiptKey(input.imageR2Key, session.user.id)) {
+  if (!isOwnedReceiptKey(input.imageR2Key, userId)) {
     throw new Error("invalid_image_key")
+  }
+  // imageUrl aynı nesneyi tarif eder ve fiş detay sayfasında <img src> olarak
+  // render edilir; key doğrulanıp URL doğrulanmazsa ikisi farklı yerleri
+  // gösterebilir. Aynı sahiplik kuralı ikisine de uygulanır.
+  if (!isOwnedReceiptUrl(input.imageUrl, userId)) {
+    throw new Error("invalid_image_url")
+  }
+
+  // Aynı (sohbet, tool-call) için kullanıcı zaten kaydettiyse aynı id'yi döndür.
+  // Kart state'i (savedId) sayfa yenilenince kaybolduğu için bu olmadan aynı fiş
+  // tekrar kaydedilebiliyor ve depolama kotasını boşa yakıyordu — sepetteki
+  // çözümün aynısı (bkz. saveBasket).
+  if (conversationId && sourceToolCallId) {
+    const [existing] = await db
+      .select({ id: receipts.id })
+      .from(receipts)
+      .where(
+        and(
+          eq(receipts.userId, userId),
+          eq(receipts.conversationId, conversationId),
+          eq(receipts.sourceToolCallId, sourceToolCallId),
+        ),
+      )
+      .limit(1)
+    if (existing) return { ok: true, id: existing.id }
   }
 
   // Depolama kotası: kayıt öncesi sert tavan (kullanıcının açık "Kaydet"
   // aksiyonu). Görsel analizi kotası ayrıdır ve asistan turunda sayılır.
   //
-  // Eşzamanlılık notu: count→insert statement-düzeyinde atomik değil; ama gerçek
-  // çift-gönderim UI kilidiyle engelli (kart kaydederken/kaydedince butonu
-  // kilitler). Kalan tek yarış "aynı anda iki FARKLI fiş" — ardışık insan
-  // tıklamasıyla ulaşılamaz, en kötü 1 fazla satır (AI/maliyet/güvenlik etkisi
-  // yok). neon-http transaction desteklemediğinden daha sıkı serileştirme,
+  // Eşzamanlılık notu: count→insert statement-düzeyinde atomik değil, ama
+  // pratikte güvenli. Çift-gönderim üç katmanda engelli: (1) UI "Kaydet"i
+  // kaydederken/kaydedince kilitler, (2) yukarıdaki dedup aynı (sohbet,
+  // tool-call) için var olan id'yi döner, (3) receipt_conv_tool_idx unique
+  // index'i aynı kartın iki satırını DB'de imkânsız kılar. Geriye yalnızca
+  // "aynı anda iki FARKLI fiş" yarışı kalır — ardışık insan tıklamasıyla
+  // ulaşılamaz, en kötü 1 fazla satır (AI/maliyet/güvenlik etkisi yok).
+  // neon-http transaction desteklemediğinden daha sıkı serileştirme,
   // jsonb/numeric'i ham SQL'de elle kodlayıp çalışan kayıt yolunu riske atmayı
   // gerektirir — bu denge için gereksiz. Bkz. saveBasket aynı gerekçe.
-  const receiptLimit = planLimit(await getUserPlan(session.user.id), "savedReceipts")
+  const receiptLimit = planLimit(await getUserPlan(userId), "savedReceipts")
   if (receiptLimit !== null) {
     const [row] = await db
       .select({ value: count() })
       .from(receipts)
-      .where(eq(receipts.userId, session.user.id))
+      .where(eq(receipts.userId, userId))
     if ((row?.value ?? 0) >= receiptLimit) {
       return { ok: false, reason: "storage_limit_reached" }
     }
@@ -121,7 +171,9 @@ export async function saveReceipt(input: {
   const [inserted] = await db
     .insert(receipts)
     .values({
-      userId: session.user.id,
+      userId,
+      conversationId,
+      sourceToolCallId,
       marketName: input.marketName,
       purchaseDate: input.purchaseDate
         ? new Date(input.purchaseDate)
@@ -312,6 +364,36 @@ export async function searchReceipts(
     )
     .orderBy(...orderByForReceiptSort(sort))
     .limit(200)
+}
+
+/**
+ * Bir sohbet için kullanıcının kaydettiği fişlerin {toolCallId → receiptId}
+ * eşlemesini döndürür. Sohbet rehidrate edilirken her `tool-receiptComparison`
+ * çıktısı için "Kaydedildi" durumunu sunucudan kurabilmek için kullanılır
+ * (bkz. getSavedBasketsForConversation — aynı desen).
+ */
+export async function getSavedReceiptsForConversation(
+  conversationId: string,
+  userId: string,
+): Promise<Record<string, string>> {
+  const rows = await db
+    .select({
+      id: receipts.id,
+      sourceToolCallId: receipts.sourceToolCallId,
+    })
+    .from(receipts)
+    .where(
+      and(
+        eq(receipts.userId, userId),
+        eq(receipts.conversationId, conversationId),
+        isNotNull(receipts.sourceToolCallId),
+      ),
+    )
+  const map: Record<string, string> = {}
+  for (const row of rows) {
+    if (row.sourceToolCallId) map[row.sourceToolCallId] = row.id
+  }
+  return map
 }
 
 export async function getReceiptDetail(id: string, userId: string) {

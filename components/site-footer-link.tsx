@@ -12,6 +12,7 @@
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
 
+import { EASE_OUT_SOFT } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 const underline = {
@@ -48,7 +49,7 @@ export function FooterLink({
         transition={
           reduceMotion
             ? { duration: 0 }
-            : { duration: 0.28, ease: [0.22, 1, 0.36, 1] }
+            : { duration: 0.28, ease: EASE_OUT_SOFT }
         }
         className="absolute -bottom-0.5 left-0 h-px w-full origin-left bg-current"
       />

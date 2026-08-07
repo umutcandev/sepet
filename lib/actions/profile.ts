@@ -5,7 +5,7 @@ import { z } from "zod"
 
 import { auth, signOut } from "@/auth"
 import { db, users, userSessions } from "@/lib/db"
-import { isOwnedAvatarUrl } from "@/lib/storage/r2"
+import { deleteAvatarByUrl, isOwnedAvatarUrl } from "@/lib/storage/r2"
 
 const nameSchema = z
   .string()
@@ -32,21 +32,42 @@ export async function updateProfileName(
   return { ok: true }
 }
 
-/** Yüklenen özel avatarı kullanıcıya bağlar (yalnızca kendi R2 klasörü). */
+/**
+ * Yüklenen özel avatarı kullanıcıya bağlar (yalnızca kendi R2 klasörü).
+ *
+ * Yazmadan önce eski değer okunur ve UPDATE sonrası o nesne R2'den silinir:
+ * aksi halde avatar her değiştirildiğinde bir dosya daha yetim kalır ve
+ * yalnızca hesap purge'ünde temizlenirdi. Silme best-effort — başarısız olsa da
+ * yeni avatar geçerlidir.
+ *
+ * (Postgres'te `UPDATE … RETURNING` yeni satırı döndürdüğü için eski değeri
+ * ayrı bir SELECT ile okumak zorundayız. İki sekmeden aynı anda değiştirmede en
+ * kötü ihtimalle bir nesne yetim kalır — bugünkü "her seferinde yetim"den
+ * kesinlikle daha iyi.)
+ */
 export async function setAvatar(
   publicUrl: string,
 ): Promise<{ ok: boolean; error?: string }> {
   const session = await auth()
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
+  const uid = session.user.id
 
-  if (!isOwnedAvatarUrl(publicUrl, session.user.id)) {
+  if (!isOwnedAvatarUrl(publicUrl, uid)) {
     return { ok: false, error: "Geçersiz görsel." }
   }
 
-  await db
-    .update(users)
-    .set({ customImage: publicUrl })
-    .where(eq(users.id, session.user.id))
+  const [prev] = await db
+    .select({ customImage: users.customImage })
+    .from(users)
+    .where(eq(users.id, uid))
+    .limit(1)
+
+  await db.update(users).set({ customImage: publicUrl }).where(eq(users.id, uid))
+
+  // Aynı URL yeniden set edilirse aktif nesneyi silme.
+  if (prev?.customImage && prev.customImage !== publicUrl) {
+    await deleteAvatarByUrl(prev.customImage, uid)
+  }
   return { ok: true }
 }
 
@@ -54,11 +75,18 @@ export async function setAvatar(
 export async function resetAvatar(): Promise<{ ok: boolean }> {
   const session = await auth()
   if (!session?.user?.id) return { ok: false }
+  const uid = session.user.id
 
-  await db
-    .update(users)
-    .set({ customImage: null })
-    .where(eq(users.id, session.user.id))
+  const [row] = await db
+    .select({ customImage: users.customImage })
+    .from(users)
+    .where(eq(users.id, uid))
+    .limit(1)
+
+  await db.update(users).set({ customImage: null }).where(eq(users.id, uid))
+
+  // Artık referans veren satır yok → nesneyi de temizle.
+  if (row?.customImage) await deleteAvatarByUrl(row.customImage, uid)
   return { ok: true }
 }
 

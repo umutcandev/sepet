@@ -46,10 +46,16 @@ export type ReceiptComparisonPayload = {
 
 export function ReceiptComparisonCard({
   data,
+  conversationId = null,
+  toolCallId = null,
+  initialSavedId = null,
 }: {
   data: ReceiptComparisonPayload
+  conversationId?: string | null
+  toolCallId?: string | null
+  initialSavedId?: string | null
 }) {
-  const [savedId, setSavedId] = React.useState<string | null>(null)
+  const [savedId, setSavedId] = React.useState<string | null>(initialSavedId)
   const [saving, setSaving] = React.useState(false)
 
   const { comparison, receiptContext, summary, matches } = data
@@ -91,6 +97,8 @@ export function ReceiptComparisonCard({
         summary,
         matches,
         comparison,
+        conversationId,
+        sourceToolCallId: toolCallId,
       })
       if (!res.ok) {
         toast.error(

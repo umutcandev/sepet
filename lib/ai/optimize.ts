@@ -229,7 +229,13 @@ export function computeOptimization(matches: MatchResult[]): OptimizationSummary
   const single = bestSingleMarket(items)
   const combo = bestTwoMarketCombo(items)
 
-  const savingsTL = Math.max(0, single.total - combo.total)
+  // Geçerli bir iki-market kombosu yoksa bestTwoMarketCombo total=0 döner
+  // ("kombo yok" sinyali). O sıfırı tek market toplamından çıkarmak sepetin
+  // tamamı kadar sahte bir "tasarruf" üretirdi. Tüketiciler zaten
+  // `markets.length === 2` ile kapı tutuyor, ama alanın kendisi de tutarlı
+  // olmalı — aksi halde yeni bir tüketici sessizce yanlış rakam gösterir.
+  const hasCombo = combo.markets.length === 2
+  const savingsTL = hasCombo ? Math.max(0, single.total - combo.total) : 0
   const savingsPct = single.total > 0 ? (savingsTL / single.total) * 100 : 0
 
   return {

@@ -16,7 +16,31 @@ export type LlmUsage = {
   totalTokens?: number
 }
 
-function isAbort(err: unknown): boolean {
+const IS_DEV = process.env.NODE_ENV !== "production"
+
+/**
+ * KULLANICI İÇERİĞİ taşıyan tanılama logu — yalnızca geliştirmede yazılır.
+ *
+ * Alışveriş listesi, fiş kalemleri, market adı ve harcama tutarı kişisel
+ * veridir; üretim log toplayıcısına (Vercel/Datadog) düz metin gitmemeli.
+ * Sayaç/oran gibi içeriksiz ölçümler için normal `console.log` kullanılmaya
+ * devam eder — onlar üretimde de gerekli.
+ */
+export function devLog(...args: unknown[]): void {
+  if (IS_DEV) console.log(...args)
+}
+
+/**
+ * İstek iptali (kullanıcı stream'i kesti / sekmeyi kapattı) ya da timeout.
+ * Node'da `DOMException` de `Error`'dan türediği için `AbortController.abort()`
+ * ile fırlatılan hata bu kontrole takılır.
+ *
+ * Kota muhasebesinde de kullanılır (bkz. app/api/assistant/chat): iptal edilen
+ * bir tur, model çağrısı çoktan yapılmış olduğu için kota iadesi ALMAZ — aksi
+ * halde "çağır → hemen iptal et" döngüsü kotayı hiç tüketmeden AI maliyeti
+ * üretirdi.
+ */
+export function isAbortError(err: unknown): boolean {
   return (
     err instanceof Error &&
     (err.name === "AbortError" || err.name === "TimeoutError")
@@ -45,7 +69,7 @@ export async function withLlmCall<T extends { usage: LlmUsage }>(
     return result
   } catch (err) {
     const ms = Date.now() - start
-    const status = isAbort(err) ? "aborted" : "error"
+    const status = isAbortError(err) ? "aborted" : "error"
     const message = err instanceof Error ? err.message : String(err)
     console.error(`[ai] ${label} model=${modelId} ms=${ms} status=${status} ${message}`)
     throw err

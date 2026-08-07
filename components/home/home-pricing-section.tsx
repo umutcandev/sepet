@@ -22,6 +22,8 @@ import {
 } from "@/components/subscription/plan-cards"
 import { SubscriptionFaqList } from "@/components/subscription/subscription-faq"
 import { Badge } from "@/components/ui/badge"
+import { AnimateEnter } from "@/components/motion/animate-enter"
+import { STAGGER_STEP } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 // Karşılaştırma satırları. `true` = plana dahil (tik), UNLIMITED = sonsuzluk
@@ -54,14 +56,20 @@ export function HomePricingSection() {
   return (
     <section className="relative z-20 bg-[var(--home-base)]">
       <div className="dark mx-auto w-full max-w-5xl px-4 pt-2 pb-16 text-foreground">
-        <h2 className="mb-5 text-2xl font-semibold tracking-tight text-balance text-foreground">
-          Fiyatlandırma
-        </h2>
+        <AnimateEnter>
+          <h2 className="mb-5 text-2xl font-semibold tracking-tight text-balance text-foreground">
+            Fiyatlandırma
+          </h2>
+        </AnimateEnter>
 
         {/* Solda karşılaştırma tablosu, sağında başlıksız SSS. lg altında alt
-            alta yığılır; tabloya biraz daha pay verilir çünkü üç sütun taşır. */}
+            alta yığılır; tabloya biraz daha pay verilir çünkü üç sütun taşır.
+            Tablo ve SSS bir adım arayla girer — başlıkla birlikte üç kademe. */}
         <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-10">
-          <div className="overflow-hidden rounded-[calc(var(--radius)*1.8)] border border-border bg-card">
+          <AnimateEnter
+            delay={STAGGER_STEP}
+            className="overflow-hidden rounded-[calc(var(--radius)*1.8)] border border-border bg-card"
+          >
             <table className="w-full border-separate border-spacing-0 text-xs sm:text-sm">
               {/* Özellik sütunu geniş, plan sütunları eşit — satır etiketleri
                 mobilde iki satıra sarsa da sütunlar kaymaz. */}
@@ -136,9 +144,11 @@ export function HomePricingSection() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </AnimateEnter>
 
-          <SubscriptionFaqList />
+          <AnimateEnter delay={STAGGER_STEP * 2}>
+            <SubscriptionFaqList />
+          </AnimateEnter>
         </div>
       </div>
     </section>
