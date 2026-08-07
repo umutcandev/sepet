@@ -430,6 +430,39 @@
    olursak olalım profil değişmez — eskiden iki yarı saydam gradient çapraz
    sönümlenirken rampanın ortasında tepe alfası 0.75'e düşüp header'ın sert
    kenarını açığa çıkarıyordu. */
+/* ---------------------------------------------------------------------------
+   Header logosunun açık/koyu varyant takası (components/app-shell.tsx)
+
+   Ana sayfada header zemini scroll'a BAĞLI olarak --home-base'e akıyor
+   (0 → 1 arası sürekli bir rampa). Logo ise eskiden `dark:` varyantıyla takas
+   ediliyordu: `dark` sınıfı rampanın tam ortasında (0.5) bir anda düştüğü için
+   logo, zemin yumuşakça kararırken BASAMAK yapıp zıplıyordu. Ölçüldü: zemin
+   0.47 → 0.60 arasında ilerlerken logo 1.00'dan 0.00'a tek karede geçiyordu.
+
+   Çözüm: takas oranı da aynı rampadan beslenir. `--logo-swap` 0 iken koyu
+   mürekkepli logo, 1 iken açık mürekkepli logo görünür; ara değerlerde ikisi
+   çapraz sönümlenir.
+
+   Değişkenin CSS'te varsayılanı olmalı ki JS çalışmadan da (ilk boyama, JS
+   kapalı) doğru logo görünsün. Rampanın başında CSS varsayılanı ile JS'in
+   yazacağı değer zaten aynıdır, o yüzden JS devreye girince sıçrama olmaz. */
+:root {
+  --logo-swap: 0;
+}
+.dark {
+  --logo-swap: 1;
+}
+
+@utility logo-on-light {
+  /* Koyu mürekkepli logo: açık zeminde görünür. */
+  opacity: calc(1 - var(--logo-swap));
+}
+
+@utility logo-on-dark {
+  /* Açık mürekkepli logo: koyu zeminde görünür. */
+  opacity: var(--logo-swap);
+}
+
 @utility home-header-fade {
   mask-image: linear-gradient(
     to bottom,

@@ -5,8 +5,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { CommandIcon, PanelLeftIcon, PlusIcon } from "lucide-react"
-import { motion, useMotionValue, useMotionValueEvent } from "motion/react"
+import { useTheme } from "next-themes"
+import { animate, motion, useMotionValue, useMotionValueEvent } from "motion/react"
 
+import { EASE_OUT_SOFT } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
@@ -134,6 +136,50 @@ export function AppShell({ blogPosts, children }: Props) {
     setPaletteDark(v >= 0.5)
   })
 
+  // Logo İNTERPOLE EDİLEBİLİR (iki görselin çapraz sönümü), o yüzden paletin
+  // 0.5'teki basamağına bağlı kalmasın: takas oranını doğrudan rampadan besle.
+  // Eskiden `dark:` varyantıyla takas ediliyordu ve zemin yumuşakça kararırken
+  // logo tek karede zıplıyordu.
+  const { resolvedTheme } = useTheme()
+  const themeDark = resolvedTheme === "dark"
+  const logoSwap = useMotionValue(0)
+
+  // Tema çözülene kadar (SSR + ilk istemci render'ı) inline değer YAZILMAZ;
+  // CSS varsayılanı (:root 0 / .dark 1) devrededir. Rampanın başında iki kaynak
+  // aynı değeri verdiği için JS devreye girdiğinde sıçrama olmaz.
+  //
+  // Ayrı bir state'e gerek yok: next-themes `resolvedTheme`i mount'tan sonra
+  // kendi doldurup yeniden render tetikliyor, yani doğrudan türetilebilir.
+  // Sunucu ve ilk istemci render'ı ikisi de undefined gördüğü için hidrasyon
+  // uyuşmazlığı da olmuyor.
+  const themeReady = Boolean(resolvedTheme)
+
+  // İlk çalıştırmada animasyon YOK: değer CSS varsayılanıyla zaten aynı, üstüne
+  // bir geçiş oynatmak sayfa açılışında logoyu boş yere soldurup geri getirirdi.
+  const logoSwapPrimed = React.useRef(false)
+
+  React.useEffect(() => {
+    // Gerçek tema koyuysa rampa devre dışı: logo her zaman açık varyantta.
+    if (themeDark || !isHome) {
+      const target = themeDark ? 1 : 0
+      if (!logoSwapPrimed.current) {
+        logoSwapPrimed.current = true
+        logoSwap.set(target)
+        return
+      }
+      // Tema değişimi: scroll'a bağlı olmadığı için zaman tabanlı yumuşatma.
+      const controls = animate(logoSwap, target, {
+        duration: 0.3,
+        ease: EASE_OUT_SOFT,
+      })
+      return () => controls.stop()
+    }
+    logoSwapPrimed.current = true
+    // Scroll rampası: doğrudan yaz, araya geçiş koyma — zeminle aynı karede aksın.
+    logoSwap.set(darkness.get())
+    return darkness.on("change", (v) => logoSwap.set(v))
+  }, [themeDark, isHome, darkness, logoSwap])
+
   React.useEffect(() => {
     if (!isHome) {
       darkness.set(0)
@@ -189,7 +235,14 @@ export function AppShell({ blogPosts, children }: Props) {
             style={{ opacity: darkness }}
             className="pointer-events-none absolute inset-0 bg-[var(--home-base)]"
           />
-          <header
+          <motion.header
+            // --logo-swap scroll rampasını logoya taşır. Tema çözülene kadar
+            // yazılmaz; o ana dek CSS varsayılanı (:root / .dark) geçerlidir.
+            style={
+              themeReady
+                ? ({ "--logo-swap": logoSwap } as React.CSSProperties)
+                : undefined
+            }
             className={cn(
               // [&_*]:transition-colors → `dark` düştüğünde yazı/ikon/kenarlık
               // renkleri de birlikte akar; yoksa palet sert keser.
@@ -211,8 +264,14 @@ export function AppShell({ blogPosts, children }: Props) {
               ) : (
                 // Logolar `display` ile değil opacity ile takas ediliyor:
                 // display anahtarı geçişin ortasında sert bir kesme bırakıyordu.
-                // `dark:` varyantı hem gerçek temayı hem header'ın koyu bölge
-                // sınıfını yakalar.
+                // Opaklık `--logo-swap`tan gelir (bkz. globals.css): varsayılanı
+                // tema belirler, ana sayfada scroll rampası sürer. Böylece logo
+                // zeminle AYNI eğride akar, 0.5'te basamak yapmaz.
+                //
+                // CSS transition YOK: değer zaten her karede scroll'dan geliyor,
+                // üstüne zaman tabanlı bir geçiş koymak logoyu zeminin gerisine
+                // düşürürdü. Tema değişiminin yumuşaklığı `--logo-swap`ı yaya
+                // bağlayan app-shell tarafında sağlanır.
                 <span className="relative inline-flex h-5 shrink-0 md:hidden">
                   <Image
                     src="/brand/sepet-dark.svg"
@@ -220,7 +279,7 @@ export function AppShell({ blogPosts, children }: Props) {
                     width={846}
                     height={178}
                     priority
-                    className="h-5 w-auto transition-opacity duration-300 dark:opacity-0"
+                    className="logo-on-light h-5 w-auto"
                   />
                   <Image
                     src="/brand/sepet-light.svg"
@@ -228,7 +287,7 @@ export function AppShell({ blogPosts, children }: Props) {
                     aria-hidden
                     width={846}
                     height={178}
-                    className="absolute inset-0 h-5 w-auto opacity-0 transition-opacity duration-300 dark:opacity-100"
+                    className="logo-on-dark absolute inset-0 h-5 w-auto"
                   />
                 </span>
               )}
@@ -277,7 +336,7 @@ export function AppShell({ blogPosts, children }: Props) {
                 ) : null}
               </span>
             </div>
-          </header>
+          </motion.header>
         </div>
         <div
           ref={scrollRef}
