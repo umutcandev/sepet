@@ -174,33 +174,38 @@ export function HomeHero() {
         <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3 text-center">
             {/* Hero ilk ekranda: scroll beklenmez, açılışta kademeli girer.
-                Gecikmeler rozet → prompt → chip sırasını izler. */}
+                Sıra rozet → başlık → prompt → chip, adım ~0.12s. Şeridin
+                gecikmesi de bu diziyi sürdürür (home-blog-section). */}
             <AnimateEnter isWhileInView={false} delay={0.1}>
               <HeroMarketBadge />
             </AnimateEnter>
-            {/* Başlığa BİLEREK sarmalayıcı konmadı: kendi AnimatePresence
-                blur geçişi zaten girişi yapıyor, üstüne ikinci bir fade
-                koymak iki animasyonu çakıştırırdı. */}
-            <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
-              <AnimatePresence mode="wait" initial={false}>
-                {/* Anahtar index değil metnin kendisi: isim sonradan
+            {/* Başlık da diziye dahil. İçindeki AnimatePresence ile çakışmaz:
+                bu sarmalayıcı yalnızca açılışta bir kez oynar (~0.85s'de biter),
+                rotasyon ise 3.2s'de başlar. Sarmalayıcı olmadan ilk başlık
+                (AnimatePresence initial={false} olduğu için) animasyonsuz,
+                birden beliriyordu. */}
+            <AnimateEnter isWhileInView={false} delay={0.22}>
+              <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
+                <AnimatePresence mode="wait" initial={false}>
+                  {/* Anahtar index değil metnin kendisi: isim sonradan
                     çözümlenirse (snapshot yoksa) başlık sert bir metin
                     swap'ı yerine rotasyonla aynı blur geçişiyle güncellenir. */}
-                <motion.span
-                  key={headings[headingIndex]}
-                  initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
-                  transition={{ duration: 0.45, ease: "easeOut" }}
-                  className="inline-block"
-                >
-                  {headings[headingIndex]}
-                </motion.span>
-              </AnimatePresence>
-            </h1>
+                  <motion.span
+                    key={headings[headingIndex]}
+                    initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
+                    transition={{ duration: 0.45, ease: "easeOut" }}
+                    className="inline-block"
+                  >
+                    {headings[headingIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </h1>
+            </AnimateEnter>
           </div>
 
-          <AnimateEnter isWhileInView={false} delay={0.25} className="w-full">
+          <AnimateEnter isWhileInView={false} delay={0.34} className="w-full">
             <AssistantPrompt
               input={input}
               setInput={setInput}
@@ -210,7 +215,7 @@ export function HomeHero() {
             />
           </AnimateEnter>
 
-          <AnimateEnter isWhileInView={false} delay={0.4}>
+          <AnimateEnter isWhileInView={false} delay={0.46}>
             <div className="flex flex-wrap justify-center gap-2">
               {CHIPS.map((chip) => (
                 <PressFx key={chip}>

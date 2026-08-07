@@ -48,7 +48,16 @@ export function HomeBlogSection() {
           Rengini `dark` sarmalayıcıdan alır — bu bölüm her iki temada da koyu,
           o yüzden logolar tek renk krem olarak oturur. */}
       <div className="dark mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
-        <AnimateEnter>
+        {/* Şerit fold'un TAM sınırında duruyor: hangi ekran yüksekliğinde
+            olursak olalım ilk ekranın alt kenarına denk geliyor, dolayısıyla
+            scroll reveal'a hiç girmiyor ve animasyonsuz beliriyordu. Bu yüzden
+            açılış moduna alındı; gecikme hero'daki diziyi sürdürür
+            (rozet 0.1 → başlık 0.22 → prompt 0.34 → chip 0.46 → şerit 0.58).
+
+            `isWhileInView={false}` sunucu HTML'ine sınıfı doğrudan yazar, yani
+            animasyon ilk kareden itibaren kuruludur. Hidrasyondan sonra sınıf
+            eklenseydi eleman önce görünür boyanıp sonra sıfır opaklığa düşerdi. */}
+        <AnimateEnter isWhileInView={false} delay={0.58}>
           <LogoMarquee className="text-foreground/45" />
         </AnimateEnter>
       </div>
