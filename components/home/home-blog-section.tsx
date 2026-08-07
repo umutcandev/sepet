@@ -9,6 +9,9 @@ import { formatAuthorNames } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
 import { formatPostDateMedium } from "@/lib/blog/format"
 import { Button } from "@/components/ui/button"
+import { AnimateEnter } from "@/components/motion/animate-enter"
+import { PressFx } from "@/components/motion/press-fx"
+import { stagger } from "@/lib/motion"
 
 // Ana sayfa "son 4 yazı" bölümü (plan §7.3). getLatestPosts ile beslenir.
 export function HomeBlogSection() {
@@ -45,56 +48,67 @@ export function HomeBlogSection() {
           Rengini `dark` sarmalayıcıdan alır — bu bölüm her iki temada da koyu,
           o yüzden logolar tek renk krem olarak oturur. */}
       <div className="dark mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
-        <LogoMarquee className="text-foreground/45" />
+        <AnimateEnter>
+          <LogoMarquee className="text-foreground/45" />
+        </AnimateEnter>
       </div>
       {/* pb: altında footer var; sayfa dibi boşluğunu footer'ın kendi padding'i
           tamamlıyor, bu yüzden burada eskisinden dar. */}
       <div className="dark mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
-        <div className="mb-5 flex items-center justify-between gap-4">
+        <AnimateEnter className="mb-5 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
             Blog Gönderileri
           </h2>
-          <Button asChild size="sm" className="group shrink-0">
-            <Link href="/blog">
-              Tüm blog yazıları
-              <ArrowRight
-                className="transition-transform group-hover:translate-x-0.5"
-                aria-hidden
-              />
-            </Link>
-          </Button>
-        </div>
+          <PressFx className="shrink-0">
+            <Button asChild size="sm" className="group shrink-0">
+              <Link href="/blog">
+                Tüm blog yazıları
+                <ArrowRight
+                  className="transition-transform group-hover:translate-x-0.5"
+                  aria-hidden
+                />
+              </Link>
+            </Button>
+          </PressFx>
+        </AnimateEnter>
 
+        {/* Kartlar 80 ms aralıkla girer: dört kart tek tek sayılmak yerine tek
+            bir dalga olarak okunur. */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {posts.map((post, i) => {
             const category = getCategory(post.category)
             return (
-              <BlogDitherCard
+              <AnimateEnter
                 key={post.slug}
-                href={post.permalink}
-                index={i}
-                className="group flex h-full flex-col rounded-xl border border-border bg-card p-4 transition-colors hover:border-foreground/20 [&_[data-slot=avatar]]:ring-card"
+                delay={stagger(i)}
+                className="h-full"
               >
-                <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-muted-foreground">
-                  <time dateTime={post.publishedAt}>
-                    {formatPostDateMedium(post.publishedAt)}
-                  </time>
-                  <span aria-hidden>·</span>
-                  <span>{category.label}</span>
-                </div>
+                <BlogDitherCard
+                  href={post.permalink}
+                  index={i}
+                  className="group flex h-full flex-col rounded-xl border border-border bg-card p-4 transition-colors hover:border-foreground/20 [&_[data-slot=avatar]]:ring-card"
+                >
+                  <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-muted-foreground">
+                    <time dateTime={post.publishedAt}>
+                      {formatPostDateMedium(post.publishedAt)}
+                    </time>
+                    <span aria-hidden>·</span>
+                    <span>{category.label}</span>
+                  </div>
 
-                <h3 className="mt-1 grow text-base font-medium tracking-tight text-pretty text-foreground transition-colors group-hover:text-primary">
-                  {post.title}
-                </h3>
+                  <h3 className="mt-1 grow text-base font-medium tracking-tight text-pretty text-foreground transition-colors group-hover:text-primary">
+                    {post.title}
+                  </h3>
 
-                <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5">
-                  <AuthorAvatarGroup authors={post.authors} size="sm" />
-                  <span className="min-w-0 text-sm text-muted-foreground">
-                    {formatAuthorNames(post.authors)} ·{" "}
-                    {post.metadata.readingTime} dk okuma
-                  </span>
-                </div>
-              </BlogDitherCard>
+                  <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                    <AuthorAvatarGroup authors={post.authors} size="sm" />
+                    <span className="min-w-0 text-sm text-muted-foreground">
+                      {formatAuthorNames(post.authors)} ·{" "}
+                      {post.metadata.readingTime} dk okuma
+                    </span>
+                  </div>
+                </BlogDitherCard>
+              </AnimateEnter>
             )
           })}
         </div>

@@ -16,6 +16,7 @@ import {
   ShoppingBasketIcon,
 } from "lucide-react"
 
+import { EASE_OUT_SOFT, SPRING_PILL } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 export type Interval = "month" | "year"
@@ -77,7 +78,7 @@ export function GradientCard({
     <div
       className={cn(
         "h-full rounded-[calc(var(--radius)*1.8)] bg-gradient-to-br from-primary via-ring to-primary/50 p-0.5",
-        className,
+        className
       )}
     >
       <div className="relative h-full overflow-hidden rounded-[calc(var(--radius)*1.8-2px)] bg-card">
@@ -105,6 +106,11 @@ export function BillingToggle({
   size?: "default" | "sm"
 }) {
   const sm = size === "sm"
+  const reduce = useReducedMotion()
+  // layoutId global bir isim uzayıdır: aynı sayfada iki BillingToggle
+  // render edilirse (ör. ana sayfa + panel) iki pill aynı kimliği paylaşır ve
+  // birbirlerinin konumuna uçarlar. useId her kopyaya kendi kimliğini verir.
+  const pillId = React.useId()
 
   return (
     <div
@@ -112,7 +118,7 @@ export function BillingToggle({
       aria-label="Faturalandırma aralığı"
       className={cn(
         "inline-flex w-fit items-center gap-0.5 rounded-lg border border-border bg-muted/60 p-0.5",
-        sm ? "h-7 text-xs" : "h-8 text-sm",
+        sm ? "h-7 text-xs" : "h-8 text-sm"
       )}
     >
       {(["month", "year"] as const).map((iv) => {
@@ -124,22 +130,35 @@ export function BillingToggle({
             onClick={() => onChange(iv)}
             aria-pressed={active}
             className={cn(
-              "flex items-center self-stretch rounded-md font-medium transition-colors",
+              "relative flex items-center self-stretch rounded-md font-medium transition-colors",
               sm ? "gap-0.5 px-2" : "gap-1 px-3",
               active
-                ? "bg-background text-foreground smooth-shadow-xs"
-                : "text-muted-foreground hover:text-foreground",
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
             )}
           >
-            {iv === "month" ? "Aylık" : "Yıllık"}
+            {/* Aktif zemin ayrı bir katman: iki buton arasında `layoutId` ile
+                kayar. Eskiden her butonun kendi `bg-background`ı vardı, yani
+                vurgu bir yerde sönüp diğerinde yanıyordu — hareket yoktu. */}
+            {active && (
+              <motion.span
+                layoutId={pillId}
+                aria-hidden
+                className="absolute inset-0 rounded-md bg-background smooth-shadow-xs"
+                transition={reduce ? { duration: 0 } : SPRING_PILL}
+              />
+            )}
+            <span className="relative z-10">
+              {iv === "month" ? "Aylık" : "Yıllık"}
+            </span>
             {iv === "year" && (
               <span
                 className={cn(
-                  "rounded-full px-1 py-px font-mono font-medium leading-none transition-colors",
+                  "relative z-10 rounded-full px-1 py-px font-mono leading-none font-medium transition-colors",
                   sm ? "text-[9px]" : "text-[10px]",
                   active
                     ? "bg-primary/15 text-primary"
-                    : "bg-muted-foreground/10 text-muted-foreground",
+                    : "bg-muted-foreground/10 text-muted-foreground"
                 )}
               >
                 %17
@@ -165,7 +184,7 @@ export function FreeCard({
     <div className="flex h-full flex-col gap-5 rounded-[calc(var(--radius)*1.8)] border border-border bg-muted/30 p-5">
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="cn-font-heading text-lg font-semibold leading-none">
+          <span className="cn-font-heading text-lg leading-none font-semibold">
             Ücretsiz
           </span>
           {badge}
@@ -198,7 +217,7 @@ export function ProCard({
     <GradientCard>
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="cn-font-heading text-lg font-semibold leading-none">
+          <span className="cn-font-heading text-lg leading-none font-semibold">
             Pro
           </span>
           {badge}
@@ -255,7 +274,8 @@ export function AnimatedAmount({
         locales="tr-TR"
         transformTiming={{
           duration: 550,
-          easing: "cubic-bezier(0.22,1,0.36,1)",
+          // NumberFlow CSS string bekler; eğri yine tek kaynaktan gelsin.
+          easing: `cubic-bezier(${EASE_OUT_SOFT.join(",")})`,
         }}
         opacityTiming={{ duration: 250, easing: "ease-out" }}
       />
@@ -289,7 +309,11 @@ function ProPrice({ interval }: { interval: Interval }) {
             className="absolute inset-x-0 top-1/2 h-px origin-left -translate-y-1/2 rounded-full bg-destructive/70"
             initial={reduce ? false : { scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ delay: 0.18, duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
+            transition={{
+              delay: 0.18,
+              duration: 0.4,
+              ease: [0.65, 0, 0.35, 1],
+            }}
           />
         </motion.span>
       )}
@@ -314,7 +338,7 @@ function FeatureList({ items, muted }: { items: Feature[]; muted?: boolean }) {
           <Icon
             className={cn(
               "size-4 shrink-0",
-              muted ? "text-muted-foreground" : "text-primary",
+              muted ? "text-muted-foreground" : "text-primary"
             )}
           />
           <span className={muted ? "text-muted-foreground" : "text-foreground"}>

@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 import { HeroMarketBadge } from "@/components/hero-market-badge"
-import {
-  type PromptInputMessage,
-} from "@/components/ai-elements/prompt-input"
+import { AnimateEnter } from "@/components/motion/animate-enter"
+import { PressFx } from "@/components/motion/press-fx"
+import { type PromptInputMessage } from "@/components/ai-elements/prompt-input"
 import { AssistantPrompt } from "@/components/assistant/assistant-prompt"
 
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
@@ -79,7 +79,7 @@ export function HomeHero() {
 
     const text = message.text?.trim() ?? ""
     const imageFile = (message.files ?? []).find((f) =>
-      f.mediaType?.startsWith("image/"),
+      f.mediaType?.startsWith("image/")
     )
 
     if (!text && !imageFile) return
@@ -96,11 +96,14 @@ export function HomeHero() {
             url: imageFile.url,
             mediaType: imageFile.mediaType,
             filename: imageFile.filename,
-          }),
+          })
         )
         // If no text was given, set a default seed
         if (!text) {
-          window.sessionStorage.setItem(ASSISTANT_SEED_KEY, "Bu görseli analiz et")
+          window.sessionStorage.setItem(
+            ASSISTANT_SEED_KEY,
+            "Bu görseli analiz et"
+          )
         }
       }
     }
@@ -153,11 +156,11 @@ export function HomeHero() {
       <div className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16">
         <div
           aria-hidden
-          className="dark:hidden pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/backgrounds/background-image.avif')_type('image/avif'),url('/backgrounds/background-image.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/backgrounds/background-image.avif')_type('image/avif'),url('/backgrounds/background-image.webp')_type('image/webp'))] [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] bg-cover bg-bottom bg-no-repeat [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] dark:hidden"
         />
         <div
           aria-hidden
-          className="hidden dark:block pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/backgrounds/background-image-dark.avif')_type('image/avif'),url('/backgrounds/background-image-dark.webp')_type('image/webp'))] bg-cover bg-bottom bg-no-repeat [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-full bg-[image:image-set(url('/backgrounds/background-image-dark.avif')_type('image/avif'),url('/backgrounds/background-image-dark.webp')_type('image/webp'))] [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] bg-cover bg-bottom bg-no-repeat [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] dark:block"
         />
         {/* Görselin alt kenarını blog bölümünün dip rengine (--home-base, temaya
             bağlı) yumuşak fade ile bağlar: dipte tam renk, yukarı doğru saydamlaşır.
@@ -170,7 +173,14 @@ export function HomeHero() {
         />
         <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3 text-center">
-            <HeroMarketBadge />
+            {/* Hero ilk ekranda: scroll beklenmez, açılışta kademeli girer.
+                Gecikmeler rozet → prompt → chip sırasını izler. */}
+            <AnimateEnter isWhileInView={false} delay={0.1}>
+              <HeroMarketBadge />
+            </AnimateEnter>
+            {/* Başlığa BİLEREK sarmalayıcı konmadı: kendi AnimatePresence
+                blur geçişi zaten girişi yapıyor, üstüne ikinci bir fade
+                koymak iki animasyonu çakıştırırdı. */}
             <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
               <AnimatePresence mode="wait" initial={false}>
                 {/* Anahtar index değil metnin kendisi: isim sonradan
@@ -190,28 +200,33 @@ export function HomeHero() {
             </h1>
           </div>
 
-          <AssistantPrompt
-            input={input}
-            setInput={setInput}
-            onSubmit={handleSubmit}
-            status={isSubmitting ? "submitted" : undefined}
-            className="w-full"
-          />
+          <AnimateEnter isWhileInView={false} delay={0.25} className="w-full">
+            <AssistantPrompt
+              input={input}
+              setInput={setInput}
+              onSubmit={handleSubmit}
+              status={isSubmitting ? "submitted" : undefined}
+              className="w-full"
+            />
+          </AnimateEnter>
 
-          <div className="flex flex-wrap justify-center gap-2">
-            {CHIPS.map((chip) => (
-              <Button
-                key={chip}
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => handleChip(chip)}
-                className="h-auto rounded-lg border-border bg-muted px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/20 hover:bg-muted hover:text-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:border-muted-foreground/35 dark:hover:bg-muted"
-              >
-                {chip}
-              </Button>
-            ))}
-          </div>
+          <AnimateEnter isWhileInView={false} delay={0.4}>
+            <div className="flex flex-wrap justify-center gap-2">
+              {CHIPS.map((chip) => (
+                <PressFx key={chip}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleChip(chip)}
+                    className="h-auto rounded-lg border-border bg-muted px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/20 hover:bg-muted hover:text-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:border-muted-foreground/35 dark:hover:bg-muted"
+                  >
+                    {chip}
+                  </Button>
+                </PressFx>
+              ))}
+            </div>
+          </AnimateEnter>
         </div>
       </div>
     </>
