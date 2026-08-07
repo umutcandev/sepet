@@ -144,6 +144,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }
     // Sunucu cookie'yi sildi; tam sayfa navigasyonuyla oturumsuz "/"a geç
     // (statik sayfa, misafir durumuyla tutarlı; bayat client cache bırakmaz).
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- tam reload kasıtlı; router.push bayat client cache'i taşır.
     window.location.assign("/")
   }, [clearClientSession, refresh])
 

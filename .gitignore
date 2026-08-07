@@ -48,3 +48,9 @@ next-env.d.ts
 # skills (npx skills add) — yerelde kurulur, repoya girmez
 .agents/
 skills-lock.json
+
+# next dev (16.3+) bunları otomatik üretir/günceller ve node_modules altındaki
+# sürüm-eşli dokümana işaret eder — yerelde üretilir, repoya girmez (.agents/
+# ile aynı sözleşme). Kapatmak için next.config'e `agentRules: false`.
+/AGENTS.md
+/CLAUDE.md

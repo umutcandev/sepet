@@ -98,6 +98,7 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
       window.location.pathname.startsWith("/asistan/")
     ) {
       e.preventDefault()
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- fresh mount kasıtlı; router.push aynı segment'e düşüp remount etmez (yukarıdaki drift notu).
       window.location.assign("/asistan")
     }
   }
