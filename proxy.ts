@@ -4,6 +4,7 @@ import type { NextRequest, NextFetchEvent } from "next/server"
 
 import { authConfig } from "./auth.config"
 import {
+  assistantBurstLimiter,
   authLimiter,
   avatarUploadLimiter,
   locationLimiter,
@@ -43,6 +44,15 @@ const apiMiddleware = withAuth(async (req) => {
 
   if (path.startsWith("/api/auth")) {
     const { success, reset } = await authLimiter.limit(`auth:${ip}`)
+    if (!success) return tooManyResponse(reset)
+  }
+
+  // Asistan (Gemini vision + parse + eşleştirme). Hacim sınırı aylık kotadır;
+  // bu yalnızca burst korumasıdır — kota dolduğunda dönen 402'lerin de
+  // hammer'lanmasını ve iptal döngülerini keser.
+  if (path.startsWith("/api/assistant")) {
+    const key = userId ? `user:${userId}` : `ip:${ip}`
+    const { success, reset } = await assistantBurstLimiter.limit(key)
     if (!success) return tooManyResponse(reset)
   }
 

@@ -82,6 +82,7 @@ type AssistantChatProps = {
     metadata?: unknown
   }>
   initialSavedBaskets?: Record<string, string>
+  initialSavedReceipts?: Record<string, string>
 }
 
 export function AssistantChat({
@@ -89,6 +90,7 @@ export function AssistantChat({
   initialTitle,
   initialMessages,
   initialSavedBaskets,
+  initialSavedReceipts,
 }: AssistantChatProps = {}) {
   const guard = useRequireAuth()
   const locationGuard = useRequireLocation()
@@ -670,7 +672,13 @@ export function AssistantChat({
                             },
                             suppressToolLoader,
                           )
-                        case "tool-receiptComparison":
+                        case "tool-receiptComparison": {
+                          const toolCallId =
+                            (part as { toolCallId?: string }).toolCallId ?? null
+                          const savedId =
+                            toolCallId && initialSavedReceipts
+                              ? initialSavedReceipts[toolCallId] ?? null
+                              : null
                           return renderToolPart(
                             key,
                             part,
@@ -678,10 +686,14 @@ export function AssistantChat({
                             (out) => (
                               <ReceiptComparisonCard
                                 data={out as ReceiptComparisonPayload}
+                                conversationId={conversationId ?? null}
+                                toolCallId={toolCallId}
+                                initialSavedId={savedId}
                               />
                             ),
                             suppressToolLoader,
                           )
+                        }
                         case "file": {
                           const filePart = part as {
                             type: "file"

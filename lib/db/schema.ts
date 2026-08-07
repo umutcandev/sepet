@@ -320,6 +320,14 @@ export const receipts = pgTable(
     userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
+    // Kaydın geldiği sohbet + tool-call. `basket` ile aynı dedup mekanizması:
+    // sohbet yeniden yüklendiğinde "Kaydedildi" durumu sunucudan kurulabilsin ve
+    // aynı karttan ikinci bir satır oluşmasın (bkz. basket_conv_tool_idx).
+    // Sohbet silinirse fiş korunur → set null.
+    conversationId: uuid("conversationId").references(() => conversations.id, {
+      onDelete: "set null",
+    }),
+    sourceToolCallId: text("sourceToolCallId"),
     marketName: text("marketName"),
     purchaseDate: timestamp("purchaseDate", { mode: "date" }),
     totalAmount: numeric("totalAmount", { precision: 10, scale: 2 }),
@@ -339,6 +347,11 @@ export const receipts = pgTable(
   },
   (t) => [
     index("receipt_user_created_idx").on(t.userId, t.createdAt.desc()),
+    uniqueIndex("receipt_conv_tool_idx").on(
+      t.userId,
+      t.conversationId,
+      t.sourceToolCallId,
+    ),
   ],
 )
 

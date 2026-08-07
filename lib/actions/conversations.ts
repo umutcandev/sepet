@@ -12,6 +12,7 @@ import {
 } from "@/lib/conversation-sort"
 import { isUuid } from "@/lib/utils"
 import { getSavedBasketsForConversation } from "./baskets"
+import { getSavedReceiptsForConversation } from "./receipts"
 
 const TITLE_MAX = 100
 const SEED_TITLE_MAX = 60
@@ -200,6 +201,7 @@ export async function getConversation(id: string): Promise<{
   title: string
   messages: StoredMessage[]
   savedBaskets: Record<string, string>
+  savedReceipts: Record<string, string>
 } | null> {
   const session = await auth()
   if (!session?.user?.id) return null
@@ -221,7 +223,7 @@ export async function getConversation(id: string): Promise<{
 
   if (!conv) return null
 
-  const [rows, savedBaskets] = await Promise.all([
+  const [rows, savedBaskets, savedReceipts] = await Promise.all([
     db
       .select({
         id: conversationMessages.id,
@@ -233,6 +235,7 @@ export async function getConversation(id: string): Promise<{
       .where(eq(conversationMessages.conversationId, id))
       .orderBy(asc(conversationMessages.sequence)),
     getSavedBasketsForConversation(id, session.user.id),
+    getSavedReceiptsForConversation(id, session.user.id),
   ])
 
   const messages: StoredMessage[] = rows.map((r) => ({
@@ -242,7 +245,7 @@ export async function getConversation(id: string): Promise<{
     metadata: r.metadata ?? undefined,
   }))
 
-  return { id: conv.id, title: conv.title, messages, savedBaskets }
+  return { id: conv.id, title: conv.title, messages, savedBaskets, savedReceipts }
 }
 
 export async function deleteConversation(id: string): Promise<void> {

@@ -56,6 +56,20 @@ export function publicUrlForKey(key: string): string {
   return `${getPublicBase()}/${key}`
 }
 
+/**
+ * `publicUrlForKey`'in tersi: public URL'den R2 object key'ini çıkarır. Base
+ * ile başlamayan (yani bizim bucket'ımıza ait olmayan) URL'lerde null döner —
+ * çağıran taraf silme gibi yıkıcı bir işlemi asla yabancı bir key üzerinde
+ * yapmasın.
+ */
+function keyFromPublicUrl(url: string | null | undefined): string | null {
+  if (typeof url !== "string") return null
+  const prefix = `${getPublicBase()}/`
+  if (!url.startsWith(prefix)) return null
+  const key = url.slice(prefix.length)
+  return key.length > 0 ? key : null
+}
+
 export function validateUpload(input: { contentType: string; size: number }): {
   ok: true
 } | { ok: false; reason: string; status: number } {
@@ -119,10 +133,39 @@ export function isOwnedAvatarUrl(
   return url.startsWith(`${getPublicBase()}/avatars/${userId}/`)
 }
 
+/** `isOwnedReceiptKey`'in avatar karşılığı — silme öncesi sahiplik kontrolü. */
+function isOwnedAvatarKey(
+  key: string | null | undefined,
+  userId: string,
+): boolean {
+  return typeof key === "string" && key.startsWith(`avatars/${userId}/`)
+}
+
 export async function deleteReceiptObject(key: string): Promise<void> {
   await getR2Client().send(
     new DeleteObjectCommand({ Bucket: getR2Bucket(), Key: key }),
   )
+}
+
+/**
+ * Kullanıcının ESKİ avatar nesnesini best-effort siler. Avatar değiştirmek ya da
+ * kaldırmak `users.customImage`'i günceller; nesne silinmezse R2'de sonsuza dek
+ * yetim kalır (yalnızca hesap purge'ünde temizlenirdi). Sahiplik key üzerinden
+ * yeniden doğrulanır — DB'deki değer bozuksa yabancı bir nesne silinmesin.
+ */
+export async function deleteAvatarByUrl(
+  url: string | null | undefined,
+  userId: string,
+): Promise<void> {
+  const key = keyFromPublicUrl(url)
+  if (!key || !isOwnedAvatarKey(key, userId)) return
+  try {
+    await getR2Client().send(
+      new DeleteObjectCommand({ Bucket: getR2Bucket(), Key: key }),
+    )
+  } catch (err) {
+    console.error("[r2] eski avatar silinemedi", err)
+  }
 }
 
 /**
@@ -157,6 +200,55 @@ export async function uploadAvatarDirect(input: {
     }),
   )
   return { key, publicUrl: publicUrlForKey(key) }
+}
+
+const RECEIPTS_PREFIX = "receipts/"
+
+export type R2ObjectRef = { key: string; lastModified: Date | null }
+
+/**
+ * `receipts/` önekindeki nesnelerin TEK sayfasını listeler (yetim temizliği
+ * için). Cron'un 60 sn bütçesini aşmamak adına iş bilinçli olarak sayfa sayfa
+ * yapılır; `nextStartAfter` bir sonraki çalıştırmada kaldığı yerden devam
+ * etmeyi sağlar (S3 continuation token'ının aksine süresi dolmaz ve nesne
+ * kümesi değişse de geçerli kalır). Liste bittiğinde null döner.
+ */
+export async function listReceiptObjectsPage(input: {
+  startAfter?: string
+  maxKeys?: number
+}): Promise<{ objects: R2ObjectRef[]; nextStartAfter: string | null }> {
+  const res = await getR2Client().send(
+    new ListObjectsV2Command({
+      Bucket: getR2Bucket(),
+      Prefix: RECEIPTS_PREFIX,
+      StartAfter: input.startAfter,
+      MaxKeys: input.maxKeys ?? 1000,
+    }),
+  )
+  const objects: R2ObjectRef[] =
+    res.Contents?.flatMap((o) =>
+      o.Key ? [{ key: o.Key, lastModified: o.LastModified ?? null }] : [],
+    ) ?? []
+  const last = objects.at(-1)?.key ?? null
+  return {
+    objects,
+    nextStartAfter: res.IsTruncated && last ? last : null,
+  }
+}
+
+/** Verilen key'leri toplu siler (S3 DeleteObjects tek çağrıda en fazla 1000). */
+export async function deleteObjectsByKeys(keys: string[]): Promise<void> {
+  if (keys.length === 0) return
+  const client = getR2Client()
+  const bucket = getR2Bucket()
+  for (let i = 0; i < keys.length; i += 1000) {
+    await client.send(
+      new DeleteObjectsCommand({
+        Bucket: bucket,
+        Delete: { Objects: keys.slice(i, i + 1000).map((Key) => ({ Key })) },
+      }),
+    )
+  }
 }
 
 /** Verilen önek altındaki tüm nesneleri sayfalayarak siler. */

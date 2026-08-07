@@ -19,7 +19,7 @@ import {
   AI_MAX_RETRIES,
   type AiCallOptions,
 } from "./models"
-import { withLlmCall } from "./telemetry"
+import { devLog, withLlmCall } from "./telemetry"
 import {
   CHAT_TITLE_PROMPT,
   IMAGE_ANALYSIS_PROMPT,
@@ -63,16 +63,18 @@ async function findFirstHit(
       // En az bir marketten gerçek fiyatı olmayan adayları ele — bir depo
       // fiyatı yoksa o ürün optimizasyona katkı yapamaz.
       const hits = result.details.filter((d) => d.markets.length >= 1)
-      console.log(
+      // Sorgu metni kullanıcı içeriğidir → yalnızca dev. Üretimde cache
+      // isabet oranı `[lookupProducts] match cache` satırından okunur.
+      devLog(
         `[lookupProducts] q="${q}" cached=${result.cached} hits=${result.details.length} withMarket=${hits.length}`,
       )
       if (hits.length > 0) return { kind: "hit", hits }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
       const status = err instanceof MarketfiyatiError ? err.status : undefined
-      console.error(
-        `[lookupProducts] error for q="${q}" status=${status} ${message}`,
-      )
+      // Hata üretimde de görünmeli, ama sorgu metni olmadan.
+      console.error(`[lookupProducts] search failed status=${status} ${message}`)
+      devLog(`[lookupProducts] ↑ failing query: q="${q}"`)
       // Marketfiyati ücretsiz — kota yok. 403/429/WAF/5xx hepsi geçici API hatası.
       lastError = { kind: "api_error", message }
     }
@@ -118,16 +120,25 @@ export async function analyzeImage(
         },
       }),
   )
-  console.log(
-    "[analyzeImage] kind=",
-    object.kind,
+  // Üretim: sınıflandırma + sayılar (içeriksiz). Market adı, tutar, yemek adı
+  // ve unknownReason kullanıcı içeriğidir → dev.
+  const itemCount =
     object.kind === "receipt"
-      ? `market=${object.receipt?.marketName} items=${object.receipt?.items.length} total=${object.receipt?.totalAmount}`
+      ? object.receipt?.items.length
       : object.kind === "food"
-        ? `dish=${object.food?.dishName} items=${object.food?.items.length}`
+        ? object.food?.items.length
+        : undefined
+  console.log(
+    `[analyzeImage] kind=${object.kind} items=${itemCount ?? "-"} ` +
+      `reasoning=${reasoning ? `${reasoning.length}c` : "none"}`,
+  )
+  devLog(
+    "[analyzeImage] detail:",
+    object.kind === "receipt"
+      ? `market=${object.receipt?.marketName} total=${object.receipt?.totalAmount}`
+      : object.kind === "food"
+        ? `dish=${object.food?.dishName}`
         : `reason=${object.unknownReason}`,
-    "reasoning=",
-    reasoning ? `${reasoning.length} chars` : "none",
   )
   return { analysis: object, reasoning: reasoning ?? null }
 }
@@ -179,11 +190,15 @@ export async function parseShoppingList(
         },
       }),
   )
+  // Üretim: kaç kalem çıktı (parse kalitesi metriği). Kalem adları ve arama
+  // sorguları kullanıcının alışveriş listesidir → dev.
   console.log(
-    "[parseShoppingList] items:",
+    `[parseShoppingList] items=${object.items.length} ` +
+      `reasoning=${reasoning ? `${reasoning.length}c` : "none"}`,
+  )
+  devLog(
+    "[parseShoppingList] detail:",
     object.items.map((i) => `${i.name} → "${i.searchQuery}"`).join(" | "),
-    "reasoning=",
-    reasoning ? `${reasoning.length} chars` : "none",
   )
   return { draft: object, reasoning: reasoning ?? null }
 }
