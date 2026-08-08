@@ -10,6 +10,7 @@ import { animate, motion, useMotionValue, useMotionValueEvent } from "motion/rea
 
 import { EASE_OUT_SOFT } from "@/lib/motion"
 import { cn } from "@/lib/utils"
+import { useMounted } from "@/hooks/use-mounted"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
 import type { BlogNavItem } from "@/components/blog/blog-posts-group"
@@ -153,8 +154,7 @@ export function AppShell({ blogPosts, children }: Props) {
   // okuyan bir lazy initializer ile kuruyor, yani değer daha ilk istemci
   // render'ında dolu geliyor. O render sunucununkiyle karşılaştırıldığı için
   // `style={{"--logo-swap":0}}` vs `style={}` hidrasyon uyuşmazlığı çıkıyordu.
-  const [mounted, setMounted] = React.useState(false)
-  React.useEffect(() => setMounted(true), [])
+  const mounted = useMounted()
   const themeReady = mounted && Boolean(resolvedTheme)
 
   // İlk çalıştırmada animasyon YOK: değer CSS varsayılanıyla zaten aynı, üstüne
