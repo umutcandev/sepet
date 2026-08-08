@@ -323,11 +323,23 @@ export type MessageResponseProps = ComponentProps<typeof Streamdown>;
 
 const streamdownPlugins = { cjk, code, math, mermaid };
 
+/* Streamdown'ın kendi liste tipografisi sohbet balonu için uygun değil:
+   `list-inside` madde işaretini metnin içine alır (girinti ve asılı hizalama
+   olmaz, saran satır işaretin altına kayar) ve `li_py-1` maddeler arasını
+   paragraf gibi açar. Aşağıdaki arbitrary variant'lar descendant seçici
+   ürettiği için (0,1,1) streamdown'ın düz utility'lerini (0,1,0) ezer.
+   Aynı ölçüler asistanın reasoning bloğunda da kullanılıyor. */
+const markdownTypography =
+  "[&_ul]:list-outside [&_ul]:list-disc [&_ul]:pl-5 " +
+  "[&_ol]:list-outside [&_ol]:list-decimal [&_ol]:pl-5 " +
+  "[&_li]:py-0.5 [&_li]:pl-1 [&_li]:marker:text-muted-foreground"
+
 export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (
     <Streamdown
       className={cn(
         "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
+        markdownTypography,
         className
       )}
       plugins={streamdownPlugins}

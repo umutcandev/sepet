@@ -21,11 +21,26 @@ import { formatTLOrDash } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { ProductHit } from "@/lib/marketfiyati/types"
 
+type SearchResponse = {
+  hits: ProductHit[]
+  total: number | null
+  page: number
+  hasMore: boolean
+}
+
 type Result =
   | { kind: "idle" }
   | { kind: "loading" }
   | { kind: "error"; message: string }
-  | { kind: "ok"; query: string; hits: ProductHit[] }
+  | {
+      kind: "ok"
+      query: string
+      hits: ProductHit[]
+      total: number | null
+      page: number
+      hasMore: boolean
+      loadingMore: boolean
+    }
 
 export function ProductSearchPage() {
   const [q, setQ] = React.useState("")
@@ -43,6 +58,24 @@ export function ProductSearchPage() {
   const trimmed = q.trim()
   const canSubmit = trimmed.length >= 2 && result.kind !== "loading"
 
+  async function fetchPage(
+    value: string,
+    page: number,
+    signal: AbortSignal,
+  ): Promise<SearchResponse> {
+    const res = await fetch(
+      `/api/products/search?q=${encodeURIComponent(value)}&page=${page}`,
+      { signal },
+    )
+    if (!res.ok) {
+      const body = (await res.json().catch(() => null)) as {
+        error?: string
+      } | null
+      throw new Error(body?.error ?? `HTTP ${res.status}`)
+    }
+    return (await res.json()) as SearchResponse
+  }
+
   async function runSearchWith(query: string) {
     const value = query.trim()
     if (value.length < 2) return
@@ -52,22 +85,54 @@ export function ProductSearchPage() {
     setResult({ kind: "loading" })
 
     try {
-      const res = await fetch(
-        `/api/products/search?q=${encodeURIComponent(value)}`,
-        { signal: ctrl.signal },
-      )
-      if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as {
-          error?: string
-        } | null
-        throw new Error(body?.error ?? `HTTP ${res.status}`)
-      }
-      const data = (await res.json()) as { hits: ProductHit[] }
+      const data = await fetchPage(value, 0, ctrl.signal)
       if (ctrl.signal.aborted) return
-      setResult({ kind: "ok", query: value, hits: data.hits })
+      setResult({
+        kind: "ok",
+        query: value,
+        hits: data.hits,
+        total: data.total,
+        page: data.page,
+        hasMore: data.hasMore,
+        loadingMore: false,
+      })
     } catch (err) {
       if ((err as Error).name === "AbortError") return
       setResult({ kind: "error", message: (err as Error).message })
+    }
+  }
+
+  async function loadMore() {
+    if (result.kind !== "ok" || !result.hasMore || result.loadingMore) return
+    const { query, page } = result
+    const ctrl = new AbortController()
+    abortRef.current = ctrl
+    setResult({ ...result, loadingMore: true })
+
+    try {
+      const data = await fetchPage(query, page + 1, ctrl.signal)
+      if (ctrl.signal.aborted) return
+      setResult((prev) => {
+        // Yeni bir arama araya girmişse (farklı sorgu ya da liste sıfırlanmışsa)
+        // bu sayfayı yok say — yanlış sorgunun sonucunu eklemeyelim.
+        if (prev.kind !== "ok" || prev.query !== query) return prev
+        const seen = new Set(prev.hits.map((h) => h.productId))
+        const fresh = data.hits.filter((h) => !seen.has(h.productId))
+        return {
+          ...prev,
+          hits: [...prev.hits, ...fresh],
+          total: data.total ?? prev.total,
+          page: data.page,
+          hasMore: data.hasMore,
+          loadingMore: false,
+        }
+      })
+    } catch (err) {
+      if ((err as Error).name === "AbortError") return
+      // Sayfa yüklenemedi — mevcut liste dursun, buton tekrar denenebilir kalsın.
+      setResult((prev) =>
+        prev.kind === "ok" ? { ...prev, loadingMore: false } : prev,
+      )
     }
   }
 
@@ -148,6 +213,7 @@ export function ProductSearchPage() {
       <ResultArea
         result={result}
         onSelect={guard(setSelectedId)}
+        onLoadMore={loadMore}
       />
 
       <ResponsiveDialog
@@ -173,9 +239,11 @@ export function ProductSearchPage() {
 function ResultArea({
   result,
   onSelect,
+  onLoadMore,
 }: {
   result: Result
   onSelect: (productId: string) => void
+  onLoadMore: () => void
 }) {
   if (result.kind === "loading") {
     return (
@@ -219,7 +287,12 @@ function ResultArea({
     <>
       <div className="mb-3 flex items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground">
-          “{result.query}” için {result.hits.length} sonuç
+          {/* Toplam biliniyorsa "48 / 220" göster — kaç sonucun daha olduğunu
+              görmeden "daha fazla" butonu bağlamsız kalıyor. */}
+          “{result.query}” için{" "}
+          {result.total !== null && result.total > result.hits.length
+            ? `${result.total} sonuçtan ${result.hits.length} tanesi`
+            : `${result.hits.length} sonuç`}
         </p>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
@@ -231,6 +304,22 @@ function ResultArea({
           />
         ))}
       </div>
+
+      {result.hasMore && (
+        <div className="mt-4 flex justify-center">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onLoadMore}
+            disabled={result.loadingMore}
+            className="h-9 px-4"
+          >
+            {result.loadingMore && <Spinner className="size-3.5" />}
+            {result.loadingMore ? "Yükleniyor..." : "Daha fazla göster"}
+          </Button>
+        </div>
+      )}
     </>
   )
 }

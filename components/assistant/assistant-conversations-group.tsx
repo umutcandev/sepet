@@ -39,6 +39,7 @@ import { setConversationStarred } from "@/lib/actions/conversations"
 import {
   assistantConversations,
   useAssistantConversations,
+  useAssistantConversationsHydrated,
 } from "@/lib/stores/assistant-conversations"
 import { useAssistantTitle } from "@/lib/stores/assistant-title"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -317,6 +318,43 @@ function ConversationRow({
   )
 }
 
+// Store hidrasyonundan önceki bekleme satırları. Sayı SIDEBAR_HISTORY_LIMIT ile
+// aynı: hidrasyondan sonra gelen liste tam dolu olduğunda yer tutucu sayısı da
+// birebir karşılık bulur, sidebar zıplamaz. Genişlikler kasten farklı: eşit
+// uzunluktaki bloklar liste değil tablo gibi duruyordu.
+const SKELETON_ROW_WIDTHS = [
+  "w-32",
+  "w-24",
+  "w-28",
+  "w-20",
+  "w-30",
+  "w-26",
+  "w-32",
+  "w-22",
+  "w-28",
+  "w-24",
+] as const
+
+function ConversationRowsSkeleton() {
+  return (
+    <SidebarMenu>
+      {SKELETON_ROW_WIDTHS.map((w, i) => (
+        <SidebarMenuItem key={i}>
+          {/* SidebarMenuButton ile aynı kutu ölçüsü (h-8, px-2, gap-2) →
+              gerçek satırlar geldiğinde liste yüksekliği zıplamaz. */}
+          <div
+            className="flex h-8 items-center gap-2 rounded-md px-2"
+            aria-hidden
+          >
+            <Skeleton className="size-4 shrink-0 rounded-full" />
+            <Skeleton className={cn("h-3.5", w)} />
+          </div>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
+  )
+}
+
 export function AssistantConversationsGroup({ conversations }: Props) {
   // Aktif id'yi router'dan değil assistant-title store'undan okuyoruz:
   // AssistantChat yeni sohbet başlatınca URL'yi `window.history.replaceState`
@@ -334,6 +372,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
   // açıldığında snapshot olduğu gibi okunuyor. Hidrasyon AppShell
   // useEffect'inde yapılıyor — bkz. app-shell.tsx.
   const list = useAssistantConversations(conversations)
+  const storeHydrated = useAssistantConversationsHydrated()
 
   const { scrollRef, measure, fade } = useScrollFade()
   // Liste uzunluğu değişince (yeni sohbet, silme, stream upsert) yeniden ölç —
@@ -354,6 +393,26 @@ export function AssistantConversationsGroup({ conversations }: Props) {
   // ── Collapse states for sidebar groups ──
   const [favoritesCollapsed, setFavoritesCollapsed] = React.useState(false)
   const [historyCollapsed, setHistoryCollapsed] = React.useState(false)
+
+  // Store hidrasyonu `/api/me` dönüşünde AppShell'de yapılıyor; o ana kadar
+  // liste boş görünür. "Henüz sohbetin yok." yazıp saniyesinde sohbetleri
+  // listelemek yerine bekleme durumunu iskeletle gösteriyoruz. Server'dan
+  // dolu bir fallback geldiyse (SSR listesi) beklemeye gerek yok.
+  if (!storeHydrated && list.length === 0) {
+    return (
+      // Gerçek "Geçmiş Sohbetler" grubuyla aynı kutu: min-h-0 flex-1 + kendi
+      // scroll kabı. 10 yer tutucu sidebar'a sığmazsa taşma yapmak yerine
+      // listede olduğu gibi kaydırılır.
+      <SidebarGroup className="flex min-h-0 flex-1 flex-col">
+        <SidebarGroupLabel>Geçmiş Sohbetler</SidebarGroupLabel>
+        <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto pb-6">
+          <SidebarGroupContent>
+            <ConversationRowsSkeleton />
+          </SidebarGroupContent>
+        </div>
+      </SidebarGroup>
+    )
+  }
 
   if (list.length === 0) {
     return (

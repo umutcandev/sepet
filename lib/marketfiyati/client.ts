@@ -256,6 +256,15 @@ function geo(opts?: GeoOptions) {
 
 export type IdentityType = "barcode" | "id"
 
+/**
+ * `size` için sunucu tarafı tavan. Ölçüldü (2026-08-08, "peynir", İstanbul 34
+ * depo): 12→12, 24→24, 26→26, 30→25, 48→25, 100→25, 200→25. Yani ~26'nın
+ * üstünde istenen boyut sessizce 25'e düşürülüyor — hata dönmüyor, bu yüzden
+ * fark edilmesi zor. Daha büyük aday havuzu isteyen `pages` ile sayfa sayfa
+ * çekmeli; tek istekte büyütmek MÜMKÜN DEĞİL.
+ */
+export const MF_MAX_SIZE = 26
+
 /** Keyword ile ürün arama. */
 export function search(
   keywords: string,

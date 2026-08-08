@@ -25,6 +25,7 @@ import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
 import { type ReceiptSort, DEFAULT_RECEIPT_SORT } from "@/lib/receipt-sort"
+import { OCR_MODEL_NAME } from "@/lib/ai/models"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -181,7 +182,7 @@ export async function saveReceipt(input: {
       totalAmount: totalAmount != null ? totalAmount.toFixed(2) : null,
       imageUrl: input.imageUrl,
       imageR2Key: input.imageR2Key,
-      ocrModel: "gemini-2.5-flash",
+      ocrModel: OCR_MODEL_NAME,
       bestSingleMarket: bestSingle?.market ?? null,
       bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
       potentialSavingsTL: persistedSavings.toFixed(2),

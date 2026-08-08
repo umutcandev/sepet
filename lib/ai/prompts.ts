@@ -13,6 +13,30 @@ KURALLAR:
 - Eşleşme bulunamayan kalemleri özetin sonunda belirt.
 - Asla uzun açıklama yapma; tool sonuçları kartlar halinde gösterilecek.`
 
+/**
+ * Kullanıcıya OLDUĞU GİBİ gösterilen serbest metin alanlarının (chatResponse,
+ * unknownReason) yazım biçimi. Kural metnini yazmak tek başına yetmiyor: model
+ * prompt'taki örnek çıktıların noktalamasını taklit ettiği için bu dosyadaki
+ * tırnak içi örnekler de aynı biçimde tutulmalı (em dash, emoji, tırnaklı ürün
+ * adı yok).
+ *
+ * KAPSAM UYARISI: Bu kurallar YALNIZ düz cümle alanları içindir. Veri
+ * alanlarına (name, searchQuery, rawName, dishName) uygulanırsa "Coca-Cola" →
+ * "Coca Cola", "Tam-Tat" → "Tam Tat" gibi bozulmalar market arama sorgusunu
+ * kırar. Bu yüzden kural bloğu alan adıyla birlikte üretiliyor ve hangi
+ * alanlara DOKUNMAYACAĞI açıkça yazılıyor.
+ */
+export const USER_TEXT_STYLE = (field: string) =>
+  `${field} YAZIM BİÇİMİ (yalnızca bu alan için geçerli):
+- Emoji kullanma.
+- Çizgi kullanma: uzun çizgi (—), orta çizgi (–) ve cümle ortasında ayraç olarak kısa çizgi (-) YASAK. Ara vermek istediğinde cümleyi nokta ya da virgülle böl.
+- Düz ve temiz Türkçe yaz. Her cümle tek bir şey söylesin; iç içe geçmiş uzun cümle kurma.
+- Cümlenin içinde geçen ürün, market ve yemek adlarını tırnak içine alma, doğrudan yaz.
+- Benzer bilgileri sıralayacaksan madde listesi kullan: her madde "- " ile başlar ve tek satırdır. Maddelerin ortak gerekçesini her maddede tekrarlama, listeden önceki cümlede bir kez söyle.
+- Madde listesi yoksa metin tek paragraf olsun, gereksiz satır atlama yapma.
+
+BU KURALLAR SADECE ${field} ALANINI BİÇİMLENDİRİR. name, searchQuery, rawName ve dishName alanları VERİDİR; oradaki yazımı bu kurallara uydurmaya ÇALIŞMA. Ürün ve marka adının kendi içindeki tire korunur (ör. "coca-cola", "tam-tat", "3-lü"), tırnak/büyük-küçük harf kuralları için o alanların kendi bölümüne bak.`
+
 export const PARSE_PROMPT = (rawText: string) => `Kullanıcının yazdığı Türkçe girdiyi parse et.
 
 ÖNCE GİRDİ TÜRÜNÜ BELİRLE — KARAR SIRASI: önce C kontrolü, değilse A vs B.
@@ -26,13 +50,15 @@ chatResponse KURALLARI (yalnızca C modunda dolu, A/B'de null):
 - Sepet dışı konularda kibarca konuyu Sepet'e çek.
 - Asla ürün ismi/fiyat üretme, varsayım yapma.
 
+${USER_TEXT_STYLE("chatResponse")}
+
 C MODU ÖRNEKLERİ:
-- "selam nasılsın" → items:[], chatResponse:"Selam! İyiyim, teşekkürler. Sana en ucuz sepeti bulayım — alışveriş listeni yazar mısın, ya da bir fiş veya yemek fotoğrafı yüklemek ister misin?"
+- "selam nasılsın" → items:[], chatResponse:"Selam! İyiyim, teşekkürler. Sana en ucuz sepeti bulabilirim. Alışveriş listeni yazar mısın, ya da bir fiş veya yemek fotoğrafı yüklemek ister misin?"
 - "merhaba" → items:[], chatResponse:"Merhaba! Alışveriş listeni yazarsan ya da bir fiş veya yemek fotoğrafı yüklersen 6 markette en ucuzunu bulurum."
 - "ne yapabilirsin" → items:[], chatResponse:"Yazdığın listeyi 6 markette karşılaştırıp en ucuzunu buluyorum. Bir fiş fotoğrafı yüklersen kalemleri otomatik okurum; bir yemek fotoğrafı yüklersen onu evde yapman için malzemeleri çıkarırım. Hemen denemek ister misin?"
 - "sen kimsin" → items:[], chatResponse:"Ben Sepet asistanıyım, Türkiye'deki 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) arasında en ucuz alışveriş sepetini bulmana yardım ediyorum. Listeni yaz, fiş veya yemek fotoğrafı yükle, başlayalım."
 - "teşekkürler" → items:[], chatResponse:"Rica ederim! Yeni bir liste olursa buradayım."
-- "yarın hava nasıl" → items:[], chatResponse:"Hava durumuna bakamıyorum ama alışverişinde yardımcı olabilirim — listeni yazar mısın, ya da bir fiş veya yemek fotoğrafı yüklemek ister misin?"
+- "yarın hava nasıl" → items:[], chatResponse:"Hava durumuna bakamıyorum ama alışverişinde yardımcı olabilirim. Listeni yazar mısın, ya da bir fiş veya yemek fotoğrafı yüklemek ister misin?"
 
 A) YEMEK/TARİF/İÇECEK MODU: Girdi bir yemek, tarif veya ev yapımı içecek adı içeriyorsa (ör. "menemen", "sade sucuklu pizza", "mercimek çorbası", "karnıyarık", "kek", "limonata", "sahlep", "salata") ve içinde virgülle ayrılmış liste veya açık miktar (sayı + birim) YOKSA → o yemeğin/içeceğin temel HAM MALZEMELERİNİ ayrı kalemler olarak çıkar. Her malzeme için makul bir tek-porsiyon miktarı koy. Hazır/işlenmiş ürün aramaktan kaçın (ör. "menemen" için "hazır menemen" değil, yumurta/domates/biber yaz; "limonata" için "hazır limonata" değil, limon/şeker/su yaz).
 
@@ -163,18 +189,20 @@ A) kind="receipt" — Görselde bir MARKET fişi/faturası görüyorsan. SADECE 
    · Restoran/kafe/lokanta/pastane adisyonu: "Adisyon", masa no, garson, "servis", sıcak yemek/içecek isimleri sipariş olarak (porsiyon halinde).
    · Elektronik/teknoloji, mobilya, hırdavat, kırtasiye, kuyumcu, oto yedek parça, kuaför, otopark, ulaşım/HGS, fatura (elektrik/su/doğalgaz/internet/telefon).
    · Banka dekontu, ATM makbuzu, POS slipi (tek satır sadece tutar/onay kodu).
-   Bu listede görüneni unknownReason'a şu kalıpla yaz: "Bu bir [sektör] fişi gibi görünüyor (ör. [marka/ipucu]). Sepet sadece market/gıda fişlerini analiz ediyor — bir market fişi yüklemek ister misin?"
+   Bu listede görüneni unknownReason'a şu kalıpla yaz: "Bu bir [sektör] fişi gibi görünüyor (ör. [marka/ipucu]). Sepet sadece market ve gıda fişlerini analiz ediyor. Bir market fişi yüklemek ister misin?"
 
 B) kind="food" — Görselde net bir şekilde bir yemek/içecek tanıyorsan ve ADINI biliyorsan (ör. "döner", "menemen", "kumpir", "lahmacun", "sade sucuklu pizza", "limonata", "sahlep").
    → food alanını doldur (aşağıdaki YEMEK KURALLARI'na göre). receipt=null, unknownReason=null.
 
 C) kind="unknown" — Görsel (a) ne market fişi ne de tanıyabildiğin bir yemek/içecek ise (kedi, araba, manzara, anlamsız obje, tanıyamadığın ekzotik tabak, çok bulanık fotoğraf), VEYA (b) fiş gibi görünüyor ama yukarıdaki NEGATİF SİNYALLER'den biriyse (market dışı sektör).
-   → unknownReason alanına 1 kısa Türkçe cümle yaz. Örnekler:
-     · "Görselde bir yemek değil bir kedi var — bir yemek ya da market fişi fotoğrafı yükleyebilir misin?"
-     · "Tabaktaki yemeği tanıyamadım, fotoğraf bulanık görünüyor — daha net bir kare çekebilir misin?"
-     · "Bu bir giyim mağazası fişi gibi görünüyor (Giyim Dünyası). Sepet sadece market/gıda fişlerini analiz ediyor — bir market fişi yüklemek ister misin?"
-     · "Bu bir akaryakıt fişi gibi görünüyor (Shell, motorin). Sepet sadece market/gıda fişlerini analiz ediyor — bir market fişi yüklemek ister misin?"
+   → unknownReason alanına 1-2 kısa Türkçe cümle yaz. Örnekler:
+     · "Görselde bir yemek değil bir kedi var. Bir yemek ya da market fişi fotoğrafı yükleyebilir misin?"
+     · "Tabaktaki yemeği tanıyamadım, fotoğraf bulanık görünüyor. Daha net bir kare çekebilir misin?"
+     · "Bu bir giyim mağazası fişi gibi görünüyor (Giyim Dünyası). Sepet sadece market ve gıda fişlerini analiz ediyor. Bir market fişi yüklemek ister misin?"
+     · "Bu bir akaryakıt fişi gibi görünüyor (Shell, motorin). Sepet sadece market ve gıda fişlerini analiz ediyor. Bir market fişi yüklemek ister misin?"
    receipt=null, food=null.
+
+${USER_TEXT_STYLE("unknownReason")}
 
 KARAR KURALI: Şüphedeysen unknown'a düş — yanlış yemek/fiş tahmin etmek, kullanıcıdan ismi istemekten kötüdür. MARKET FİŞİ OLDUĞUNDAN EMİN DEĞİLSEN receipt yazma; non-grocery bir fişin satırlarını sepete önermek kullanıcı için çok daha kötü bir hatadır.
 
@@ -266,7 +294,7 @@ Her malzeme için:
 
 KARŞIT ÖRNEK — kind="unknown" döndür:
 - Bulanık bir tabak fotoğrafı, içindekiler seçilmiyor → unknown.
-- Hiç görmediğin etnik bir yemek, adından emin değilsin → unknown ("Tabaktaki yemeği tanıyamadım — kullanıcıdan adını isteyebilirsin").
+- Hiç görmediğin etnik bir yemek, adından emin değilsin → unknown ("Tabaktaki yemeği tanıyamadım. Adını yazar mısın?").
 - Bir kedi/araba/manzara fotoğrafı → unknown ("Görselde bir yemek ya da fiş görmüyorum, bir [X] fotoğrafı var").`
 
 // ─── Ürün eşleştirme (LLM seçim adımı) ───
@@ -286,6 +314,14 @@ export type MatchPromptItem = {
 
 export const MATCH_PROMPT = (items: MatchPromptItem[]) => `Bir alışveriş asistanısın. Her kalem için, market arama API'sinden dönen adaylar arasından kullanıcının istediği ürüne UYAN TÜM adayları belirle.
 
+ADAY LİSTESİ NASIL GELİYOR: Liste uzundur (kalem başına ~70 aday) ve arama motorunun KELİME EŞLEŞMESİ sırasıyla gelir — alaka sırası DEĞİLDİR. Aday listesi, adında sorgu kelimesi geçen HER ŞEYİ içerir; bunların önemli bir kısmı kullanıcının istediği ürün değildir. Ölçüldü: "yağ" sorgusunda ilk 21 adayın tamamı yağ çözücü sprey/temizlik ürünü, "tavuk" sorgusunda ilk 14 adayın yarısı tavuk yumurtası ve hazır noodle, "un" sorgusunda ilk 2 aday glutensiz un.
+
+NASIL ÇALIŞACAKSIN — HER ADAYI TEK TEK DEĞERLENDİR:
+- VARSAYILAN CEVAP "HAYIR"dır. Bir adayı acceptedProductIds'e koymak için "adında doğru kelime geçiyor" YETMEZ; o adayın kullanıcının istediği ÜRÜNÜN TA KENDİSİ olduğuna karar vermen gerekir.
+- Listeyi toptan kopyalama. Aday sayısı 12 de olsa 72 de olsa aynı sıkılıkta ele: uzun liste "daha çok kabul et" demek DEĞİLDİR. Uzun listede tipik olarak DAHA ÇOK alakasız ürün vardır, daha az değil.
+- Sıradaki YER hiçbir şey kanıtlamaz. 1. adayı "en iyi eşleşme" varsayma; primary'yi seçmeden önce listenin tamamını tara — kullanıcının kastettiği sade temel ürün çoğu zaman ortada ya da sonda.
+- Adayların HEPSİNİN ya da neredeyse hepsinin kabul edildiği bir sonuç, kurallardan birini atladığının işaretidir. Böyle bir sonuca varıyorsan listeyi kural 1 ve 8 ile yeniden gözden geçir.
+
 NEDEN ÇOKLU SEÇİM: Uygulama tek market ve iki market kombinasyonlarını kuruyor. Aynı ürünün farklı marka/boyut varyantları farklı marketlerde satılıyor — bu yüzden TEK bir ürün seçmek yetmez. Doğru ürün tipinin tüm makul adaylarını "acceptedProductIds" listesine koy; optimizasyon her markette en hesaplısını kendisi seçecek.
 
 GÖREV — her kalem için:
@@ -295,10 +331,15 @@ GÖREV — her kalem için:
 - reason: Kısa Türkçe gerekçe (1 cümle).
 
 KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
-1) ÜRÜN TİPİ DOĞRU OLMALI: Aday, kullanıcının istediği ürünün ta kendisi olmalı. Aynı kategoriden ama farklı ürün RED:
-   · "domates" → "domates salçası" RED (salça farklı ürün), taze domates KABUL.
-   · "soğan" → "Ülker Çizi soğan aromalı peynir" RED (peynir, soğan değil).
-   · Gerçek aday yoksa → acceptedProductIds=[].
+1) ÜRÜN TİPİ DOĞRU OLMALI — EN ÖNEMLİ KURAL: Aday, kullanıcının istediği ürünün ta kendisi olmalı. Adında sorgu kelimesinin geçmesi hiçbir şey ifade etmez; ürünün NE OLDUĞUNA bak. Sık karşılaşılan tuzaklar (hepsi gerçek aday listelerinden):
+   · AMACI FARKLI ÜRÜN — RED: Ölçüt "gıda mı, değil mi" DEĞİLDİR; ölçüt "kullanıcının kastettiği ürün mü" sorusudur. Market alışverişi temizlik, kağıt ve kişisel bakım ürünü de içerir; bunlar MEŞRU kalemlerdir ve kullanıcı istediğinde KABUL edilir.
+     – Kullanıcı bir GIDA istiyorsa, aynı kelimeyi taşıyan temizlik/kozmetik ürünü RED: "yağ" (yemeklik) → "Porçöz Yağ Çözücü", "Cif Kir Ve Yağ Çözücü", "Dasty Yağ Sökücü", "Selpak Yağ Emici Havlu", "Elseve Mucizevi Yağ Şampuan", "Johnson's Bebe Yağı" RED; ayçiçek/zeytinyağı/mısırözü/tereyağı KABUL.
+     – Kullanıcı bir TEMİZLİK/BAKIM ürünü istiyorsa (marka ya da ürün tipiyle belli: "omo", "vanish oxi", "bingo kireç", "deterjan", "çamaşır suyu", "bulaşık deterjanı", "şampuan", "peçete") o ürünler KABUL. Fiş karşılaştırmalarında bu kalemler çok sık geçer; "gıda değil" gerekçesiyle elemek kullanıcının gerçekten aldığı ürünü kaybettirir.
+   · ÇEŞNİ/BULYON/BAHARAT/HAZIR ÇORBA — RED: Ürünün kendisi değil, tadını veren katkıdır. "et" → "Knorr Et Bulyon", "Magic Et Baharatı", "Et Suyu" RED. "tavuk" → "Indomie Tavuk Noodle", "Tavuk Bulyon", "Yayla Tavuk Çorbası", "Bağdat Tavuk Harcı" RED.
+   · BAŞKA ÜRÜNÜN ADINDA GEÇEN HAYVAN/BİTKİ ADI — RED: "tavuk" → "Gezen Tavuk Yumurta", "Tavuk Yumurtası" RED — bu YUMURTA, tavuk eti değil. Kullanıcı yumurta isteseydi yumurta yazardı.
+   · MARKA ADI TUZAĞI — RED: Sorgu kelimesi ÜRÜN adı değil MARKA adının parçasıysa geçersizdir. "un" → "Un Do Tre Dana Etli Tortelloni", "Un Do Tre Ravioli" RED (marka "Un Do Tre", ürün makarna).
+   · TÜREV/İŞLENMİŞ FARKLI ÜRÜN — RED: "domates" → "domates salçası" RED, taze domates KABUL. "soğan" → "Ülker Çizi soğan aromalı peynir" RED. "un" → "galeta unu", "mısır unu" RED (kullanıcı buğday unu istiyor; açıkça yazdıysa KABUL).
+   · Gerçek aday yoksa → acceptedProductIds=[]. Yanlış ürünü "hiç yoktan iyidir" diye KABUL ETME — yanlış eşleşme kullanıcıya boş sonuçtan daha çok zarar verir.
 2) MARKA/BOYUT VARYANTLARINI DAHİL ET: Doğru ürün tipindeki TÜM markaları ve makul boyutları kabul et (6'lı/10'lu/15'li yumurta, 1L/500ml süt hepsi geçerli) — optimizasyon birim fiyata göre adil kıyaslayacak. Kullanıcı net marka yazdıysa (ör. "eti cin") o markayı primary yap ama diğer makul adayları da kabul listesinde tut. Tek aday başka markaysa ve tip aynıysa yine kabul.
 3) BOYUT: Kullanıcı net bir boyut belirttiyse — rawName'de (ör. "PEPSI 2.5 LT") YA DA ayrı quantity+unit alanında (ör. quantity=500, unit="g") — o boyuta uyan adaylar primary olsun. O boyut hiç yoksa farklı boyutluları kabul et ve sizeMismatch=true. Kullanıcı hiç boyut belirtmediyse (nötr varsayılan quantity=1/unit="adet" ve rawName'de ölçü yok) sizeMismatch=false ve tüm makul boyutlar kabul.
 4) KOLİ/ÇOKLU PAKET — RED: Bitmiş ürünün toplu kolilerini KABUL ETME: "24'lü kola kolisi", "6'lı su paketi", "12'li bira kolisi" (bunlar bölünüp tek alınamaz). ANCAK doğal olarak çoklu satılan baz gıdalar (yumurta 10/15/30'lu viyol, peçete 32'li, tuvalet kağıdı 8'li, çay poşeti 100'lü) koli DEĞİL — standart satış birimi, kabul et.
@@ -311,21 +352,46 @@ KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
    · "salatalık" → "Taze Salatalık" KABUL, "Salatalık Turşusu" / "Kornişon Turşu" RED.
    · "domates" → taze domates KABUL, "Domates Konservesi" / "Kurutulmuş Domates" RED.
    · "turşu" → "Karışık Turşu" / "Salatalık Turşusu" KABUL (kullanıcı turşu istedi).
+8) ÇİĞ ET/TAVUK/BALIK — ŞARKÜTERİ VE HAZIR ÜRÜN RED: Kural 7'nin aynısı et ürünleri için. Kullanıcı "et", "tavuk", "balık", "kıyma", "dana" gibi çiğ bir et yazdıysa ve açıkça "füme", "kuru", "salam", "sucuk", "şarküteri" YAZMADIYSA; füme/kuru/dilimli şarküteri ürünlerini ve hazır yemekleri KABUL ETME. Bunlar hem farklı SKU hem kilo başına kat kat pahalı.
+   · "et" → "Dana Kuşbaşı", "Kıyma", "Antrikot", "Bonfile", "Sote" KABUL; "Dana Füme Kuru Et", "Dilimli Füme Et", "Et Çubukları Atıştırmalık", "Hindi Füme" RED.
+   · "tavuk" → "Tavuk But", "Tavuk Göğüs", "Tavuk Baget", "Tavuk Kanat", "Bütün Tavuk" KABUL; "Çıtır Tavuk Burger", "Tavuk Dürüm Tantuni", "Soslu Buffalo Wings" RED.
+9) ÖZEL DİYET / TIBBİ VARYANT — İSTENMEDİKÇE RED: Kullanıcı açıkça yazmadıysa "glutensiz", "laktozsuz", "diyabetik", "şekersiz", "vegan", "organik", "light/diyet" varyantlarını KABUL ETME. Bunlar normal ürünün 2-5 katı fiyata satılan özel SKU'lardır ve kullanıcı istemediği sürece sepeti gereksiz pahalılaştırır. Arama sonuçları bu varyantları sık sık en başa koyar — sıraya aldanma. Kullanıcı açıkça yazdıysa (ör. "glutensiz un", "laktozsuz süt") o zaman TERSİ geçerlidir: yalnız o varyantı kabul et.
+   · "un" → "Sinangil Un 1 Kg", "Söke Un 2 Kg" KABUL; "Söke Glutensiz Un", "Mlife Glutensiz Un" RED.
+   · "ekmek" → normal/kepekli/tam buğday ekmek KABUL; "Glutensiz Ekmek" RED.
+   · "süt" → "İçim Süt 1 Lt" KABUL; "Laktozsuz Süt", "Barista Süt" RED.
 
 ÖRNEKLER:
 - rawName="PEPSI 2.5 LT", adaylar: "Pepsi 2.5 Lt" (X1), "Pepsi 1 L" (X2) → acceptedProductIds=[X1, X2], primaryProductId=X1, sizeMismatch=false.
 - rawName="PEPSI 2.5 LT", adaylar sadece "Pepsi 330 ml" (X1), "Pepsi 1 L" (X2) → acceptedProductIds=[X1, X2], primaryProductId=X2 (en yakın), sizeMismatch=true.
 - rawName="soğan", adaylar sadece "Ülker Çizi Soğan Aromalı" → acceptedProductIds=[], primaryProductId=null.
-- rawName="yumurta" (2 adet), adaylar: "City Farm Organik 10'lu" (A), "Keskinoğlu Omega 3 12'li" (B), "Nascita Yumurta Sünger" (C), "Sürpriz Yumurta Oyuncak" (D), "A101 M Boy 30'lu" (E) → acceptedProductIds=[A, B, E], primaryProductId=A, sizeMismatch=true. Sünger/oyuncak (C, D) elenir. ASLA boş değil.
+- rawName="yumurta" (2 adet), adaylar: "City Farm Organik 10'lu" (A), "Keskinoğlu Omega 3 12'li" (B), "Nascita Yumurta Sünger" (C), "Sürpriz Yumurta Oyuncak" (D), "A101 M Boy 30'lu" (E) → acceptedProductIds=[B, E], primaryProductId=E, sizeMismatch=true. Sünger/oyuncak (C, D) ürün değil; organik (A) kural 9 gereği elenir (kullanıcı organik yazmadı). ASLA boş değil.
 - rawName="kola" (1 adet), adaylar: "Coca Cola 1L" (A), "Coca Cola 24'lü Koli" (B) → acceptedProductIds=[A], primaryProductId=A (koli B elenir).
 - rawName="yoğurt" (500 g), adaylar: "Sütaş Süzme Yoğurt 750g" (A), "Danone Meyveli 4'lü" (B), "Eker Light Yoğurt" (C), "Pınar Yoğurt 1kg" (D) → acceptedProductIds=[A, C, D], primaryProductId=A, sizeMismatch=true. Meyveli (B) elenir.
-- rawName="süt" (1 L), adaylar: "İçim Tam Yağlı Süt 1L" (A), "Pınar Süt 200ml" (B), "Pınar Çikolatalı Süt 200ml" (C) → acceptedProductIds=[A, B], primaryProductId=A. Çikolatalı (C) elenir.
+- rawName="süt" (1 L), adaylar: "İçim Tam Yağlı Süt 1L" (A), "Pınar Süt 200ml" (B), "Pınar Çikolatalı Süt 200ml" (C), "Sek Laktozsuz Süt 1L" (D), "İçim Organik Süt 200ml" (E) → acceptedProductIds=[A, B], primaryProductId=A. Çikolatalı (C) kural 6, laktozsuz (D) ve organik (E) kural 9 gereği elenir — kullanıcı bunların hiçbirini yazmadı.
 - rawName="salatalık" (cacık için, 2 adet), adaylar: "Taze Salatalık kg" (A), "Salatalık Turşusu 720ml" (B), "Kornişon Turşu 370ml" (C) → acceptedProductIds=[A], primaryProductId=A. Turşu (B, C) elenir.
+- rawName="yağ", adaylar: "Porçöz Yağ Çözücü 1 Lt" (A), "Cif Kir Ve Yağ Çözücü" (B), "Selpak Yağ Emici Havlu" (C), "Elseve Mucizevi Yağ Şampuan" (D), "Vita Bitkisel Yağ 2 Lt" (E), "Lurpak Sürülebilir Yağ 200 Gr" (F) → acceptedProductIds=[E, F], primaryProductId=E. Kullanıcı YEMEKLİK yağ istiyor; A/B/C/D bambaşka amaçlı ürünler — elenir. DİKKAT: bu listede alakasız adaylar ÇOĞUNLUKTA; azınlıkta kalmaları kabul için gerekçe değildir.
+- rawName="bingo kireç önleyici", adaylar: "Bingo Sprey Kireç Çözücü 900 Ml" (A) → acceptedProductIds=[A], primaryProductId=A. Kullanıcı AÇIKÇA bir temizlik ürünü istiyor ve aday tam olarak o — "gıda değil" diye ELEME. Aynısı "omo sıvı" → "Omo Sıvı Çamaşır Deterjanı", "vanish oxi" → "Vanish Oxi Action Leke Çıkarıcı" için de geçerlidir.
+- rawName="tavuk", adaylar: "Indomie Tavuk Köri Noodle 75 Gr" (A), "Gezen Tavuk Yumurta 10 Adet" (B), "Knorr Tavuk Bulyon" (C), "Taze Tavuk Baget 1 Kg" (D), "Şenpiliç Kemiksiz Tavuk But 1 Kg" (E), "Çıtır Tavuk Burger 180 Gr" (F) → acceptedProductIds=[D, E], primaryProductId=D. A hazır noodle, B yumurta, C bulyon, F hazır yemek — hepsi elenir.
+- rawName="et", adaylar: "Knorr Et Bulyon 24 Adet" (A), "Dana Füme Kuru Et 100 Gr" (B), "Magic Et Baharatı" (C), "Emin Dana Kuşbaşı Et 400 Gr" (D), "Et Ve Süt Kurumu Kıyma 1 Kg" (E) → acceptedProductIds=[D, E], primaryProductId=E. Bulyon/baharat gıda katkısı, füme kuru et şarküteri — elenir.
+- rawName="un", adaylar: "Söke Glutensiz Un 250 Gr" (A), "Sinangil Un 1 Kg" (B), "Un Do Tre Ravioli 350 Gr" (C), "Nimet Galeta Unu 400 Gr" (D), "Söke Un 2 Kg" (E) → acceptedProductIds=[B, E], primaryProductId=B. A glutensiz (istenmedi), C marka adı tuzağı (ürün makarna), D farklı ürün — elenir.
 
 ÇIKTI: Her kalem için bir selection. itemIndex'i girdideki ile aynı tut.
 
-KALEMLER:
-${JSON.stringify(items, null, 2)}`
+KALEMLER — her kalem "[itemIndex] istenen ürün" satırıyla başlar, altındaki her satır bir adaydır:
+productId | ürün adı | marka | kategori
+
+${items
+  .map(
+    (it) =>
+      `[${it.itemIndex}] "${it.rawName}" — istenen miktar: ${it.quantity} ${it.unit}\n` +
+      it.candidates
+        .map(
+          (c) =>
+            `${c.productId} | ${c.name} | ${c.brand ?? "-"} | ${c.category ?? "-"}`,
+        )
+        .join("\n"),
+  )
+  .join("\n\n")}`
 
 // ─── Sohbet başlığı üretimi ───
 

@@ -333,7 +333,11 @@ export const receipts = pgTable(
     totalAmount: numeric("totalAmount", { precision: 10, scale: 2 }),
     imageUrl: text("imageUrl").notNull(),
     imageR2Key: text("imageR2Key").notNull(),
-    ocrModel: text("ocrModel").notNull().default("gemini-2.5-flash"),
+    // Fişin hangi modelle okunduğu. VARSAYILAN YOK: değer verilmezse sessizce
+    // yanlış model kaydedilirdi (nitekim eski default "gemini-2.5-flash"
+    // kalmıştı ve OCR flash-lite'a geçince yanlış olacaktı). Default'suz olunca
+    // eksik değer derleme zamanında yakalanır. Yazan taraf: OCR_MODEL_NAME.
+    ocrModel: text("ocrModel").notNull(),
     bestSingleMarket: text("bestSingleMarket"),
     bestSingleTotal: numeric("bestSingleTotal", { precision: 10, scale: 2 }),
     potentialSavingsTL: numeric("potentialSavingsTL", {

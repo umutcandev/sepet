@@ -188,8 +188,15 @@ export function AssistantPrompt({
         maxFiles={1}
         onSubmit={handleSubmit}
         className={cn(
-          "rounded-xl border-ring/70 bg-muted shadow-sm dark:bg-muted",
-          "has-[[data-slot=input-group-control]:focus-visible]:border-ring/70 has-[[data-slot=input-group-control]:focus-visible]:ring-0",
+          // Yükseltilmiş yüzey: kenar `smooth-shadow-ring-*`in içindeki hairline.
+          // `border-0` InputGroup'un kendi `border`ını düşürür — border + shadow
+          // ikilisi çift kenar çizerdi (bkz. globals.css'teki not).
+          "rounded-xl border-0 bg-muted transition-[background-color,box-shadow] smooth-shadow-ring-sm dark:bg-muted",
+          // Odakta tek değişen şey halkanın rengi; gölge aynı kalıyor. Gölgeyi
+          // burada tekrar yazmak ŞART: InputGroup'un `ring-3` odak kuralı da
+          // box-shadow yazıyor ve `has-[]` özgüllüğüyle dinlenme kuralını ezip
+          // yumuşak gölgeyi tamamen siliyor. `!` onu geri alıyor.
+          "has-[[data-slot=input-group-control]:focus-visible]:smooth-shadow-ring-sm! has-[[data-slot=input-group-control]:focus-visible]:smooth-ring-ring/55",
           "has-disabled:bg-muted has-disabled:opacity-100 dark:has-disabled:bg-muted",
           className,
         )}

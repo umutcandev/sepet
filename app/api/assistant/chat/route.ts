@@ -216,10 +216,32 @@ function formatTL(n: number) {
   })
 }
 
+/**
+ * Yüzde etiketi. Küçük oranlarda tek hane ondalık anlamlı, büyük oranlarda
+ * gürültü; her iki durumda da ayırıcı Türkçe virgül olmalı ("%11,4" — "%11.4"
+ * değil).
+ */
+function formatPct(n: number): string {
+  return n.toLocaleString("tr-TR", {
+    maximumFractionDigits: n < 10 ? 1 : 0,
+  })
+}
+
+/** "kuru fasulye" → "Kuru fasulye" (Türkçe i/İ kuralına uyar). */
+function capitalizeTr(s: string): string {
+  if (!s) return s
+  return s[0].toLocaleUpperCase("tr-TR") + s.slice(1)
+}
+
 function formatRequestedQty(qty: number, unit: MatchResult["unit"]): string {
   return `${qty} ${unit}`
 }
 
+/**
+ * Ortak gerekçe ("tam boyutu bulamadım") tek seferde başlıkta söylenir; madde
+ * satırları yalnız kaleme özgü bilgiyi taşır. Aynı cümleyi her maddede
+ * tekrarlamak listeyi okunmaz yapıyordu.
+ */
 function buildSizeMismatchNote(matches: MatchResult[]): string {
   const mismatches = matches.filter(
     (m) => m.sizeMismatch && m.bestMatch && m.lookupStatus === "ok",
@@ -227,9 +249,9 @@ function buildSizeMismatchNote(matches: MatchResult[]): string {
   if (mismatches.length === 0) return ""
   const lines = mismatches.map((m) => {
     const requested = formatRequestedQty(m.quantity, m.unit)
-    return `- "${m.rawName}" için ${requested} istedin; aramamda tam o boyut yoktu, en yakın olarak "${m.bestMatch!.name}" ile eşleştirdim.`
+    return `- ${capitalizeTr(m.rawName)}: ${requested} istedin, ${m.bestMatch!.name} ile eşleştirdim.`
   })
-  return `\n\n**Not:** Aşağıdaki kalemlerde istediğin tam boyutu/miktarı bulamadım — kontrol et, gerekirse kartlardan değiştir:\n${lines.join("\n")}`
+  return `\n\n**Bazı kalemlerde istediğin tam boyutu bulamadım.** Kartlardan değiştirebilirsin:\n\n${lines.join("\n")}`
 }
 
 function buildSummaryText(
@@ -254,56 +276,91 @@ function buildSummaryText(
   const hasFullCombo = combo.markets.length === 2
 
   if (single.isFullCoverage) {
-    const head = `${matchedCount} kalemli sepetini hazırladım. ${single.market} marketinden almak en ucuz çıkıyor (${formatTL(single.total)} TL).`
+    const head = `${matchedCount} kalemli sepetini hazırladım. En ucuz tek market ${single.market}, sepetin tamamı ${formatTL(single.total)} TL.`
     const comboPart =
       hasFullCombo && combo.savingsTL > 0
-        ? ` İki market kombinasyonu denenirse (${combo.markets.join(" + ")}) ${formatTL(combo.savingsTL)} TL tasarruf edersin (%${combo.savingsPct.toFixed(1)}).`
+        ? ` Alışverişi ${combo.markets.join(" ve ")} arasında bölersen ${formatTL(combo.savingsTL)} TL (%${formatPct(combo.savingsPct)}) daha ucuza geliyor.`
         : ""
     return head + comboPart + missingPart + mismatchNote
   }
 
   if (hasFullCombo) {
-    const head = `${matchedCount} kalemli sepetini hazırladım. Tek bir markette tüm sepetini bulamadım, ama iki market kombinasyonuyla (${combo.markets.join(" + ")}) tamamı ${formatTL(combo.total)} TL'ye geliyor.`
+    const head = `${matchedCount} kalemli sepetini hazırladım. Tek markette tümünü bulamadım ama ${combo.markets.join(" ve ")} ikilisiyle sepetin tamamı ${formatTL(combo.total)} TL.`
     return head + missingPart + mismatchNote
   }
 
-  const head = `${matchedCount} kalemli sepetini hazırladım. Tek bir markette tüm sepetini bulamadım — en iyi durumda ${single.market}'ten ${single.itemCount}/${matchedCount} kalem ${formatTL(single.total)} TL'ye alınıyor.`
+  const head = `${matchedCount} kalemli sepetini hazırladım. Tek markette tümünü bulamadım. En iyi seçenek ${single.market} marketi: ${single.itemCount}/${matchedCount} kalem ${formatTL(single.total)} TL.`
   return head + missingPart + mismatchNote
+}
+
+/**
+ * Fiş ile bugünü kıyaslarken YALNIZCA bugün fiyatı bulunabilen kalemler
+ * sayılmalı. `totalReceiptAmount` fişin tamamını, `totalBestAmount` ise sadece
+ * eşleşenleri topladığından ikisini doğrudan çıkarmak, bulunamayan her kalemi
+ * "bugün 0 TL" saymak demektir; uçta hiçbir kalem eşleşmezse "207,15 TL
+ * harcadın, bugün 0,00 TL'ye gelir, 207,15 TL tasarruf" gibi tamamen yanlış
+ * bir sonuç çıkar.
+ */
+function comparableTotals(items: ReceiptComparison["items"]): {
+  count: number
+  receiptTotal: number
+} {
+  const matched = items.filter(
+    (i) => i.bestPrice != null && i.receiptTotalPrice != null,
+  )
+  return {
+    count: matched.length,
+    receiptTotal: matched.reduce((s, i) => s + (i.receiptTotalPrice ?? 0), 0),
+  }
 }
 
 function buildReceiptComparisonText(comp: ReceiptComparison): string {
   if (comp.items.length === 0) {
     return "Fişindeki kalemleri çıkardım ama eşleşen ürün bulamadım."
   }
+
+  const comparable = comparableTotals(comp.items)
+  // Kalemler okundu ama hiçbirine bugünden fiyat bulunamadı → kıyaslanacak bir
+  // şey yok. Tutar cümlesi kurmak burada yanlış sayı üretir.
+  if (comparable.count === 0) {
+    return `Fişindeki ${comp.items.length} kalemi okudum ama hiçbiri için güncel market fiyatı bulamadım. Bu yüzden bir karşılaştırma yapamadım.`
+  }
+  // Kısmi eşleşmede hangi kümeden konuştuğumuz açık olmalı; okuyucu aksi halde
+  // rakamları fişin tamamı sanır.
+  const scopeNote =
+    comparable.count < comp.items.length
+      ? ` (${comp.items.length} kalemden ${comparable.count} tanesi için fiyat bulunabildi)`
+      : ""
+
   if (comp.staleness?.isStale) {
     // İşaretli fark: pozitif → bugün daha ucuz (tasarruf mümkün), negatif →
     // bugün daha pahalı. comp.totalSavingsTL kalem bazında Math.max(0, …) ile
     // toplandığı için her zaman ≥ 0; "iki tutar neredeyse aynı" mı yoksa
     // "bugün çok daha pahalı" mı ayrımı için ham farkı kullanmamız şart.
-    const diff = comp.totalReceiptAmount - comp.totalBestAmount
+    const diff = comparable.receiptTotal - comp.totalBestAmount
     const tolerance = Math.max(
       1,
-      Math.max(comp.totalReceiptAmount, comp.totalBestAmount) * 0.02,
+      Math.max(comparable.receiptTotal, comp.totalBestAmount) * 0.02,
     )
     const figuresPart = (() => {
-      const head = `Yine de bilgi amaçlı: fişinde ${formatTL(comp.totalReceiptAmount)} TL harcamışsın, aynı sepet bugünün en iyi fiyatlarıyla ${formatTL(comp.totalBestAmount)} TL'ye geliyor`
+      const head = `Yine de bilgi amaçlı: fişinde bu kalemlere ${formatTL(comparable.receiptTotal)} TL harcamışsın, aynı ürünler bugünün en iyi fiyatlarıyla ${formatTL(comp.totalBestAmount)} TL'ye geliyor${scopeNote}.`
       if (Math.abs(diff) <= tolerance) {
-        return `${head} — iki tutar neredeyse aynı.`
+        return `${head} İki tutar neredeyse aynı.`
       }
       if (diff > 0) {
-        return `${head} — bugüne kıyasla yaklaşık ${formatTL(diff)} TL tasarruf mümkün olurdu.`
+        return `${head} Bugüne kıyasla yaklaşık ${formatTL(diff)} TL tasarruf mümkün olurdu.`
       }
-      return `${head} — bugün aynı sepeti almak yaklaşık ${formatTL(Math.abs(diff))} TL daha pahalıya geliyor.`
+      return `${head} Bugün aynı sepeti almak yaklaşık ${formatTL(Math.abs(diff))} TL daha pahalıya geliyor.`
     })()
     if (comp.staleness.reason === "date" && comp.staleness.ageLabel) {
-      return `Bu fiş ${comp.staleness.ageLabel} öncesine ait — o dönemin fiyatları bugünkü piyasayla birebir karşılaştırılamaz, bu yüzden tasarruf hesabı tam olarak anlamlı değil. ${figuresPart}`
+      return `Bu fiş ${comp.staleness.ageLabel} öncesine ait. O dönemin fiyatları bugünkü piyasayla birebir karşılaştırılamaz, bu yüzden tasarruf hesabı tam olarak anlamlı değil. ${figuresPart}`
     }
-    return `Fişindeki tutar bugünkü fiyatlarla kıyaslanamayacak kadar düşük görünüyor — büyük olasılıkla farklı bir döneme ait, tasarruf hesabı birebir anlamlı değil. ${figuresPart}`
+    return `Fişindeki tutar bugünkü fiyatlarla kıyaslanamayacak kadar düşük görünüyor. Büyük olasılıkla farklı bir döneme ait, tasarruf hesabı birebir anlamlı değil. ${figuresPart}`
   }
   if (comp.totalSavingsTL <= 0) {
-    return `Fişindeki ${formatTL(comp.totalReceiptAmount)} TL'lik harcamana karşılık bulduğumuz en iyi fiyatlar zaten yakın — ek bir kazanç çıkmadı.`
+    return `Fişindeki ${formatTL(comparable.receiptTotal)} TL'lik harcamana karşılık bulduğumuz en iyi fiyatlar zaten yakın, ek bir kazanç çıkmadı${scopeNote}.`
   }
-  return `Bu fişinde ${formatTL(comp.totalReceiptAmount)} TL harcamışsın. Bulduğumuz en iyi fiyatlarla aynı sepet ${formatTL(comp.totalBestAmount)} TL'ye geliyordu — yaklaşık ${formatTL(comp.totalSavingsTL)} TL tasarruf mümkündü.`
+  return `Bu fişinde bu kalemlere ${formatTL(comparable.receiptTotal)} TL harcamışsın. Bulduğumuz en iyi fiyatlarla aynı ürünler ${formatTL(comp.totalBestAmount)} TL'ye geliyordu, yaklaşık ${formatTL(comp.totalSavingsTL)} TL tasarruf mümkündü${scopeNote}.`
 }
 
 const STALE_RATIO_THRESHOLD = 3
@@ -408,11 +465,16 @@ function computeReceiptComparison(
     0,
   )
 
+  // Bayatlık oranı yalnızca KARŞILAŞTIRILABİLİR kalemler üzerinden anlamlıdır:
+  // bugün fiyatı bulunamayan kalem totalBestAmount'a 0 katkı yapar, oysa fişteki
+  // tutarı totalReceiptAmount'ta durur. İkisini bölmek, eşleşme oranı düştükçe
+  // oranı yapay olarak küçültür.
+  const comparable = comparableTotals(items)
   const staleness = computeStaleness({
     purchaseDate,
-    totalReceiptAmount,
+    totalReceiptAmount: comparable.receiptTotal,
     totalBestAmount,
-    itemCount: items.length,
+    itemCount: comparable.count,
   })
 
   return { items, totalReceiptAmount, totalBestAmount, totalSavingsTL, staleness }
@@ -921,7 +983,7 @@ async function runAssistantTurn({
         writer,
         !hasItems
           ? "Fişten ürün çıkartamadım. Lütfen tüm satırların net göründüğü bir kare çek."
-          : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et ve düzeltmelerini yap — ardından karşılaştırma için onayla.",
+          : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.",
       )
       // Kalem çıktıysa onay kartı gösterilir → awaiting; çıkmadıysa terminal.
       return { awaiting: hasItems }
@@ -938,7 +1000,7 @@ async function runAssistantTurn({
       }
       await emitText(
         writer,
-        `Görseldeki yemeği "${food.dishName}" olarak tanıdım. Evde yapman için temel malzemelerini çıkardım — miktarları tek porsiyona göre tahmin ettim, market paket boyutları farklı olabilir. Kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.`,
+        `Görseldeki yemeği ${food.dishName} olarak tanıdım ve evde yapman için temel malzemelerini çıkardım. Miktarları tek porsiyona göre tahmin ettim, market paket boyutları farklı olabilir. Kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.`,
       )
       return { awaiting: true }
     }
