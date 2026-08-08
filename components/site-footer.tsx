@@ -162,10 +162,10 @@ export function SiteFooter({ className }: { className?: string }) {
         </div>
 
         {/* Alt şerit */}
-        <div className="mt-10 flex flex-col gap-4 border-t border-border pt-6 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-xs font-medium text-muted-foreground">
-              © {year}, Sepet.
+              © {year}, Tüm hakları saklıdır.
             </p>
             {/* Varsayılan rozetten biraz daha dar (px-1.5) ve bir tık daha
                 yüksek (h-6): yanındaki telif satırıyla optik olarak eşitlenir. */}

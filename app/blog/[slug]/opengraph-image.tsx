@@ -303,7 +303,6 @@ export default async function Image({
                 >
                   {author.src ? (
                     // Satori sadece <img> render eder; next/image burada geçersiz.
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={author.src}
                       alt=""

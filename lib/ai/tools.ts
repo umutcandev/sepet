@@ -12,9 +12,7 @@ import {
   type ParsedItem,
 } from "./schemas"
 import {
-  geminiFlash,
   geminiFlashLite,
-  GEMINI_FLASH,
   GEMINI_FLASH_LITE,
   AI_MAX_RETRIES,
   type AiCallOptions,
@@ -27,8 +25,12 @@ import {
   PARSE_PROMPT,
   type MatchPromptItem,
 } from "./prompts"
-import { stripQuantityTokens } from "./normalize"
-import { searchProductDetails } from "@/lib/marketfiyati/cache"
+import { stripQuantityTokens, queryGeneralizations } from "./normalize"
+import {
+  MF_MATCH_PAGES,
+  MF_PAGE_SIZE,
+  searchProductDetails,
+} from "@/lib/marketfiyati/cache"
 import type { ProductDetail } from "@/lib/marketfiyati/types"
 import {
   MarketfiyatiError,
@@ -45,21 +47,39 @@ type FindOutcome =
   | { kind: "api_quota"; message: string }
   | { kind: "api_error"; message: string }
 
+/**
+ * Bir kalem için atılacak en fazla arama denemesi. Kısaltma yalnızca sonuç
+ * ALINAMAYINCA devreye girdiğinden normal listelerde ("süt", "beyaz peynir")
+ * hiç tetiklenmez; tavan yalnızca uzun OCR sorgularında geçerli olur ve
+ * upstream'e karşı üst sınır görevi görür.
+ */
+const MAX_SEARCH_ATTEMPTS = 4
+
 async function findFirstHit(
   searchQuery: string,
   rawName: string,
   loc: LocationContext,
 ): Promise<FindOutcome> {
   const tried = new Set<string>()
-  const variants = [searchQuery, stripQuantityTokens(rawName)]
+  const variants = [
+    searchQuery,
+    // Genelleştirmeler rawName varyantından ÖNCE: ölçümde sonucu kurtaran hep
+    // kelime atmak oldu. stripQuantityTokens fiş bağlamında aynı kelime
+    // sayısını üretiyor ("omo sivi color" → "omo sıvı color"), yani sıfır
+    // sonucu sıfır sonuca çeviriyor ama denemelerden birini harcıyordu.
+    ...queryGeneralizations(searchQuery),
+    // Son çare: searchQuery hatalı üretilmişse ham ad farklı bir ipucu taşır.
+    stripQuantityTokens(rawName),
+  ]
     .map((v) => v.trim())
     .filter((v) => v.length >= 2 && !tried.has(v) && tried.add(v))
+    .slice(0, MAX_SEARCH_ATTEMPTS)
 
   let lastError: FindOutcome | null = null
 
   for (const q of variants) {
     try {
-      const result = await searchProductDetails(q, loc)
+      const result = await searchProductDetails(q, loc, { pages: MF_MATCH_PAGES })
       // En az bir marketten gerçek fiyatı olmayan adayları ele — bir depo
       // fiyatı yoksa o ürün optimizasyona katkı yapamaz.
       const hits = result.details.filter((d) => d.markets.length >= 1)
@@ -93,10 +113,10 @@ export async function analyzeImage(
 ): Promise<ImageAnalysisWithReasoning> {
   const { object, reasoning } = await withLlmCall(
     "analyzeImage",
-    GEMINI_FLASH,
+    GEMINI_FLASH_LITE,
     () =>
       generateObject({
-        model: geminiFlash,
+        model: geminiFlashLite,
         schema: ImageAnalysisSchema,
         temperature: 0.1,
         abortSignal: opts.signal,
@@ -110,6 +130,10 @@ export async function analyzeImage(
             ],
           },
         ],
+        // flash-lite'ta düşünme VARSAYILAN OLARAK KAPALIDIR — bütçe açıkça
+        // verilmezse `reasoning` boş döner ve sohbetteki düşünme akışı
+        // (reasoningStart/Delta/End) sessizce kaybolur. Model değişiminde
+        // korunması gereken kritik ayar burasıdır.
         providerOptions: {
           google: {
             thinkingConfig: {
@@ -206,7 +230,22 @@ export async function parseShoppingList(
 type HitList = ProductDetail[]
 type ProductHitItem = ProductDetail
 
-const MAX_CANDIDATES = 12
+/**
+ * LLM'e gönderilen aday tavanı — asıl darboğaz burasıydı, arama sayfa boyutu
+ * değil: havuz ne kadar büyürse büyüsün prompt'a yalnız bu kadarı giriyor.
+ *
+ * Çekilen havuzun TAMAMINA eşit tutuluyor; çekip atmak hem boşa istek hem de
+ * ölçümün gösterdiği kaybı geri getiriyor. Birden fazla markette satılan
+ * adayların ilk 12/24/48/72 dilimlerindeki sayısı (2026-08-08, İstanbul 34
+ * depo): peynir 0/0/0/4, süt 7/11/15/20, makarna 2/6/13/20, domates 1/6/9/14.
+ * Konsolidasyon tam da bu adaylara dayandığından 24'lük tavan "peynir" gibi
+ * sorgularda optimizasyona HİÇ malzeme bırakmıyordu.
+ *
+ * Bedeli: prompt token'ı aday sayısıyla doğrusal artar (~30 token/aday, kalem
+ * başına ~2.2K). Düşürmek istersen MF_MATCH_PAGES'i azalt — ikisi birlikte
+ * hareket etmeli.
+ */
+const MAX_CANDIDATES = MF_MATCH_PAGES * MF_PAGE_SIZE
 
 type CachedSelection = {
   primaryProductId: string | null
@@ -319,9 +358,13 @@ function resolveSelection(
     }
   }
 
-  const accepted = (sel.acceptedProductIds ?? []).filter((id) =>
-    validIds.has(id),
-  )
+  // LLM aynı productId'yi birden çok kez döndürebiliyor (ölçümde tek kalemde 72
+  // adaya karşılık 153 id geldi). Fiyat hesabını bozmuyor — buildMarketOptions
+  // market başına en ucuzu tuttuğundan idempotent — ama cache'e ve prompt'a
+  // şişmiş liste taşımamak için tekilleştiriyoruz.
+  const accepted = [
+    ...new Set((sel.acceptedProductIds ?? []).filter((id) => validIds.has(id))),
+  ]
   let primary =
     sel.primaryProductId && validIds.has(sel.primaryProductId)
       ? sel.primaryProductId

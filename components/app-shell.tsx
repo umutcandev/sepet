@@ -10,6 +10,7 @@ import { animate, motion, useMotionValue, useMotionValueEvent } from "motion/rea
 
 import { EASE_OUT_SOFT } from "@/lib/motion"
 import { cn } from "@/lib/utils"
+import { useMounted } from "@/hooks/use-mounted"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
 import type { BlogNavItem } from "@/components/blog/blog-posts-group"
@@ -145,15 +146,16 @@ export function AppShell({ blogPosts, children }: Props) {
   const themeDark = resolvedTheme === "dark"
   const logoSwap = useMotionValue(0)
 
-  // Tema çözülene kadar (SSR + ilk istemci render'ı) inline değer YAZILMAZ;
+  // Mount olana kadar (SSR + ilk istemci render'ı) inline değer YAZILMAZ;
   // CSS varsayılanı (:root 0 / .dark 1) devrededir. Rampanın başında iki kaynak
   // aynı değeri verdiği için JS devreye girdiğinde sıçrama olmaz.
   //
-  // Ayrı bir state'e gerek yok: next-themes `resolvedTheme`i mount'tan sonra
-  // kendi doldurup yeniden render tetikliyor, yani doğrudan türetilebilir.
-  // Sunucu ve ilk istemci render'ı ikisi de undefined gördüğü için hidrasyon
-  // uyuşmazlığı da olmuyor.
-  const themeReady = Boolean(resolvedTheme)
+  // `resolvedTheme`den türetmek YETMEZ: next-themes state'ini localStorage'ı
+  // okuyan bir lazy initializer ile kuruyor, yani değer daha ilk istemci
+  // render'ında dolu geliyor. O render sunucununkiyle karşılaştırıldığı için
+  // `style={{"--logo-swap":0}}` vs `style={}` hidrasyon uyuşmazlığı çıkıyordu.
+  const mounted = useMounted()
+  const themeReady = mounted && Boolean(resolvedTheme)
 
   // İlk çalıştırmada animasyon YOK: değer CSS varsayılanıyla zaten aynı, üstüne
   // bir geçiş oynatmak sayfa açılışında logoyu boş yere soldurup geri getirirdi.
@@ -341,10 +343,11 @@ export function AppShell({ blogPosts, children }: Props) {
         </div>
         <div
           ref={scrollRef}
-          className={cn(
-            "flex min-h-0 flex-1 flex-col overflow-y-auto",
-            isHome ? "no-scrollbar" : "cn-scrollbar-thin"
-          )}
+          // Tüm rotalarda tek çubuk. Ana sayfa eskiden `no-scrollbar` ile çubuğu
+          // tamamen gizliyordu: sayfayı yalnız tekerlek ya da klavyeyle
+          // gezebiliyordun, aşağıdaki bölümlere (fiyatlandırma) sürükleyerek
+          // inmenin yolu yoktu.
+          className="flex min-h-0 flex-1 flex-col overflow-y-auto cn-scrollbar-thin"
         >
           {/* Ana sayfada hero görseli, scroll edilince header'ın hemen altında
               tam opaklıkta görünüp keskin yatay bir çizgi oluşturuyordu. Bu

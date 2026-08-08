@@ -14,7 +14,7 @@ export const SITE_DESCRIPTION =
   "Alışveriş listeni yaz, marketlerdeki en uygun fiyatları karşılaştır ve en ucuz sepeti saniyeler içinde oluştur."
 
 // Sepet'in resmî sosyal hesabı — Organization.sameAs ve RSS için.
-export const SITE_X = "https://x.com/trysepet"
+export const SITE_X = "https://x.com/trysepetcom"
 
 /** Göreli yolu mutlak URL'e çevirir (canonical, OG, JSON-LD, sitemap). */
 export function absoluteUrl(path = "/"): string {

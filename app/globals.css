@@ -12,6 +12,12 @@
 /* Blog makale tipografisi (prose) — token'lara bağlanır (aşağıda). */
 @plugin "@tailwindcss/typography";
 
+/* Streamdown (asistan mesajlarının markdown render'ı) sınıflarını kendi dist
+   dosyasında taşır. Tailwind varsayılan olarak node_modules'ü taramadığı için
+   bu satır olmadan `list-disc`, `list-inside` gibi utility'ler hiç üretilmez;
+   sonuç: madde işaretsiz, aralıkları bozuk listeler. */
+@source "../node_modules/streamdown/dist";
+
 /* Dark variants activate when next-themes adds .dark class to <html>; system pref is opt-in via the theme toggle ("Sistem" option). */
 @custom-variant dark (&:is(.dark *));
 

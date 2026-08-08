@@ -38,7 +38,7 @@ Yüklenen fişler, aynı sepetin bugünkü en iyi fiyatıyla karşılaştırıla
 
 Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS 4 ve shadcn/ui üzerine kuruludur.
 
-Yapay zekâ katmanı Vercel AI SDK ile Google Gemini 2.5 Flash ve Flash Lite modellerini kullanır. Veri tarafında Neon Postgres (Drizzle ORM), Upstash Redis ve Cloudflare R2 bulunur. Kimlik doğrulama NextAuth.js v5, abonelik Polar, dağıtım Vercel üzerindedir. Market fiyatları marketfiyati.org.tr üzerinden alınır.
+Yapay zekâ katmanı Vercel AI SDK ile Google Gemini 2.5 Flash Lite modelini kullanır. Veri tarafında Neon Postgres (Drizzle ORM), Upstash Redis ve Cloudflare R2 bulunur. Kimlik doğrulama NextAuth.js v5, abonelik Polar, dağıtım Vercel üzerindedir. Market fiyatları marketfiyati.org.tr üzerinden alınır.
 
 ---
 

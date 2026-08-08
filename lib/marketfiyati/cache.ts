@@ -21,6 +21,7 @@ import {
   type ProductDetail,
   type ProductHit,
 } from "./types"
+import { computeHasMore, mergeUniqueById } from "./pagination"
 
 const round2 = (n: number) => Math.round(n * 100) / 100
 
@@ -44,11 +45,27 @@ function depotsHash(depots: string[]): string {
 const locKey = (loc: LocationContext) =>
   `${round2(loc.latitude)}:${round2(loc.longitude)}:${loc.distance}:${depotsHash(loc.depots)}`
 
-// v3: cache key'leri artık kullanıcı konumuna (koordinat + mesafe + seçili
-// depolar) bağlı. v2 anahtarları tek bir env-sabit konuma kilitliydi; sürüm
-// artışı eski kayıtları TTL beklemeden geçersiz kılar.
-const SEARCH_KEY = (q: string, loc: LocationContext) =>
-  `mf:search:v3:${q}:${locKey(loc)}`
+/** Varsayılan sayfa boyutu — marketfiyati.org.tr'nin kendi sitesiyle aynı. */
+export const MF_PAGE_SIZE = 24
+
+/**
+ * AI eşleştirmesine giren aday havuzu için çekilecek SAYFA sayısı. Tek istekte
+ * büyütülemez — `size` tavanı 26 (bkz. MF_MAX_SIZE), üstü sessizce 25'e düşer.
+ *
+ * Neden çok sayfa: ölçümde ("peynir", İstanbul 34 depo) ilk 56 adayın hemen
+ * hepsi TEK markette satılıyordu; birden fazla markette bulunan adaylar 57, 59,
+ * 64, 83, 101… sıralarında başlıyor. Optimizasyonun tek/iki market
+ * konsolidasyonu tam da bu çok-marketli adaylara dayandığından, sığ havuz
+ * konsolidasyona hiç malzeme vermiyor.
+ */
+export const MF_MATCH_PAGES = 3
+
+// v4: cache key'leri kullanıcı konumuna (koordinat + mesafe + seçili depolar)
+// ek olarak sayfa ve sayfa boyutuna bağlı. v3 anahtarları sayfa taşımıyordu →
+// 2. sayfa 1. sayfanın üstüne yazardı. Sürüm artışı eski kayıtları TTL
+// beklemeden geçersiz kılar.
+const SEARCH_KEY = (q: string, loc: LocationContext, page: number, size: number) =>
+  `mf:search:v4:${q}:${locKey(loc)}:p${page}s${size}`
 const PRODUCT_KEY = (productId: string, loc: LocationContext) =>
   `mf:product:v3:${locKey(loc)}:${productId}`
 const BARCODE_KEY = (barcode: string) => `mf:barcode:${barcode}`
@@ -128,17 +145,66 @@ async function persistBarcode(barcode: string, productId: string): Promise<void>
 async function fetchAndCacheSearch(
   rawQuery: string,
   loc: LocationContext,
-): Promise<ProductDetail[]> {
+  page: number,
+  size: number,
+): Promise<{ details: ProductDetail[]; total: number | null }> {
   const depots = await getNearbyDepotIds(loc)
   const resp = await search(rawQuery, {
     latitude: loc.latitude,
     longitude: loc.longitude,
     distance: loc.distance,
     depots,
+    pages: page,
+    size,
   })
   const details = resp.content.map((p) => toProductDetail(p))
   await writeProducts(details, loc)
-  return details
+  return { details, total: resp.numberOfFound ?? null }
+}
+
+export type SearchPageOptions = {
+  /** 0 tabanlı başlangıç sayfası. */
+  page?: number
+  /** Sayfa başına ürün. MF_MAX_SIZE (26) üstü sunucuda sessizce 25'e düşer. */
+  size?: number
+  /**
+   * `page`'den itibaren kaç ardışık sayfa çekilip tek listede birleştirilsin.
+   * Varsayılan 1. Aday havuzunu tek istekte büyütmek mümkün olmadığından
+   * (bkz. MF_MAX_SIZE) derin havuz isteyen çağıran bunu kullanır.
+   */
+  pages?: number
+}
+
+/** Sayfalı sonuçların cache'lenen gövdesi: id listesi + toplam sonuç sayısı. */
+type CachedSearchPage = { ids: string[]; total: number | null }
+
+type LoadedPage = { details: ProductDetail[]; total: number | null; cached: boolean }
+
+/** Tek sayfa: önce Redis, miss'te API. Sayfa bazlı cache paylaşımlıdır. */
+async function loadPage(
+  rawQuery: string,
+  q: string,
+  loc: LocationContext,
+  page: number,
+  size: number,
+): Promise<LoadedPage> {
+  const key = SEARCH_KEY(q, loc, page, size)
+  const cachedPage = await redis.get<CachedSearchPage>(key)
+  if (cachedPage && cachedPage.ids.length > 0) {
+    const cachedDetails = await readProducts(cachedPage.ids, loc)
+    // Ürün kayıtları search key'inden önce expire olabilir — eksikse API'ye düş.
+    if (cachedDetails.length === cachedPage.ids.length) {
+      return { details: cachedDetails, total: cachedPage.total, cached: true }
+    }
+  }
+
+  const { details, total } = await fetchAndCacheSearch(rawQuery, loc, page, size)
+  await redis.set<CachedSearchPage>(
+    key,
+    { ids: details.map((d) => d.productId), total },
+    { ex: MF_SEARCH_TTL },
+  )
+  return { details, total, cached: false }
 }
 
 /**
@@ -148,34 +214,53 @@ async function fetchAndCacheSearch(
  * market-bilinçli aday seçimi için aday başına `markets[]` gerektiğinden
  * `searchProducts`'tan ayrı bir detay döndürür (ekstra API çağrısı yapmaz —
  * /search zaten tüm depo fiyatlarını getiriyor).
+ *
+ * `total` marketfiyati'nin bildirdiği toplam eşleşme sayısı (numberOfFound);
+ * API vermezse null. Sayfalama kararı için `hasMore` hesaplanır.
  */
 export async function searchProductDetails(
   rawQuery: string,
   loc: LocationContext = MF_DEFAULT_LOCATION,
-): Promise<{ details: ProductDetail[]; cached: boolean }> {
+  opts: SearchPageOptions = {},
+): Promise<{
+  details: ProductDetail[]
+  cached: boolean
+  total: number | null
+  page: number
+  hasMore: boolean
+}> {
+  const page = Math.max(0, Math.trunc(opts.page ?? 0))
+  const size = opts.size ?? MF_PAGE_SIZE
+  const pageCount = Math.max(1, Math.trunc(opts.pages ?? 1))
+  const empty = { details: [], cached: false, total: 0, page, hasMore: false }
+
   const q = normalizeQuery(rawQuery)
-  if (q.length < 2) return { details: [], cached: false }
+  if (q.length < 2) return empty
 
   if (isBarcode(q)) {
+    // Barkod tam eşleşme — tek ürün, sayfalama anlamsız.
+    if (page > 0) return empty
     const detail = await getProductByBarcode(q, loc)
-    return { details: detail ? [detail] : [], cached: false }
+    const details = detail ? [detail] : []
+    return { details, cached: false, total: details.length, page, hasMore: false }
   }
 
-  const cachedIds = await redis.get<string[]>(SEARCH_KEY(q, loc))
-  if (cachedIds && cachedIds.length > 0) {
-    const cachedDetails = await readProducts(cachedIds, loc)
-    if (cachedDetails.length === cachedIds.length) {
-      return { details: cachedDetails, cached: true }
-    }
-  }
-
-  const details = await fetchAndCacheSearch(rawQuery, loc)
-  await redis.set(
-    SEARCH_KEY(q, loc),
-    details.map((d) => d.productId),
-    { ex: MF_SEARCH_TTL },
+  // Sayfalar paralel çekilir; client'ın MAX_CONCURRENT tavanı WAF'ı korur.
+  const loaded = await Promise.all(
+    Array.from({ length: pageCount }, (_, i) => loadPage(rawQuery, q, loc, page + i, size)),
   )
-  return { details, cached: false }
+
+  const details = mergeUniqueById(loaded.map((p) => p.details))
+  const total = loaded[0].total
+  const last = loaded[loaded.length - 1]
+  return {
+    details,
+    // Tümü cache'ten geldiyse "cached" — biri bile API'ye gittiyse değil.
+    cached: loaded.every((p) => p.cached),
+    total,
+    page,
+    hasMore: computeHasMore(total, page + pageCount - 1, size, last.details.length),
+  }
 }
 
 /**
@@ -185,9 +270,16 @@ export async function searchProductDetails(
 export async function searchProducts(
   rawQuery: string,
   loc: LocationContext = MF_DEFAULT_LOCATION,
-): Promise<{ hits: ProductHit[]; cached: boolean }> {
-  const { details, cached } = await searchProductDetails(rawQuery, loc)
-  return { hits: details.map(toProductHit), cached }
+  opts: SearchPageOptions = {},
+): Promise<{
+  hits: ProductHit[]
+  cached: boolean
+  total: number | null
+  page: number
+  hasMore: boolean
+}> {
+  const { details, ...rest } = await searchProductDetails(rawQuery, loc, opts)
+  return { hits: details.map(toProductHit), ...rest }
 }
 
 /**

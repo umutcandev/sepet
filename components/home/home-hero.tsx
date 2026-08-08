@@ -44,13 +44,26 @@ export function HomeHero() {
     ? displayUser.name.trim().split(/\s+/)[0]
     : ""
 
+  // İsim ilk boyamada YOK: snapshot hidrasyon güvenli okunuyor (session-provider,
+  // useSyncExternalStore) ve ilk istemci render'ında sunucu değerini (null)
+  // döndürüyor. Adı geldiği anda uygulamak, daha yeni girmiş olan başlığı aynı
+  // yerde ikinci kez anime ediyordu: "Market fişine göz atalım mı?" → hemen
+  // "Can, market fişine göz atalım mı?". Bunun yerine ad rotasyon sınırında
+  // devralınır — ekrandaki cümle olduğu gibi kalır, ad sıradaki geçişle gelir.
+  const [activeFirstName, setActiveFirstName] = React.useState(firstName)
+  const firstNameRef = React.useRef(firstName)
+
+  React.useEffect(() => {
+    firstNameRef.current = firstName
+  }, [firstName])
+
   const headings = React.useMemo(() => {
-    if (!firstName) return ROTATING_HEADINGS
+    if (!activeFirstName) return ROTATING_HEADINGS
     return ROTATING_HEADINGS.map((heading) => {
       const lowerFirst = heading.charAt(0).toLowerCase() + heading.slice(1)
-      return `${firstName}, ${lowerFirst}`
+      return `${activeFirstName}, ${lowerFirst}`
     })
-  }, [firstName])
+  }, [activeFirstName])
 
   const [input, setInput] = React.useState("")
   const [headingIndex, setHeadingIndex] = React.useState(0)
@@ -59,11 +72,16 @@ export function HomeHero() {
   React.useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | undefined
 
-    const timeoutId = setTimeout(() => {
+    // Ad ve index birlikte ilerler: ikisi tek geçişte değişsin, ad kendi başına
+    // araya girip fazladan bir animasyon tetiklemesin.
+    const advance = () => {
+      setActiveFirstName(firstNameRef.current)
       setHeadingIndex((prev) => (prev + 1) % ROTATING_HEADINGS.length)
-      intervalId = setInterval(() => {
-        setHeadingIndex((prev) => (prev + 1) % ROTATING_HEADINGS.length)
-      }, 10000)
+    }
+
+    const timeoutId = setTimeout(() => {
+      advance()
+      intervalId = setInterval(advance, 10000)
     }, 3200)
 
     return () => {
@@ -187,9 +205,9 @@ export function HomeHero() {
             <AnimateEnter isWhileInView={false} delay={0.22}>
               <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
                 <AnimatePresence mode="wait" initial={false}>
-                  {/* Anahtar index değil metnin kendisi: isim sonradan
-                    çözümlenirse (snapshot yoksa) başlık sert bir metin
-                    swap'ı yerine rotasyonla aynı blur geçişiyle güncellenir. */}
+                  {/* Anahtar index değil metnin kendisi. Ad artık yalnızca
+                    rotasyonla birlikte değiştiği için metin de tam o anda
+                    değişir; anahtar ikisini tek geçişte toplar. */}
                   <motion.span
                     key={headings[headingIndex]}
                     initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}

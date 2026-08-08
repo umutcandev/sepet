@@ -33,7 +33,11 @@ export const assistantConversations = {
   hydrate(items: ConversationListItem[]) {
     if (hydrated) return
     hydrated = true
-    setState(items)
+    // setState değil: gelen liste referans olarak mevcut state ile aynı olsa
+    // bile (ör. boş liste) `hydrated` değişimi abonelere duyurulmalı — iskelet
+    // gösteren tüketiciler buna bakıyor.
+    state = items
+    for (const l of listeners) l()
   },
   // Çıkışta listeyi anında boşalt. `hydrated` true kalır: sonraki bir
   // hydrate() çağrısı (ör. sekmeler arası senkron) eski listeyi geri
@@ -133,4 +137,20 @@ export function useAssistantConversations(
       : fallback
   }, [fallback])
   return React.useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+}
+
+/**
+ * Store `/api/me` sonrası doldurulana kadar false. Tüketiciler bu aralıkta
+ * "sohbetin yok" yerine iskelet gösterir — aksi hâlde oturumlu kullanıcı her
+ * yüklenişte kısa bir "Henüz sohbetin yok." yanıp sönmesi görüyor.
+ *
+ * Server snapshot'ı da false: SSR ve ilk istemci render'ı aynı çıktıyı verir,
+ * hidrasyon uyuşmazlığı olmaz.
+ */
+export function useAssistantConversationsHydrated(): boolean {
+  return React.useSyncExternalStore(
+    assistantConversations.subscribe,
+    assistantConversations.isHydrated,
+    () => false,
+  )
 }
