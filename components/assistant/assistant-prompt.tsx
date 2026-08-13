@@ -209,9 +209,7 @@ export function AssistantPrompt({
             onChange={(e) => setInput(e.target.value)}
             aria-label="Asistana mesajın"
             placeholder="Alışveriş listeni, yemek görselini veya fiş fotoğrafını yükle."
-            // placeholder:text-foreground/60 3.98:1 veriyordu; token'ın kendisi
-            // (muted-foreground) ölçülü ve 7.77:1.
-            className="text-sm placeholder:text-muted-foreground"
+            className="text-sm placeholder:text-foreground/60"
           />
         </PromptInputBody>
         <PromptInputFooter>

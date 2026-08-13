@@ -49,7 +49,7 @@ function SidebarToggleButton() {
       className="-ml-1 h-8 gap-2 px-2 md:pr-2.5"
     >
       <PanelLeftIcon className="cn-rtl-flip size-4" />
-      <span className="hidden items-center gap-0.5 font-mono text-[0.6875rem] leading-none font-medium text-subtle-foreground md:inline-flex">
+      <span className="hidden items-center gap-0.5 font-mono text-[0.6875rem] leading-none font-medium text-muted-foreground/60 md:inline-flex">
         <CommandIcon className="size-3 shrink-0" />
         {/* Büyük "B"nin optik merkezi font metrikleri yüzünden ikon merkezinin
             ~0.5px üstünde kalıyor → ⌘ ile yatay hizada görünmesi için hafif

@@ -172,7 +172,7 @@ export function ConversationDeleteDialog({
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={pending}
-            className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             {pending ? "Siliniyor..." : "Sil"}
           </AlertDialogAction>

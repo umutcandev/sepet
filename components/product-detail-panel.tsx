@@ -151,7 +151,7 @@ export function ProductDetailPanel({ productId }: Props) {
                             )}
                           </div>
                           {m.priceModifiedAt && (
-                            <div className="truncate text-[0.625rem] text-subtle-foreground">
+                            <div className="truncate text-[0.625rem] text-muted-foreground/70">
                               {formatRelative(m.priceModifiedAt)}{" "}
                               güncellendi
                             </div>
@@ -167,7 +167,7 @@ export function ProductDetailPanel({ productId }: Props) {
                             </Badge>
                           </div>
                           {m.unitPrice && (
-                            <div className="mt-0.5 truncate text-[0.625rem] text-subtle-foreground">
+                            <div className="mt-0.5 truncate text-[0.625rem] text-muted-foreground/70">
                               {m.unitPrice}
                             </div>
                           )}
@@ -181,7 +181,7 @@ export function ProductDetailPanel({ productId }: Props) {
           </div>
         )}
 
-        <p className="text-[0.625rem] text-subtle-foreground">
+        <p className="text-[0.625rem] text-muted-foreground/60">
           Veri {formatRelative(detail.cachedAt)} önbelleğe alındı.
         </p>
       </ResponsiveDialogBody>

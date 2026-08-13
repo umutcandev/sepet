@@ -127,7 +127,7 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
                   onChange={(e) => setConfirm(e.target.value)}
                 />
               </Field>
-              <p className="text-[0.6875rem] leading-[1.5] text-subtle-foreground">
+              <p className="text-[0.6875rem] leading-[1.5] text-muted-foreground/70">
                 En az 8 karakter, bir harf ve bir rakam.
               </p>
               {error ? (

@@ -428,7 +428,7 @@ export function LoginForm({ callbackUrl }: Props) {
 
                   <div className="flex items-center gap-3" aria-hidden>
                     <span className="h-px flex-1 bg-border" />
-                    <span className="text-xs tracking-[-0.01em] text-subtle-foreground">
+                    <span className="text-xs tracking-[-0.01em] text-muted-foreground/60">
                       veya
                     </span>
                     <span className="h-px flex-1 bg-border" />
@@ -582,7 +582,7 @@ export function LoginForm({ callbackUrl }: Props) {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </Field>
-                  <p className="text-[0.6875rem] leading-[1.5] text-subtle-foreground">
+                  <p className="text-[0.6875rem] leading-[1.5] text-muted-foreground/70">
                     En az 8 karakter, bir harf ve bir rakam.
                   </p>
                   {error ? (
@@ -783,7 +783,7 @@ export function LoginForm({ callbackUrl }: Props) {
         </div>
 
         {stage === "method" ? (
-          <p className="mt-3.5 text-[0.6875rem] leading-[1.5] tracking-[-0.005em] text-subtle-foreground">
+          <p className="mt-3.5 text-[0.6875rem] leading-[1.5] tracking-[-0.005em] text-muted-foreground/60">
             Devam ederek <TermsDialog /> ve <PrivacyDialog />
             &apos;i kabul ediyorsun.
           </p>

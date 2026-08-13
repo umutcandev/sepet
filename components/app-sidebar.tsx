@@ -208,7 +208,7 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
             <NavUserSkeleton />
           ) : null}
         </div>
-        <div className="flex items-center justify-center gap-1.5 px-2 pb-0.5 text-[0.6875rem] text-subtle-foreground group-data-[collapsible=icon]:hidden">
+        <div className="flex items-center justify-center gap-1.5 px-2 pb-0.5 text-[0.6875rem] text-muted-foreground/60 group-data-[collapsible=icon]:hidden">
           <Link
             href="/gizlilik"
             onClick={handleNavClick}

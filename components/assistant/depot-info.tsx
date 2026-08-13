@@ -37,7 +37,7 @@ export function DepotInfo({
           // Görünen daire 16px kalıyor ama tıklama alanı ::after ile 32px'e
           // açılıyor (WCAG 2.5.8 tabanı 24px). Odak göstergesi gerçek bir
           // halka: renk değişimi tek başına gösterge sayılmaz.
-          className="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full text-subtle-foreground transition-colors after:absolute after:-inset-2 hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
+          className="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground/50 transition-colors after:absolute after:-inset-2 hover:text-foreground focus-visible:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
         >
           <InfoIcon className="size-3.5" />
         </button>
@@ -49,7 +49,7 @@ export function DepotInfo({
         className="w-56 gap-1 p-3"
       >
         <PopoverTitle className="text-xs"><b>{depotName}</b> {market ? ` (${market})` : ""}</PopoverTitle>
-        <PopoverDescription className="text-[0.625rem] text-subtle-foreground">
+        <PopoverDescription className="text-[0.625rem] text-muted-foreground/70">
           Yakınındaki şubeler arasından seçildi. Zincir marketlerde fiyat
           çoğunlukla ülke geneli aynıdır.
         </PopoverDescription>

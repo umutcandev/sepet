@@ -56,7 +56,7 @@ export function DeleteReceiptButton({ id }: { id: string }) {
           <AlertDialogAction
             onClick={handleDelete}
             disabled={busy}
-            className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             {busy ? (
               <>

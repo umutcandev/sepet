@@ -176,7 +176,7 @@ export function SettingsDialog({
                 className="h-8 pl-8 text-sm [&::-webkit-search-cancel-button]:appearance-none"
               />
             </div>
-            <div className="hidden px-2 pt-1 text-[0.6875rem] font-medium tracking-wide text-subtle-foreground sm:block">
+            <div className="hidden px-2 pt-1 text-[0.6875rem] font-medium tracking-wide text-muted-foreground/70 sm:block">
               Ayarlar
             </div>
             <ul className="flex gap-1 overflow-x-auto [scrollbar-width:none] sm:flex-col sm:gap-0.5 sm:overflow-x-visible [&::-webkit-scrollbar]:hidden">

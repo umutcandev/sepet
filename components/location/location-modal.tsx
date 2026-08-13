@@ -467,7 +467,7 @@ export function LocationModal() {
                           className={cn(
                             "flex items-center gap-2 rounded-md py-1.5 text-left transition-colors sm:px-1",
                             selecting &&
-                              "w-full cursor-pointer hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+                              "w-full cursor-pointer hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
                             excluded && "opacity-45"
                           )}
                         >

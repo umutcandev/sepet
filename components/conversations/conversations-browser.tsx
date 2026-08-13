@@ -588,7 +588,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                       aria-checked={isSelected}
                       onClick={() => toggleSelect(c.id)}
                       className={cn(
-                        "flex w-full cursor-pointer items-center gap-2 py-2 pr-3 pl-4 text-left transition-colors hover:bg-secondary/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:-outline-offset-2 focus-visible:outline-none",
+                        "flex w-full cursor-pointer items-center gap-2 py-2 pr-3 pl-4 text-left transition-colors hover:bg-secondary/50 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:-outline-offset-2 focus-visible:outline-none",
                         isSelected && "bg-secondary/40",
                       )}
                     >
@@ -775,7 +775,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                 void handleSingleDelete()
               }}
               disabled={deletePending}
-              className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {deletePending ? "Siliniyor..." : "Sil"}
             </AlertDialogAction>
@@ -812,7 +812,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                 void handleBulkDelete()
               }}
               disabled={deletePending}
-              className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {deletePending ? (
                 <>

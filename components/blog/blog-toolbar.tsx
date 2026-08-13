@@ -172,7 +172,7 @@ export function BlogToolbar({
             searchOpen ? "flex flex-1" : "hidden",
           )}
         >
-          <div className="flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-muted/40 pr-1.5 pl-3 transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring">
+          <div className="flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-muted/40 pr-1.5 pl-3 transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/40">
             <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
             <Command.Input
               ref={inputRef}

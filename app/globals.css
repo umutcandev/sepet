@@ -48,25 +48,9 @@
     --color-input: var(--input);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
-    /* `--destructive` METİN/kenarlık rolü (yüzey üstünde kırmızı yazı),
-       `--destructive-surface` DOLGU rolü (silme onay butonunun zemini),
-       `--destructive-foreground` o dolgunun üstündeki yazı. Üçü ayrı rol:
-       tek bir kırmızı hem Lc≥75 metin hem de doygun bir dolgu olamıyor
-       (koyu temada metin L≈0.86'ya çıkmak zorunda, dolgu ise L≈0.55'te
-       kalmalı). `--destructive-foreground` eskiden HİÇ tanımlı değildi;
-       `text-destructive-foreground` bu yüzden Tailwind tarafından hiç
-       üretilmiyordu ve dokuz silme butonu kırmızı zemin üstünde miras
-       aldığı koyu kahve yazıyla (2.67:1) çıkıyordu. */
-    --color-destructive-surface: var(--destructive-surface);
-    --color-destructive-foreground: var(--destructive-foreground);
     --color-accent-foreground: var(--accent-foreground);
     --color-accent: var(--accent);
     --color-muted-foreground: var(--muted-foreground);
-    /* Üçüncül metin rolü. Eskiden bu iş muted-foreground'un alfa
-       modifikatörleriyle (50%, 60%, 70%) yapılıyordu; alfa yalnız soldurmuyor,
-       kontrastı da inceltiyordu — 2.07:1'e kadar düşüyordu. Rolün artık kendi
-       token'ı var ve ölçülü: her yüzeyde Lc ≥ 60. */
-    --color-subtle-foreground: var(--subtle-foreground);
     --color-muted: var(--muted);
     --color-secondary-foreground: var(--secondary-foreground);
     --color-secondary: var(--secondary);
@@ -87,74 +71,39 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ---------------------------------------------------------------------------
-   Palet — OKLCH
-
-   Hex'ten OKLCH'e geçildi: Tailwind v4 kendi varsayılan paletini zaten OKLCH'te
-   tanımlıyor ve bu uzayda L (açıklık) doğrudan bir kontrast kolu. Aşağıdaki
-   değerlerin ÇOĞU eski hex'in birebir karşılığı; yalnız kontrast ölçümünde
-   kalan roller taşındı. Her taşınan değer APCA (Lc) ve WCAG 2 ile hem açık hem
-   koyu temada, oturduğu HER yüzeye karşı ölçüldü:
-
-     • metin rolleri        → gövde metni Lc ≥ 75
-     • buton/etiket metni   → gövde dışı Lc ≥ 60 (APCA'nın kendi ayrımı)
-     • --ring / --input     → arayüz bileşeni sınırı WCAG ≥ 3:1
-
-   Ton (H) ve doygunluk (C) korunarak yalnız L oynatıldı, böylece sıcak kahve
-   kimliği aynı kaldı. Bir değeri değiştirirsen ölçümü tekrarla.
---------------------------------------------------------------------------- */
 :root {
-    --background: oklch(0.982 0.013 71.3);
-    --foreground: oklch(0.289 0.044 46.2);
-    --card: oklch(0.989 0.009 76);
-    --card-foreground: oklch(0.289 0.044 46.2);
-    --popover: oklch(0.989 0.009 76);
-    --popover-foreground: oklch(0.289 0.044 46.2);
-    --primary: oklch(0.431 0.064 48.2);
-    --primary-foreground: oklch(0.982 0.013 71.3);
-    --secondary: oklch(0.938 0.023 69.6);
-    --secondary-foreground: oklch(0.289 0.044 46.2);
-    --muted: oklch(0.938 0.023 69.6);
-    /* L 0.516 → 0.439: eski değer --muted/--secondary yüzeyinde Lc 66'ya
-       düşüyordu (gövde eşiği 75). Şimdi en kötü yüzeyde tam 75. */
-    --muted-foreground: oklch(0.439 0.079 51.2);
-    /* Üçüncül kademe: muted'dan bir tık açık ama hâlâ Lc ≥ 75. Açık temada
-       gerçek bir basamak (0.439 → 0.492); koyu temada tavan yüzünden iki
-       kademe neredeyse üst üste biner, orada ayrımı ağırlık/boyut taşır. */
-    --subtle-foreground: oklch(0.492 0.079 51.2);
-    --accent: oklch(0.914 0.033 74.8);
-    --accent-foreground: oklch(0.289 0.044 46.2);
-    /* L 0.543 → 0.520: hata metni --background üstünde Lc 72.3'tü. */
-    --destructive: oklch(0.52 0.155 32.8);
-    --destructive-surface: oklch(0.5 0.155 32.8);
-    --destructive-foreground: oklch(0.982 0.013 71.3);
-    --border: oklch(0.903 0.021 72.1);
-    /* Bilinçli olarak --border ile AYNI. Denetimde bir ara bunu 3:1'e (L 0.656)
-       çektim: girdinin zemini saydam olduğu için kenarlık kontrolü tanımlayan
-       tek işaret ve WCAG 1.4.11 bunu 3:1 istiyor. Ama o değer arayüzü ikiye
-       böldü — buton, sekme, kart hep --border'ın yumuşak çizgisindeyken girdi
-       tek başına koyu bir çerçeveyle duruyordu. Tek düzelik tercih edildi;
-       1.4.11'in girdi kenarlığı maddesi bilinçli olarak karşılanmıyor. */
-    --input: oklch(0.903 0.021 72.1);
-    /* Odak halkası da 3:1 istiyor; eski değer açık temada 2.97:1'de kalıyordu. */
-    --ring: oklch(0.627 0.099 60.7);
-    /* Grafik rampası: SABİT ton (52°) + eşit L basamakları (~0.095). Eskiden
-       ton 46°–67° arası kayıyordu (10° eşiğinin iki katı) ve chart-2/chart-3
-       arasında yalnız 0.054 L vardı — donut'ta komşu dilimler ayrışmıyordu. */
-    --chart-1: oklch(0.76 0.1 52);
-    --chart-2: oklch(0.665 0.106 52);
-    --chart-3: oklch(0.57 0.091 52);
-    --chart-4: oklch(0.475 0.076 52);
-    --chart-5: oklch(0.38 0.061 52);
+    --background: #FFF8F0;
+    --foreground: #3D2418;
+    --card: #FFFBF5;
+    --card-foreground: #3D2418;
+    --popover: #FFFBF5;
+    --popover-foreground: #3D2418;
+    --primary: #6D4530;
+    --primary-foreground: #FFF8F0;
+    --secondary: #F5E8DA;
+    --secondary-foreground: #3D2418;
+    --muted: #F5E8DA;
+    --muted-foreground: #8C5A3C;
+    --accent: #F0E0CB;
+    --accent-foreground: #3D2418;
+    --destructive: #B8442E;
+    --border: #E8DDD0;
+    --input: #E8DDD0;
+    --ring: #C08552;
+    --chart-1: #C08552;
+    --chart-2: #A06848;
+    --chart-3: #8C5A3C;
+    --chart-4: #D4A574;
+    --chart-5: #3D2418;
     --radius: 0.625rem;
-    --sidebar: oklch(0.968 0.017 74);
-    --sidebar-foreground: oklch(0.289 0.044 46.2);
-    --sidebar-primary: oklch(0.431 0.064 48.2);
-    --sidebar-primary-foreground: oklch(0.982 0.013 71.3);
-    --sidebar-accent: oklch(0.914 0.033 74.8);
-    --sidebar-accent-foreground: oklch(0.289 0.044 46.2);
-    --sidebar-border: oklch(0.903 0.021 72.1);
-    --sidebar-ring: oklch(0.627 0.099 60.7);
+    --sidebar: #FCF3E6;
+    --sidebar-foreground: #3D2418;
+    --sidebar-primary: #6D4530;
+    --sidebar-primary-foreground: #FFF8F0;
+    --sidebar-accent: #F0E0CB;
+    --sidebar-accent-foreground: #3D2418;
+    --sidebar-border: #E8DDD0;
+    --sidebar-ring: #C08552;
     /* Ana sayfa hero→blog geçişinin dip rengi (gerçek temaya bağlı).
        Gündüz: koyu yeşilimsi-siyah; gece: koyu kahve. */
     --home-base: #0d0f0c;
@@ -166,79 +115,40 @@
 }
 
 .dark {
-    --background: oklch(0.194 0.015 57.2);
-    --foreground: oklch(0.938 0.023 69.6);
-    --card: oklch(0.225 0.017 58.6);
-    --card-foreground: oklch(0.938 0.023 69.6);
-    --popover: oklch(0.225 0.017 58.6);
-    --popover-foreground: oklch(0.938 0.023 69.6);
-    --primary: oklch(0.8 0.09 67.1);
-    --primary-foreground: oklch(0.12 0.012 57.2);
-    --secondary: oklch(0.262 0.024 63.7);
-    --secondary-foreground: oklch(0.938 0.023 69.6);
-    --muted: oklch(0.262 0.024 63.7);
-    /* L 0.705 → 0.860. APCA polariteye duyarlı: açık-üstü-koyu eşlemede aynı
-       WCAG oranı çok daha düşük Lc verir. Eski değer WCAG 6.94:1 ile "geçiyor"
-       görünürken Lc yalnız 49.6'ydı — gövde eşiğinin (75) çok altında. */
-    --muted-foreground: oklch(0.86 0.059 70.1);
-    --subtle-foreground: oklch(0.853 0.059 70.1);
-    --accent: oklch(0.31 0.03 66);
-    --accent-foreground: oklch(0.938 0.023 69.6);
-    --destructive: oklch(0.858 0.078 34);
-    --destructive-surface: oklch(0.55 0.16 32);
-    --destructive-foreground: oklch(0.972 0.012 45);
-    --border: oklch(0.262 0.024 63.7);
-    --input: oklch(0.262 0.024 63.7);
-    --ring: oklch(0.7 0.105 60.7);
-    --chart-1: oklch(0.86 0.053 52);
-    --chart-2: oklch(0.775 0.092 52);
-    --chart-3: oklch(0.69 0.11 52);
-    --chart-4: oklch(0.605 0.096 52);
-    --chart-5: oklch(0.52 0.083 52);
-    --sidebar: oklch(0.21 0.016 58);
-    --sidebar-foreground: oklch(0.938 0.023 69.6);
-    --sidebar-primary: oklch(0.8 0.09 67.1);
-    --sidebar-primary-foreground: oklch(0.12 0.012 57.2);
-    --sidebar-accent: oklch(0.31 0.03 66);
-    --sidebar-accent-foreground: oklch(0.938 0.023 69.6);
-    --sidebar-border: oklch(0.262 0.024 63.7);
-    --sidebar-ring: oklch(0.7 0.105 60.7);
+    --background: #1A130E;
+    --foreground: #F5E8DA;
+    --card: #221A14;
+    --card-foreground: #F5E8DA;
+    --popover: #221A14;
+    --popover-foreground: #F5E8DA;
+    --primary: #D4A574;
+    --primary-foreground: #1A130E;
+    --secondary: #2D2218;
+    --secondary-foreground: #F5E8DA;
+    --muted: #2D2218;
+    --muted-foreground: #B89A78;
+    --accent: #3D2D1F;
+    --accent-foreground: #F5E8DA;
+    --destructive: #E07259;
+    --border: #2D2218;
+    --input: #2D2218;
+    --ring: #C08552;
+    --chart-1: #D4A574;
+    --chart-2: #C08552;
+    --chart-3: #A06848;
+    --chart-4: #8C5A3C;
+    --chart-5: #F5E8DA;
+    --sidebar: #1F1812;
+    --sidebar-foreground: #F5E8DA;
+    --sidebar-primary: #D4A574;
+    --sidebar-primary-foreground: #1A130E;
+    --sidebar-accent: #3D2D1F;
+    --sidebar-accent-foreground: #F5E8DA;
+    --sidebar-border: #2D2218;
+    --sidebar-ring: #C08552;
     --home-base: #1b0e08;
     --home-base-soft: rgba(27, 14, 8, 0.5);
     --home-base-clear: rgba(27, 14, 8, 0);
-}
-
-/* Artırılmış kontrast tercihi. Metin rollerini APCA'nın TERCİH EDİLEN
-   eşiklerine çeker (gövde Lc 90, gövde dışı Lc 75) ve kenarlık/halka/girdi
-   sınırlarını 3:1'den 4.5:1'e çıkarır. Hiyerarşi kasıtlı olarak sıkışır:
-   bu modda ayrım okunabilirliğin önüne geçmez.
-
-   Girdi kenarlığı varsayılan temada bilinçli olarak yumuşak (bkz. --input);
-   burada --border ile birlikte koyulaşıyor, çünkü kullanıcı bunu işletim
-   sisteminden açıkça istemiş oluyor. Tek düzelik yine korunuyor: iki token
-   her modda aynı değeri taşıyor. */
-@media (prefers-contrast: more) {
-  :root {
-    --muted-foreground: oklch(0.257 0.067 51.2);
-    --subtle-foreground: oklch(0.36 0.075 51.2);
-    --destructive: oklch(0.28 0.11 32.8);
-    --border: oklch(0.524 0.021 72.1);
-    --input: oklch(0.524 0.021 72.1);
-    --ring: oklch(0.529 0.099 60.7);
-    --sidebar-border: oklch(0.524 0.021 72.1);
-    --sidebar-ring: oklch(0.529 0.099 60.7);
-  }
-
-  .dark {
-    --muted-foreground: oklch(0.932 0.05 70.1);
-    --subtle-foreground: oklch(0.9 0.055 70.1);
-    --destructive: oklch(0.934 0.034 34);
-    --border: oklch(0.635 0.024 63.7);
-    --input: oklch(0.635 0.024 63.7);
-    --ring: oklch(0.641 0.105 60.7);
-    --sidebar-border: oklch(0.635 0.024 63.7);
-    --sidebar-ring: oklch(0.641 0.105 60.7);
-  }
 }
 
 /* shadow-plugin'in hairline'ı varsayılan olarak nötrdür (siyah %5 / beyaz %18).
@@ -304,7 +214,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring;
+    @apply border-border outline-ring/50;
     }
   body {
     @apply bg-background text-foreground;

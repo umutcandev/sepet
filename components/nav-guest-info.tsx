@@ -40,7 +40,7 @@ export function NavGuestInfo() {
         type="button"
         onClick={handleDismiss}
         aria-label="Kapat"
-        className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md text-subtle-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground"
+        className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md text-muted-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-foreground"
       >
         <XIcon className="size-4" />
       </button>

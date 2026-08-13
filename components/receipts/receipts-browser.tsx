@@ -756,7 +756,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                 void handleSingleDelete()
               }}
               disabled={deletePending}
-              className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {deletePending ? "Siliniyor..." : "Sil"}
             </AlertDialogAction>
@@ -793,7 +793,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                 void handleBulkDelete()
               }}
               disabled={deletePending}
-              className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {deletePending ? (
                 <>

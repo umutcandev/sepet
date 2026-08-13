@@ -104,7 +104,7 @@ export function AvatarChanger() {
             onClick={pick}
             disabled={busy}
             aria-label="Profil fotoğrafını değiştir"
-            className="block size-10 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="block size-10 rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
           >
             <Avatar size="lg" className="size-10 rounded-full">
               <AvatarImage src={shown || undefined} alt="" />
