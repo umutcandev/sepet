@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 // Polar checkout dönüşünü karşılar: successUrl `/?abonelik=basarili` (hata
 // durumunda `/?abonelik=hata`) ile döner. Bir kez toast gösterip query param'ı

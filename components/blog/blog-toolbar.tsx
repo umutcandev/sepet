@@ -188,6 +188,7 @@ export function BlogToolbar({
                   inputRef.current?.blur()
                 }
               }}
+              aria-label="Yazılarda ara"
               placeholder="Yazılarda ara..."
               className="h-full w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />
@@ -220,7 +221,7 @@ export function BlogToolbar({
                         <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
                           <Highlighted text={doc.title} ranges={titleHl} />
                         </span>
-                        <span className="shrink-0 rounded-md border border-border px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                        <span className="shrink-0 rounded-md border border-border px-1.5 py-0.5 text-[0.6875rem] font-medium text-muted-foreground">
                           {doc.categoryLabel}
                         </span>
                       </div>

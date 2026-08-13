@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import { Button } from "@/components/ui/button"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
+import { FormError } from "@/components/ui/form-error"
 import { PasswordInput } from "@/components/auth/password-input"
 import {
   Dialog,
@@ -127,7 +128,7 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
         <p className="text-xs text-muted-foreground">
           En az 8 karakter, bir harf ve bir rakam.
         </p>
-        {error ? <p className="text-xs text-destructive">{error}</p> : null}
+        {error ? <FormError>{error}</FormError> : null}
       </div>
       <DialogFooter>
         <Button type="submit" disabled={busy} className="gap-2">
@@ -170,7 +171,7 @@ function SetPasswordLink({ onClose }: { onClose: () => void }) {
           </DialogDescription>
         </DialogHeader>
         {error ? (
-          <p className="py-1 text-xs text-destructive">{error}</p>
+          <FormError>{error}</FormError>
         ) : null}
         <DialogFooter className="sm:justify-between">
           <Button
@@ -200,7 +201,7 @@ function SetPasswordLink({ onClose }: { onClose: () => void }) {
           bir bağlantı gönderelim; şifreni o sayfadan belirlersin.
         </DialogDescription>
       </DialogHeader>
-      {error ? <p className="py-1 text-xs text-destructive">{error}</p> : null}
+      {error ? <FormError>{error}</FormError> : null}
       <DialogFooter>
         <Button onClick={sendLink} disabled={busy} className="gap-2">
           {busy ? <Spinner /> : null}

@@ -191,7 +191,7 @@ export default async function BasketDetailPage({
           <div className="overflow-hidden rounded-xl border bg-card">
             <div className="flex items-center gap-2 border-b px-4 py-3">
               <span className="text-sm font-medium">Sepetteki Kalemler</span>
-              <Badge variant="secondary" className="text-[10px]">
+              <Badge variant="secondary" className="text-[0.625rem]">
                 {items.length}
               </Badge>
             </div>
@@ -204,7 +204,7 @@ export default async function BasketDetailPage({
                       {it.rawName}
                     </div>
                     {it.matchedName && it.matchedName !== it.rawName && (
-                      <div className="text-[11px] text-muted-foreground break-words">
+                      <div className="text-[0.6875rem] text-muted-foreground break-words">
                         ↪ {it.matchedName}
                       </div>
                     )}
@@ -214,7 +214,7 @@ export default async function BasketDetailPage({
                       <MarketCell name={it.bestMarket} size="sm" />
                     </div>
                     <div className="shrink-0 text-right">
-                      <div className="text-[11px] text-muted-foreground tabular-nums">
+                      <div className="text-[0.6875rem] text-muted-foreground tabular-nums">
                         {Number(it.quantity)} {it.unit}
                       </div>
                       <div className="text-sm font-medium tabular-nums">
@@ -231,7 +231,7 @@ export default async function BasketDetailPage({
             <div className="hidden md:block">
               <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
                 <TableHeader>
-                  <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                  <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
                     <TableHead className="min-w-[160px]">Ürün</TableHead>
                     <TableHead className="w-20 text-right">Adet</TableHead>
                     <TableHead className="min-w-[120px]">En iyi market</TableHead>
@@ -244,7 +244,7 @@ export default async function BasketDetailPage({
                       <TableCell className="align-top">
                         <div className="text-sm font-medium">{it.rawName}</div>
                         {it.matchedName && it.matchedName !== it.rawName && (
-                          <div className="text-[11px] text-muted-foreground">
+                          <div className="text-[0.6875rem] text-muted-foreground">
                             ↪ {it.matchedName}
                           </div>
                         )}

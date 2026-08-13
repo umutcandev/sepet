@@ -304,9 +304,13 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   )
 }
 
-function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
+// Kasıtlı olarak <div>, <main> DEĞİL. Bu kap sidebar'ın yanındaki her şeyi
+// (site header'ı dâhil) sarıyor; <main> olsaydı header <main>'in içine düşer
+// ve banner landmark'ı olmaktan çıkardı. Gerçek <main> AppShell'de, header'dan
+// sonra açılıyor (components/app-shell.tsx).
+function SidebarInset({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <main
+    <div
       data-slot="sidebar-inset"
       className={cn(
         "relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:smooth-shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
@@ -367,9 +371,13 @@ function SidebarSeparator({
   )
 }
 
-function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
+// <nav>, çünkü kapsadığı her şey gezinme: ana menü, sohbet listesi, blog
+// listesi. Sidebar'ın kendisi <div> kaldı (header/footer'ı da içeriyor);
+// landmark tam olarak gezinme bölgesini sarıyor. Birden fazla navigation
+// landmark'ı olduğu için (footer'da da var) çağıran taraf aria-label verir.
+function SidebarContent({ className, ...props }: React.ComponentProps<"nav">) {
   return (
-    <div
+    <nav
       data-slot="sidebar-content"
       data-sidebar="content"
       className={cn(

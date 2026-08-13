@@ -6,6 +6,7 @@ import { CameraIcon } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { FormError } from "@/components/ui/form-error"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { resetAvatar, setAvatar } from "@/lib/actions/profile"
 import { cn } from "@/lib/utils"
@@ -133,7 +134,7 @@ export function AvatarChanger() {
         ) : null}
       </div>
 
-      {error ? <span className="text-xs text-destructive">{error}</span> : null}
+      {error ? <FormError>{error}</FormError> : null}
 
       <input
         ref={fileRef}

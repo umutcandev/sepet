@@ -9,7 +9,7 @@ import {
   RefreshCwIcon,
   XIcon,
 } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import {
   PromptInput,
@@ -207,6 +207,7 @@ export function AssistantPrompt({
           <PromptInputTextarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            aria-label="Asistana mesajın"
             placeholder="Alışveriş listeni, yemek görselini veya fiş fotoğrafını yükle."
             className="text-sm placeholder:text-foreground/60"
           />
@@ -333,8 +334,8 @@ function AddAttachmentMenu() {
   const att = usePromptInputAttachments()
   return (
     <PromptInputActionMenu>
-      <PromptInputActionMenuTrigger className="rounded-full">
-        <PlusIcon className="size-4" />
+      <PromptInputActionMenuTrigger aria-label="Ek yükle" className="rounded-full">
+        <PlusIcon aria-hidden="true" className="size-4" />
       </PromptInputActionMenuTrigger>
       <PromptInputActionMenuContent>
         <PromptInputActionMenuItem onSelect={() => att.openFileDialog()}>

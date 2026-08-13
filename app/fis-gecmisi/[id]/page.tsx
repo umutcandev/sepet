@@ -108,7 +108,7 @@ function ReceiptInfoCard({
             <TableRow className="bg-muted/40 hover:bg-muted/50">
               <TableCell
                 colSpan={2}
-                className="text-[11px] text-muted-foreground"
+                className="text-[0.6875rem] text-muted-foreground"
               >
                 Bu fiş 6 aydan eski — bugünkü piyasayla kıyaslanmıyor, tasarruf
                 hesabı gösterilmiyor.
@@ -221,7 +221,7 @@ export default async function ReceiptDetailPage({
           <div className="overflow-hidden rounded-xl border bg-card">
             <div className="flex items-center gap-2 border-b px-4 py-3">
               <span className="text-sm font-medium">Fişteki Kalemler</span>
-              <Badge variant="secondary" className="text-[10px]">
+              <Badge variant="secondary" className="text-[0.625rem]">
                 {items.length}
               </Badge>
             </div>
@@ -238,18 +238,18 @@ export default async function ReceiptDetailPage({
                           {it.rawName}
                         </div>
                         {it.matchedName && it.matchedName !== it.rawName && (
-                          <div className="text-[11px] text-muted-foreground break-words">
+                          <div className="text-[0.6875rem] text-muted-foreground break-words">
                             ↪ {it.matchedName}
                           </div>
                         )}
                       </div>
-                      <div className="shrink-0 text-right text-[11px] text-muted-foreground tabular-nums">
+                      <div className="shrink-0 text-right text-[0.6875rem] text-muted-foreground tabular-nums">
                         {Number(it.quantity)} {it.unit}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-2 rounded-md bg-muted/40 p-2 text-xs">
                       <div>
-                        <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                        <div className="text-[0.625rem] uppercase tracking-wide text-muted-foreground">
                           Fişteki
                         </div>
                         <div className="tabular-nums">
@@ -259,7 +259,7 @@ export default async function ReceiptDetailPage({
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                        <div className="text-[0.625rem] uppercase tracking-wide text-muted-foreground">
                           En iyi
                         </div>
                         <div className="tabular-nums">
@@ -291,7 +291,7 @@ export default async function ReceiptDetailPage({
             <div className="hidden md:block">
               <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
                 <TableHeader>
-                  <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                  <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
                     <TableHead className="min-w-[160px]">Ürün</TableHead>
                     <TableHead className="w-20 text-right">Adet</TableHead>
                     <TableHead className="w-24 text-right">Fişteki</TableHead>
@@ -309,7 +309,7 @@ export default async function ReceiptDetailPage({
                         <TableCell className="align-top">
                           <div className="text-sm font-medium">{it.rawName}</div>
                           {it.matchedName && it.matchedName !== it.rawName && (
-                            <div className="text-[11px] text-muted-foreground">
+                            <div className="text-[0.6875rem] text-muted-foreground">
                               ↪ {it.matchedName}
                             </div>
                           )}

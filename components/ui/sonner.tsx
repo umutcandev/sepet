@@ -8,7 +8,7 @@ import {
   TriangleAlertIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
-import { Toaster as Sonner, type ToasterProps } from "sonner"
+import { Toaster as Sonner, toast as sonnerToast, type ToasterProps } from "sonner"
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
@@ -53,9 +53,36 @@ const Toaster = ({ ...props }: ToasterProps) => {
           toast: "cn-toast smooth-shadow-ring-md!",
         },
       }}
+      closeButton
+      // Sonner varsayılanı 4sn; zamanlı bir bildirimin tabanı 5sn. Hataların
+      // kendisi hiç sönmüyor (aşağıdaki sarmalayıcı), bu süre yalnız düşük
+      // riskli onaylar için.
+      duration={6000}
       {...props}
     />
   )
 }
 
-export { Toaster }
+/**
+ * Projede `toast` doğrudan sonner'dan değil buradan alınır.
+ *
+ * Tek sebebi var: HATA bildirimleri kendiliğinden kaybolmamalı. Kaybolan bir
+ * hata, kullanıcı okumaya yetişemediğinde geri getirilemez; ekran okuyucu ya da
+ * büyüteç kullanan biri için birkaç saniye çoğu zaman yetmez. Diğer türler
+ * Toaster'daki 6sn'yi kullanmaya devam eder, hepsinde kapatma butonu var.
+ *
+ * Çağıran taraf isterse `duration` geçerek bunu geçersiz kılabilir.
+ */
+const toast: typeof sonnerToast = Object.assign(
+  ((...args: Parameters<typeof sonnerToast>) => sonnerToast(...args)) as typeof sonnerToast,
+  sonnerToast,
+  {
+    error: ((message, data) =>
+      sonnerToast.error(message, {
+        duration: Number.POSITIVE_INFINITY,
+        ...data,
+      })) as typeof sonnerToast.error,
+  }
+)
+
+export { Toaster, toast }

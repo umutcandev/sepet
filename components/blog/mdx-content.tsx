@@ -230,8 +230,8 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
               oluyordu. Etiketler zaten doğru yazımlarıyla tutuluyor. */}
           <span
             className={cn(
-              "shrink-0 font-mono text-[11px] leading-none font-medium tracking-wide text-muted-foreground",
-              title && "text-[10px]",
+              "shrink-0 font-mono text-[0.6875rem] leading-none font-medium tracking-wide text-muted-foreground",
+              title && "text-[0.625rem]",
             )}
           >
             {label}

@@ -6,6 +6,7 @@ import { CheckIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
+import { FormError } from "@/components/ui/form-error"
 import { loginDialog } from "@/lib/stores/login-dialog"
 import { verifySignupByTokenAction } from "@/lib/actions/credentials-auth"
 
@@ -37,7 +38,7 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
       >
         <Button
           variant="outline"
-          className="h-[44px] w-full rounded-xl"
+          className="h-11 w-full rounded-xl"
           onClick={() => loginDialog.open()}
         >
           Giriş ekranına dön
@@ -67,7 +68,7 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
             subtitle="Artık e-posta ve şifrenle giriş yapabilirsin."
           >
             <Button
-              className="h-[44px] w-full rounded-xl"
+              className="h-11 w-full rounded-xl"
               onClick={() => loginDialog.open()}
             >
               Giriş yap
@@ -88,7 +89,7 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
             subtitle="Hesabını etkinleştirmek için aşağıdaki butona tıkla."
           >
             <Button
-              className="h-[44px] w-full gap-2 rounded-xl"
+              className="h-11 w-full gap-2 rounded-xl"
               disabled={stage === "loading"}
               onClick={confirm}
             >
@@ -96,7 +97,7 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
               E-postamı doğrula
             </Button>
             {stage === "error" ? (
-              <p className="mt-3 text-xs text-destructive">{error}</p>
+              <FormError>{error}</FormError>
             ) : null}
           </Content>
         </motion.div>
@@ -119,10 +120,10 @@ function Content({
   return (
     <div className="flex w-full flex-col items-center">
       {icon}
-      <h1 className="mt-5 text-[22px] leading-tight font-semibold tracking-[-0.02em] text-foreground">
+      <h1 className="mt-5 text-[1.375rem] leading-tight font-semibold tracking-[-0.02em] text-foreground">
         {title}
       </h1>
-      <p className="mt-2 max-w-[300px] text-[14px] leading-[1.4] tracking-[-0.01em] text-muted-foreground">
+      <p className="mt-2 max-w-[300px] text-sm leading-[1.4] tracking-[-0.01em] text-muted-foreground">
         {subtitle}
       </p>
       <div className="mt-7 w-full">{children}</div>

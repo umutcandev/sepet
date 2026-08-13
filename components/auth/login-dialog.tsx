@@ -7,6 +7,7 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 import { Button } from "@/components/ui/button"
 import { LoginForm } from "@/components/auth/login-form"
 import { useMediaQuery } from "@/hooks/use-media-query"
+import { useRestoreFocusOnClose } from "@/hooks/use-restore-focus-on-close"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -44,15 +45,21 @@ export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
 // (interactiveWidget: resizes-content), iOS odaklanan input'u en yakın
 // kaydırılabilir atada görünür alana getirir.
 function MobileDialog({ open, onOpenChange, callbackUrl }: Props) {
+  // Trigger yok (store'dan açılıyor) → odağı geri veren tek mekanizma bu.
+  // `open` ŞART: bu bileşen Root'la birlikte sürekli mount kalıyor, mount anı
+  // açılış anı değil.
+  const restoreFocus = useRestoreFocusOnClose(open)
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Content
           aria-describedby={undefined}
+          onCloseAutoFocus={restoreFocus}
           className={cn(
             "fixed inset-0 z-50 flex h-dvh w-full flex-col bg-background outline-none",
             "data-open:animate-in data-open:fade-in-0 data-open:slide-in-from-bottom-8",
-            "data-closed:animate-out data-closed:fade-out-0 data-closed:slide-out-to-bottom-8",
+            "data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0 data-closed:slide-out-to-bottom-8",
             "duration-300",
           )}
         >
@@ -81,6 +88,8 @@ function MobileDialog({ open, onOpenChange, callbackUrl }: Props) {
 }
 
 function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
+  const restoreFocus = useRestoreFocusOnClose(open)
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
@@ -88,17 +97,18 @@ function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
           className={cn(
             "fixed inset-0 z-50 bg-foreground/15 supports-backdrop-filter:backdrop-blur-xs",
             "data-open:animate-in data-open:fade-in-0",
-            "data-closed:animate-out data-closed:fade-out-0",
+            "data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0",
             "duration-200",
           )}
         />
         <DialogPrimitive.Content
           aria-describedby={undefined}
+          onCloseAutoFocus={restoreFocus}
           className={cn(
             "fixed top-1/2 left-1/2 z-50 flex h-auto max-h-[min(720px,calc(100dvh-2rem))] w-[min(100%-2rem,420px)]",
             "-translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl bg-background smooth-shadow-ring-lg outline-none",
             "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
-            "data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0 data-closed:zoom-out-95",
             "duration-200",
           )}
         >

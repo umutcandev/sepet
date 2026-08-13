@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { CheckIcon, ExternalLinkIcon, Loader2Icon, SaveIcon } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { saveBasket } from "@/lib/actions/baskets"

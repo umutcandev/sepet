@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import { LoginDialog } from "@/components/auth/login-dialog"
 import { useLoginDialog } from "@/lib/stores/login-dialog"

@@ -155,7 +155,7 @@ export function BillingToggle({
               <span
                 className={cn(
                   "relative z-10 rounded-full px-1 py-px font-mono leading-none font-medium transition-colors",
-                  sm ? "text-[9px]" : "text-[10px]",
+                  sm ? "text-[0.5625rem]" : "text-[0.625rem]",
                   active
                     ? "bg-primary/15 text-primary"
                     : "bg-muted-foreground/10 text-muted-foreground"

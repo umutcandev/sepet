@@ -61,7 +61,7 @@ export function HeaderUserMenu({
       >
         <Avatar className="size-6 shrink-0 rounded-full">
           <AvatarImage src={user.avatar} alt={user.name} />
-          <AvatarFallback className="rounded-full text-[10px]">
+          <AvatarFallback className="rounded-full text-[0.625rem]">
             {user.name.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>

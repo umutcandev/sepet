@@ -224,6 +224,26 @@
     }
 }
 
+/* ---------------------------------------------------------------------------
+   Windows Yüksek Kontrast (forced-colors)
+
+   Bu modda tarayıcı yazarın renklerini atar; Tailwind'in `ring-*` halkası
+   box-shadow olduğu için HİÇ boyanmaz. Geriye tek görünür gösterge olarak
+   gerçek bir outline kalır, o da sistemin kendi vurgu rengiyle.
+
+   Kural KATMANSIZ (`@layer` DIŞINDA) olmalı. Bileşenler odak halkasını
+   kurarken `outline-none` da yazıyor ve o utility `@layer utilities`te;
+   katmanlı sıralamada utilities, base'i yener — kuralı `@layer base` içine
+   koyduğumuzda ölçtük: hesaplanan outline `0px none` kalıyordu. Katmansız
+   CSS bütün katmanları yendiği için burada duruyor.
+--------------------------------------------------------------------------- */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
 /* Blog `prose`'unu mevcut palete bağla: token'lar light/dark'ta zaten flip
    ettiği için ayrı `prose-invert` gerekmez, renk her iki temada da uyumlu.
    Gövde metni okunabilir ama başlıklardan soluk: foreground'un yumuşatılmış

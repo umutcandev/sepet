@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Spinner } from "@/components/ui/spinner"
+import { FormError } from "@/components/ui/form-error"
 import { EXPORT_CATEGORIES, type ExportCategory } from "@/lib/privacy/categories"
 
 type Status = "idle" | "preparing" | "ready" | "error"
@@ -93,6 +94,12 @@ export function ExportDataDialog() {
   }
 
   async function startExport() {
+    // Doğrulama tıklamada: buton devre dışı bırakılmıyor, eksik seçim burada
+    // söyleniyor (hata bölgesi role="alert" ile duyuruluyor).
+    if (selected.size === 0) {
+      setErrorMsg("Dışa aktarmak için en az bir veri kategorisi seç.")
+      return
+    }
     revoke()
     setStatus("preparing")
     setErrorMsg(null)
@@ -123,7 +130,6 @@ export function ExportDataDialog() {
     }
   }
 
-  const nothingSelected = selected.size === 0
   const preparing = status === "preparing"
 
   return (
@@ -191,7 +197,7 @@ export function ExportDataDialog() {
                   })}
                 </div>
                 {errorMsg ? (
-                  <p className="pt-1 text-xs text-destructive">{errorMsg}</p>
+                  <FormError>{errorMsg}</FormError>
                 ) : null}
               </div>
 
@@ -201,10 +207,9 @@ export function ExportDataDialog() {
                     Vazgeç
                   </Button>
                 </DialogClose>
-                <Button
-                  onClick={startExport}
-                  disabled={preparing || nothingSelected}
-                >
+                {/* Hiçbir kategori seçilmemişken de basılabilir: neyin eksik
+                    olduğunu devre dışı bir buton değil, üstteki hata söyler. */}
+                <Button onClick={startExport} disabled={preparing}>
                   {preparing ? (
                     <>
                       <Spinner />

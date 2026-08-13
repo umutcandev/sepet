@@ -13,7 +13,7 @@ import {
   Trash2Icon,
   XIcon,
 } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import {
   AlertDialog,
@@ -509,7 +509,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
             <div className="overflow-hidden rounded-xl border bg-card">
               <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
                 <TableHeader>
-                  <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                  <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
                     {selecting ? <TableHead className="w-10" /> : null}
                     <TableHead className="min-w-[100px]">Tarih</TableHead>
                     <TableHead className="min-w-[160px]">Sepet adı</TableHead>
@@ -529,17 +529,13 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                       : 0
                     if (selecting) {
                       return (
+                        // <tr> düğme olamaz. Klavye yolu artık satırın
+                        // sahte rolü değil, hücredeki GERÇEK onay kutusu:
+                        // odaklanabilir, etiketli, Space ile değişir. Satıra
+                        // tıklamak fare için kısayol olarak duruyor.
                         <TableRow
                           key={b.id}
-                          tabIndex={0}
                           onClick={() => toggleSelect(b.id)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault()
-                              toggleSelect(b.id)
-                            }
-                          }}
-                          aria-pressed={isSelected}
                           className={cn(
                             "cursor-pointer",
                             isSelected && "bg-secondary/40",
@@ -548,9 +544,9 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                           <TableCell className="w-10">
                             <Checkbox
                               checked={isSelected}
-                              tabIndex={-1}
-                              aria-hidden
-                              className="pointer-events-none"
+                              onCheckedChange={() => toggleSelect(b.id)}
+                              onClick={(e) => e.stopPropagation()}
+                              aria-label={`${b.name} seç`}
                             />
                           </TableCell>
                           <TableCell>

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { AnimatePresence, motion } from "motion/react"
 import {
   CircleEllipsisIcon,

@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { AnimatePresence, motion } from "motion/react"
-import { ArrowRight } from "lucide-react"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
+import { ArrowRight, PauseIcon, PlayIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -20,6 +20,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
 import { completeOnboarding } from "@/lib/actions/onboarding"
 
 type Step = {
@@ -63,25 +64,66 @@ const ONBOARDING_STEPS: Step[] = [
 
 function StepVideo({ src }: { src: string }) {
   const videoRef = React.useRef<HTMLVideoElement>(null)
+  // Hareket azaltma tercihinde döngü kendiliğinden BAŞLAMAZ (WCAG 2.2.2 +
+  // vestibüler tetikleyici); kullanıcı isterse oynatır.
+  const reduceMotion = useReducedMotion()
+  // Durum elemanın KENDİSİNDEN okunur (onPlay/onPause), effect'ten yazılmaz:
+  // tarayıcı otomatik oynatmayı engellerse buton yine doğru ikonu gösterir.
+  const [playing, setPlaying] = React.useState(!reduceMotion)
 
   React.useEffect(() => {
     const video = videoRef.current
     if (!video) return
     video.currentTime = 0
-    video.play().catch(() => {})
-  }, [src])
+    if (!reduceMotion) video.play().catch(() => {})
+  }, [src, reduceMotion])
+
+  const toggle = () => {
+    const video = videoRef.current
+    if (!video) return
+    if (video.paused) {
+      video.play().catch(() => {})
+      setPlaying(true)
+    } else {
+      video.pause()
+      setPlaying(false)
+    }
+  }
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted ring-1 ring-border/50">
+    <div className="group/step-video relative aspect-video w-full overflow-hidden rounded-lg bg-muted ring-1 ring-border/50">
       <video
         ref={videoRef}
         src={src}
-        autoPlay
+        autoPlay={!reduceMotion}
         loop
         muted
         playsInline
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
         className="absolute inset-0 h-full w-full object-cover"
       />
+      {/* 5 saniyeden uzun otomatik hareketin görünür bir durdurma kontrolü
+          olmalı. Duraklatılmışken kalıcı, oynarken hover/odakta belirir —
+          kontrol her zaman klavyeyle ulaşılabilir. */}
+      <Button
+        type="button"
+        size="icon-sm"
+        variant="secondary"
+        onClick={toggle}
+        aria-label={playing ? "Videoyu duraklat" : "Videoyu oynat"}
+        className={cn(
+          "absolute right-2 bottom-2 rounded-full transition-opacity duration-150",
+          playing &&
+            "opacity-0 group-hover/step-video:opacity-100 focus-visible:opacity-100"
+        )}
+      >
+        {playing ? (
+          <PauseIcon className="size-3.5" />
+        ) : (
+          <PlayIcon className="size-3.5" />
+        )}
+      </Button>
     </div>
   )
 }

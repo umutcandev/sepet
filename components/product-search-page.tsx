@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ImageIcon, ScanBarcodeIcon, SearchIcon } from "lucide-react"
+import { ImageIcon, ScanBarcodeIcon, SearchIcon, TriangleAlertIcon } from "lucide-react"
 
 import { BarcodeScannerDialog } from "@/components/barcode-scanner-dialog"
 import { ProductDetailPanel } from "@/components/product-detail-panel"
@@ -170,6 +170,7 @@ export function ProductSearchPage() {
           <Input
             value={q}
             onChange={(e) => setQ(e.target.value)}
+            aria-label="Ürün adı ya da barkod"
             placeholder="Barkod, ürün adı ya da marka arayın..."
             className="h-9 pl-8 bg-sidebar"
             autoFocus
@@ -258,7 +259,13 @@ function ResultArea({
   if (result.kind === "error") {
     return (
       <EmptyState>
-        <p className="text-sm text-destructive">Hata: {result.message}</p>
+        <p
+          role="alert"
+          className="flex items-center gap-1.5 text-sm text-destructive"
+        >
+          <TriangleAlertIcon aria-hidden="true" className="size-4 shrink-0" />
+          Hata: {result.message}
+        </p>
       </EmptyState>
     )
   }
@@ -362,7 +369,7 @@ function ProductCard({
         <div className="line-clamp-2 text-sm font-medium leading-tight text-foreground">
           {hit.name}
         </div>
-        <div className="truncate text-[11px] text-muted-foreground">
+        <div className="truncate text-[0.6875rem] text-muted-foreground">
           {[hit.brand, hit.category].filter(Boolean).join(" · ") ||
             hit.productId}
         </div>
@@ -370,7 +377,7 @@ function ProductCard({
 
       <div className="mt-auto flex items-center justify-between gap-2 pt-1">
         {hit.marketCount > 0 ? (
-          <span className="text-[10px] text-muted-foreground/70">
+          <span className="text-[0.625rem] text-muted-foreground/70">
             {hit.marketCount} market
           </span>
         ) : (
@@ -378,7 +385,7 @@ function ProductCard({
         )}
         <Badge
           variant="default"
-          className="h-5 px-2 font-mono text-[11px] font-normal tabular-nums"
+          className="h-5 px-2 font-mono text-[0.6875rem] font-normal tabular-nums"
         >
           {formatTLOrDash(hit.averagePrice)}
         </Badge>

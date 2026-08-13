@@ -98,7 +98,7 @@ export function ProductDetailPanel({ productId }: Props) {
           <DetailThumb url={detail.imageUrl} />
           <div className="flex min-w-0 flex-1 flex-col gap-1.5">
             <div className="space-y-0.5">
-              <ResponsiveDialogTitle className="line-clamp-2 text-[15px] font-semibold leading-snug">
+              <ResponsiveDialogTitle className="line-clamp-2 text-[0.9375rem] font-semibold leading-snug">
                 {detail.name}
               </ResponsiveDialogTitle>
               {subtitle && (
@@ -144,14 +144,14 @@ export function ProductDetailPanel({ productId }: Props) {
                             {hasCheapest && m.price === min && (
                               <Badge
                                 variant="success"
-                                className="h-4 shrink-0 px-1.5 text-[10px] font-medium tracking-tight"
+                                className="h-4 shrink-0 px-1.5 text-[0.625rem] font-medium tracking-tight"
                               >
                                 en ucuz
                               </Badge>
                             )}
                           </div>
                           {m.priceModifiedAt && (
-                            <div className="truncate text-[10px] text-muted-foreground/70">
+                            <div className="truncate text-[0.625rem] text-muted-foreground/70">
                               {formatRelative(m.priceModifiedAt)}{" "}
                               güncellendi
                             </div>
@@ -161,13 +161,13 @@ export function ProductDetailPanel({ productId }: Props) {
                           <div className="flex items-center justify-end gap-1">
                             <Badge
                               variant={tier}
-                              className="h-5 px-2 font-mono text-[11px] font-medium tabular-nums"
+                              className="h-5 px-2 font-mono text-[0.6875rem] font-medium tabular-nums"
                             >
                               {formatTL(m.price)}
                             </Badge>
                           </div>
                           {m.unitPrice && (
-                            <div className="mt-0.5 truncate text-[10px] text-muted-foreground/70">
+                            <div className="mt-0.5 truncate text-[0.625rem] text-muted-foreground/70">
                               {m.unitPrice}
                             </div>
                           )}
@@ -181,7 +181,7 @@ export function ProductDetailPanel({ productId }: Props) {
           </div>
         )}
 
-        <p className="text-[10px] text-muted-foreground/60">
+        <p className="text-[0.625rem] text-muted-foreground/60">
           Veri {formatRelative(detail.cachedAt)} önbelleğe alındı.
         </p>
       </ResponsiveDialogBody>

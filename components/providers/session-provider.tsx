@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import type { CurrentUser } from "@/lib/auth/session"
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"

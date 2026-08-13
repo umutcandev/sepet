@@ -45,10 +45,10 @@ export function NavGuestInfo() {
         <XIcon className="size-4" />
       </button>
 
-      <p className="pr-6 text-[14px] font-medium leading-tight text-foreground">
+      <p className="pr-6 text-sm font-medium leading-tight text-foreground">
         Geri bildirim
       </p>
-      <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+      <p className="mt-2 text-[0.8125rem] leading-relaxed text-muted-foreground">
         Sepet geliştirme aşamasındadır. Bir hata fark edersen ya da fikrin varsa
         GitHub üzerinden bize ulaşabilirsin.
       </p>
@@ -56,7 +56,7 @@ export function NavGuestInfo() {
         href="https://github.com/umutcandev/sepet"
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-foreground underline-offset-2 transition-colors hover:underline"
+        className="mt-3 inline-flex items-center gap-1 text-[0.8125rem] font-medium text-foreground underline-offset-2 transition-colors hover:underline"
       >
         GitHub&apos;da katkıda bulun
         <ArrowUpRightIcon className="size-3.5" />

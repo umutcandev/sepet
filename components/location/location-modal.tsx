@@ -9,7 +9,7 @@ import {
   SearchIcon,
   XIcon,
 } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import {
   ResponsiveDialog,
@@ -448,28 +448,26 @@ export function LocationModal() {
                       // Seçim modunda işareti kalkan satır soluklaşır → "hariç
                       // tutulacak" görsel ipucu (dışlama bazlı seçim).
                       const excluded = selecting && !isSelected
+                      // Seçim modunda satır gerçek bir <button role="checkbox">
+                      // olur: Enter/Space native gelir, durum aria-checked ile
+                      // doğru rolde duyurulur (eskiden "button" + aria-pressed
+                      // idi). Seçim modu dışında etkileşimsiz bir <div>.
+                      const Row = selecting ? "button" : "div"
                       return (
-                        <div
+                        <Row
                           key={d.id}
-                          role={selecting ? "button" : undefined}
-                          tabIndex={selecting ? 0 : undefined}
-                          aria-pressed={selecting ? isSelected : undefined}
-                          onClick={
-                            selecting ? () => toggleDepot(d.id) : undefined
-                          }
-                          onKeyDown={
-                            selecting
-                              ? (e) => {
-                                if (e.key === "Enter" || e.key === " ") {
-                                  e.preventDefault()
-                                  toggleDepot(d.id)
-                                }
-                              }
-                              : undefined
-                          }
+                          {...(selecting
+                            ? ({
+                                type: "button",
+                                role: "checkbox",
+                                "aria-checked": isSelected,
+                                onClick: () => toggleDepot(d.id),
+                              } as const)
+                            : {})}
                           className={cn(
-                            "flex items-center gap-2 rounded-md py-1.5 transition-colors sm:px-1",
-                            selecting && "cursor-pointer hover:bg-accent",
+                            "flex items-center gap-2 rounded-md py-1.5 text-left transition-colors sm:px-1",
+                            selecting &&
+                              "w-full cursor-pointer hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
                             excluded && "opacity-45"
                           )}
                         >
@@ -497,17 +495,17 @@ export function LocationModal() {
                               {d.market}
                             </span>
                             {d.branch ? (
-                              <span className="truncate text-[11px] text-muted-foreground">
+                              <span className="truncate text-[0.6875rem] text-muted-foreground">
                                 {d.branch}
                               </span>
                             ) : null}
                           </span>
                           {d.distance != null ? (
-                            <span className="shrink-0 text-[11px] whitespace-nowrap text-muted-foreground tabular-nums">
+                            <span className="shrink-0 text-[0.6875rem] whitespace-nowrap text-muted-foreground tabular-nums">
                               {d.distance.toFixed(2)} km
                             </span>
                           ) : null}
-                        </div>
+                        </Row>
                       )
                     })}
                   </div>

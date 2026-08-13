@@ -32,8 +32,45 @@ const ROTATING_HEADINGS = [
 const ASSISTANT_SEED_KEY = "assistant:seed"
 const ASSISTANT_FILE_KEY = "assistant:file"
 
+/**
+ * Hero yüksekliğini `100svh`e değil, BİR KEZ ölçülen bir değere bağlar.
+ *
+ * Kök layout `interactiveWidget: "resizes-content"` kullanıyor (mobil login
+ * dialogunda odaklanan input klavyenin altında kalmasın diye). Bunun yan
+ * etkisi: klavye açılınca LAYOUT viewport küçülüyor ve `svh` dâhil bütün
+ * viewport birimleri yeniden hesaplanıyor. Ana sayfada hero 809px'ten 336px'e
+ * çöküyor, altındaki logo şeridi prompt'un dibine tırmanıyordu (ölçüldü).
+ *
+ * `--hero-vh` yalnız GENİŞLİK değiştiğinde (döndürme, pencere boyutlandırma)
+ * tazelenir; yalnız yüksekliğin değiştiği resize = klavye demektir, yok sayılır.
+ * JS çalışmazsa Tailwind sınıfındaki `100svh` fallback'i devrededir.
+ */
+function useFrozenViewportHeight() {
+  React.useEffect(() => {
+    const root = document.documentElement
+    const apply = () =>
+      root.style.setProperty("--hero-vh", `${window.innerHeight}px`)
+
+    let lastWidth = window.innerWidth
+    apply()
+
+    const onResize = () => {
+      if (window.innerWidth === lastWidth) return
+      lastWidth = window.innerWidth
+      apply()
+    }
+
+    window.addEventListener("resize", onResize)
+    return () => {
+      window.removeEventListener("resize", onResize)
+      root.style.removeProperty("--hero-vh")
+    }
+  }, [])
+}
+
 export function HomeHero() {
   const router = useRouter()
+  useFrozenViewportHeight()
   const guard = useRequireAuth()
   const locationGuard = useRequireLocation()
   // displayUser: çözümlenmiş kullanıcı ya da localStorage snapshot'ı — isim
@@ -171,7 +208,7 @@ export function HomeHero() {
       <link rel="preload" as="image" href="/market-logos/bim.webp" />
       <link rel="preload" as="image" href="/market-logos/tarim-kredi.webp" />
       <link rel="preload" as="image" href="/market-logos/carrefoursa.webp" />
-      <div className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16">
+      <div className="relative flex min-h-[calc(var(--hero-vh,100svh)-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/backgrounds/background-image.avif')_type('image/avif'),url('/backgrounds/background-image.webp')_type('image/webp'))] [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] bg-cover bg-bottom bg-no-repeat [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] dark:hidden"

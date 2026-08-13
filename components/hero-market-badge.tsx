@@ -102,7 +102,7 @@ export function HeroMarketBadge() {
         </AnimatePresence>
       </div>
 
-      <span className="text-[13px] font-medium text-muted-foreground">
+      <span className="text-[0.8125rem] font-medium text-muted-foreground">
         Tüm zincir marketler burada!
       </span>
 
