@@ -46,6 +46,14 @@
     --color-chart-1: var(--chart-1);
     --color-ring: var(--ring);
     --color-input: var(--input);
+    /* `--input` girdinin SINIRI (kenarlık), `--input-surface` girdinin DOLGUSU
+       (`dark:bg-input/30`, `disabled:bg-input/50`, komut paleti zemini...).
+       shadcn ikisini tek token'da topluyor; sınır 1.4.11 için 3:1'e çıkınca
+       dolgu da beraberinde açılıyordu — koyu temada girdi zemini #251C15'ten
+       #3B3128'e, açık temada devre dışı girdi #F4ECE2'den #CEC4B9'a. Dolgunun
+       kontrast yükümlülüğü yok (üstündeki yazı `--foreground`), bu yüzden
+       kendi token'ına ayrıldı ve eski, göz yormayan değerinde kaldı. */
+    --color-input-surface: var(--input-surface);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
     /* `--destructive` METİN/kenarlık rolü (yüzey üstünde kırmızı yazı),
@@ -130,8 +138,14 @@
     --destructive-foreground: oklch(0.982 0.013 71.3);
     --border: oklch(0.903 0.021 72.1);
     /* Kenarlık girdinin TEK sınırı (zemin saydam), yani WCAG 1.4.11 kapsamında
-       3:1 gerekiyor. Eski değer --border ile aynıydı: 1.27:1. */
-    --input: oklch(0.656 0.03 72.1);
+       3:1 gerekiyor. Eski değer --border ile aynıydı: 1.27:1.
+       L bu oranın tek kolu; C ise oranı neredeyse hiç oynatmıyor (0.021→0.08
+       aralığında 3.00–3.04). Bu yüzden doygunluk 0.021'den 0.05'e çıkarıldı:
+       aynı kontrastta çizgi gri-kahve yerine paletin sıcak tonunda okunuyor.
+       --border (0.021) ile --ring (0.099) arasında bilinçli bir ara kademe. */
+    --input: oklch(0.656 0.05 72.1);
+    /* Dolgu rolü: eski --input değerinin ta kendisi. Bkz. --color-input-surface. */
+    --input-surface: oklch(0.903 0.021 72.1);
     /* Odak halkası da 3:1 istiyor; eski değer açık temada 2.97:1'de kalıyordu. */
     --ring: oklch(0.627 0.099 60.7);
     /* Grafik rampası: SABİT ton (52°) + eşit L basamakları (~0.095). Eskiden
@@ -184,7 +198,8 @@
     --destructive-surface: oklch(0.55 0.16 32);
     --destructive-foreground: oklch(0.972 0.012 45);
     --border: oklch(0.262 0.024 63.7);
-    --input: oklch(0.52 0.03 63.7);
+    --input: oklch(0.52 0.05 63.7);
+    --input-surface: oklch(0.262 0.024 63.7);
     --ring: oklch(0.7 0.105 60.7);
     --chart-1: oklch(0.86 0.053 52);
     --chart-2: oklch(0.775 0.092 52);
@@ -207,14 +222,18 @@
 /* Artırılmış kontrast tercihi. Metin rollerini APCA'nın TERCİH EDİLEN
    eşiklerine çeker (gövde Lc 90, gövde dışı Lc 75) ve kenarlık/halka/girdi
    sınırlarını 3:1'den 4.5:1'e çıkarır. Hiyerarşi kasıtlı olarak sıkışır:
-   bu modda ayrım okunabilirliğin önüne geçmez. */
+   bu modda ayrım okunabilirliğin önüne geçmez.
+
+   `--input-surface` bilerek dışarıda: o bir DOLGU, kontrast yükümlüsü değil.
+   Onu da koyulaştırmak girdi zeminini kapatıp üstündeki yazının kontrastını
+   düşürürdü — yani bu modun amacının tam tersi. */
 @media (prefers-contrast: more) {
   :root {
     --muted-foreground: oklch(0.257 0.067 51.2);
     --subtle-foreground: oklch(0.36 0.075 51.2);
     --destructive: oklch(0.28 0.11 32.8);
     --border: oklch(0.524 0.021 72.1);
-    --input: oklch(0.524 0.03 72.1);
+    --input: oklch(0.524 0.05 72.1);
     --ring: oklch(0.529 0.099 60.7);
     --sidebar-border: oklch(0.524 0.021 72.1);
     --sidebar-ring: oklch(0.529 0.099 60.7);
@@ -225,7 +244,7 @@
     --subtle-foreground: oklch(0.9 0.055 70.1);
     --destructive: oklch(0.934 0.034 34);
     --border: oklch(0.635 0.024 63.7);
-    --input: oklch(0.636 0.03 63.7);
+    --input: oklch(0.636 0.05 63.7);
     --ring: oklch(0.641 0.105 60.7);
     --sidebar-border: oklch(0.635 0.024 63.7);
     --sidebar-ring: oklch(0.641 0.105 60.7);
