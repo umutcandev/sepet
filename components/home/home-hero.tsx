@@ -279,7 +279,7 @@ export function HomeHero() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleChip(chip)}
-                    className="h-auto rounded-lg border-border bg-muted px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/20 hover:bg-muted hover:text-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:border-muted-foreground/35 dark:hover:bg-muted"
+                    className="h-auto rounded-lg border-border bg-muted px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/20 hover:bg-muted hover:text-foreground"
                   >
                     {chip}
                   </Button>

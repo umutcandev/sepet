@@ -70,7 +70,7 @@ export function HeroMarketBadge() {
       href="/asistan"
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
-      className="group inline-flex items-center gap-2 rounded-full border border-border bg-muted py-1 pr-2.5 pl-1.5 transition-colors select-none hover:border-foreground/20 dark:border-muted-foreground/20 dark:bg-muted dark:hover:border-muted-foreground/35"
+      className="group inline-flex items-center gap-2 rounded-full border border-border bg-muted py-1 pr-2.5 pl-1.5 transition-colors select-none hover:border-foreground/20"
     >
       <div className="flex -space-x-2">
         <AnimatePresence mode="popLayout" initial={false}>

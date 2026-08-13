@@ -442,7 +442,7 @@ export function AssistantChat({
                 variant="outline"
                 size="sm"
                 onClick={() => handleSuggestionClick(s)}
-                className="h-auto rounded-full border-border px-3 py-1.5 text-xs font-normal text-muted-foreground dark:border-muted-foreground/25"
+                className="h-auto rounded-full border-border px-3 py-1.5 text-xs font-normal text-muted-foreground"
               >
                 {s}
               </Button>
