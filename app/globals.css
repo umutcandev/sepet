@@ -325,30 +325,6 @@
   }
 }
 
-/* ---------------------------------------------------------------------------
-   "İçeriğe atla" bağlantısı (components/app-shell.tsx)
-
-   Sayfanın ilk odaklanabilir elemanı. Odaklanana kadar görünmez; klavye
-   kullanıcısı sidebar ve header'ın tamamını tek Tab ile atlayıp <main>'e iner.
---------------------------------------------------------------------------- */
-.skip-link {
-  position: fixed;
-  top: 0.75rem;
-  inset-inline-start: -100vw;
-  z-index: 100;
-  border-radius: var(--radius-md);
-  background: var(--primary);
-  padding: 0.5rem 0.875rem;
-  color: var(--primary-foreground);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-.skip-link:focus-visible {
-  inset-inline-start: 0.75rem;
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
-
 /* Blog `prose`'unu mevcut palete bağla: token'lar light/dark'ta zaten flip
    ettiği için ayrı `prose-invert` gerekmez, renk her iki temada da uyumlu.
    Gövde metni okunabilir ama başlıklardan soluk: foreground'un yumuşatılmış

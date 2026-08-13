@@ -224,8 +224,17 @@ export function AppShell({ blogPosts, children }: Props) {
   return (
     <SidebarProvider>
       {/* Sayfanın ilk odaklanabilir elemanı: sidebar + header tekrarlı chrome,
-          klavye kullanıcısı tek Tab ile <main>'e iner. Stil globals.css'te. */}
-      <a className="skip-link" href="#main">
+          klavye kullanıcısı tek Tab ile <main>'e iner.
+
+          Taban `sr-only`: özel bir CSS sınıfı DEĞİL, çünkü o sınıf üretilmezse
+          bağlantı akışta kalıp bütün düzeni sağa itiyor (production'da tam
+          olarak bu oldu). `sr-only` zaten `position:absolute` — odak stilleri
+          hiç uygulanmasa bile düzene dokunamaz, en kötü ihtimalle görünmez bir
+          ama çalışan bağlantı kalır. */}
+      <a
+        href="#main"
+        className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-3 focus-visible:z-[100] focus-visible:rounded-md focus-visible:bg-primary focus-visible:px-3.5 focus-visible:py-2 focus-visible:text-sm focus-visible:font-medium focus-visible:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:start-3"
+      >
         İçeriğe atla
       </a>
       <AppSidebar blogPosts={blogPosts} />
