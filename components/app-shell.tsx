@@ -49,7 +49,7 @@ function SidebarToggleButton() {
       className="-ml-1 h-8 gap-2 px-2 md:pr-2.5"
     >
       <PanelLeftIcon className="cn-rtl-flip size-4" />
-      <span className="hidden items-center gap-0.5 font-mono text-[11px] leading-none font-medium text-muted-foreground/60 md:inline-flex">
+      <span className="hidden items-center gap-0.5 font-mono text-[0.6875rem] leading-none font-medium text-subtle-foreground md:inline-flex">
         <CommandIcon className="size-3 shrink-0" />
         {/* Büyük "B"nin optik merkezi font metrikleri yüzünden ikon merkezinin
             ~0.5px üstünde kalıyor → ⌘ ile yatay hizada görünmesi için hafif
@@ -126,7 +126,7 @@ export function AppShell({ blogPosts, children }: Props) {
   // sıçrarken zemin gecikiyordu (kopuk his) ve gecikme boyunca açık header koyu
   // içeriğin üstünde kalıyordu. Scroll'a bağlı sürümde header rengi her an
   // altındaki içerikle tutarlı; scroll durursa renk de durur.
-  const scrollRef = React.useRef<HTMLDivElement>(null)
+  const scrollRef = React.useRef<HTMLElement>(null)
   // Değer MotionValue'da tutulur: her scroll karesinde React re-render'ı
   // tetiklemeden doğrudan style'a yazılır.
   const darkness = useMotionValue(0)
@@ -223,6 +223,11 @@ export function AppShell({ blogPosts, children }: Props) {
 
   return (
     <SidebarProvider>
+      {/* Sayfanın ilk odaklanabilir elemanı: sidebar + header tekrarlı chrome,
+          klavye kullanıcısı tek Tab ile <main>'e iner. Stil globals.css'te. */}
+      <a className="skip-link" href="#main">
+        İçeriğe atla
+      </a>
       <AppSidebar blogPosts={blogPosts} />
       <SidebarInset className="min-h-0 overflow-hidden">
         {/* Zemin rengi DIŞ sarmalayıcıda: `dark` sınıfı --home-base'i de gece
@@ -341,7 +346,12 @@ export function AppShell({ blogPosts, children }: Props) {
             </div>
           </motion.header>
         </div>
-        <div
+        {/* Sayfanın tek <main> landmark'ı ve aynı zamanda kaydırma kabı.
+            Header'ın DIŞINDA: <main> içindeki bir <header> banner landmark'ı
+            sayılmaz, ayrıca "içeriğe atla" bağlantısının atlayacağı bir şey
+            kalmazdı. */}
+        <main
+          id="main"
           ref={scrollRef}
           // Tüm rotalarda tek çubuk. Ana sayfa eskiden `no-scrollbar` ile çubuğu
           // tamamen gizliyordu: sayfayı yalnız tekerlek ya da klavyeyle
@@ -380,7 +390,7 @@ export function AppShell({ blogPosts, children }: Props) {
             </div>
           ) : null}
           {children}
-        </div>
+        </main>
       </SidebarInset>
     </SidebarProvider>
   )

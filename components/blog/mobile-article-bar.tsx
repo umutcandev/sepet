@@ -73,7 +73,7 @@ function TocMenu({ toc }: { toc: TocEntry[] }) {
                     style={{ paddingLeft: 8 + item.depth * 14 }}
                     className="flex gap-2 rounded-md py-1.5 pr-2 text-sm leading-snug text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                   >
-                    <span className="shrink-0 tabular-nums text-muted-foreground/60">
+                    <span className="shrink-0 tabular-nums text-subtle-foreground">
                       {item.number}
                     </span>
                     <span className="min-w-0">{item.title}</span>

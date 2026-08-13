@@ -8,7 +8,7 @@ import {
   Loader2Icon,
   SaveIcon,
 } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -140,7 +140,7 @@ export function ReceiptComparisonCard({
       <div className="overflow-x-auto">
         <Table className="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
           <TableHeader>
-            <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
+            <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
               <TableHead className="min-w-[140px]">Ürün</TableHead>
               <TableHead className="w-28 text-right">Fişteki</TableHead>
               <TableHead className="min-w-[140px]">En iyi market</TableHead>
@@ -190,12 +190,12 @@ export function ReceiptComparisonCard({
                         <div className="min-w-0 flex-1">
                           <div className="text-sm font-medium">{it.rawName}</div>
                           {it.matchedName && it.matchedName !== it.rawName && (
-                            <div className="text-[11px] text-muted-foreground">
+                            <div className="text-[0.6875rem] text-muted-foreground">
                               ↪ {it.matchedName}
                             </div>
                           )}
                           {it.sizeMismatch && (
-                            <div className="mt-0.5 flex items-center gap-1 text-[11px] text-amber-600 dark:text-amber-400">
+                            <div className="mt-0.5 flex items-center gap-1 text-[0.6875rem] text-amber-600 dark:text-amber-400">
                               <InfoIcon className="size-3" />
                               Farklı boyut. Karşılaştırma tam olarak doğru olmayabilir.
                             </div>
@@ -239,7 +239,7 @@ export function ReceiptComparisonCard({
                     <TableRow className="bg-muted/20 hover:bg-muted/20">
                       <TableCell colSpan={5} className="p-0">
                         <div className="px-4 py-2">
-                          <div className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                          <div className="mb-1.5 text-[0.6875rem] font-medium uppercase tracking-wide text-muted-foreground">
                             Diğer Marketlerdeki Fiyatlar
                           </div>
                           <ul className="grid divide-y rounded-md border bg-background">
@@ -285,7 +285,7 @@ export function ReceiptComparisonCard({
               {formatTL(comparison.totalBestAmount)}
             </span>
             {isStale && (
-              <span className="ml-1 text-[11px] text-muted-foreground">
+              <span className="ml-1 text-[0.6875rem] text-muted-foreground">
                 (bugünkü piyasaya göre)
               </span>
             )}

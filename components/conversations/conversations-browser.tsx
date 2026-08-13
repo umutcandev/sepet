@@ -17,7 +17,7 @@ import {
   Trash2Icon,
   XIcon,
 } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
 import {
@@ -51,6 +51,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import { FormError } from "@/components/ui/form-error"
 import { Spinner } from "@/components/ui/spinner"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import {
@@ -313,16 +314,24 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
   // ── Yeniden adlandır ──
   const [renameValue, setRenameValue] = React.useState("")
   const [renamePending, setRenamePending] = React.useState(false)
+  const [renameInvalid, setRenameInvalid] = React.useState(false)
+  const renameInputRef = React.useRef<HTMLInputElement>(null)
   React.useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setRenameValue(renameTarget?.title ?? "")
+    setRenameInvalid(false)
   }, [renameTarget])
 
   const handleRenameSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!renameTarget) return
     const trimmed = renameValue.trim()
-    if (!trimmed) return
+    if (!trimmed) {
+      setRenameInvalid(true)
+      renameInputRef.current?.focus()
+      return
+    }
+    setRenameInvalid(false)
     setRenamePending(true)
     try {
       await renameConversation(renameTarget.id, trimmed)
@@ -568,19 +577,18 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
               return (
                 <li key={c.id}>
                   {selecting ? (
-                    <div
-                      role="button"
-                      tabIndex={0}
+                    // Satırın kendisi onay kutusu: gerçek <button>, yani
+                    // Enter ve Space bedava gelir ve el yazımı klavye kodu
+                    // gerekmez. Rol "checkbox" çünkü yaptığı iş bir seçim
+                    // değiştirmek; "button" + aria-pressed ekran okuyucuya
+                    // "basılı düğme" derdi.
+                    <button
+                      type="button"
+                      role="checkbox"
+                      aria-checked={isSelected}
                       onClick={() => toggleSelect(c.id)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault()
-                          toggleSelect(c.id)
-                        }
-                      }}
-                      aria-pressed={isSelected}
                       className={cn(
-                        "flex w-full cursor-pointer items-center gap-2 py-2 pr-3 pl-4 text-left transition-colors hover:bg-secondary/50",
+                        "flex w-full cursor-pointer items-center gap-2 py-2 pr-3 pl-4 text-left transition-colors hover:bg-secondary/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:-outline-offset-2 focus-visible:outline-none",
                         isSelected && "bg-secondary/40",
                       )}
                     >
@@ -599,7 +607,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                       <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                         {date}
                       </span>
-                    </div>
+                    </button>
                   ) : (
                     <div className="group relative flex items-center gap-2 pr-2 transition-colors hover:bg-secondary/50">
                       <Link
@@ -712,11 +720,20 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
             </DialogHeader>
             <div className="py-4">
               <Input
+                ref={renameInputRef}
                 value={renameValue}
-                onChange={(e) => setRenameValue(e.target.value)}
+                onChange={(e) => {
+                  setRenameValue(e.target.value)
+                  setRenameInvalid(false)
+                }}
                 maxLength={100}
                 autoFocus
+                aria-invalid={renameInvalid || undefined}
+                aria-describedby={renameInvalid ? "conv-rename-error" : undefined}
               />
+              <FormError id="conv-rename-error" className="mt-1.5">
+                {renameInvalid ? "Başlık boş olamaz." : null}
+              </FormError>
             </div>
             <DialogFooter>
               <Button
@@ -726,7 +743,8 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
               >
                 Vazgeç
               </Button>
-              <Button type="submit" disabled={renamePending || !renameValue.trim()}>
+              {/* Doğrulama submit'te; buton geçerlilik için kilitlenmez. */}
+              <Button type="submit" disabled={renamePending}>
                 {renamePending ? "Kaydediliyor..." : "Kaydet"}
               </Button>
             </DialogFooter>
@@ -757,7 +775,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                 void handleSingleDelete()
               }}
               disabled={deletePending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
             >
               {deletePending ? "Siliniyor..." : "Sil"}
             </AlertDialogAction>
@@ -794,7 +812,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                 void handleBulkDelete()
               }}
               disabled={deletePending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
             >
               {deletePending ? (
                 <>

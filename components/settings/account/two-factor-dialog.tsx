@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import { QRCodeSVG } from "qrcode.react"
 
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { PasswordInput } from "@/components/auth/password-input"
 import { Spinner } from "@/components/ui/spinner"
+import { FormError } from "@/components/ui/form-error"
 import { OtpField } from "@/components/auth/otp-field"
 import {
   Dialog,
@@ -164,7 +165,7 @@ function SetupTwoFactor({
                 onChange={(e) => setReauthValue(e.target.value)}
               />
             </Field>
-            {error ? <p className="text-xs text-destructive">{error}</p> : null}
+            {error ? <FormError>{error}</FormError> : null}
           </div>
           <DialogFooter>
             <Button type="submit" disabled={busy || !reauthValue} className="gap-2">
@@ -186,7 +187,7 @@ function SetupTwoFactor({
             </DialogDescription>
           </DialogHeader>
           {error ? (
-            <p className="py-1 text-xs text-destructive">{error}</p>
+            <FormError>{error}</FormError>
           ) : null}
           <DialogFooter>
             <Button onClick={sendSetupCode} disabled={busy} className="gap-2">
@@ -217,7 +218,7 @@ function SetupTwoFactor({
             onComplete={(v) => begin(v)}
             disabled={busy}
           />
-          {error ? <p className="text-xs text-destructive">{error}</p> : null}
+          {error ? <FormError>{error}</FormError> : null}
         </div>
         <DialogFooter className="sm:justify-between">
           <Button
@@ -266,7 +267,7 @@ function SetupTwoFactor({
             onComplete={(v) => confirm(v)}
             disabled={busy}
           />
-          {error ? <p className="text-xs text-destructive">{error}</p> : null}
+          {error ? <FormError>{error}</FormError> : null}
         </div>
         <DialogFooter className="sm:justify-between">
           <Button type="button" variant="ghost" onClick={() => setStep("qr")}>
@@ -436,7 +437,7 @@ function ManageTwoFactor({
               : "Doğrulama kodu kullan"
             : "Kurtarma kodu kullan"}
         </button>
-        {error ? <p className="text-xs text-destructive">{error}</p> : null}
+        {error ? <FormError>{error}</FormError> : null}
       </div>
       <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between">
         <Button

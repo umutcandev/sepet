@@ -55,7 +55,7 @@ function PostAuthorAvatars({ authors }: { authors: readonly AuthorId[] }) {
           {author.avatar ? (
             <AvatarImage src={author.avatar} alt={author.name} />
           ) : null}
-          <AvatarFallback className="text-[8px] leading-none">
+          <AvatarFallback className="text-[0.5rem] leading-none">
             {initials(author.name)}
           </AvatarFallback>
         </Avatar>

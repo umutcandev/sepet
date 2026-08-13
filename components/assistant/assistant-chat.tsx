@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
-import { ChevronDownIcon, SparklesIcon } from "lucide-react"
+import { ChevronDownIcon, SparklesIcon, TriangleAlertIcon } from "lucide-react"
 
 import {
   Conversation,
@@ -742,9 +742,18 @@ export function AssistantChat({
                   )
                 }
                 return (
-                  <div className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
-                    {error.message ||
-                      "Asistan şu an cevap veremiyor. Lütfen biraz sonra tekrar deneyin."}
+                  <div
+                    role="alert"
+                    className="mx-auto flex w-full max-w-3xl items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+                  >
+                    <TriangleAlertIcon
+                      aria-hidden="true"
+                      className="mt-0.5 size-4 shrink-0"
+                    />
+                    <span>
+                      {error.message ||
+                        "Asistan şu an cevap veremiyor. Lütfen biraz sonra tekrar deneyin."}
+                    </span>
                   </div>
                 )
               })()}
@@ -785,9 +794,11 @@ function renderToolPart(
     return (
       <div
         key={key}
-        className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+        role="alert"
+        className="flex items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
       >
-        {part.errorText ?? "Bir hata oluştu, tekrar deneyebilir misin?"}
+        <TriangleAlertIcon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+        <span>{part.errorText ?? "Bir hata oluştu, tekrar deneyebilir misin?"}</span>
       </div>
     )
   }

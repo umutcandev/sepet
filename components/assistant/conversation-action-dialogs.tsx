@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import {
   AlertDialog,
@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { FormError } from "@/components/ui/form-error"
 import {
   deleteConversation,
   renameConversation,
@@ -44,18 +45,26 @@ export function ConversationRenameDialog({
 }) {
   const [value, setValue] = React.useState("")
   const [pending, setPending] = React.useState(false)
+  const [invalid, setInvalid] = React.useState(false)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   React.useEffect(() => {
     // Dialog re-opens with a different target — reset editable value to its title.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(target?.title ?? "")
+    setInvalid(false)
   }, [target])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!target) return
     const trimmed = value.trim()
-    if (!trimmed) return
+    if (!trimmed) {
+      setInvalid(true)
+      inputRef.current?.focus()
+      return
+    }
+    setInvalid(false)
     setPending(true)
     try {
       await renameConversation(target.id, trimmed)
@@ -86,17 +95,29 @@ export function ConversationRenameDialog({
           </DialogHeader>
           <div className="py-4">
             <Input
+              ref={inputRef}
               value={value}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => {
+                setValue(e.target.value)
+                setInvalid(false)
+              }}
               maxLength={100}
               autoFocus
+              aria-invalid={invalid || undefined}
+              aria-describedby={invalid ? "rename-error" : undefined}
             />
+            <FormError id="rename-error" className="mt-1.5">
+              {invalid ? "Başlık boş olamaz." : null}
+            </FormError>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               Vazgeç
             </Button>
-            <Button type="submit" disabled={pending || !value.trim()}>
+            {/* Gönder butonu form geçerli olana kadar KİLİTLENMEZ: devre dışı
+                bir aksiyon neyin eksik olduğunu söylemez. Doğrulama submit'te
+                yapılır ve odak hatalı alana taşınır. */}
+            <Button type="submit" disabled={pending}>
               {pending ? "Kaydediliyor..." : "Kaydet"}
             </Button>
           </DialogFooter>
@@ -151,7 +172,7 @@ export function ConversationDeleteDialog({
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={pending}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
           >
             {pending ? "Siliniyor..." : "Sil"}
           </AlertDialogAction>

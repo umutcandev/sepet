@@ -230,8 +230,8 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
               oluyordu. Etiketler zaten doğru yazımlarıyla tutuluyor. */}
           <span
             className={cn(
-              "shrink-0 font-mono text-[11px] leading-none font-medium tracking-wide text-muted-foreground",
-              title && "text-[10px]",
+              "shrink-0 font-mono text-[0.6875rem] leading-none font-medium tracking-wide text-muted-foreground",
+              title && "text-[0.625rem]",
             )}
           >
             {label}
@@ -247,7 +247,7 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
           className={cn(
             "inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors",
             "hover:bg-foreground/[0.06] hover:text-foreground",
-            "focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
+            "focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
           )}
         >
           <CopiedIconSwap

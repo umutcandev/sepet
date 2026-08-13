@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { Loader2Icon, Trash2Icon } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -56,7 +56,7 @@ export function DeleteBasketButton({ id }: { id: string }) {
           <AlertDialogAction
             onClick={handleDelete}
             disabled={busy}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
           >
             {busy ? (
               <>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { FormError } from "@/components/ui/form-error"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { updateProfileName } from "@/lib/actions/profile"
 
@@ -31,8 +32,22 @@ export function ProfileNameField() {
   const trimmed = value.trim()
   const dirty = trimmed.length > 0 && trimmed !== serverName.trim()
 
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
   const save = React.useCallback(async () => {
-    if (!dirty || saving) return
+    if (saving) return
+    // Doğrulama submit'te: buton hep etkin, eksik olan burada söylenir ve
+    // odak alana geri gider.
+    if (trimmed.length === 0) {
+      setError("Ad boş olamaz.")
+      inputRef.current?.focus()
+      return
+    }
+    if (!dirty) {
+      setError("Adda bir değişiklik yok.")
+      inputRef.current?.focus()
+      return
+    }
     setSaving(true)
     setError(null)
     const res = await updateProfileName(trimmed)
@@ -49,6 +64,7 @@ export function ProfileNameField() {
     <div className="flex flex-col items-end gap-1">
       <div className="flex items-center gap-2">
         <Input
+          ref={inputRef}
           value={value}
           onChange={(e) => {
             setValue(e.target.value)
@@ -63,20 +79,19 @@ export function ProfileNameField() {
           maxLength={80}
           aria-label="Tam ad"
           aria-invalid={error ? true : undefined}
+          aria-describedby={error ? "profile-name-error" : undefined}
           className="h-7 w-32 text-sm sm:w-40"
         />
         <Button
           variant="outline"
           size="sm"
           onClick={() => void save()}
-          disabled={!dirty || saving}
+          disabled={saving}
         >
           {saving ? "Kaydediliyor…" : "Kaydet"}
         </Button>
       </div>
-      {error ? (
-        <span className="text-xs text-destructive">{error}</span>
-      ) : null}
+      <FormError id="profile-name-error">{error}</FormError>
     </div>
   )
 }

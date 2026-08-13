@@ -59,7 +59,7 @@ function AllocationBreakdown({
                   <TableCell colSpan={2} className="pb-1 pt-2">
                     <div className="flex items-center gap-1.5">
                       <MarketLogo name={g.market} size="sm" />
-                      <span className="text-[11px] font-semibold">{g.market}</span>
+                      <span className="text-[0.6875rem] font-semibold">{g.market}</span>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -73,28 +73,28 @@ function AllocationBreakdown({
                   >
                     <TableCell className="py-1 align-top whitespace-normal">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[12px] font-medium">
+                        <span className="text-xs font-medium">
                           {capitalize(e.rawName) || e.productName}
                         </span>
                         {multiPack && (
-                          <span className="shrink-0 rounded bg-muted px-1 text-[10px] font-medium tabular-nums text-muted-foreground">
+                          <span className="shrink-0 rounded bg-muted px-1 text-[0.625rem] font-medium tabular-nums text-muted-foreground">
                             {e.quantity}×
                           </span>
                         )}
                         <DepotInfo depotName={e.depotName} market={e.market} />
                       </div>
-                      <div className="text-[11px] text-muted-foreground">
+                      <div className="text-[0.6875rem] text-muted-foreground">
                         {e.productName}
                         {multiPack && ` · ${tl.format(e.unitPrice)}/paket`}
                       </div>
                       {e.sizeMismatch && (
-                        <div className="flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-400">
+                        <div className="flex items-center gap-1 text-[0.625rem] text-amber-600 dark:text-amber-400">
                           <AlertCircleIcon className="size-2.5" />
                           Farklı Boyut
                         </div>
                       )}
                     </TableCell>
-                    <TableCell className="py-1 text-right align-top text-[12px] tabular-nums">
+                    <TableCell className="py-1 text-right align-top text-xs tabular-nums">
                       {tl.format(e.lineTotal)}
                     </TableCell>
                   </TableRow>
@@ -151,7 +151,7 @@ function OptionRow({
       >
         {logo}
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-[0.6875rem] font-medium text-muted-foreground">
             {label}
             {badge}
           </div>
@@ -214,7 +214,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
               )
             : `${singleMarket.itemCount}/${totalItems} kalem`
       }
-      subtitleClassName="truncate text-[11px] text-muted-foreground"
+      subtitleClassName="truncate text-[0.6875rem] text-muted-foreground"
       total={singleMarket.total}
       allocation={singleMarket.allocation}
       markets={[singleMarket.market]}
@@ -233,7 +233,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
         twoMarketCombo.savingsTL > 0 ? (
           <Badge
             variant="outline"
-            className="border-emerald-500/40 px-1.5 py-0 text-[10px] text-emerald-700 dark:text-emerald-300"
+            className="border-emerald-500/40 px-1.5 py-0 text-[0.625rem] text-emerald-700 dark:text-emerald-300"
           >
             <TrendingDownIcon className="mr-0.5 size-2.5" />%
             {twoMarketCombo.savingsPct.toFixed(1)}
@@ -248,8 +248,8 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
       }
       subtitleClassName={
         twoMarketCombo.savingsTL > 0
-          ? "text-[11px] font-medium text-emerald-700 dark:text-emerald-300"
-          : "text-[11px] text-muted-foreground"
+          ? "text-[0.6875rem] font-medium text-emerald-700 dark:text-emerald-300"
+          : "text-[0.6875rem] text-muted-foreground"
       }
       total={twoMarketCombo.total}
       allocation={twoMarketCombo.allocation}

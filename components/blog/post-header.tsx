@@ -43,21 +43,21 @@ export function PostHeader({ post }: { post: Post }) {
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
           <AuthorNameLinks authors={post.authors} />
           {role ? (
-            <span className="text-muted-foreground/70">{role}</span>
+            <span className="text-subtle-foreground">{role}</span>
           ) : null}
-          <span aria-hidden className="text-muted-foreground/50">
+          <span aria-hidden className="text-subtle-foreground">
             ·
           </span>
           <time
             dateTime={post.publishedAt}
-            className="hidden text-muted-foreground/70 lg:inline"
+            className="hidden text-subtle-foreground lg:inline"
           >
             {formatPostDateShort(post.publishedAt)}
           </time>
-          <span aria-hidden className="hidden text-muted-foreground/50 lg:inline">
+          <span aria-hidden className="hidden text-subtle-foreground lg:inline">
             ·
           </span>
-          <span className="text-muted-foreground/70">
+          <span className="text-subtle-foreground">
             {post.metadata.readingTime} dk okuma
           </span>
         </div>

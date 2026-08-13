@@ -119,7 +119,7 @@ export function ReceiptApprovalCard({
         <span className="text-sm font-medium">Fişindeki Kalemler</span>
         <div className="ml-auto flex flex-wrap gap-1.5">
           {readOnly ? (
-            <Badge variant="secondary" className="text-[10px]">
+            <Badge variant="secondary" className="text-[0.625rem]">
               <CheckIcon className="mr-1 size-3" /> ONAYLANDI
             </Badge>
           ) : null}
@@ -151,7 +151,7 @@ export function ReceiptApprovalCard({
       <div className="overflow-x-auto">
         <Table className="min-w-[600px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
           <TableHeader>
-            <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
+            <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
               <TableHead className="min-w-[140px]">Ürün</TableHead>
               <TableHead className="w-20 text-right">Adet</TableHead>
               <TableHead className="w-24">Birim</TableHead>

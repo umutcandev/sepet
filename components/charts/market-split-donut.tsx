@@ -130,7 +130,7 @@ export function MarketSplitDonut({ data, totalLabel, emptyHint }: Props) {
                     <tspan
                       x={viewBox.cx}
                       dy="-0.6em"
-                      className="fill-muted-foreground text-[10px] uppercase tracking-wide"
+                      className="fill-muted-foreground text-[0.625rem] uppercase tracking-wide"
                     >
                       {totalLabel}
                     </tspan>

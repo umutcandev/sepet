@@ -21,12 +21,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { FormError } from "@/components/ui/form-error"
 import {
   LEGAL_LAST_UPDATED,
   PrivacyContent,
   TermsContent,
 } from "@/components/legal/legal-content"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import {
   signInWithFacebookAction,
@@ -360,10 +361,10 @@ export function LoginForm({ callbackUrl }: Props) {
           className="hidden h-12 w-12 rounded-xl md:h-16 md:w-16 dark:block"
         />
 
-        <h1 className="mt-6 text-[28px] leading-tight font-semibold tracking-[-0.02em] text-foreground md:mt-5 md:text-[22px]">
+        <h1 className="mt-6 text-[1.75rem] leading-tight font-semibold tracking-[-0.02em] text-foreground md:mt-5 md:text-[1.375rem]">
           {title}
         </h1>
-        <p className="mt-2 max-w-[320px] text-[14px] leading-[1.4] tracking-[-0.01em] text-muted-foreground md:max-w-[300px]">
+        <p className="mt-2 max-w-[320px] text-sm leading-[1.4] tracking-[-0.01em] text-muted-foreground md:max-w-[300px]">
           {subtitle}
         </p>
 
@@ -393,9 +394,9 @@ export function LoginForm({ callbackUrl }: Props) {
                       type="submit"
                       variant="outline"
                       size="lg"
-                      className="h-[44px] w-full gap-2 rounded-xl px-[6px] text-[14px] font-medium tracking-[-0.01em]"
+                      className="h-11 w-full gap-2 rounded-xl px-[6px] text-sm font-medium tracking-[-0.01em]"
                     >
-                      <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full">
+                      <span className="flex h-5 w-[20px] items-center justify-center rounded-full">
                         <GoogleIcon />
                       </span>
                       Google ile devam et
@@ -415,9 +416,9 @@ export function LoginForm({ callbackUrl }: Props) {
                       type="submit"
                       variant="outline"
                       size="lg"
-                      className="h-[44px] w-full gap-2 rounded-xl px-[6px] text-[14px] font-medium tracking-[-0.01em]"
+                      className="h-11 w-full gap-2 rounded-xl px-[6px] text-sm font-medium tracking-[-0.01em]"
                     >
-                      <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full">
+                      <span className="flex h-5 w-[20px] items-center justify-center rounded-full">
                         <FacebookIcon />
                       </span>
                       Facebook ile devam et
@@ -427,7 +428,7 @@ export function LoginForm({ callbackUrl }: Props) {
 
                   <div className="flex items-center gap-3" aria-hidden>
                     <span className="h-px flex-1 bg-border" />
-                    <span className="text-[12px] tracking-[-0.01em] text-muted-foreground/60">
+                    <span className="text-xs tracking-[-0.01em] text-subtle-foreground">
                       veya
                     </span>
                     <span className="h-px flex-1 bg-border" />
@@ -451,7 +452,7 @@ export function LoginForm({ callbackUrl }: Props) {
                       aria-label="E-posta adresin"
                       required
                       placeholder="E-posta adresin"
-                      className="h-[44px] rounded-xl px-3"
+                      className="h-11 rounded-xl px-3"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
@@ -459,7 +460,7 @@ export function LoginForm({ callbackUrl }: Props) {
                       <Button
                         type="submit"
                         size="lg"
-                        className="h-[44px] w-full rounded-xl text-[14px] font-medium tracking-[-0.01em]"
+                        className="h-11 w-full rounded-xl text-sm font-medium tracking-[-0.01em]"
                       >
                         E-posta ile devam et
                       </Button>
@@ -484,7 +485,7 @@ export function LoginForm({ callbackUrl }: Props) {
                       autoComplete="email"
                       required
                       autoFocus={!email}
-                      className="h-[42px] rounded-xl px-3"
+                      className="h-10.5 rounded-xl px-3"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
@@ -497,24 +498,24 @@ export function LoginForm({ callbackUrl }: Props) {
                       autoComplete="current-password"
                       required
                       autoFocus={!!email}
-                      className="h-[42px] rounded-xl px-3"
+                      className="h-10.5 rounded-xl px-3"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </Field>
                   {error ? (
-                    <p className="text-xs text-destructive">{error}</p>
+                    <FormError>{error}</FormError>
                   ) : null}
                   <Button
                     type="submit"
                     size="lg"
                     disabled={busy}
-                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
                   >
                     {busy ? <Spinner /> : null}
                     Giriş yap
                   </Button>
-                  <div className="mt-1 flex flex-col items-center gap-1.5 text-[13px]">
+                  <div className="mt-1 flex flex-col items-center gap-1.5 text-[0.8125rem]">
                     <button
                       type="button"
                       className="text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
@@ -551,7 +552,7 @@ export function LoginForm({ callbackUrl }: Props) {
                       inputMode="email"
                       autoComplete="email"
                       required
-                      className="h-[42px] rounded-xl px-3"
+                      className="h-10.5 rounded-xl px-3"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
@@ -564,7 +565,7 @@ export function LoginForm({ callbackUrl }: Props) {
                       autoComplete="new-password"
                       required
                       autoFocus={!!email}
-                      className="h-[42px] rounded-xl px-3"
+                      className="h-10.5 rounded-xl px-3"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
@@ -576,29 +577,29 @@ export function LoginForm({ callbackUrl }: Props) {
                       name="confirm-password"
                       autoComplete="new-password"
                       required
-                      className="h-[42px] rounded-xl px-3"
+                      className="h-10.5 rounded-xl px-3"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </Field>
-                  <p className="text-[11px] leading-[1.5] text-muted-foreground/70">
+                  <p className="text-[0.6875rem] leading-[1.5] text-subtle-foreground">
                     En az 8 karakter, bir harf ve bir rakam.
                   </p>
                   {error ? (
-                    <p className="text-xs text-destructive">{error}</p>
+                    <FormError>{error}</FormError>
                   ) : null}
                   <Button
                     type="submit"
                     size="lg"
                     disabled={busy}
-                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
                   >
                     {busy ? <Spinner /> : null}
                     Devam et
                   </Button>
                   <button
                     type="button"
-                    className="mt-1 text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    className="mt-1 text-center text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
                     onClick={() => goStage("email-login")}
                   >
                     Zaten hesabın var mı? Giriş yap
@@ -615,13 +616,13 @@ export function LoginForm({ callbackUrl }: Props) {
                     disabled={busy}
                   />
                   {error ? (
-                    <p className="text-xs text-destructive">{error}</p>
+                    <FormError>{error}</FormError>
                   ) : null}
                   <Button
                     type="button"
                     size="lg"
                     disabled={busy || otp.length !== 6}
-                    className="h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    className="h-11 w-full gap-2 rounded-xl text-sm font-medium"
                     onClick={() => submitVerify()}
                   >
                     {busy ? <Spinner /> : null}
@@ -633,7 +634,7 @@ export function LoginForm({ callbackUrl }: Props) {
                     size="sm"
                     disabled={resendIn > 0}
                     onClick={resendCode}
-                    className="text-[13px] text-muted-foreground"
+                    className="text-[0.8125rem] text-muted-foreground"
                   >
                     {resendIn > 0
                       ? `Kodu tekrar gönder (${resendIn})`
@@ -656,26 +657,26 @@ export function LoginForm({ callbackUrl }: Props) {
                       inputMode="email"
                       autoComplete="email"
                       required
-                      className="h-[42px] rounded-xl px-3"
+                      className="h-10.5 rounded-xl px-3"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </Field>
                   {error ? (
-                    <p className="text-xs text-destructive">{error}</p>
+                    <FormError>{error}</FormError>
                   ) : null}
                   <Button
                     type="submit"
                     size="lg"
                     disabled={busy}
-                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
                   >
                     {busy ? <Spinner /> : null}
                     Sıfırlama bağlantısı gönder
                   </Button>
                   <button
                     type="button"
-                    className="mt-1 text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    className="mt-1 text-center text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
                     onClick={() => goStage("email-login")}
                   >
                     Girişe dön
@@ -685,7 +686,7 @@ export function LoginForm({ callbackUrl }: Props) {
 
               {stage === "forgot-sent" ? (
                 <div className="flex w-full flex-col gap-4 text-left">
-                  <p className="text-[13px] leading-[1.5] text-muted-foreground">
+                  <p className="text-[0.8125rem] leading-[1.5] text-muted-foreground">
                     Bağlantı birkaç dakika içinde gelmezse spam klasörünü kontrol
                     et. Bağlantı 15 dakika geçerlidir.
                   </p>
@@ -693,13 +694,13 @@ export function LoginForm({ callbackUrl }: Props) {
                     type="button"
                     size="lg"
                     onClick={() => goStage("email-login")}
-                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
                   >
                     Girişe dön
                   </Button>
                   <button
                     type="button"
-                    className="text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    className="text-center text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
                     onClick={resendReset}
                   >
                     Bağlantı gelmedi mi? Tekrar gönder
@@ -716,13 +717,13 @@ export function LoginForm({ callbackUrl }: Props) {
                     disabled={busy}
                   />
                   {error ? (
-                    <p className="text-xs text-destructive">{error}</p>
+                    <FormError>{error}</FormError>
                   ) : null}
                   <Button
                     type="button"
                     size="lg"
                     disabled={busy || otp.length !== 6}
-                    className="h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    className="h-11 w-full gap-2 rounded-xl text-sm font-medium"
                     onClick={() => submitTwoFactor()}
                   >
                     {busy ? <Spinner /> : null}
@@ -730,7 +731,7 @@ export function LoginForm({ callbackUrl }: Props) {
                   </Button>
                   <button
                     type="button"
-                    className="text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    className="text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
                     onClick={() => goStage("recovery")}
                   >
                     Kurtarma kodu kullan
@@ -751,26 +752,26 @@ export function LoginForm({ callbackUrl }: Props) {
                       autoComplete="one-time-code"
                       required
                       placeholder="XXXXX-XXXXX"
-                      className="h-[42px] rounded-xl px-3 tracking-[0.1em]"
+                      className="h-10.5 rounded-xl px-3 tracking-[0.1em]"
                       value={recoveryCode}
                       onChange={(e) => setRecoveryCode(e.target.value)}
                     />
                   </Field>
                   {error ? (
-                    <p className="text-xs text-destructive">{error}</p>
+                    <FormError>{error}</FormError>
                   ) : null}
                   <Button
                     type="submit"
                     size="lg"
                     disabled={busy}
-                    className="mt-1 h-[44px] w-full gap-2 rounded-xl text-[14px] font-medium"
+                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
                   >
                     {busy ? <Spinner /> : null}
                     Doğrula
                   </Button>
                   <button
                     type="button"
-                    className="text-center text-[13px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    className="text-center text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
                     onClick={() => goStage("two-factor")}
                   >
                     Doğrulama koduna dön
@@ -782,7 +783,7 @@ export function LoginForm({ callbackUrl }: Props) {
         </div>
 
         {stage === "method" ? (
-          <p className="mt-3.5 text-[11px] leading-[1.5] tracking-[-0.005em] text-muted-foreground/60">
+          <p className="mt-3.5 text-[0.6875rem] leading-[1.5] tracking-[-0.005em] text-subtle-foreground">
             Devam ederek <TermsDialog /> ve <PrivacyDialog />
             &apos;i kabul ediyorsun.
           </p>
@@ -796,7 +797,7 @@ export function LoginForm({ callbackUrl }: Props) {
 // (buton kenarının üstüne taşar; tıklamayı engellemesin diye pointer-events-none).
 function LastUsedBadge() {
   return (
-    <span className="pointer-events-none absolute -top-2 right-3 z-10 rounded-full bg-primary px-2 py-0.5 text-[10px] leading-4 font-medium tracking-[-0.005em] text-primary-foreground ring-2 ring-background">
+    <span className="pointer-events-none absolute -top-2 right-3 z-10 rounded-full bg-primary px-2 py-0.5 text-[0.625rem] leading-4 font-medium tracking-[-0.005em] text-primary-foreground ring-2 ring-background">
       Son kullanılan
     </span>
   )
@@ -874,7 +875,7 @@ function PrivacyDialog() {
 
 function GoogleIcon() {
   return (
-    <svg viewBox="0 0 18 18" className="h-[18px] w-[18px]" aria-hidden="true">
+    <svg viewBox="0 0 18 18" className="h-4.5 w-[18px]" aria-hidden="true">
       <path
         fill="#4285F4"
         d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"
@@ -897,7 +898,7 @@ function GoogleIcon() {
 
 function FacebookIcon() {
   return (
-    <svg viewBox="0 0 18 18" className="h-[18px] w-[18px]" aria-hidden="true">
+    <svg viewBox="0 0 18 18" className="h-4.5 w-[18px]" aria-hidden="true">
       <path
         fill="#0866FF"
         d="M18 9A9 9 0 1 0 7.594 17.89v-6.29H5.309V9h2.285V7.017c0-2.255 1.343-3.5 3.4-3.5.984 0 2.014.175 2.014.175v2.215h-1.135c-1.118 0-1.467.694-1.467 1.406V9h2.497l-.4 2.6h-2.097v6.29A9.002 9.002 0 0 0 18 9z"

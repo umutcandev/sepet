@@ -24,13 +24,13 @@ export function PasswordInput({
       />
       <button
         type="button"
-        // Sekme akışını bozmasın: alanlar arasında gezinirken toggle atlanır,
-        // fareyle/dokunuşla erişilir; ekran okuyucuya durum aria ile bildirilir.
-        tabIndex={-1}
+        // Sekme sırasında: her pointer etkileşiminin klavye yolu olmalı.
+        // Eskiden tabIndex={-1} idi ve klavye kullanıcısı şifresini hiç
+        // göremiyordu; aria-pressed de ulaşılamadığı için işe yaramıyordu.
         aria-label={visible ? "Şifreyi gizle" : "Şifreyi göster"}
         aria-pressed={visible}
         onClick={() => setVisible((v) => !v)}
-        className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+        className="absolute inset-y-0 right-0 flex w-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       >
         {visible ? (
           <EyeOffIcon className="size-4" aria-hidden />

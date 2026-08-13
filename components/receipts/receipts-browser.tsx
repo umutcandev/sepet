@@ -13,7 +13,7 @@ import {
   Trash2Icon,
   XIcon,
 } from "lucide-react"
-import { toast } from "sonner"
+import { toast } from "@/components/ui/sonner"
 
 import {
   AlertDialog,
@@ -509,7 +509,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
             <div className="overflow-hidden rounded-xl border bg-card">
               <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
                 <TableHeader>
-                  <TableRow className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                  <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
                     {selecting ? <TableHead className="w-10" /> : null}
                     <TableHead className="min-w-[100px]">Tarih</TableHead>
                     <TableHead className="min-w-[120px]">Fişteki Market</TableHead>
@@ -534,17 +534,13 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                       : dateFmt.format(new Date(r.createdAt))
                     if (selecting) {
                       return (
+                        // <tr> düğme olamaz. Klavye yolu artık satırın
+                        // sahte rolü değil, hücredeki GERÇEK onay kutusu:
+                        // odaklanabilir, etiketli, Space ile değişir. Satıra
+                        // tıklamak fare için kısayol olarak duruyor.
                         <TableRow
                           key={r.id}
-                          tabIndex={0}
                           onClick={() => toggleSelect(r.id)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault()
-                              toggleSelect(r.id)
-                            }
-                          }}
-                          aria-pressed={isSelected}
                           className={cn(
                             "cursor-pointer",
                             isSelected && "bg-secondary/40",
@@ -553,9 +549,9 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                           <TableCell className="w-10">
                             <Checkbox
                               checked={isSelected}
-                              tabIndex={-1}
-                              aria-hidden
-                              className="pointer-events-none"
+                              onCheckedChange={() => toggleSelect(r.id)}
+                              onClick={(e) => e.stopPropagation()}
+                              aria-label={`${r.marketName} seç`}
                             />
                           </TableCell>
                           <TableCell>{dateLabel}</TableCell>
@@ -760,7 +756,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                 void handleSingleDelete()
               }}
               disabled={deletePending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
             >
               {deletePending ? "Siliniyor..." : "Sil"}
             </AlertDialogAction>
@@ -797,7 +793,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                 void handleBulkDelete()
               }}
               disabled={deletePending}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-destructive-surface text-destructive-foreground hover:bg-destructive-surface/90"
             >
               {deletePending ? (
                 <>

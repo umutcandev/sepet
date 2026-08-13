@@ -172,7 +172,7 @@ export function BlogToolbar({
             searchOpen ? "flex flex-1" : "hidden",
           )}
         >
-          <div className="flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-muted/40 pr-1.5 pl-3 transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/40">
+          <div className="flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-muted/40 pr-1.5 pl-3 transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring">
             <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
             <Command.Input
               ref={inputRef}
@@ -188,6 +188,7 @@ export function BlogToolbar({
                   inputRef.current?.blur()
                 }
               }}
+              aria-label="Yazılarda ara"
               placeholder="Yazılarda ara..."
               className="h-full w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />
@@ -220,7 +221,7 @@ export function BlogToolbar({
                         <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
                           <Highlighted text={doc.title} ranges={titleHl} />
                         </span>
-                        <span className="shrink-0 rounded-md border border-border px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                        <span className="shrink-0 rounded-md border border-border px-1.5 py-0.5 text-[0.6875rem] font-medium text-muted-foreground">
                           {doc.categoryLabel}
                         </span>
                       </div>
