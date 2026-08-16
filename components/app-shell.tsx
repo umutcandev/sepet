@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { HeaderUserMenu } from "@/components/header-user-menu"
-import { ThemeToggleButton } from "@/components/theme-toggle"
 import {
   SidebarInset,
   SidebarProvider,
@@ -327,7 +326,6 @@ export function AppShell({ blogPosts, children }: Props) {
               ) : null}
             </div>
             <div className="flex shrink-0 items-center justify-end gap-1 px-4">
-              <ThemeToggleButton />
               {/* İki varyant da her zaman render edilir; hangisinin görüneceğine
                 ilk boyamada <html data-session> ipucu üzerinden CSS karar verir
                 (globals.css), oturum çözümlenince ipucu gerçekle senkronlanır.

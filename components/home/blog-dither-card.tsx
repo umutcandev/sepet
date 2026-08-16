@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Dithering } from "@paper-design/shaders-react"
 import { useReducedMotion } from "motion/react"
 
+import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 
 // Paper "Sine Wave" dithering preset'i (shaders.paper.design/dithering):
@@ -24,8 +25,28 @@ const DITHER = {
   offsetY: 0.35,
 } as const
 
+// Fullscreen dörtgen: MSAA'nın düzelteceği kenar yok, derinlik/stencil
+// kullanılmıyor. Bkz. hero-shader.tsx'teki aynı sabit.
+const WEBGL_CONTEXT = {
+  antialias: false,
+  depth: false,
+  stencil: false,
+} as const satisfies WebGLContextAttributes
+
 // Fade-out süresi; canvas'ı bu süre dolmadan söküp geçişi kesmiyoruz.
 const FADE_MS = 300
+
+/* HOVER'I OLMAYAN CİHAZDA BU EFEKT HİÇ KURULMUYOR.
+
+   `onPointerEnter` dokunmatikte de ateşleniyor: parmak karta değdiği anda
+   pointerenter → pointerdown → ... → tıklama zinciri işliyor. Yani telefonda
+   bir yazıya dokunmak, tam gezinme başlarken bir WebGL context'i açıp
+   dithering programını DERLİYORDU; efekt bir kare bile görünmeden kart
+   sökülüyor. Bedeli ödenip karşılığı alınamayan tek iş buydu.
+
+   Hover'ın kalıcı bir durum olduğu cihazlarda (fare/trackpad) efekt olduğu gibi
+   duruyor — orada zaten okunuyor ve tek seferde tek kart açılıyor. */
+const HOVER_CAPABLE = "(hover: hover) and (pointer: fine)"
 
 // Her kartın dalgası farklı yöne baksın: kart index'ine göre sabit rotasyon.
 // Kartlar aynı satırda yan yana olduğu için deterministik bir liste (rastgele
@@ -44,6 +65,7 @@ export function BlogDitherCard({
   children: React.ReactNode
 }) {
   const reduceMotion = useReducedMotion()
+  const hoverCapable = useMediaQuery(HOVER_CAPABLE)
   const [active, setActive] = React.useState(false)
   // WebGL context'i 4 kart için sürekli açık tutmamak adına canvas yalnızca
   // hover/focus sırasında mount ediliyor, fade bitince sökülüyor.
@@ -57,14 +79,14 @@ export function BlogDitherCard({
   }, [])
 
   const activate = React.useCallback(() => {
-    if (reduceMotion) return
+    if (reduceMotion || !hoverCapable) return
     if (timer.current) {
       clearTimeout(timer.current)
       timer.current = null
     }
     setMounted(true)
     setActive(true)
-  }, [reduceMotion])
+  }, [hoverCapable, reduceMotion])
 
   const deactivate = React.useCallback(() => {
     setActive(false)
@@ -92,6 +114,7 @@ export function BlogDitherCard({
           <Dithering
             {...DITHER}
             rotation={ROTATIONS[index % ROTATIONS.length]}
+            webGlContextAttributes={WEBGL_CONTEXT}
             style={{ width: "100%", height: "100%" }}
           />
           {/* Metin kontrastı: shader'ın üzerine karttan gelen yarı saydam perde. */}

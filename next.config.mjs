@@ -18,6 +18,12 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: { root: __dirname },
+  // Telefondan yerel ağ üzerinden test ederken (http://192.168.1.x:3000) Next
+  // dev sunucusu /_next/* isteklerini "cross-origin" sayıp ENGELLİYOR. Sonuç
+  // sessiz bir bozulma: sayfa 200 dönüyor ama chunk'lar inmediği için istemci
+  // bileşenleri hiç mount olmuyor — hero shader'ın telefonda gelmemesinin
+  // sebebi buydu. Yalnız dev sunucusunu ilgilendirir, production'a çıkmaz.
+  allowedDevOrigins: ["192.168.1.176", "192.168.1.*"],
   // argon2 (native napi binary) ve nodemailer server-only; bundle'a girmeyip
   // Node runtime'da require edilmeleri gerekir. Aksi halde build/serverless
   // paketleme bozulur.

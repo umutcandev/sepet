@@ -25,7 +25,29 @@ export function HomeBlogSection() {
   // `-mt-*` ile bölümü fade'in tam dolduğu bölgeye yukarı çekiyoruz (z-20 ile
   // hero'nun üstünde kalır), boşluk kapanır.
   return (
-    <section className="relative z-20 -mt-24 bg-[var(--home-base)] md:-mt-28">
+    <section className="relative z-20 -mt-24 md:-mt-28">
+      {/* Zemin artık section'ın kendi düz `bg`si değil, üst kenarı yumuşayan
+          ayrı bir katman (`home-dark-ground`).
+
+          Sebep: hero'nun dip rampası (`.home-hero-fade`) artık shader ile
+          birlikte, hidrasyondan SONRA geliyor. Bu bölüm ise ilk boyamada
+          hazır. Düz renk olsaydı o boşlukta krem hero'nun dibine simsiyah bir
+          blok keskin bir çizgiyle otururdu.
+
+          Katman BİLEREK anime EDİLMİYOR. Denendi: bölüm ilk boyamada, shader
+          ise hidrasyonda başladığı için aynı gecikmeyi verseler bile farklı
+          anlardan sayıyorlar; zemin gelip shader'ı bekliyor gibi görünüyordu.
+          Burası zaten bir sayfa bölümü, yerinde durması doğru — yükselerek
+          gelen şey hero'nun zemini olmalı.
+
+          `absolute` + `-z-10`: yerleşime hiç dokunmuyor. Bu şart, çünkü
+          aşağıdaki `data-home-dark-start` nişanının KONUMU header'ın scroll
+          rampasını besliyor (app-shell). Section'ın kendisini oynatsaydık
+          nişan da oynar ve açılışta header rengi titrerdi. */}
+      <div
+        aria-hidden
+        className="home-dark-ground pointer-events-none absolute inset-0 -z-10"
+      />
       {/* Header'ın zeminini bu noktadan itibaren --home-base'e çeviren nişan
           (AppShell IntersectionObserver ile izler). Bölümün kendisini hedef
           almıyoruz: çok uzun olduğu için üst kenarı header'ın altına geçerken

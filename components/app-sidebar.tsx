@@ -155,7 +155,7 @@ function SidebarBrandToggle() {
  * Daraltılmış rayda gizli: oradaki karşılığı SidebarBrandToggle.
  */
 function SidebarPanelToggle() {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, isMobile } = useSidebar()
   const modifier = useShortcutModifier()
 
   return (
@@ -172,7 +172,13 @@ function SidebarPanelToggle() {
           <PanelLeftIcon className="cn-rtl-flip size-4" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent side="bottom">
+      {/* Mobilde tooltip YOK. Bu düğme daraltılmış rayda gizlenir
+          (`group-data-[collapsible=icon]:hidden`) ama mobilde kenar çubuğu bir
+          `Sheet` ve o dalda ne `group` sınıfı ne `data-collapsible` var — yani
+          varyant hiç eşleşmiyor, düğme görünür kalıyor ve dokununca tooltip
+          açılıyordu. Üstelik içeriği telefonda anlamsız bir kısayol.
+          `hidden` koşulu SidebarMenuButton'ınkiyle aynı kalıp (ui/sidebar.tsx). */}
+      <TooltipContent side="bottom" hidden={isMobile}>
         Kenar çubuğunu kapat
         <KbdGroup>
           <Kbd>{modifier}</Kbd>

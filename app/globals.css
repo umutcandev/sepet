@@ -183,6 +183,35 @@
   --smooth-ring-color: color-mix(in oklab, var(--foreground) var(--smooth-ring-alpha), transparent);
 }
 
+/* ---------------------------------------------------------------------------
+   Hero'nun altındaki koyu bölümün zemini (components/home/home-blog-section.tsx)
+
+   Bölüm hero'nun üstüne -mt-24 (md: -mt-28) ile biniyor ve zemini düz
+   --home-base'ti. Sorun: hero'nun dip rampası (`.home-hero-fade`) artık
+   shader ile birlikte geliyor, bu bölüm ise ilk boyamada. Aradaki boşlukta
+   krem hero'nun dibine simsiyah bir blok KESKİN bir çizgiyle oturuyordu.
+
+   Üst kenar bu yüzden düz renk değil, 6rem'lik bir alfa rampası. İki işi var:
+
+   1. Rampa BİNDİRME payı kadar: bölüm, hero'nun üstünden çıktığı yerde tam
+      opak oluyor. Yani senkron kaçsa bile ortaya sert bir kenar çıkamaz, en
+      kötü ihtimalle yumuşak bir geçiş görünür.
+   2. Yerleşince GÖRÜNMEZ: hero'nun fade'i bindirme bölgesinde zaten tam opak
+      --home-base, dolayısıyla bu rampa opak rengin üstüne biniyor ve hiçbir
+      fark bırakmıyor. Oturmuş görünüm birebir eskisi gibi.
+
+   6rem taban bindirmeye (96px) eşit; md'de bindirme 112px olduğu için rampa
+   daha erken kapanır, yani orada da hep hero'nun üstünde biter. Saydam uç
+   `--home-base-clear`: düz `transparent` saydam SİYAHTIR ve geçişte çamurlu
+   bir bant bırakırdı. */
+@utility home-dark-ground {
+  background-image: linear-gradient(
+    to bottom,
+    var(--home-base-clear) 0,
+    var(--home-base) 6rem
+  );
+}
+
 /* Hero görselinin alt kenarını blog dip rengine dikişsiz bağlayan fade.
    Görselin dibi koyu bir manzara (gündüz yeşil tepeler / gece kahve tepeler);
    fade yarı-saydam olduğu yerde o tepe siluetinin üst kenarı "çizgi" gibi
@@ -597,6 +626,43 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero shader'ının girişi (components/home/hero-shader.tsx)
+
+   `enter-fx` ile aynı aileden: aynı eğri, aynı "aşağıdan yüksel" hareketi.
+   Ayrı bir utility olmasının iki sebebi var:
+
+   1. BLUR YOK. `enter-fx` bitişe kadar `filter: blur(6px)` sürüyor; tam ekran
+      bir WebGL yüzeyinde bu, her karede bütün yüzeyi bulanıklaştırmak demek ve
+      tam olarak main thread'in en yoğun olduğu açılış anına denk geliyor.
+      Burada yalnızca opacity + transform var, ikisi de compositor'da koşar.
+   2. DAHA UZUN YOL, DAHA UZUN SÜRE. Rozet gibi küçük bir elemanda 14px'lik
+      yükselme okunur; 764px'lik bir zeminde hiç fark edilmez. 40px/0.9s bu
+      yüzeyin ölçeğinde "sahne aşağıdan kuruluyor" hissini veriyor.
+
+   Yukarı kayarken üstte açılan boşluk GÖRÜNMEZ: shader'ın üst platosu zaten
+   --background, yani arkasından çıkan renk aynı renk. Altta taşan kısmı da
+   hero'nun `overflow-hidden`ı kırpıyor. */
+@utility hero-shader-fx {
+  animation: hero-shader-fx 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @media (prefers-reduced-motion: reduce) {
+    /* Hareket azaltmada yalnızca sönümleme — `enter-fx` ile aynı davranış. */
+    animation-name: enter-fx-fade;
+    animation-duration: 0.2s;
+  }
+}
+
+@keyframes hero-shader-fx {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

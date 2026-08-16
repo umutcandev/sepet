@@ -4,7 +4,6 @@ import * as React from "react"
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 
-import { Button } from "@/components/ui/button"
 import { useMounted } from "@/hooks/use-mounted"
 import { cn } from "@/lib/utils"
 
@@ -13,12 +12,6 @@ const OPTIONS = [
   { value: "dark", icon: MoonIcon, label: "Koyu" },
   { value: "system", icon: MonitorIcon, label: "Sistem" },
 ] as const
-
-const NEXT_THEME: Record<string, string> = {
-  light: "dark",
-  dark: "system",
-  system: "light",
-}
 
 export function ThemeMenuItems() {
   const { theme, setTheme } = useTheme()
@@ -102,32 +95,5 @@ export function ThemeMenuItems() {
         </div>
       </div>
     </>
-  )
-}
-
-export function ThemeToggleButton({ className }: { className?: string }) {
-  const { theme, setTheme } = useTheme()
-  const mounted = useMounted()
-
-  const current = mounted ? (theme ?? "system") : "light"
-  const meta =
-    current === "dark"
-      ? { Icon: MoonIcon, label: "Koyu tema" }
-      : current === "system"
-        ? { Icon: MonitorIcon, label: "Sistem teması" }
-        : { Icon: SunIcon, label: "Açık tema" }
-
-  return (
-    <Button
-      type="button"
-      variant="outline"
-      size="icon-sm"
-      onClick={() => setTheme(NEXT_THEME[current])}
-      aria-label={`${meta.label}. Temayı değiştir.`}
-      title={meta.label}
-      className={className}
-    >
-      <meta.Icon className="size-4" />
-    </Button>
   )
 }
