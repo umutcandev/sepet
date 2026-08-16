@@ -25,29 +25,26 @@ export function HomeBlogSection() {
   // `-mt-*` ile bölümü fade'in tam dolduğu bölgeye yukarı çekiyoruz (z-20 ile
   // hero'nun üstünde kalır), boşluk kapanır.
   return (
-    <section className="relative z-20 -mt-24 md:-mt-28">
-      {/* Zemin artık section'ın kendi düz `bg`si değil, üst kenarı yumuşayan
-          ayrı bir katman (`home-dark-ground`).
-
-          Sebep: hero'nun dip rampası (`.home-hero-fade`) artık shader ile
-          birlikte, hidrasyondan SONRA geliyor. Bu bölüm ise ilk boyamada
-          hazır. Düz renk olsaydı o boşlukta krem hero'nun dibine simsiyah bir
-          blok keskin bir çizgiyle otururdu.
-
-          Katman BİLEREK anime EDİLMİYOR. Denendi: bölüm ilk boyamada, shader
-          ise hidrasyonda başladığı için aynı gecikmeyi verseler bile farklı
-          anlardan sayıyorlar; zemin gelip shader'ı bekliyor gibi görünüyordu.
-          Burası zaten bir sayfa bölümü, yerinde durması doğru — yükselerek
-          gelen şey hero'nun zemini olmalı.
-
-          `absolute` + `-z-10`: yerleşime hiç dokunmuyor. Bu şart, çünkü
-          aşağıdaki `data-home-dark-start` nişanının KONUMU header'ın scroll
-          rampasını besliyor (app-shell). Section'ın kendisini oynatsaydık
-          nişan da oynar ve açılışta header rengi titrerdi. */}
-      <div
-        aria-hidden
-        className="home-dark-ground pointer-events-none absolute inset-0 -z-10"
-      />
+    // Zemin section'ın KENDİ `background-image`ı (`.home-dark-ground`,
+    // globals.css): üst kenarı 6rem boyunca saydamdan --home-base'e çıkan bir
+    // rampa, altı düz --home-base.
+    //
+    // Rampanın sebebi: hero'nun dip fade'i (`.home-hero-fade`) artık shader ile
+    // birlikte, hidrasyondan SONRA geliyor; bu bölüm ise ilk boyamada hazır.
+    // Düz renk olsaydı o boşlukta krem hero'nun dibine simsiyah bir blok keskin
+    // bir çizgiyle otururdu. Rampa bindirme payı (96px) kadar, yani bölüm
+    // hero'nun üstünden çıktığı yerde tam opak; senkron kaçsa bile sert kenar
+    // çıkamaz. Oturunca GÖRÜNMEZ, çünkü hero'nun fade'i o bölgede zaten tam
+    // opak --home-base.
+    //
+    // AYRI BİR KATMAN DEĞİL. Burada bir zamanlar `absolute inset-0 -z-10`
+    // taşıyan bir div vardı; negatif z, kendi stacking context'inde en alta
+    // boyanır, bağlam tutmazsa katman `SidebarInset`in `bg-background`ının
+    // (krem) ALTINA düşüp tamamen kaybolur — bölümün zemini krem kalırken
+    // içeriği `dark` paletiyle boyanmaya devam eder (başlık krem üstünde krem).
+    // Section'ın kendi arka planı olarak hiçbir boyama sırası varsayımı yok:
+    // arka plan her zaman kendi içeriğinin altında, ata zeminlerin üstünde.
+    <section className="home-dark-ground relative z-20 -mt-24 md:-mt-28">
       {/* Header'ın zeminini bu noktadan itibaren --home-base'e çeviren nişan
           (AppShell IntersectionObserver ile izler). Bölümün kendisini hedef
           almıyoruz: çok uzun olduğu için üst kenarı header'ın altına geçerken

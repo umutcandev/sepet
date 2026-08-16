@@ -203,11 +203,19 @@
    6rem taban bindirmeye (96px) eşit; md'de bindirme 112px olduğu için rampa
    daha erken kapanır, yani orada da hep hero'nun üstünde biter. Saydam uç
    `--home-base-clear`: düz `transparent` saydam SİYAHTIR ve geçişte çamurlu
-   bir bant bırakırdı. */
-@utility home-dark-ground {
+   bir bant bırakırdı.
+
+   `@utility` DEĞİL, aşağıdaki `.home-hero-fade` gibi DÜZ BİR SINIF. Utility
+   olarak yazıldığında kural yalnızca Tailwind sınıf adayını kaynak taramasında
+   bulursa üretilir; tek bir dosyada geçen yepyeni bir ad için bu, derleme
+   ortamına ve build cache'ine bağlı sessiz bir kırılganlık. Düz sınıf her
+   derlemede koşulsuz çıkar — hero fade'in hiç düşmemesinin sebebi de bu.
+   Durak `0px`: birimsiz `0` geçerli olsa da eski motorlarda gradient'i tümden
+   geçersiz kılabiliyor, o da bu bildirimin sessizce düşmesi demek. */
+.home-dark-ground {
   background-image: linear-gradient(
     to bottom,
-    var(--home-base-clear) 0,
+    var(--home-base-clear) 0px,
     var(--home-base) 6rem
   );
 }
