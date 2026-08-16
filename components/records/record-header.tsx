@@ -35,21 +35,46 @@ export function RecordHeader({
   meta?: React.ReactNode
   actions?: React.ReactNode
 }) {
+  const hasActions = Boolean(conversation) || Boolean(actions)
+
   return (
-    <header className="mb-5 space-y-2">
-      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-        <h1 className="min-w-0 flex-1 text-xl font-semibold break-words sm:text-2xl">
+    // Telefonda başlık ÜSTTE tek başına, aksiyonlar ALTINDA; yan yana dizilim
+    // ancak `sm`den itibaren. Tek satırda `flex-1` bir başlık + `shrink-0` bir
+    // aksiyon bloğu vardı: aksiyonlar (sohbet rozeti + "Fiyatları yenile")
+    // 390px'lik bir ekranda tek başına satırı doldurduğu için başlığa sıfır
+    // genişlik kalıyor, `flex-wrap` da devreye girmiyordu — `flex-basis: 0`
+    // taşıyan bir öğe her zaman "sığıyor" sayılır. Sonuç: `break-words` başlığı
+    // harf harf alt alta diziyordu ("İs / ke / nd / er…").
+    <header className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+      <div className="min-w-0 space-y-1">
+        {/* `text-balance` uzun adları satırlara dengeli dağıtır; `break-words`
+            yalnızca tek parça uzun bir kelime için son çare. */}
+        <h1 className="text-xl font-semibold text-balance break-words sm:text-2xl">
           {title}
         </h1>
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+          <span className="tabular-nums">{formatDateTime(createdAt)}</span>
+          {meta ? (
+            <>
+              <span aria-hidden>·</span>
+              {meta}
+            </>
+          ) : null}
+        </div>
+      </div>
+
+      {hasActions ? (
+        <div className="flex flex-wrap items-center gap-2 sm:shrink-0">
           {conversation ? (
-            <Button variant="outline" size="sm" asChild>
+            <Button variant="outline" size="sm" asChild className="min-w-0">
               <Link
                 href={`/asistan/${conversation.id}`}
                 title={`${conversation.title.trim()} sohbetine git`}
               >
-                <MessagesSquareIcon className="mr-1.5 size-3.5" />
-                <span className="max-w-[12rem] truncate">
+                <MessagesSquareIcon className="mr-1.5 size-3.5 shrink-0" />
+                {/* Dar ekranda 12rem hâlâ satırın yarısından fazlası; viewport'a
+                    da bağlanıyor ki yanındaki birincil aksiyon ezilmesin. */}
+                <span className="min-w-0 max-w-[min(12rem,45vw)] truncate">
                   {conversation.title.trim()}
                 </span>
               </Link>
@@ -57,17 +82,7 @@ export function RecordHeader({
           ) : null}
           {actions}
         </div>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-        <span className="tabular-nums">{formatDateTime(createdAt)}</span>
-        {meta ? (
-          <>
-            <span aria-hidden>·</span>
-            {meta}
-          </>
-        ) : null}
-      </div>
+      ) : null}
     </header>
   )
 }

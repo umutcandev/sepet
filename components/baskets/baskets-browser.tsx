@@ -5,12 +5,9 @@ import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
 import {
   ArrowRightIcon,
-  CheckSquareIcon,
   ListFilterIcon,
-  MoreHorizontalIcon,
   SearchIcon,
   ShoppingBasketIcon,
-  Trash2Icon,
   XIcon,
 } from "lucide-react"
 import { toast } from "@/components/ui/sonner"
@@ -31,11 +28,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -62,60 +57,9 @@ import {
   listBasketsPaginated,
   searchBaskets,
 } from "@/lib/actions/baskets"
+import { RecordRowActions } from "@/components/records/record-row-actions"
 import { formatDateShort, formatTL } from "@/lib/format"
 import { cn } from "@/lib/utils"
-
-/**
- * Satır aksiyonları (⋯). Hem masaüstü tablosunda hem mobil kart listesinde aynı
- * menü kullanılır. `z-10`, satırın tamamını kaplayan link overlay'inin üstünde
- * kalması için (bkz. `after:absolute after:inset-0`).
- */
-function RowActions({
-  label,
-  onSelect,
-  onDelete,
-}: {
-  label: string
-  onSelect: () => void
-  onDelete: () => void
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label={label}
-          className="relative z-10 text-muted-foreground after:absolute after:-inset-2"
-        >
-          <MoreHorizontalIcon className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-40">
-        <DropdownMenuItem
-          onSelect={(e) => {
-            e.preventDefault()
-            onSelect()
-          }}
-        >
-          <CheckSquareIcon className="size-4" />
-          Seç
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          variant="destructive"
-          onSelect={(e) => {
-            e.preventDefault()
-            onDelete()
-          }}
-        >
-          <Trash2Icon className="size-4" />
-          Sil
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
 
 function useDebounced<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = React.useState(value)
@@ -619,7 +563,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                           </Badge>
                         ) : null}
                         {selecting ? null : (
-                          <RowActions
+                          <RecordRowActions
                             label="Sepet eylemleri"
                             onSelect={() => enterSelect(b.id)}
                             onDelete={() => setSingleDeleteTarget(b)}
@@ -756,7 +700,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                           )}
                         </TableCell>
                         <TableCell className="text-right">
-                          <RowActions
+                          <RecordRowActions
                             label="Sepet eylemleri"
                             onSelect={() => enterSelect(b.id)}
                             onDelete={() => setSingleDeleteTarget(b)}

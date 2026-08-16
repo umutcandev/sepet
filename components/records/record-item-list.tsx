@@ -12,7 +12,7 @@ import {
 import { ProductDetailPanel } from "@/components/product-detail-panel"
 import { MarketCell } from "@/components/market-cell"
 import { DepotInfo } from "@/components/assistant/depot-info"
-import { formatTL } from "@/lib/format"
+import { formatQuantity, formatTL } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
 export type RecordItemView = {
@@ -35,12 +35,19 @@ export type RecordItemView = {
   plan: {
     market: string
     unitPrice: number
+    /** Alınacak paket sayısı (fişte: kalemin miktarı). */
     packs: number
     lineTotal: number
     depotName: string | null
     sizeMismatch: boolean
   } | null
-  /** Fiş kalemlerinde fişteki tutar; sepette null. */
+  /**
+   * Fiş kalemlerinde fişte ÖDENEN tutar; sepette null.
+   *
+   * Plan fiyatıyla birlikte gösterilir, onun yerine değil: fiş sayfasının
+   * tamamı "ne ödedin" ile "en ucuz neydi" arasındaki fark. Bir zamanlar plan
+   * doluyken bu alan hiç basılmıyordu ve karşılaştırmanın yarısı kayboluyordu.
+   */
   receiptTotal?: number | null
   savings?: number | null
 }
@@ -95,6 +102,7 @@ function RecordItemRow({
   const secondary = [item.matchedBrand, item.matchedName]
     .filter(Boolean)
     .join(" · ")
+  const hasReceiptTotal = item.receiptTotal != null
 
   return (
     <li className="flex items-start gap-3 px-4 py-3">
@@ -154,12 +162,22 @@ function RecordItemRow({
         )}
       </div>
 
-      <div className="shrink-0 space-y-1 text-right">
+      {/* `max-w-[45%]` + `min-w-0`: sağ kolon `shrink-0` iken uzun bir market
+          adı (ör. "Tarım Kredi Kooperatif") satırın tamamını yiyip ürün adını
+          harf harf kırdırıyordu. Artık ürün adı satırın en az yarısını tutar. */}
+      <div className="min-w-0 max-w-[45%] shrink-0 space-y-1 text-right">
         <div className="text-[0.6875rem] text-muted-foreground tabular-nums">
           {qtyLabel}
         </div>
 
-        {item.plan ? (
+        {/* Fişte ödenen tutar — kalemin ASIL sayısı, bu yüzden baskın. */}
+        {hasReceiptTotal && (
+          <div className="text-sm font-medium tabular-nums">
+            {formatTL(item.receiptTotal!)}
+          </div>
+        )}
+
+        {item.plan && (
           <>
             <div className="flex items-center justify-end gap-1">
               <MarketCell
@@ -173,20 +191,27 @@ function RecordItemRow({
                 market={item.plan.market}
               />
             </div>
-            <div className="text-sm font-medium tabular-nums">
+            {/* Fişte ödenen tutar varsa plan fiyatı ONUN YANINDA ikincil bir
+                referans ("en ucuz ₺12,50"); sepette ise tek fiyat odur. */}
+            <div
+              className={cn(
+                "tabular-nums",
+                hasReceiptTotal
+                  ? "text-[0.6875rem] text-muted-foreground"
+                  : "text-sm font-medium",
+              )}
+            >
+              {hasReceiptTotal && "en ucuz "}
               {formatTL(item.plan.lineTotal)}
             </div>
             {item.plan.packs > 1 && (
               <div className="text-[0.625rem] text-muted-foreground tabular-nums">
-                {item.plan.packs}× · {formatTL(item.plan.unitPrice)}/paket
+                {formatQuantity(item.plan.packs)}× ·{" "}
+                {formatTL(item.plan.unitPrice)}/paket
               </div>
             )}
           </>
-        ) : item.receiptTotal != null ? (
-          <div className="text-sm font-medium tabular-nums">
-            {formatTL(item.receiptTotal)}
-          </div>
-        ) : null}
+        )}
 
         {item.savings != null && item.savings > 0 && (
           // Rozet değil düz metin: satırdaki diğer sayılarla aynı hizada okunsun,
@@ -221,8 +246,4 @@ function Thumb({ url }: { url: string | null }) {
       <Image src={url} alt="" fill sizes="40px" className="object-cover" unoptimized />
     </div>
   )
-}
-
-function formatQuantity(q: number): string {
-  return Number.isInteger(q) ? q.toString() : q.toFixed(2).replace(/\.?0+$/, "")
 }

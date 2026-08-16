@@ -15,7 +15,7 @@ import {
 import { saveReceipt } from "@/lib/actions/receipts"
 import { SaveRecordRow } from "@/components/assistant/save-record-row"
 import { MarketLogo } from "@/components/market-logo"
-import { formatTLOrDash as formatTL } from "@/lib/format"
+import { formatTLOrDash } from "@/lib/format"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -100,7 +100,7 @@ export function ReceiptComparisonCard({
               variant="outline"
               className="ml-auto border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
             >
-              {formatTL(comparison.totalSavingsTL)} tasarruf mümkündü
+              {formatTLOrDash(comparison.totalSavingsTL)} tasarruf mümkündü
             </Badge>
           )
         )}
@@ -173,7 +173,7 @@ export function ReceiptComparisonCard({
                       </div>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
-                      {formatTL(it.receiptTotalPrice)}
+                      {formatTLOrDash(it.receiptTotalPrice)}
                     </TableCell>
                     <TableCell>
                       {it.bestMarket ? (
@@ -188,14 +188,14 @@ export function ReceiptComparisonCard({
                       )}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
-                      {formatTL(it.bestPrice)}
+                      {formatTLOrDash(it.bestPrice)}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
                       {it.savingsTL == null ? (
                         <span className="text-xs text-muted-foreground">—</span>
                       ) : hasSavings && !isStale ? (
                         <span className="font-medium text-emerald-700 dark:text-emerald-300">
-                          −{formatTL(it.savingsTL)}
+                          −{formatTLOrDash(it.savingsTL)}
                         </span>
                       ) : (
                         <span className="text-xs text-muted-foreground">
@@ -224,7 +224,7 @@ export function ReceiptComparisonCard({
                                   </span>
                                 </div>
                                 <span className="font-medium tabular-nums">
-                                  {formatTL(mp.price)}
+                                  {formatTLOrDash(mp.price)}
                                 </span>
                               </li>
                             ))}
@@ -245,13 +245,13 @@ export function ReceiptComparisonCard({
           <span>
             Fiş toplamı:{" "}
             <span className="font-semibold text-foreground tabular-nums">
-              {formatTL(comparison.totalReceiptAmount)}
+              {formatTLOrDash(comparison.totalReceiptAmount)}
             </span>
           </span>
           <span>
             En iyi:{" "}
             <span className="font-semibold text-foreground tabular-nums">
-              {formatTL(comparison.totalBestAmount)}
+              {formatTLOrDash(comparison.totalBestAmount)}
             </span>
             {isStale && (
               <span className="ml-1 text-[0.6875rem] text-muted-foreground">

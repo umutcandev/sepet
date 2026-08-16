@@ -64,7 +64,11 @@ export const TwoMarketComboResultSchema = z.object({
   total: z.number(),
   savingsTL: z.number(),
   savingsPct: z.number(),
-  allocation: z.array(MarketAllocationSchema),
+  // `singleMarket.allocation` ile AYNI default. Bu alan sonradan eklendi; ondan
+  // önce kaydedilmiş `summaryJson`'larda hiç yok. Default olmadan okuma yolundaki
+  // `safeParse` tüm özeti reddediyor ve kayıtta DURAN toplamlar (total,
+  // savingsTL, markets) da beraberinde düşüyordu — sepet detayı özetsiz açılıyordu.
+  allocation: z.array(MarketAllocationSchema).default([]),
 })
 
 export const OptimizationSummarySchema = z.object({

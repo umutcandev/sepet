@@ -76,36 +76,52 @@ export default async function ReceiptDetailPage({
   // kurulamaz), o yüzden fiyat yaşı tarihin yanında sessiz bir not olarak durur.
   const freshness = priceFreshness(receipt.createdAt)
 
-  const itemViews: RecordItemView[] = items.map((it) => ({
-    id: it.id,
-    rawName: it.rawName,
-    quantity: Number(it.quantity),
-    unit: it.unit,
-    matchedName:
-      it.matchedName && it.matchedName !== it.rawName ? it.matchedName : null,
-    matchedBrand: it.matchedBrand,
-    matchedImageUrl: it.matchedImageUrl,
-    matchedProductId: it.matchedProductId,
-    searchQuery: it.searchQuery,
-    matched:
-      it.lookupStatus != null
-        ? it.lookupStatus === "ok"
-        : it.matchedProductId != null,
-    // Fişte kalem satırının fiyatı gerçekten o kaleme ait (fişten okundu) —
-    // sepetteki plan belirsizliği burada yok.
-    plan: it.bestMarket
-      ? {
-          market: it.bestMarket,
-          unitPrice: it.bestPrice ? Number(it.bestPrice) : 0,
-          packs: 1,
-          lineTotal: it.bestPrice ? Number(it.bestPrice) : 0,
-          depotName: null,
-          sizeMismatch: false,
-        }
-      : null,
-    receiptTotal: it.receiptTotalPrice ? Number(it.receiptTotalPrice) : null,
-    savings: !isStale && it.savingsTL ? Number(it.savingsTL) : null,
-  }))
+  const itemViews: RecordItemView[] = items.map((it) => {
+    // DİKKAT — `bestPrice` BİRİM fiyattır (eşleşen ürünün tüm marketlerdeki en
+    // düşük raf fiyatı), satır tutarı değil. `savingsTL` ve aşağıdaki dağılım
+    // grafiği zaten `bestPrice × quantity` üzerinden hesaplanıyor; satırın da
+    // aynı tanımı kullanması gerekir, yoksa 3 adetlik bir kalemde satırda tek
+    // paketin fiyatı yazarken grafik ve tasarruf üç katını sayıyordu.
+    const unitPrice = it.bestPrice != null ? Number(it.bestPrice) : null
+    const quantity = Number(it.quantity)
+    const lineTotal =
+      unitPrice != null && Number.isFinite(quantity)
+        ? unitPrice * quantity
+        : null
+
+    return {
+      id: it.id,
+      rawName: it.rawName,
+      quantity,
+      unit: it.unit,
+      matchedName:
+        it.matchedName && it.matchedName !== it.rawName ? it.matchedName : null,
+      matchedBrand: it.matchedBrand,
+      matchedImageUrl: it.matchedImageUrl,
+      matchedProductId: it.matchedProductId,
+      searchQuery: it.searchQuery,
+      matched:
+        it.lookupStatus != null
+          ? it.lookupStatus === "ok"
+          : it.matchedProductId != null,
+      // Fişte "plan" = bugünün en ucuz alternatifi. Fişte ÖDENEN tutar ayrı bir
+      // alan (`receiptTotal`); ikisi yan yana durmadan karşılaştırmanın anlamı
+      // kalmıyor — sayfanın varlık sebebi bu iki sayının farkı.
+      plan:
+        it.bestMarket && unitPrice != null && lineTotal != null
+          ? {
+              market: it.bestMarket,
+              unitPrice,
+              packs: quantity,
+              lineTotal,
+              depotName: null,
+              sizeMismatch: false,
+            }
+          : null,
+      receiptTotal: it.receiptTotalPrice ? Number(it.receiptTotalPrice) : null,
+      savings: !isStale && it.savingsTL ? Number(it.savingsTL) : null,
+    }
+  })
 
   const matchedCount = itemViews.filter((it) => it.matched).length
   const allMatched = matchedCount === itemViews.length
@@ -172,6 +188,14 @@ export default async function ReceiptDetailPage({
                 </Badge>
               ) : null
             }
+            footer={
+              isStale ? (
+                <RecordInfoNote className="bg-muted/40">
+                  Bu fiş 6 aydan eski olduğundan bugünkü piyasayla
+                  kıyaslanmıyor.
+                </RecordInfoNote>
+              ) : null
+            }
           >
             <RecordInfoRow label="Market">
               <div className="flex justify-end">
@@ -208,11 +232,6 @@ export default async function ReceiptDetailPage({
                   )}
                 </div>
               </RecordInfoRow>
-            )}
-            {isStale && (
-              <RecordInfoNote className="bg-muted/40">
-                Bu fiş 6 aydan eski olduğundan bugünkü piyasayla kıyaslanmıyor.
-              </RecordInfoNote>
             )}
           </RecordInfoList>
 

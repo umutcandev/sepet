@@ -27,6 +27,7 @@ export function RecordInfoList({
   title,
   headerRight,
   children,
+  footer,
   className,
 }: {
   title: string
@@ -38,6 +39,12 @@ export function RecordInfoList({
    */
   headerRight?: React.ReactNode
   children: React.ReactNode
+  /**
+   * Listenin altındaki etiketsiz not (uyarı metinleri). `<dl>`in DIŞINDA
+   * render edilir: `dl` yalnızca `dt`/`dd` çiftleri (ya da onları saran `div`)
+   * alabilir, tek başına bir `dd` geçersiz işaretlemedir.
+   */
+  footer?: React.ReactNode
   className?: string
 }) {
   return (
@@ -47,6 +54,7 @@ export function RecordInfoList({
         {headerRight ? <div className="ml-auto">{headerRight}</div> : null}
       </div>
       <dl className="divide-y">{children}</dl>
+      {footer ? <div className="border-t">{footer}</div> : null}
     </div>
   )
 }
@@ -70,7 +78,10 @@ export function RecordInfoRow({
   )
 }
 
-/** Etiketsiz, tam genişlik satır (uyarı/not metinleri için). */
+/**
+ * Etiketsiz, tam genişlik not. `RecordInfoList`'in `footer` yuvasına verilir —
+ * `<dl>`in içine değil (bkz. `footer` prop'unun açıklaması).
+ */
 export function RecordInfoNote({
   children,
   className,
@@ -79,8 +90,8 @@ export function RecordInfoNote({
   className?: string
 }) {
   return (
-    <div className={cn("px-4 py-2.5", className)}>
-      <dd className="text-xs text-muted-foreground">{children}</dd>
-    </div>
+    <p className={cn("px-4 py-2.5 text-xs text-muted-foreground", className)}>
+      {children}
+    </p>
   )
 }

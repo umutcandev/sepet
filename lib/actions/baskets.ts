@@ -88,6 +88,12 @@ export type SaveBasketResult =
  * örtük bir sözleşme. İkisi de aynı kaynaktan sırayla üretildiği için bugün
  * çalışıyor, ama araya tek bir filtre girmesi tüm kalemleri sessizce kaydırırdı.
  * Önce konumu doğrula, tutmuyorsa ham adla ara.
+ *
+ * İkisi de tutmuyorsa `null`. Konumdaki eşleşmeye geri düşmek, tam olarak bu
+ * fonksiyonun engellemek için var olduğu hatayı geri getirirdi: yanlış ürünün
+ * fotoğrafı, markası ve fiyatı başka bir kalemin satırına yazılır ve hiçbir
+ * yerde belli olmazdı. Eşleşme yoksa kalem "eşleşme bulunamadı" olarak kaydolur
+ * — kullanıcıya görünen, düzeltilebilir bir durum.
  */
 function matchForItem(
   matches: MatchResult[],
@@ -96,7 +102,7 @@ function matchForItem(
 ): MatchResult | null {
   const positional = matches[idx]
   if (positional && positional.rawName === rawName) return positional
-  return matches.find((m) => m.rawName === rawName) ?? positional ?? null
+  return matches.find((m) => m.rawName === rawName) ?? null
 }
 
 export async function saveBasket(

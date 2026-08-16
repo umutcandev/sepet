@@ -5,6 +5,7 @@ import { auth } from "@/auth"
 import { getBasketDetailCached } from "@/lib/data/records"
 import {
   createAllocationLookup,
+  hasBreakdown,
   marketTotals,
   parseSummary,
   recommendedPlan,
@@ -106,6 +107,12 @@ export default async function BasketDetailPage({
 
   const marketSplit: MarketDatum[] = marketTotals(plan?.allocation ?? [])
   const showSplit = plan !== null && marketSplit.length >= 2
+
+  // Plan var ama kalem dökümü yok = `allocation` alanı eklenmeden önce
+  // kaydedilmiş bir sepet. Toplamlar (Sepet Özeti) duruyor, satır fiyatları
+  // yok. Sessizce boş bırakmak "fiyat bulunamadı" gibi okunurdu; sebebini ve
+  // çözümünü ("Fiyatları yenile") söylüyoruz.
+  const breakdownMissing = plan !== null && !hasBreakdown(plan)
 
   // "Fiyatları yenile": aynı kalemlerle asistanda yeniden hesaplat. Kayıtlı
   // sepeti ölü bir arşivden tekrar kullanılabilir bir listeye çeviren şey bu.
@@ -222,12 +229,20 @@ export default async function BasketDetailPage({
                   ? items.length
                   : `${matchedCount}/${items.length} eşleşti`}
               </Badge>
-              {plan && (
+              {plan && !breakdownMissing && (
                 <span className="ml-auto text-xs text-muted-foreground">
                   Fiyatlar: {plan.label} planı
                 </span>
               )}
             </div>
+            {breakdownMissing && (
+              <p className="border-b bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground">
+                Bu sepet, kalem bazında fiyat dökümü tutulmaya başlanmadan önce
+                kaydedilmiş. Toplamlar yukarıdaki özette duruyor; satır
+                fiyatlarını görmek için “Fiyatları yenile” ile sepeti yeniden
+                hesaplat.
+              </p>
+            )}
             <RecordItemList
               items={itemViews}
               emptyHint="Bu sepette kalem yok."

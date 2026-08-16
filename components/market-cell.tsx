@@ -49,10 +49,16 @@ export function MarketCell({
 
   const inner = (
     <>
-      <MarketLogo name={name} size={size} />
+      <MarketLogo name={name} size={size} className="shrink-0" />
+      {/* `truncate` tek başına ETKİSİZDİ: flex öğesinin varsayılan
+          `min-width: auto`u onu içerik genişliğinin altına indirmiyor, dolayısıyla
+          taşma kırpılmak yerine kabı büyütüyordu. Uzun market adları ("Tarım
+          Kredi Kooperatif Market") telefonda satırı taşırıp yanındaki ürün adını
+          harf harf kırdırıyordu. `min-w-0` ikisinde de olmalı — hem kapta hem
+          metinde. */}
       <span
         className={cn(
-          "truncate",
+          "min-w-0 truncate",
           !isKnown && "italic text-muted-foreground",
         )}
       >
@@ -64,7 +70,7 @@ export function MarketCell({
     </>
   )
 
-  const base = cn("inline-flex items-center gap-2", TEXT_SIZE[size])
+  const base = cn("inline-flex min-w-0 max-w-full items-center gap-2", TEXT_SIZE[size])
 
   if (clickable && url) {
     return (

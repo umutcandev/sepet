@@ -30,6 +30,22 @@ export function formatAmount(value: number): string {
   return decimalFmt.format(value)
 }
 
+const quantityFmt = new Intl.NumberFormat("tr-TR", {
+  maximumFractionDigits: 3,
+})
+
+/**
+ * Miktar: "2", "1,5", "0,85" — gereksiz sıfır yok, ondalık ayracı Türkçe.
+ *
+ * İki ayrı dosyada `q.toFixed(2).replace(/\.?0+$/, "")` olarak duruyordu; hem
+ * kopyaydı hem de para biçimi "₺1,50" iken miktarı "1.5" diye nokta ile
+ * yazıyordu — aynı satırda iki farklı ondalık ayracı.
+ */
+export function formatQuantity(value: number): string {
+  if (!Number.isFinite(value)) return "0"
+  return quantityFmt.format(value)
+}
+
 // ─── Tarih ───
 
 const dateLongFmt = new Intl.DateTimeFormat("tr-TR", {

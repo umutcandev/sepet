@@ -27,6 +27,18 @@ export type BasketPlan = {
 }
 
 /**
+ * Planın kalem bazında dökümü var mı?
+ *
+ * `allocation` alanı optimizasyona sonradan eklendi; ondan önce kaydedilmiş
+ * sepetlerde toplamlar duruyor ama döküm yok. O kayıtlarda kalem satırları
+ * fiyatsız kalır — uydurmak yerine (bkz. basket_item.minPrice yorumu) durumun
+ * kendisi kullanıcıya söylenir.
+ */
+export function hasBreakdown(plan: BasketPlan | null): boolean {
+  return plan !== null && plan.allocation.length > 0
+}
+
+/**
  * Kayıt sayfasında hangi satın alma planının gösterileceğini seçer.
  *
  * `OptimizationCard`'ın sıralama kuralıyla BİREBİR aynı: tek market sepeti tam
@@ -47,7 +59,7 @@ export function recommendedPlan(
       kind: "combo",
       label: "İki market",
       markets: twoMarketCombo.markets,
-      allocation: twoMarketCombo.allocation ?? [],
+      allocation: twoMarketCombo.allocation,
       total: twoMarketCombo.total,
     }
   }
@@ -57,7 +69,7 @@ export function recommendedPlan(
           kind: "combo",
           label: "İki market",
           markets: twoMarketCombo.markets,
-          allocation: twoMarketCombo.allocation ?? [],
+          allocation: twoMarketCombo.allocation,
           total: twoMarketCombo.total,
         }
       : null
@@ -66,7 +78,7 @@ export function recommendedPlan(
     kind: "single",
     label: "Tek market",
     markets: [singleMarket.market],
-    allocation: singleMarket.allocation ?? [],
+    allocation: singleMarket.allocation,
     total: singleMarket.total,
   }
 }

@@ -164,32 +164,26 @@ export function ProductSearchPage({
   const submitSearch = guard(locationGuard(() => runSearchWith(q)))
   const openScanner = guard(locationGuard(() => setScannerOpen(true)))
 
-  // URL'den gelen sorguyu bir kez kendiliğinden çalıştır. `runSearchWith`
-  // kullanılmıyor çünkü o "loading"i senkron kuruyor; burada başlangıç state'i
-  // zaten "loading" ve setState yalnızca yanıt geldiğinde çağrılıyor.
+  // URL'den gelen sorguyu bir kez kendiliğinden çalıştır — ama elle aramayla
+  // AYNI kapılardan geçerek. Doğrudan `fetchPage` çağrılıyordu; oturumsuz bir
+  // kullanıcı (paylaşılan bir arama linki) API'den 401 alıyor ve login modalı
+  // yerine ekranda ham "unauthorized" metnini görüyordu. Konum için de aynısı.
+  //
+  // Kapı kapalıysa sarmalayıcı `undefined` döner: ilk render'daki "loading"i
+  // geri alıp boş duruma düşeriz. Giriş yapılınca `guard` kimliği değişir ve
+  // efekt yeniden koşar; konum modalı ise handler'ı zaten kendisi sürdürür.
+  const seedRan = React.useRef(false)
   React.useEffect(() => {
-    if (!hasSeed) return
-    const ctrl = new AbortController()
-    abortRef.current = ctrl
-    fetchPage(seedQuery, 0, ctrl.signal)
-      .then((data) => {
-        if (ctrl.signal.aborted) return
-        setResult({
-          kind: "ok",
-          query: seedQuery,
-          hits: data.hits,
-          total: data.total,
-          page: data.page,
-          hasMore: data.hasMore,
-          loadingMore: false,
-        })
-      })
-      .catch((err: Error) => {
-        if (ctrl.signal.aborted || err.name === "AbortError") return
-        setResult({ kind: "error", message: err.message })
-      })
-    return () => ctrl.abort()
-  }, [hasSeed, seedQuery])
+    if (!hasSeed || seedRan.current) return
+    const started = guard(
+      locationGuard(() => {
+        seedRan.current = true
+        return runSearchWith(seedQuery)
+      }),
+    )()
+    if (started === undefined) setResult({ kind: "idle" })
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runSearchWith her render'da yeniden kurulur; bağımlılığı sorgunun kendisi
+  }, [hasSeed, seedQuery, guard, locationGuard])
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">

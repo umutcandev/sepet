@@ -5,12 +5,9 @@ import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
 import {
   ArrowRightIcon,
-  CheckSquareIcon,
   ListFilterIcon,
-  MoreHorizontalIcon,
   SearchIcon,
   SparklesIcon,
-  Trash2Icon,
   XIcon,
 } from "lucide-react"
 import { toast } from "@/components/ui/sonner"
@@ -31,11 +28,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -63,6 +58,7 @@ import {
   listReceiptsPaginated,
   searchReceipts,
 } from "@/lib/actions/receipts"
+import { RecordRowActions } from "@/components/records/record-row-actions"
 import { formatDateShort, formatTL } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
@@ -72,54 +68,6 @@ function receiptLabel(r: ReceiptListItem): string {
   return `${r.marketName ?? "Fiş"} · ${formatDateShort(
     r.purchaseDate ?? r.createdAt,
   )}`
-}
-
-/** Bkz. baskets-browser'daki aynı bileşen. */
-function RowActions({
-  label,
-  onSelect,
-  onDelete,
-}: {
-  label: string
-  onSelect: () => void
-  onDelete: () => void
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label={label}
-          className="relative z-10 text-muted-foreground after:absolute after:-inset-2"
-        >
-          <MoreHorizontalIcon className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-40">
-        <DropdownMenuItem
-          onSelect={(e) => {
-            e.preventDefault()
-            onSelect()
-          }}
-        >
-          <CheckSquareIcon className="size-4" />
-          Seç
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          variant="destructive"
-          onSelect={(e) => {
-            e.preventDefault()
-            onDelete()
-          }}
-        >
-          <Trash2Icon className="size-4" />
-          Sil
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
 }
 
 function useDebounced<T>(value: T, delay: number): T {
@@ -634,7 +582,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                           </Badge>
                         ) : null}
                         {selecting ? null : (
-                          <RowActions
+                          <RecordRowActions
                             label="Fiş eylemleri"
                             onSelect={() => enterSelect(r.id)}
                             onDelete={() => setSingleDeleteTarget(r)}
@@ -806,7 +754,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                           )}
                         </TableCell>
                         <TableCell className="text-right">
-                          <RowActions
+                          <RecordRowActions
                             label="Fiş eylemleri"
                             onSelect={() => enterSelect(r.id)}
                             onDelete={() => setSingleDeleteTarget(r)}
