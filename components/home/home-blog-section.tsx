@@ -40,13 +40,22 @@ export function HomeBlogSection() {
           Burası zaten bir sayfa bölümü, yerinde durması doğru — yükselerek
           gelen şey hero'nun zemini olmalı.
 
-          `absolute` + `-z-10`: yerleşime hiç dokunmuyor. Bu şart, çünkü
-          aşağıdaki `data-home-dark-start` nişanının KONUMU header'ın scroll
-          rampasını besliyor (app-shell). Section'ın kendisini oynatsaydık
-          nişan da oynar ve açılışta header rengi titrerdi. */}
+          `absolute`: yerleşime hiç dokunmuyor. Bu şart, çünkü aşağıdaki
+          `data-home-dark-start` nişanının KONUMU header'ın scroll rampasını
+          besliyor (app-shell). Section'ın kendisini oynatsaydık nişan da oynar
+          ve açılışta header rengi titrerdi.
+
+          NEGATİF z-index KULLANILMIYOR. Burada bir zamanlar `-z-10` vardı ve
+          katman yalnızca section'ın `relative z-20` ile bir stacking context
+          açıyor olmasına bağlıydı: negatif z, kendi bağlamında EN ALTA boyanır,
+          bağlam tutmazsa katman `SidebarInset`in `bg-background`ının (krem)
+          ALTINA düşer ve tamamen kaybolur — bölümün zemini krem kalırken içeriği
+          `dark` paletiyle boyanmaya devam eder (başlık krem üstünde krem).
+          Şimdi katman z-auto, içerik sarmalayıcıları `relative z-10`: sıralama
+          tek bir stacking context varsayımına değil, kendi elemanlarına bağlı. */}
       <div
         aria-hidden
-        className="home-dark-ground pointer-events-none absolute inset-0 -z-10"
+        className="home-dark-ground pointer-events-none absolute inset-0"
       />
       {/* Header'ın zeminini bu noktadan itibaren --home-base'e çeviren nişan
           (AppShell IntersectionObserver ile izler). Bölümün kendisini hedef
@@ -69,7 +78,7 @@ export function HomeBlogSection() {
 
           Rengini `dark` sarmalayıcıdan alır — bu bölüm her iki temada da koyu,
           o yüzden logolar tek renk krem olarak oturur. */}
-      <div className="dark mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
+      <div className="dark relative z-10 mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
         {/* Şerit fold'un TAM sınırında duruyor: hangi ekran yüksekliğinde
             olursak olalım ilk ekranın alt kenarına denk geliyor, dolayısıyla
             scroll reveal'a hiç girmiyor ve animasyonsuz beliriyordu. Bu yüzden
@@ -85,7 +94,7 @@ export function HomeBlogSection() {
       </div>
       {/* pb: altında footer var; sayfa dibi boşluğunu footer'ın kendi padding'i
           tamamlıyor, bu yüzden burada eskisinden dar. */}
-      <div className="dark mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
+      <div className="dark relative z-10 mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
         <AnimateEnter className="mb-5 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
             Blog Gönderileri
