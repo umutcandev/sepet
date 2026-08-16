@@ -63,19 +63,64 @@ import {
   listReceiptsPaginated,
   searchReceipts,
 } from "@/lib/actions/receipts"
+import { formatDateShort, formatTL } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
-const tl = new Intl.NumberFormat("tr-TR", {
-  style: "currency",
-  currency: "TRY",
-  maximumFractionDigits: 2,
-})
+/** Fişe ad verilmemişse (eski kayıtlar) market + tarihten türet. */
+function receiptLabel(r: ReceiptListItem): string {
+  if (r.name?.trim()) return r.name.trim()
+  return `${r.marketName ?? "Fiş"} · ${formatDateShort(
+    r.purchaseDate ?? r.createdAt,
+  )}`
+}
 
-const dateFmt = new Intl.DateTimeFormat("tr-TR", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-})
+/** Bkz. baskets-browser'daki aynı bileşen. */
+function RowActions({
+  label,
+  onSelect,
+  onDelete,
+}: {
+  label: string
+  onSelect: () => void
+  onDelete: () => void
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          aria-label={label}
+          className="relative z-10 text-muted-foreground after:absolute after:-inset-2"
+        >
+          <MoreHorizontalIcon className="size-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-40">
+        <DropdownMenuItem
+          onSelect={(e) => {
+            e.preventDefault()
+            onSelect()
+          }}
+        >
+          <CheckSquareIcon className="size-4" />
+          Seç
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          variant="destructive"
+          onSelect={(e) => {
+            e.preventDefault()
+            onDelete()
+          }}
+        >
+          <Trash2Icon className="size-4" />
+          Sil
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 function useDebounced<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = React.useState(value)
@@ -507,11 +552,107 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
             ) : null
           ) : (
             <div className="overflow-hidden rounded-xl border bg-card">
+              {/* Mobil kart listesi — bkz. baskets-browser'daki aynı gerekçe. */}
+              <ul className="divide-y md:hidden">
+                {displayed.map((r) => {
+                  const isSelected = selected.has(r.id)
+                  const isStale = isReceiptStaleByDate(r.purchaseDate)
+                  const savings =
+                    !isStale && r.potentialSavingsTL
+                      ? Number(r.potentialSavingsTL)
+                      : 0
+                  const label = receiptLabel(r)
+                  return (
+                    <li
+                      key={r.id}
+                      onClick={selecting ? () => toggleSelect(r.id) : undefined}
+                      className={cn(
+                        "relative flex items-start gap-3 px-4 py-3",
+                        selecting && "cursor-pointer",
+                        selecting && isSelected && "bg-secondary/40",
+                      )}
+                    >
+                      {selecting ? (
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={() => toggleSelect(r.id)}
+                          onClick={(e) => e.stopPropagation()}
+                          aria-label={`${label} seç`}
+                          className="mt-0.5 shrink-0"
+                        />
+                      ) : null}
+
+                      <div className="min-w-0 flex-1 space-y-1.5">
+                        {selecting ? (
+                          <div className="text-sm font-medium break-words">
+                            {label}
+                          </div>
+                        ) : (
+                          <Link
+                            href={`/fis-gecmisi/${r.id}`}
+                            className="block text-sm font-medium break-words after:absolute after:inset-0"
+                          >
+                            {label}
+                          </Link>
+                        )}
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <MarketCell
+                            name={r.marketName}
+                            size="sm"
+                            clickable={false}
+                          />
+                          <span className="text-xs text-muted-foreground tabular-nums">
+                            {r.totalAmount
+                              ? formatTL(Number(r.totalAmount))
+                              : "—"}
+                          </span>
+                        </div>
+                        {r.bestSingleMarket ? (
+                          <div className="flex flex-wrap items-center gap-x-1.5 text-[0.6875rem] text-muted-foreground">
+                            <span>En iyi:</span>
+                            <MarketCell
+                              name={r.bestSingleMarket}
+                              size="sm"
+                              clickable={false}
+                            />
+                            {r.bestSingleTotal ? (
+                              <span className="tabular-nums">
+                                ({formatTL(Number(r.bestSingleTotal))})
+                              </span>
+                            ) : null}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className="relative z-10 flex shrink-0 flex-col items-end gap-1.5">
+                        {savings > 0 ? (
+                          <Badge
+                            variant="outline"
+                            className="border-emerald-200 bg-emerald-50 text-emerald-700 tabular-nums dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
+                          >
+                            {formatTL(savings)}
+                          </Badge>
+                        ) : null}
+                        {selecting ? null : (
+                          <RowActions
+                            label="Fiş eylemleri"
+                            onSelect={() => enterSelect(r.id)}
+                            onDelete={() => setSingleDeleteTarget(r)}
+                          />
+                        )}
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+
+              <div className="hidden md:block">
               <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
                 <TableHeader>
                   <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
                     {selecting ? <TableHead className="w-10" /> : null}
                     <TableHead className="min-w-[100px]">Tarih</TableHead>
+                    <TableHead className="min-w-[140px]">Fiş adı</TableHead>
                     <TableHead className="min-w-[120px]">Fişteki Market</TableHead>
                     <TableHead className="w-28 text-right">Fiş tutarı</TableHead>
                     <TableHead className="min-w-[140px]">
@@ -529,9 +670,10 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                       !isStale && r.potentialSavingsTL
                         ? Number(r.potentialSavingsTL)
                         : 0
-                    const dateLabel = r.purchaseDate
-                      ? dateFmt.format(new Date(r.purchaseDate))
-                      : dateFmt.format(new Date(r.createdAt))
+                    const dateLabel = formatDateShort(
+                      r.purchaseDate ?? r.createdAt,
+                    )
+                    const label = receiptLabel(r)
                     if (selecting) {
                       return (
                         // <tr> düğme olamaz. Klavye yolu artık satırın
@@ -551,11 +693,12 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                               checked={isSelected}
                               onCheckedChange={() => toggleSelect(r.id)}
                               onClick={(e) => e.stopPropagation()}
-                              aria-label={`${r.marketName} seç`}
+                              aria-label={`${label} seç`}
                             />
                           </TableCell>
                           <TableCell>{dateLabel}</TableCell>
-                          <TableCell className="font-medium">
+                          <TableCell className="font-medium">{label}</TableCell>
+                          <TableCell>
                             <MarketCell
                               name={r.marketName}
                               size="sm"
@@ -564,7 +707,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                           </TableCell>
                           <TableCell className="text-right tabular-nums">
                             {r.totalAmount
-                              ? tl.format(Number(r.totalAmount))
+                              ? formatTL(Number(r.totalAmount))
                               : "—"}
                           </TableCell>
                           <TableCell>
@@ -577,7 +720,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                                 />
                                 {r.bestSingleTotal ? (
                                   <span className="text-xs text-muted-foreground">
-                                    ({tl.format(Number(r.bestSingleTotal))})
+                                    ({formatTL(Number(r.bestSingleTotal))})
                                   </span>
                                 ) : null}
                               </span>
@@ -591,7 +734,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                                 variant="outline"
                                 className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
                               >
-                                {tl.format(savings)}
+                                {formatTL(savings)}
                               </Badge>
                             ) : (
                               <span className="text-xs text-muted-foreground">
@@ -602,124 +745,79 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                         </TableRow>
                       )
                     }
+                    // Tek link + ::after ile satır geneline yayılmış tıklama
+                    // alanı — bkz. baskets-browser'daki aynı gerekçe.
                     return (
                       <TableRow
                         key={r.id}
-                        className="cursor-pointer hover:bg-secondary/50"
+                        className="relative cursor-pointer hover:bg-secondary/50"
                       >
+                        <TableCell>{dateLabel}</TableCell>
                         <TableCell>
                           <Link
                             href={`/fis-gecmisi/${r.id}`}
-                            className="block"
+                            className="font-medium after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                           >
-                            {dateLabel}
+                            {label}
                           </Link>
                         </TableCell>
                         <TableCell>
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block font-medium"
-                          >
-                            <MarketCell
-                              name={r.marketName}
-                              size="sm"
-                              clickable={false}
-                            />
-                          </Link>
+                          <MarketCell
+                            name={r.marketName}
+                            size="sm"
+                            clickable={false}
+                          />
                         </TableCell>
                         <TableCell className="text-right tabular-nums">
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block"
-                          >
-                            {r.totalAmount
-                              ? tl.format(Number(r.totalAmount))
-                              : "—"}
-                          </Link>
+                          {r.totalAmount
+                            ? formatTL(Number(r.totalAmount))
+                            : "—"}
                         </TableCell>
                         <TableCell>
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block"
-                          >
-                            {r.bestSingleMarket ? (
-                              <span className="inline-flex items-center gap-1.5">
-                                <MarketCell
-                                  name={r.bestSingleMarket}
-                                  size="sm"
-                                  clickable={false}
-                                />
-                                {r.bestSingleTotal ? (
-                                  <span className="text-xs text-muted-foreground">
-                                    ({tl.format(Number(r.bestSingleTotal))})
-                                  </span>
-                                ) : null}
-                              </span>
-                            ) : (
-                              <span className="text-muted-foreground">—</span>
-                            )}
-                          </Link>
+                          {r.bestSingleMarket ? (
+                            <span className="inline-flex items-center gap-1.5">
+                              <MarketCell
+                                name={r.bestSingleMarket}
+                                size="sm"
+                                clickable={false}
+                              />
+                              {r.bestSingleTotal ? (
+                                <span className="text-xs text-muted-foreground">
+                                  ({formatTL(Number(r.bestSingleTotal))})
+                                </span>
+                              ) : null}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
                         </TableCell>
                         <TableCell className="text-right tabular-nums">
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block"
-                          >
-                            {savings > 0 ? (
-                              <Badge
-                                variant="outline"
-                                className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
-                              >
-                                {tl.format(savings)}
-                              </Badge>
-                            ) : (
-                              <span className="text-xs text-muted-foreground">
-                                —
-                              </span>
-                            )}
-                          </Link>
+                          {savings > 0 ? (
+                            <Badge
+                              variant="outline"
+                              className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
+                            >
+                              {formatTL(savings)}
+                            </Badge>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">
+                              —
+                            </span>
+                          )}
                         </TableCell>
                         <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="icon-xs"
-                                aria-label="Fiş eylemleri"
-                                className="relative text-muted-foreground after:absolute after:-inset-2"
-                              >
-                                <MoreHorizontalIcon className="size-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="min-w-40">
-                              <DropdownMenuItem
-                                onSelect={(e) => {
-                                  e.preventDefault()
-                                  enterSelect(r.id)
-                                }}
-                              >
-                                <CheckSquareIcon className="size-4" />
-                                Seç
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                variant="destructive"
-                                onSelect={(e) => {
-                                  e.preventDefault()
-                                  setSingleDeleteTarget(r)
-                                }}
-                              >
-                                <Trash2Icon className="size-4" />
-                                Sil
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <RowActions
+                            label="Fiş eylemleri"
+                            onSelect={() => enterSelect(r.id)}
+                            onDelete={() => setSingleDeleteTarget(r)}
+                          />
                         </TableCell>
                       </TableRow>
                     )
                   })}
                 </TableBody>
               </Table>
+              </div>
               {/* Infinite scroll sentinel */}
               {hasMore && !isSearchActive ? (
                 <div ref={sentinelRef} className="flex justify-center py-4">
@@ -744,8 +842,9 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
           <AlertDialogHeader>
             <AlertDialogTitle>Fiş silinsin mi?</AlertDialogTitle>
             <AlertDialogDescription>
-              Bu fiş ve içindeki kalemler kalıcı olarak silinecek. Bu işlem geri
-              alınamaz.
+              {singleDeleteTarget
+                ? `“${receiptLabel(singleDeleteTarget)}” fişi ve içindeki kalemler kalıcı olarak silinecek. Bu işlem geri alınamaz.`
+                : "Bu fiş ve içindeki kalemler kalıcı olarak silinecek. Bu işlem geri alınamaz."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

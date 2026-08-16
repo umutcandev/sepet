@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
-import { ArrowRightIcon, ChevronDownIcon } from "lucide-react"
+import { ArrowRightIcon, ChevronDownIcon, NewspaperIcon } from "lucide-react"
 
 import {
   Avatar,
@@ -99,8 +99,8 @@ function PostRow({
 /**
  * Sidebar "Blog Gönderileri" grubu. Favoriler / Geçmiş Sohbetler gruplarıyla
  * aynı açılır-kapanır (collapsible) davranışı kullanır; varsayılan açık gelir.
- * Son birkaç yazının başlığını yazar avatarıyla gösterir, altta "Tüm yazıları
- * gör" satırıyla /blog'a yönlendirir.
+ * Gelen yazıların başlığını yazar avatarıyla listeler — kaç yazı geleceğine
+ * çağıran karar verir (bkz. app/layout.tsx, şu an son 2).
  */
 export function BlogPostsGroup({ posts }: Props) {
   const { isMobile, setOpenMobile } = useSidebar()
@@ -113,7 +113,10 @@ export function BlogPostsGroup({ posts }: Props) {
   if (posts.length === 0) return null
 
   return (
-    <SidebarGroup className="shrink-0">
+    <>
+    {/* Daraltılmış rayda gizli: satırların ikonu yazar avatarı, tek başına
+        hangi yazı olduğunu söylemiyor (bkz. assistant-conversations-group). */}
+    <SidebarGroup className="shrink-0 group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel asChild>
         <button
           onClick={() => setCollapsed((p) => !p)}
@@ -150,5 +153,28 @@ export function BlogPostsGroup({ posts }: Props) {
         )}
       </AnimatePresence>
     </SidebarGroup>
+
+    {/* Listenin raydaki karşılığı: tek satır, /blog. Sohbet geçmişindekiyle
+        aynı kalıp (bkz. assistant-conversations-group RailHistoryLink) —
+        blok kaybolduğunda yerine ona götüren bir tutamak kalır. `data-rail-link`
+        ve marj kuralının gerekçesi de orada. */}
+    <SidebarGroup
+      data-rail-link
+      className="mt-3 hidden shrink-0 group-data-[collapsible=icon]:block [[data-rail-link]_~_&]:mt-0"
+    >
+      <SidebarGroupContent>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Blog Gönderileri">
+              <Link href="/blog" onClick={handleNavClick}>
+                <NewspaperIcon />
+                <span>Blog Gönderileri</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+    </>
   )
 }

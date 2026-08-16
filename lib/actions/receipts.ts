@@ -15,7 +15,7 @@ import {
   sql,
 } from "drizzle-orm"
 import { auth } from "@/auth"
-import { db, receipts, receiptItems } from "@/lib/db"
+import { db, receipts, receiptItems, conversations } from "@/lib/db"
 import {
   deleteReceiptObject,
   isOwnedReceiptKey,
@@ -26,6 +26,7 @@ import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
 import { type ReceiptSort, DEFAULT_RECEIPT_SORT } from "@/lib/receipt-sort"
 import { OCR_MODEL_NAME } from "@/lib/ai/models"
+import { OptimizationSummarySchema } from "@/lib/ai/schemas"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -39,6 +40,7 @@ const BULK_DELETE_CHUNK = 100
 // Liste satırı için gereken alanlar (tablo + arama + infinite scroll ortak tipi).
 export type ReceiptListItem = {
   id: string
+  name: string | null
   marketName: string | null
   purchaseDate: Date | null
   createdAt: Date
@@ -50,6 +52,7 @@ export type ReceiptListItem = {
 
 const receiptListColumns = {
   id: receipts.id,
+  name: receipts.name,
   marketName: receipts.marketName,
   purchaseDate: receipts.purchaseDate,
   createdAt: receipts.createdAt,
@@ -82,7 +85,18 @@ export type SaveReceiptResult =
   | { ok: true; id: string }
   | { ok: false; reason: "storage_limit_reached" }
 
+function autoReceiptName(marketName: string | null): string {
+  const fmt = new Intl.DateTimeFormat("tr-TR", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+  return `${marketName ?? "Fiş"} · ${fmt.format(new Date())}`
+}
+
 export async function saveReceipt(input: {
+  name?: string | null
   imageUrl: string
   imageR2Key: string
   marketName: string | null
@@ -158,10 +172,17 @@ export async function saveReceipt(input: {
     }
   }
 
+  // Yazarken doğrula — bkz. saveBasket'teki aynı gerekçe.
+  const summary = OptimizationSummarySchema.parse(input.summary)
+
+  const trimmedName = input.name?.trim()
+  const name =
+    trimmedName && trimmedName.length > 0
+      ? trimmedName
+      : autoReceiptName(input.marketName)
+
   const bestSingle =
-    input.summary.singleMarket.itemCount > 0
-      ? input.summary.singleMarket
-      : null
+    summary.singleMarket.itemCount > 0 ? summary.singleMarket : null
 
   const totalAmount =
     input.totalAmount ?? input.comparison.totalReceiptAmount ?? null
@@ -175,6 +196,7 @@ export async function saveReceipt(input: {
       userId,
       conversationId,
       sourceToolCallId,
+      name,
       marketName: input.marketName,
       purchaseDate: input.purchaseDate
         ? new Date(input.purchaseDate)
@@ -186,21 +208,44 @@ export async function saveReceipt(input: {
       bestSingleMarket: bestSingle?.market ?? null,
       bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
       potentialSavingsTL: persistedSavings.toFixed(2),
-      summaryJson: input.summary,
+      summaryJson: summary,
     })
     .returning({ id: receipts.id })
 
   if (!inserted) throw new Error("insert_failed")
 
   if (input.items.length > 0) {
+    // Fotoğraf/marka `matches` içinde geliyor ama save'e kadar gelip yazılmadan
+    // düşüyordu; kayıt sayfasının fakir görünmesi tasarım tercihi değil,
+    // gösterecek verisinin olmamasıydı. Temsilci ürünün id'si üzerinden bağla.
+    const enrichmentByProductId = new Map(
+      input.matches
+        .filter((m) => m.bestMatch)
+        .map((m) => [
+          m.bestMatch!.productId,
+          {
+            brand: m.bestMatch!.brand,
+            imageUrl: m.bestMatch!.imageUrl,
+            lookupStatus: m.lookupStatus,
+          },
+        ]),
+    )
+    const statusByRawName = new Map(
+      input.matches.map((m) => [m.rawName, m.lookupStatus]),
+    )
+
     await db.insert(receiptItems).values(
       input.items.map((it, idx) => {
         const comp = input.comparison.items[idx]
         const lineTotal =
           it.totalPrice ??
           (it.unitPrice != null ? it.unitPrice * it.quantity : null)
+        const enrichment = comp?.matchedProductId
+          ? enrichmentByProductId.get(comp.matchedProductId) ?? null
+          : null
         return {
           receiptId: inserted.id,
+          sortIndex: idx,
           rawName: it.rawName,
           searchQuery: it.searchQuery,
           quantity: it.quantity.toString(),
@@ -211,6 +256,12 @@ export async function saveReceipt(input: {
             lineTotal != null ? lineTotal.toFixed(2) : null,
           matchedProductId: comp?.matchedProductId ?? null,
           matchedName: comp?.matchedName ?? null,
+          matchedBrand: enrichment?.brand ?? null,
+          matchedImageUrl: enrichment?.imageUrl ?? null,
+          lookupStatus:
+            enrichment?.lookupStatus ??
+            statusByRawName.get(it.rawName) ??
+            null,
           bestMarket: comp?.bestMarket ?? null,
           bestPrice:
             comp?.bestPrice != null ? comp.bestPrice.toFixed(2) : null,
@@ -360,7 +411,11 @@ export async function searchReceipts(
     .where(
       and(
         eq(receipts.userId, session.user.id),
-        or(ilike(receipts.marketName, pattern), itemMatch),
+        or(
+          ilike(receipts.name, pattern),
+          ilike(receipts.marketName, pattern),
+          itemMatch,
+        ),
       ),
     )
     .orderBy(...orderByForReceiptSort(sort))
@@ -397,17 +452,36 @@ export async function getSavedReceiptsForConversation(
   return map
 }
 
+/**
+ * Fiş + kalemleri + (varsa) geldiği sohbet. Bkz. getBasketDetail — aynı desen:
+ * paralel sorgu, sortIndex ile sıra garantisi, sohbete geri dönüş bağlantısı.
+ */
 export async function getReceiptDetail(id: string, userId: string) {
   if (!isUuid(id)) return null
-  const [receipt] = await db
-    .select()
-    .from(receipts)
-    .where(and(eq(receipts.id, id), eq(receipts.userId, userId)))
-    .limit(1)
-  if (!receipt) return null
-  const items = await db
-    .select()
-    .from(receiptItems)
-    .where(eq(receiptItems.receiptId, id))
-  return { receipt, items }
+
+  const [rows, items] = await Promise.all([
+    db
+      .select({ receipt: receipts, conversationTitle: conversations.title })
+      .from(receipts)
+      .leftJoin(conversations, eq(conversations.id, receipts.conversationId))
+      .where(and(eq(receipts.id, id), eq(receipts.userId, userId)))
+      .limit(1),
+    db
+      .select()
+      .from(receiptItems)
+      .where(eq(receiptItems.receiptId, id))
+      .orderBy(asc(receiptItems.sortIndex), asc(receiptItems.rawName)),
+  ])
+
+  const row = rows[0]
+  if (!row) return null
+
+  return {
+    receipt: row.receipt,
+    items,
+    conversation:
+      row.receipt.conversationId && row.conversationTitle
+        ? { id: row.receipt.conversationId, title: row.conversationTitle }
+        : null,
+  }
 }

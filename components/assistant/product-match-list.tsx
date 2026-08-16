@@ -15,14 +15,10 @@ import {
 import { MarketLogo } from "@/components/market-logo"
 import { DepotInfo } from "@/components/assistant/depot-info"
 import type { MatchResult } from "@/lib/ai/schemas"
+import { formatTL } from "@/lib/format"
 
 export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
   if (!matches?.length) return null
-  const tlFormatter = new Intl.NumberFormat("tr-TR", {
-    style: "currency",
-    currency: "TRY",
-    maximumFractionDigits: 2,
-  })
 
   return (
     <div className="overflow-hidden rounded-xl border bg-card">
@@ -102,7 +98,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                       />
                     </span>
                     <span className="text-sm font-semibold tabular-nums">
-                      {tlFormatter.format(cheapest.price)}
+                      {formatTL(cheapest.price)}
                     </span>
                   </div>
                 </div>
@@ -133,7 +129,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                         </div>
                         <div className="flex flex-col items-end text-right">
                           <span className="font-medium tabular-nums">
-                            {tlFormatter.format(mp.price)}
+                            {formatTL(mp.price)}
                           </span>
                         </div>
                       </li>

@@ -42,9 +42,25 @@ type Result =
       loadingMore: boolean
     }
 
-export function ProductSearchPage() {
-  const [q, setQ] = React.useState("")
-  const [result, setResult] = React.useState<Result>({ kind: "idle" })
+export function ProductSearchPage({
+  initialQuery = "",
+}: {
+  /**
+   * URL'den gelen sorgu (`/urun-ara?q=...`). Arama tamamen bileşen state'inde
+   * durduğu için hiçbir yerden derin link kurulamıyordu — eşleşmeyen bir kalem
+   * "kendin ara"ya bağlanamıyor, bir arama paylaşılamıyordu.
+   */
+  initialQuery?: string
+} = {}) {
+  const seedQuery = initialQuery.trim()
+  const hasSeed = seedQuery.length >= 2
+
+  const [q, setQ] = React.useState(initialQuery)
+  // URL'den sorgu geldiyse ilk render zaten yükleniyor durumunda başlar —
+  // efekt içinde senkron setState yapmak zorunda kalmayalım diye.
+  const [result, setResult] = React.useState<Result>(
+    hasSeed ? { kind: "loading" } : { kind: "idle" },
+  )
   const [selectedId, setSelectedId] = React.useState<string | null>(null)
   const [scannerOpen, setScannerOpen] = React.useState(false)
   const abortRef = React.useRef<AbortController | null>(null)
@@ -147,6 +163,33 @@ export function ProductSearchPage() {
   // eslint-disable-next-line react-hooks/refs -- guard wrappers run at event time, not render
   const submitSearch = guard(locationGuard(() => runSearchWith(q)))
   const openScanner = guard(locationGuard(() => setScannerOpen(true)))
+
+  // URL'den gelen sorguyu bir kez kendiliğinden çalıştır. `runSearchWith`
+  // kullanılmıyor çünkü o "loading"i senkron kuruyor; burada başlangıç state'i
+  // zaten "loading" ve setState yalnızca yanıt geldiğinde çağrılıyor.
+  React.useEffect(() => {
+    if (!hasSeed) return
+    const ctrl = new AbortController()
+    abortRef.current = ctrl
+    fetchPage(seedQuery, 0, ctrl.signal)
+      .then((data) => {
+        if (ctrl.signal.aborted) return
+        setResult({
+          kind: "ok",
+          query: seedQuery,
+          hits: data.hits,
+          total: data.total,
+          page: data.page,
+          hasMore: data.hasMore,
+          loadingMore: false,
+        })
+      })
+      .catch((err: Error) => {
+        if (ctrl.signal.aborted || err.name === "AbortError") return
+        setResult({ kind: "error", message: err.message })
+      })
+    return () => ctrl.abort()
+  }, [hasSeed, seedQuery])
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">

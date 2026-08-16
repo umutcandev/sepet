@@ -9,8 +9,9 @@ import {
   FileTextIcon,
   LinkIcon,
 } from "lucide-react"
-import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { toast } from "@/components/ui/sonner"
+
+import { IconSwap } from "@/components/motion/icon-swap"
 
 import {
   ChatGptLogo,
@@ -56,15 +57,9 @@ export async function copyText(text: string): Promise<boolean> {
 }
 
 /**
- * Kopyalama geri bildirimi için ikon takası. Sert bir koşullu render yerine
- * ölçek + opaklık + bulanıklık ile geçiş yapar; kopyalama onayının tamamı bu
- * ikon olduğu için tek karelik bir takas kaçırılabiliyordu.
- *
- * `initial={false}` ilk render'da animasyonu bastırır — ikon sayfa açılışında
- * belirmez, yalnızca durum değişiminde animasyon oynar.
- *
- * Reduced motion altında ölçek ve bulanıklık düşer, geriye yalnızca opaklık
- * geçişi kalır: geri bildirim korunur, hareket kalkar.
+ * Kopyalama geri bildirimi için ikon takası. Geçişin kendisi `IconSwap`'ta
+ * (components/motion/icon-swap.tsx) — aynı fizik daraltılmış kenar çubuğunda
+ * logo → anahtar takasında da kullanılıyor, iki yerde ayrı ayrı yaşamasın.
  */
 export function CopiedIconSwap({
   copied,
@@ -77,40 +72,14 @@ export function CopiedIconSwap({
   className?: string
   copiedClassName?: string
 }) {
-  const reduceMotion = useReducedMotion()
-  const hidden = reduceMotion
-    ? { opacity: 0 }
-    : { opacity: 0, scale: 0.25, filter: "blur(4px)" }
-  const shown = reduceMotion
-    ? { opacity: 1 }
-    : { opacity: 1, scale: 1, filter: "blur(0px)" }
-
   return (
-    // `popLayout` çıkan öğeyi position:absolute yapar; konumlanmış atayı
-    // burada garantiliyoruz ki çağıran düğmenin `relative` olup olmaması
-    // sonucu değiştirmesin. Giren ikon (akışta kalan) kabın boyutunu verir.
-    <span className="relative inline-flex">
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.span
-          key={copied ? "copied" : "idle"}
-          initial={hidden}
-          animate={shown}
-          exit={hidden}
-          transition={
-            reduceMotion
-              ? { duration: 0.15, ease: "easeOut" }
-              : { type: "spring", duration: 0.3, bounce: 0 }
-          }
-          className="inline-flex"
-        >
-          {copied ? (
-            <CheckIcon className={cn(className, copiedClassName)} />
-          ) : (
-            <IdleIcon className={className} />
-          )}
-        </motion.span>
-      </AnimatePresence>
-    </span>
+    <IconSwap swapKey={copied ? "copied" : "idle"}>
+      {copied ? (
+        <CheckIcon className={cn(className, copiedClassName)} />
+      ) : (
+        <IdleIcon className={className} />
+      )}
+    </IconSwap>
   )
 }
 

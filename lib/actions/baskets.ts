@@ -3,11 +3,12 @@
 import { revalidatePath } from "next/cache"
 import { and, asc, count, desc, eq, exists, ilike, inArray, isNotNull, or, sql } from "drizzle-orm"
 import { auth } from "@/auth"
-import { db, baskets, basketItems } from "@/lib/db"
+import { db, baskets, basketItems, conversations } from "@/lib/db"
 import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
 import { type BasketSort, DEFAULT_BASKET_SORT } from "@/lib/basket-sort"
+import { OptimizationSummarySchema } from "@/lib/ai/schemas"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -82,6 +83,22 @@ export type SaveBasketResult =
   | { ok: true; id: string }
   | { ok: false; reason: "storage_limit_reached" }
 
+/**
+ * `matches[idx]` ile `items[idx]` konum üzerinden eşleştiriliyordu — anahtarsız,
+ * örtük bir sözleşme. İkisi de aynı kaynaktan sırayla üretildiği için bugün
+ * çalışıyor, ama araya tek bir filtre girmesi tüm kalemleri sessizce kaydırırdı.
+ * Önce konumu doğrula, tutmuyorsa ham adla ara.
+ */
+function matchForItem(
+  matches: MatchResult[],
+  rawName: string,
+  idx: number,
+): MatchResult | null {
+  const positional = matches[idx]
+  if (positional && positional.rawName === rawName) return positional
+  return matches.find((m) => m.rawName === rawName) ?? positional ?? null
+}
+
 export async function saveBasket(
   input: SaveBasketInput,
 ): Promise<SaveBasketResult> {
@@ -136,13 +153,17 @@ export async function saveBasket(
   const trimmedName = input.name?.trim()
   const name = trimmedName && trimmedName.length > 0 ? trimmedName : autoBasketName()
 
+  // `summary` istemciden geliyor ve doğrudan jsonb'ye yazılıyordu; bozuk/eksik
+  // bir özet ancak okuma anında, detay sayfasını düşürerek fark ediliyordu.
+  // Yazarken doğrula: hata artık kaydedenin kendi isteğinde patlar, kayıt
+  // sonrası sessiz bir bomba bırakmaz.
+  const summary = OptimizationSummarySchema.parse(input.summary)
+
   const bestSingle =
-    input.summary.singleMarket.itemCount > 0
-      ? input.summary.singleMarket
-      : null
+    summary.singleMarket.itemCount > 0 ? summary.singleMarket : null
   const twoMarketSavings =
-    input.summary.twoMarketCombo.markets.length === 2
-      ? input.summary.twoMarketCombo.savingsTL
+    summary.twoMarketCombo.markets.length === 2
+      ? summary.twoMarketCombo.savingsTL
       : null
 
   const [inserted] = await db
@@ -156,7 +177,7 @@ export async function saveBasket(
       bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
       twoMarketSavingsTL:
         twoMarketSavings != null ? twoMarketSavings.toFixed(2) : null,
-      summaryJson: input.summary,
+      summaryJson: summary,
     })
     .returning({ id: baskets.id })
 
@@ -165,22 +186,28 @@ export async function saveBasket(
   if (input.items.length > 0) {
     await db.insert(basketItems).values(
       input.items.map((it, idx) => {
-        const match = input.matches[idx]
+        const match = matchForItem(input.matches, it.rawName, idx)
         const best = match?.bestMatch ?? null
         const minPrice = best?.minPrice ?? null
-        const marketWithMin = best
-          ? match.marketPrices.find((mp) => mp.price === minPrice) ?? null
-          : null
+        const marketWithMin =
+          best && match
+            ? match.marketPrices.find((mp) => mp.price === minPrice) ?? null
+            : null
         return {
           basketId: inserted.id,
+          sortIndex: idx,
           rawName: it.rawName,
           searchQuery: it.searchQuery,
           quantity: it.quantity.toString(),
           unit: it.unit,
           matchedProductId: best?.productId ?? null,
           matchedName: best?.name ?? null,
-          bestMarket: marketWithMin?.market ?? null,
-          bestPrice: minPrice != null ? minPrice.toFixed(2) : null,
+          matchedBrand: best?.brand ?? null,
+          matchedImageUrl: best?.imageUrl ?? null,
+          lookupStatus: match?.lookupStatus ?? null,
+          // Referans fiyat — plana ait değil. Bkz. schema.ts'teki uzun yorum.
+          minPrice: minPrice != null ? minPrice.toFixed(2) : null,
+          minPriceMarket: marketWithMin?.market ?? null,
         }
       }),
     )
@@ -330,17 +357,46 @@ export async function getSavedBasketsForConversation(
   return map
 }
 
+/**
+ * Sepet + kalemleri + (varsa) geldiği sohbet.
+ *
+ * İki sorgu ardışık çalışıyordu; birbirine bağlı olmadıkları için paralel.
+ * Kalemler `sortIndex` ile çekilir — sırasız SELECT'in bugün doğru görünmesi
+ * tesadüftü (bkz. basket_item.sortIndex).
+ *
+ * `conversationId` hem yazılıyor hem `set null` ile özenle korunuyordu ama
+ * hiçbir yerde okunmuyordu: kullanıcı "bu sepeti neden böyle kurdum"a
+ * dönemiyordu. Sohbet silinmişse join boş döner, rozet gizlenir.
+ */
 export async function getBasketDetail(id: string, userId: string) {
   if (!isUuid(id)) return null
-  const [basket] = await db
-    .select()
-    .from(baskets)
-    .where(and(eq(baskets.id, id), eq(baskets.userId, userId)))
-    .limit(1)
-  if (!basket) return null
-  const items = await db
-    .select()
-    .from(basketItems)
-    .where(eq(basketItems.basketId, id))
-  return { basket, items }
+
+  // İki sorgu birbirine bağlı değil → paralel. Kalem sorgusu sahiplik
+  // kontrolünden bağımsız çalışır ama sonucu yalnızca sepet bu kullanıcıya
+  // aitse döner; aksi halde aşağıda daha okunmadan atılır.
+  const [rows, items] = await Promise.all([
+    db
+      .select({ basket: baskets, conversationTitle: conversations.title })
+      .from(baskets)
+      .leftJoin(conversations, eq(conversations.id, baskets.conversationId))
+      .where(and(eq(baskets.id, id), eq(baskets.userId, userId)))
+      .limit(1),
+    db
+      .select()
+      .from(basketItems)
+      .where(eq(basketItems.basketId, id))
+      .orderBy(asc(basketItems.sortIndex), asc(basketItems.rawName)),
+  ])
+
+  const row = rows[0]
+  if (!row) return null
+
+  return {
+    basket: row.basket,
+    items,
+    conversation:
+      row.basket.conversationId && row.conversationTitle
+        ? { id: row.basket.conversationId, title: row.conversationTitle }
+        : null,
+  }
 }

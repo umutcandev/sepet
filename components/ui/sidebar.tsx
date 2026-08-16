@@ -31,6 +31,34 @@ const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
+/** Çerezden açık/kapalı durumu. Sunucuda okunmaz (aşağıdaki nota bakın). */
+function readSidebarCookie(fallback: boolean): boolean {
+  if (typeof document === "undefined") return fallback
+  const match = document.cookie.match(
+    new RegExp(`(?:^|;\\s*)${SIDEBAR_COOKIE_NAME}=(true|false)`)
+  )
+  return match ? match[1] === "true" : fallback
+}
+
+/**
+ * Durumu İLK BOYAMADAN ÖNCE DOM'a yazan betik.
+ *
+ * Çerez neden sunucuda okunmuyor: kök layout kasıtlı olarak cookie'ye
+ * dokunmuyor, yoksa paylaşımlı rotalar (ana sayfa, blog, yasal sayfalar)
+ * statik/ISR olarak CDN'de cache'lenemez — bkz. app/layout.tsx. Dolayısıyla
+ * sunucu HTML'i her zaman "açık" boyanır.
+ *
+ * Bu betik, hidrasyondan ÖNCE çalışıp kenar çubuğunun iki durum niteliğini
+ * çerezle uyumlu hâle getirir. Geri kalan her şey (genişlik, etiketlerin
+ * gizlenmesi, inset marjı) zaten bu iki nitelikten türeyen CSS. İstemcinin ilk
+ * render'ı da aynı çerezi okuduğu için React hidrasyonda DOM'u kendi çıktısıyla
+ * UYUŞUR bulur: ne uyarı çıkar, ne de "açık → kapalı" animasyonu oynar.
+ *
+ * `collapsible` modu prop'tan geliyor; betiğin bilmesi için Sidebar kökü onu
+ * `data-collapsible-mode` olarak yazıyor (durumdan bağımsız, sabit değer).
+ */
+const SIDEBAR_INIT_SCRIPT = `(function(){try{var m=document.cookie.match(/(?:^|;\\s*)${SIDEBAR_COOKIE_NAME}=(true|false)/);if(!m||m[1]!=="false")return;var el=document.querySelector('[data-slot="sidebar"][data-collapsible-mode]');if(!el)return;el.setAttribute("data-state","collapsed");el.setAttribute("data-collapsible",el.getAttribute("data-collapsible-mode"));}catch(e){}})()`
+
 type SidebarContextProps = {
   state: "expanded" | "collapsed"
   open: boolean
@@ -70,7 +98,10 @@ function SidebarProvider({
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
-  const [_open, _setOpen] = React.useState(defaultOpen)
+  // Başlangıç değeri çerezden: kullanıcı kenar çubuğunu kapattıysa bir sonraki
+  // ziyarette de kapalı açılır. Sunucuda `document` yok → defaultOpen; farkı
+  // ilk boyamadan önce SIDEBAR_INIT_SCRIPT kapatıyor.
+  const [_open, _setOpen] = React.useState(() => readSidebarCookie(defaultOpen))
   const open = openProp ?? _open
   const setOpen = React.useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {
@@ -146,6 +177,9 @@ function SidebarProvider({
         {...props}
       >
         {children}
+        {/* Kenar çubuğu işaretlemesinden SONRA: betik senkron çalışır, yani
+            hidrasyondan önce ama aradığı düğüm ayrıştırıldıktan sonra. */}
+        <script dangerouslySetInnerHTML={{ __html: SIDEBAR_INIT_SCRIPT }} />
       </div>
     </SidebarContext.Provider>
   )
@@ -212,6 +246,8 @@ function Sidebar({
       className="group peer hidden text-sidebar-foreground md:block"
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
+      // Duruma bağlı DEĞİL — SIDEBAR_INIT_SCRIPT daraltma modunu buradan okur.
+      data-collapsible-mode={collapsible}
       data-variant={variant}
       data-side={side}
       data-slot="sidebar"
@@ -394,7 +430,10 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-group"
       data-sidebar="group"
-      className={cn("relative flex w-full min-w-0 flex-col p-2", className)}
+      // Dikey py-2 → py-1. Gruplar arka arkaya dizildiği için o dolgu iki kez
+      // sayılıyordu (8+8) ve kenar çubuğu, satırlardan çok boşluktan oluşuyordu.
+      // Yatay px-2 duruyor: satırların kenar çubuğu kenarına olan mesafesi.
+      className={cn("relative flex w-full min-w-0 flex-col px-2 py-1", className)}
       {...props}
     />
   )
@@ -459,7 +498,11 @@ function SidebarMenu({ className, ...props }: React.ComponentProps<"ul">) {
     <ul
       data-slot="sidebar-menu"
       data-sidebar="menu"
-      className={cn("flex w-full min-w-0 flex-col gap-0", className)}
+      // gap-0.5: satırların hover/aktif zeminleri gap-0'da birbirine yapışıp
+      // tek bir blok gibi okunuyordu (özellikle daraltılmış rayda, ikonlar alt
+      // alta dizilince). 2 piksel ayrımı görünür kılmaya yetiyor, listeyi
+      // seyreltmeye yetmiyor.
+      className={cn("flex w-full min-w-0 flex-col gap-0.5", className)}
       {...props}
     />
   )
@@ -484,6 +527,11 @@ const sidebarMenuButtonVariants = cva(
         default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
         outline:
           "bg-background shadow-[0_0_0_1px_var(--sidebar-border)] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_var(--sidebar-accent)]",
+        // Menünün tek eylem satırı için (Yeni Sohbet). Taban sınıflardaki
+        // sidebar-accent hover/active'ini bilerek eziyor — cva varyantı tabandan
+        // SONRA geldiği için tailwind-merge bu sınıfları kazandırır.
+        primary:
+          "bg-primary text-primary-foreground hover:bg-primary/85 hover:text-primary-foreground active:bg-primary/85 active:text-primary-foreground",
       },
       size: {
         default: "h-8 text-sm",
@@ -536,7 +584,13 @@ function SidebarMenuButton({
   }
 
   return (
-    <Tooltip>
+    // Bu tooltip'ler YALNIZ daraltılmış rayda görünür (aşağıdaki `hidden`) ve
+    // orada etiketin tek taşıyıcısıdır. Kök `TooltipProvider` gecikmesi 0;
+    // rayda o değer, fare listede aşağı süzülürken art arda altı balon
+    // patlatıyordu. 300 ms bekleme kasıtlı gezinmeyi geçişten ayırır —
+    // Radix'in `skipDelayDuration`'ı (varsayılan 300 ms) sayesinde ilk balon
+    // açıldıktan sonra komşularına geçiş yine anlıktır.
+    <Tooltip delayDuration={300}>
       <TooltipTrigger asChild>{button}</TooltipTrigger>
       <TooltipContent
         side="right"

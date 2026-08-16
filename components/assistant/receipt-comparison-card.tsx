@@ -1,14 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  InfoIcon,
-  Loader2Icon,
-  SaveIcon,
-} from "lucide-react"
-import { toast } from "@/components/ui/sonner"
+import { ChevronDownIcon, InfoIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -20,7 +13,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { saveReceipt } from "@/lib/actions/receipts"
+import { SaveRecordRow } from "@/components/assistant/save-record-row"
 import { MarketLogo } from "@/components/market-logo"
+import { formatTLOrDash as formatTL } from "@/lib/format"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -55,9 +50,6 @@ export function ReceiptComparisonCard({
   toolCallId?: string | null
   initialSavedId?: string | null
 }) {
-  const [savedId, setSavedId] = React.useState<string | null>(initialSavedId)
-  const [saving, setSaving] = React.useState(false)
-
   const { comparison, receiptContext, summary, matches } = data
   const [expanded, setExpanded] = React.useState<Set<number>>(new Set())
 
@@ -83,38 +75,15 @@ export function ReceiptComparisonCard({
   const canSave = !!receiptContext.imageR2Key
   const isStale = !!comparison.staleness?.isStale
 
-  async function handleSave() {
-    if (!canSave || saving || savedId) return
-    setSaving(true)
-    try {
-      const res = await saveReceipt({
-        imageUrl: receiptContext.imageUrl,
-        imageR2Key: receiptContext.imageR2Key!,
-        marketName: receiptContext.marketName,
-        purchaseDate: receiptContext.purchaseDate,
-        totalAmount: receiptContext.totalAmount,
-        items: receiptContext.items,
-        summary,
-        matches,
-        comparison,
-        conversationId,
-        sourceToolCallId: toolCallId,
-      })
-      if (!res.ok) {
-        toast.error(
-          "Fiş kaydetme limitin doldu. Eski bir fişi sil ya da Pro'ya geç.",
-        )
-        return
-      }
-      setSavedId(res.id)
-      toast.success("Fişlerime kaydedildi.")
-    } catch (err) {
-      console.error("[ReceiptComparisonCard] save failed", err)
-      toast.error("Fiş kaydedilemedi. Lütfen tekrar dene.")
-    } finally {
-      setSaving(false)
-    }
-  }
+  const namePlaceholder = React.useMemo(() => {
+    const fmt = new Intl.DateTimeFormat("tr-TR", {
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    return `${receiptContext.marketName ?? "Fiş"} · ${fmt.format(new Date())}`
+  }, [receiptContext.marketName])
 
   return (
     <div className="rounded-xl border bg-card">
@@ -271,7 +240,7 @@ export function ReceiptComparisonCard({
         </Table>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 border-t bg-muted/30 px-4 py-3 text-sm">
+      <div className="space-y-3 border-t bg-muted/30 px-4 py-3 text-sm">
         <div className="flex flex-wrap items-baseline gap-3 text-xs text-muted-foreground">
           <span>
             Fiş toplamı:{" "}
@@ -291,38 +260,35 @@ export function ReceiptComparisonCard({
             )}
           </span>
         </div>
-        <div className="ml-auto flex items-center gap-2">
-          {savedId ? (
-            <Button type="button" size="sm" variant="secondary" disabled>
-              <CheckIcon className="mr-1 size-3.5" />
-              Kaydedildi
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              size="sm"
-              onClick={handleSave}
-              disabled={!canSave || saving}
-            >
-              {saving ? (
-                <Loader2Icon className="mr-1 size-3.5 animate-spin" />
-              ) : (
-                <SaveIcon className="mr-1 size-3.5" />
-              )}
-              Fişi Kaydet
-            </Button>
-          )}
-        </div>
+        <SaveRecordRow
+          size="sm"
+          namePlaceholder={namePlaceholder}
+          nameLabel="Fiş adı"
+          saveLabel="Fişi Kaydet"
+          viewHref={(id) => `/fis-gecmisi/${id}`}
+          initialSavedId={initialSavedId}
+          disabled={!canSave}
+          save={(name) =>
+            saveReceipt({
+              name,
+              imageUrl: receiptContext.imageUrl,
+              imageR2Key: receiptContext.imageR2Key!,
+              marketName: receiptContext.marketName,
+              purchaseDate: receiptContext.purchaseDate,
+              totalAmount: receiptContext.totalAmount,
+              items: receiptContext.items,
+              summary,
+              matches,
+              comparison,
+              conversationId,
+              sourceToolCallId: toolCallId,
+            })
+          }
+          limitMessage="Fiş kaydetme limitin doldu. Eski bir fişi sil ya da Pro'ya geç."
+          successMessage="Fişlerime kaydedildi."
+          errorMessage="Fiş kaydedilemedi. Lütfen tekrar dene."
+        />
       </div>
     </div>
   )
-}
-
-function formatTL(n: number | null | undefined): string {
-  if (n == null || !Number.isFinite(n)) return "—"
-  return new Intl.NumberFormat("tr-TR", {
-    style: "currency",
-    currency: "TRY",
-    maximumFractionDigits: 2,
-  }).format(n)
 }

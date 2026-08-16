@@ -19,6 +19,7 @@ import type { ReceiptOCR, ReceiptOCRItem } from "@/lib/ai/schemas"
 import { UNIT_VALUES } from "@/lib/ai/schemas"
 import { stripQuantityTokens } from "@/lib/ai/normalize"
 import { MarketLogo } from "@/components/market-logo"
+import { formatTLOrDash as formatTL } from "@/lib/format"
 
 type EditableItem = ReceiptOCRItem & { _id: string }
 
@@ -337,15 +338,6 @@ export function ReceiptApprovalCard({
       )}
     </div>
   )
-}
-
-function formatTL(n: number | null | undefined): string {
-  if (n == null || !Number.isFinite(n)) return "—"
-  return new Intl.NumberFormat("tr-TR", {
-    style: "currency",
-    currency: "TRY",
-    maximumFractionDigits: 2,
-  }).format(n)
 }
 
 function formatQty(q: number) {

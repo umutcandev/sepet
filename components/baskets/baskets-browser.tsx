@@ -62,19 +62,60 @@ import {
   listBasketsPaginated,
   searchBaskets,
 } from "@/lib/actions/baskets"
+import { formatDateShort, formatTL } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
-const tl = new Intl.NumberFormat("tr-TR", {
-  style: "currency",
-  currency: "TRY",
-  maximumFractionDigits: 2,
-})
-
-const dateFmt = new Intl.DateTimeFormat("tr-TR", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-})
+/**
+ * Satır aksiyonları (⋯). Hem masaüstü tablosunda hem mobil kart listesinde aynı
+ * menü kullanılır. `z-10`, satırın tamamını kaplayan link overlay'inin üstünde
+ * kalması için (bkz. `after:absolute after:inset-0`).
+ */
+function RowActions({
+  label,
+  onSelect,
+  onDelete,
+}: {
+  label: string
+  onSelect: () => void
+  onDelete: () => void
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          aria-label={label}
+          className="relative z-10 text-muted-foreground after:absolute after:-inset-2"
+        >
+          <MoreHorizontalIcon className="size-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-40">
+        <DropdownMenuItem
+          onSelect={(e) => {
+            e.preventDefault()
+            onSelect()
+          }}
+        >
+          <CheckSquareIcon className="size-4" />
+          Seç
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          variant="destructive"
+          onSelect={(e) => {
+            e.preventDefault()
+            onDelete()
+          }}
+        >
+          <Trash2Icon className="size-4" />
+          Sil
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 function useDebounced<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = React.useState(value)
@@ -507,6 +548,90 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
             ) : null
           ) : (
             <div className="overflow-hidden rounded-xl border bg-card">
+              {/* Mobil kart listesi. Liste tek bir altı kolonlu tabloyla
+                  kuruluyordu; min-width'lerin toplamı ~620px olduğu için
+                  telefonda tablo yatay kayıyor ve satır aksiyon menüsü ekranın
+                  dışında kalıyordu. Detay sayfasında md altı için ayrı kart
+                  listesi zaten yazılmıştı, aynı özen buraya hiç uygulanmamıştı. */}
+              <ul className="divide-y md:hidden">
+                {displayed.map((b) => {
+                  const twoMarket = b.twoMarketSavingsTL
+                    ? Number(b.twoMarketSavingsTL)
+                    : 0
+                  const isSelected = selected.has(b.id)
+                  return (
+                    <li
+                      key={b.id}
+                      onClick={selecting ? () => toggleSelect(b.id) : undefined}
+                      className={cn(
+                        "relative flex items-start gap-3 px-4 py-3",
+                        selecting && "cursor-pointer",
+                        selecting && isSelected && "bg-secondary/40",
+                      )}
+                    >
+                      {selecting ? (
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={() => toggleSelect(b.id)}
+                          onClick={(e) => e.stopPropagation()}
+                          aria-label={`${b.name} seç`}
+                          className="mt-0.5 shrink-0"
+                        />
+                      ) : null}
+
+                      <div className="min-w-0 flex-1 space-y-1.5">
+                        {selecting ? (
+                          <div className="text-sm font-medium break-words">
+                            {b.name}
+                          </div>
+                        ) : (
+                          <Link
+                            href={`/sepetlerim/${b.id}`}
+                            className="block text-sm font-medium break-words after:absolute after:inset-0"
+                          >
+                            {b.name}
+                          </Link>
+                        )}
+                        <div className="text-[0.6875rem] text-muted-foreground tabular-nums">
+                          {formatDateShort(b.createdAt)}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <MarketCell
+                            name={b.bestSingleMarket}
+                            size="sm"
+                            clickable={false}
+                          />
+                          <span className="text-xs text-muted-foreground tabular-nums">
+                            {b.bestSingleTotal
+                              ? formatTL(Number(b.bestSingleTotal))
+                              : "—"}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="relative z-10 flex shrink-0 flex-col items-end gap-1.5">
+                        {twoMarket > 0 ? (
+                          <Badge
+                            variant="outline"
+                            className="border-emerald-200 bg-emerald-50 text-emerald-700 tabular-nums dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
+                          >
+                            {formatTL(twoMarket)}
+                          </Badge>
+                        ) : null}
+                        {selecting ? null : (
+                          <RowActions
+                            label="Sepet eylemleri"
+                            onSelect={() => enterSelect(b.id)}
+                            onDelete={() => setSingleDeleteTarget(b)}
+                          />
+                        )}
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+
+              <div className="hidden md:block">
               <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
                 <TableHeader>
                   <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
@@ -516,7 +641,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                     <TableHead className="min-w-[140px]">En iyi market</TableHead>
                     <TableHead className="w-28 text-right">Toplam</TableHead>
                     <TableHead className="w-28 text-right">
-                      2 market tasarrufu
+                      tasarruf miktarı
                     </TableHead>
                     {selecting ? null : <TableHead className="w-10" />}
                   </TableRow>
@@ -550,7 +675,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                             />
                           </TableCell>
                           <TableCell>
-                            {dateFmt.format(new Date(b.createdAt))}
+                            {formatDateShort(b.createdAt)}
                           </TableCell>
                           <TableCell className="font-medium">{b.name}</TableCell>
                           <TableCell>
@@ -562,7 +687,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                           </TableCell>
                           <TableCell className="text-right tabular-nums">
                             {b.bestSingleTotal
-                              ? tl.format(Number(b.bestSingleTotal))
+                              ? formatTL(Number(b.bestSingleTotal))
                               : "—"}
                           </TableCell>
                           <TableCell className="text-right tabular-nums">
@@ -571,7 +696,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                                 variant="outline"
                                 className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
                               >
-                                {tl.format(twoMarket)}
+                                {formatTL(twoMarket)}
                               </Badge>
                             ) : (
                               <span className="text-xs text-muted-foreground">
@@ -582,109 +707,67 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                         </TableRow>
                       )
                     }
+                    // Her hücre kendi <Link>'ini sarıyor ve beşi de aynı adrese
+                    // gidiyordu: ekran okuyucu satır başına beş özdeş link
+                    // okuyor, klavyeyle bir sepetten diğerine geçmek beş tab
+                    // sürüyordu. Tek link (sepet adı) + ::after ile satırın
+                    // tamamına genişletilmiş tıklama alanı — projede zaten
+                    // kullanılan desen.
                     return (
                       <TableRow
                         key={b.id}
-                        className="cursor-pointer hover:bg-secondary/50"
+                        className="relative cursor-pointer hover:bg-secondary/50"
                       >
                         <TableCell>
-                          <Link
-                            href={`/sepetlerim/${b.id}`}
-                            className="block"
-                          >
-                            {dateFmt.format(new Date(b.createdAt))}
-                          </Link>
+                          {formatDateShort(b.createdAt)}
                         </TableCell>
                         <TableCell>
                           <Link
                             href={`/sepetlerim/${b.id}`}
-                            className="block font-medium"
+                            className="font-medium after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                           >
                             {b.name}
                           </Link>
                         </TableCell>
                         <TableCell>
-                          <Link
-                            href={`/sepetlerim/${b.id}`}
-                            className="block"
-                          >
-                            <MarketCell
-                              name={b.bestSingleMarket}
-                              size="sm"
-                              clickable={false}
-                            />
-                          </Link>
+                          <MarketCell
+                            name={b.bestSingleMarket}
+                            size="sm"
+                            clickable={false}
+                          />
                         </TableCell>
                         <TableCell className="text-right tabular-nums">
-                          <Link
-                            href={`/sepetlerim/${b.id}`}
-                            className="block"
-                          >
-                            {b.bestSingleTotal
-                              ? tl.format(Number(b.bestSingleTotal))
-                              : "—"}
-                          </Link>
+                          {b.bestSingleTotal
+                            ? formatTL(Number(b.bestSingleTotal))
+                            : "—"}
                         </TableCell>
                         <TableCell className="text-right tabular-nums">
-                          <Link
-                            href={`/sepetlerim/${b.id}`}
-                            className="block"
-                          >
-                            {twoMarket > 0 ? (
-                              <Badge
-                                variant="outline"
-                                className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
-                              >
-                                {tl.format(twoMarket)}
-                              </Badge>
-                            ) : (
-                              <span className="text-xs text-muted-foreground">
-                                —
-                              </span>
-                            )}
-                          </Link>
+                          {twoMarket > 0 ? (
+                            <Badge
+                              variant="outline"
+                              className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
+                            >
+                              {formatTL(twoMarket)}
+                            </Badge>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">
+                              —
+                            </span>
+                          )}
                         </TableCell>
                         <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="icon-xs"
-                                aria-label="Sepet eylemleri"
-                                className="relative text-muted-foreground after:absolute after:-inset-2"
-                              >
-                                <MoreHorizontalIcon className="size-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="min-w-40">
-                              <DropdownMenuItem
-                                onSelect={(e) => {
-                                  e.preventDefault()
-                                  enterSelect(b.id)
-                                }}
-                              >
-                                <CheckSquareIcon className="size-4" />
-                                Seç
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                variant="destructive"
-                                onSelect={(e) => {
-                                  e.preventDefault()
-                                  setSingleDeleteTarget(b)
-                                }}
-                              >
-                                <Trash2Icon className="size-4" />
-                                Sil
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <RowActions
+                            label="Sepet eylemleri"
+                            onSelect={() => enterSelect(b.id)}
+                            onDelete={() => setSingleDeleteTarget(b)}
+                          />
                         </TableCell>
                       </TableRow>
                     )
                   })}
                 </TableBody>
               </Table>
+              </div>
               {/* Infinite scroll sentinel */}
               {hasMore && !isSearchActive ? (
                 <div ref={sentinelRef} className="flex justify-center py-4">

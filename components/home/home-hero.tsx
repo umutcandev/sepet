@@ -220,11 +220,16 @@ export function HomeHero() {
         {/* Görselin alt kenarını blog bölümünün dip rengine (--home-base, temaya
             bağlı) yumuşak fade ile bağlar: dipte tam renk, yukarı doğru saydamlaşır.
             Gradient detayları `.home-hero-fade` içinde (globals.css) — tek hue alfa
-            rampası, görselin alt tepe siluetini çizgisiz yedirir. Kısa tutulur
-            (h-[22%]) ki üst kısımdaki görüntüyü maskelemesin. */}
+            rampası, görselin alt tepe siluetini çizgisiz yedirir.
+
+            Yükseklik YÜZDE DEĞİL sabit: gradient durakları rem cinsinden ve
+            üstüne binen blog bölümünün bindirmesi de sabit piksel (96/112px).
+            `h-[22%]` iken kısa pencerelerde tam opak bölge bindirmeden kısa
+            kalıyor, bölümün sert üst kenarı görselin üstünde çizgi olarak
+            görünüyordu. 17rem = 8rem opak dip + 9rem rampa. */}
         <div
           aria-hidden
-          className="home-hero-fade pointer-events-none absolute inset-x-0 bottom-0 h-[22%]"
+          className="home-hero-fade pointer-events-none absolute inset-x-0 bottom-0 h-[17rem]"
         />
         <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3 text-center">

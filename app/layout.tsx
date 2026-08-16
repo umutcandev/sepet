@@ -75,8 +75,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // Sidebar "Blog Gönderileri" grubu için son 4 yazı (başlık + link + yazar).
-  const blogPosts = getLatestPosts(4).map((post) => ({
+  // Sidebar "Blog Gönderileri" grubu için son 2 yazı (başlık + link + yazar).
+  // Sınır burada, bileşende değil: kesilen yazılar hiç serialize edilmiyor.
+  const blogPosts = getLatestPosts(2).map((post) => ({
     title: post.title,
     permalink: post.permalink,
     authors: post.authors,

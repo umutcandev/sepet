@@ -10,12 +10,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import { MarketCell } from "@/components/market-cell"
-
-const tl = new Intl.NumberFormat("tr-TR", {
-  style: "currency",
-  currency: "TRY",
-  maximumFractionDigits: 2,
-})
+import { formatTL } from "@/lib/format"
 
 const COLOR_VARS = [
   "var(--chart-1)",
@@ -94,7 +89,7 @@ export function MarketSplitDonut({ data, totalLabel, emptyHint }: Props) {
                         <span className="text-muted-foreground">{market}</span>
                       </div>
                       <span className="font-mono font-medium tabular-nums">
-                        {tl.format(Number(value))}{" "}
+                        {formatTL(Number(value))}{" "}
                         <span className="text-muted-foreground">
                           · %{Math.round(pct)}
                         </span>
@@ -139,7 +134,7 @@ export function MarketSplitDonut({ data, totalLabel, emptyHint }: Props) {
                       dy="1.5em"
                       className="fill-foreground text-base font-semibold tabular-nums"
                     >
-                      {tl.format(total)}
+                      {formatTL(total)}
                     </tspan>
                   </text>
                 )

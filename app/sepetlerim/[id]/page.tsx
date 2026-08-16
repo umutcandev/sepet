@@ -2,123 +2,47 @@ import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 import { ChevronLeftIcon } from "lucide-react"
 import { auth } from "@/auth"
-import { getBasketDetail } from "@/lib/actions/baskets"
+import { getBasketDetailCached } from "@/lib/data/records"
+import {
+  createAllocationLookup,
+  marketTotals,
+  parseSummary,
+  recommendedPlan,
+} from "@/lib/basket-plan"
+import { formatDateTime, formatTL } from "@/lib/format"
+import { priceFreshness } from "@/lib/price-freshness"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { MarketCell } from "@/components/market-cell"
+import { OptimizationCard } from "@/components/assistant/optimization-card"
 import {
   MarketSplitDonut,
   type MarketDatum,
 } from "@/components/charts/market-split-donut"
-import type { OptimizationSummary } from "@/lib/ai/schemas"
+import { RecordHeader } from "@/components/records/record-header"
+import { RefreshPricesButton } from "@/components/records/refresh-prices-button"
+import {
+  RecordInfoList,
+  RecordInfoRow,
+} from "@/components/records/record-info-list"
+import {
+  RecordItemList,
+  type RecordItemView,
+} from "@/components/records/record-item-list"
 import { DeleteBasketButton } from "./delete-button"
 
-export const metadata = { title: "Sepet Detayı" }
-
-const tl = new Intl.NumberFormat("tr-TR", {
-  style: "currency",
-  currency: "TRY",
-  maximumFractionDigits: 2,
-})
-
-const dateFmt = new Intl.DateTimeFormat("tr-TR", {
-  day: "2-digit",
-  month: "long",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-})
-
-type BasketRow = Awaited<ReturnType<typeof getBasketDetail>> extends
-  | { basket: infer B }
-  | null
-  ? B
-  : never
-
-function BasketInfoCard({
-  basket,
-  itemCount,
-  twoMarketSavings,
+export async function generateMetadata({
+  params,
 }: {
-  basket: BasketRow
-  itemCount: number
-  twoMarketSavings: number
+  params: Promise<{ id: string }>
 }) {
-  return (
-    <div className="overflow-hidden rounded-xl border bg-card">
-      <div className="flex items-center gap-2 border-b px-4 py-3">
-        <span className="text-sm font-medium">Sepet Bilgisi</span>
-      </div>
-      <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
-        <TableBody>
-          <TableRow>
-            <TableCell className="text-xs uppercase tracking-wide text-muted-foreground">
-              Ad
-            </TableCell>
-            <TableCell className="text-right font-medium">
-              {basket.name}
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="text-xs uppercase tracking-wide text-muted-foreground">
-              Oluşturuldu
-            </TableCell>
-            <TableCell className="text-right tabular-nums">
-              {dateFmt.format(new Date(basket.createdAt))}
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="text-xs uppercase tracking-wide text-muted-foreground">
-              Kalem
-            </TableCell>
-            <TableCell className="text-right font-medium tabular-nums">
-              {itemCount}
-            </TableCell>
-          </TableRow>
-          {basket.bestSingleMarket && (
-            <TableRow>
-              <TableCell className="text-xs uppercase tracking-wide text-muted-foreground">
-                En iyi market
-              </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end">
-                  <MarketCell name={basket.bestSingleMarket} size="sm" />
-                </div>
-                {basket.bestSingleTotal && (
-                  <div className="text-xs text-muted-foreground tabular-nums">
-                    {tl.format(Number(basket.bestSingleTotal))}
-                  </div>
-                )}
-              </TableCell>
-            </TableRow>
-          )}
-          {twoMarketSavings > 0 && (
-            <TableRow className="bg-emerald-500/5 hover:bg-emerald-500/10">
-              <TableCell className="text-xs text-emerald-700 dark:text-emerald-300">
-                2 market kombinasyonu tasarrufu
-              </TableCell>
-              <TableCell className="text-right">
-                <Badge
-                  variant="outline"
-                  className="border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
-                >
-                  {tl.format(twoMarketSavings)}
-                </Badge>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  )
+  const session = await auth()
+  if (!session?.user?.id) return { title: "Sepet Detayı" }
+  const { id } = await params
+  const detail = await getBasketDetailCached(id, session.user.id)
+  // Statik metadata yüzünden on kayıtlı sepetin sekme başlığı, tarayıcı geçmişi
+  // ve paylaşım önizlemesi birbirinin aynıydı.
+  return { title: detail ? detail.basket.name : "Sepet Detayı" }
 }
 
 export default async function BasketDetailPage({
@@ -130,26 +54,67 @@ export default async function BasketDetailPage({
   if (!session?.user?.id) redirect("/sepetlerim")
 
   const { id } = await params
-  const detail = await getBasketDetail(id, session.user.id)
+  const detail = await getBasketDetailCached(id, session.user.id)
   if (!detail) notFound()
-  const { basket, items } = detail
+  const { basket, items, conversation } = detail
 
   const twoMarketSavings = basket.twoMarketSavingsTL
     ? Number(basket.twoMarketSavingsTL)
     : 0
 
-  const summary = basket.summaryJson as OptimizationSummary | null
-  const allocation = summary?.twoMarketCombo.allocation ?? []
-  const allocationByMarket = new Map<string, number>()
-  for (const a of allocation) {
-    allocationByMarket.set(
-      a.market,
-      (allocationByMarket.get(a.market) ?? 0) + a.lineTotal,
-    )
-  }
-  const marketSplit: MarketDatum[] = Array.from(allocationByMarket.entries())
-    .map(([market, value]) => ({ market, value }))
-  const showSplit = twoMarketSavings > 0 && marketSplit.length >= 2
+  // Eski/bozuk kayıtlar burada `null`a düşer; sayfa özetsiz ama ayakta kalır.
+  const summary = parseSummary(basket.summaryJson)
+  const plan = recommendedPlan(summary)
+
+  // Kalem satırları fiyatı taşımaz; fiyat ve market seçili planın dökümünden
+  // okunur. Aksi halde kayıt sayfası, kullanıcıya hiç önerilmemiş üçüncü bir
+  // sepet gösteriyordu (her kalem ayrı bir marketten, dört ayrı mağaza).
+  const takeAllocation = createAllocationLookup(plan?.allocation ?? [])
+  const itemViews: RecordItemView[] = items.map((it) => {
+    const alloc = takeAllocation(it.rawName)
+    return {
+      id: it.id,
+      rawName: it.rawName,
+      quantity: Number(it.quantity),
+      unit: it.unit,
+      matchedName:
+        it.matchedName && it.matchedName !== it.rawName ? it.matchedName : null,
+      matchedBrand: it.matchedBrand,
+      matchedImageUrl: it.matchedImageUrl,
+      matchedProductId: it.matchedProductId,
+      searchQuery: it.searchQuery,
+      // Eski kayıtlarda lookupStatus yok → eşleşen ürün id'si karar verir.
+      matched:
+        it.lookupStatus != null
+          ? it.lookupStatus === "ok"
+          : it.matchedProductId != null,
+      plan: alloc
+        ? {
+            market: alloc.market,
+            unitPrice: alloc.unitPrice,
+            packs: alloc.quantity,
+            lineTotal: alloc.lineTotal,
+            depotName: alloc.depotName,
+            sizeMismatch: alloc.sizeMismatch,
+          }
+        : null,
+    }
+  })
+
+  const matchedCount = itemViews.filter((it) => it.matched).length
+  const allMatched = matchedCount === itemViews.length
+
+  const marketSplit: MarketDatum[] = marketTotals(plan?.allocation ?? [])
+  const showSplit = plan !== null && marketSplit.length >= 2
+
+  // "Fiyatları yenile": aynı kalemlerle asistanda yeniden hesaplat. Kayıtlı
+  // sepeti ölü bir arşivden tekrar kullanılabilir bir listeye çeviren şey bu.
+  const refreshQuery = items
+    .map((it) => `${Number(it.quantity)} ${it.unit} ${it.rawName}`)
+    .join(", ")
+
+  // Fiyatların yaşı ayrı bir rozet değil, yenileme butonunun tooltip'i.
+  const freshness = priceFreshness(basket.createdAt)
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
@@ -165,111 +130,109 @@ export default async function BasketDetailPage({
         </div>
       </div>
 
-      <div
-        className={
-          showSplit
-            ? "grid gap-5 md:grid-cols-[280px_minmax(0,1fr)]"
-            : "space-y-5"
+      <RecordHeader
+        title={basket.name}
+        createdAt={basket.createdAt}
+        conversation={conversation}
+        actions={
+          refreshQuery ? (
+            <RefreshPricesButton
+              href={`/asistan?liste=${encodeURIComponent(refreshQuery)}`}
+              freshnessLabel={freshness?.ageLabel ?? null}
+              isStale={freshness?.isStale ?? false}
+            />
+          ) : null
         }
-      >
-        {showSplit && (
-          <div className="min-w-0 space-y-3">
-            <div className="rounded-xl border bg-card p-4">
-              <div className="mb-3 text-xs uppercase tracking-wide text-muted-foreground">
-                2-Market Dağılımı
+      />
+
+      {/* Masaüstü: üstte iki kolon — solda sepet bilgisi + dağılım, sağda
+          sepet özeti; altta tam genişlik kalem listesi.
+          Mobil: `order` ile önce özet (sonuç), sonra kalemler (döküm), en son
+          bilgi ve dağılım — sohbetteki okuma sırasının aynısı. */}
+      <div className="grid gap-5 md:grid-cols-2">
+        <div className="order-3 min-w-0 space-y-5 md:order-1">
+          <RecordInfoList
+            title="Sepet Bilgisi"
+            headerRight={
+              twoMarketSavings > 0 ? (
+                <Badge variant="success" className="tabular-nums">
+                  {formatTL(twoMarketSavings)}
+                  <span className="sr-only"> iki market tasarrufu</span>
+                </Badge>
+              ) : null
+            }
+          >
+            <RecordInfoRow label="Oluşturuldu">
+              <span className="tabular-nums">
+                {formatDateTime(basket.createdAt)}
+              </span>
+            </RecordInfoRow>
+            <RecordInfoRow label="Kalem">
+              <span className="tabular-nums">
+                {allMatched
+                  ? items.length
+                  : `${matchedCount}/${items.length} eşleşti`}
+              </span>
+            </RecordInfoRow>
+            {basket.bestSingleMarket && (
+              <RecordInfoRow label="Tek market">
+                <div className="flex flex-wrap items-center justify-end gap-x-2">
+                  <MarketCell name={basket.bestSingleMarket} size="sm" />
+                  {basket.bestSingleTotal && (
+                    <span className="tabular-nums text-muted-foreground">
+                      {formatTL(Number(basket.bestSingleTotal))}
+                    </span>
+                  )}
+                </div>
+              </RecordInfoRow>
+            )}
+          </RecordInfoList>
+
+          {showSplit && (
+            <div className="overflow-hidden rounded-xl border bg-card">
+              <div className="flex min-h-12 items-center border-b px-4 py-2 text-sm font-medium">
+                {plan.kind === "combo" ? "2-Market Dağılımı" : "Market Dağılımı"}
               </div>
-              <MarketSplitDonut
-                data={marketSplit}
-                totalLabel="2-market toplamı"
-                emptyHint="Dağılım için yeterli market yok."
-              />
+              <div className="p-4">
+                <MarketSplitDonut
+                  data={marketSplit}
+                  totalLabel={`${plan.label} toplamı`}
+                  emptyHint="Dağılım için yeterli market yok."
+                />
+              </div>
             </div>
+          )}
+        </div>
+
+        {/* Sohbetteki genişleyen dökümün bütün verisi zaten diskteydi; kayıt
+            sayfası bunu yalnızca halka grafik için toplayıp gerisini atıyordu.
+            Kart saf bir bileşen — tek girdisi summary. */}
+        {summary && (
+          <div className="order-1 min-w-0 md:order-2">
+            <OptimizationCard summary={summary} />
           </div>
         )}
 
-        <div className="min-w-0 space-y-3">
+        <div className="order-2 min-w-0 md:order-3 md:col-span-2">
           <div className="overflow-hidden rounded-xl border bg-card">
-            <div className="flex items-center gap-2 border-b px-4 py-3">
+            <div className="flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2">
               <span className="text-sm font-medium">Sepetteki Kalemler</span>
-              <Badge variant="secondary" className="text-[0.625rem]">
-                {items.length}
+              <Badge variant="secondary">
+                {allMatched
+                  ? items.length
+                  : `${matchedCount}/${items.length} eşleşti`}
               </Badge>
+              {plan && (
+                <span className="ml-auto text-xs text-muted-foreground">
+                  Fiyatlar: {plan.label} planı
+                </span>
+              )}
             </div>
-
-            <ul className="divide-y md:hidden">
-              {items.map((it) => (
-                <li key={it.id} className="space-y-2 px-4 py-3">
-                  <div className="min-w-0">
-                    <div className="text-sm font-medium break-words">
-                      {it.rawName}
-                    </div>
-                    {it.matchedName && it.matchedName !== it.rawName && (
-                      <div className="text-[0.6875rem] text-muted-foreground break-words">
-                        ↪ {it.matchedName}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <MarketCell name={it.bestMarket} size="sm" />
-                    </div>
-                    <div className="shrink-0 text-right">
-                      <div className="text-[0.6875rem] text-muted-foreground tabular-nums">
-                        {Number(it.quantity)} {it.unit}
-                      </div>
-                      <div className="text-sm font-medium tabular-nums">
-                        {it.bestPrice
-                          ? tl.format(Number(it.bestPrice))
-                          : "—"}
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            <div className="hidden md:block">
-              <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
-                <TableHeader>
-                  <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
-                    <TableHead className="min-w-[160px]">Ürün</TableHead>
-                    <TableHead className="w-20 text-right">Adet</TableHead>
-                    <TableHead className="min-w-[120px]">En iyi market</TableHead>
-                    <TableHead className="w-24 text-right">En iyi fiyat</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {items.map((it) => (
-                    <TableRow key={it.id}>
-                      <TableCell className="align-top">
-                        <div className="text-sm font-medium">{it.rawName}</div>
-                        {it.matchedName && it.matchedName !== it.rawName && (
-                          <div className="text-[0.6875rem] text-muted-foreground">
-                            ↪ {it.matchedName}
-                          </div>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums text-sm">
-                        {Number(it.quantity)} {it.unit}
-                      </TableCell>
-                      <TableCell>
-                        <MarketCell name={it.bestMarket} size="sm" />
-                      </TableCell>
-                      <TableCell className="text-right tabular-nums">
-                        {it.bestPrice ? tl.format(Number(it.bestPrice)) : "—"}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+            <RecordItemList
+              items={itemViews}
+              emptyHint="Bu sepette kalem yok."
+            />
           </div>
-
-          <BasketInfoCard
-            basket={basket}
-            itemCount={items.length}
-            twoMarketSavings={twoMarketSavings}
-          />
         </div>
       </div>
     </div>
