@@ -23,8 +23,14 @@ import { Button } from "@/components/ui/button"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 import { useRequireLocation } from "@/lib/hooks/use-require-location"
 import { useCurrentUser } from "@/components/providers/session-provider"
+import { useMounted } from "@/hooks/use-mounted"
 import { assistantTitle } from "@/lib/stores/assistant-title"
 import { assistantConversations } from "@/lib/stores/assistant-conversations"
+import {
+  readQueryParam,
+  SEED_LIST_MAX,
+  SEED_LIST_PARAM,
+} from "@/lib/url-seed"
 import type {
   BasketDraft,
   ImageAnalysis,
@@ -77,12 +83,6 @@ type AnalyzeImageOutput = {
 
 type AssistantChatProps = {
   conversationId?: string
-  /**
-   * Yazma alanına önceden doldurulacak metin (ör. kayıtlı bir sepetten
-   * "Fiyatları yenile"). Kasıtlı olarak GÖNDERİLMEZ, yalnızca doldurulur:
-   * kullanıcının açık onayı olmadan bir asistan turu başlatmak kotasını harcar.
-   */
-  initialInput?: string
   initialTitle?: string
   initialMessages?: Array<Pick<UIMessage, "id" | "role" | "parts"> & {
     metadata?: unknown
@@ -93,7 +93,6 @@ type AssistantChatProps = {
 
 export function AssistantChat({
   conversationId: initialConversationId,
-  initialInput,
   initialTitle,
   initialMessages,
   initialSavedBaskets,
@@ -217,8 +216,38 @@ export function AssistantChat({
       }
     },
   })
-  const [input, setInput] = React.useState(initialInput ?? "")
+  // `null` = kullanıcı yazma alanına hiç dokunmadı → gösterilen değer URL
+  // seed'idir (aşağıdaki `seededInput`). İlk tuşta state devralır.
+  const [input, setInput] = React.useState<string | null>(null)
   const sentSeedRef = React.useRef(false)
+
+  /**
+   * `/asistan?liste=...` — kayıtlı bir sepetten "Fiyatları yenile".
+   *
+   * Yalnızca yazma alanını DOLDURUR, göndermez: kullanıcının açık onayı olmadan
+   * bir asistan turu başlatmak kotasını harcar.
+   *
+   * Sayfadan prop olarak DEĞİL, burada okunuyor: `searchParams` await etmek
+   * `/asistan`ı dinamik rotaya çeviriyordu (bkz. lib/url-seed.ts).
+   *
+   * `window` yalnızca istemcide var. Efektte `setInput` çağırmak yerine
+   * (`react-hooks/set-state-in-effect`) değer RENDER SIRASINDA türetiliyor:
+   * `useMounted` hidrasyona dek false döner, yani sunucu ile ilk istemci
+   * render'ı ikisi de boş textarea basar — uyuşmazlık yok. Mount'tan sonra
+   * `seededInput` devreye girer.
+   *
+   * `input` state'i kullanıcı yazana kadar `null`; gösterilen değer o zamana
+   * dek seed'dir. Böylece seed metni kullanıcının yazdığını hiçbir zaman ezmez
+   * (tek karakter silmek bile state'i devralır).
+   *
+   * Var olan bir sohbette (initialMessages dolu) hiç çalışmaz; oraya bu
+   * bağlantıyla gelinmiyor ve gelinse bile hazır bir metin bağlamı bozardı.
+   */
+  const mounted = useMounted()
+  const seededInput =
+    mounted && !(initialMessages && initialMessages.length > 0)
+      ? (readQueryParam(SEED_LIST_PARAM, SEED_LIST_MAX) ?? "")
+      : ""
 
   // Ana sayfadan gelen seed'i synchronously oku ki ilk render'da hemen
   // optimistic user bubble + "Düşünüyorum…" gösterebilelim. Aksi halde
@@ -770,7 +799,7 @@ export function AssistantChat({
       )}
 
       <AssistantPrompt
-        input={input}
+        input={input ?? seededInput}
         setInput={setInput}
         onSubmit={handleSubmit}
         className="mx-auto w-full max-w-3xl"

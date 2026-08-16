@@ -18,6 +18,11 @@ import { Spinner } from "@/components/ui/spinner"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 import { useRequireLocation } from "@/lib/hooks/use-require-location"
 import { formatTLOrDash } from "@/lib/format"
+import {
+  readQueryParam,
+  SEARCH_QUERY_MAX,
+  SEARCH_QUERY_PARAM,
+} from "@/lib/url-seed"
 import { cn } from "@/lib/utils"
 import type { ProductHit } from "@/lib/marketfiyati/types"
 
@@ -42,25 +47,9 @@ type Result =
       loadingMore: boolean
     }
 
-export function ProductSearchPage({
-  initialQuery = "",
-}: {
-  /**
-   * URL'den gelen sorgu (`/urun-ara?q=...`). Arama tamamen bileşen state'inde
-   * durduğu için hiçbir yerden derin link kurulamıyordu — eşleşmeyen bir kalem
-   * "kendin ara"ya bağlanamıyor, bir arama paylaşılamıyordu.
-   */
-  initialQuery?: string
-} = {}) {
-  const seedQuery = initialQuery.trim()
-  const hasSeed = seedQuery.length >= 2
-
-  const [q, setQ] = React.useState(initialQuery)
-  // URL'den sorgu geldiyse ilk render zaten yükleniyor durumunda başlar —
-  // efekt içinde senkron setState yapmak zorunda kalmayalım diye.
-  const [result, setResult] = React.useState<Result>(
-    hasSeed ? { kind: "loading" } : { kind: "idle" },
-  )
+export function ProductSearchPage() {
+  const [q, setQ] = React.useState("")
+  const [result, setResult] = React.useState<Result>({ kind: "idle" })
   const [selectedId, setSelectedId] = React.useState<string | null>(null)
   const [scannerOpen, setScannerOpen] = React.useState(false)
   const abortRef = React.useRef<AbortController | null>(null)
@@ -164,26 +153,49 @@ export function ProductSearchPage({
   const submitSearch = guard(locationGuard(() => runSearchWith(q)))
   const openScanner = guard(locationGuard(() => setScannerOpen(true)))
 
-  // URL'den gelen sorguyu bir kez kendiliğinden çalıştır — ama elle aramayla
-  // AYNI kapılardan geçerek. Doğrudan `fetchPage` çağrılıyordu; oturumsuz bir
-  // kullanıcı (paylaşılan bir arama linki) API'den 401 alıyor ve login modalı
-  // yerine ekranda ham "unauthorized" metnini görüyordu. Konum için de aynısı.
-  //
-  // Kapı kapalıysa sarmalayıcı `undefined` döner: ilk render'daki "loading"i
-  // geri alıp boş duruma düşeriz. Giriş yapılınca `guard` kimliği değişir ve
-  // efekt yeniden koşar; konum modalı ise handler'ı zaten kendisi sürdürür.
-  const seedRan = React.useRef(false)
+  /**
+   * `/urun-ara?q=...` derin linki. Arama tamamen bileşen state'inde durduğu
+   * için hiçbir yerden bağlanılamıyordu — eşleşmeyen bir kalem "kendin ara"ya
+   * gidemiyor, bir arama paylaşılamıyordu.
+   *
+   * Sunucudan prop olarak DEĞİL, burada okunuyor: `searchParams` await etmek
+   * rotayı dinamik yapıyordu (bkz. lib/url-seed.ts). EFEKT içinde, `useState`
+   * başlatıcısında değil — `window` yalnızca istemcide var, başlatıcıda okunsa
+   * sunucu boş input + boş liste, istemci dolu input + spinner basar ve
+   * hidrasyon uyuşmazlığı doğardı.
+   *
+   * Arama elle aramayla AYNI kapılardan geçer. Doğrudan `fetchPage`
+   * çağrılıyordu; oturumsuz bir kullanıcı (paylaşılan bir link) API'den 401
+   * alıp login modalı yerine ham "unauthorized" metnini görüyordu.
+   * `applied` input'u bir kez doldurur (kapı kapalıyken de görünsün, ayrıca
+   * sonraki koşular kullanıcının yazdığını EZMESİN); `searched` ise yalnız
+   * arama gerçekten başlayınca işaretlenir, böylece giriş yapılınca — `guard`
+   * kimliği değişip efekt yeniden koştuğunda — arama kendiliğinden sürer.
+   */
+  const seed = React.useRef({ applied: false, searched: false })
   React.useEffect(() => {
-    if (!hasSeed || seedRan.current) return
-    const started = guard(
+    if (seed.current.searched) return
+    const value = readQueryParam(SEARCH_QUERY_PARAM, SEARCH_QUERY_MAX)
+    if (!value) {
+      seed.current.searched = true
+      return
+    }
+    if (!seed.current.applied) {
+      seed.current.applied = true
+      setQ(value)
+    }
+    if (value.length < 2) {
+      seed.current.searched = true
+      return
+    }
+    guard(
       locationGuard(() => {
-        seedRan.current = true
-        return runSearchWith(seedQuery)
+        seed.current.searched = true
+        return runSearchWith(value)
       }),
     )()
-    if (started === undefined) setResult({ kind: "idle" })
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- runSearchWith her render'da yeniden kurulur; bağımlılığı sorgunun kendisi
-  }, [hasSeed, seedQuery, guard, locationGuard])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runSearchWith her render'da yeniden kurulur; efekt yalnız kapılara bağlı
+  }, [guard, locationGuard])
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">

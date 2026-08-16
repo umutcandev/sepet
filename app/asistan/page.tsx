@@ -6,20 +6,9 @@ export const metadata = {
     "Yapay zekâ destekli alışveriş asistanı ile listeni paylaş, en ucuz market kombinasyonunu anında öğren.",
 }
 
-// Kayıtlı bir sepetten "Fiyatları yenile" ile gelindiğinde liste yazma alanına
-// hazır düşer. Gönderme kullanıcıya bırakılır — bkz. AssistantChat.initialInput.
-const MAX_SEED_LENGTH = 2000
-
-export default async function AssistantPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ liste?: string }>
-}) {
-  const { liste } = await searchParams
-  const initialInput =
-    typeof liste === "string" && liste.trim().length > 0
-      ? liste.slice(0, MAX_SEED_LENGTH)
-      : undefined
-
-  return <AssistantChat initialInput={initialInput} />
+// `?liste=` (kayıtlı sepetten "Fiyatları yenile") istemcide okunuyor —
+// bkz. lib/url-seed.ts. Burada `searchParams` await edilseydi rota dinamik
+// olur ve sayfa statik prerender'ı kaybederdi.
+export default function AssistantPage() {
+  return <AssistantChat />
 }
