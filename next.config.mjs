@@ -23,7 +23,7 @@ const nextConfig = {
   // sessiz bir bozulma: sayfa 200 dönüyor ama chunk'lar inmediği için istemci
   // bileşenleri hiç mount olmuyor — hero shader'ın telefonda gelmemesinin
   // sebebi buydu. Yalnız dev sunucusunu ilgilendirir, production'a çıkmaz.
-  allowedDevOrigins: ["192.168.1.176", "192.168.1.*"],
+  allowedDevOrigins: ["192.168.1.*"],
   // argon2 (native napi binary) ve nodemailer server-only; bundle'a girmeyip
   // Node runtime'da require edilmeleri gerekir. Aksi halde build/serverless
   // paketleme bozulur.

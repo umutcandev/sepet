@@ -2,7 +2,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { AuthorAvatarGroup } from "@/components/blog/author-meta"
-import { BlogDitherCard } from "@/components/home/blog-dither-card"
+import { HomeFeaturesSection } from "@/components/home/home-features-section"
 import { LogoMarquee } from "@/components/home/logo-marquee"
 import { getLatestPosts } from "@/lib/blog"
 import { formatAuthorNames } from "@/lib/blog/authors"
@@ -80,6 +80,14 @@ export function HomeBlogSection() {
           <LogoMarquee className="text-foreground/45" />
         </AnimateEnter>
       </div>
+
+      {/* Üç özellik kartı. Zemin (`home-dark-ground`) ve `data-home-dark-start`
+          nişanı bu section'a ait olduğu için özellik bölümü de BURADA duruyor:
+          page.tsx'te ayrı bir kardeş olsaydı hero'nun fade'iyle bu section'ın
+          -mt bindirmesinin arasına düşerdi. Kendi `dark` sarmalayıcısını
+          taşır — aşağıdaki blog bloğu gibi. */}
+      <HomeFeaturesSection />
+
       {/* pb: altında footer var; sayfa dibi boşluğunu footer'ın kendi padding'i
           tamamlıyor, bu yüzden burada eskisinden dar. */}
       <div className="dark mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
@@ -111,9 +119,8 @@ export function HomeBlogSection() {
                 delay={stagger(i)}
                 className="h-full"
               >
-                <BlogDitherCard
+                <Link
                   href={post.permalink}
-                  index={i}
                   className="group flex h-full flex-col rounded-xl border border-border bg-card p-4 transition-colors hover:border-foreground/20 [&_[data-slot=avatar]]:ring-card"
                 >
                   <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-muted-foreground">
@@ -128,14 +135,18 @@ export function HomeBlogSection() {
                     {post.title}
                   </h3>
 
-                  <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5">
-                    <AuthorAvatarGroup authors={post.authors} size="sm" />
-                    <span className="min-w-0 text-sm text-muted-foreground">
-                      {formatAuthorNames(post.authors)} ·{" "}
-                      {post.metadata.readingTime} dk okuma
+                  {/* Sarmalamıyoruz: dar kartta "Nur Salan ve Umutcan Kaya"
+                      sığmayınca avatarlar tek başına bir satırda kalıp
+                      isimden kopuyordu. Tek satır + `truncate`, taşan adı
+                      üç noktayla kesiyor; avatar grubu flex'in `min-width:auto`
+                      tabanı sayesinde daralmıyor. */}
+                  <div className="mt-8 flex items-center gap-2">
+                    <AuthorAvatarGroup authors={post.authors} size="xs" />
+                    <span className="min-w-0 truncate text-sm text-muted-foreground">
+                      {formatAuthorNames(post.authors)}
                     </span>
                   </div>
-                </BlogDitherCard>
+                </Link>
               </AnimateEnter>
             )
           })}

@@ -1,8 +1,7 @@
-import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
-import { ChevronLeftIcon } from "lucide-react"
 import { auth } from "@/auth"
 import { getBasketDetailCached } from "@/lib/data/records"
+import { withResolvedItemImages } from "@/lib/data/item-images"
 import {
   createAllocationLookup,
   marketTotals,
@@ -12,7 +11,6 @@ import {
 import { formatDateTime, formatTL } from "@/lib/format"
 import { priceFreshness } from "@/lib/price-freshness"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { MarketCell } from "@/components/market-cell"
 import { OptimizationCard } from "@/components/assistant/optimization-card"
 import {
@@ -20,16 +18,16 @@ import {
   type MarketDatum,
 } from "@/components/charts/market-split-donut"
 import { RecordHeader } from "@/components/records/record-header"
-import { RefreshPricesButton } from "@/components/records/refresh-prices-button"
 import {
   RecordInfoList,
+  RecordInfoNote,
   RecordInfoRow,
 } from "@/components/records/record-info-list"
 import {
   RecordItemList,
   type RecordItemView,
 } from "@/components/records/record-item-list"
-import { DeleteBasketButton } from "./delete-button"
+import { BasketActionsMenu } from "./actions-menu"
 
 export async function generateMetadata({
   params,
@@ -56,7 +54,10 @@ export default async function BasketDetailPage({
   const { id } = await params
   const detail = await getBasketDetailCached(id, session.user.id)
   if (!detail) notFound()
-  const { basket, items, conversation } = detail
+  const { basket, conversation } = detail
+  // Görseli olmayan kalemler eşleşen üründen tamamlanır — `matchedImageUrl`
+  // sütunu sonradan eklendiğinden eski kayıtların tamamı boşta kalmıştı.
+  const items = await withResolvedItemImages(detail.items, "basket")
 
   const twoMarketSavings = basket.twoMarketSavingsTL
     ? Number(basket.twoMarketSavingsTL)
@@ -69,6 +70,12 @@ export default async function BasketDetailPage({
   // Kalem satırları fiyatı taşımaz; fiyat ve market seçili planın dökümünden
   // okunur. Aksi halde kayıt sayfası, kullanıcıya hiç önerilmemiş üçüncü bir
   // sepet gösteriyordu (her kalem ayrı bir marketten, dört ayrı mağaza).
+  //
+  // Döküm `summaryJson`'a sonradan eklendi: ondan önceki sepetlerde toplamlar ve
+  // marketler var ama kalem bazlı fiyat YOK. Sessizce boş bırakmak yerine durumu
+  // söyle — kullanıcı bunun bir arıza değil eski kayıt olduğunu bilsin ve
+  // "Fiyatları yenile"ye yönelsin.
+  const hasBreakdown = (plan?.allocation.length ?? 0) > 0
   const takeAllocation = createAllocationLookup(plan?.allocation ?? [])
   const itemViews: RecordItemView[] = items.map((it) => {
     const alloc = takeAllocation(it.rawName)
@@ -118,30 +125,21 @@ export default async function BasketDetailPage({
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Button variant="ghost" size="sm" asChild>
-          <Link href="/sepetlerim">
-            <ChevronLeftIcon className="mr-1 size-4" />
-            Sepetlerim
-          </Link>
-        </Button>
-        <div className="ml-auto">
-          <DeleteBasketButton id={basket.id} />
-        </div>
-      </div>
-
       <RecordHeader
         title={basket.name}
         createdAt={basket.createdAt}
-        conversation={conversation}
         actions={
-          refreshQuery ? (
-            <RefreshPricesButton
-              href={`/asistan?liste=${encodeURIComponent(refreshQuery)}`}
-              freshnessLabel={freshness?.ageLabel ?? null}
-              isStale={freshness?.isStale ?? false}
-            />
-          ) : null
+          <BasketActionsMenu
+            id={basket.id}
+            conversation={conversation}
+            refreshHref={
+              refreshQuery
+                ? `/asistan?liste=${encodeURIComponent(refreshQuery)}`
+                : null
+            }
+            freshnessLabel={freshness?.ageLabel ?? null}
+            isStale={freshness?.isStale ?? false}
+          />
         }
       />
 
@@ -186,6 +184,14 @@ export default async function BasketDetailPage({
                 </div>
               </RecordInfoRow>
             )}
+            {!hasBreakdown && (
+              <RecordInfoNote className="bg-muted/40">
+                Bu sepet, kalem bazlı fiyat dökümü eklenmeden önce kaydedilmiş.
+                Toplamlar kayıtlı, tek tek kalem fiyatları yok. Güncel fiyatlar
+                için &quot;Fiyatları yenile&quot; ile aynı listeyi yeniden
+                hesaplat.
+              </RecordInfoNote>
+            )}
           </RecordInfoList>
 
           {showSplit && (
@@ -222,11 +228,11 @@ export default async function BasketDetailPage({
                   ? items.length
                   : `${matchedCount}/${items.length} eşleşti`}
               </Badge>
-              {plan && (
-                <span className="ml-auto text-xs text-muted-foreground">
-                  Fiyatlar: {plan.label} planı
-                </span>
-              )}
+              <span className="ml-auto text-xs text-muted-foreground">
+                {hasBreakdown && plan
+                  ? `Fiyatlar: ${plan.label} planı`
+                  : "Fiyat dökümü yok"}
+              </span>
             </div>
             <RecordItemList
               items={itemViews}

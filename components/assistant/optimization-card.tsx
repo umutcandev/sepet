@@ -125,14 +125,14 @@ function OptionRow({
   subtitle: React.ReactNode
   subtitleClassName: string
   total: number
-  allocation: MarketAllocation[] | undefined
+  allocation: MarketAllocation[]
   markets: string[]
 }) {
   const [open, setOpen] = useState(false)
-  // Eski kayıtlı özetlerde allocation hiç olmayabilir (summaryJson zod'dan
-  // geçmeden cast edildiği için default uygulanmaz) → güvenli boş listeye düş.
-  const items = allocation ?? []
-  const canExpand = items.length > 0
+  // Döküm eklenmeden önce kaydedilmiş özetlerde `allocation` boş dizi olur
+  // (bkz. şemadaki `.default([])`) — kart toplamı ve marketi gösterir, yalnızca
+  // açılır döküm kapalı kalır.
+  const canExpand = allocation.length > 0
 
   return (
     <div>
@@ -168,7 +168,7 @@ function OptionRow({
         )}
       </button>
       {open && canExpand && (
-        <AllocationBreakdown allocation={items} markets={markets} />
+        <AllocationBreakdown allocation={allocation} markets={markets} />
       )}
     </div>
   )

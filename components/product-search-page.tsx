@@ -15,8 +15,12 @@ import {
 } from "@/components/ui/responsive-dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
+import { useCurrentUser } from "@/components/providers/session-provider"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 import { useRequireLocation } from "@/lib/hooks/use-require-location"
+import { useUserLocation } from "@/lib/stores/location"
+import { locationDialog } from "@/lib/stores/location-dialog"
+import { loginDialog } from "@/lib/stores/login-dialog"
 import { formatTLOrDash } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { ProductHit } from "@/lib/marketfiyati/types"
@@ -66,13 +70,40 @@ export function ProductSearchPage({
   const abortRef = React.useRef<AbortController | null>(null)
   const guard = useRequireAuth()
   const locationGuard = useRequireLocation()
+  // Sarmalayıcı guard'lar event zamanı için; derin link render sonrası tek
+  // seferlik bir akış olduğundan kapıları ham durumdan okuyor.
+  const { isAuthenticated, loading: sessionLoading } = useCurrentUser()
+  const { hasLocation } = useUserLocation()
 
   React.useEffect(() => {
     return () => abortRef.current?.abort()
   }, [])
 
+  /**
+   * Derin linkin (`?q=`) hangi kapıda olduğu. Sıra formunkiyle aynı: önce
+   * oturum, sonra konum. Karar efekte değil RENDER'a ait — efekt gövdesinde
+   * senkron setState zincirleme render'a yol açıyor (react-hooks/
+   * set-state-in-effect), o yüzden "kapıda bekliyor" saklanan bir state değil
+   * türetilen bir değer.
+   */
+  const seedGate: "none" | "session" | "auth" | "location" | "ready" = !hasSeed
+    ? "none"
+    : sessionLoading
+      ? "session"
+      : !isAuthenticated
+        ? "auth"
+        : !hasLocation
+          ? "location"
+          : "ready"
+
+  // Kapıda bekleyen seed varken iskelet göstermek yanıltıcı olurdu: arama hiç
+  // başlamadı, modalın cevabı bekleniyor. Görüntü boş duruma düşer; yazma
+  // alanındaki sorgu yerinde durduğu için kullanıcı elle de arayabilir.
+  const view: Result =
+    seedGate === "auth" || seedGate === "location" ? { kind: "idle" } : result
+
   const trimmed = q.trim()
-  const canSubmit = trimmed.length >= 2 && result.kind !== "loading"
+  const canSubmit = trimmed.length >= 2 && view.kind !== "loading"
 
   async function fetchPage(
     value: string,
@@ -164,11 +195,38 @@ export function ProductSearchPage({
   const submitSearch = guard(locationGuard(() => runSearchWith(q)))
   const openScanner = guard(locationGuard(() => setScannerOpen(true)))
 
-  // URL'den gelen sorguyu bir kez kendiliğinden çalıştır. `runSearchWith`
-  // kullanılmıyor çünkü o "loading"i senkron kuruyor; burada başlangıç state'i
-  // zaten "loading" ve setState yalnızca yanıt geldiğinde çağrılıyor.
+  // URL'den gelen sorguyu bir kez kendiliğinden çalıştır.
+  //
+  // Efekt `fetchPage`e doğrudan düşüyordu, yani formun geçtiği oturum ve konum
+  // kapılarını atlıyordu: oturumsuz bir ziyaretçi API'den 401 alıyor ve arama
+  // sonucu yerine ham "unauthorized" metnini görüyordu. Paylaşılan bir arama
+  // linkinin ilk izlenimi bu olamaz — kapılar burada, `guard(locationGuard(…))`
+  // ile aynı sırayla elle uygulanır.
+  const seededRef = React.useRef(false)
   React.useEffect(() => {
-    if (!hasSeed) return
+    // "session": /api/me henüz çözülmedi. Misafir varsayıp login modalı açmak
+    // yeni giriş yapmış kullanıcıyı boş yere durdururdu — bekle.
+    if (seededRef.current || seedGate === "none" || seedGate === "session") {
+      return
+    }
+
+    if (seedGate === "auth") {
+      // `seededRef` bilerek işaretlenmiyor: giriş yapılınca efekt yeniden
+      // çalışır ve arama kullanıcı bir şey yapmadan koşar.
+      loginDialog.open()
+      return
+    }
+
+    seededRef.current = true
+    if (seedGate === "location") {
+      // Konum kaydedilince bekleyen aksiyon olarak çalışır (bkz. locationDialog).
+      // Buradaki setState efekt gövdesinde değil, kullanıcı aksiyonunda.
+      locationDialog.open(() => void runSearchWith(seedQuery))
+      return
+    }
+
+    // İstek doğrudan burada kurulur; `runSearchWith` "loading"i senkron
+    // yazardı. İptal, unmount'taki ortak `abortRef` temizliğine bağlı.
     const ctrl = new AbortController()
     abortRef.current = ctrl
     fetchPage(seedQuery, 0, ctrl.signal)
@@ -188,8 +246,10 @@ export function ProductSearchPage({
         if (ctrl.signal.aborted || err.name === "AbortError") return
         setResult({ kind: "error", message: err.message })
       })
-    return () => ctrl.abort()
-  }, [hasSeed, seedQuery])
+    // `fetchPage`/`runSearchWith` her render'da yeniden kurulur; tek çalışmayı
+    // `seededRef` garanti ettiği için bağımlılık listesinde yokturlar.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seedGate, seedQuery])
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
@@ -245,7 +305,7 @@ export function ProductSearchPage({
           disabled={!canSubmit}
           className="h-9 px-3"
         >
-          {result.kind === "loading" ? (
+          {view.kind === "loading" ? (
             <Spinner className="size-3.5" />
           ) : (
             <SearchIcon className="size-3.5" />
@@ -255,7 +315,7 @@ export function ProductSearchPage({
       </form>
 
       <ResultArea
-        result={result}
+        result={view}
         onSelect={guard(setSelectedId)}
         onLoadMore={loadMore}
       />

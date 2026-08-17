@@ -20,9 +20,7 @@ function CardSkeleton({
 }) {
   return (
     <div className="overflow-hidden rounded-xl border bg-card">
-      <div className="border-b px-4 py-3">
-        <Skeleton className={`h-4 ${headerWidth}`} />
-      </div>
+      <CardHeaderSkeleton width={headerWidth} />
       <div className="divide-y">
         {Array.from({ length: rows }).map((_, i) => (
           <div key={i} className="flex min-h-10 items-center justify-between px-4 py-2">
@@ -35,13 +33,32 @@ function CardSkeleton({
   )
 }
 
+/**
+ * Kart başlığı — gerçek kartlarla aynı ritim (`min-h-12`, `py-2`). İskeletin
+ * `py-3` kullandığı yerlerde yüklenince başlık 4px kayıyordu.
+ */
+function CardHeaderSkeleton({
+  width = "w-28",
+  extra,
+}: {
+  width?: string
+  extra?: React.ReactNode
+}) {
+  return (
+    <div className="flex min-h-12 items-center gap-2 border-b px-4 py-2">
+      <Skeleton className={`h-4 ${width}`} />
+      {extra}
+    </div>
+  )
+}
+
 function ItemsCardSkeleton() {
   return (
     <div className="overflow-hidden rounded-xl border bg-card">
-      <div className="flex items-center gap-2 border-b px-4 py-3">
-        <Skeleton className="h-4 w-36" />
-        <Skeleton className="h-5 w-10 rounded-md" />
-      </div>
+      <CardHeaderSkeleton
+        width="w-36"
+        extra={<Skeleton className="h-5 w-10 rounded-md" />}
+      />
       <ul className="divide-y">
         {Array.from({ length: 5 }).map((_, i) => (
           <li key={i} className="flex items-start gap-3 px-4 py-3">
@@ -64,9 +81,7 @@ function ItemsCardSkeleton() {
 function SummaryCardSkeleton() {
   return (
     <div className="overflow-hidden rounded-xl border bg-card">
-      <div className="border-b px-4 py-3">
-        <Skeleton className="h-4 w-24" />
-      </div>
+      <CardHeaderSkeleton width="w-24" />
       <div className="divide-y">
         {Array.from({ length: 2 }).map((_, i) => (
           <div key={i} className="flex items-center gap-3 px-4 py-3">
@@ -83,44 +98,43 @@ function SummaryCardSkeleton() {
   )
 }
 
+/** Halka solda, döküm sağda — bkz. MarketSplitDonut'taki aynı yerleşim. */
 function DonutCardSkeleton() {
   return (
     <div className="overflow-hidden rounded-xl border bg-card">
-      <div className="border-b px-4 py-3">
-        <Skeleton className="h-4 w-40" />
-      </div>
-      <div className="space-y-3 p-4">
-        <Skeleton className="mx-auto size-36 rounded-full" />
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="flex items-center justify-between">
-            <Skeleton className="h-3.5 w-24" />
-            <Skeleton className="h-3.5 w-8" />
-          </div>
-        ))}
+      <CardHeaderSkeleton width="w-40" />
+      <div className="flex items-center gap-3 p-4 sm:gap-4">
+        <Skeleton className="size-[140px] shrink-0 rounded-full sm:size-[168px]" />
+        <div className="grid min-w-0 flex-1 gap-1">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="flex min-h-8 items-center gap-2">
+              <Skeleton className="size-2 shrink-0 rounded-full" />
+              <Skeleton className="size-6 shrink-0 rounded-full" />
+              <Skeleton className="h-3.5 min-w-0 flex-1" />
+              <Skeleton className="hidden h-3.5 w-16 shrink-0 sm:block" />
+              <Skeleton className="h-3.5 w-9 shrink-0" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
 }
 
-function HeaderSkeleton({ actions }: { actions: number }) {
+/**
+ * Başlık + tek "İşlem Yapın" menüsü. Geri bağlantısı ve dağınık aksiyon
+ * butonları kalktığı için iskelet de tek satır — aksi halde yüklenince sayfa
+ * bir satır boyu zıplardı (bkz. dosya başındaki not).
+ */
+function HeaderSkeleton() {
   return (
-    <>
-      <div className="mb-4 flex items-center gap-2">
-        <Skeleton className="h-8 w-28" />
-        <Skeleton className="ml-auto h-8 w-20" />
+    <div className="mb-5 space-y-2">
+      <div className="flex items-start justify-between gap-4">
+        <Skeleton className="h-7 w-56" />
+        <Skeleton className="h-8 w-28 shrink-0" />
       </div>
-      <div className="mb-5 space-y-2">
-        <div className="flex items-start justify-between gap-4">
-          <Skeleton className="h-7 w-56" />
-          <div className="flex shrink-0 gap-2">
-            {Array.from({ length: actions }).map((_, i) => (
-              <Skeleton key={i} className="h-8 w-32" />
-            ))}
-          </div>
-        </div>
-        <Skeleton className="h-3.5 w-52" />
-      </div>
-    </>
+      <Skeleton className="h-3.5 w-52" />
+    </div>
   )
 }
 
@@ -128,7 +142,7 @@ function HeaderSkeleton({ actions }: { actions: number }) {
 export function BasketDetailSkeleton() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
-      <HeaderSkeleton actions={2} />
+      <HeaderSkeleton />
       <div className="grid gap-5 md:grid-cols-2">
         <div className="order-3 min-w-0 space-y-5 md:order-1">
           <CardSkeleton rows={4} />
@@ -149,13 +163,11 @@ export function BasketDetailSkeleton() {
 export function ReceiptDetailSkeleton() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
-      <HeaderSkeleton actions={1} />
+      <HeaderSkeleton />
       <div className="grid gap-5 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
         <div className="order-2 min-w-0 space-y-5 md:order-1">
           <div className="overflow-hidden rounded-xl border bg-card">
-            <div className="border-b px-4 py-3">
-              <Skeleton className="h-4 w-24" />
-            </div>
+            <CardHeaderSkeleton width="w-24" />
             <div className="p-3">
               <Skeleton className="h-40 w-full rounded-lg md:h-56" />
             </div>

@@ -40,8 +40,12 @@ export type RecordItemView = {
     depotName: string | null
     sizeMismatch: boolean
   } | null
-  /** Fiş kalemlerinde fişteki tutar; sepette null. */
-  receiptTotal?: number | null
+  /**
+   * Fiş kalemlerinde fişteki TEK PAKET fiyatı; sepette null. Satır toplamı
+   * değil: karşılaştırmanın iki tarafı da paket başına (bkz. ReceiptComparison),
+   * alınan adet fiyatı çarpmaz.
+   */
+  receiptUnitPrice?: number | null
   savings?: number | null
 }
 
@@ -98,7 +102,7 @@ function RecordItemRow({
 
   return (
     <li className="flex items-start gap-3 px-4 py-3">
-      <Thumb url={item.matchedImageUrl} />
+      <Thumb key={item.matchedImageUrl ?? ""} url={item.matchedImageUrl} />
 
       <div className="min-w-0 flex-1 space-y-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -159,7 +163,7 @@ function RecordItemRow({
           {qtyLabel}
         </div>
 
-        {item.plan ? (
+        {item.plan && (
           <>
             <div className="flex items-center justify-end gap-1">
               <MarketCell
@@ -182,11 +186,26 @@ function RecordItemRow({
               </div>
             )}
           </>
-        ) : item.receiptTotal != null ? (
-          <div className="text-sm font-medium tabular-nums">
-            {formatTL(item.receiptTotal)}
-          </div>
-        ) : null}
+        )}
+
+        {/* Fişteki fiyat planın YERİNE değil YANINDA durur. Eşleşen her kalemde
+            plan dolu olduğu için fişteki fiyat ekrandan tamamen kalkıyordu:
+            karşılaştırmanın bir bacağı yokken aşağıdaki "−₺x"in neyin farkı
+            olduğu okunmuyor. "/paket" eki tabanı söyler — üstteki adet sayısıyla
+            çarpılmış bir tutar değil. */}
+        {item.receiptUnitPrice != null &&
+          (item.plan ? (
+            <div className="text-[0.625rem] text-muted-foreground tabular-nums">
+              Fişte {formatTL(item.receiptUnitPrice)}/paket
+            </div>
+          ) : (
+            <div className="text-sm font-medium tabular-nums">
+              {formatTL(item.receiptUnitPrice)}
+              <span className="text-[0.625rem] text-muted-foreground">
+                /paket
+              </span>
+            </div>
+          ))}
 
         {item.savings != null && item.savings > 0 && (
           // Rozet değil düz metin: satırdaki diğer sayılarla aynı hizada okunsun,
@@ -201,9 +220,12 @@ function RecordItemRow({
 }
 
 function Thumb({ url }: { url: string | null }) {
+  // Market CDN'i eşleşen ürünün görseline 404 dönebiliyor (ölçüldü). Hata
+  // yakalanmazsa kutu kırık resim ikonuyla kalıyordu; yer-tutucuya düşülür.
+  const [failed, setFailed] = React.useState(false)
   const base =
     "relative size-10 shrink-0 overflow-hidden rounded-md bg-muted outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
-  if (!url) {
+  if (!url || failed) {
     return (
       <div
         className={cn(
@@ -218,7 +240,15 @@ function Thumb({ url }: { url: string | null }) {
   }
   return (
     <div className={base}>
-      <Image src={url} alt="" fill sizes="40px" className="object-cover" unoptimized />
+      <Image
+        src={url}
+        alt=""
+        fill
+        sizes="40px"
+        className="object-cover"
+        unoptimized
+        onError={() => setFailed(true)}
+      />
     </div>
   )
 }

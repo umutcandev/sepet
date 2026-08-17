@@ -24,7 +24,7 @@ export function AuthorAvatarGroup({
   size = "sm",
 }: {
   authors: readonly AuthorId[]
-  size?: "sm" | "default" | "lg"
+  size?: "xs" | "sm" | "default" | "lg"
 }) {
   const list = getAuthors(authors)
   return (

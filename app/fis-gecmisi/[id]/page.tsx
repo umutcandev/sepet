@@ -1,14 +1,12 @@
-import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
-import { ChevronLeftIcon } from "lucide-react"
 import { auth } from "@/auth"
 import { getReceiptDetailCached } from "@/lib/data/records"
+import { withResolvedItemImages } from "@/lib/data/item-images"
 import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
 import { parseSummary } from "@/lib/basket-plan"
 import { formatDate, formatTL } from "@/lib/format"
 import { priceFreshness } from "@/lib/price-freshness"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { MarketCell } from "@/components/market-cell"
 import { OptimizationCard } from "@/components/assistant/optimization-card"
 import {
@@ -26,7 +24,7 @@ import {
   type RecordItemView,
 } from "@/components/records/record-item-list"
 import { ReceiptImage } from "@/components/records/receipt-image"
-import { DeleteReceiptButton } from "./delete-button"
+import { ReceiptActionsMenu } from "./actions-menu"
 
 function receiptTitle(receipt: {
   name: string | null
@@ -62,7 +60,9 @@ export default async function ReceiptDetailPage({
   const { id } = await params
   const detail = await getReceiptDetailCached(id, session.user.id)
   if (!detail) notFound()
-  const { receipt, items, conversation } = detail
+  const { receipt, conversation } = detail
+  // Bkz. sepet detayı: görseli boş kalan kalemler eşleşen üründen tamamlanır.
+  const items = await withResolvedItemImages(detail.items, "receipt")
 
   const isStale = isReceiptStaleByDate(receipt.purchaseDate)
   const totalSavings =
@@ -92,7 +92,9 @@ export default async function ReceiptDetailPage({
         ? it.lookupStatus === "ok"
         : it.matchedProductId != null,
     // Fişte kalem satırının fiyatı gerçekten o kaleme ait (fişten okundu) —
-    // sepetteki plan belirsizliği burada yok.
+    // sepetteki plan belirsizliği burada yok. Tutar TEK PAKET fiyatı: satırın
+    // iki tarafı da (fişteki paket fiyatı / en iyi paket fiyatı) aynı tabanda
+    // olsun diye, `packs` bu yüzden daima 1 (bkz. ReceiptComparison).
     plan: it.bestMarket
       ? {
           market: it.bestMarket,
@@ -103,17 +105,22 @@ export default async function ReceiptDetailPage({
           sizeMismatch: false,
         }
       : null,
-    receiptTotal: it.receiptTotalPrice ? Number(it.receiptTotalPrice) : null,
+    receiptUnitPrice: it.receiptUnitPrice
+      ? Number(it.receiptUnitPrice)
+      : null,
     savings: !isStale && it.savingsTL ? Number(it.savingsTL) : null,
   }))
 
   const matchedCount = itemViews.filter((it) => it.matched).length
   const allMatched = matchedCount === itemViews.length
 
+  // Dağılım da kalem satırlarıyla AYNI tabanda: tek paket fiyatı. Burası
+  // `bestPrice × quantity` topluyordu, yani aynı sayfada satırda ₺30 yazan
+  // kalem grafikte ₺90 sayılıyordu; satırın kendisi kendiyle çelişiyordu.
   const marketSplitMap = new Map<string, number>()
   for (const it of items) {
     if (!it.bestMarket || !it.bestPrice) continue
-    const line = Number(it.bestPrice) * Number(it.quantity)
+    const line = Number(it.bestPrice)
     if (!Number.isFinite(line) || line <= 0) continue
     marketSplitMap.set(
       it.bestMarket,
@@ -127,24 +134,14 @@ export default async function ReceiptDetailPage({
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
-      <div className="mb-4 flex items-center gap-2">
-        <Button variant="ghost" size="sm" asChild>
-          <Link href="/fis-gecmisi">
-            <ChevronLeftIcon className="mr-1 size-4" />
-            Fişlerim
-          </Link>
-        </Button>
-        <div className="ml-auto">
-          <DeleteReceiptButton id={receipt.id} />
-        </div>
-      </div>
-
       <RecordHeader
         title={receiptTitle(receipt)}
         createdAt={receipt.createdAt}
-        conversation={conversation}
         meta={
           freshness ? <span>Fiyatlar {freshness.ageLabel} alındı</span> : null
+        }
+        actions={
+          <ReceiptActionsMenu id={receipt.id} conversation={conversation} />
         }
       />
 

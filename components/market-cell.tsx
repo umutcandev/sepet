@@ -52,7 +52,10 @@ export function MarketCell({
       <MarketLogo name={name} size={size} />
       <span
         className={cn(
-          "truncate",
+          // `min-w-0` olmadan `truncate` bir flex kabında hiç devreye girmez:
+          // flex öğesinin varsayılan `min-width: auto`su onu içeriğinin altına
+          // inmekten alıkoyar, ad kırpılmak yerine kabı taşırır.
+          "min-w-0 truncate",
           !isKnown && "italic text-muted-foreground",
         )}
       >

@@ -15,7 +15,7 @@ import {
 import { saveReceipt } from "@/lib/actions/receipts"
 import { SaveRecordRow } from "@/components/assistant/save-record-row"
 import { MarketLogo } from "@/components/market-logo"
-import { formatTLOrDash as formatTL } from "@/lib/format"
+import { formatTLOrDash } from "@/lib/format"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -100,7 +100,7 @@ export function ReceiptComparisonCard({
               variant="outline"
               className="ml-auto border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
             >
-              {formatTL(comparison.totalSavingsTL)} tasarruf mümkündü
+              {formatTLOrDash(comparison.totalSavingsTL)} tasarruf mümkündü
             </Badge>
           )
         )}
@@ -111,9 +111,12 @@ export function ReceiptComparisonCard({
           <TableHeader>
             <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
               <TableHead className="min-w-[140px]">Ürün</TableHead>
-              <TableHead className="w-28 text-right">Fişteki</TableHead>
+              {/* Üç sayı kolonu da PAKET başına: "Fişteki" satır toplamıyken
+                  yanındaki "En iyi fiyat" tek paketti, yani tablo iki farklı
+                  tabanı yan yana koyup farkını alıyordu. */}
+              <TableHead className="w-28 text-right">Fişteki paket</TableHead>
               <TableHead className="min-w-[140px]">En iyi market</TableHead>
-              <TableHead className="w-24 text-right">En iyi fiyat</TableHead>
+              <TableHead className="w-24 text-right">En iyi paket</TableHead>
               <TableHead className="w-24 text-right">Fark</TableHead>
             </TableRow>
           </TableHeader>
@@ -173,7 +176,7 @@ export function ReceiptComparisonCard({
                       </div>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
-                      {formatTL(it.receiptTotalPrice)}
+                      {formatTLOrDash(it.receiptUnitPrice)}
                     </TableCell>
                     <TableCell>
                       {it.bestMarket ? (
@@ -188,14 +191,14 @@ export function ReceiptComparisonCard({
                       )}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
-                      {formatTL(it.bestPrice)}
+                      {formatTLOrDash(it.bestPrice)}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
                       {it.savingsTL == null ? (
                         <span className="text-xs text-muted-foreground">—</span>
                       ) : hasSavings && !isStale ? (
                         <span className="font-medium text-emerald-700 dark:text-emerald-300">
-                          −{formatTL(it.savingsTL)}
+                          −{formatTLOrDash(it.savingsTL)}
                         </span>
                       ) : (
                         <span className="text-xs text-muted-foreground">
@@ -224,7 +227,7 @@ export function ReceiptComparisonCard({
                                   </span>
                                 </div>
                                 <span className="font-medium tabular-nums">
-                                  {formatTL(mp.price)}
+                                  {formatTLOrDash(mp.price)}
                                 </span>
                               </li>
                             ))}
@@ -243,15 +246,15 @@ export function ReceiptComparisonCard({
       <div className="space-y-3 border-t bg-muted/30 px-4 py-3 text-sm">
         <div className="flex flex-wrap items-baseline gap-3 text-xs text-muted-foreground">
           <span>
-            Fiş toplamı:{" "}
+            Fişteki paket fiyatları:{" "}
             <span className="font-semibold text-foreground tabular-nums">
-              {formatTL(comparison.totalReceiptAmount)}
+              {formatTLOrDash(comparison.totalReceiptAmount)}
             </span>
           </span>
           <span>
             En iyi:{" "}
             <span className="font-semibold text-foreground tabular-nums">
-              {formatTL(comparison.totalBestAmount)}
+              {formatTLOrDash(comparison.totalBestAmount)}
             </span>
             {isStale && (
               <span className="ml-1 text-[0.6875rem] text-muted-foreground">
@@ -260,6 +263,12 @@ export function ReceiptComparisonCard({
             )}
           </span>
         </div>
+        {/* Toplamlar fişin basılı genel toplamı DEĞİL. Etiketi söylemeyip
+            kullanıcıyı fişle karşılaştırmaya bırakmak, tutmayan iki sayı
+            gösterip sebebini saklamak olurdu. */}
+        <p className="text-[0.6875rem] text-muted-foreground">
+          Karşılaştırma paket başına yapılır; aldığın adet fiyatı çarpmaz.
+        </p>
         <SaveRecordRow
           size="sm"
           namePlaceholder={namePlaceholder}

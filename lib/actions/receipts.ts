@@ -184,8 +184,15 @@ export async function saveReceipt(input: {
   const bestSingle =
     summary.singleMarket.itemCount > 0 ? summary.singleMarket : null
 
+  // Fişin BASILI genel toplamı. `comparison.totalReceiptAmount` artık bu değil
+  // (paket fiyatlarının toplamı — bkz. ReceiptComparison), o yüzden OCR toplamı
+  // okuyamadığında satır tutarlarının toplamına düşülür.
+  const lineTotalsSum = input.comparison.items.reduce(
+    (sum, i) => sum + (i.receiptTotalPrice ?? 0),
+    0,
+  )
   const totalAmount =
-    input.totalAmount ?? input.comparison.totalReceiptAmount ?? null
+    input.totalAmount ?? (lineTotalsSum > 0 ? lineTotalsSum : null)
 
   const isStale = !!input.comparison.staleness?.isStale
   const persistedSavings = isStale ? 0 : input.comparison.totalSavingsTL
@@ -250,8 +257,14 @@ export async function saveReceipt(input: {
           searchQuery: it.searchQuery,
           quantity: it.quantity.toString(),
           unit: it.unit,
+          // Karşılaştırmanın fiş tarafı: tek paket fiyatı. OCR birim fiyatı
+          // okuyamadıysa `comparison` bunu satır toplamından türetmiş olur.
           receiptUnitPrice:
-            it.unitPrice != null ? it.unitPrice.toFixed(2) : null,
+            comp?.receiptUnitPrice != null
+              ? comp.receiptUnitPrice.toFixed(2)
+              : it.unitPrice != null
+                ? it.unitPrice.toFixed(2)
+                : null,
           receiptTotalPrice:
             lineTotal != null ? lineTotal.toFixed(2) : null,
           matchedProductId: comp?.matchedProductId ?? null,

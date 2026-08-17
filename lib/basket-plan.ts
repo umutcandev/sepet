@@ -42,12 +42,16 @@ export function recommendedPlan(
   const hasCombo = twoMarketCombo.markets.length === 2
   const comboFirst = !singleMarket.isFullCoverage && hasCombo
 
+  // `allocation` her iki tarafta da `.default([])` taşıyor: `parseSummary`'den
+  // geçmiş bir özette alan daima dizidir, eski kayıtta boş dizidir. Buradaki
+  // `?? []` savunması şemayla çelişiyordu (tip zaten opsiyonel değil) — tek
+  // doğru kaynak şema.
   if (comboFirst) {
     return {
       kind: "combo",
       label: "İki market",
       markets: twoMarketCombo.markets,
-      allocation: twoMarketCombo.allocation ?? [],
+      allocation: twoMarketCombo.allocation,
       total: twoMarketCombo.total,
     }
   }
@@ -57,7 +61,7 @@ export function recommendedPlan(
           kind: "combo",
           label: "İki market",
           markets: twoMarketCombo.markets,
-          allocation: twoMarketCombo.allocation ?? [],
+          allocation: twoMarketCombo.allocation,
           total: twoMarketCombo.total,
         }
       : null
@@ -66,7 +70,7 @@ export function recommendedPlan(
     kind: "single",
     label: "Tek market",
     markets: [singleMarket.market],
-    allocation: singleMarket.allocation ?? [],
+    allocation: singleMarket.allocation,
     total: singleMarket.total,
   }
 }

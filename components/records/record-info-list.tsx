@@ -70,7 +70,12 @@ export function RecordInfoRow({
   )
 }
 
-/** Etiketsiz, tam genişlik satır (uyarı/not metinleri için). */
+/**
+ * Etiketsiz, tam genişlik satır (uyarı/not metinleri için).
+ *
+ * Görünürde etiketi yok ama `<dl>` içinde `<dt>`siz bir `<dd>` geçersiz — terim
+ * yalnızca ekrandan gizlenir, ağaçtan değil.
+ */
 export function RecordInfoNote({
   children,
   className,
@@ -80,6 +85,7 @@ export function RecordInfoNote({
 }) {
   return (
     <div className={cn("px-4 py-2.5", className)}>
+      <dt className="sr-only">Not</dt>
       <dd className="text-xs text-muted-foreground">{children}</dd>
     </div>
   )

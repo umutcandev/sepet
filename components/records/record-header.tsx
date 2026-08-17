@@ -1,7 +1,3 @@
-import Link from "next/link"
-import { MessagesSquareIcon } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
 import { formatDateTime } from "@/lib/format"
 
 /**
@@ -11,52 +7,30 @@ import { formatDateTime } from "@/lib/format"
  * kullanıcının verdiği ad ("İskender sepeti") en alttaki bilgi tablosunda,
  * üstelik sağdan kesik duruyordu. Ad artık sayfanın ilk şeyi.
  *
- * Sohbet bağlantısı: `conversationId` hem yazılıyor hem `set null` ile
- * korunuyor ama hiç okunmuyordu; kullanıcı "bu sepeti neden böyle kurdum"a
- * dönemiyordu. Sohbet silinmişse `conversation` null gelir ve buton hiç render
- * edilmez.
- *
- * Stil notu: sohbet bağlantısı elle kurulmuş border/radius/ikon yerine sayfanın
- * diğer aksiyonlarıyla aynı `Button` primitive'i (outline) ve projenin her
- * yerinde sohbeti temsil eden `MessagesSquareIcon`'dur; birincil aksiyon
- * (`actions`) onun sağında durur.
+ * Aksiyonlar (sohbete git, fiyat yenile, sil) tek bir "İşlem Yap" menüsünde
+ * toplandığı için `actions` tek ve dar bir hedef — başlığa yer bırakır. Yine de
+ * `min-w-[12rem]`: kalan genişlik başlığa yetmezse aksiyon alt satıra iner,
+ * başlık kelime ortasından kırılmaz.
  */
 export function RecordHeader({
   title,
   createdAt,
-  conversation,
   meta,
   actions,
 }: {
   title: string
   createdAt: Date | string
-  conversation?: { id: string; title: string } | null
   /** Tarihin yanında, sessiz tonda gösterilecek kısa bilgi. */
   meta?: React.ReactNode
   actions?: React.ReactNode
 }) {
   return (
     <header className="mb-5 space-y-2">
-      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-        <h1 className="min-w-0 flex-1 text-xl font-semibold break-words sm:text-2xl">
+      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        <h1 className="min-w-[12rem] flex-1 text-xl font-semibold break-words sm:text-2xl">
           {title}
         </h1>
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
-          {conversation ? (
-            <Button variant="outline" size="sm" asChild>
-              <Link
-                href={`/asistan/${conversation.id}`}
-                title={`${conversation.title.trim()} sohbetine git`}
-              >
-                <MessagesSquareIcon className="mr-1.5 size-3.5" />
-                <span className="max-w-[12rem] truncate">
-                  {conversation.title.trim()}
-                </span>
-              </Link>
-            </Button>
-          ) : null}
-          {actions}
-        </div>
+        {actions ? <div className="shrink-0">{actions}</div> : null}
       </div>
 
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
