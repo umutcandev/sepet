@@ -77,6 +77,12 @@ type AnalyzeImageOutput = {
 
 type AssistantChatProps = {
   conversationId?: string
+  /**
+   * Yazma alanına önceden doldurulacak metin (ör. kayıtlı bir sepetten
+   * "Fiyatları yenile"). Kasıtlı olarak GÖNDERİLMEZ, yalnızca doldurulur:
+   * kullanıcının açık onayı olmadan bir asistan turu başlatmak kotasını harcar.
+   */
+  initialInput?: string
   initialTitle?: string
   initialMessages?: Array<Pick<UIMessage, "id" | "role" | "parts"> & {
     metadata?: unknown
@@ -87,6 +93,7 @@ type AssistantChatProps = {
 
 export function AssistantChat({
   conversationId: initialConversationId,
+  initialInput,
   initialTitle,
   initialMessages,
   initialSavedBaskets,
@@ -210,7 +217,7 @@ export function AssistantChat({
       }
     },
   })
-  const [input, setInput] = React.useState("")
+  const [input, setInput] = React.useState(initialInput ?? "")
   const sentSeedRef = React.useRef(false)
 
   // Ana sayfadan gelen seed'i synchronously oku ki ilk render'da hemen

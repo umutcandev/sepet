@@ -295,22 +295,26 @@ function buildSummaryText(
 
 /**
  * Fiş ile bugünü kıyaslarken YALNIZCA bugün fiyatı bulunabilen kalemler
- * sayılmalı. `totalReceiptAmount` fişin tamamını, `totalBestAmount` ise sadece
- * eşleşenleri topladığından ikisini doğrudan çıkarmak, bulunamayan her kalemi
- * "bugün 0 TL" saymak demektir; uçta hiçbir kalem eşleşmezse "207,15 TL
+ * sayılmalı. `totalReceiptAmount` kalemlerin tamamını, `totalBestAmount` ise
+ * sadece eşleşenleri topladığından ikisini doğrudan çıkarmak, bulunamayan her
+ * kalemi "bugün 0 TL" saymak demektir; uçta hiçbir kalem eşleşmezse "207,15 TL
  * harcadın, bugün 0,00 TL'ye gelir, 207,15 TL tasarruf" gibi tamamen yanlış
  * bir sonuç çıkar.
+ *
+ * Toplananlar paket fiyatlarıdır, satır tutarları değil (bkz.
+ * ReceiptComparison) — cümledeki tabanla ekrandaki taban aynı olmalı.
  */
 function comparableTotals(items: ReceiptComparison["items"]): {
   count: number
   receiptTotal: number
 } {
   const matched = items.filter(
-    (i) => i.bestPrice != null && i.receiptTotalPrice != null,
+    (i) => i.bestPrice != null && i.receiptUnitPrice != null,
   )
   return {
     count: matched.length,
-    receiptTotal: matched.reduce((s, i) => s + (i.receiptTotalPrice ?? 0), 0),
+    // Paket başına — `totalBestAmount` ile aynı taban (bkz. ReceiptComparison).
+    receiptTotal: matched.reduce((s, i) => s + (i.receiptUnitPrice ?? 0), 0),
   }
 }
 
@@ -343,7 +347,7 @@ function buildReceiptComparisonText(comp: ReceiptComparison): string {
       Math.max(comparable.receiptTotal, comp.totalBestAmount) * 0.02,
     )
     const figuresPart = (() => {
-      const head = `Yine de bilgi amaçlı: fişinde bu kalemlere ${formatTL(comparable.receiptTotal)} TL harcamışsın, aynı ürünler bugünün en iyi fiyatlarıyla ${formatTL(comp.totalBestAmount)} TL'ye geliyor${scopeNote}.`
+      const head = `Yine de bilgi amaçlı: fişteki paket fiyatlarının toplamı ${formatTL(comparable.receiptTotal)} TL, aynı ürünlerin bugünkü en iyi paket fiyatları ${formatTL(comp.totalBestAmount)} TL${scopeNote}.`
       if (Math.abs(diff) <= tolerance) {
         return `${head} İki tutar neredeyse aynı.`
       }
@@ -358,9 +362,11 @@ function buildReceiptComparisonText(comp: ReceiptComparison): string {
     return `Fişindeki tutar bugünkü fiyatlarla kıyaslanamayacak kadar düşük görünüyor. Büyük olasılıkla farklı bir döneme ait, tasarruf hesabı birebir anlamlı değil. ${figuresPart}`
   }
   if (comp.totalSavingsTL <= 0) {
-    return `Fişindeki ${formatTL(comparable.receiptTotal)} TL'lik harcamana karşılık bulduğumuz en iyi fiyatlar zaten yakın, ek bir kazanç çıkmadı${scopeNote}.`
+    return `Fişteki paket fiyatlarının toplamı ${formatTL(comparable.receiptTotal)} TL; bulduğumuz en iyi fiyatlar buna zaten yakın, ek bir kazanç çıkmadı${scopeNote}.`
   }
-  return `Bu fişinde bu kalemlere ${formatTL(comparable.receiptTotal)} TL harcamışsın. Bulduğumuz en iyi fiyatlarla aynı ürünler ${formatTL(comp.totalBestAmount)} TL'ye geliyordu, yaklaşık ${formatTL(comp.totalSavingsTL)} TL tasarruf mümkündü${scopeNote}.`
+  // Karşılaştırmanın tabanı cümlede geçmezse okuyucu rakamı fişin genel
+  // toplamıyla kıyaslar ve tutarsız bulur — taban paket başınadır.
+  return `Fişteki paket fiyatlarının toplamı ${formatTL(comparable.receiptTotal)} TL. Aynı ürünlerin bugünkü en iyi paket fiyatları ${formatTL(comp.totalBestAmount)} TL, aradaki fark ${formatTL(comp.totalSavingsTL)} TL${scopeNote}. Karşılaştırma paket başına yapılır, aldığın adet fiyatı çarpmaz.`
 }
 
 const STALE_RATIO_THRESHOLD = 3
@@ -405,7 +411,6 @@ function computeReceiptComparison(
   payloadItems: ReceiptApprovalPayload["items"],
   matches: MatchResult[],
   purchaseDate: string | null,
-  receiptTotalAmount: number | null,
 ): ReceiptComparison {
   const items = payloadItems.map((it, idx) => {
     const match = matches[idx]
@@ -417,19 +422,28 @@ function computeReceiptComparison(
       : null
     const bestMarket = marketWithMin?.market ?? null
     const bestPrice = minPrice ?? null
-    // Fişteki toplam tutarla en iyi (birim fiyat * quantity) karşılaştır
+    // Fişte o satır için ödenen gerçek para (bağlam; karşılaştırmaya girmez).
     const receiptTotal =
       it.totalPrice ??
       (it.unitPrice != null ? it.unitPrice * it.quantity : null)
-    const bestTotal = bestPrice != null ? bestPrice * it.quantity : null
+    // Karşılaştırma PAKET BAŞINA: `bestPrice` tek paketin raf fiyatı olduğu
+    // için fiş tarafı da tek paket olmalı. Adetle çarpmak "3 ekmeğe ödenen
+    // para"yı "1 ekmeğin fiyatı"yla kıyaslar ve tasarrufu şişirirdi; ayrıca
+    // aynı karttaki `summary` toplamları da çarpımsız (bkz. effective-cost.ts).
+    // OCR birim fiyatı okuyamadıysa satır toplamından türet.
+    const receiptUnit =
+      it.unitPrice ??
+      (it.totalPrice != null && it.quantity > 0
+        ? it.totalPrice / it.quantity
+        : null)
     // Farklı boyutlu ürünle eşleşmişse fiyatlar kıyaslanamaz — tasarruf yazma.
     const savingsTL =
-      !sizeMismatch && receiptTotal != null && bestTotal != null
-        ? Math.max(0, receiptTotal - bestTotal)
+      !sizeMismatch && receiptUnit != null && bestPrice != null
+        ? Math.max(0, receiptUnit - bestPrice)
         : null
     return {
       rawName: it.rawName,
-      receiptUnitPrice: it.unitPrice,
+      receiptUnitPrice: receiptUnit,
       receiptTotalPrice: receiptTotal,
       matchedProductId: best?.productId ?? null,
       matchedName: best?.name ?? null,
@@ -440,26 +454,15 @@ function computeReceiptComparison(
     }
   })
 
-  const lineItemsTotal = items.reduce(
-    (sum, i) => sum + (i.receiptTotalPrice ?? 0),
+  // Kartın altındaki iki toplam da PAKET BAŞINA. Fişin basılı genel toplamı
+  // buraya girmez: farklı tabandaki iki sayıyı yan yana koymak karşılaştırmayı
+  // anlamsız kılardı. Basılı toplam ayrı taşınır (`receipt.totalAmount`) ve
+  // onay ekranında kalem silinse bile bu toplamlar güncel listeyi yansıtır.
+  const totalReceiptAmount = items.reduce(
+    (sum, i) => sum + (i.receiptUnitPrice ?? 0),
     0,
   )
-  // Onay ekranında kalem silinince fişin basılı genel toplamı artık güncel
-  // kalem listesini yansıtmaz. Tüm kalemlerin tutarı biliniyorsa satır
-  // toplamını kullan; bir kısmı OCR'dan okunamadıysa basılı toplama düş.
-  const allLineTotalsKnown =
-    items.length > 0 && items.every((i) => i.receiptTotalPrice != null)
-  const totalReceiptAmount = allLineTotalsKnown
-    ? lineItemsTotal
-    : receiptTotalAmount != null && receiptTotalAmount > 0
-      ? receiptTotalAmount
-      : lineItemsTotal
-  const totalBestAmount = items.reduce(
-    (sum, i, idx) =>
-      sum +
-      (i.bestPrice != null ? i.bestPrice * payloadItems[idx].quantity : 0),
-    0,
-  )
+  const totalBestAmount = items.reduce((sum, i) => sum + (i.bestPrice ?? 0), 0)
   const totalSavingsTL = items.reduce(
     (sum, i) => sum + (i.savingsTL ?? 0),
     0,
@@ -1050,7 +1053,6 @@ async function runAssistantTurn({
       p.items,
       matches,
       p.purchaseDate ?? null,
-      p.totalAmount ?? null,
     )
     const compareCallId = nanoid()
     writer.write(toolInputAvailable(compareCallId, "receiptComparison", {}))

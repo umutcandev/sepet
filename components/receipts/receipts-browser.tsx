@@ -5,12 +5,9 @@ import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
 import {
   ArrowRightIcon,
-  CheckSquareIcon,
   ListFilterIcon,
-  MoreHorizontalIcon,
   SearchIcon,
   SparklesIcon,
-  Trash2Icon,
   XIcon,
 } from "lucide-react"
 import { toast } from "@/components/ui/sonner"
@@ -25,30 +22,23 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { MarketCell } from "@/components/market-cell"
+import {
+  RecordListCard,
+  RecordListDot,
+} from "@/components/records/record-list-card"
+import { RecordRowActions } from "@/components/records/record-row-actions"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
 import {
@@ -63,19 +53,15 @@ import {
   listReceiptsPaginated,
   searchReceipts,
 } from "@/lib/actions/receipts"
-import { cn } from "@/lib/utils"
+import { formatDateShort, formatTL } from "@/lib/format"
 
-const tl = new Intl.NumberFormat("tr-TR", {
-  style: "currency",
-  currency: "TRY",
-  maximumFractionDigits: 2,
-})
-
-const dateFmt = new Intl.DateTimeFormat("tr-TR", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-})
+/** Fişe ad verilmemişse (eski kayıtlar) market + tarihten türet. */
+function receiptLabel(r: ReceiptListItem): string {
+  if (r.name?.trim()) return r.name.trim()
+  return `${r.marketName ?? "Fiş"} · ${formatDateShort(
+    r.purchaseDate ?? r.createdAt,
+  )}`
+}
 
 function useDebounced<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = React.useState(value)
@@ -506,220 +492,86 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
               </div>
             ) : null
           ) : (
-            <div className="overflow-hidden rounded-xl border bg-card">
-              <Table className="[&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4">
-                <TableHeader>
-                  <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
-                    {selecting ? <TableHead className="w-10" /> : null}
-                    <TableHead className="min-w-[100px]">Tarih</TableHead>
-                    <TableHead className="min-w-[120px]">Fişteki Market</TableHead>
-                    <TableHead className="w-28 text-right">Fiş tutarı</TableHead>
-                    <TableHead className="min-w-[140px]">
-                      En iyi alternatif
-                    </TableHead>
-                    <TableHead className="w-28 text-right">Tasarruf</TableHead>
-                    {selecting ? null : <TableHead className="w-10" />}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {displayed.map((r) => {
-                    const isSelected = selected.has(r.id)
-                    const isStale = isReceiptStaleByDate(r.purchaseDate)
-                    const savings =
-                      !isStale && r.potentialSavingsTL
-                        ? Number(r.potentialSavingsTL)
-                        : 0
-                    const dateLabel = r.purchaseDate
-                      ? dateFmt.format(new Date(r.purchaseDate))
-                      : dateFmt.format(new Date(r.createdAt))
-                    if (selecting) {
-                      return (
-                        // <tr> düğme olamaz. Klavye yolu artık satırın
-                        // sahte rolü değil, hücredeki GERÇEK onay kutusu:
-                        // odaklanabilir, etiketli, Space ile değişir. Satıra
-                        // tıklamak fare için kısayol olarak duruyor.
-                        <TableRow
-                          key={r.id}
-                          onClick={() => toggleSelect(r.id)}
-                          className={cn(
-                            "cursor-pointer",
-                            isSelected && "bg-secondary/40",
-                          )}
-                        >
-                          <TableCell className="w-10">
-                            <Checkbox
-                              checked={isSelected}
-                              onCheckedChange={() => toggleSelect(r.id)}
-                              onClick={(e) => e.stopPropagation()}
-                              aria-label={`${r.marketName} seç`}
-                            />
-                          </TableCell>
-                          <TableCell>{dateLabel}</TableCell>
-                          <TableCell className="font-medium">
-                            <MarketCell
-                              name={r.marketName}
-                              size="sm"
-                              clickable={false}
-                            />
-                          </TableCell>
-                          <TableCell className="text-right tabular-nums">
+            <div>
+              {/* Bkz. baskets-browser: tek satır kartı, iki bant, her bantta
+                  tek esneyen öğe. Fişte alt bant iki market taşır — fişteki
+                  market ve bugünkü en ucuz alternatif. */}
+              <ul className="space-y-2">
+                {displayed.map((r) => {
+                  const isStale = isReceiptStaleByDate(r.purchaseDate)
+                  const savings =
+                    !isStale && r.potentialSavingsTL
+                      ? Number(r.potentialSavingsTL)
+                      : 0
+                  const label = receiptLabel(r)
+                  return (
+                    <RecordListCard
+                      key={r.id}
+                      href={`/fis-gecmisi/${r.id}`}
+                      title={label}
+                      selecting={selecting}
+                      selected={selected.has(r.id)}
+                      selectLabel={`${label} seç`}
+                      onToggleSelect={() => toggleSelect(r.id)}
+                      primary={
+                        <>
+                          {savings > 0 ? (
+                            <span className="text-xs font-medium text-emerald-700 tabular-nums dark:text-emerald-300">
+                              <span className="sr-only">
+                                tasarruf edebilirdin{" "}
+                              </span>
+                              {formatTL(savings)}
+                            </span>
+                          ) : null}
+                          <span className="text-sm font-medium tabular-nums">
                             {r.totalAmount
-                              ? tl.format(Number(r.totalAmount))
+                              ? formatTL(Number(r.totalAmount))
                               : "—"}
-                          </TableCell>
-                          <TableCell>
-                            {r.bestSingleMarket ? (
-                              <span className="inline-flex items-center gap-1.5">
+                          </span>
+                        </>
+                      }
+                      meta={
+                        <>
+                          <MarketCell
+                            name={r.marketName}
+                            size="sm"
+                            clickable={false}
+                            className="min-w-0"
+                          />
+                          {r.bestSingleMarket ? (
+                            <>
+                              <RecordListDot />
+                              <span className="flex min-w-0 items-center gap-1.5">
                                 <MarketCell
                                   name={r.bestSingleMarket}
                                   size="sm"
                                   clickable={false}
+                                  className="min-w-0"
                                 />
                                 {r.bestSingleTotal ? (
-                                  <span className="text-xs text-muted-foreground">
-                                    ({tl.format(Number(r.bestSingleTotal))})
+                                  <span className="shrink-0 tabular-nums">
+                                    {formatTL(Number(r.bestSingleTotal))}
                                   </span>
                                 ) : null}
                               </span>
-                            ) : (
-                              <span className="text-muted-foreground">—</span>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-right tabular-nums">
-                            {savings > 0 ? (
-                              <Badge
-                                variant="outline"
-                                className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
-                              >
-                                {tl.format(savings)}
-                              </Badge>
-                            ) : (
-                              <span className="text-xs text-muted-foreground">
-                                —
-                              </span>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      )
-                    }
-                    return (
-                      <TableRow
-                        key={r.id}
-                        className="cursor-pointer hover:bg-secondary/50"
-                      >
-                        <TableCell>
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block"
-                          >
-                            {dateLabel}
-                          </Link>
-                        </TableCell>
-                        <TableCell>
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block font-medium"
-                          >
-                            <MarketCell
-                              name={r.marketName}
-                              size="sm"
-                              clickable={false}
-                            />
-                          </Link>
-                        </TableCell>
-                        <TableCell className="text-right tabular-nums">
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block"
-                          >
-                            {r.totalAmount
-                              ? tl.format(Number(r.totalAmount))
-                              : "—"}
-                          </Link>
-                        </TableCell>
-                        <TableCell>
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block"
-                          >
-                            {r.bestSingleMarket ? (
-                              <span className="inline-flex items-center gap-1.5">
-                                <MarketCell
-                                  name={r.bestSingleMarket}
-                                  size="sm"
-                                  clickable={false}
-                                />
-                                {r.bestSingleTotal ? (
-                                  <span className="text-xs text-muted-foreground">
-                                    ({tl.format(Number(r.bestSingleTotal))})
-                                  </span>
-                                ) : null}
-                              </span>
-                            ) : (
-                              <span className="text-muted-foreground">—</span>
-                            )}
-                          </Link>
-                        </TableCell>
-                        <TableCell className="text-right tabular-nums">
-                          <Link
-                            href={`/fis-gecmisi/${r.id}`}
-                            className="block"
-                          >
-                            {savings > 0 ? (
-                              <Badge
-                                variant="outline"
-                                className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-900/20 dark:text-emerald-400"
-                              >
-                                {tl.format(savings)}
-                              </Badge>
-                            ) : (
-                              <span className="text-xs text-muted-foreground">
-                                —
-                              </span>
-                            )}
-                          </Link>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="icon-xs"
-                                aria-label="Fiş eylemleri"
-                                className="relative text-muted-foreground after:absolute after:-inset-2"
-                              >
-                                <MoreHorizontalIcon className="size-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="min-w-40">
-                              <DropdownMenuItem
-                                onSelect={(e) => {
-                                  e.preventDefault()
-                                  enterSelect(r.id)
-                                }}
-                              >
-                                <CheckSquareIcon className="size-4" />
-                                Seç
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                variant="destructive"
-                                onSelect={(e) => {
-                                  e.preventDefault()
-                                  setSingleDeleteTarget(r)
-                                }}
-                              >
-                                <Trash2Icon className="size-4" />
-                                Sil
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
+                            </>
+                          ) : null}
+                        </>
+                      }
+                      metaTrailing={formatDateShort(
+                        r.purchaseDate ?? r.createdAt,
+                      )}
+                      actions={
+                        <RecordRowActions
+                          label="Fiş eylemleri"
+                          onSelect={() => enterSelect(r.id)}
+                          onDelete={() => setSingleDeleteTarget(r)}
+                        />
+                      }
+                    />
+                  )
+                })}
+              </ul>
               {/* Infinite scroll sentinel */}
               {hasMore && !isSearchActive ? (
                 <div ref={sentinelRef} className="flex justify-center py-4">
@@ -744,8 +596,9 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
           <AlertDialogHeader>
             <AlertDialogTitle>Fiş silinsin mi?</AlertDialogTitle>
             <AlertDialogDescription>
-              Bu fiş ve içindeki kalemler kalıcı olarak silinecek. Bu işlem geri
-              alınamaz.
+              {singleDeleteTarget
+                ? `“${receiptLabel(singleDeleteTarget)}” fişi ve içindeki kalemler kalıcı olarak silinecek. Bu işlem geri alınamaz.`
+                : "Bu fiş ve içindeki kalemler kalıcı olarak silinecek. Bu işlem geri alınamaz."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

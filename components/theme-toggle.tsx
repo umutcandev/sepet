@@ -4,7 +4,6 @@ import * as React from "react"
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 
-import { Button } from "@/components/ui/button"
 import { useMounted } from "@/hooks/use-mounted"
 import { cn } from "@/lib/utils"
 
@@ -14,13 +13,9 @@ const OPTIONS = [
   { value: "system", icon: MonitorIcon, label: "Sistem" },
 ] as const
 
-const NEXT_THEME: Record<string, string> = {
-  light: "dark",
-  dark: "system",
-  system: "light",
-}
-
-export function ThemeMenuItems() {
+// Radyo grubunun paylaşılan davranışı: menü içindeki etiketli hâli de,
+// footer'daki yalnızca simgeli hâli de aynı seçim ve klavye kurallarını izler.
+function useThemeRadioGroup() {
   const { theme, setTheme } = useTheme()
   const mounted = useMounted()
   const groupRef = React.useRef<HTMLDivElement>(null)
@@ -30,7 +25,7 @@ export function ThemeMenuItems() {
   // APG radiogroup: Tab grubun tamamına bir kez uğrar (yalnızca seçili radio
   // tab sırasında, roving tabindex), grup içinde ok tuşlarıyla gezinilir ve
   // odaklanan seçenek aynı anda seçilir. Home/End uçlara gider.
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const index = OPTIONS.findIndex((option) => option.value === current)
     if (index < 0) return
 
@@ -64,6 +59,12 @@ export function ThemeMenuItems() {
       [next]?.focus()
   }
 
+  return { current, setTheme, groupRef, onKeyDown }
+}
+
+export function ThemeMenuItems() {
+  const { current, setTheme, groupRef, onKeyDown } = useThemeRadioGroup()
+
   return (
     <>
       <span className="px-1.5 py-1 text-xs font-normal text-muted-foreground">
@@ -74,7 +75,7 @@ export function ThemeMenuItems() {
           ref={groupRef}
           role="radiogroup"
           aria-label="Tema seçimi"
-          onKeyDown={handleKeyDown}
+          onKeyDown={onKeyDown}
           className="flex w-full items-center gap-0.5 rounded-md bg-muted p-0.5"
         >
           {OPTIONS.map(({ value, icon: Icon, label }) => {
@@ -105,29 +106,46 @@ export function ThemeMenuItems() {
   )
 }
 
-export function ThemeToggleButton({ className }: { className?: string }) {
-  const { theme, setTheme } = useTheme()
-  const mounted = useMounted()
-
-  const current = mounted ? (theme ?? "system") : "light"
-  const meta =
-    current === "dark"
-      ? { Icon: MoonIcon, label: "Koyu tema" }
-      : current === "system"
-        ? { Icon: MonitorIcon, label: "Sistem teması" }
-        : { Icon: SunIcon, label: "Açık tema" }
+// Footer alt şeridi için yatay, yalnızca simgeli tema anahtarı. Ölçü ve çerçeve
+// yanındaki durum rozetiyle aynı (h-6, rounded-md, border-border) ki ikisi tek
+// bir kontrol kümesi gibi okunsun; renk ise nötr kalıyor, canlı sinyali taşıyan
+// primary tonu yalnız rozette dursun.
+export function ThemeToggleInline({ className }: { className?: string }) {
+  const { current, setTheme, groupRef, onKeyDown } = useThemeRadioGroup()
 
   return (
-    <Button
-      type="button"
-      variant="outline"
-      size="icon-sm"
-      onClick={() => setTheme(NEXT_THEME[current])}
-      aria-label={`${meta.label}. Temayı değiştir.`}
-      title={meta.label}
-      className={className}
+    <div
+      ref={groupRef}
+      role="radiogroup"
+      aria-label="Tema seçimi"
+      onKeyDown={onKeyDown}
+      className={cn(
+        "flex h-6 w-fit shrink-0 items-center gap-0.5 rounded-md border border-border p-0.5",
+        className,
+      )}
     >
-      <meta.Icon className="size-4" />
-    </Button>
+      {OPTIONS.map(({ value, icon: Icon, label }) => {
+        const selected = current === value
+        return (
+          <button
+            key={value}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            aria-label={label}
+            tabIndex={selected ? 0 : -1}
+            onClick={() => setTheme(value)}
+            className={cn(
+              "flex size-5 items-center justify-center rounded-sm transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+              selected
+                ? "bg-muted text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            <Icon className="size-3.5" />
+          </button>
+        )
+      })}
+    </div>
   )
 }

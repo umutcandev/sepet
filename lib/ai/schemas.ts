@@ -64,7 +64,11 @@ export const TwoMarketComboResultSchema = z.object({
   total: z.number(),
   savingsTL: z.number(),
   savingsPct: z.number(),
-  allocation: z.array(MarketAllocationSchema),
+  // `singleMarket.allocation` ile AYNI kural: alan sonradan eklendi, ondan önce
+  // kaydedilmiş sepetlerde yok. Default olmadan zorunlu kalınca `parseSummary`
+  // tüm özeti düşürüyordu — kayıtta duran toplamlar, marketler ve tasarruf da
+  // beraberinde. Döküm yoksa boş liste; özet ayakta kalır.
+  allocation: z.array(MarketAllocationSchema).default([]),
 })
 
 export const OptimizationSummarySchema = z.object({
@@ -233,14 +237,24 @@ export const ImageAnalysisSchema = z.object({
     ),
 })
 
+// Fiş karşılaştırması PAKET BAŞINA yapılır: `receiptUnitPrice` ile `bestPrice`
+// aynı tabandadır (ikisi de tek paketin fiyatı) ve fark ikisinin arasındadır.
+// Adetle çarpmak, sepet tarafındaki kuralla (bkz. lib/ai/effective-cost.ts —
+// miktar fiyatı ETKİLEMEZ) ve aynı karttaki `summary` toplamlarıyla çelişirdi.
 export const ReceiptComparisonItemSchema = z.object({
   rawName: z.string(),
+  // Fişteki tek paket fiyatı — karşılaştırmanın fiş tarafı. OCR birim fiyatı
+  // okuyamadıysa satır toplamı adede bölünerek türetilir.
   receiptUnitPrice: z.number().nullable(),
+  // O satır için fişte ödenen gerçek tutar (birim × adet). Karşılaştırmaya
+  // girmez; yalnızca fişin kendi toplamını kurmak için taşınır.
   receiptTotalPrice: z.number().nullable(),
   matchedProductId: z.string().nullable(),
   matchedName: z.string().nullable(),
   bestMarket: z.string().nullable(),
+  // En ucuz marketteki tek paket fiyatı.
   bestPrice: z.number().nullable(),
+  // receiptUnitPrice − bestPrice (negatifse 0). Farklı boyut eşleşmesinde null.
   savingsTL: z.number().nullable(),
   sizeMismatch: z.boolean(),
 })
@@ -255,7 +269,11 @@ export const ReceiptStalenessSchema = z.object({
 
 export const ReceiptComparisonSchema = z.object({
   items: z.array(ReceiptComparisonItemSchema),
+  // DİKKAT — fişin basılı genel toplamı DEĞİL: fişteki paket fiyatlarının
+  // toplamı. `totalBestAmount` ile aynı tabanda olsun diye böyle; basılı toplam
+  // ayrı taşınır (receipt.totalAmount).
   totalReceiptAmount: z.number(),
+  // Aynı kalemlerin bugünkü en iyi paket fiyatları toplamı.
   totalBestAmount: z.number(),
   totalSavingsTL: z.number(),
   staleness: ReceiptStalenessSchema.nullable(),

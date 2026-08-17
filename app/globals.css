@@ -183,6 +183,43 @@
   --smooth-ring-color: color-mix(in oklab, var(--foreground) var(--smooth-ring-alpha), transparent);
 }
 
+/* ---------------------------------------------------------------------------
+   Hero'nun altındaki koyu bölümün zemini (components/home/home-blog-section.tsx)
+
+   Bölüm hero'nun üstüne -mt-24 (md: -mt-28) ile biniyor ve zemini düz
+   --home-base'ti. Sorun: hero'nun dip rampası (`.home-hero-fade`) artık
+   shader ile birlikte geliyor, bu bölüm ise ilk boyamada. Aradaki boşlukta
+   krem hero'nun dibine simsiyah bir blok KESKİN bir çizgiyle oturuyordu.
+
+   Üst kenar bu yüzden düz renk değil, 6rem'lik bir alfa rampası. İki işi var:
+
+   1. Rampa BİNDİRME payı kadar: bölüm, hero'nun üstünden çıktığı yerde tam
+      opak oluyor. Yani senkron kaçsa bile ortaya sert bir kenar çıkamaz, en
+      kötü ihtimalle yumuşak bir geçiş görünür.
+   2. Yerleşince GÖRÜNMEZ: hero'nun fade'i bindirme bölgesinde zaten tam opak
+      --home-base, dolayısıyla bu rampa opak rengin üstüne biniyor ve hiçbir
+      fark bırakmıyor. Oturmuş görünüm birebir eskisi gibi.
+
+   6rem taban bindirmeye (96px) eşit; md'de bindirme 112px olduğu için rampa
+   daha erken kapanır, yani orada da hep hero'nun üstünde biter. Saydam uç
+   `--home-base-clear`: düz `transparent` saydam SİYAHTIR ve geçişte çamurlu
+   bir bant bırakırdı.
+
+   `@utility` DEĞİL, aşağıdaki `.home-hero-fade` gibi DÜZ BİR SINIF. Utility
+   olarak yazıldığında kural yalnızca Tailwind sınıf adayını kaynak taramasında
+   bulursa üretilir; tek bir dosyada geçen yepyeni bir ad için bu, derleme
+   ortamına ve build cache'ine bağlı sessiz bir kırılganlık. Düz sınıf her
+   derlemede koşulsuz çıkar — hero fade'in hiç düşmemesinin sebebi de bu.
+   Durak `0px`: birimsiz `0` geçerli olsa da eski motorlarda gradient'i tümden
+   geçersiz kılabiliyor, o da bu bildirimin sessizce düşmesi demek. */
+.home-dark-ground {
+  background-image: linear-gradient(
+    to bottom,
+    var(--home-base-clear) 0px,
+    var(--home-base) 6rem
+  );
+}
+
 /* Hero görselinin alt kenarını blog dip rengine dikişsiz bağlayan fade.
    Görselin dibi koyu bir manzara (gündüz yeşil tepeler / gece kahve tepeler);
    fade yarı-saydam olduğu yerde o tepe siluetinin üst kenarı "çizgi" gibi
@@ -190,16 +227,34 @@
    • Tek hue (--home-base) üzerinde 1→0 alfa rampası; ara opaklıklar color-mix ile
      üretilir → ne saydam-siyaha kayma ne de yeşilimsi ton oynaması olur.
    • Duraklar arası eğim kademeli (Mach bandı / keskin çizgi oluşmaz) ve orta
-     bölge daha opak tutulur ki tepe silueti yedirilsin. */
+     bölge daha opak tutulur ki tepe silueti yedirilsin.
+
+   Duraklar YÜZDE DEĞİL rem: fade'in üstüne binen blog bölümü hero'ya sabit
+   piksel kadar biniyor (-mt-24 / md:-mt-28 = 96/112px) ve o bölümün zemini
+   TAM OPAK. Rampa yüzdeyle ölçülünce tam opaklığa `0.65 × 0.22 × heroYükseklik`
+   = 0.143H'de ulaşıyordu; yani ancak ~847px'den uzun pencerelerde bindirmeyi
+   kapatıyordu. Daha kısa pencerede bölümün sert üst kenarı fade henüz yarı
+   saydamken başlıyor ve görselin dibi bıçakla kesilmiş gibi duruyordu.
+   Şimdi dipteki 8rem (128px) her koşulda tam opak → bindirmenin 7rem'lik en
+   derin hali bile rampaya hiç değmiyor, dikiş kayboluyor.
+
+   Rampa 8rem→17rem arası 9rem (144px, eskiden ~68px) ve alfa smoothstep
+   (3t²-2t³) örneklenerek dağıtıldı: doğrusal rampanın başladığı yerde göz
+   "burada bir örtü başladı" çizgisini yakalıyordu, S eğrisinde iki uç da
+   düz teğetle giriyor. */
 .home-hero-fade {
   background-image: linear-gradient(
     to top,
-    var(--home-base) 0%,
-    var(--home-base) 65%,
-    color-mix(in srgb, var(--home-base) 80%, var(--home-base-clear)) 76%,
-    var(--home-base-soft) 85%,
-    color-mix(in srgb, var(--home-base) 24%, var(--home-base-clear)) 93%,
-    var(--home-base-clear) 100%
+    var(--home-base) 0,
+    var(--home-base) 8rem,
+    color-mix(in srgb, var(--home-base) 96%, var(--home-base-clear)) 9.125rem,
+    color-mix(in srgb, var(--home-base) 84%, var(--home-base-clear)) 10.25rem,
+    color-mix(in srgb, var(--home-base) 68%, var(--home-base-clear)) 11.375rem,
+    var(--home-base-soft) 12.5rem,
+    color-mix(in srgb, var(--home-base) 32%, var(--home-base-clear)) 13.625rem,
+    color-mix(in srgb, var(--home-base) 16%, var(--home-base-clear)) 14.75rem,
+    color-mix(in srgb, var(--home-base) 4%, var(--home-base-clear)) 15.875rem,
+    var(--home-base-clear) 17rem
   );
 }
 
@@ -579,6 +634,43 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero shader'ının girişi (components/home/hero-shader.tsx)
+
+   `enter-fx` ile aynı aileden: aynı eğri, aynı "aşağıdan yüksel" hareketi.
+   Ayrı bir utility olmasının iki sebebi var:
+
+   1. BLUR YOK. `enter-fx` bitişe kadar `filter: blur(6px)` sürüyor; tam ekran
+      bir WebGL yüzeyinde bu, her karede bütün yüzeyi bulanıklaştırmak demek ve
+      tam olarak main thread'in en yoğun olduğu açılış anına denk geliyor.
+      Burada yalnızca opacity + transform var, ikisi de compositor'da koşar.
+   2. DAHA UZUN YOL, DAHA UZUN SÜRE. Rozet gibi küçük bir elemanda 14px'lik
+      yükselme okunur; 764px'lik bir zeminde hiç fark edilmez. 40px/0.9s bu
+      yüzeyin ölçeğinde "sahne aşağıdan kuruluyor" hissini veriyor.
+
+   Yukarı kayarken üstte açılan boşluk GÖRÜNMEZ: shader'ın üst platosu zaten
+   --background, yani arkasından çıkan renk aynı renk. Altta taşan kısmı da
+   hero'nun `overflow-hidden`ı kırpıyor. */
+@utility hero-shader-fx {
+  animation: hero-shader-fx 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @media (prefers-reduced-motion: reduce) {
+    /* Hareket azaltmada yalnızca sönümleme — `enter-fx` ile aynı davranış. */
+    animation-name: enter-fx-fade;
+    animation-duration: 0.2s;
+  }
+}
+
+@keyframes hero-shader-fx {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

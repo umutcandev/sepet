@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 import { HeroMarketBadge } from "@/components/hero-market-badge"
+import { HeroShader } from "@/components/home/hero-shader"
 import { AnimateEnter } from "@/components/motion/animate-enter"
 import { PressFx } from "@/components/motion/press-fx"
 import { type PromptInputMessage } from "@/components/ai-elements/prompt-input"
@@ -176,32 +177,6 @@ export function HomeHero() {
 
   return (
     <>
-      <link
-        rel="preload"
-        as="image"
-        href="/backgrounds/background-image.avif"
-        type="image/avif"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        as="image"
-        href="/backgrounds/background-image.webp"
-        type="image/webp"
-        fetchPriority="high"
-      />
-      <link
-        rel="preload"
-        as="image"
-        href="/backgrounds/background-image-dark.avif"
-        type="image/avif"
-      />
-      <link
-        rel="preload"
-        as="image"
-        href="/backgrounds/background-image-dark.webp"
-        type="image/webp"
-      />
       <link rel="preload" as="image" href="/market-logos/a101.webp" />
       <link rel="preload" as="image" href="/market-logos/migros.webp" />
       <link rel="preload" as="image" href="/market-logos/sok.webp" />
@@ -209,23 +184,16 @@ export function HomeHero() {
       <link rel="preload" as="image" href="/market-logos/tarim-kredi.webp" />
       <link rel="preload" as="image" href="/market-logos/carrefoursa.webp" />
       <div className="relative flex min-h-[calc(var(--hero-vh,100svh)-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-full bg-[image:image-set(url('/backgrounds/background-image.avif')_type('image/avif'),url('/backgrounds/background-image.webp')_type('image/webp'))] [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] bg-cover bg-bottom bg-no-repeat [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] dark:hidden"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-full bg-[image:image-set(url('/backgrounds/background-image-dark.avif')_type('image/avif'),url('/backgrounds/background-image-dark.webp')_type('image/webp'))] [mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] bg-cover bg-bottom bg-no-repeat [-webkit-mask-image:linear-gradient(to_top,black_0%,black_30%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.55)_65%,rgba(0,0,0,0.25)_80%,rgba(0,0,0,0.08)_92%,transparent_100%)] dark:block"
-        />
-        {/* Görselin alt kenarını blog bölümünün dip rengine (--home-base, temaya
-            bağlı) yumuşak fade ile bağlar: dipte tam renk, yukarı doğru saydamlaşır.
-            Gradient detayları `.home-hero-fade` içinde (globals.css) — tek hue alfa
-            rampası, görselin alt tepe siluetini çizgisiz yedirir. Kısa tutulur
-            (h-[22%]) ki üst kısımdaki görüntüyü maskelemesin. */}
-        <div
-          aria-hidden
-          className="home-hero-fade pointer-events-none absolute inset-x-0 bottom-0 h-[22%]"
-        />
+        {/* Tek zemin katmanı: gündüz/gece iki ayrı görsel yerine tek shader,
+            paleti temadan okuyor. Maske YOK — shader'ın üst platosu zaten
+            --background, söndürülecek bir fark kalmadı.
+
+            Dibe inen `.home-hero-fade` rampası da ARTIK BUNUN İÇİNDE: shader ile
+            tek parça hâlinde, aynı mesafede yukarı süzülmesi gerekiyor (bkz.
+            hero-shader.tsx). Burada ayrı bir kardeş olarak dursaydı ilk boyamada
+            yerine oturur, shader ise sonradan altından yükselirdi — karartı
+            havada asılı kalır, girişin bütünlüğü bozulurdu. */}
+        <HeroShader />
         <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3 text-center">
             {/* Hero ilk ekranda: scroll beklenmez, açılışta kademeli girer.

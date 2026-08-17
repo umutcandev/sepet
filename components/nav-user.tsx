@@ -64,9 +64,22 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              // `my-2`: rayda düğme h-12'den size-8'e iniyor. Footer alttan
+              // hizalı olduğu için kısalma avatarı 8 piksel AŞAĞI kaydırıyordu.
+              // Dikey marj kutuyu yine 48 piksele tamamlar → avatar açılıp
+              // kapanırken tam olarak yerinde kalır.
+              //
+              // `p-1!`: rayda taban stil dolguyu sıfırlıyor, avatar 32 piksellik
+              // düğmeyi kenardan kenara dolduruyordu — rayın 8 piksellik iç
+              // payını tek başına deliyordu. 4 piksel dolgu + 24 piksel avatar
+              // aynı kutuyu ortalı doldurur ve dikey konumu genişken duruma
+              // birebir eşitler (8+4 = 12 piksel üstten, iki durumda da).
+              className="group-data-[collapsible=icon]:my-2 group-data-[collapsible=icon]:p-1! data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              {/* Tetikleyicideki avatar iki durumda da 24 piksel (`size="sm"`,
+                  yedek harfi de küçültür). Menü içindeki kopyası 32'de kalıyor:
+                  orası geniş bir yüzey ve kimliği tanıtan asıl yer. */}
+              <Avatar size="sm" className="rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className="rounded-lg">
                   {user.name.charAt(0).toUpperCase()}

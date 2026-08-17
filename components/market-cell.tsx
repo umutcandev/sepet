@@ -6,6 +6,17 @@ import { cn } from "@/lib/utils"
 
 type Size = "sm" | "default" | "lg"
 
+// Market adı hiçbir yazı boyutu sınıfı taşımıyor, mirasa bırakıyordu: masaüstü
+// tabloda <table class="text-sm"> onu 14px'e çekiyor, ama detay sayfasının mobil
+// kart listesinde miras doğrudan body'den geliyor ve 16px oluyordu. Sonuç, aynı
+// satırda 11px "1 adet", 14px fiyat ve 16px market adı. Ölçek artık `size`e
+// bağlı ve her yerde aynı.
+const TEXT_SIZE: Record<Size, string> = {
+  sm: "text-xs",
+  default: "text-sm",
+  lg: "text-base",
+}
+
 type MarketCellProps = {
   name: string | null | undefined
   size?: Size
@@ -27,7 +38,9 @@ export function MarketCell({
   className,
 }: MarketCellProps) {
   if (!name) {
-    return <span className="text-muted-foreground">—</span>
+    return (
+      <span className={cn(TEXT_SIZE[size], "text-muted-foreground")}>—</span>
+    )
   }
 
   const entry = findMarket(name)
@@ -39,7 +52,10 @@ export function MarketCell({
       <MarketLogo name={name} size={size} />
       <span
         className={cn(
-          "truncate",
+          // `min-w-0` olmadan `truncate` bir flex kabında hiç devreye girmez:
+          // flex öğesinin varsayılan `min-width: auto`su onu içeriğinin altına
+          // inmekten alıkoyar, ad kırpılmak yerine kabı taşırır.
+          "min-w-0 truncate",
           !isKnown && "italic text-muted-foreground",
         )}
       >
@@ -51,7 +67,7 @@ export function MarketCell({
     </>
   )
 
-  const base = "inline-flex items-center gap-2"
+  const base = cn("inline-flex items-center gap-2", TEXT_SIZE[size])
 
   if (clickable && url) {
     return (

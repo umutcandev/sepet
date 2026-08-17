@@ -1,16 +1,76 @@
+// Tek biçim kaynağı. Daha önce dokuz ayrı dosya kendi Intl örneğini kurup iki
+// farklı para biçimi ("27,50 TL" ve "₺27,50") üretiyordu; kullanıcı ürün
+// panelinde bir biçim, kayıt sayfasında başkasını görüyordu. Karar: her yerde
+// "₺27,50". Yeni bir yerel formatter kurma — buradan import et.
+
+const currencyFmt = new Intl.NumberFormat("tr-TR", {
+  style: "currency",
+  currency: "TRY",
+  maximumFractionDigits: 2,
+})
+
 const decimalFmt = new Intl.NumberFormat("tr-TR", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 })
 
-/** "27,50 TL" — symbol-free, locale-correct decimal. */
+/** "₺27,50" — projedeki tek para biçimi. */
 export function formatTL(value: number): string {
-  return `${decimalFmt.format(value)} TL`
+  return currencyFmt.format(value)
 }
 
-/** Same as `formatTL` but tolerant of nullish input ("—" fallback). */
+/** `formatTL` ama null/NaN toleranslı ("—" fallback). */
 export function formatTLOrDash(value: number | null | undefined): string {
-  return value == null ? "—" : formatTL(value)
+  if (value == null || !Number.isFinite(value)) return "—"
+  return formatTL(value)
+}
+
+/** Sembolsüz ondalık — "₺" zaten bağlamda varsa (ör. tablo başlığında). */
+export function formatAmount(value: number): string {
+  return decimalFmt.format(value)
+}
+
+// ─── Tarih ───
+
+const dateLongFmt = new Intl.DateTimeFormat("tr-TR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+})
+
+const dateTimeFmt = new Intl.DateTimeFormat("tr-TR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+})
+
+const dateShortFmt = new Intl.DateTimeFormat("tr-TR", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+})
+
+type DateInput = Date | string | number
+
+function toDate(value: DateInput): Date {
+  return value instanceof Date ? value : new Date(value)
+}
+
+/** "08 Ağustos 2026" — detay sayfası başlıkları. */
+export function formatDate(value: DateInput): string {
+  return dateLongFmt.format(toDate(value))
+}
+
+/** "08 Ağustos 2026 17:42" — kayıt zamanı. */
+export function formatDateTime(value: DateInput): string {
+  return dateTimeFmt.format(toDate(value))
+}
+
+/** "08 Ağu 2026" — liste satırları. */
+export function formatDateShort(value: DateInput): string {
+  return dateShortFmt.format(toDate(value))
 }
 
 const relTime = new Intl.RelativeTimeFormat("tr-TR", { numeric: "auto" })

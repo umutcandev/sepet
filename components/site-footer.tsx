@@ -1,13 +1,14 @@
 // Site geneli alt bilgi — tek kaynak. Paper'daki footer taslağının yapısı:
-// solda marka + tanıtım + sosyal ikonlar, sağda üç bağlantı sütunu, altta ince
-// ayraçla telif satırı. Ölçüler blog sayfalarıyla aynı kabı (max-w-5xl px-4)
-// kullanır ki sütunlar yazı gridiyle aynı hizaya otursun.
+// solda marka + tanıtım + sosyal ikonlar, sağda dört bağlantı sütunu, altta
+// telif satırı ile durum rozeti + tema anahtarı. Ölçüler blog sayfalarıyla aynı
+// kabı (max-w-5xl px-4) kullanır ki sütunlar yazı gridiyle aynı hizaya otursun.
 // Yeni bir sayfaya eklerken bu bileşeni import et; kopya footer dosyası açma.
 import Image from "next/image"
 import Link from "next/link"
 
 import { GitHubLogo, XLogo } from "@/components/blog/brand-icons"
 import { FooterLink } from "@/components/site-footer-link"
+import { ThemeToggleInline } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CATEGORY_LIST } from "@/lib/blog/categories"
@@ -83,9 +84,9 @@ export function SiteFooter({ className }: { className?: string }) {
       {/* Üst/alt boşluk asimetrik: alt şerit sayfanın dibine daha yakın dursun
           diye pb üstteki pt'nin yarısı kadar. */}
       <div className="mx-auto w-full max-w-5xl px-4 pt-10 pb-5 md:pt-14 md:pb-7">
-        <div className="flex flex-col gap-10 md:flex-row md:justify-between md:gap-16">
+        <div className="flex flex-col gap-10 md:flex-row md:justify-between md:gap-10 lg:gap-12">
           {/* Marka sütunu */}
-          <div className="flex flex-col gap-6 md:max-w-xs">
+          <div className="flex flex-col gap-6 md:max-w-[17rem]">
             <Link href="/" className="inline-flex w-fit items-center">
               <Image
                 src="/brand/sepet-dark.svg"
@@ -125,8 +126,10 @@ export function SiteFooter({ className }: { className?: string }) {
             </div>
           </div>
 
-          {/* Bağlantı sütunları — mobilde iki, sm ve üstünde üç sütun */}
-          <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 md:gap-x-12 lg:gap-x-16">
+          {/* Bağlantı sütunları — mobilde iki, sm'de dört. md'de marka sütunu
+              yana geçince dört sütuna yer kalmadığı için 2×2'ye düşer, lg'de
+              yeniden tek sıra dört sütun olur. */}
+          <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4 md:grid-cols-2 md:gap-x-10 lg:grid-cols-4 lg:gap-x-8">
             <FooterColumn title="Ürün">
               {productLinks.map((link) => (
                 <FooterListLink key={link.href} href={link.href}>
@@ -147,6 +150,14 @@ export function SiteFooter({ className }: { className?: string }) {
               ))}
             </FooterColumn>
 
+            <FooterColumn title="Yasal">
+              {legalLinks.map((link) => (
+                <FooterListLink key={link.href} href={link.href}>
+                  {link.label}
+                </FooterListLink>
+              ))}
+            </FooterColumn>
+
             <FooterColumn title="Destek">
               <FooterListLink href={STATUS_URL} external>
                 Sistem Durumu
@@ -161,12 +172,13 @@ export function SiteFooter({ className }: { className?: string }) {
           </div>
         </div>
 
-        {/* Alt şerit */}
+        {/* Alt şerit: solda telif, sağda aynı yükseklikteki iki kontrol —
+            durum rozeti ve tema anahtarı. */}
         <div className="mt-10 flex flex-col gap-4 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap items-center gap-3">
-            <p className="text-xs font-medium text-muted-foreground">
-              © {year}, Tüm hakları saklıdır.
-            </p>
+          <p className="text-xs font-medium text-muted-foreground">
+            © {year}, Tüm hakları saklıdır.
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
             {/* Varsayılan rozetten biraz daha dar (px-1.5) ve bir tık daha
                 yüksek (h-6): yanındaki telif satırıyla optik olarak eşitlenir. */}
             <Badge
@@ -184,16 +196,8 @@ export function SiteFooter({ className }: { className?: string }) {
                 Sistem Durumu
               </a>
             </Badge>
+            <ThemeToggleInline />
           </div>
-          <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            {legalLinks.map((link) => (
-              <li key={link.href}>
-                <FooterLink href={link.href} className="text-xs">
-                  {link.label}
-                </FooterLink>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </footer>

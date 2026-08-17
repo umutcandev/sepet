@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
+import { formatTL } from "@/lib/format"
 import { DepotInfo } from "@/components/assistant/depot-info"
 import type { MarketAllocation, OptimizationSummary } from "@/lib/ai/schemas"
 
@@ -34,11 +35,9 @@ function formatMissingItemsText(names: string[], market: string): string {
 function AllocationBreakdown({
   allocation,
   markets,
-  tl,
 }: {
   allocation: MarketAllocation[]
   markets: string[]
-  tl: Intl.NumberFormat
 }) {
   const multiMarket = markets.length > 1
   const grouped = markets
@@ -85,7 +84,7 @@ function AllocationBreakdown({
                       </div>
                       <div className="text-[0.6875rem] text-muted-foreground">
                         {e.productName}
-                        {multiPack && ` · ${tl.format(e.unitPrice)}/paket`}
+                        {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
                       </div>
                       {e.sizeMismatch && (
                         <div className="flex items-center gap-1 text-[0.625rem] text-amber-600 dark:text-amber-400">
@@ -95,7 +94,7 @@ function AllocationBreakdown({
                       )}
                     </TableCell>
                     <TableCell className="py-1 text-right align-top text-xs tabular-nums">
-                      {tl.format(e.lineTotal)}
+                      {formatTL(e.lineTotal)}
                     </TableCell>
                   </TableRow>
                 )
@@ -118,7 +117,6 @@ function OptionRow({
   total,
   allocation,
   markets,
-  tl,
 }: {
   logo: React.ReactNode
   label: string
@@ -127,15 +125,14 @@ function OptionRow({
   subtitle: React.ReactNode
   subtitleClassName: string
   total: number
-  allocation: MarketAllocation[] | undefined
+  allocation: MarketAllocation[]
   markets: string[]
-  tl: Intl.NumberFormat
 }) {
   const [open, setOpen] = useState(false)
-  // Eski kayıtlı özetlerde allocation hiç olmayabilir (summaryJson zod'dan
-  // geçmeden cast edildiği için default uygulanmaz) → güvenli boş listeye düş.
-  const items = allocation ?? []
-  const canExpand = items.length > 0
+  // Döküm eklenmeden önce kaydedilmiş özetlerde `allocation` boş dizi olur
+  // (bkz. şemadaki `.default([])`) — kart toplamı ve marketi gösterir, yalnızca
+  // açılır döküm kapalı kalır.
+  const canExpand = allocation.length > 0
 
   return (
     <div>
@@ -159,7 +156,7 @@ function OptionRow({
           <div className={subtitleClassName}>{subtitle}</div>
         </div>
         <span className="shrink-0 text-xl font-bold tabular-nums">
-          {tl.format(total)}
+          {formatTL(total)}
         </span>
         {canExpand && (
           <ChevronDownIcon
@@ -171,7 +168,7 @@ function OptionRow({
         )}
       </button>
       {open && canExpand && (
-        <AllocationBreakdown allocation={items} markets={markets} tl={tl} />
+        <AllocationBreakdown allocation={allocation} markets={markets} />
       )}
     </div>
   )
@@ -179,11 +176,6 @@ function OptionRow({
 
 export function OptimizationCard({ summary }: { summary: OptimizationSummary }) {
   if (!summary) return null
-  const tl = new Intl.NumberFormat("tr-TR", {
-    style: "currency",
-    currency: "TRY",
-    maximumFractionDigits: 2,
-  })
 
   const { singleMarket, twoMarketCombo, totalItems } = summary
   const hasCombo = twoMarketCombo.markets.length === 2
@@ -218,7 +210,6 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
       total={singleMarket.total}
       allocation={singleMarket.allocation}
       markets={[singleMarket.market]}
-      tl={tl}
     />
   )
 
@@ -243,7 +234,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
       title={twoMarketCombo.markets.join(" + ")}
       subtitle={
         twoMarketCombo.savingsTL > 0
-          ? `${tl.format(twoMarketCombo.savingsTL)} tasarruf`
+          ? `${formatTL(twoMarketCombo.savingsTL)} tasarruf`
           : `${totalItems}/${totalItems} kalem`
       }
       subtitleClassName={
@@ -254,13 +245,12 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
       total={twoMarketCombo.total}
       allocation={twoMarketCombo.allocation}
       markets={twoMarketCombo.markets}
-      tl={tl}
     />
   ) : null
 
   return (
     <div className="overflow-hidden rounded-xl border bg-card">
-      <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
+      <div className="flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2">
         <span className="text-sm font-medium">Sepet Özeti</span>
       </div>
       <div className="divide-y">

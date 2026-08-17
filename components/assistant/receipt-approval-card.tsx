@@ -19,6 +19,7 @@ import type { ReceiptOCR, ReceiptOCRItem } from "@/lib/ai/schemas"
 import { UNIT_VALUES } from "@/lib/ai/schemas"
 import { stripQuantityTokens } from "@/lib/ai/normalize"
 import { MarketLogo } from "@/components/market-logo"
+import { formatTLOrDash } from "@/lib/format"
 
 type EditableItem = ReceiptOCRItem & { _id: string }
 
@@ -236,7 +237,7 @@ export function ReceiptApprovalCard({
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
                     {readOnly ? (
-                      <span>{formatTL(it.unitPrice)}</span>
+                      <span>{formatTLOrDash(it.unitPrice)}</span>
                     ) : (
                       <Input
                         type="number"
@@ -255,7 +256,7 @@ export function ReceiptApprovalCard({
                     )}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
-                    {formatTL(
+                    {formatTLOrDash(
                       it.totalPrice ??
                       (it.unitPrice != null
                         ? it.unitPrice * it.quantity
@@ -300,7 +301,7 @@ export function ReceiptApprovalCard({
                 </div>
               </TableCell>
               <TableCell className="text-right text-sm font-semibold text-foreground tabular-nums">
-                {formatTL(ocr.totalAmount ?? totalReceipt)}
+                {formatTLOrDash(ocr.totalAmount ?? totalReceipt)}
               </TableCell>
               {!readOnly && <TableCell />}
             </TableRow>
@@ -337,15 +338,6 @@ export function ReceiptApprovalCard({
       )}
     </div>
   )
-}
-
-function formatTL(n: number | null | undefined): string {
-  if (n == null || !Number.isFinite(n)) return "—"
-  return new Intl.NumberFormat("tr-TR", {
-    style: "currency",
-    currency: "TRY",
-    maximumFractionDigits: 2,
-  }).format(n)
 }
 
 function formatQty(q: number) {

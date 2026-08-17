@@ -4,7 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { CommandIcon, PanelLeftIcon, PlusIcon } from "lucide-react"
+import { PanelLeftIcon, PlusIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 import { animate, motion, useMotionValue, useMotionValueEvent } from "motion/react"
 
@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { HeaderUserMenu } from "@/components/header-user-menu"
-import { ThemeToggleButton } from "@/components/theme-toggle"
 import {
   SidebarInset,
   SidebarProvider,
@@ -37,27 +36,26 @@ type Props = {
 // Büyütmek geçişi daha yumuşak/uzun, küçültmek daha keskin yapar.
 const HOME_DARK_RANGE = 160
 
+// Yalnızca mobil. Masaüstünde anahtar artık kenar çubuğunun kendi başlığında
+// (app-sidebar.tsx): genişken sağ üstteki düğme, daraltılmışken üstüne gelince
+// anahtara dönüşen logo. Mobilde ise kenar çubuğu bir `Sheet` ve kapalıyken
+// ekranda hiç yok — açacak tutamak dışarıda kalmak zorunda.
+//
+// Kalıcı "⌘B" etiketi de bu taşımayla birlikte düştü: kısayolun yeri, düğmenin
+// yanındaki sabit bir rozet değil tooltip (mobilde zaten anlamsızdı).
 function SidebarToggleButton() {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, openMobile } = useSidebar()
 
   return (
     <Button
       type="button"
       variant="ghost"
+      size="icon-sm"
       onClick={toggleSidebar}
-      aria-label="Kenar çubuğunu aç/kapat"
-      className="-ml-1 h-8 gap-2 px-2 md:pr-2.5"
+      aria-label={openMobile ? "Kenar çubuğunu kapat" : "Kenar çubuğunu aç"}
+      className="-ml-1 md:hidden"
     >
       <PanelLeftIcon className="cn-rtl-flip size-4" />
-      <span className="hidden items-center gap-0.5 font-mono text-[0.6875rem] leading-none font-medium text-muted-foreground/60 md:inline-flex">
-        <CommandIcon className="size-3 shrink-0" />
-        {/* Büyük "B"nin optik merkezi font metrikleri yüzünden ikon merkezinin
-            ~0.5px üstünde kalıyor → ⌘ ile yatay hizada görünmesi için hafif
-            aşağı nudge. */}
-        <span className="inline-flex h-3 translate-y-[0.5px] items-center justify-center leading-none">
-          B
-        </span>
-      </span>
     </Button>
   )
 }
@@ -269,12 +267,11 @@ export function AppShell({ blogPosts, children }: Props) {
           >
             <div className="flex shrink-0 items-center gap-2 px-4">
               <SidebarToggleButton />
+              {/* Anahtarla ondan sonra geleni ayırır; anahtar mobile özel
+                  olduğu için ayraç da öyle. */}
               <Separator
                 orientation="vertical"
-                className={cn(
-                  "mr-2 data-vertical:h-4 data-vertical:self-auto",
-                  !isAssistantRoute && "md:hidden"
-                )}
+                className="mr-2 data-vertical:h-4 data-vertical:self-auto md:hidden"
               />
               {isAssistantRoute ? (
                 <NewConversationButton />
@@ -329,7 +326,6 @@ export function AppShell({ blogPosts, children }: Props) {
               ) : null}
             </div>
             <div className="flex shrink-0 items-center justify-end gap-1 px-4">
-              <ThemeToggleButton />
               {/* İki varyant da her zaman render edilir; hangisinin görüneceğine
                 ilk boyamada <html data-session> ipucu üzerinden CSS karar verir
                 (globals.css), oturum çözümlenince ipucu gerçekle senkronlanır.
@@ -338,7 +334,7 @@ export function AppShell({ blogPosts, children }: Props) {
                 kullanıcı avatarını görür. */}
               <span data-session-guest>
                 <Button size="sm" onClick={() => loginDialog.open()}>
-                  Hemen Başla
+                  Oturum Aç
                 </Button>
               </span>
               <span data-session-authed>

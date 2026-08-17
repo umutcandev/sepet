@@ -1,14 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  InfoIcon,
-  Loader2Icon,
-  SaveIcon,
-} from "lucide-react"
-import { toast } from "@/components/ui/sonner"
+import { ChevronDownIcon, InfoIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -20,7 +13,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { saveReceipt } from "@/lib/actions/receipts"
+import { SaveRecordRow } from "@/components/assistant/save-record-row"
 import { MarketLogo } from "@/components/market-logo"
+import { formatTLOrDash } from "@/lib/format"
 import type {
   MatchResult,
   OptimizationSummary,
@@ -55,9 +50,6 @@ export function ReceiptComparisonCard({
   toolCallId?: string | null
   initialSavedId?: string | null
 }) {
-  const [savedId, setSavedId] = React.useState<string | null>(initialSavedId)
-  const [saving, setSaving] = React.useState(false)
-
   const { comparison, receiptContext, summary, matches } = data
   const [expanded, setExpanded] = React.useState<Set<number>>(new Set())
 
@@ -83,38 +75,15 @@ export function ReceiptComparisonCard({
   const canSave = !!receiptContext.imageR2Key
   const isStale = !!comparison.staleness?.isStale
 
-  async function handleSave() {
-    if (!canSave || saving || savedId) return
-    setSaving(true)
-    try {
-      const res = await saveReceipt({
-        imageUrl: receiptContext.imageUrl,
-        imageR2Key: receiptContext.imageR2Key!,
-        marketName: receiptContext.marketName,
-        purchaseDate: receiptContext.purchaseDate,
-        totalAmount: receiptContext.totalAmount,
-        items: receiptContext.items,
-        summary,
-        matches,
-        comparison,
-        conversationId,
-        sourceToolCallId: toolCallId,
-      })
-      if (!res.ok) {
-        toast.error(
-          "Fiş kaydetme limitin doldu. Eski bir fişi sil ya da Pro'ya geç.",
-        )
-        return
-      }
-      setSavedId(res.id)
-      toast.success("Fişlerime kaydedildi.")
-    } catch (err) {
-      console.error("[ReceiptComparisonCard] save failed", err)
-      toast.error("Fiş kaydedilemedi. Lütfen tekrar dene.")
-    } finally {
-      setSaving(false)
-    }
-  }
+  const namePlaceholder = React.useMemo(() => {
+    const fmt = new Intl.DateTimeFormat("tr-TR", {
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    return `${receiptContext.marketName ?? "Fiş"} · ${fmt.format(new Date())}`
+  }, [receiptContext.marketName])
 
   return (
     <div className="rounded-xl border bg-card">
@@ -131,7 +100,7 @@ export function ReceiptComparisonCard({
               variant="outline"
               className="ml-auto border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
             >
-              {formatTL(comparison.totalSavingsTL)} tasarruf mümkündü
+              {formatTLOrDash(comparison.totalSavingsTL)} tasarruf mümkündü
             </Badge>
           )
         )}
@@ -142,9 +111,12 @@ export function ReceiptComparisonCard({
           <TableHeader>
             <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
               <TableHead className="min-w-[140px]">Ürün</TableHead>
-              <TableHead className="w-28 text-right">Fişteki</TableHead>
+              {/* Üç sayı kolonu da PAKET başına: "Fişteki" satır toplamıyken
+                  yanındaki "En iyi fiyat" tek paketti, yani tablo iki farklı
+                  tabanı yan yana koyup farkını alıyordu. */}
+              <TableHead className="w-28 text-right">Fişteki paket</TableHead>
               <TableHead className="min-w-[140px]">En iyi market</TableHead>
-              <TableHead className="w-24 text-right">En iyi fiyat</TableHead>
+              <TableHead className="w-24 text-right">En iyi paket</TableHead>
               <TableHead className="w-24 text-right">Fark</TableHead>
             </TableRow>
           </TableHeader>
@@ -204,7 +176,7 @@ export function ReceiptComparisonCard({
                       </div>
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
-                      {formatTL(it.receiptTotalPrice)}
+                      {formatTLOrDash(it.receiptUnitPrice)}
                     </TableCell>
                     <TableCell>
                       {it.bestMarket ? (
@@ -219,14 +191,14 @@ export function ReceiptComparisonCard({
                       )}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
-                      {formatTL(it.bestPrice)}
+                      {formatTLOrDash(it.bestPrice)}
                     </TableCell>
                     <TableCell className="text-right tabular-nums">
                       {it.savingsTL == null ? (
                         <span className="text-xs text-muted-foreground">—</span>
                       ) : hasSavings && !isStale ? (
                         <span className="font-medium text-emerald-700 dark:text-emerald-300">
-                          −{formatTL(it.savingsTL)}
+                          −{formatTLOrDash(it.savingsTL)}
                         </span>
                       ) : (
                         <span className="text-xs text-muted-foreground">
@@ -255,7 +227,7 @@ export function ReceiptComparisonCard({
                                   </span>
                                 </div>
                                 <span className="font-medium tabular-nums">
-                                  {formatTL(mp.price)}
+                                  {formatTLOrDash(mp.price)}
                                 </span>
                               </li>
                             ))}
@@ -271,18 +243,18 @@ export function ReceiptComparisonCard({
         </Table>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 border-t bg-muted/30 px-4 py-3 text-sm">
+      <div className="space-y-3 border-t bg-muted/30 px-4 py-3 text-sm">
         <div className="flex flex-wrap items-baseline gap-3 text-xs text-muted-foreground">
           <span>
-            Fiş toplamı:{" "}
+            Fişteki paket fiyatları:{" "}
             <span className="font-semibold text-foreground tabular-nums">
-              {formatTL(comparison.totalReceiptAmount)}
+              {formatTLOrDash(comparison.totalReceiptAmount)}
             </span>
           </span>
           <span>
             En iyi:{" "}
             <span className="font-semibold text-foreground tabular-nums">
-              {formatTL(comparison.totalBestAmount)}
+              {formatTLOrDash(comparison.totalBestAmount)}
             </span>
             {isStale && (
               <span className="ml-1 text-[0.6875rem] text-muted-foreground">
@@ -291,38 +263,41 @@ export function ReceiptComparisonCard({
             )}
           </span>
         </div>
-        <div className="ml-auto flex items-center gap-2">
-          {savedId ? (
-            <Button type="button" size="sm" variant="secondary" disabled>
-              <CheckIcon className="mr-1 size-3.5" />
-              Kaydedildi
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              size="sm"
-              onClick={handleSave}
-              disabled={!canSave || saving}
-            >
-              {saving ? (
-                <Loader2Icon className="mr-1 size-3.5 animate-spin" />
-              ) : (
-                <SaveIcon className="mr-1 size-3.5" />
-              )}
-              Fişi Kaydet
-            </Button>
-          )}
-        </div>
+        {/* Toplamlar fişin basılı genel toplamı DEĞİL. Etiketi söylemeyip
+            kullanıcıyı fişle karşılaştırmaya bırakmak, tutmayan iki sayı
+            gösterip sebebini saklamak olurdu. */}
+        <p className="text-[0.6875rem] text-muted-foreground">
+          Karşılaştırma paket başına yapılır; aldığın adet fiyatı çarpmaz.
+        </p>
+        <SaveRecordRow
+          size="sm"
+          namePlaceholder={namePlaceholder}
+          nameLabel="Fiş adı"
+          saveLabel="Fişi Kaydet"
+          viewHref={(id) => `/fis-gecmisi/${id}`}
+          initialSavedId={initialSavedId}
+          disabled={!canSave}
+          save={(name) =>
+            saveReceipt({
+              name,
+              imageUrl: receiptContext.imageUrl,
+              imageR2Key: receiptContext.imageR2Key!,
+              marketName: receiptContext.marketName,
+              purchaseDate: receiptContext.purchaseDate,
+              totalAmount: receiptContext.totalAmount,
+              items: receiptContext.items,
+              summary,
+              matches,
+              comparison,
+              conversationId,
+              sourceToolCallId: toolCallId,
+            })
+          }
+          limitMessage="Fiş kaydetme limitin doldu. Eski bir fişi sil ya da Pro'ya geç."
+          successMessage="Fişlerime kaydedildi."
+          errorMessage="Fiş kaydedilemedi. Lütfen tekrar dene."
+        />
       </div>
     </div>
   )
-}
-
-function formatTL(n: number | null | undefined): string {
-  if (n == null || !Number.isFinite(n)) return "—"
-  return new Intl.NumberFormat("tr-TR", {
-    style: "currency",
-    currency: "TRY",
-    maximumFractionDigits: 2,
-  }).format(n)
 }

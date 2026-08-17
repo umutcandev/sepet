@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react"
 import {
   CircleEllipsisIcon,
   ChevronDownIcon,
+  HistoryIcon,
   MoreHorizontalIcon,
   PencilIcon,
   StarIcon,
@@ -212,6 +213,52 @@ function useScrollFade() {
 const SIDEBAR_HISTORY_LIMIT = 10
 const SIDEBAR_STARRED_LIMIT = 8
 
+// Daraltılmış rayda (collapsible=icon) sohbet listesi anlamını yitirir:
+// satırların tek görünür parçası durum ikonu kalır ve on satır aynı daireye
+// iner. Ana gezinme ikonlarının aksine burada tooltip de kurtarmaz — hangi
+// sohbetin hangisi olduğu ancak balon açılınca anlaşılırdı. Listeler gizlenir;
+// geçmişin yerini tek bir satır alır (RailHistoryLink).
+const HIDE_ON_RAIL = "group-data-[collapsible=icon]:hidden"
+
+/**
+ * Geçmiş sohbet listesinin daraltılmış raydaki karşılığı: tek satır, /sohbetler.
+ *
+ * Kendi `SidebarGroup`'unda duruyor — grubun `p-2`'si ana gezinme bloğuyla
+ * arasına görünür bir boşluk koyuyor, yani ray "gezinme" ve "sohbetler" diye
+ * okunmaya devam ediyor. Favoriler'in raydaki karşılığı YOK: sabitlenmiş
+ * sohbetler tanım gereği tek tek seçilmiş öğeler, tek bir ikona indirgenemez.
+ *
+ * `/sohbetler`e giden ikinci yol olması sorun değil; genişletilmiş sidebar'da
+ * da hem gezinmedeki "Sohbetler" hem listedeki "Daha fazla göster" oraya
+ * gidiyor. Ayırt edici olan ikon ve etiket: bu satır geçmişi temsil ediyor.
+ */
+function RailHistoryLink({ onNavigate }: { onNavigate: () => void }) {
+  return (
+    // `data-rail-link` + `mt-3`: bu satır ve blog'unki gezinme bloğundan
+    // ayrılsın diye üstlerinde boşluk var, ama İKİSİ ART ARDA gelince aradaki
+    // boşluk düşsün diye kendi aralarında sıfırlanıyor — kendinden önce başka
+    // bir ray bağlantısı varsa marj kalkar. Bitişik kardeş (`+`) yerine genel
+    // kardeş (`~`) kullanılıyor: aradaki gizli gruplar DOM'da duruyor.
+    <SidebarGroup
+      data-rail-link
+      className="mt-3 hidden shrink-0 group-data-[collapsible=icon]:block [[data-rail-link]_~_&]:mt-0"
+    >
+      <SidebarGroupContent>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Geçmiş Sohbetler">
+              <Link href="/sohbetler" onClick={onNavigate}>
+                <HistoryIcon />
+                <span>Geçmiş Sohbetler</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  )
+}
+
 /**
  * Yıldız aç/kapa — store'da optimistik güncelle, server action başarısız olursa
  * geri al. Sıralamayı (updatedAt) değiştirmez.
@@ -400,23 +447,31 @@ export function AssistantConversationsGroup({ conversations }: Props) {
   // dolu bir fallback geldiyse (SSR listesi) beklemeye gerek yok.
   if (!storeHydrated && list.length === 0) {
     return (
-      // Gerçek "Geçmiş Sohbetler" grubuyla aynı kutu: min-h-0 flex-1 + kendi
-      // scroll kabı. 10 yer tutucu sidebar'a sığmazsa taşma yapmak yerine
-      // listede olduğu gibi kaydırılır.
-      <SidebarGroup className="flex min-h-0 flex-1 flex-col">
-        <SidebarGroupLabel>Geçmiş Sohbetler</SidebarGroupLabel>
-        <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto pb-6">
-          <SidebarGroupContent>
-            <ConversationRowsSkeleton />
-          </SidebarGroupContent>
-        </div>
-      </SidebarGroup>
+      <>
+        {/* Gerçek "Geçmiş Sohbetler" grubuyla aynı kutu: min-h-0 flex-1 + kendi
+            scroll kabı. 10 yer tutucu sidebar'a sığmazsa taşma yapmak yerine
+            listede olduğu gibi kaydırılır. */}
+        <SidebarGroup
+          className={cn("flex min-h-0 flex-1 flex-col", HIDE_ON_RAIL)}
+        >
+          <SidebarGroupLabel>Geçmiş Sohbetler</SidebarGroupLabel>
+          <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto pb-6">
+            <SidebarGroupContent>
+              <ConversationRowsSkeleton />
+            </SidebarGroupContent>
+          </div>
+        </SidebarGroup>
+        {/* Rayda iskelet yok: tek satırın yer tutucusu satırın kendisinden
+            uzun sürmez, sohbet olsa da olmasa da hedefi aynı. */}
+        <RailHistoryLink onNavigate={handleNavClick} />
+      </>
     )
   }
 
   if (list.length === 0) {
+    // Rayda satır YOK: boş bir geçmişe giden ikon yalnızca gürültü olurdu.
     return (
-      <SidebarGroup>
+      <SidebarGroup className={HIDE_ON_RAIL}>
         <SidebarGroupLabel>Geçmiş Sohbetler</SidebarGroupLabel>
         <SidebarGroupContent>
           <p className="px-2 py-1 text-xs text-muted-foreground">
@@ -435,7 +490,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
   return (
     <>
       {starred.length > 0 ? (
-        <SidebarGroup className="shrink-0">
+        <SidebarGroup className={cn("shrink-0", HIDE_ON_RAIL)}>
           <SidebarGroupLabel asChild>
             <button
               onClick={() => setFavoritesCollapsed((p) => !p)}
@@ -481,7 +536,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
         </SidebarGroup>
       ) : null}
 
-      <SidebarGroup className="flex min-h-0 flex-1 flex-col">
+      <SidebarGroup className={cn("flex min-h-0 flex-1 flex-col", HIDE_ON_RAIL)}>
         <SidebarGroupLabel asChild>
           <button
             onClick={() => setHistoryCollapsed((p) => !p)}
@@ -571,6 +626,8 @@ export function AssistantConversationsGroup({ conversations }: Props) {
           )}
         </AnimatePresence>
       </SidebarGroup>
+
+      <RailHistoryLink onNavigate={handleNavClick} />
 
       <ConversationRenameDialog
         target={renameTarget}

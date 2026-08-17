@@ -13,6 +13,7 @@ import {
 } from "drizzle-orm/pg-core"
 import type { AdapterAccountType } from "next-auth/adapters"
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
+import type { MatchResult, OptimizationSummary } from "@/lib/ai/schemas"
 
 export const users = pgTable("user", {
   id: text("id")
@@ -328,6 +329,10 @@ export const receipts = pgTable(
       onDelete: "set null",
     }),
     sourceToolCallId: text("sourceToolCallId"),
+    // Kullanıcının verdiği ad. Sepette baştan vardı, fişte yoktu — bu yüzden
+    // her fiş listede birbirinin aynı görünüyordu. Boş bırakılırsa kayıt anında
+    // otomatik ad üretilir (bkz. autoReceiptName).
+    name: text("name"),
     marketName: text("marketName"),
     purchaseDate: timestamp("purchaseDate", { mode: "date" }),
     totalAmount: numeric("totalAmount", { precision: 10, scale: 2 }),
@@ -344,7 +349,10 @@ export const receipts = pgTable(
       precision: 10,
       scale: 2,
     }),
-    summaryJson: jsonb("summaryJson"),
+    // `$type` olmadan bu kolon `unknown` dönüyor ve okuma tarafında körlemesine
+    // cast ediliyordu. Tip artık taşınıyor; yine de okuyan taraf zod ile
+    // doğrular (eski kayıtlar eksik alan içerebilir — bkz. lib/basket-plan.ts).
+    summaryJson: jsonb("summaryJson").$type<OptimizationSummary>(),
     createdAt: timestamp("createdAt", { mode: "date" })
       .notNull()
       .defaultNow(),
@@ -366,6 +374,10 @@ export const receiptItems = pgTable(
     receiptId: uuid("receiptId")
       .notNull()
       .references(() => receipts.id, { onDelete: "cascade" }),
+    // Kalemlerin fişteki sırası. Sırasız SELECT PostgreSQL'de sıra garantisi
+    // vermez (satır güncellemesi/VACUUM sonrası dizilim değişebilir); önceki
+    // doğru görünüm tesadüftü. Okuma tarafı orderBy(asc(sortIndex)) kullanır.
+    sortIndex: integer("sortIndex").notNull().default(0),
     rawName: text("rawName").notNull(),
     searchQuery: text("searchQuery"),
     quantity: numeric("quantity", { precision: 10, scale: 3 })
@@ -382,9 +394,12 @@ export const receiptItems = pgTable(
     }),
     matchedProductId: text("matchedProductId"),
     matchedName: text("matchedName"),
+    matchedBrand: text("matchedBrand"),
+    matchedImageUrl: text("matchedImageUrl"),
     bestMarket: text("bestMarket"),
     bestPrice: numeric("bestPrice", { precision: 10, scale: 2 }),
     savingsTL: numeric("savingsTL", { precision: 10, scale: 2 }),
+    lookupStatus: text("lookupStatus").$type<MatchResult["lookupStatus"]>(),
   },
   (t) => [index("receipt_item_receipt_idx").on(t.receiptId)],
 )
@@ -409,7 +424,10 @@ export const baskets = pgTable(
       precision: 10,
       scale: 2,
     }),
-    summaryJson: jsonb("summaryJson"),
+    // Sepetin GERÇEK içeriği burada: her iki planın (tek market / iki market)
+    // kalem bazında dökümü. Kalem satırları planın fiyatını taşımaz, bu jsonb
+    // taşır — bkz. lib/basket-plan.ts ve basket_item.minPrice yorumu.
+    summaryJson: jsonb("summaryJson").$type<OptimizationSummary>(),
     createdAt: timestamp("createdAt", { mode: "date" })
       .notNull()
       .defaultNow(),
@@ -431,6 +449,8 @@ export const basketItems = pgTable(
     basketId: uuid("basketId")
       .notNull()
       .references(() => baskets.id, { onDelete: "cascade" }),
+    // Kullanıcının yazdığı liste sırası. Bkz. receipt_item.sortIndex.
+    sortIndex: integer("sortIndex").notNull().default(0),
     rawName: text("rawName").notNull(),
     searchQuery: text("searchQuery").notNull(),
     quantity: numeric("quantity", { precision: 10, scale: 3 })
@@ -439,8 +459,19 @@ export const basketItems = pgTable(
     unit: text("unit").notNull().default("adet"),
     matchedProductId: text("matchedProductId"),
     matchedName: text("matchedName"),
-    bestMarket: text("bestMarket"),
-    bestPrice: numeric("bestPrice", { precision: 10, scale: 2 }),
+    matchedBrand: text("matchedBrand"),
+    matchedImageUrl: text("matchedImageUrl"),
+    // Eşleşme sonucu. Kaydedilmediği için kayıt sayfası "eşleşme yok" ile "veri
+    // yok"u aynı tireye indiriyordu; artık ayrı gösterilebiliyor.
+    lookupStatus: text("lookupStatus").$type<MatchResult["lookupStatus"]>(),
+    // DİKKAT — bu bir PLAN fiyatı DEĞİL. Temsilci ürünün tüm marketlerdeki en
+    // düşük fiyatı ve onu veren zincir; yalnızca referans/arama içindir. Eskiden
+    // `bestPrice`/`bestMarket` adıyla duruyor ve kayıt sayfasında sepet toplamı
+    // gibi gösteriliyordu: her kalemi ayrı bir marketten toplayan, kullanıcıya
+    // hiç önerilmemiş üçüncü bir sepet. Gösterilecek fiyat daima
+    // `basket.summaryJson` içindeki seçili planın allocation'ından okunur.
+    minPrice: numeric("minPrice", { precision: 10, scale: 2 }),
+    minPriceMarket: text("minPriceMarket"),
   },
   (t) => [index("basket_item_basket_idx").on(t.basketId)],
 )
