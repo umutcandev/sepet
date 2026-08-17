@@ -334,7 +334,7 @@ export function AppShell({ blogPosts, children }: Props) {
                 kullanıcı avatarını görür. */}
               <span data-session-guest>
                 <Button size="sm" onClick={() => loginDialog.open()}>
-                  Hemen Başla
+                  Oturum Aç
                 </Button>
               </span>
               <span data-session-authed>

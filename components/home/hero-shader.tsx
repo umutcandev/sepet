@@ -64,7 +64,7 @@ const REFERENCE_HERO_HEIGHT = 764
 const GEOMETRY = {
   shape: "wave",
   offsetX: 0,
-  offsetY: 0.10,
+  offsetY: 0,
   rotation: 0,
   /* softness/intensity/noise Paper'ın "Wave" preset'inden birebir alındı —
      shader'ın imzası bu üçlü. `noise` tanecikleri `shape`i İLERİ iter, yani

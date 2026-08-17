@@ -65,7 +65,7 @@ export function HomeBlogSection() {
           hero'nun hemen ardına iliştirilmiş gibi durmuyordu.
 
           Rengini `dark` sarmalayıcıdan alır — bu bölüm her iki temada da koyu,
-          o yüzden logolar tek renk krem olarak oturur. */}
+          o yüzden logolar tek renk marka tonunda (dark `--primary`) oturur. */}
       <div className="dark mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
         {/* Şerit fold'un TAM sınırında duruyor: hangi ekran yüksekliğinde
             olursak olalım ilk ekranın alt kenarına denk geliyor, dolayısıyla
@@ -77,7 +77,11 @@ export function HomeBlogSection() {
             animasyon ilk kareden itibaren kuruludur. Hidrasyondan sonra sınıf
             eklenseydi eleman önce görünür boyanıp sonra sıfır opaklığa düşerdi. */}
         <AnimateEnter isWhileInView={false} delay={0.58}>
-          <LogoMarquee className="text-foreground/45" />
+          {/* Wordmark'lar `currentColor` — renk buradan iner. `text-primary`,
+              `dark` sarmalayıcı içinde olduğumuz için koyu temanın sıcak
+              marka tonu; kart zemininde (`--card`) rahat okunuyor, o yüzden
+              eski kırma opaklığa (foreground/45) gerek kalmadı. */}
+          <LogoMarquee className="text-primary" />
         </AnimateEnter>
       </div>
 

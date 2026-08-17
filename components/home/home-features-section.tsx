@@ -2,14 +2,12 @@ import Image from "next/image"
 import Link from "next/link"
 import {
   ArrowRight,
-  CheckIcon,
   ChevronDownIcon,
   PackageIcon,
-  PlusIcon,
   TrendingDownIcon,
-  XIcon,
 } from "lucide-react"
 
+import { FeatureChatMock } from "@/components/home/feature-chat-mock"
 import { AnimateEnter } from "@/components/motion/animate-enter"
 import { PressFx } from "@/components/motion/press-fx"
 import { Button } from "@/components/ui/button"
@@ -25,22 +23,25 @@ import { cn } from "@/lib/utils"
 // Altta başlık + kısa açıklama. Paper'daki ölçüler (16px köşe, 24px metin
 // bloğu, 16/14px punto, 24px satır yüksekliği) korundu.
 //
-// Maketler EKRAN GÖRÜNTÜSÜ DEĞİL: uygulamanın gerçek kartlarının (assistant/
-// receipt-approval-card, assistant/product-match-list, assistant/optimization-
-// card) statik ikizleri. Sebebi tek: görsel olsalardı temayla birlikte dönmez,
-// retina'da bulanır ve arayüz her değiştiğinde bayatlardı. Burada hepsi aynı
-// tasarım token'larından besleniyor.
+// Maketler EKRAN GÖRÜNTÜSÜ DEĞİL: uygulamanın gerçek parçalarının (assistant/
+// assistant-chat sohbet akışı + basket-approval-card, assistant/
+// product-match-list, assistant/optimization-card) statik ikizleri. Sebebi tek:
+// görsel olsalardı temayla birlikte dönmez, retina'da bulanır ve arayüz her
+// değiştiğinde bayatlardı. Burada hepsi aynı tasarım token'larından besleniyor.
 //
-// Etkileşim yok, bu yüzden sunucu bileşeni: maketler sayfaya tek bir byte JS
-// eklemez. Hepsi `aria-hidden` — ekran okuyucu için başlık ve açıklama zaten
-// aynı şeyi söylüyor, arayüz taklidi yalnızca gürültü olurdu.
+// Bölüm sunucu bileşenidir; sayfaya JS indiren tek parça ilk kartın
+// canlandırılmış sohbet maketi (feature-chat-mock.tsx), diğer ikisi tek byte
+// eklemez. Hiçbirinde etkileşim yok: maketler seyredilir, kurcalanmaz. Hepsi
+// `aria-hidden` — ekran okuyucu için başlık ve açıklama zaten aynı şeyi
+// söylüyor, arayüz taklidi yalnızca gürültü olurdu.
 
 /* ── Maketlerin ortak geometrisi ─────────────────────────────────────────────
 
    Üç maket de kartın üstünden AYNI boşlukta başlar, solundan 20px içeriden
    girer, sağ kenardan 20px taşar ve AYNI yükseklikte durur. Satırı az olan
    maket (Sepet Özeti) bu yüksekliği satırlarını gererek doldurur, çok olan
-   alttan kırpılır; kutunun sınırları üç kartta da sabit kalır.
+   alttan kırpılır; kutunun sınırları üç kartta da sabit kalır. Sohbet maketi
+   de aynı kutuda: panelden uzun olan içeriğini kendi içinde kaydırır.
 
    Sağdaki `pr-10` (40px) taşma payından (20px) BÜYÜK: sağa yaslı fiyatlar
    taşan kısma düşüp kırpılmasın diye. Kırpılan tek şey panelin boş sağ payı,
@@ -52,10 +53,11 @@ const MOCK_FRAME = "h-[15.5rem] pt-6 pl-5"
 const MOCK_PANEL = "flex h-56 w-[calc(100%+1.25rem)] flex-col"
 /** Satır içi yatay ritim. */
 const ROW_X = "pl-3.5 pr-10"
-/** Maket başlığı — üç panelde de birebir aynı. */
+/** Maket başlığı — kartı doğrudan gösteren iki panelde birebir aynı. Sohbet
+ *  maketinde başlık kartın kendi içine iniyor, panelin tepesinde durmuyor. */
 const MOCK_HEADER = cn(
   "shrink-0 border-b border-white/10 py-2 text-sm font-medium text-foreground",
-  ROW_X,
+  ROW_X
 )
 
 function MarketAvatar({ src, className }: { src: string; className?: string }) {
@@ -63,7 +65,7 @@ function MarketAvatar({ src, className }: { src: string; className?: string }) {
     <span
       className={cn(
         "relative flex size-7 shrink-0 overflow-hidden rounded-full bg-background ring-1 ring-white/15",
-        className,
+        className
       )}
     >
       {/* alt="": kap zaten aria-hidden, logo dekoratif. */}
@@ -79,77 +81,11 @@ function MarketAvatar({ src, className }: { src: string; className?: string }) {
   )
 }
 
-/* ── 1. Kalem çıkarma (receipt-approval-card'ın ikizi) ───────────────────── */
+/* ── 1. Sohbet akışı ─────────────────────────────────────────────────────────
 
-const DRAFT_ITEMS = [
-  { name: "pirinç", qty: "500", unit: "g" },
-  { name: "haşlanmış nohut", qty: "200", unit: "g" },
-  { name: "sıvı yağ", qty: "1", unit: "l" },
-  { name: "tuz", qty: "1", unit: "paket" },
-]
-
-// Alan görünümü: gerçek Input/NativeSelect yerine aynı ölçüde statik kutular.
-const FIELD =
-  "rounded-md bg-black/25 px-2 py-1 text-xs text-foreground ring-1 ring-white/10"
-
-function DraftItemsMock() {
-  return (
-    <>
-      <div className={MOCK_HEADER}>Sepetindeki Kalemler</div>
-      <div className={ROW_X}>
-        {/* Sütun başlıkları ve satırlar aynı genişlik yuvalarını kullanır
-            (w-11 / w-14 / w-5) — gap'e bırakılsa adet ve birim sütunları
-            satırdan satıra kayardı. */}
-        <div className="flex items-center gap-2 pt-1.5 pb-1 text-[0.625rem]/[0.875rem] font-medium tracking-wide text-muted-foreground uppercase">
-          <span className="min-w-0 flex-1">Ürün</span>
-          <span className="w-11 text-right">Adet</span>
-          <span className="w-14">Birim</span>
-          <span className="w-5" />
-        </div>
-        {DRAFT_ITEMS.map((item) => (
-          <div key={item.name} className="flex items-center gap-2 pb-1">
-            <span className={cn("min-w-0 flex-1 truncate", FIELD)}>
-              {item.name}
-            </span>
-            <span className={cn("w-11 text-right tabular-nums", FIELD)}>
-              {item.qty}
-            </span>
-            <span
-              className={cn("flex w-14 items-center justify-between", FIELD)}
-            >
-              <span className="truncate">{item.unit}</span>
-              <ChevronDownIcon className="size-3 shrink-0 text-muted-foreground" />
-            </span>
-            <span className="flex w-5 justify-center">
-              <XIcon className="size-3.5 text-muted-foreground" />
-            </span>
-          </div>
-        ))}
-      </div>
-      {/* mt-auto: kalem sayısı ne olursa olsun eylem çubuğu panelin dibinde. */}
-      <div
-        className={cn(
-          "mt-auto flex shrink-0 items-center gap-2 border-t border-white/10 bg-black/15 py-2",
-          ROW_X,
-        )}
-      >
-        <span className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-foreground ring-1 ring-white/15">
-          <PlusIcon className="size-3" />
-          Yeni kalem
-        </span>
-        <span className="ml-auto flex items-center gap-1.5">
-          <span className="px-1.5 py-1 text-xs font-medium text-muted-foreground">
-            İptal
-          </span>
-          <span className="flex items-center gap-1 rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
-            <CheckIcon className="size-3" />
-            Onayla
-          </span>
-        </span>
-      </div>
-    </>
-  )
-}
+   Tek canlandırılan maket bu, o yüzden ayrı bir istemci bileşeninde:
+   components/home/feature-chat-mock.tsx. Bölümün geri kalanı sunucu bileşeni
+   olarak kalır, sayfaya inen JS yalnızca o dosya kadardır. */
 
 /* ── 2. Ürün eşleştirme (product-match-list'in ikizi) ────────────────────── */
 
@@ -220,7 +156,7 @@ function ProductMatchMock() {
                 <span className="text-[0.6875rem]/[1rem] text-muted-foreground">
                   {match.market}
                 </span>
-                <span className="text-[0.8125rem]/[1.125rem] font-semibold tabular-nums text-foreground">
+                <span className="text-[0.8125rem]/[1.125rem] font-semibold text-foreground tabular-nums">
                   {formatTL(match.price)}
                 </span>
               </span>
@@ -257,7 +193,7 @@ function OptimizationMock() {
               3/3 kalem
             </span>
           </span>
-          <span className="shrink-0 text-lg font-bold tabular-nums text-foreground">
+          <span className="shrink-0 text-lg font-bold text-foreground tabular-nums">
             {formatTL(113.25)}
           </span>
           <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
@@ -291,7 +227,7 @@ function OptimizationMock() {
               {formatTL(8.8)} tasarruf
             </span>
           </span>
-          <span className="shrink-0 text-lg font-bold tabular-nums text-foreground">
+          <span className="shrink-0 text-lg font-bold text-foreground tabular-nums">
             {formatTL(104.45)}
           </span>
           <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
@@ -307,6 +243,10 @@ type Feature = {
   title: string
   description: string
   mock: React.ReactNode
+  /** Panel zemini. Varsayılan `bg-muted`: içinde tek bir kart duran maketler
+   *  için doğru yüzey. Sohbet maketi kendi yığınını kuruyor (zemin → balon →
+   *  kart), o yüzden bir kat aşağıdan, `bg-background`tan başlıyor. */
+  panel?: string
 }
 
 const FEATURES: Feature[] = [
@@ -314,7 +254,8 @@ const FEATURES: Feature[] = [
     title: "Aklındaki tarifi yaz",
     description:
       "Tarifini yaz ya da fişini yükle. Sepetindeki kalemleri tek tek çıkarırız.",
-    mock: <DraftItemsMock />,
+    mock: <FeatureChatMock />,
+    panel: "bg-background",
   },
   {
     title: "Kalemlerini eşleştir",
@@ -348,13 +289,14 @@ function FeatureCard({ feature }: { feature: Feature }) {
         className={cn(
           "relative shrink-0 overflow-hidden",
           "[mask-image:radial-gradient(140%_130%_at_0%_0%,#000_60%,transparent_100%)]",
-          MOCK_FRAME,
+          MOCK_FRAME
         )}
       >
         <div
           className={cn(
-            "overflow-hidden rounded-xl bg-muted smooth-shadow-ring-lg smooth-ring-white/15",
-            MOCK_PANEL,
+            "overflow-hidden rounded-xl smooth-shadow-ring-lg smooth-ring-white/15",
+            feature.panel ?? "bg-muted",
+            MOCK_PANEL
           )}
         >
           {feature.mock}
@@ -377,7 +319,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
             `backdrop-blur` burada güvenli: maskeli ata kendi backdrop kökünü
             kurar, bulanıklık yalnız o kutunun içindekini örnekler, kartın
             zeminine taşmaz. */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-card/0 to-card backdrop-blur-lg [mask-image:linear-gradient(to_bottom,transparent,#000_70%)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-card/0 to-card [mask-image:linear-gradient(to_bottom,transparent,#000_70%)] backdrop-blur-lg" />
       </div>
 
       <div className="relative -mt-[1.625rem] px-5 pb-5 sm:px-6 sm:pb-6">
@@ -402,7 +344,7 @@ export function HomeFeaturesSection() {
           arkaya geldiği için aynı ritmi paylaşmaları gerekiyor. */}
       <AnimateEnter className="mb-5 flex items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
-          Belirle. Eşleştir. Tasarruf et.
+          Asistanla Tanışın
         </h2>
         <PressFx className="shrink-0">
           <Button asChild size="sm" className="group shrink-0">
