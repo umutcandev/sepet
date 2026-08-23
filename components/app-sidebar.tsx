@@ -18,6 +18,7 @@ import {
 import { NavGuest } from "@/components/nav-guest"
 import { NavGuestInfo } from "@/components/nav-guest-info"
 import { NavUser } from "@/components/nav-user"
+import { BrandContextMenu } from "@/components/brand/brand-context-menu"
 import { SepetMark } from "@/components/brand/sepet-mark"
 import { IconSwap } from "@/components/motion/icon-swap"
 import { Button } from "@/components/ui/button"
@@ -236,30 +237,36 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
             {/* Genişken wordmark + kapatma anahtarı, daralınca üstüne gelince
                 anahtara dönüşen kare işaret. Hangisinin görüneceğine
                 `data-collapsible` karar verir. */}
-            <SidebarMenuButton
-              size="lg"
-              asChild
-              className="hover:bg-transparent active:bg-transparent group-data-[collapsible=icon]:hidden"
-            >
-              <Link href="/">
-                <Image
-                  src="/brand/sepet-dark.svg"
-                  alt="Sepet"
-                  width={846}
-                  height={178}
-                  priority
-                  className="h-6 w-auto dark:hidden"
-                />
-                <Image
-                  src="/brand/sepet-light.svg"
-                  alt=""
-                  aria-hidden
-                  width={846}
-                  height={178}
-                  className="hidden h-6 w-auto dark:block"
-                />
-              </Link>
-            </SidebarMenuButton>
+            {/* Sağ tık / basılı tutma → marka menüsü. Sarmalayıcı
+                SidebarMenuButton'ın DIŞINDA: o `asChild` ile Slot kullanıyor ve
+                tek bir eleman çocuk bekliyor. İçine konduğunda prop'lar (sınıf,
+                ref) Link'e hiç ulaşmıyor ve menü hiç açılmıyordu. */}
+            <BrandContextMenu>
+              <SidebarMenuButton
+                size="lg"
+                asChild
+                className="hover:bg-transparent active:bg-transparent group-data-[collapsible=icon]:hidden"
+              >
+                <Link href="/">
+                  <Image
+                    src="/brand/sepet-dark.svg"
+                    alt="Sepet"
+                    width={846}
+                    height={178}
+                    priority
+                    className="h-6 w-auto dark:hidden"
+                  />
+                  <Image
+                    src="/brand/sepet-light.svg"
+                    alt=""
+                    aria-hidden
+                    width={846}
+                    height={178}
+                    className="hidden h-6 w-auto dark:block"
+                  />
+                </Link>
+              </SidebarMenuButton>
+            </BrandContextMenu>
             <SidebarBrandToggle />
             <SidebarPanelToggle />
           </SidebarMenuItem>

@@ -76,7 +76,7 @@ export function ThemeMenuItems() {
           role="radiogroup"
           aria-label="Tema seçimi"
           onKeyDown={onKeyDown}
-          className="flex w-full items-center gap-0.5 rounded-md bg-muted p-0.5"
+          className="surface-inset flex w-full items-center gap-0.5 rounded-md bg-muted p-0.5"
         >
           {OPTIONS.map(({ value, icon: Icon, label }) => {
             const selected = current === value
@@ -91,7 +91,7 @@ export function ThemeMenuItems() {
                 className={cn(
                   "flex flex-1 items-center justify-center gap-1 rounded-sm px-1.5 py-1 text-xs transition-colors",
                   selected
-                    ? "bg-background text-foreground smooth-shadow-xs"
+                    ? "surface-raised-tight bg-background text-foreground"
                     : "text-muted-foreground hover:text-foreground",
                 )}
               >
@@ -120,7 +120,7 @@ export function ThemeToggleInline({ className }: { className?: string }) {
       aria-label="Tema seçimi"
       onKeyDown={onKeyDown}
       className={cn(
-        "flex h-6 w-fit shrink-0 items-center gap-0.5 rounded-md border border-border p-0.5",
+        "surface-inset flex h-6 w-fit shrink-0 items-center gap-0.5 rounded-md border border-border p-0.5",
         className,
       )}
     >
@@ -136,9 +136,14 @@ export function ThemeToggleInline({ className }: { className?: string }) {
             tabIndex={selected ? 0 : -1}
             onClick={() => setTheme(value)}
             className={cn(
-              "flex size-5 items-center justify-center rounded-sm transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+              // size-5 (20px) kabın içine SIĞMIYORDU: h-6 border-box, kenarlık 1px →
+            // içerik kutusu 22px; p-0.5 (4px) düşünce butona 18px kalıyor. 20px
+            // buton dikeyde 1px taşıyıp boşluğu 3px yerine 2px gösteriyordu,
+            // yatayda ise 3px kalıyordu — gözle fark edilen asimetri buydu.
+            // 18px'te 1+2+18+2+1 = 24 tam oturur, dört kenar da 3px.
+            "flex size-4.5 items-center justify-center rounded-sm transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
               selected
-                ? "bg-muted text-foreground"
+                ? "surface-raised-tight bg-muted text-foreground"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >

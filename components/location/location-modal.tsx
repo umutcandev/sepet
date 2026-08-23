@@ -322,7 +322,21 @@ export function LocationModal() {
           <ResponsiveDialogBody className="pt-1.5">
             {/* Harita (solda, kendi çerçevesinde) + market paneli (sağda, borderless) */}
             <div className="grid gap-2 sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-              <div className="h-48 overflow-hidden rounded-lg bg-muted outline outline-1 -outline-offset-1 outline-black/10 sm:h-80 dark:outline-white/10">
+              {/* data-vaul-no-drag: mobilde bu modal bir Drawer olarak açılıyor
+                  (bkz. ResponsiveDialog) ve vaul, içerik üzerindeki pointer
+                  sürüklemesini "drawer'ı kapat" diye yorumluyor. Harita da aynı
+                  jesti istiyor; ikisi çakışınca haritayı kaydırmak drawer'ı
+                  aşağı çekiyordu. vaul bu özniteliği taşıyan (veya altında olan)
+                  elemanda sürüklemeyi başlatmıyor.
+
+                  `handleOnly` prop'u da çözerdi ama BİLEREK kullanılmadı:
+                  DrawerContent'teki tutamaç `DrawerPrimitive.Handle` değil düz
+                  bir div, dolayısıyla handleOnly sürüklemeyi tümden kilitlerdi
+                  ve bu tüm drawer'ları etkilerdi. */}
+              <div
+                data-vaul-no-drag
+                className="h-56 overflow-hidden rounded-lg bg-muted outline outline-1 -outline-offset-1 outline-black/10 sm:h-80 dark:outline-white/10"
+              >
                 <LocationMap
                   center={center}
                   onMove={handleMapMove}

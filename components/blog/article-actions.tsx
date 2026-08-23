@@ -10,6 +10,7 @@ import {
   LinkIcon,
 } from "lucide-react"
 import { toast } from "@/components/ui/sonner"
+import { copyText } from "@/lib/copy"
 
 import { IconSwap } from "@/components/motion/icon-swap"
 
@@ -30,31 +31,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 
-// Panoya kopyalama: güvenli bağlam yoksa (clipboard API yok) gizli bir textarea'ya
-// düşer. Kullanıcı hareketi (tıklama) içinde çağrıldığı için her iki yol da çalışır.
-export async function copyText(text: string): Promise<boolean> {
-  try {
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text)
-      return true
-    }
-  } catch {
-    // textarea fallback'e düş
-  }
-  try {
-    const textarea = document.createElement("textarea")
-    textarea.value = text
-    textarea.style.position = "fixed"
-    textarea.style.opacity = "0"
-    document.body.appendChild(textarea)
-    textarea.select()
-    const ok = document.execCommand("copy")
-    document.body.removeChild(textarea)
-    return ok
-  } catch {
-    return false
-  }
-}
 
 /**
  * Kopyalama geri bildirimi için ikon takası. Geçişin kendisi `IconSwap`'ta
@@ -321,3 +297,7 @@ export function ArticleActions({
     </div>
   )
 }
+
+// `copyText` lib/copy.ts'e taşındı; buradan yeniden dışa aktarılıyor ki
+// mevcut import'lar (ör. blog/mdx-content) kırılmasın.
+export { copyText }
