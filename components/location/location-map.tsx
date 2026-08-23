@@ -119,6 +119,10 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
       })
       mapRef.current = map
 
+      // Leaflet'in kendi öneki (bayrak + "Leaflet" bağlantısı) bandı iki
+      // katına çıkarıyor ve zorunlu değil. OSM atfı KALIR — o hukuken gerekli.
+      map.attributionControl?.setPrefix(false)
+
       L.tileLayer(TILE_URL, {
         attribution: TILE_ATTRIBUTION,
         maxZoom: 19,
@@ -224,10 +228,25 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
     )
   }, [])
 
-  // Opak arka plan + net border: harita döşemeleri üstünde saydam buton berbat
-  // göründüğü için bg-background'ı her iki temada da zorluyoruz.
+  // Opak arka plan: harita döşemeleri üstünde saydam buton berbat göründüğü
+  // için bg-background'ı her iki temada da zorluyoruz.
+  //
+  // `outline` varyantı kullanılıyor, `default` DEĞİL: default'un tabanı
+  // `--primary` ve zemini `bg-primary`. Burada zemini `bg-background` ile
+  // ezmek, kenarlığı (`border-primary`) ve gradyanın türetildiği
+  // `--surface-base`'i ezmiyordu; sonuç krem butonun üstünde kahve bir
+  // kenarlık ve kahve bir dip gölgesiydi. `outline`ın tabanı zaten
+  // `--background`, yani zeminle uyumlu.
+  //
+  // Dark'ta `outline` normalde `bg-input/30` taşır; opaklık için onu da
+  // ezdiğimizden tabanı elle `--background`a sabitliyoruz ki türetme yine
+  // gerçekte görünen renge dayansın.
+  //
+  // `smooth-shadow-ring-xs` KALDIRILDI: `box-shadow`u doğrudan yazdığı için
+  // `surface-raised`ın rim ve gölge katmanlarını tamamen eziyordu — kontrol
+  // hem yanlış kenarlıklı hem düz kalıyordu. Derinliği artık tek sistem verir.
   const controlClass =
-    "size-7 bg-background text-foreground smooth-shadow-ring-xs hover:bg-muted dark:bg-background dark:hover:bg-muted"
+    "size-7 bg-background text-foreground hover:bg-muted dark:bg-background dark:[--surface-base:var(--background)] dark:hover:bg-muted"
 
   return (
     <div className="relative h-full w-full">
@@ -235,6 +254,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
       <div className="absolute top-2 right-2 z-[1000] flex flex-col gap-1.5">
         <Button
           type="button"
+          variant="outline"
           size="icon-sm"
           className={controlClass}
           aria-label="Yakınlaştır"
@@ -244,6 +264,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
         </Button>
         <Button
           type="button"
+          variant="outline"
           size="icon-sm"
           className={controlClass}
           aria-label="Uzaklaştır"
@@ -253,6 +274,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
         </Button>
         <Button
           type="button"
+          variant="outline"
           size="icon-sm"
           className={cn(controlClass, "mt-1")}
           aria-label="Konumumu bul"

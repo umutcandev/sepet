@@ -837,6 +837,35 @@
 }
 
 
+/* ─── Leaflet ───
+   Kütüphanenin kendi CSS'i nötr beyaz bir atıf bandı çiziyor (rgba(255,255,255,.8),
+   12px, #333) — sıcak palette yamalı duruyor ve haritanın altını kaplıyor.
+   Metnin KENDİSİ değişmez: "© OpenStreetMap contributors" atfı hukuken gerekli,
+   yalnız sunumu tokenlara bağlanır. Leaflet'in kendi "Leaflet" öneki ise
+   zorunlu olmadığı için haritada setPrefix(false) ile kapatılıyor
+   (bkz. components/location/location-map.tsx).
+
+   Seçiciye `.leaflet-control` ekli: Leaflet zemini `.leaflet-container
+   .leaflet-control-attribution` (0,2,0) ile yazıyor ve kendi CSS'i bileşende
+   import edildiği için bizden SONRA yükleniyor — eşit özgüllükte kaybederdik.
+   Öğe zaten `leaflet-control` sınıfını taşıyor, (0,3,0)'a çıkmak yetiyor;
+   !important gerekmiyor. */
+.leaflet-container .leaflet-control-attribution.leaflet-control {
+  background: color-mix(in oklab, var(--background) 78%, transparent);
+  color: var(--muted-foreground);
+  padding: 0 5px;
+  font-size: 10px;
+  line-height: 1.5;
+  border-top-left-radius: var(--radius-sm);
+  backdrop-filter: blur(6px);
+}
+
+.leaflet-container .leaflet-control-attribution a {
+  color: var(--muted-foreground);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 @utility logo-on-light {
   /* Koyu mürekkepli logo: açık zeminde görünür. */
   opacity: calc(1 - var(--logo-swap));
