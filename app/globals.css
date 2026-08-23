@@ -5,7 +5,8 @@
    gölgenin SON katmanı olarak 1px'lik hairline'ı da içerir. Böylece kenar
    gölgenin içinde erir; `border`/`ring` + `shadow` ikilisinin çizdiği "önce
    sert çizgi, hemen dışında yumuşak gölge" çift kenarı oluşmaz.
-   Bu yüzeylerde ASLA ayrıca `border`/`ring` kullanma — halka zaten içinde. */
+   Bu yüzeylerde ASLA ayrıca `border`/`ring` kullanma — halka zaten içinde.
+   Kaynak: https://shadow.floriankiem.com */
 @import "shadow-plugin";
 @import "./style-nova.css";
 
