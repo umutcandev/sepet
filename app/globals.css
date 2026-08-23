@@ -584,32 +584,120 @@
    box-shadow doğrudan yazılmaz; Tailwind'in --tw-* zinciri korunur ki
    focus-visible:ring-* bu yüzeylerde ezilmesin. */
 :root {
-  --surface-sheen: rgb(255 255 255 / 0.06);
-  --surface-shade: rgb(0 0 0 / 0.075);
-  --surface-rim-top: color-mix(in oklab, var(--background) 26%, transparent);
+  /* Paletin iki ucu. Derinlik NÖTR siyah/beyazla değil, bunlarla üretilir:
+     oklab'da siyaha karışmak L ile birlikte KROMAYI da düşürür, sıcak bir
+     kahve yüzey griye/çeliğe kayar. Aynı paletin koyu kahvesine karışmak ise
+     tonu koruyup yalnız parlaklığı indirir. */
+  --surface-ink: var(--foreground);
+  --surface-paper: var(--background);
+
+  --surface-sheen: color-mix(in oklab, var(--surface-paper) 6%, transparent);
+  --surface-shade: color-mix(in oklab, var(--surface-ink) 8%, transparent);
+  --surface-rim-top: color-mix(in oklab, var(--surface-paper) 26%, transparent);
   --surface-rim-bottom: color-mix(in srgb, currentColor 6%, transparent);
-  --surface-contact: rgb(0 0 0 / 0.08);
-  --surface-ambient: rgb(0 0 0 / 0.05);
-  --surface-knob-cast: rgb(0 0 0 / 0.17);
-  --surface-well-top: rgb(0 0 0 / 0.08);
-  --surface-well-bottom: rgb(255 255 255 / 0.1);
+  --surface-contact: color-mix(in oklab, var(--surface-ink) 11%, transparent);
+  --surface-ambient: color-mix(in oklab, var(--surface-ink) 7%, transparent);
+  --surface-knob-cast: color-mix(in oklab, var(--surface-ink) 22%, transparent);
+  --surface-ring-inner: color-mix(in oklab, var(--surface-ink) 12%, transparent);
+  /* Türetme oranları: koyu bir zeminde aynı oran çok daha sert okunur,
+     bu yüzden dark'ta hem karışım hem alfa düşer. */
+  --surface-shade-depth: 82%;
+  --surface-shade-alpha: 60%;
+  --surface-rim-lift: 74%;
+  --surface-rim-alpha: 55%;
+  --surface-well-top: color-mix(in oklab, var(--surface-ink) 11%, transparent);
+  --surface-well-bottom: color-mix(in oklab, var(--surface-paper) 10%, transparent);
 }
 
 .dark {
-  --surface-sheen: rgb(255 255 255 / 0.05);
-  --surface-shade: rgb(0 0 0 / 0.09);
-  --surface-rim-top: color-mix(in oklab, var(--foreground) 9%, transparent);
+  /* Dark'ta mürekkep sayfanın KENDİSİNDEN de koyu olmalı ki gölge okunsun;
+     saf siyah yerine zeminin sıcak, daha karanlık hâli kullanılır. */
+  --surface-ink: color-mix(in oklab, var(--background) 40%, black);
+  --surface-paper: var(--foreground);
+
+  --surface-sheen: color-mix(in oklab, var(--surface-paper) 5%, transparent);
+  --surface-shade: color-mix(in oklab, var(--surface-ink) 10%, transparent);
+  --surface-rim-top: color-mix(in oklab, var(--surface-paper) 9%, transparent);
   --surface-rim-bottom: color-mix(in srgb, currentColor 6%, transparent);
-  --surface-contact: rgb(0 0 0 / 0.35);
-  --surface-ambient: rgb(0 0 0 / 0.22);
-  --surface-knob-cast: rgb(0 0 0 / 0.42);
-  --surface-well-top: rgb(0 0 0 / 0.35);
-  --surface-well-bottom: rgb(255 255 255 / 0.1);
+  --surface-contact: color-mix(in oklab, var(--surface-ink) 40%, transparent);
+  --surface-ambient: color-mix(in oklab, var(--surface-ink) 26%, transparent);
+  --surface-knob-cast: color-mix(in oklab, var(--surface-ink) 48%, transparent);
+  --surface-ring-inner: color-mix(in oklab, var(--surface-paper) 10%, transparent);
+  --surface-shade-depth: 91%;
+  --surface-shade-alpha: 40%;
+  --surface-rim-lift: 88%;
+  --surface-rim-alpha: 34%;
+  --surface-well-top: color-mix(in oklab, var(--surface-ink) 40%, transparent);
+  --surface-well-bottom: color-mix(in oklab, var(--surface-paper) 10%, transparent);
 }
 
 /* Tailwind'in box-shadow zinciri. Halkalar (ring) ve gölge ayrı değişkenlerde
    tutulduğu için ikisi birlikte yaşayabilir; fallback'ler @property tanımı
    gelmese de kuralın geçersiz olmamasını sağlar. */
+/* ─── Yüzeyin kendi renginden türetilen ışık/gölge ───
+   Nötr beyaz/siyah bindirmek en kolay yol ama yanlış olanı: yarı saydam siyah
+   bir yüzeyi karartırken KROMA katmaz, dolayısıyla düşük kromalı krem bir
+   zeminde sonuç "gri" okunur; yarı saydam beyaz da tersini yapıp tebeşirler.
+   Fiziksel doğrusu, aydınlanan yüzeyin kendi renginin daha parlak, gölgede
+   kalanın da daha koyu hâline dönmesi.
+
+   CSS bir elemanın kendi background-color'ını okuyamaz, bu yüzden her varyant
+   kendi taban rengini `--surface-base` olarak bildirir; türetme tek yerde.
+   Buton `data-variant` yazdığı için eşleme öznitelik üzerinden kurulur —
+   sınıf dizisine uzun arbitrary değerler serpmeye gerek kalmaz. */
+[data-slot="button"][data-variant="default"],
+[data-slot="badge"][data-variant="default"] {
+  --surface-base: var(--primary);
+}
+[data-slot="button"][data-variant="secondary"],
+[data-slot="badge"][data-variant="secondary"] {
+  --surface-base: var(--secondary);
+}
+[data-slot="button"][data-variant="outline"] {
+  --surface-base: var(--background);
+}
+/* DİKKAT — taban, varyantın ADI değil GERÇEKTE GÖRÜNEN renktir. Destructive'in
+   zemini `bg-destructive/10`, yani solgun bir pembe; buraya `--destructive`
+   yazmak tam güçte kırmızıyı solgun pembenin üstüne boyayıp butonu baştan
+   aşağı boyanmış gibi gösteriyordu (ölçüm: kırmızı kanalında 53 seviye
+   düşüş, referansta bu ~%10). Karışımı burada kurup gerçek yüzeyi veriyoruz. */
+[data-slot="button"][data-variant="destructive"] {
+  --surface-base: color-mix(in oklab, var(--destructive) 10%, var(--background));
+}
+/* Outline dark'ta saydam değil `bg-input/30` taşır. */
+.dark [data-slot="button"][data-variant="outline"] {
+  --surface-base: color-mix(in oklab, var(--input) 30%, var(--background));
+}
+.dark [data-slot="button"][data-variant="destructive"] {
+  --surface-base: color-mix(in oklab, var(--destructive) 20%, var(--background));
+}
+
+[data-slot="badge"][data-variant="destructive"] {
+  --surface-base: color-mix(in oklab, var(--destructive) 10%, var(--background));
+}
+.dark [data-slot="badge"][data-variant="destructive"] {
+  --surface-base: color-mix(in oklab, var(--destructive) 20%, var(--background));
+}
+
+[data-slot="button"][data-variant],
+[data-slot="badge"][data-variant] {
+  /* Alt gölge: aynı rengin %18 siyaha çekilmiş hâli, %60 alfayla. */
+  --surface-shade: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-base) var(--surface-shade-depth), var(--surface-ink))
+      var(--surface-shade-alpha),
+    transparent
+  );
+  /* Üst rim: aynı rengin %26 beyaza çekilmiş hâli. Nötr beyaz değil, yani
+     kahve bir butonda rim de sıcak kahve kalır. */
+  --surface-rim-top: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-base) var(--surface-rim-lift), var(--surface-paper))
+      var(--surface-rim-alpha),
+    transparent
+  );
+}
+
 @utility surface-shadow-chain {
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
@@ -676,16 +764,53 @@
   background-image:
     radial-gradient(
       closest-side circle at 50% 50%,
-      rgb(0 0 0 / 0.09) 60%,
+      color-mix(in oklab, var(--surface-ink) 11%, transparent) 60%,
       transparent 100%
     ),
-    linear-gradient(to bottom in oklab, transparent 45%, rgb(0 0 0 / 0.08)),
+    linear-gradient(
+      to bottom in oklab,
+      transparent 45%,
+      color-mix(in oklab, var(--surface-ink) 10%, transparent)
+    ),
     /* Düz koyultma: diskin toplam beyazlığını indirir ama radyal katmanın
        ürettiği kenar-gövde FARKI korunur, yani 360° kabartma kaybolmaz. */
-    linear-gradient(rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.06));
+    linear-gradient(
+      color-mix(in oklab, var(--surface-ink) 7%, transparent),
+      color-mix(in oklab, var(--surface-ink) 7%, transparent)
+    );
   --tw-shadow:
     0 1px 3px -0.5px var(--surface-knob-cast),
     0 0 3px -1px var(--surface-knob-cast);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Çip ölçeği — badge gibi ~20px yüksekliğindeki küçük yüzeyler. Burada 1px'lik
+   rim ORANTISIZ: yükseklik 20px iken üstte ve altta birer çizgi, yüzeyin
+   onda birini kaplayıp bevel değil sert bir kontur gibi okunuyor (hele büyük
+   radius'ta, çünkü rim yuvarlağı takip edip tam bir halkaya dönüşüyor).
+   Bu ölçekte derinliği rim değil GÖLGE taşımalı: yalnız gövde gradyanı +
+   sıkı temas gölgesi. */
+@utility surface-raised-chip {
+  /* Butonla AYNI ışık modeli (üstte ışık, altta gölge), farklı primitif.
+     Butonda bunu doğrusal gövde gradyanı taşır; kenarları düz bir yüzeyde
+     doğru sonuç verir. Çipte geometri başka: yükseklik 20px, radius 8px —
+     yarıçap yüksekliğin ~%40'ı, yani alt kenar düz değil EĞRİ. Doğrusal
+     gradyan radius'u bilmez, koyu ucu eğrinin üstüne düşüp köşelerde
+     toplanır ve kalın bir yay çizer (kısa rozette düz bölüm kalmadığı için
+     daha da belirgin).
+
+     `inset` gölge ise border-radius'u takip eder: eğri boyunca 1px kalır.
+     Bu yüzden çipte ışık modeli gradyanla değil rim'le anlatılır. Alfalar
+     buton ölçeğinin altında, çünkü 20px'te 1px yüksekliğin %5'i. */
+  --tw-inset-shadow:
+    inset 0 1px 0 0
+      color-mix(in oklab, var(--surface-rim-top) 22%, transparent),
+    inset 0 -1px 0 0
+      color-mix(in oklab, var(--surface-shade) 45%, transparent);
+  --tw-shadow: 0 1px 1.5px -1px var(--surface-contact);
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
@@ -710,6 +835,7 @@
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow, 0 0 #0000);
 }
+
 
 @utility logo-on-light {
   /* Koyu mürekkepli logo: açık zeminde görünür. */

@@ -117,7 +117,7 @@ export function BillingToggle({
       role="group"
       aria-label="Faturalandırma aralığı"
       className={cn(
-        "inline-flex w-fit items-center gap-0.5 rounded-lg border border-border bg-muted/60 p-0.5",
+        "surface-inset inline-flex w-fit items-center gap-0.5 rounded-lg border border-border bg-muted/60 p-0.5",
         sm ? "h-7 text-xs" : "h-8 text-sm"
       )}
     >
@@ -144,7 +144,7 @@ export function BillingToggle({
               <motion.span
                 layoutId={pillId}
                 aria-hidden
-                className="absolute inset-0 rounded-md bg-background smooth-shadow-xs"
+                className="surface-raised-tight absolute inset-0 rounded-md bg-background"
                 transition={reduce ? { duration: 0 } : SPRING_PILL}
               />
             )}

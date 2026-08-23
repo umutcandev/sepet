@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "surface-raised bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        default: "surface-raised border-primary bg-primary text-primary-foreground [a]:hover:bg-primary/80",
         outline:
           // Görünür kenarlığı OLAN yüzeyde ayrıca iç rim çizilmez: ikisi üst
           // üste binince tepede iki paralel açık çizgi oluşup kalın bir border
@@ -19,11 +19,11 @@ const buttonVariants = cva(
           // sönük olduğu için orada fark oluşmuyordu, bu yüzden yalnız dark.
           "surface-raised border-border bg-background dark:[--surface-rim-top:transparent] dark:border-t-[color-mix(in_oklab,var(--foreground)_17%,transparent)] hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:
-          "surface-raised bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "surface-raised border-secondary bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:
           "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
         destructive:
-          "surface-raised bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
+          "surface-raised border-destructive/10 bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:border-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
