@@ -237,14 +237,16 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
             {/* Genişken wordmark + kapatma anahtarı, daralınca üstüne gelince
                 anahtara dönüşen kare işaret. Hangisinin görüneceğine
                 `data-collapsible` karar verir. */}
-            <SidebarMenuButton
-              size="lg"
-              asChild
-              className="hover:bg-transparent active:bg-transparent group-data-[collapsible=icon]:hidden"
-            >
-              {/* Sağ tık / basılı tutma → marka menüsü. Sarmalayıcı Link'in
-                  KENDİSİNİ hedefler; böylece sol tık hâlâ ana sayfaya gider. */}
-              <BrandContextMenu>
+            {/* Sağ tık / basılı tutma → marka menüsü. Sarmalayıcı
+                SidebarMenuButton'ın DIŞINDA: o `asChild` ile Slot kullanıyor ve
+                tek bir eleman çocuk bekliyor. İçine konduğunda prop'lar (sınıf,
+                ref) Link'e hiç ulaşmıyor ve menü hiç açılmıyordu. */}
+            <BrandContextMenu>
+              <SidebarMenuButton
+                size="lg"
+                asChild
+                className="hover:bg-transparent active:bg-transparent group-data-[collapsible=icon]:hidden"
+              >
                 <Link href="/">
                   <Image
                     src="/brand/sepet-dark.svg"
@@ -263,8 +265,8 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
                     className="hidden h-6 w-auto dark:block"
                   />
                 </Link>
-              </BrandContextMenu>
-            </SidebarMenuButton>
+              </SidebarMenuButton>
+            </BrandContextMenu>
             <SidebarBrandToggle />
             <SidebarPanelToggle />
           </SidebarMenuItem>
