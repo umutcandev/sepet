@@ -621,6 +621,11 @@
      light'taki üst rim'i de zaten görünmüyor (tabanı sayfanın kendisi), yani
      iki yüzey bu konuda da aynı yere düşüyor. */
   --surface-well: color-mix(in oklab, var(--background) 98%, var(--surface-ink));
+  /* Etkileşimli alanların (select tetikleyicisi gibi) hover yüzeyi. Ayrı bir
+     token gerekiyor: `surface-inset` dolguyu OPAK bir `background-image`
+     katmanıyla basıyor, dolayısıyla `hover:bg-*` sınıfları bu yüzeylerde
+     görünmez — hover'ı ancak yüzeyin kendi rengini değiştirerek anlatabiliriz. */
+  --surface-well-hover: color-mix(in oklab, var(--background) 92%, var(--surface-ink));
 }
 
 .dark {
@@ -643,6 +648,9 @@
      (`bg-input/30`), yani sayfadan bir tık AÇIK. Daha koyu bir gövde
      denenmişti; alanı butonların yanında bir delik gibi gösteriyordu. */
   --surface-well: color-mix(in oklab, var(--input) 30%, var(--background));
+  /* Dinlenme %30; hover'da %50 — kaldırılan `dark:hover:bg-input/50`in
+     amaçladığı değerin aynısı, bu sefer gerçekten görünür yerden. */
+  --surface-well-hover: color-mix(in oklab, var(--input) 50%, var(--background));
 }
 
 /* Tailwind'in box-shadow zinciri. Halkalar (ring) ve gölge ayrı değişkenlerde
@@ -737,6 +745,14 @@
       var(--surface-rim-alpha),
     transparent
   );
+}
+
+/* Tıklanabilir alanlar (select tetikleyicisi, native select, combobox) için
+   hover. `surface-inset` ile birlikte kullanılır. */
+@utility surface-inset-interactive {
+  &:hover:not(:disabled):not([data-disabled]) {
+    --surface-well: var(--surface-well-hover);
+  }
 }
 
 @utility surface-shadow-chain {
