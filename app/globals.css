@@ -535,6 +535,182 @@
   --logo-swap: 1;
 }
 
+/* ---------------------------------------------------------------------------
+   Yüzey derinliği — "flat" görünümü kıran katmanlar
+   ---------------------------------------------------------------------------
+   Referans arayüzlerden piksel ölçümüyle çıkarıldı. Üç kural:
+
+   1. Dolgu düz renk değil, dikey gradyan (üst açık → alt koyu). Fark %5-8.
+      DİKKAT: bu gradyan üste NÖTR BEYAZ bindirilerek yapılmaz. Yarı saydam
+      beyaz doygunluğu düşürür; sıcak/doygun bir palette yüzeyin üstü
+      tebeşirli, "tozlu" görünür. Referans buton nötr siyah olduğu için
+      orada fark edilmiyordu.
+
+      Alfalar kasten DÜŞÜK tutulur. Ölçüm: referansta üst rim, dolgunun
+      +55 seviye üstünde; %75'lik bir karışım kahve üzerinde +109 veriyordu,
+      yani iki katı. Sıcak kahve bir yüzeyde parlak beyaz çizgi en çabuk
+      göze batan şey — buradaki hedef referanstan bile bir tık altı (+38).
+
+      Bunun yerine RİM paletin kendi sıcak ucundan türetilir: light'ta
+      `--background` (krem), dark'ta `--foreground` (sıcak açık ton). Rim
+      1px'lik ve yüksek alfalı olduğu için rengi gerçekten okunur.
+      Fizik de bunu söylüyor — aydınlanan yüzey beyazlaşmaz, kendi renginin
+      daha parlak hâline döner. Karakteri daha güçlü, altın bir rim isteniyorsa
+      bu iki satırda `--primary`ye çevirmek yeterli.
+
+      Gövdede yalnız ALTA doğru hafif bir koyulaşma var; yukarıdaki aydınlık
+      hissini 1px'lik üst rim taşıyor. Ara ton çamurlanmasın diye
+      interpolasyon oklab'da.
+   2. Kenar üniform DEĞİL: üst rim, alt rimin ~iki katı parlaklıkta. Işık
+      tepeden gelir; nesnenin üst kenarı onu yakalar, alt kenar zeminden
+      sekeni alır.
+   3. Gölge iki katman: 1px'lik sert "temas" (nesneyi zemine oturtur) +
+      geniş yumuşak "ortam" (yüksekliği anlatır). Tek katman ya yapışık ya
+      uçuyor görünür.
+
+   İki kutup var ve karıştırılmamalı:
+     surface-raised → yukarı çıkan nesne (buton, thumb, aktif segment, kart)
+     surface-inset  → içeri oyulmuş yüzey (input, track, progress yolu).
+   Inset'te aydınlatma TERSİNE döner: üstte gölge, altta sekme. Ölçümde
+   switch track'i tam da böyleydi (üst rim 71, alt rim 87 — alt daha parlak).
+
+   Alt rim `currentColor`dan türetilir, TEMADAN değil. Polarite yüzeyin
+   kendi açıklığına bağlıdır: koyu bir yüzeyde metin açıktır → alt kenar
+   açık çıkar (zeminden seken ışık); açık bir yüzeyde metin koyudur → alt
+   kenar koyu çıkar (gölgede kalan alt kenar). Tek satır, dört kombinasyonun
+   dördünde de doğru — dark temadaki AÇIK primary buton dahil, ki tema
+   tabanlı sabit bir değer tam orada yanlış sonuç veriyordu.
+
+   box-shadow doğrudan yazılmaz; Tailwind'in --tw-* zinciri korunur ki
+   focus-visible:ring-* bu yüzeylerde ezilmesin. */
+:root {
+  --surface-sheen: rgb(255 255 255 / 0.06);
+  --surface-shade: rgb(0 0 0 / 0.075);
+  --surface-rim-top: color-mix(in oklab, var(--background) 26%, transparent);
+  --surface-rim-bottom: color-mix(in srgb, currentColor 6%, transparent);
+  --surface-contact: rgb(0 0 0 / 0.08);
+  --surface-ambient: rgb(0 0 0 / 0.05);
+  --surface-knob-cast: rgb(0 0 0 / 0.17);
+  --surface-well-top: rgb(0 0 0 / 0.08);
+  --surface-well-bottom: rgb(255 255 255 / 0.1);
+}
+
+.dark {
+  --surface-sheen: rgb(255 255 255 / 0.05);
+  --surface-shade: rgb(0 0 0 / 0.09);
+  --surface-rim-top: color-mix(in oklab, var(--foreground) 9%, transparent);
+  --surface-rim-bottom: color-mix(in srgb, currentColor 6%, transparent);
+  --surface-contact: rgb(0 0 0 / 0.35);
+  --surface-ambient: rgb(0 0 0 / 0.22);
+  --surface-knob-cast: rgb(0 0 0 / 0.42);
+  --surface-well-top: rgb(0 0 0 / 0.35);
+  --surface-well-bottom: rgb(255 255 255 / 0.1);
+}
+
+/* Tailwind'in box-shadow zinciri. Halkalar (ring) ve gölge ayrı değişkenlerde
+   tutulduğu için ikisi birlikte yaşayabilir; fallback'ler @property tanımı
+   gelmese de kuralın geçersiz olmamasını sağlar. */
+@utility surface-shadow-chain {
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+@utility surface-raised {
+  background-image: linear-gradient(
+    to bottom in oklab,
+    transparent 40%,
+    var(--surface-shade)
+  );
+  --tw-inset-shadow:
+    inset 0 1px 0 0 var(--surface-rim-top),
+    inset 0 -1px 0 0 var(--surface-rim-bottom);
+  --tw-shadow:
+    0 1px 2px -1px var(--surface-contact), 0 3px 8px -3px var(--surface-ambient);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Gölgesiz kabartma: bir oyuğun İÇİNDE oturan parçalar (switch thumb, aktif
+   sekme) için. Kendi gölgesini taşır ama sayfaya değil, içinde durduğu
+   yuvaya düşürür — bu yüzden ortam katmanı yok, yalnız sıkı temas. */
+@utility surface-raised-tight {
+  background-image: linear-gradient(
+    to bottom in oklab,
+    transparent 45%,
+    var(--surface-shade)
+  );
+  --tw-inset-shadow:
+    inset 0 1px 0 0 var(--surface-rim-top),
+    inset 0 -1px 0 0 var(--surface-rim-bottom);
+  --tw-shadow: 0 1px 2px -1px var(--surface-contact);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* `--surface-sheen` yalnız oyuğun DİBİNDEKİ toplanan ışıktır ve kasten çok
+   düşük alfalıdır (ölçüm: switch track dolgusu 51 → 63, yani ~%5). Bu
+   seviyede nötr beyaz doygunluğu hissedilir ölçüde düşürmez; yüksek alfada
+   ise koyu bir track'in dibinde parlak bir hilale dönüşüyordu. */
+/* Düğme/knob — switch thumb'ı gibi AÇIK, küçük ve bir oyuğun içinde yüzen
+   parçalar. Genel `surface-raised` burada çalışmaz: onun rim'i paletin sıcak
+   ucundan türer ve neredeyse beyaz bir yüzeyde kaybolur.
+
+   Referans ölçümü (thumb yatay kesiti): kenarlar 255, gövde 240-245, yani
+   halka gövdeden PARLAK. Dikeyde gövde 255 → 227 koyulaşıyor, en altta yine
+   255'lik bir sekme çizgisi var. Track dolgusu thumb'ın iki yanında da
+   57'den 51'e düşüyor — yani düğme çepeçevre gölge düşürüyor, yalnız aşağı
+   değil. Üçü birlikte parçayı "yüzüyor" gösteren şey. */
+@utility surface-knob {
+  /* İki katman. Radyal olan İÇERİYİ koyultur, en dış 1px'i boyamaz — böylece
+     kenar çepeçevre parlak kalır (ölçüm: referans thumb kenarları 255, gövde
+     240). Halkayı BEYAZLA çizmiyoruz: beyaz halka düğmenin açık olduğunu
+     varsayar ve koyu bir thumb'da gümüş bir çembere dönüşür. Koyultma ise
+     rengi ne olursa olsun doğru çalışır, yani polariteden bağımsız 360°
+     kabartma. Doğrusal olan ışığın tepeden geldiğini söyler. */
+  background-image:
+    radial-gradient(
+      closest-side circle at 50% 50%,
+      rgb(0 0 0 / 0.09) 60%,
+      transparent 100%
+    ),
+    linear-gradient(to bottom in oklab, transparent 45%, rgb(0 0 0 / 0.08)),
+    /* Düz koyultma: diskin toplam beyazlığını indirir ama radyal katmanın
+       ürettiği kenar-gövde FARKI korunur, yani 360° kabartma kaybolmaz. */
+    linear-gradient(rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.06));
+  --tw-shadow:
+    0 1px 3px -0.5px var(--surface-knob-cast),
+    0 0 3px -1px var(--surface-knob-cast);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+@utility surface-inset {
+  /* Oyuk: üstte gölge, altta sekme. Dış gölge YOK — içeri giren nesne
+     zemine gölge düşürmez.
+     Gradyan raised'ın TERSİ yönde: ışık oyuğun dibinde toplanır. Ölçüm
+     (switch track): dolgu üstte 51, altta 63 — yani aşağı doğru açılıyor. */
+  background-image: linear-gradient(
+    to top in oklab,
+    var(--surface-sheen),
+    transparent 60%
+  );
+  --tw-inset-shadow:
+    inset 0 1px 2px -1px var(--surface-well-top),
+    inset 0 -1px 0 0 var(--surface-well-bottom);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
 @utility logo-on-light {
   /* Koyu mürekkepli logo: açık zeminde görünür. */
   opacity: calc(1 - var(--logo-swap));
