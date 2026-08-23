@@ -370,7 +370,9 @@ export function VoiceInput({
   if (state.kind === "requesting") {
     return (
       <div className={cn(voiceContainerClass, className)}>
-        <div className="w-24 text-xs text-muted-foreground sm:w-32 px-1">
+        {/* Kap artık her yönden 4px; hap olmayan bu çocuk kendi soluk payını
+            kendisi taşıyor. */}
+        <div className="w-24 px-1.5 text-xs text-muted-foreground sm:w-32">
           Hazırlanıyor…
         </div>
         <VoiceStopButton
@@ -396,7 +398,7 @@ export function VoiceInput({
           barRadius={1}
           fadeEdges
           fadeWidth={12}
-          className="w-16 text-foreground sm:w-24"
+          className="ms-1.5 w-16 text-foreground sm:w-24"
         />
         <span
           className={cn(

@@ -612,12 +612,15 @@
      durmak zorunda. Sayfadan belirgin koyu bir gövde denenmişti: tozu
      gidermişti ama alanı butonların yanında donuk bir levha gibi
      gösteriyordu. Artık sayfadan yalnız bir tık aşağıda; oyuğu ANLATAN şey
-     gövdenin koyuluğu değil, gradyanının ve dış gölgesinin olmaması. */
-  --surface-well: color-mix(in oklab, var(--background) 97%, var(--surface-ink));
-  /* Alt kenar çizgisi. Light'ta paletin parlak ucu sayfanın KENDİSİ olduğu
-     için karışıma yer yok; yüzeyin sayfadan bir tık koyu olması da bu çizgiyi
-     görünür kılmak içindir. */
-  --surface-well-lift: color-mix(in oklab, var(--surface-paper) 85%, transparent);
+     gövdenin koyuluğu değil, gradyanının ve dış gölgesinin olmaması.
+
+     %94 denendi ve light'ta fazla koyu kaldı — gradyan kalkınca gövdenin
+     tamamı o tek tonda okunuyor, oysa gradyanlı hâlde yalnız alt ucu o
+     koyulukta. %98: sayfadan ayırt edilecek kadar, levha gibi durmayacak
+     kadar. Üst rim buna bağlı olarak neredeyse görünmez hâle geliyor; butonun
+     light'taki üst rim'i de zaten görünmüyor (tabanı sayfanın kendisi), yani
+     iki yüzey bu konuda da aynı yere düşüyor. */
+  --surface-well: color-mix(in oklab, var(--background) 98%, var(--surface-ink));
 }
 
 .dark {
@@ -640,13 +643,6 @@
      (`bg-input/30`), yani sayfadan bir tık AÇIK. Daha koyu bir gövde
      denenmişti; alanı butonların yanında bir delik gibi gösteriyordu. */
   --surface-well: color-mix(in oklab, var(--input) 30%, var(--background));
-  /* Dark'ta parlak uç kremdir ve yüzeyden ÇOK uzaktır; light'taki gibi saf
-     sürmek tebeşir bir çizgi bırakır. Butonun rim'iyle aynı bütçe. */
-  --surface-well-lift: color-mix(
-    in oklab,
-    color-mix(in oklab, var(--surface-well) 86%, var(--surface-paper)) 40%,
-    transparent
-  );
 }
 
 /* Tailwind'in box-shadow zinciri. Halkalar (ring) ve gölge ayrı değişkenlerde
@@ -697,6 +693,13 @@
   --surface-base: color-mix(in oklab, var(--destructive) 20%, var(--background));
 }
 
+/* Outline rozet, outline BUTONLA aynı yüzeyi taşır: ikisi de zeminin
+   üzerinde duran, kenarlıklı, dolgusuz kontrollerdir. Rozet tarafı
+   atlanmıştı, bu yüzden footer'daki "Sistem Durumu" rozeti düz kalıyordu. */
+[data-slot="badge"][data-variant="outline"] {
+  --surface-base: var(--background);
+}
+
 [data-slot="button"][data-variant],
 [data-slot="badge"][data-variant] {
   /* Alt gölge: aynı rengin %18 siyaha çekilmiş hâli, %60 alfayla. */
@@ -708,6 +711,26 @@
   );
   /* Üst rim: aynı rengin %26 beyaza çekilmiş hâli. Nötr beyaz değil, yani
      kahve bir butonda rim de sıcak kahve kalır. */
+  --surface-rim-top: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-base) var(--surface-rim-lift), var(--surface-paper))
+      var(--surface-rim-alpha),
+    transparent
+  );
+}
+
+/* Yukarıdaki türetme `data-slot`/`data-variant` yazan bileşenlere bağlı.
+   Elle yazılmış kontroller (ör. sesli girişin İptal/İlet düğmeleri) bu
+   öznitelikleri taşımaz; onlar `--surface-base`ini kendisi bildirip bu
+   yardımcıyı ekler. Öznitelik kuralı (0,2,0) sınıftan (0,1,0) güçlü olduğu
+   için bileşenlerin mevcut değerleri etkilenmez. */
+@utility surface-tint {
+  --surface-shade: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-base) var(--surface-shade-depth), var(--surface-ink))
+      var(--surface-shade-alpha),
+    transparent
+  );
   --surface-rim-top: color-mix(
     in oklab,
     color-mix(in oklab, var(--surface-base) var(--surface-rim-lift), var(--surface-paper))
@@ -832,23 +855,36 @@
 }
 
 @utility surface-inset {
-  /* Alan yüzeyi: DÜZ dolgu + tek bir alt kenar çizgisi. Gövde gradyanı YOK.
-     Kabartmanın (`surface-raised`) tüm işareti gradyan + üst rim + dış
-     gölgedir; alana da gradyan verilince ikisi ayırt edilemez hâle geliyordu.
-     Alanın anlatımı bu yüzden tek bir şeye indi: dibinde biriken ışık.
+  /* Alan yüzeyi: butonun rim'lerinin AYNISI — üstte ışık, altta gölge, ikisi
+     de `surface-raised`ın kullandığı token'lar. Tek fark GÖVDE GRADYANININ
+     olmaması; kabartmayı alandan ayıran şey artık yalnız o ve dış gölge.
 
-     Çizgi 1px keskin. Bulanık bir `2px -1px` gölge yüzeyin içine yayılıp onu
-     "tozlu" gösteriyordu.
+     Rim'ler 1px keskin çizgi. Bulanık bir `2px -1px` gölge yüzeyin içine
+     yayılıp onu "tozlu" gösteriyordu.
 
-     Kritik kural: ışık yüzeyin KENDİ renginden türer. Nötr krem/mürekkep
-     yıkaması bindirmek oklab'da kromayı düşürür ve kahverengi yüzeyi
-     grileştirir.
+     Üst rim burada, öğenin üzerinde türetiliyor: taban `--surface-base` değil
+     `--surface-well`, ama ifade ve oranlar butonunkiyle birebir aynı. `:root`ta
+     kurulsaydı `var()` orada çözülür ve `.dark` light'ın tabanını miras alırdı.
+     Alt rim (`--surface-rim-bottom`) zaten global ve `currentColor`dan türüyor,
+     yani polariteyi kendisi çözüyor.
 
-     Tek katman yüzeyin kendi rengini basar: alanların çoğu `bg-transparent`,
-     `background-image` ise `background-color`ın üstünde durduğu için bu
-     katman zemini olmayan alanda da çalışır. */
+     Kritik kural: ışık da gölge de yüzeyin KENDİ renginden türer. Nötr
+     krem/mürekkep yıkaması bindirmek oklab'da kromayı düşürür ve kahverengi
+     yüzeyi grileştirir.
+
+     Tek gradyan katmanı yüzeyin kendi rengini basar: alanların çoğu
+     `bg-transparent`, `background-image` ise `background-color`ın üstünde
+     durduğu için bu katman zemini olmayan alanda da çalışır. */
+  --surface-rim-top: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-well) var(--surface-rim-lift), var(--surface-paper))
+      var(--surface-rim-alpha),
+    transparent
+  );
   background-image: linear-gradient(var(--surface-well), var(--surface-well));
-  --tw-inset-shadow: inset 0 -1px 0 0 var(--surface-well-lift);
+  --tw-inset-shadow:
+    inset 0 1px 0 0 var(--surface-rim-top),
+    inset 0 -1px 0 0 var(--surface-rim-bottom);
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
