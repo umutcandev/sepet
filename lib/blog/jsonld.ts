@@ -1,7 +1,7 @@
 // Rich Snippet uyumlu JSON-LD üreticileri. Tek kaynak; sayfalar <JsonLd> ile
 // XSS-safe enjekte eder (bkz. components/blog/json-ld.tsx).
 import type { Post } from "@/.velite"
-import { SITE_NAME, SITE_URL, SITE_X, absoluteUrl } from "@/lib/site"
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, SITE_X, absoluteUrl } from "@/lib/site"
 
 import { getAuthor } from "./authors"
 import { getCategory } from "./categories"
@@ -9,12 +9,15 @@ import { getCategory } from "./categories"
 const ORG_ID = absoluteUrl("/#organization")
 const WEBSITE_ID = absoluteUrl("/#website")
 
-export function organizationLd() {
+// Organization ve WebSite düğümleri TEK bir @graph içinde yayımlanır (bkz.
+// siteGraphLd). Bu yüzden ikisi de kendi "@context"ini taşımaz — bağlam
+// sarmalayıcıda bir kez verilir.
+function organizationNode() {
   return {
-    "@context": "https://schema.org",
     "@type": "Organization",
     "@id": ORG_ID,
     name: SITE_NAME,
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",
@@ -24,15 +27,33 @@ export function organizationLd() {
   }
 }
 
-export function websiteLd() {
+function websiteNode() {
   return {
-    "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     name: SITE_NAME,
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
     inLanguage: "tr-TR",
     publisher: { "@id": ORG_ID },
+  }
+}
+
+/**
+ * Site geneli kimlik grafiği (kök layout'ta bir kez basılır).
+ *
+ * Düğümler ÇIPLAK BİR DİZİ olarak değil `@graph` altında verilir: iki biçim de
+ * JSON-LD'ye göre geçerli, ama üst seviyesi dizi olan belgede tüketicinin
+ * `@type`/`name` gibi alanları okumak için önce diziyi dolaşması gerekir.
+ * Pratikte birçok ayrıştırıcı (arama motoru zenginleştiricileri, ajan
+ * tarayıcıları) üst seviyede tek bir nesne bekleyip alanları bulamadan
+ * "eksik" raporluyor. `@graph` bu belirsizliği ortadan kaldırır ve @id
+ * referansları (publisher → ORG_ID) aynı belge içinde çözülebilir kalır.
+ */
+export function siteGraphLd() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [organizationNode(), websiteNode()],
   }
 }
 
