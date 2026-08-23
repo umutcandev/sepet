@@ -871,41 +871,42 @@
 }
 
 @utility surface-inset {
-  /* Alan yüzeyi: butonun rim'lerinin AYNISI — üstte ışık, altta gölge, ikisi
-     de `surface-raised`ın kullandığı token'lar. Tek fark GÖVDE GRADYANININ
-     olmaması; kabartmayı alandan ayıran şey artık yalnız o ve dış gölge.
+  /* Oyuk: üstte ışık, altta gölge. Gövde gradyanı ve dış gölge YOK — kabartmayı
+     alandan ayıran şey bu ikisi.
 
-     Rim'ler 1px keskin çizgi. Bulanık bir `2px -1px` gölge yüzeyin içine
-     yayılıp onu "tozlu" gösteriyordu.
+     DOLGU BASMAZ. Bir ara buraya opak bir `background-image` katmanı konmuştu
+     ve `surface-inset` taşıyan 22 parçanın çoğu kendi rengini getirdiği için
+     (`bg-muted`, `bg-primary`, `bg-input`…) hepsini örttü: switch açık/kapalı
+     aynı renge düştü, sekme şeridi `--muted`ini kaybetti. Kendi zemini olmayan
+     alanlar dolguyu `surface-well-fill` ile ayrıca ister.
 
-     Üst rim burada, öğenin üzerinde türetiliyor: taban `--surface-base` değil
-     `--surface-well`, ama ifade ve oranlar butonunkiyle birebir aynı. `:root`ta
-     kurulsaydı `var()` orada çözülür ve `.dark` light'ın tabanını miras alırdı.
-     Alt rim (`--surface-rim-bottom`) zaten global ve `currentColor`dan türüyor,
-     yani polariteyi kendisi çözüyor.
-
-     Kritik kural: ışık da gölge de yüzeyin KENDİ renginden türer. Nötr
-     krem/mürekkep yıkaması bindirmek oklab'da kromayı düşürür ve kahverengi
-     yüzeyi grileştirir.
-
-     Tek gradyan katmanı yüzeyin kendi rengini basar: alanların çoğu
-     `bg-transparent`, `background-image` ise `background-color`ın üstünde
-     durduğu için bu katman zemini olmayan alanda da çalışır. */
-  --surface-rim-top: color-mix(
+     Üst rim `--surface-rim-top`u DEĞİL kendi adını kullanır. O token kabartmanın
+     tokenı ve miras alınıyor: burada ezilince oyuğun İÇİNDE oturan parçalar
+     (switch thumb'ı, aktif sekme) kendi renginin rim'i yerine oyuğunkini
+     alıyordu. Alt rim global `--surface-rim-bottom`, `currentColor`dan türediği
+     için her öğede kendi rengine göre çözülür — ezmeye gerek yok. */
+  --surface-well-rim: color-mix(
     in oklab,
     color-mix(in oklab, var(--surface-well) var(--surface-rim-lift), var(--surface-paper))
       var(--surface-rim-alpha),
     transparent
   );
-  background-image: linear-gradient(var(--surface-well), var(--surface-well));
   --tw-inset-shadow:
-    inset 0 1px 0 0 var(--surface-rim-top),
+    inset 0 1px 0 0 var(--surface-well-rim),
     inset 0 -1px 0 0 var(--surface-rim-bottom);
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow, 0 0 #0000);
 }
+
+/* Alanın gövde rengi. Yalnız KENDİ zemini olmayan alanlar (`bg-transparent`
+   input, textarea, select, combobox) ekler. `background-image` seçildi çünkü
+   `background-color`ın üstünde durur, yani sınıf sırası yarışına girmez. */
+@utility surface-well-fill {
+  background-image: linear-gradient(var(--surface-well), var(--surface-well));
+}
+
 
 
 /* ─── Leaflet ───
