@@ -590,8 +590,6 @@
      tonu koruyup yalnız parlaklığı indirir. */
   --surface-ink: var(--foreground);
   --surface-paper: var(--background);
-
-  --surface-sheen: color-mix(in oklab, var(--surface-paper) 6%, transparent);
   --surface-shade: color-mix(in oklab, var(--surface-ink) 8%, transparent);
   --surface-rim-top: color-mix(in oklab, var(--surface-paper) 26%, transparent);
   --surface-rim-bottom: color-mix(in srgb, currentColor 6%, transparent);
@@ -605,8 +603,21 @@
   --surface-shade-alpha: 60%;
   --surface-rim-lift: 74%;
   --surface-rim-alpha: 55%;
-  --surface-well-top: color-mix(in oklab, var(--surface-ink) 11%, transparent);
-  --surface-well-bottom: color-mix(in oklab, var(--surface-paper) 10%, transparent);
+  /* OYUK — butonla aynı prensip: tek bir yüzey rengi, ondan türeyen iki uç.
+     Önceki hâlde alanlara nötr mürekkep/krem yıkaması biniyordu; bu doygunluğu
+     düşürüp yüzeyi "tozlu" gösteriyordu. Buton toz yapmıyor çünkü hem gölgesini
+     hem ışığını KENDİ renginden alıyor. Alan da artık öyle.
+
+     `--surface-well` alanın gövde rengi — BUTONUN dolgusuyla aynı ailede
+     durmak zorunda. Sayfadan belirgin koyu bir gövde denenmişti: tozu
+     gidermişti ama alanı butonların yanında donuk bir levha gibi
+     gösteriyordu. Artık sayfadan yalnız bir tık aşağıda; oyuğu ANLATAN şey
+     gövdenin koyuluğu değil, gradyanının ve dış gölgesinin olmaması. */
+  --surface-well: color-mix(in oklab, var(--background) 97%, var(--surface-ink));
+  /* Alt kenar çizgisi. Light'ta paletin parlak ucu sayfanın KENDİSİ olduğu
+     için karışıma yer yok; yüzeyin sayfadan bir tık koyu olması da bu çizgiyi
+     görünür kılmak içindir. */
+  --surface-well-lift: color-mix(in oklab, var(--surface-paper) 85%, transparent);
 }
 
 .dark {
@@ -614,8 +625,6 @@
      saf siyah yerine zeminin sıcak, daha karanlık hâli kullanılır. */
   --surface-ink: color-mix(in oklab, var(--background) 40%, black);
   --surface-paper: var(--foreground);
-
-  --surface-sheen: color-mix(in oklab, var(--surface-paper) 5%, transparent);
   --surface-shade: color-mix(in oklab, var(--surface-ink) 10%, transparent);
   --surface-rim-top: color-mix(in oklab, var(--surface-paper) 9%, transparent);
   --surface-rim-bottom: color-mix(in srgb, currentColor 6%, transparent);
@@ -627,8 +636,17 @@
   --surface-shade-alpha: 40%;
   --surface-rim-lift: 88%;
   --surface-rim-alpha: 34%;
-  --surface-well-top: color-mix(in oklab, var(--surface-ink) 40%, transparent);
-  --surface-well-bottom: color-mix(in oklab, var(--surface-paper) 10%, transparent);
+  /* Dark'ta alan da butonun outline varyantıyla AYNI dolguyu taşır
+     (`bg-input/30`), yani sayfadan bir tık AÇIK. Daha koyu bir gövde
+     denenmişti; alanı butonların yanında bir delik gibi gösteriyordu. */
+  --surface-well: color-mix(in oklab, var(--input) 30%, var(--background));
+  /* Dark'ta parlak uç kremdir ve yüzeyden ÇOK uzaktır; light'taki gibi saf
+     sürmek tebeşir bir çizgi bırakır. Butonun rim'iyle aynı bütçe. */
+  --surface-well-lift: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-well) 86%, var(--surface-paper)) 40%,
+    transparent
+  );
 }
 
 /* Tailwind'in box-shadow zinciri. Halkalar (ring) ve gölge ayrı değişkenlerde
@@ -741,10 +759,6 @@
     var(--tw-shadow, 0 0 #0000);
 }
 
-/* `--surface-sheen` yalnız oyuğun DİBİNDEKİ toplanan ışıktır ve kasten çok
-   düşük alfalıdır (ölçüm: switch track dolgusu 51 → 63, yani ~%5). Bu
-   seviyede nötr beyaz doygunluğu hissedilir ölçüde düşürmez; yüksek alfada
-   ise koyu bir track'in dibinde parlak bir hilale dönüşüyordu. */
 /* Düğme/knob — switch thumb'ı gibi AÇIK, küçük ve bir oyuğun içinde yüzen
    parçalar. Genel `surface-raised` burada çalışmaz: onun rim'i paletin sıcak
    ucundan türer ve neredeyse beyaz bir yüzeyde kaybolur.
@@ -818,18 +832,23 @@
 }
 
 @utility surface-inset {
-  /* Oyuk: üstte gölge, altta sekme. Dış gölge YOK — içeri giren nesne
-     zemine gölge düşürmez.
-     Gradyan raised'ın TERSİ yönde: ışık oyuğun dibinde toplanır. Ölçüm
-     (switch track): dolgu üstte 51, altta 63 — yani aşağı doğru açılıyor. */
-  background-image: linear-gradient(
-    to top in oklab,
-    var(--surface-sheen),
-    transparent 60%
-  );
-  --tw-inset-shadow:
-    inset 0 1px 2px -1px var(--surface-well-top),
-    inset 0 -1px 0 0 var(--surface-well-bottom);
+  /* Alan yüzeyi: DÜZ dolgu + tek bir alt kenar çizgisi. Gövde gradyanı YOK.
+     Kabartmanın (`surface-raised`) tüm işareti gradyan + üst rim + dış
+     gölgedir; alana da gradyan verilince ikisi ayırt edilemez hâle geliyordu.
+     Alanın anlatımı bu yüzden tek bir şeye indi: dibinde biriken ışık.
+
+     Çizgi 1px keskin. Bulanık bir `2px -1px` gölge yüzeyin içine yayılıp onu
+     "tozlu" gösteriyordu.
+
+     Kritik kural: ışık yüzeyin KENDİ renginden türer. Nötr krem/mürekkep
+     yıkaması bindirmek oklab'da kromayı düşürür ve kahverengi yüzeyi
+     grileştirir.
+
+     Tek katman yüzeyin kendi rengini basar: alanların çoğu `bg-transparent`,
+     `background-image` ise `background-color`ın üstünde durduğu için bu
+     katman zemini olmayan alanda da çalışır. */
+  background-image: linear-gradient(var(--surface-well), var(--surface-well));
+  --tw-inset-shadow: inset 0 -1px 0 0 var(--surface-well-lift);
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
