@@ -8,7 +8,6 @@ import Link from "next/link"
 
 import { GitHubLogo, XLogo } from "@/components/blog/brand-icons"
 import { FooterLink } from "@/components/site-footer-link"
-import { BrandContextMenu } from "@/components/brand/brand-context-menu"
 import { ThemeToggleInline } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -88,25 +87,23 @@ export function SiteFooter({ className }: { className?: string }) {
         <div className="flex flex-col gap-10 md:flex-row md:justify-between md:gap-10 lg:gap-12">
           {/* Marka sütunu */}
           <div className="flex flex-col gap-6 md:max-w-[17rem]">
-            <BrandContextMenu>
-              <Link href="/" className="inline-flex w-fit items-center">
-                <Image
-                  src="/brand/sepet-dark.svg"
-                  alt="Sepet"
-                  width={846}
-                  height={178}
-                  className="h-6 w-auto dark:hidden"
-                />
-                <Image
-                  src="/brand/sepet-light.svg"
-                  alt=""
-                  aria-hidden
-                  width={846}
-                  height={178}
-                  className="hidden h-6 w-auto dark:block"
-                />
-              </Link>
-            </BrandContextMenu>
+            <Link href="/" className="inline-flex w-fit items-center">
+              <Image
+                src="/brand/sepet-dark.svg"
+                alt="Sepet"
+                width={846}
+                height={178}
+                className="h-6 w-auto dark:hidden"
+              />
+              <Image
+                src="/brand/sepet-light.svg"
+                alt=""
+                aria-hidden
+                width={846}
+                height={178}
+                className="hidden h-6 w-auto dark:block"
+              />
+            </Link>
             <p className="text-sm leading-relaxed text-muted-foreground">
               Alışveriş listeni yaz, marketlerdeki en uygun fiyatları
               karşılaştır ve en ucuz sepeti saniyeler içinde oluştur.

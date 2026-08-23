@@ -2,9 +2,9 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { CheckIcon, DownloadIcon } from "lucide-react"
+import { CheckIcon, DownloadIcon, PackageIcon } from "lucide-react"
 
-import { SepetMark } from "@/components/brand/sepet-mark"
+import { IconSwap } from "@/components/motion/icon-swap"
 import {
   ContextMenu,
   ContextMenuContent,
@@ -14,56 +14,42 @@ import {
 } from "@/components/ui/context-menu"
 import { toast } from "@/components/ui/sonner"
 import { copyText } from "@/lib/copy"
-import { cn } from "@/lib/utils"
 
-// Wordmark iki ayrı dosyadır ve mürekkebi dosyanın İÇİNDE sabittir (token'a
-// bağlanamaz): `sepet-dark.svg` açık zemin için #6D4530, `sepet-light.svg` koyu
-// zemin için #F2C897.
-const WORDMARK = {
-  light: "/brand/sepet-dark.svg",
-  dark: "/brand/sepet-light.svg",
+// Dosya adlarındaki "-light" AÇIK MÜREKKEBİ anlatır, yani koyu zeminde
+// kullanılır. Mürekkep dosyanın içinde sabittir (token'a bağlanamaz), bu yüzden
+// hangi varyantın verileceğine sayfanın teması karar verir.
+const ASSET = {
+  light: { wordmark: "/brand/sepet-dark.svg", logo: "/brand/sepet-logo-dark.svg" },
+  dark: { wordmark: "/brand/sepet-light.svg", logo: "/brand/sepet-logo-light.svg" },
 } as const
+
+const MEDIA_KIT = "/brand/sepet-medya-kiti.zip"
 
 // Menü gövdesi <body>'ye portallanır, yani sayfanın kendi temasında yaşar
 // (logonun durduğu yerel `.dark` sarmalayıcısında değil). Önizleme kutuları da
-// `dark:` varyantlarıyla aynı kaynağa bakıyor; ikisi bu yüzden hep aynı şeyi
-// gösterir — kullanıcı ne görüyorsa onu kopyalar. next-themes yerine doğrudan
-// sınıf okunuyor: tıklama anında çalıştığı için hidrasyon sarkması olmaz.
-function isDarkPage() {
-  return document.documentElement.classList.contains("dark")
+// `dark:` varyantlarıyla aynı kaynağa bakar; kullanıcı kutuda ne görüyorsa onu
+// kopyalar. next-themes yerine sınıf okunuyor: tıklama anında çalıştığı için
+// hidrasyon sarkması olmaz.
+function assets() {
+  return ASSET[
+    document.documentElement.classList.contains("dark") ? "dark" : "light"
+  ]
 }
 
-// SepetMark `currentColor` ile çizilir; DOM'dan serialize edilen SVG kendi
-// başına açıldığında siyah kalırdı. Kopyalarken hesaplanan mürekkebi sabitleyip
-// varlığı kendi kendine yeter hâle getiriyoruz.
-function serializeMark(svg: SVGSVGElement): string {
-  const clone = svg.cloneNode(true) as SVGSVGElement
-  const ink = getComputedStyle(svg).color
-  clone.removeAttribute("class")
-  clone.setAttribute("fill", "none")
-  clone.setAttribute("color", ink)
-  for (const path of clone.querySelectorAll('[fill="currentColor"]')) {
-    path.setAttribute("fill", ink)
-  }
-  return new XMLSerializer().serializeToString(clone)
-}
-
-function downloadBlob(source: string, filename: string) {
-  const url = URL.createObjectURL(
-    new Blob([source], { type: "image/svg+xml;charset=utf-8" }),
-  )
+function download(href: string, filename: string) {
   const a = document.createElement("a")
-  a.href = url
+  a.href = href
   a.download = filename
   document.body.appendChild(a)
   a.click()
   a.remove()
-  // Tarayıcı indirmeyi kuyruğa aldıktan sonra serbest bırak; hemen revoke etmek
-  // yavaş cihazlarda indirmeyi boş dosyaya düşürebiliyor.
-  setTimeout(() => URL.revokeObjectURL(url), 10_000)
 }
 
-/** Önizleme kutusu + altında etiket. Kopyalanınca kutu "Kopyalandı"ya döner. */
+/**
+ * Önizleme kutusu + altında etiket. Kopyalanınca kutunun içeriği `IconSwap` ile
+ * (ölçek + opaklık + bulanıklık) onay durumuna geçer — kod bloğundaki kopyalama
+ * geri bildiriminin aynı fiziği.
+ */
 function CopyTile({
   label,
   copied,
@@ -77,29 +63,25 @@ function CopyTile({
 }) {
   return (
     <ContextMenuItem
-      // preventDefault: kopyalama geri bildirimi kutunun içinde gösteriliyor,
-      // menü kapanırsa kullanıcı onu hiç görmez.
+      // preventDefault: onay kutunun içinde gösteriliyor, menü kapanırsa
+      // kullanıcı onu hiç görmez.
       onSelect={(event) => {
         event.preventDefault()
         onCopy()
       }}
       className="flex-col items-stretch gap-1.5 rounded-md p-1 focus:bg-transparent"
     >
-      <span className="surface-inset relative flex h-14 items-center justify-center overflow-hidden rounded-md border border-border bg-muted">
-        <span
-          className={cn(
-            "flex items-center transition-opacity duration-150",
-            copied ? "opacity-10" : "opacity-100",
+      <span className="surface-inset flex h-14 items-center justify-center overflow-hidden rounded-md border border-border bg-muted">
+        <IconSwap swapKey={copied ? "copied" : "idle"}>
+          {copied ? (
+            <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+              <CheckIcon className="size-3.5" />
+              Kopyalandı
+            </span>
+          ) : (
+            children
           )}
-        >
-          {children}
-        </span>
-        {copied ? (
-          <span className="absolute inset-0 flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground">
-            <CheckIcon className="size-3.5" />
-            Kopyalandı
-          </span>
-        ) : null}
+        </IconSwap>
       </span>
       <span className="px-0.5 text-sm text-foreground">{label}</span>
     </ContextMenuItem>
@@ -110,15 +92,15 @@ function CopyTile({
  * Logoya sağ tık (mobilde basılı tutma) ile açılan marka menüsü.
  *
  * Radix ContextMenu her iki jesti de kendisi karşılıyor, ek kütüphane gerekmez.
- * Menü yalnızca elde GERÇEKTEN bulunan varlıkları sunar; üretilmemiş bir "marka
- * paketi" ya da olmayan bir kılavuz sayfası vaat etmez.
+ * Sunulan her varlık `public/brand` altında gerçekten var; işaretin SVG'leri ve
+ * medya kiti `scripts/build-brand-kit.mjs` ile ekrandaki bileşenle aynı
+ * kaynaktan üretiliyor.
  */
 export function BrandContextMenu({ children }: { children: React.ReactNode }) {
-  const markRef = React.useRef<SVGSVGElement>(null)
-  const [copied, setCopied] = React.useState<"wordmark" | "mark" | null>(null)
+  const [copied, setCopied] = React.useState<"wordmark" | "logo" | null>(null)
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   // Menü açılırken doldurulur; tıklama anında ağa gidilmez (aşağıya bkz).
-  const wordmarkCache = React.useRef<Record<string, string>>({})
+  const cache = React.useRef<Record<string, string>>({})
 
   React.useEffect(() => {
     return () => {
@@ -126,74 +108,63 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  const flag = (which: "wordmark" | "mark") => {
+  const flag = (which: "wordmark" | "logo") => {
     setCopied(which)
     if (timer.current) clearTimeout(timer.current)
     timer.current = setTimeout(() => setCopied(null), 1600)
   }
 
-  // Menü açıldığında güncel varyantı önden indirip saklar. Amaç Safari:
-  // clipboard yazımı kullanıcı hareketinden çok sonra gelirse (araya `await
-  // fetch` girerse) sessizce reddedilebiliyor. Önbellek doluysa kopyalama yolu
-  // ağa hiç uğramaz. Hata yutulur — asıl kopyalama yine de fetch'e düşebilir.
-  const prefetchWordmark = () => {
-    const src = WORDMARK[isDarkPage() ? "dark" : "light"]
-    if (wordmarkCache.current[src]) return
-    void fetch(src)
-      .then((res) => (res.ok ? res.text() : null))
-      .then((text) => {
-        if (text) wordmarkCache.current[src] = text
-      })
-      .catch(() => {})
+  // Menü açıldığında iki SVG'yi de önden indirip saklar. Amaç Safari: clipboard
+  // yazımı kullanıcı hareketinden çok sonra gelirse (araya `await fetch`
+  // girerse) sessizce reddedilebiliyor. Önbellek doluysa kopyalama ağa uğramaz.
+  const prefetch = () => {
+    const { wordmark, logo } = assets()
+    for (const src of [wordmark, logo]) {
+      if (cache.current[src]) continue
+      void fetch(src)
+        .then((res) => (res.ok ? res.text() : null))
+        .then((text) => {
+          if (text) cache.current[src] = text
+        })
+        .catch(() => {})
+    }
   }
 
-  const copyWordmark = async () => {
-    const src = WORDMARK[isDarkPage() ? "dark" : "light"]
+  const copy = async (src: string, which: "wordmark" | "logo") => {
     try {
-      let source = wordmarkCache.current[src]
+      let source = cache.current[src]
       if (!source) {
         const res = await fetch(src)
         if (!res.ok) throw new Error(String(res.status))
         source = await res.text()
-        wordmarkCache.current[src] = source
+        cache.current[src] = source
       }
       if (!(await copyText(source))) throw new Error("clipboard")
-      flag("wordmark")
+      flag(which)
     } catch {
-      toast.error("Wordmark kopyalanamadı")
+      toast.error("Kopyalanamadı")
     }
-  }
-
-  const copyMark = async () => {
-    const svg = markRef.current
-    if (!svg) return toast.error("İşaret kopyalanamadı")
-    if (!(await copyText(serializeMark(svg)))) {
-      return toast.error("İşaret kopyalanamadı")
-    }
-    flag("mark")
-  }
-
-  const downloadMark = () => {
-    const svg = markRef.current
-    if (!svg) return toast.error("İşaret indirilemedi")
-    downloadBlob(serializeMark(svg), "sepet-simge.svg")
   }
 
   return (
     <ContextMenu
       onOpenChange={(open) => {
-        if (open) prefetchWordmark()
+        if (open) prefetch()
         else setCopied(null)
       }}
     >
       <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
 
-      <ContextMenuContent className="w-72 p-1">
+      {/* collisionPadding: menü imlecin/parmağın konumuna çıpalanır. Logolar
+          başlığın en solunda ve en üstünde duruyor, yani çıpa hep bir kenara
+          yapışık; pay olmadan menü ekranın kenarına dayanıp kırpılmış
+          görünüyordu. */}
+      <ContextMenuContent className="w-72 p-1" collisionPadding={12}>
         <div className="grid grid-cols-2 gap-1">
           <CopyTile
             label="Wordmark'ı kopyala"
             copied={copied === "wordmark"}
-            onCopy={copyWordmark}
+            onCopy={() => copy(assets().wordmark, "wordmark")}
           >
             {/* Tema seçimi CSS ile: iki dosya da basılır, biri gizlenir.
                 Hidrasyonda yanlış varyantın parlaması böyle engellenir ve
@@ -216,37 +187,52 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
           </CopyTile>
 
           <CopyTile
-            label="İşareti kopyala"
-            copied={copied === "mark"}
-            onCopy={copyMark}
+            label="Logoyu kopyala"
+            copied={copied === "logo"}
+            onCopy={() => copy(assets().logo, "logo")}
           >
-            <SepetMark className="h-8" />
+            <Image
+              src="/brand/sepet-logo-dark.svg"
+              alt="Sepet logosu"
+              width={167}
+              height={284}
+              className="h-8 w-auto dark:hidden"
+            />
+            <Image
+              src="/brand/sepet-logo-light.svg"
+              alt=""
+              aria-hidden
+              width={167}
+              height={284}
+              className="hidden h-8 w-auto dark:block"
+            />
           </CopyTile>
         </div>
 
         <ContextMenuSeparator />
 
-        {/* Menü öğelerinin varsayılanı ikonu SAĞA itmek (`[&>svg]:order-last`
-            + `ms-auto`). Bunu aynı özgüllükte bir karşı-sınıfla ezmek sıralamaya
-            bağlı kalırdı; ikonu bir span'e sarıyoruz, böylece `[&>svg]` doğrudan
-            çocuk eşleşmesi hiç kurulmuyor. Boyut kuralı `[&_svg]` descendant
-            olduğu için geçerliliğini koruyor. */}
-        <ContextMenuItem onSelect={downloadMark} className="gap-2 py-1.5">
-          <span className="flex shrink-0 items-center">
-            <DownloadIcon />
-          </span>
-          Simgeyi indir (SVG)
+        {/* İkonlar sağda: menü öğesinin temeli bunu zaten yapıyor
+            (`[&>svg]:order-last` + `ms-auto`), o yüzden ikonu doğrudan çocuk
+            bırakıp kurala dokunmuyoruz. */}
+        <ContextMenuItem
+          onSelect={() => download(assets().wordmark, "sepet-wordmark.svg")}
+        >
+          Wordmark&apos;ı indir
+          <DownloadIcon />
+        </ContextMenuItem>
+        <ContextMenuItem
+          onSelect={() => download(assets().logo, "sepet-logo.svg")}
+        >
+          Logoyu indir
+          <DownloadIcon />
+        </ContextMenuItem>
+        <ContextMenuItem
+          onSelect={() => download(MEDIA_KIT, "sepet-medya-kiti.zip")}
+        >
+          Medya kitini indir
+          <PackageIcon />
         </ContextMenuItem>
       </ContextMenuContent>
-
-      {/* Kopyalama/indirmenin kaynağı: işaretin ayrı bir .svg dosyası yok,
-          yalnız bu bileşen var. Yolları burada tekrar yazmak yerine aynı
-          bileşeni gizlice basıp DOM'dan serialize ediyoruz — tek kaynak korunur.
-          Trigger ile aynı ağaçta durur (portallanmaz), bu yüzden mürekkebi
-          logonun bulunduğu yerel bağlamdan alır. */}
-      <span aria-hidden className="pointer-events-none fixed top-0 -left-[9999px]">
-        <SepetMark ref={markRef} className="h-6" />
-      </span>
     </ContextMenu>
   )
 }
