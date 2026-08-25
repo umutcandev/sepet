@@ -1,3 +1,4 @@
+import { Squircle } from "@/components/ui/squircle"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -48,7 +49,11 @@ import { cn } from "@/lib/utils"
    veri değil. */
 
 /** Maket kutusu: pt-6 + panel h-56 = 24 + 224 = 248, yani kutu tam panelde biter. */
-const MOCK_FRAME = "h-[15.5rem] pt-6 pl-5"
+/** Üst ve sol boşluk EŞİT (20px) olmalı: sol, panelin sağdan taşma
+ *  miktarına (`w-[calc(100%+1.25rem)]`) bağlı olduğu için sabit; üst de
+ *  ona uyar. Yükseklik 15.25rem = 20px boşluk + `h-56` panel, yani panel
+ *  yine çerçevenin altına tam oturuyor. */
+const MOCK_FRAME = "h-[15.25rem] pt-5 pl-5"
 /** Panel: pl-5 kadar içeriden başlar, kartın sağından tam 20px taşar. */
 const MOCK_PANEL = "flex h-56 w-[calc(100%+1.25rem)] flex-col"
 /** Satır içi yatay ritim. */
@@ -282,7 +287,12 @@ function FeatureCard({ feature }: { feature: Feature }) {
     // EKLENMEZ, halka zaten gölgenin içinde. `smooth-ring-border` şart —
     // bu bölüm sayfa içi bir `dark` sarmalayıcıda ve plugin'in nötr beyaz
     // halkası yoksa kazanıyor (bkz. logo-marquee'deki uzun not).
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-card smooth-shadow-ring-sm smooth-ring-border">
+    <Squircle
+      as="article"
+      radius="2xl"
+      effects
+      className="flex h-full flex-col bg-card smooth-shadow-ring-sm smooth-ring-border"
+    >
       {/* Maket kutusu. Radyal maske sol-üstten açılıp sağ-alta doğru eritir. */}
       <div
         aria-hidden
@@ -292,15 +302,17 @@ function FeatureCard({ feature }: { feature: Feature }) {
           MOCK_FRAME
         )}
       >
-        <div
+        <Squircle
+          radius="xl"
+          effects
           className={cn(
-            "overflow-hidden rounded-xl smooth-shadow-ring-lg smooth-ring-white/15",
+            "smooth-shadow-ring-lg smooth-ring-white/15",
             feature.panel ?? "bg-muted",
             MOCK_PANEL
           )}
         >
           {feature.mock}
-        </div>
+        </Squircle>
         {/* Bulanık dip. Üç iş birden yapıyor, üçü de aynı rampada:
 
             1. `backdrop-blur` arkasını kademeli bulandırır — radyal maske yalnız
@@ -330,7 +342,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
           {feature.description}
         </p>
       </div>
-    </article>
+    </Squircle>
   )
 }
 

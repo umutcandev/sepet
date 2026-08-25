@@ -1,5 +1,6 @@
 "use client"
 
+import { Squircle } from "@/components/ui/squircle"
 import Image from "next/image"
 import {
   RiArrowDownSLine,
@@ -21,7 +22,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
   if (!matches?.length) return null
 
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Squircle className="border bg-card" radius="xl" effects>
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Eşleşen Ürünler</span>
       </div>
@@ -142,6 +143,6 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
         )
       })}
       </div>
-    </div>
+    </Squircle>
   )
 }

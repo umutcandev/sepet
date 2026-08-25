@@ -1,5 +1,6 @@
 "use client"
 
+import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
@@ -753,9 +754,11 @@ export function AssistantChat({
                   )
                 }
                 return (
-                  <div
+                  <Squircle
                     role="alert"
-                    className="mx-auto flex w-full max-w-3xl items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+                    radius="xl"
+                    effects
+                    className="mx-auto flex w-full max-w-3xl items-start gap-2 border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
                   >
                     <RiAlertLine
                       aria-hidden="true"
@@ -765,7 +768,7 @@ export function AssistantChat({
                       {error.message ||
                         "Asistan şu an cevap veremiyor. Lütfen biraz sonra tekrar deneyin."}
                     </span>
-                  </div>
+                  </Squircle>
                 )
               })()}
           </ConversationContent>
@@ -803,14 +806,16 @@ function renderToolPart(
   }
   if (part.state === "output-error") {
     return (
-      <div
+      <Squircle
         key={key}
         role="alert"
-        className="flex items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+        radius="xl"
+        effects
+        className="flex items-start gap-2 border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
       >
         <RiAlertLine aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
         <span>{part.errorText ?? "Bir hata oluştu, tekrar deneyebilir misin?"}</span>
-      </div>
+      </Squircle>
     )
   }
   if (suppressLoader) {
@@ -862,7 +867,7 @@ function QuotaExceededCard({
       }).format(new Date(resetAt))
     : null
   return (
-    <div className="mx-auto w-full max-w-3xl rounded-xl border bg-card p-4">
+    <Squircle className="mx-auto w-full max-w-3xl border bg-card p-4" radius="xl" effects>
       <div className="flex items-start gap-3">
         <RiSparklingLine className="mt-0.5 size-5 shrink-0 text-foreground" />
         <div className="flex flex-col gap-1">
@@ -877,7 +882,7 @@ function QuotaExceededCard({
           </span>
         </div>
       </div>
-    </div>
+    </Squircle>
   )
 }
 

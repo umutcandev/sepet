@@ -1,3 +1,4 @@
+import { Squircle } from "@/components/ui/squircle"
 import Link from "next/link"
 import { RiArrowRightLine } from "@remixicon/react"
 
@@ -123,33 +124,50 @@ export function HomeBlogSection() {
                 delay={stagger(i)}
                 className="h-full"
               >
+                {/* Yüzey (kenar + zemin) içerideki `Squircle`de duruyor:
+                    clip-path elemanın KENDİ odak halkasını da sildiği için
+                    `Link` kırpılmadan dışarıda kalıyor, klavye odağı onun
+                    üzerinde çizilir. `grid` + `h-full` şart — `effects`
+                    açıkken Lisse SVG katmanını barındıran bir sarmalayıcı div
+                    doğuruyor; tek satırlık grid onu esnetmezse içerideki
+                    `h-full` çözülemez ve kartlar eşit boyda durmaz.
+
+                    Dinlenme kenarı SVG'ye taşındığı için eski
+                    `hover:border-foreground/20` artık boyanmıyor; hover geri
+                    bildirimi zemin tonuna alındı. */}
                 <Link
                   href={post.permalink}
-                  className="group flex h-full flex-col rounded-xl border border-border bg-card p-4 transition-colors hover:border-foreground/20 [&_[data-slot=avatar]]:ring-card"
+                  className="group grid h-full rounded-xl"
                 >
-                  <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-muted-foreground">
-                    <time dateTime={post.publishedAt}>
-                      {formatPostDateMedium(post.publishedAt)}
-                    </time>
-                    <span aria-hidden>·</span>
-                    <span>{category.label}</span>
-                  </div>
+                  <Squircle
+                    radius="xl"
+                    effects
+                    className="flex h-full flex-col border border-border bg-card p-4 transition-colors group-hover:bg-muted/40 [&_[data-slot=avatar]]:ring-card"
+                  >
+                    <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-muted-foreground">
+                      <time dateTime={post.publishedAt}>
+                        {formatPostDateMedium(post.publishedAt)}
+                      </time>
+                      <span aria-hidden>·</span>
+                      <span>{category.label}</span>
+                    </div>
 
-                  <h3 className="mt-1 grow text-base font-medium tracking-tight text-pretty text-foreground transition-colors group-hover:text-primary">
-                    {post.title}
-                  </h3>
+                    <h3 className="mt-1 grow text-base font-medium tracking-tight text-pretty text-foreground transition-colors group-hover:text-primary">
+                      {post.title}
+                    </h3>
 
-                  {/* Sarmalamıyoruz: dar kartta "Nur Salan ve Umutcan Kaya"
-                      sığmayınca avatarlar tek başına bir satırda kalıp
-                      isimden kopuyordu. Tek satır + `truncate`, taşan adı
-                      üç noktayla kesiyor; avatar grubu flex'in `min-width:auto`
-                      tabanı sayesinde daralmıyor. */}
-                  <div className="mt-8 flex items-center gap-2">
-                    <AuthorAvatarGroup authors={post.authors} size="xs" />
-                    <span className="min-w-0 truncate text-sm text-muted-foreground">
-                      {formatAuthorNames(post.authors)}
-                    </span>
-                  </div>
+                    {/* Sarmalamıyoruz: dar kartta "Nur Salan ve Umutcan Kaya"
+                        sığmayınca avatarlar tek başına bir satırda kalıp
+                        isimden kopuyordu. Tek satır + `truncate`, taşan adı
+                        üç noktayla kesiyor; avatar grubu flex'in
+                        `min-width:auto` tabanı sayesinde daralmıyor. */}
+                    <div className="mt-8 flex items-center gap-2">
+                      <AuthorAvatarGroup authors={post.authors} size="xs" />
+                      <span className="min-w-0 truncate text-sm text-muted-foreground">
+                        {formatAuthorNames(post.authors)}
+                      </span>
+                    </div>
+                  </Squircle>
                 </Link>
               </AnimateEnter>
             )
