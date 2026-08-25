@@ -16,7 +16,6 @@
 // Zemin fiyatlandırma bölümüyle aynı --home-base; iç sarmalayıcıdaki `dark`
 // metin/kart paletini koyu tutar, footer'ın gradyanı da bu renkten devam eder.
 
-import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
@@ -129,35 +128,13 @@ export function HomeCtaSection() {
 
         <AnimateEnter delay={STAGGER_STEP}>
           <PressFx>
-            {/* Katmanlı: clip-path elemanın KENDİ odak halkasını da sildiği
-                için buton kırpılmadan kalıyor — `focus-visible:ring-3` onun
-                üzerinde çizilir. Görünen yüzey (zemin + kenar + `surface-raised`
-                kabartması) arkadaki mutlak konumlu `Squircle`da.
-
-                `grid` şart: `effects` açıkken Lisse SVG katmanı için bir
-                sarmalayıcı div doğuruyor; tek satırlık grid onu esnetmezse
-                içerideki `h-full` çözülemez ve zemin katmanı çöker.
-
-                Buton `ghost`a alındı ki varsayılan varyantın zemini/kenarı
-                katmanla üst üste binmesin; hover geri bildirimi katmanın
-                zemininde. */}
             <Button
               {...hoverProps}
               asChild
               size="lg"
-              variant="ghost"
-              className="group/cta relative h-10 rounded-full px-5 text-primary-foreground hover:bg-transparent hover:text-primary-foreground dark:hover:bg-transparent"
+              className="h-10 rounded-full px-5"
             >
-              <Link href="/asistan">
-                <span aria-hidden className="absolute inset-0 grid">
-                  <Squircle
-                    radius={20}
-                    effects
-                    className="surface-raised h-full w-full border border-primary bg-primary transition-colors group-hover/cta:bg-primary/80"
-                  />
-                </span>
-                <span className="relative">Ücretsiz başla</span>
-              </Link>
+              <Link href="/asistan">Ücretsiz başla</Link>
             </Button>
           </PressFx>
         </AnimateEnter>
