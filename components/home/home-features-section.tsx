@@ -49,7 +49,11 @@ import { cn } from "@/lib/utils"
    veri değil. */
 
 /** Maket kutusu: pt-6 + panel h-56 = 24 + 224 = 248, yani kutu tam panelde biter. */
-const MOCK_FRAME = "h-[15.5rem] pt-6 pl-5"
+/** Üst ve sol boşluk EŞİT (20px) olmalı: sol, panelin sağdan taşma
+ *  miktarına (`w-[calc(100%+1.25rem)]`) bağlı olduğu için sabit; üst de
+ *  ona uyar. Yükseklik 15.25rem = 20px boşluk + `h-56` panel, yani panel
+ *  yine çerçevenin altına tam oturuyor. */
+const MOCK_FRAME = "h-[15.25rem] pt-5 pl-5"
 /** Panel: pl-5 kadar içeriden başlar, kartın sağından tam 20px taşar. */
 const MOCK_PANEL = "flex h-56 w-[calc(100%+1.25rem)] flex-col"
 /** Satır içi yatay ritim. */
