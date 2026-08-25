@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { AnimatePresence, motion } from "motion/react"
-import { CheckIcon } from "lucide-react"
+import { RiCheckLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
@@ -61,7 +61,7 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
           <Content
             icon={
               <span className="mt-5 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <CheckIcon className="h-5 w-5" />
+                <RiCheckLine className="h-5 w-5" />
               </span>
             }
             title="Hesabın doğrulandı"

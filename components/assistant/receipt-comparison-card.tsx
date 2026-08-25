@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDownIcon, InfoIcon } from "lucide-react"
+import { RiArrowDownSLine, RiInformationLine } from "@remixicon/react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -91,7 +91,7 @@ export function ReceiptComparisonCard({
         <span className="text-sm font-medium">Fiş Karşılaştırması</span>
         {isStale ? (
           <span className="ml-auto inline-flex items-center gap-1 text-xs text-muted-foreground">
-            <InfoIcon className="size-3.5" />
+            <RiInformationLine className="size-3.5" />
             Fişiniz Eski
           </span>
         ) : (
@@ -152,7 +152,7 @@ export function ReceiptComparisonCard({
                             }
                             className="relative -ml-1 mt-0.5 text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
                           >
-                            <ChevronDownIcon
+                            <RiArrowDownSLine
                               className={`transition-transform ${
                                 isOpen ? "rotate-180" : ""
                               }`}
@@ -168,7 +168,7 @@ export function ReceiptComparisonCard({
                           )}
                           {it.sizeMismatch && (
                             <div className="mt-0.5 flex items-center gap-1 text-[0.6875rem] text-amber-600 dark:text-amber-400">
-                              <InfoIcon className="size-3" />
+                              <RiInformationLine className="size-3" />
                               Farklı boyut. Karşılaştırma tam olarak doğru olmayabilir.
                             </div>
                           )}

@@ -1,6 +1,6 @@
 "use client"
 
-import { InfoIcon } from "lucide-react"
+import { RiInformationLine } from "@remixicon/react"
 import {
   Popover,
   PopoverContent,
@@ -39,7 +39,7 @@ export function DepotInfo({
           // halka: renk değişimi tek başına gösterge sayılmaz.
           className="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground/50 transition-colors after:absolute after:-inset-2 hover:text-foreground focus-visible:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
         >
-          <InfoIcon className="size-3.5" />
+          <RiInformationLine className="size-3.5" />
         </button>
       </PopoverTrigger>
       <PopoverContent

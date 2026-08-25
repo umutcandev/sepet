@@ -4,19 +4,20 @@ import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
 import {
-  ArrowRightIcon,
-  CheckSquareIcon,
-  ListFilterIcon,
-  MessagesSquareIcon,
-  MoreHorizontalIcon,
-  PencilIcon,
-  PlusIcon,
-  SearchIcon,
-  StarIcon,
-  StarOffIcon,
-  Trash2Icon,
-  XIcon,
-} from "lucide-react"
+  RiAddLine,
+  RiArrowRightLine,
+  RiCheckboxLine,
+  RiCloseLine,
+  RiDeleteBinLine,
+  RiFilter3Line,
+  RiMoreLine,
+  RiPencilLine,
+  RiQuestionAnswerLine,
+  RiSearchLine,
+  RiStarFill,
+  RiStarLine,
+  RiStarOffLine,
+} from "@remixicon/react"
 import { toast } from "@/components/ui/sonner"
 
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
@@ -397,7 +398,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border bg-card px-6 py-12 text-center">
         <div className="rounded-full bg-secondary p-3 text-primary">
-          <MessagesSquareIcon className="size-5" />
+          <RiQuestionAnswerLine className="size-5" />
         </div>
         <h2 className="text-base font-medium">Henüz sohbetin yok</h2>
         <p className="max-w-sm text-sm text-muted-foreground">
@@ -405,7 +406,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
         </p>
         <Button asChild className="mt-2">
           <Link href="/asistan">
-            <PlusIcon className="size-4" />
+            <RiAddLine className="size-4" />
             Yeni Sohbet
           </Link>
         </Button>
@@ -471,7 +472,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
             </Button>
             <Button asChild size="sm">
               <Link href="/asistan">
-                <PlusIcon className="size-3.5" />
+                <RiAddLine className="size-3.5" />
                 Yeni Sohbet
               </Link>
             </Button>
@@ -482,7 +483,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
       {/* Arama kutusu + sıralama */}
       <div className="flex items-center gap-2">
         <div className="relative flex-1">
-          <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <RiSearchLine className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
             inputMode="search"
@@ -518,7 +519,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                 aria-label="Aramayı temizle"
                 className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
               >
-                <XIcon className="size-4" />
+                <RiCloseLine className="size-4" />
               </button>
             ) : null}
           </div>
@@ -532,7 +533,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
               aria-label="Sırala"
               className="size-9 shrink-0 text-muted-foreground"
             >
-              <ListFilterIcon className="size-4" />
+              <RiFilter3Line className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="min-w-48">
@@ -545,7 +546,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                 <DropdownMenuRadioItem key={opt.value} value={opt.value}>
                   <span className="flex items-center gap-1">
                     {opt.prefix}
-                    <ArrowRightIcon
+                    <RiArrowRightLine
                       className="size-3.5 text-muted-foreground"
                       aria-hidden
                     />
@@ -602,7 +603,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                         {c.title}
                       </span>
                       {c.starred ? (
-                        <StarIcon className="size-3.5 shrink-0 fill-current text-amber-500" />
+                        <RiStarFill className="size-3.5 shrink-0 text-amber-500" />
                       ) : null}
                       <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                         {date}
@@ -618,7 +619,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                           {c.title}
                         </span>
                         {c.starred ? (
-                          <StarIcon className="size-3.5 shrink-0 fill-current text-amber-500" />
+                          <RiStarFill className="size-3.5 shrink-0 text-amber-500" />
                         ) : null}
                       </Link>
                       <div className="flex shrink-0 items-center pr-1">
@@ -633,7 +634,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                               aria-label="Sohbet eylemleri"
                               className="absolute right-2 text-muted-foreground opacity-0 transition-opacity after:absolute after:-inset-2 group-focus-within:opacity-100 group-hover:opacity-100 aria-expanded:opacity-100"
                             >
-                              <MoreHorizontalIcon className="size-4" />
+                              <RiMoreLine className="size-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="min-w-44">
@@ -643,7 +644,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                                 enterSelect(c.id)
                               }}
                             >
-                              <CheckSquareIcon className="size-4" />
+                              <RiCheckboxLine className="size-4" />
                               Seç
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
@@ -655,12 +656,12 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                             >
                               {c.starred ? (
                                 <>
-                                  <StarOffIcon className="size-4" />
+                                  <RiStarOffLine className="size-4" />
                                   Favorilerden çıkar
                                 </>
                               ) : (
                                 <>
-                                  <StarIcon className="size-4" />
+                                  <RiStarLine className="size-4" />
                                   Favorilere ekle
                                 </>
                               )}
@@ -671,7 +672,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                                 setRenameTarget(c)
                               }}
                             >
-                              <PencilIcon className="size-4" />
+                              <RiPencilLine className="size-4" />
                               Yeniden adlandır
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
@@ -682,7 +683,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                                 setSingleDeleteTarget(c)
                               }}
                             >
-                              <Trash2Icon className="size-4" />
+                              <RiDeleteBinLine className="size-4" />
                               Sil
                             </DropdownMenuItem>
                           </DropdownMenuContent>

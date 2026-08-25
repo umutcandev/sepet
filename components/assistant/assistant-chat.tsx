@@ -3,7 +3,11 @@
 import * as React from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
-import { ChevronDownIcon, SparklesIcon, TriangleAlertIcon } from "lucide-react"
+import {
+  RiAlertLine,
+  RiArrowDownSLine,
+  RiSparklingLine,
+} from "@remixicon/react"
 
 import {
   Conversation,
@@ -753,7 +757,7 @@ export function AssistantChat({
                     role="alert"
                     className="mx-auto flex w-full max-w-3xl items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
                   >
-                    <TriangleAlertIcon
+                    <RiAlertLine
                       aria-hidden="true"
                       className="mt-0.5 size-4 shrink-0"
                     />
@@ -804,7 +808,7 @@ function renderToolPart(
         role="alert"
         className="flex items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
       >
-        <TriangleAlertIcon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+        <RiAlertLine aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
         <span>{part.errorText ?? "Bir hata oluştu, tekrar deneyebilir misin?"}</span>
       </div>
     )
@@ -860,7 +864,7 @@ function QuotaExceededCard({
   return (
     <div className="mx-auto w-full max-w-3xl rounded-xl border bg-card p-4">
       <div className="flex items-start gap-3">
-        <SparklesIcon className="mt-0.5 size-5 shrink-0 text-foreground" />
+        <RiSparklingLine className="mt-0.5 size-5 shrink-0 text-foreground" />
         <div className="flex flex-col gap-1">
           <span className="text-sm font-medium">
             Bu ayki {metricLabel} hakkın doldu
@@ -903,7 +907,7 @@ function ReasoningBlock({ text, streaming }: ReasoningBlockProps) {
         ) : (
           <span>Düşündüm</span>
         )}
-        <ChevronDownIcon
+        <RiArrowDownSLine
           className={cn(
             "transition-transform duration-200",
             streaming ? "size-3.5" : "size-4",

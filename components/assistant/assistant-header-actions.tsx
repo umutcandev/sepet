@@ -3,12 +3,12 @@
 import * as React from "react"
 import { toast } from "@/components/ui/sonner"
 import {
-  ChevronDownIcon,
-  PencilIcon,
-  StarIcon,
-  StarOffIcon,
-  Trash2Icon,
-} from "lucide-react"
+  RiArrowDownSLine,
+  RiDeleteBinLine,
+  RiPencilLine,
+  RiStarLine,
+  RiStarOffLine,
+} from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -73,7 +73,7 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
             className="relative ml-1 size-6 text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
             aria-label="Sohbet eylemleri"
           >
-            <ChevronDownIcon className="size-4" />
+            <RiArrowDownSLine className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-auto min-w-40">
@@ -85,12 +85,12 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
           >
             {starred ? (
               <>
-                <StarOffIcon className="size-4" />
+                <RiStarOffLine className="size-4" />
                 Favorilerden çıkar
               </>
             ) : (
               <>
-                <StarIcon className="size-4" />
+                <RiStarLine className="size-4" />
                 Favorilere ekle
               </>
             )}
@@ -101,7 +101,7 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
               setRenameOpen(true)
             }}
           >
-            <PencilIcon className="size-4" />
+            <RiPencilLine className="size-4" />
             Yeniden adlandır
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -112,7 +112,7 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
               setDeleteOpen(true)
             }}
           >
-            <Trash2Icon className="size-4" />
+            <RiDeleteBinLine className="size-4" />
             Sil
           </DropdownMenuItem>
         </DropdownMenuContent>

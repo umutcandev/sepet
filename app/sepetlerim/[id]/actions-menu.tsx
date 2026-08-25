@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { MessagesSquareIcon, RefreshCwIcon } from "lucide-react"
+import { RiQuestionAnswerLine, RiRefreshLine } from "@remixicon/react"
 
 import { toast } from "@/components/ui/sonner"
 import {
@@ -32,7 +32,7 @@ export function BasketActionsMenu({
     links.push({
       label: "Fiyatları yenile",
       href: refreshHref,
-      icon: <RefreshCwIcon className="size-4" />,
+      icon: <RiRefreshLine className="size-4" />,
       // Fiyatların yaşı yenilemenin GEREKÇESİ; eskiden butonun tooltip'indeydi,
       // dokunmatik ekranda hiç görünmüyordu. Artık kalemin kendi alt satırı.
       hint: freshnessLabel
@@ -44,7 +44,7 @@ export function BasketActionsMenu({
     links.push({
       label: "Sohbete git",
       href: `/asistan/${conversation.id}`,
-      icon: <MessagesSquareIcon className="size-4" />,
+      icon: <RiQuestionAnswerLine className="size-4" />,
       hint: conversation.title.trim() || null,
     })
   }

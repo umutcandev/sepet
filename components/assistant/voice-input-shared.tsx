@@ -1,7 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, Loader2Icon, MicIcon, SquareIcon, XIcon } from "lucide-react"
+import {
+  RiCheckLine,
+  RiCloseLine,
+  RiLoader4Line,
+  RiMicLine,
+  RiStopFill,
+} from "@remixicon/react"
 
 import { PromptInputButton } from "@/components/ai-elements/prompt-input"
 import { cn } from "@/lib/utils"
@@ -35,7 +41,7 @@ export function VoiceMicButton({ onClick, disabled, className }: VoiceMicButtonP
       aria-label="Sesle yaz"
       tooltip="Sesle yaz"
     >
-      <MicIcon className="size-4" />
+      <RiMicLine className="size-4" />
     </PromptInputButton>
   )
 }
@@ -69,9 +75,9 @@ export function VoiceStopButton({
       )}
     >
       {loading ? (
-        <Loader2Icon className="size-3 animate-spin" />
+        <RiLoader4Line className="size-3 animate-spin" />
       ) : (
-        <SquareIcon className="size-3 fill-current" />
+        <RiStopFill className="size-3" />
       )}
     </button>
   )
@@ -100,7 +106,7 @@ export function VoiceCancelButton({
         className,
       )}
     >
-      <XIcon className="size-3" />
+      <RiCloseLine className="size-3" />
       <span>İptal</span>
     </button>
   )
@@ -135,9 +141,9 @@ export function VoiceConfirmButton({
       )}
     >
       {loading ? (
-        <Loader2Icon className="size-3 animate-spin" />
+        <RiLoader4Line className="size-3 animate-spin" />
       ) : (
-        <CheckIcon className="size-3" />
+        <RiCheckLine className="size-3" />
       )}
       <span>İlet</span>
       {elapsedLabel && !loading && (

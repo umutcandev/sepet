@@ -2,7 +2,11 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ChevronDownIcon, Loader2Icon, Trash2Icon } from "lucide-react"
+import {
+  RiArrowDownSLine,
+  RiDeleteBinLine,
+  RiLoader4Line,
+} from "@remixicon/react"
 
 import {
   AlertDialog,
@@ -77,7 +81,7 @@ export function RecordActionsMenu({
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm">
             İşlem Yapın
-            <ChevronDownIcon className="ml-1.5 size-3.5 text-muted-foreground" />
+            <RiArrowDownSLine className="ml-1.5 size-3.5 text-muted-foreground" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-56">
@@ -104,7 +108,7 @@ export function RecordActionsMenu({
               setConfirmOpen(true)
             }}
           >
-            <Trash2Icon className="size-4" />
+            <RiDeleteBinLine className="size-4" />
             {deleteLabel}
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -133,7 +137,7 @@ export function RecordActionsMenu({
             >
               {busy ? (
                 <>
-                  <Loader2Icon className="mr-1 size-3.5 animate-spin" />
+                  <RiLoader4Line className="mr-1 size-3.5 animate-spin" />
                   Siliniyor…
                 </>
               ) : (

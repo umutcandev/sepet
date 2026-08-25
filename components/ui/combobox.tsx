@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Combobox as ComboboxPrimitive } from "@base-ui/react"
-import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react"
+import { RiArrowDownSLine, RiCheckLine, RiCloseLine } from "@remixicon/react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -31,7 +31,7 @@ function ComboboxTrigger({
       {...props}
     >
       {children}
-      <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
+      <RiArrowDownSLine className="pointer-events-none size-4 text-muted-foreground" />
     </ComboboxPrimitive.Trigger>
   )
 }
@@ -44,7 +44,7 @@ function ComboboxClear({ className, ...props }: ComboboxPrimitive.Clear.Props) {
       className={cn(className)}
       {...props}
     >
-      <XIcon className="pointer-events-none" />
+      <RiCloseLine className="pointer-events-none" />
     </ComboboxPrimitive.Clear>
   )
 }
@@ -156,7 +156,7 @@ function ComboboxItem({
           <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
         }
       >
-        <CheckIcon className="pointer-events-none" />
+        <RiCheckLine className="pointer-events-none" />
       </ComboboxPrimitive.ItemIndicator>
     </ComboboxPrimitive.Item>
   )
@@ -258,7 +258,7 @@ function ComboboxChip({
           className="-ml-1 opacity-50 hover:opacity-100"
           data-slot="combobox-chip-remove"
         >
-          <XIcon className="pointer-events-none" />
+          <RiCloseLine className="pointer-events-none" />
         </ComboboxPrimitive.ChipRemove>
       )}
     </ComboboxPrimitive.Chip>

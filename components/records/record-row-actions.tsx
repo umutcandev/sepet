@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckSquareIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react"
+import { RiCheckboxLine, RiDeleteBinLine, RiMoreLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -41,7 +41,7 @@ export function RecordRowActions({
           aria-label={label}
           className="relative z-10 text-muted-foreground after:absolute after:-inset-2"
         >
-          <MoreHorizontalIcon className="size-4" />
+          <RiMoreLine className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-40">
@@ -51,7 +51,7 @@ export function RecordRowActions({
             onSelect()
           }}
         >
-          <CheckSquareIcon className="size-4" />
+          <RiCheckboxLine className="size-4" />
           Seç
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -62,7 +62,7 @@ export function RecordRowActions({
             onDelete()
           }}
         >
-          <Trash2Icon className="size-4" />
+          <RiDeleteBinLine className="size-4" />
           Sil
         </DropdownMenuItem>
       </DropdownMenuContent>

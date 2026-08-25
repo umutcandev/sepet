@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { MessagesSquareIcon } from "lucide-react"
+import { RiQuestionAnswerLine } from "@remixicon/react"
 
 import { toast } from "@/components/ui/sonner"
 import {
@@ -29,7 +29,7 @@ export function ReceiptActionsMenu({
         {
           label: "Sohbete git",
           href: `/asistan/${conversation.id}`,
-          icon: <MessagesSquareIcon className="size-4" />,
+          icon: <RiQuestionAnswerLine className="size-4" />,
           hint: conversation.title.trim() || null,
         },
       ]

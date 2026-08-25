@@ -3,7 +3,11 @@
 import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
-import { ArrowRightIcon, ChevronDownIcon, NewspaperIcon } from "lucide-react"
+import {
+  RiArrowDownSLine,
+  RiArrowRightLine,
+  RiNewspaperLine,
+} from "@remixicon/react"
 
 import {
   Avatar,
@@ -88,7 +92,7 @@ function PostRow({
             animate={hovered ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
           >
-            <ArrowRightIcon className="size-3.5!" />
+            <RiArrowRightLine className="size-3.5!" />
           </motion.span>
         </Link>
       </SidebarMenuButton>
@@ -124,7 +128,7 @@ export function BlogPostsGroup({ posts }: Props) {
         >
           <span className="inline-flex items-center gap-1.5 w-fit hover:text-sidebar-foreground transition-colors [&:hover>svg]:opacity-100">
             <span>Blog Gönderileri</span>
-            <ChevronDownIcon
+            <RiArrowDownSLine
               className={cn(
                 "size-3.5 opacity-0 transition-[opacity,rotate] duration-200",
                 collapsed && "-rotate-90"
@@ -167,7 +171,7 @@ export function BlogPostsGroup({ posts }: Props) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Blog Gönderileri">
               <Link href="/blog" onClick={handleNavClick}>
-                <NewspaperIcon />
+                <RiNewspaperLine />
                 <span>Blog Gönderileri</span>
               </Link>
             </SidebarMenuButton>

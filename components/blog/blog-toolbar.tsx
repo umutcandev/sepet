@@ -5,12 +5,12 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Command } from "cmdk"
 import {
-  CheckIcon,
-  ChevronDownIcon,
-  RssIcon,
-  SearchIcon,
-  XIcon,
-} from "lucide-react"
+  RiArrowDownSLine,
+  RiCheckLine,
+  RiCloseLine,
+  RiRssLine,
+  RiSearchLine,
+} from "@remixicon/react"
 
 import { CATEGORIES, CATEGORY_LIST, type CategoryId } from "@/lib/blog/categories"
 import { searchDocs, type Highlight, type SearchDoc } from "@/lib/blog/search"
@@ -160,7 +160,7 @@ export function BlogToolbar({
             searchOpen && "hidden",
           )}
         >
-          <SearchIcon className="size-4" />
+          <RiSearchLine className="size-4" />
         </button>
 
         {/* Arama: masaüstünde her zaman; mobilde yalnız searchOpen iken */}
@@ -173,7 +173,7 @@ export function BlogToolbar({
           )}
         >
           <div className="surface-inset flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-muted/40 pr-1.5 pl-3 transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/40">
-            <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
+            <RiSearchLine className="size-4 shrink-0 text-muted-foreground" />
             <Command.Input
               ref={inputRef}
               value={query}
@@ -199,7 +199,7 @@ export function BlogToolbar({
                 onClick={clear}
                 className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                <XIcon className="size-4" />
+                <RiCloseLine className="size-4" />
               </button>
             )}
           </div>
@@ -250,7 +250,7 @@ export function BlogToolbar({
           title="RSS akışı"
           className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
         >
-          <RssIcon className="size-4" />
+          <RiRssLine className="size-4" />
         </a>
       </div>
     </div>
@@ -332,7 +332,7 @@ function CategoryDrawer({
         )}
       >
         {label}
-        <ChevronDownIcon className="size-4 text-primary-foreground/70" />
+        <RiArrowDownSLine className="size-4 text-primary-foreground/70" />
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
@@ -342,7 +342,7 @@ function CategoryDrawer({
           <DrawerClose asChild>
             <Link href="/blog" className={drawerItemClass(!active)}>
               Tümü
-              {!active && <CheckIcon className="ms-auto size-4" />}
+              {!active && <RiCheckLine className="ms-auto size-4" />}
             </Link>
           </DrawerClose>
           {CATEGORY_LIST.map((category) => (
@@ -353,7 +353,7 @@ function CategoryDrawer({
               >
                 {category.label}
                 {active === category.id && (
-                  <CheckIcon className="ms-auto size-4" />
+                  <RiCheckLine className="ms-auto size-4" />
                 )}
               </Link>
             </DrawerClose>

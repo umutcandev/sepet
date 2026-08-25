@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
-import { ArrowRightIcon } from "lucide-react"
+import { RiArrowRightLine } from "@remixicon/react"
 
 import { SPRING_SLIDE } from "@/lib/motion"
 
@@ -118,7 +118,7 @@ export function HeroMarketBadge() {
         }}
         className="text-muted-foreground"
       >
-        <ArrowRightIcon className="size-3.5" />
+        <RiArrowRightLine className="size-3.5" />
       </motion.span>
     </Link>
   )

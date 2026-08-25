@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { SearchXIcon } from "lucide-react"
+import { RiSearchLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 
@@ -78,7 +78,7 @@ export default function NotFound() {
   return (
     <div className="mx-auto w-full max-w-2xl px-6 py-16">
       <div className="mb-4 flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground">
-        <SearchXIcon className="size-5" />
+        <RiSearchLine className="size-5" />
       </div>
       <h1 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
         Sayfa bulunamadı

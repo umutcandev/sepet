@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { RotateCcwIcon, TriangleAlertIcon } from "lucide-react"
+import { RiAlertLine, RiResetLeftLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 
@@ -32,7 +32,7 @@ export function RecordErrorState({
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16 text-center">
       <div className="mx-auto mb-4 flex size-11 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400">
-        <TriangleAlertIcon className="size-5" />
+        <RiAlertLine className="size-5" />
       </div>
       <h1 className="text-lg font-semibold">{title}</h1>
       <p className="mt-2 text-sm text-muted-foreground">
@@ -40,7 +40,7 @@ export function RecordErrorState({
       </p>
       <div className="mt-5 flex items-center justify-center gap-2">
         <Button type="button" onClick={reset}>
-          <RotateCcwIcon className="mr-1.5 size-3.5" />
+          <RiResetLeftLine className="mr-1.5 size-3.5" />
           Tekrar dene
         </Button>
         <Button variant="outline" asChild>

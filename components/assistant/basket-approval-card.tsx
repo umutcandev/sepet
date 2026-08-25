@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, PlusIcon, XIcon } from "lucide-react"
+import { RiAddLine, RiCheckLine, RiCloseLine } from "@remixicon/react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -116,7 +116,7 @@ export function BasketApprovalCard({
         <div className="ml-auto flex flex-wrap gap-1.5">
           {readOnly ? (
             <Badge variant="secondary" className="text-[0.625rem]">
-              <CheckIcon className="mr-1 size-3" /> ONAYLANDI
+              <RiCheckLine className="mr-1 size-3" /> ONAYLANDI
             </Badge>
           ) : null}
         </div>
@@ -214,7 +214,7 @@ export function BasketApprovalCard({
                         className="size-7 text-muted-foreground hover:text-destructive"
                         aria-label="Kalemi sil"
                       >
-                        <XIcon className="size-3.5" />
+                        <RiCloseLine className="size-3.5" />
                       </Button>
                     </TableCell>
                   )}
@@ -233,7 +233,7 @@ export function BasketApprovalCard({
             size="sm"
             onClick={addItem}
           >
-            <PlusIcon className="mr-1 size-3.5" />
+            <RiAddLine className="mr-1 size-3.5" />
             Yeni kalem
           </Button>
           <div className="ml-auto flex flex-wrap items-center gap-2">
@@ -246,7 +246,7 @@ export function BasketApprovalCard({
               onClick={handleApprove}
               disabled={items.length === 0}
             >
-              <CheckIcon className="mr-1 size-3.5" />
+              <RiCheckLine className="mr-1 size-3.5" />
               Onayla
             </Button>
           </div>

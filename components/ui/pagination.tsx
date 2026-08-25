@@ -1,9 +1,9 @@
 ﻿import * as React from "react"
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MoreHorizontalIcon,
-} from "lucide-react"
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiMoreLine,
+} from "@remixicon/react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -77,7 +77,7 @@ function PaginationPrevious({
       className={cn("pl-1.5!", className)}
       {...props}
     >
-      <ChevronLeftIcon data-icon="inline-start" className="cn-rtl-flip" />
+      <RiArrowLeftSLine data-icon="inline-start" className="cn-rtl-flip" />
       <span className="hidden sm:block">{text}</span>
     </PaginationLink>
   )
@@ -96,7 +96,7 @@ function PaginationNext({
       {...props}
     >
       <span className="hidden sm:block">{text}</span>
-      <ChevronRightIcon data-icon="inline-end" className="cn-rtl-flip" />
+      <RiArrowRightSLine data-icon="inline-end" className="cn-rtl-flip" />
     </PaginationLink>
   )
 }
@@ -115,7 +115,7 @@ function PaginationEllipsis({
       )}
       {...props}
     >
-      <MoreHorizontalIcon />
+      <RiMoreLine />
       <span className="sr-only">More pages</span>
     </span>
   )

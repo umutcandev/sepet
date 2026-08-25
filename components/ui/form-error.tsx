@@ -1,4 +1,4 @@
-import { TriangleAlertIcon } from "lucide-react"
+import { RiAlertLine } from "@remixicon/react"
 
 import { cn } from "@/lib/utils"
 
@@ -46,9 +46,9 @@ export function FormError({
     >
       {empty ? null : (
         <>
-          {/* 1.5px'lik lucide çizgisi, yanındaki normal ağırlıktaki metinle
+          {/* Remix Icon'un dolgu ağırlığı, yanındaki normal ağırlıktaki metinle
               aynı optik ağırlıkta durur. */}
-          <TriangleAlertIcon aria-hidden="true" className="mt-px size-3.5 shrink-0" />
+          <RiAlertLine aria-hidden="true" className="mt-px size-3.5 shrink-0" />
           <span>{children}</span>
         </>
       )}

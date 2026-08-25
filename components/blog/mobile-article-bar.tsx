@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDownIcon, CopyIcon, ListIcon } from "lucide-react"
+import {
+  RiArrowDownSLine,
+  RiFileCopyLine,
+  RiListUnordered,
+} from "@remixicon/react"
 
 import {
   CopyArticleMenuItems,
@@ -52,7 +56,7 @@ function TocMenu({ toc }: { toc: TocEntry[] }) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="gap-1.5">
-          <ListIcon className="size-3.5" />
+          <RiListUnordered className="size-3.5" />
           İçindekiler
         </Button>
       </PopoverTrigger>
@@ -104,11 +108,11 @@ function CopyMenu({
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm" className="justify-between gap-0 px-0">
           <span className="flex items-center gap-1.5 pr-2 pl-2.5">
-            <CopyIcon className="size-3.5" />
+            <RiFileCopyLine className="size-3.5" />
             Kopyala
           </span>
           <span className="flex items-center self-stretch border-l border-border px-1.5">
-            <ChevronDownIcon className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
+            <RiArrowDownSLine className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
           </span>
         </Button>
       </DropdownMenuTrigger>

@@ -8,7 +8,7 @@ export type ConversationSort = "date_desc" | "date_asc" | "name_asc" | "name_des
 
 export const DEFAULT_CONVERSATION_SORT: ConversationSort = "date_desc"
 
-// Etiket, ortadaki ok bir kütüphane ikonu (lucide ArrowRight) olacak şekilde
+// Etiket, ortadaki ok bir kütüphane ikonu (RiArrowRightLine) olacak şekilde
 // "prefix → suffix" olarak parçalanır; menüde ikon iki parçanın arasına girer.
 export const CONVERSATION_SORTS: ReadonlyArray<{
   value: ConversationSort
