@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Squircle } from "@/components/ui/squircle";
 import { cn } from "@/lib/utils";
 import { cjk } from "@streamdown/cjk";
 import { code } from "@streamdown/code";
@@ -34,15 +35,26 @@ export type MessageProps = HTMLAttributes<HTMLDivElement> & {
   from: UIMessage["role"];
 };
 
+/**
+ * Rolü `MessageContent`e taşır. Balon biçimi bugüne dek yalnız `.is-user`
+ * grup sınıfından geliyordu; squircle'ı uygulayabilmek için rolün JS
+ * tarafında da bilinmesi gerekiyor (clip-path bir CSS sınıfı değil).
+ */
+const MessageFromContext = createContext<UIMessage["role"] | undefined>(
+  undefined
+);
+
 export const Message = ({ className, from, ...props }: MessageProps) => (
-  <div
-    className={cn(
-      "group flex w-full max-w-[95%] flex-col gap-2",
-      from === "user" ? "is-user ml-auto justify-end" : "is-assistant",
-      className
-    )}
-    {...props}
-  />
+  <MessageFromContext.Provider value={from}>
+    <div
+      className={cn(
+        "group flex w-full max-w-[95%] flex-col gap-2",
+        from === "user" ? "is-user ml-auto justify-end" : "is-assistant",
+        className
+      )}
+      {...props}
+    />
+  </MessageFromContext.Provider>
 );
 
 export type MessageContentProps = HTMLAttributes<HTMLDivElement>;
@@ -51,19 +63,39 @@ export const MessageContent = ({
   children,
   className,
   ...props
-}: MessageContentProps) => (
-  <div
-    className={cn(
-      "is-user:dark flex w-fit min-w-0 max-w-full flex-col gap-2 overflow-hidden text-sm",
-      "group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:bg-secondary group-[.is-user]:px-4 group-[.is-user]:py-3 group-[.is-user]:text-foreground",
-      "group-[.is-assistant]:text-foreground",
-      className
-    )}
-    {...props}
-  >
-    {children}
-  </div>
-);
+}: MessageContentProps) => {
+  const from = useContext(MessageFromContext);
+  const classes = cn(
+    "is-user:dark flex w-fit min-w-0 max-w-full flex-col gap-2 overflow-hidden text-sm",
+    "group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:bg-secondary group-[.is-user]:px-4 group-[.is-user]:py-3 group-[.is-user]:text-foreground",
+    "group-[.is-assistant]:text-foreground",
+    className
+  );
+
+  // Squircle YALNIZ kullanıcı balonuna. Asistan mesajının görünür bir yüzeyi
+  // yok (saydam akıyor), dolayısıyla kesecek bir köşe de yok; clip-path orada
+  // yalnız kod bloğu / mermaid taşmalarını kırpma riski getirirdi.
+  // `effects` kapalı: balonun kenarı da gölgesi de yok, SVG katmanına gerek
+  // duymuyor — bu aynı zamanda en ucuz mount yolu (sarmalayıcı div de doğmaz).
+  //
+  // `group-[.is-user]:rounded-lg` BİLEREK duruyor: hidrasyondan önce clip-path
+  // yok, köşeyi o veriyor. CSS border-radius'u clip-path ile kesiştirdiği ve
+  // squircle yuvarlak dikdörtgenin İÇİNDE kaldığı için sonuç yine squircle —
+  // sınıfı silmek yalnız ilk boyamada kare köşe kazandırırdı.
+  if (from === "user") {
+    return (
+      <Squircle className={classes} radius="lg" {...props}>
+        {children}
+      </Squircle>
+    );
+  }
+
+  return (
+    <div className={classes} {...props}>
+      {children}
+    </div>
+  );
+};
 
 export type MessageActionsProps = ComponentProps<"div">;
 

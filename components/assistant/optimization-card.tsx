@@ -1,5 +1,6 @@
 "use client"
 
+import { Squircle } from "@/components/ui/squircle"
 import { Fragment, useState } from "react"
 import { AlertCircleIcon, ChevronDownIcon, TrendingDownIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -249,7 +250,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
   ) : null
 
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Squircle className="border bg-card" radius="xl" effects>
       <div className="flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2">
         <span className="text-sm font-medium">Sepet Özeti</span>
       </div>
@@ -266,6 +267,6 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
           </>
         )}
       </div>
-    </div>
+    </Squircle>
   )
 }

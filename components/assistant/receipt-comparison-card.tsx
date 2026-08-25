@@ -1,5 +1,6 @@
 "use client"
 
+import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
 import { ChevronDownIcon, InfoIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -86,7 +87,7 @@ export function ReceiptComparisonCard({
   }, [receiptContext.marketName])
 
   return (
-    <div className="rounded-xl border bg-card">
+    <Squircle className="border bg-card" radius="xl" effects>
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Fiş Karşılaştırması</span>
         {isStale ? (
@@ -298,6 +299,6 @@ export function ReceiptComparisonCard({
           errorMessage="Fiş kaydedilemedi. Lütfen tekrar dene."
         />
       </div>
-    </div>
+    </Squircle>
   )
 }

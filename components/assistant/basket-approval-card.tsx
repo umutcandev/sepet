@@ -1,5 +1,6 @@
 "use client"
 
+import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
 import { CheckIcon, PlusIcon, XIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
@@ -110,7 +111,7 @@ export function BasketApprovalCard({
   }
 
   return (
-    <div className="rounded-xl border bg-card">
+    <Squircle className="border bg-card" radius="xl" effects>
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Sepetindeki Kalemler</span>
         <div className="ml-auto flex flex-wrap gap-1.5">
@@ -252,7 +253,7 @@ export function BasketApprovalCard({
           </div>
         </div>
       )}
-    </div>
+    </Squircle>
   )
 }
 

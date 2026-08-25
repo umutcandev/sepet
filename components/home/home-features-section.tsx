@@ -1,3 +1,4 @@
+import { Squircle } from "@/components/ui/squircle"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -282,7 +283,12 @@ function FeatureCard({ feature }: { feature: Feature }) {
     // EKLENMEZ, halka zaten gölgenin içinde. `smooth-ring-border` şart —
     // bu bölüm sayfa içi bir `dark` sarmalayıcıda ve plugin'in nötr beyaz
     // halkası yoksa kazanıyor (bkz. logo-marquee'deki uzun not).
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-card smooth-shadow-ring-sm smooth-ring-border">
+    <Squircle
+      as="article"
+      radius="2xl"
+      effects
+      className="flex h-full flex-col bg-card smooth-shadow-ring-sm smooth-ring-border"
+    >
       {/* Maket kutusu. Radyal maske sol-üstten açılıp sağ-alta doğru eritir. */}
       <div
         aria-hidden
@@ -292,15 +298,17 @@ function FeatureCard({ feature }: { feature: Feature }) {
           MOCK_FRAME
         )}
       >
-        <div
+        <Squircle
+          radius="xl"
+          effects
           className={cn(
-            "overflow-hidden rounded-xl smooth-shadow-ring-lg smooth-ring-white/15",
+            "smooth-shadow-ring-lg smooth-ring-white/15",
             feature.panel ?? "bg-muted",
             MOCK_PANEL
           )}
         >
           {feature.mock}
-        </div>
+        </Squircle>
         {/* Bulanık dip. Üç iş birden yapıyor, üçü de aynı rampada:
 
             1. `backdrop-blur` arkasını kademeli bulandırır — radyal maske yalnız
@@ -330,7 +338,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
           {feature.description}
         </p>
       </div>
-    </article>
+    </Squircle>
   )
 }
 
