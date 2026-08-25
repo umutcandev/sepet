@@ -5,15 +5,14 @@ import Link from "next/link"
 import { toast } from "@/components/ui/sonner"
 import { AnimatePresence, motion } from "motion/react"
 import {
-  CircleEllipsisIcon,
-  ChevronDownIcon,
-  HistoryIcon,
-  MoreHorizontalIcon,
-  PencilIcon,
-  StarIcon,
-  StarOffIcon,
-  Trash2Icon,
-} from "lucide-react"
+  RiArrowDownSLine,
+  RiDeleteBinLine,
+  RiHistoryLine,
+  RiMoreLine,
+  RiPencilLine,
+  RiStarLine,
+  RiStarOffLine,
+} from "@remixicon/react"
 
 import {
   SidebarGroup,
@@ -248,7 +247,7 @@ function RailHistoryLink({ onNavigate }: { onNavigate: () => void }) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Geçmiş Sohbetler">
               <Link href="/sohbetler" onClick={onNavigate}>
-                <HistoryIcon />
+                <RiHistoryLine />
                 <span>Geçmiş Sohbetler</span>
               </Link>
             </SidebarMenuButton>
@@ -312,7 +311,7 @@ function ConversationRow({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <SidebarMenuAction showOnHover>
-            <MoreHorizontalIcon />
+            <RiMoreLine />
             <span className="sr-only">Daha fazla</span>
           </SidebarMenuAction>
         </DropdownMenuTrigger>
@@ -329,12 +328,12 @@ function ConversationRow({
           >
             {c.starred ? (
               <>
-                <StarOffIcon className="size-4" />
+                <RiStarOffLine className="size-4" />
                 Favorilerden çıkar
               </>
             ) : (
               <>
-                <StarIcon className="size-4" />
+                <RiStarLine className="size-4" />
                 Favorilere ekle
               </>
             )}
@@ -345,7 +344,7 @@ function ConversationRow({
               onRename(c)
             }}
           >
-            <PencilIcon className="size-4" />
+            <RiPencilLine className="size-4" />
             Yeniden adlandır
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -356,7 +355,7 @@ function ConversationRow({
               onDelete(c)
             }}
           >
-            <Trash2Icon className="size-4" />
+            <RiDeleteBinLine className="size-4" />
             Sil
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -498,7 +497,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
             >
               <span className="inline-flex items-center gap-1.5 w-fit hover:text-sidebar-foreground transition-colors [&:hover>svg]:opacity-100">
                 <span>Favoriler</span>
-                <ChevronDownIcon
+                <RiArrowDownSLine
                   className={cn(
                     "size-3.5 opacity-0 transition-[opacity,rotate] duration-200",
                     favoritesCollapsed && "-rotate-90"
@@ -544,7 +543,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
           >
             <span className="inline-flex items-center gap-1.5 w-fit hover:text-sidebar-foreground transition-colors [&:hover>svg]:opacity-100">
               <span>Geçmiş Sohbetler</span>
-              <ChevronDownIcon
+              <RiArrowDownSLine
                 className={cn(
                   "size-3.5 opacity-0 transition-[opacity,rotate] duration-200",
                   historyCollapsed && "-rotate-90"
@@ -594,7 +593,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                             className="text-muted-foreground"
                           >
                             <Link href="/sohbetler" onClick={handleNavClick}>
-                              <CircleEllipsisIcon />
+                              <RiMoreLine />
                               <span>Daha fazla göster</span>
                             </Link>
                           </SidebarMenuButton>

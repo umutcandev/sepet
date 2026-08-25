@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { CameraIcon } from "lucide-react"
+import { RiCameraLine } from "@remixicon/react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -117,7 +117,7 @@ export function AvatarChanger() {
                 busy && "animate-pulse opacity-100",
               )}
             >
-              <CameraIcon className="size-3.5" />
+              <RiCameraLine className="size-3.5" />
             </span>
           </button>
         </div>

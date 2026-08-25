@@ -3,12 +3,12 @@
 import * as React from "react"
 import { AnimatePresence, motion } from "motion/react"
 import {
-  ListChecksIcon,
-  ListFilterIcon,
-  RulerIcon,
-  SearchIcon,
-  XIcon,
-} from "lucide-react"
+  RiCloseLine,
+  RiFilter3Line,
+  RiListCheck3,
+  RiRulerLine,
+  RiSearchLine,
+} from "@remixicon/react"
 import { toast } from "@/components/ui/sonner"
 
 import {
@@ -356,7 +356,7 @@ export function LocationModal() {
                       onClick={() => setSelecting((s) => !s)}
                       disabled={!hasDepots && !selecting}
                     >
-                      {selecting ? <XIcon /> : <><ListChecksIcon /> Seç</>}
+                      {selecting ? <RiCloseLine /> : <><RiListCheck3 /> Seç</>}
                     </Button>
                     {selecting ? (
                       <>
@@ -370,7 +370,7 @@ export function LocationModal() {
                           onClick={toggleAllVisible}
                           disabled={!hasDepots}
                         >
-                          <ListChecksIcon />
+                          <RiListCheck3 />
                         </Button>
                         <span className="truncate pl-1 text-xs font-medium text-muted-foreground tabular-nums">
                           {selected.size} seçili
@@ -388,7 +388,7 @@ export function LocationModal() {
                           size="icon-sm"
                           aria-label="Mesafe"
                         >
-                          <RulerIcon />
+                          <RiRulerLine />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="min-w-32">
@@ -415,7 +415,7 @@ export function LocationModal() {
                           aria-label="Market filtrele"
                           disabled={chains.length === 0}
                         >
-                          <ListFilterIcon />
+                          <RiFilter3Line />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="min-w-48">
@@ -569,7 +569,7 @@ export function LocationModal() {
           </DialogHeader>
           <div className="space-y-2">
             <div className="relative">
-              <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+              <RiSearchLine className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="search"
                 inputMode="search"

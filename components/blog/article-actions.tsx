@@ -2,25 +2,24 @@
 
 import * as React from "react"
 import {
-  CheckIcon,
-  ChevronDownIcon,
-  CopyIcon,
-  ExternalLinkIcon,
-  FileTextIcon,
-  LinkIcon,
-} from "lucide-react"
+  RiArrowDownSLine,
+  RiCheckLine,
+  RiClaudeFill,
+  RiExternalLinkLine,
+  RiFileCopyLine,
+  RiFileTextLine,
+  RiLinkedinFill,
+  RiLinksLine,
+  RiOpenaiFill,
+  RiTwitterXFill,
+  RiWhatsappFill,
+  type RemixiconComponentType,
+} from "@remixicon/react"
 import { toast } from "@/components/ui/sonner"
 import { copyText } from "@/lib/copy"
 
 import { IconSwap } from "@/components/motion/icon-swap"
 
-import {
-  ChatGptLogo,
-  ClaudeLogo,
-  LinkedInLogo,
-  WhatsAppLogo,
-  XLogo,
-} from "@/components/blog/brand-icons"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -44,14 +43,14 @@ export function CopiedIconSwap({
   copiedClassName,
 }: {
   copied: boolean
-  idleIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  idleIcon: RemixiconComponentType
   className?: string
   copiedClassName?: string
 }) {
   return (
     <IconSwap swapKey={copied ? "copied" : "idle"}>
       {copied ? (
-        <CheckIcon className={cn(className, copiedClassName)} />
+        <RiCheckLine className={cn(className, copiedClassName)} />
       ) : (
         <IdleIcon className={className} />
       )}
@@ -62,7 +61,7 @@ export function CopiedIconSwap({
 export type ShareTarget = {
   label: string
   href: string
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  icon: RemixiconComponentType
 }
 
 // Sosyal paylaşım hedeflerini üretir. Masaüstü (ikon satırı) ve mobil (drawer)
@@ -71,9 +70,9 @@ export function getShareTargets(url: string, title: string): ShareTarget[] {
   const text = encodeURIComponent(title)
   const link = encodeURIComponent(url)
   return [
-    { label: "X'te paylaş", icon: XLogo, href: `https://twitter.com/intent/tweet?text=${text}&url=${link}` },
-    { label: "LinkedIn'de paylaş", icon: LinkedInLogo, href: `https://www.linkedin.com/sharing/share-offsite/?url=${link}` },
-    { label: "WhatsApp'ta paylaş", icon: WhatsAppLogo, href: `https://wa.me/?text=${text}%20${link}` },
+    { label: "X'te paylaş", icon: RiTwitterXFill, href: `https://twitter.com/intent/tweet?text=${text}&url=${link}` },
+    { label: "LinkedIn'de paylaş", icon: RiLinkedinFill, href: `https://www.linkedin.com/sharing/share-offsite/?url=${link}` },
+    { label: "WhatsApp'ta paylaş", icon: RiWhatsappFill, href: `https://wa.me/?text=${text}%20${link}` },
   ]
 }
 
@@ -133,7 +132,7 @@ function SocialShare({ url, title }: { url: string; title: string }) {
         >
           <CopiedIconSwap
             copied={copied}
-            idleIcon={LinkIcon}
+            idleIcon={RiLinksLine}
             className="size-3.5"
             copiedClassName="text-emerald-600 dark:text-emerald-500"
           />
@@ -151,7 +150,7 @@ export function ActionItemContent({
   description,
   external,
 }: {
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  icon: RemixiconComponentType
   title: string
   description: string
   external?: boolean
@@ -163,7 +162,7 @@ export function ActionItemContent({
         <span className="flex items-center gap-1 font-medium text-foreground">
           {title}
           {external ? (
-            <ExternalLinkIcon className="size-3 text-muted-foreground" />
+            <RiExternalLinkLine className="size-3 text-muted-foreground" />
           ) : null}
         </span>
         <span className="text-xs text-muted-foreground">{description}</span>
@@ -189,11 +188,11 @@ function CopyArticleMenu({
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="w-full justify-between gap-0 px-0">
           <span className="flex items-center gap-1.5 pr-2 pl-2.5">
-            <CopyIcon className="size-3.5" />
+            <RiFileCopyLine className="size-3.5" />
             Makaleyi Kopyala
           </span>
           <span className="flex items-center self-stretch border-l border-border px-1.5">
-            <ChevronDownIcon className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
+            <RiArrowDownSLine className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
           </span>
         </Button>
       </DropdownMenuTrigger>
@@ -235,7 +234,7 @@ export function CopyArticleMenuItems({
     <>
       <DropdownMenuItem className="items-start gap-2 py-1.5" onSelect={handleCopyArticle}>
         <ActionItemContent
-          icon={CopyIcon}
+          icon={RiFileCopyLine}
           title="Makaleyi kopyala"
           description="LLM'ler için Markdown olarak kopyala"
         />
@@ -243,7 +242,7 @@ export function CopyArticleMenuItems({
       <DropdownMenuItem className="items-start gap-2 py-1.5" asChild>
         <a href={markdownUrl} target="_blank" rel="noopener noreferrer">
           <ActionItemContent
-            icon={FileTextIcon}
+            icon={RiFileTextLine}
             title="Markdown olarak görüntüle"
             description="Bu makaleyi düz metin olarak aç"
             external
@@ -254,7 +253,7 @@ export function CopyArticleMenuItems({
       <DropdownMenuItem className="items-start gap-2 py-1.5" asChild>
         <a href={chatGptUrl} target="_blank" rel="noopener noreferrer">
           <ActionItemContent
-            icon={ChatGptLogo}
+            icon={RiOpenaiFill}
             title="ChatGPT'de aç"
             description="Makale hakkında soru sor"
             external
@@ -264,7 +263,7 @@ export function CopyArticleMenuItems({
       <DropdownMenuItem className="items-start gap-2 py-1.5" asChild>
         <a href={claudeUrl} target="_blank" rel="noopener noreferrer">
           <ActionItemContent
-            icon={ClaudeLogo}
+            icon={RiClaudeFill}
             title="Claude'da aç"
             description="Makale hakkında soru sor"
             external

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { RiArrowRightLine } from "@remixicon/react"
 
 import { AuthorAvatarGroup } from "@/components/blog/author-meta"
 import { HomeFeaturesSection } from "@/components/home/home-features-section"
@@ -103,7 +103,7 @@ export function HomeBlogSection() {
             <Button asChild size="sm" className="group shrink-0">
               <Link href="/blog">
                 Tüm blog yazıları
-                <ArrowRight
+                <RiArrowRightLine
                   className="transition-transform group-hover:translate-x-0.5"
                   aria-hidden
                 />

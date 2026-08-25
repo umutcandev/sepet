@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { CheckIcon, DownloadIcon, PackageIcon } from "lucide-react"
+import { RiBox3Line, RiCheckLine, RiDownloadLine } from "@remixicon/react"
 
 import { IconSwap } from "@/components/motion/icon-swap"
 import {
@@ -75,7 +75,7 @@ function CopyTile({
         <IconSwap swapKey={copied ? "copied" : "idle"}>
           {copied ? (
             <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-              <CheckIcon className="size-3.5" />
+              <RiCheckLine className="size-3.5" />
               Kopyalandı
             </span>
           ) : (
@@ -218,19 +218,19 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
           onSelect={() => download(assets().wordmark, "sepet-wordmark.svg")}
         >
           Wordmark&apos;ı indir
-          <DownloadIcon />
+          <RiDownloadLine />
         </ContextMenuItem>
         <ContextMenuItem
           onSelect={() => download(assets().logo, "sepet-logo.svg")}
         >
           Logoyu indir
-          <DownloadIcon />
+          <RiDownloadLine />
         </ContextMenuItem>
         <ContextMenuItem
           onSelect={() => download(MEDIA_KIT, "sepet-medya-kiti.zip")}
         >
           Medya kitini indir
-          <PackageIcon />
+          <RiBox3Line />
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

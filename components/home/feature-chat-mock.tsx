@@ -30,7 +30,12 @@
 
 import * as React from "react"
 import { AnimatePresence, motion, type Variants } from "motion/react"
-import { CheckIcon, ChevronDownIcon, PlusIcon, XIcon } from "lucide-react"
+import {
+  RiAddLine,
+  RiArrowDownSLine,
+  RiCheckLine,
+  RiCloseLine,
+} from "@remixicon/react"
 
 import { EASE_OUT_EXPO, SPRING_SLIDE } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -271,7 +276,7 @@ export function FeatureChatMock() {
             className={STATUS_ROW}
           >
             <span className="shimmer">{status.label}</span>
-            {status.chevron ? <ChevronDownIcon className="size-4" /> : null}
+            {status.chevron ? <RiArrowDownSLine className="size-4" /> : null}
           </motion.div>
         ) : phase === "widget" ? (
           // `exit` yok: kart yalnızca ekran dışındaki sıfırlamada kaldırılır,
@@ -337,10 +342,10 @@ function DraftItemsCard() {
               className={cn("flex w-14 items-center justify-between", FIELD)}
             >
               <span className="truncate">{item.unit}</span>
-              <ChevronDownIcon className="size-3 shrink-0 text-muted-foreground" />
+              <RiArrowDownSLine className="size-3 shrink-0 text-muted-foreground" />
             </span>
             <span className="flex w-5 justify-center">
-              <XIcon className="size-3.5 text-muted-foreground" />
+              <RiCloseLine className="size-3.5 text-muted-foreground" />
             </span>
           </motion.div>
         ))}
@@ -353,7 +358,7 @@ function DraftItemsCard() {
         className="flex items-center gap-2 border-t border-white/10 bg-black/15 px-3 py-2"
       >
         <span className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-foreground ring-1 ring-white/15">
-          <PlusIcon className="size-3" />
+          <RiAddLine className="size-3" />
           Yeni kalem
         </span>
         <span className="ml-auto flex items-center gap-1.5">
@@ -361,7 +366,7 @@ function DraftItemsCard() {
             İptal
           </span>
           <span className="flex items-center gap-1 rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
-            <CheckIcon className="size-3" />
+            <RiCheckLine className="size-3" />
             Onayla
           </span>
         </span>

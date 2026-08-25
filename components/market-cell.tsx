@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from "lucide-react"
+import { RiExternalLinkLine } from "@remixicon/react"
 
 import { MarketLogo } from "@/components/market-logo"
 import { findMarket } from "@/lib/markets/registry"
@@ -62,7 +62,7 @@ export function MarketCell({
         {name}
       </span>
       {clickable && url && showExternalIcon && (
-        <ExternalLinkIcon className="size-3 shrink-0 text-muted-foreground" />
+        <RiExternalLinkLine className="size-3 shrink-0 text-muted-foreground" />
       )}
     </>
   )

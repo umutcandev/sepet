@@ -1,11 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
 import {
-  ArrowRight,
-  ChevronDownIcon,
-  PackageIcon,
-  TrendingDownIcon,
-} from "lucide-react"
+  RiArrowDownLine,
+  RiArrowDownSLine,
+  RiArrowRightLine,
+  RiBox3Line,
+} from "@remixicon/react"
 
 import { FeatureChatMock } from "@/components/home/feature-chat-mock"
 import { AnimateEnter } from "@/components/motion/animate-enter"
@@ -132,7 +132,7 @@ function ProductMatchMock() {
             {/* Paket ikonu görselin ALTINDA duruyor: CDN karesi bir gün
                 düşerse kutu boş kalmaz, bileşenin gerçek fallback'ine iner. */}
             <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-black/25 ring-1 ring-white/10">
-              <PackageIcon className="absolute size-4 text-muted-foreground" />
+              <RiBox3Line className="absolute size-4 text-muted-foreground" />
               <Image
                 src={match.image}
                 alt=""
@@ -196,7 +196,7 @@ function OptimizationMock() {
           <span className="shrink-0 text-lg font-bold text-foreground tabular-nums">
             {formatTL(113.25)}
           </span>
-          <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+          <RiArrowDownSLine className="size-3.5 shrink-0 text-muted-foreground" />
         </div>
 
         <div className={cn("flex items-center gap-2.5 py-2.5", ROW_X)}>
@@ -216,7 +216,7 @@ function OptimizationMock() {
             <span className="flex min-w-0 items-center gap-1 text-[0.6875rem]/[1rem] font-medium text-muted-foreground">
               <span className="truncate">İki market</span>
               <span className="flex shrink-0 items-center rounded-md border border-emerald-500/40 px-1 text-[0.625rem]/[0.875rem] text-emerald-300">
-                <TrendingDownIcon className="mr-0.5 size-2.5" />
+                <RiArrowDownLine className="mr-0.5 size-2.5" />
                 %7,8
               </span>
             </span>
@@ -230,7 +230,7 @@ function OptimizationMock() {
           <span className="shrink-0 text-lg font-bold text-foreground tabular-nums">
             {formatTL(104.45)}
           </span>
-          <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+          <RiArrowDownSLine className="size-3.5 shrink-0 text-muted-foreground" />
         </div>
       </div>
     </>
@@ -350,7 +350,7 @@ export function HomeFeaturesSection() {
           <Button asChild size="sm" className="group shrink-0">
             <Link href="/asistan">
               Asistanı dene
-              <ArrowRight
+              <RiArrowRightLine
                 className="transition-transform group-hover:translate-x-0.5"
                 aria-hidden
               />

@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css"
 
 import * as React from "react"
 import type * as LeafletNs from "leaflet"
-import { LocateFixedIcon, MinusIcon, PlusIcon } from "lucide-react"
+import { RiAddLine, RiFocus3Line, RiSubtractLine } from "@remixicon/react"
 
 import { loadLeaflet, TILE_ATTRIBUTION, TILE_URL } from "@/lib/leaflet"
 import { getMarketInitial, getMarketLogo } from "@/lib/markets/registry"
@@ -260,7 +260,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
           aria-label="Yakınlaştır"
           onClick={() => mapRef.current?.zoomIn()}
         >
-          <PlusIcon />
+          <RiAddLine />
         </Button>
         <Button
           type="button"
@@ -270,7 +270,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
           aria-label="Uzaklaştır"
           onClick={() => mapRef.current?.zoomOut()}
         >
-          <MinusIcon />
+          <RiSubtractLine />
         </Button>
         <Button
           type="button"
@@ -281,7 +281,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
           disabled={locating}
           onClick={handleLocate}
         >
-          {locating ? <Spinner className="size-3.5" /> : <LocateFixedIcon />}
+          {locating ? <Spinner className="size-3.5" /> : <RiFocus3Line />}
         </Button>
       </div>
     </div>

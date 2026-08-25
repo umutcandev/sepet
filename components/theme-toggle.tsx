@@ -1,16 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react"
+import { RiComputerLine, RiMoonLine, RiSunLine } from "@remixicon/react"
 import { useTheme } from "next-themes"
 
 import { useMounted } from "@/hooks/use-mounted"
 import { cn } from "@/lib/utils"
 
 const OPTIONS = [
-  { value: "light", icon: SunIcon, label: "Açık" },
-  { value: "dark", icon: MoonIcon, label: "Koyu" },
-  { value: "system", icon: MonitorIcon, label: "Sistem" },
+  { value: "light", icon: RiSunLine, label: "Açık" },
+  { value: "dark", icon: RiMoonLine, label: "Koyu" },
+  { value: "system", icon: RiComputerLine, label: "Sistem" },
 ] as const
 
 // Radyo grubunun paylaşılan davranışı: menü içindeki etiketli hâli de,

@@ -3,12 +3,12 @@
 import * as React from "react"
 import Link from "next/link"
 import {
-  ArrowRightIcon,
-  ChevronDownIcon,
-  ExternalLinkIcon,
-  FileTextIcon,
-  InfoIcon,
-} from "lucide-react"
+  RiArrowDownSLine,
+  RiArrowRightLine,
+  RiExternalLinkLine,
+  RiFileTextLine,
+  RiInformationLine,
+} from "@remixicon/react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -225,7 +225,7 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
                           <Button asChild variant="outline" size="xs" className="shrink-0">
                             <a href="/api/portal">
                               Aboneliği yönet
-                              <ExternalLinkIcon data-icon="inline-end" />
+                              <RiExternalLinkLine data-icon="inline-end" />
                             </a>
                           </Button>
                         </>
@@ -309,7 +309,7 @@ function UpgradeState() {
             <Button asChild size="default" className="w-full">
               <a href={`/api/checkout?interval=${interval}`}>
                 Pro&apos;ya Geç
-                <ArrowRightIcon data-icon="inline-end" />
+                <RiArrowRightLine data-icon="inline-end" />
               </a>
             </Button>
           }
@@ -345,11 +345,11 @@ function ContractsMenu() {
           className="gap-0 px-0"
         >
           <span className="flex items-center gap-1.5 pr-2 pl-2.5">
-            <FileTextIcon className="size-3.5" />
+            <RiFileTextLine className="size-3.5" />
             Sözleşmeler
           </span>
           <span className="flex items-center self-stretch border-l border-border px-1.5">
-            <ChevronDownIcon className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
+            <RiArrowDownSLine className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
           </span>
         </Button>
       </DropdownMenuTrigger>
@@ -363,7 +363,7 @@ function ContractsMenu() {
             >
               {contract.label}
               {/* Sağa yaslama artık DropdownMenuItem'dan geliyor (ms-auto). */}
-              <ExternalLinkIcon className="size-3.5 text-muted-foreground" />
+              <RiExternalLinkLine className="size-3.5 text-muted-foreground" />
             </Link>
           </DropdownMenuItem>
         ))}
@@ -418,7 +418,7 @@ function StatusHintDropdown({
           aria-label="Durum hakkında bilgi"
           className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         >
-          <InfoIcon className="size-3.5" />
+          <RiInformationLine className="size-3.5" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

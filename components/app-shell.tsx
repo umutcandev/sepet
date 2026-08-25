@@ -4,7 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { PanelLeftIcon, PlusIcon } from "lucide-react"
+import { RiAddLine, RiLayoutLeftLine } from "@remixicon/react"
 import { useTheme } from "next-themes"
 import { animate, motion, useMotionValue, useMotionValueEvent } from "motion/react"
 
@@ -56,7 +56,7 @@ function SidebarToggleButton() {
       aria-label={openMobile ? "Kenar çubuğunu kapat" : "Kenar çubuğunu aç"}
       className="-ml-1 md:hidden"
     >
-      <PanelLeftIcon className="cn-rtl-flip size-4" />
+      <RiLayoutLeftLine className="cn-rtl-flip size-4" />
     </Button>
   )
 }
@@ -82,7 +82,7 @@ function NewConversationButton() {
     <>
       <Button asChild size="sm" className="hidden h-7 gap-1.5 md:inline-flex">
         <Link href="/asistan" onClick={handleClick}>
-          <PlusIcon className="size-3.5" />
+          <RiAddLine className="size-3.5" />
           Yeni Sohbet
         </Link>
       </Button>
@@ -93,7 +93,7 @@ function NewConversationButton() {
         aria-label="Yeni Sohbet"
       >
         <Link href="/asistan" onClick={handleClick}>
-          <PlusIcon className="size-4" />
+          <RiAddLine className="size-4" />
         </Link>
       </Button>
     </>

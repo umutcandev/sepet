@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
-import { ArrowRight, PauseIcon, PlayIcon } from "lucide-react"
+import { RiArrowRightLine, RiPauseFill, RiPlayFill } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -119,9 +119,9 @@ function StepVideo({ src }: { src: string }) {
         )}
       >
         {playing ? (
-          <PauseIcon className="size-3.5" />
+          <RiPauseFill className="size-3.5" />
         ) : (
-          <PlayIcon className="size-3.5" />
+          <RiPlayFill className="size-3.5" />
         )}
       </Button>
     </div>
@@ -204,7 +204,7 @@ function OnboardingStepContent({
           ) : (
             <Button size="sm" onClick={onNext} disabled={disabled}>
               İleri
-              <ArrowRight className="ml-1 h-3.5 w-3.5" data-icon="inline-end" />
+              <RiArrowRightLine className="ml-1 h-3.5 w-3.5" data-icon="inline-end" />
             </Button>
           )}
         </div>

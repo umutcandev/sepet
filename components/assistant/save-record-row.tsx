@@ -2,7 +2,12 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { CheckIcon, ExternalLinkIcon, Loader2Icon, SaveIcon } from "lucide-react"
+import {
+  RiCheckLine,
+  RiExternalLinkLine,
+  RiLoader4Line,
+  RiSaveLine,
+} from "@remixicon/react"
 
 import { toast } from "@/components/ui/sonner"
 import { Button } from "@/components/ui/button"
@@ -90,12 +95,12 @@ export function SaveRecordRow({
       {savedId ? (
         <div className="flex items-center gap-2">
           <Button type="button" size={size} variant="secondary" disabled>
-            <CheckIcon className="mr-1 size-3.5" />
+            <RiCheckLine className="mr-1 size-3.5" />
             Kaydedildi
           </Button>
           <Button type="button" size={size} variant="outline" asChild>
             <Link href={viewHref(savedId)}>
-              <ExternalLinkIcon className="mr-1 size-3.5" />
+              <RiExternalLinkLine className="mr-1 size-3.5" />
               Görüntüle
             </Link>
           </Button>
@@ -108,9 +113,9 @@ export function SaveRecordRow({
           disabled={saving || disabled}
         >
           {saving ? (
-            <Loader2Icon className="mr-1 size-3.5 animate-spin" />
+            <RiLoader4Line className="mr-1 size-3.5 animate-spin" />
           ) : (
-            <SaveIcon className="mr-1 size-3.5" />
+            <RiSaveLine className="mr-1 size-3.5" />
           )}
           {saveLabel}
         </Button>
