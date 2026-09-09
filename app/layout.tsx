@@ -15,7 +15,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { SESSION_HINT_SCRIPT } from "@/lib/auth/session-snapshot"
 import { getLatestPosts } from "@/lib/blog"
-import { geistMono, geistSans } from "@/lib/fonts"
+import { cooperDisplay, geistMono, geistSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 
 const siteUrl =
@@ -86,7 +86,7 @@ export default function RootLayout({
     <html
       lang="tr"
       suppressHydrationWarning
-      className={cn("style-nova antialiased", geistSans.variable, geistMono.variable, "font-sans")}
+      className={cn("style-nova antialiased", geistSans.variable, geistMono.variable, cooperDisplay.variable, "font-sans")}
     >
       <body>
         {/* Son bilinen oturum ipucunu ilk boyamadan önce <html data-session>'a

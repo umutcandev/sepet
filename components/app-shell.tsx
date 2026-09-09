@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils"
 import { useMounted } from "@/hooks/use-mounted"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
+import { HomeHeroBackdrop } from "@/components/home/hero-shader"
 import type { BlogNavItem } from "@/components/blog/blog-posts-group"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -35,6 +36,21 @@ type Props = {
 // Ana sayfada header'ın açık zeminden --home-base'e geçtiği scroll mesafesi (px).
 // Büyütmek geçişi daha yumuşak/uzun, küçültmek daha keskin yapar.
 const HOME_DARK_RANGE = 160
+
+/* Ana sayfada header'ın ZEMİNİNİ kazandığı scroll mesafesi (px).
+   Hero zemini (Warp shader) artık header'ın ARKASINDAN geçiyor: sayfa tepedeyken
+   header'ın kendi zemini yok, shader kesintisiz akıyor. Aşağı inildiği anda
+   zemin geliyor ki içerik saydam bir şeridin altından geçmesin.
+
+   Neden gerekti: shader'ın `colorBack`i yok, tuvalin tamamı renkli. Header ayrı
+   bir `bg-background` şeridi olduğu sürece hero'nun tepesinde sayfayı boydan
+   boya kesen bir renk basamağı kalıyordu — hangi maske/fade denendiyse basamağı
+   gizlemek yerine yerine soluk bir bant koydu. Tek gerçek çözüm basamağı
+   ORTADAN KALDIRMAK: aynı shader ikisinin de arkasında.
+
+   56px, header yüksekliğinin (64px) hemen altında: ilk tekerlek hareketinde
+   zemin oturuyor ama sayfa tepedeyken hiçbir iz bırakmıyor. */
+const HOME_HEADER_SOLID_RANGE = 56
 
 // Yalnızca mobil. Masaüstünde anahtar artık kenar çubuğunun kendi başlığında
 // (app-sidebar.tsx): genişken sağ üstteki düğme, daraltılmışken üstüne gelince
@@ -128,18 +144,34 @@ export function AppShell({ blogPosts, children }: Props) {
   // Değer MotionValue'da tutulur: her scroll karesinde React re-render'ı
   // tetiklemeden doğrudan style'a yazılır.
   const darkness = useMotionValue(0)
-  // Metin/ikon paleti interpolate edilemez (token'lar `dark` sınıfıyla topluca
-  // değişir); rampanın ortasında yumuşak bir transition ile flip eder.
-  const [paletteDark, setPaletteDark] = React.useState(false)
+  // Header'ın kendi zemininin opaklığı. Ana sayfada 0'dan başlar (shader
+  // header'ın arkasından kesintisiz akar), ilk kaydırmada 1'e çıkar. Diğer
+  // rotalarda header zemini düz CSS sınıfı, bu değer hiç kullanılmaz.
+  const headerSolid = useMotionValue(0)
+  // Hero zemini tamamen kapandı mı? darkness 1'e vardığında blog bölümünün üst
+  // kenarı header'a dayanmış demektir, yani katmanın görünen tek pikseli
+  // kalmaz. Shader o noktada donar (bkz. HomeHeroBackdrop `covered`).
+  const [heroCovered, setHeroCovered] = React.useState(false)
 
   useMotionValueEvent(darkness, "change", (v) => {
-    setPaletteDark(v >= 0.5)
+    setHeroCovered(v >= 1)
   })
 
-  // Logo İNTERPOLE EDİLEBİLİR (iki görselin çapraz sönümü), o yüzden paletin
-  // 0.5'teki basamağına bağlı kalmasın: takas oranını doğrudan rampadan besle.
-  // Eskiden `dark:` varyantıyla takas ediliyordu ve zemin yumuşakça kararırken
-  // logo tek karede zıplıyordu.
+  /* HEADER PALETİ ARTIK SCROLL'A BAĞLI DEĞİL.
+
+     Burada bir zamanlar `paletteDark` vardı: ana sayfanın alt bandı her iki
+     temada da KOYU olduğu için, header o banda girerken metin/ikon paletini
+     `dark`a çeviriyordu (yoksa koyu zeminin üstünde koyu yazı kalırdı).
+     Aynı gerekçeyle `--logo-swap` da scroll rampasından besleniyordu.
+
+     O bant gündüz temasında artık koyu değil (bkz. --home-base, globals.css):
+     zemin sıcak kum, metin koyu kahve. Yani header aşağı indikçe palet
+     DEĞİŞMEMELİ — değişseydi açık zeminin üstüne açık yazı gelirdi. Gecede de
+     bir şey değişmiyor, sayfanın tamamı zaten koyu.
+
+     Geriye kalan tek scroll etkisi zemin RENGİ: header --background'tan
+     --home-base'e akıyor (aşağıdaki `darkness` katmanı). O bu haliyle doğru,
+     çünkü iki renk de aynı temanın kendi tonları. */
   const { resolvedTheme } = useTheme()
   const themeDark = resolvedTheme === "dark"
   const logoSwap = useMotionValue(0)
@@ -160,26 +192,21 @@ export function AppShell({ blogPosts, children }: Props) {
   const logoSwapPrimed = React.useRef(false)
 
   React.useEffect(() => {
-    // Gerçek tema koyuysa rampa devre dışı: logo her zaman açık varyantta.
-    if (themeDark || !isHome) {
-      const target = themeDark ? 1 : 0
-      if (!logoSwapPrimed.current) {
-        logoSwapPrimed.current = true
-        logoSwap.set(target)
-        return
-      }
-      // Tema değişimi: scroll'a bağlı olmadığı için zaman tabanlı yumuşatma.
-      const controls = animate(logoSwap, target, {
-        duration: 0.3,
-        ease: EASE_OUT_SOFT,
-      })
-      return () => controls.stop()
+    // Yalnızca GERÇEK TEMA belirler; ana sayfada da scroll rampası yok (üstteki
+    // "header paleti scroll'a bağlı değil" notu). Logo iki görselin çapraz
+    // sönümü olduğu için interpole edilebiliyor: tema değişimi yumuşak akar.
+    const target = themeDark ? 1 : 0
+    if (!logoSwapPrimed.current) {
+      logoSwapPrimed.current = true
+      logoSwap.set(target)
+      return
     }
-    logoSwapPrimed.current = true
-    // Scroll rampası: doğrudan yaz, araya geçiş koyma — zeminle aynı karede aksın.
-    logoSwap.set(darkness.get())
-    return darkness.on("change", (v) => logoSwap.set(v))
-  }, [themeDark, isHome, darkness, logoSwap])
+    const controls = animate(logoSwap, target, {
+      duration: 0.3,
+      ease: EASE_OUT_SOFT,
+    })
+    return () => controls.stop()
+  }, [themeDark, logoSwap])
 
   React.useEffect(() => {
     if (!isHome) {
@@ -187,12 +214,17 @@ export function AppShell({ blogPosts, children }: Props) {
       return
     }
     const root = scrollRef.current
-    const target = root?.querySelector("[data-home-dark-start]")
-    if (!root || !target) return
+    if (!root) return
+    // Nişan yoksa (blog bölümü hiç render edilmediyse) karartı rampası düşer ama
+    // header zemini yine de sürülmeli — yoksa sayfa kaydırılırken içerik saydam
+    // bir şeridin altından geçer.
+    const target = root.querySelector("[data-home-dark-start]")
 
     let frame = 0
     const measure = () => {
       frame = 0
+      headerSolid.set(Math.min(1, root.scrollTop / HOME_HEADER_SOLID_RANGE))
+      if (!target) return
       // Scroll container header'ın hemen altında başlıyor → root'un üst kenarı
       // = header'ın alt kenarı. d, nişanın oraya olan uzaklığı.
       const d =
@@ -210,14 +242,14 @@ export function AppShell({ blogPosts, children }: Props) {
     // Görsel yüklenmesi / viewport değişimi hero yüksekliğini oynatabilir.
     const resizeObserver = new ResizeObserver(schedule)
     resizeObserver.observe(root)
-    resizeObserver.observe(target)
+    if (target) resizeObserver.observe(target)
 
     return () => {
       if (frame) cancelAnimationFrame(frame)
       root.removeEventListener("scroll", schedule)
       resizeObserver.disconnect()
     }
-  }, [isHome, darkness])
+  }, [isHome, darkness, headerSolid])
 
   return (
     <SidebarProvider>
@@ -237,11 +269,41 @@ export function AppShell({ blogPosts, children }: Props) {
       </a>
       <AppSidebar blogPosts={blogPosts} />
       <SidebarInset className="min-h-0 overflow-hidden">
+        {/* Ana sayfanın hero zemini. HEADER'IN DE ARKASINDA: `SidebarInset`in
+            (relative) ilk katmanı, header ve <main> onun üstünde.
+
+            Neden burada, hero'nun içinde değil: shader'ın `colorBack`i yok,
+            tuvalin tamamı renkli. Header ayrı bir `bg-background` şeridi olduğu
+            sürece hero'nun tepesinde sayfayı kesen bir renk basamağı kalıyor ve
+            hangi maske denendiyse basamağı gizlemek yerine soluk bir bant
+            bırakıyordu. Basamağı yok etmenin tek yolu tek bir zeminin ikisinin
+            de altından geçmesi.
+
+            Yükseklik `--hero-vh` (home-hero.tsx'te donduruluyor): header 4rem +
+            hero calc(--hero-vh - 4rem), yani katmanın dibi hero'nun dibiyle
+            birebir çakışıyor. Katman <main>'in DIŞINDA olduğu için kaydırınca
+            yerinde kalır; sayfanın geri kalanı (opak blog bölümü) üstüne akar. */}
+        {isHome ? <HomeHeroBackdrop covered={heroCovered} /> : null}
         {/* Zemin rengi DIŞ sarmalayıcıda: `dark` sınıfı --home-base'i de gece
             değerine kilitlerdi, oysa bu renk gerçek temaya bağlı olmalı. `dark`
             yalnızca header'da → koyu zemine gelince metin/ikon/logo paleti açık
-            renge döner. */}
-        <div className="relative shrink-0 bg-background">
+            renge döner.
+
+            Ana sayfada düz `bg-background` YOK: zemin scroll'a bağlı bir katman
+            (aşağıda), sayfa tepedeyken saydam. */}
+        <div
+          className={cn(
+            "relative z-10 shrink-0",
+            !isHome && "bg-background"
+          )}
+        >
+          {isHome ? (
+            <motion.div
+              aria-hidden
+              style={{ opacity: headerSolid }}
+              className="pointer-events-none absolute inset-0 bg-background"
+            />
+          ) : null}
           {/* Koyu zemin ayrı katman ve sadece opacity ile sürülüyor: her scroll
               karesinde background-color yeniden hesaplanmaz, opacity
               compositor'da kalır. */}
@@ -251,19 +313,16 @@ export function AppShell({ blogPosts, children }: Props) {
             className="pointer-events-none absolute inset-0 bg-[var(--home-base)]"
           />
           <motion.header
-            // --logo-swap scroll rampasını logoya taşır. Tema çözülene kadar
+            // --logo-swap tema geçişini logoya taşır. Tema çözülene kadar
             // yazılmaz; o ana dek CSS varsayılanı (:root / .dark) geçerlidir.
             style={
               themeReady
                 ? ({ "--logo-swap": logoSwap } as React.CSSProperties)
                 : undefined
             }
-            className={cn(
-              // [&_*]:transition-colors → `dark` düştüğünde yazı/ikon/kenarlık
-              // renkleri de birlikte akar; yoksa palet sert keser.
-              "relative flex h-16 items-center gap-2 transition-colors duration-300 [&_*]:transition-colors [&_*]:duration-300",
-              paletteDark && "dark text-foreground"
-            )}
+            // [&_*]:transition-colors → tema değişiminde yazı/ikon/kenarlık
+            // renkleri de birlikte akar; yoksa palet sert keser.
+            className="relative flex h-16 items-center gap-2 transition-colors duration-300 [&_*]:transition-colors [&_*]:duration-300"
           >
             <div className="flex shrink-0 items-center gap-2 px-4">
               <SidebarToggleButton />
@@ -362,7 +421,11 @@ export function AppShell({ blogPosts, children }: Props) {
           // tamamen gizliyordu: sayfayı yalnız tekerlek ya da klavyeyle
           // gezebiliyordun, aşağıdaki bölümlere (fiyatlandırma) sürükleyerek
           // inmenin yolu yoktu.
-          className="flex min-h-0 flex-1 flex-col overflow-y-auto cn-scrollbar-thin"
+          // `relative z-10`: hero zemini SidebarInset'in ilk katmanı (yukarıda);
+          // konumlandırılmış olduğu için normal akıştaki <main>'in üstüne
+          // boyanırdı. İkisini de aynı yığın seviyesine çıkarınca sıra DOM'a
+          // dönüyor: zemin altta, içerik üstünde.
+          className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto cn-scrollbar-thin"
         >
           {/* Ana sayfada hero görseli, scroll edilince header'ın hemen altında
               tam opaklıkta görünüp keskin yatay bir çizgi oluşturuyordu. Bu
@@ -387,7 +450,15 @@ export function AppShell({ blogPosts, children }: Props) {
               aria-hidden
               className="home-header-fade pointer-events-none sticky top-0 z-30 -mb-12 h-12 shrink-0"
             >
-              <div className="absolute inset-0 bg-background" />
+              {/* Açık katman da artık `headerSolid`e bağlı. Eskiden düz
+                  `bg-background`di ve sayfa tepedeyken hero'nun ilk 48px'ini
+                  yıkayıp shader'ın üstünde soluk bir bant bırakıyordu — resimde
+                  "üstteki fade" diye işaretlenen şey buydu. Header'ın kendi
+                  zemini gibi, bu da ancak kaydırınca geliyor. */}
+              <motion.div
+                style={{ opacity: headerSolid }}
+                className="absolute inset-0 bg-background"
+              />
               <motion.div
                 style={{ opacity: darkness }}
                 className="absolute inset-0 bg-[var(--home-base)]"

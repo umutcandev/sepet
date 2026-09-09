@@ -18,10 +18,14 @@ export function HomeBlogSection() {
   const posts = getLatestPosts(4)
   if (posts.length === 0) return null
 
-  // Zemin = hero fade'inin dip rengi (--home-base) ile birebir aynı; gerçek
-  // temaya bağlı (gündüz #0d0f0c / gece #1b0e08), bu yüzden section'a `dark`
-  // SABİTLEMİYORUZ — yoksa değişken hep gece değerine kilitlenirdi. İç sarmalayıcı
-  // `dark` taşır ki metin/kart paleti her iki temada da koyu (açık metin) kalsın.
+  // Zemin = hero fade'inin dip rengi (--home-base), gerçek temaya bağlı:
+  // gündüz sıcak kum #F5E8DA, gece espresso #1b0e08.
+  //
+  // İÇERİDE `dark` SARMALAYICI YOK, ARTIK. Bu bölüm eskiden her iki temada da
+  // koyuydu ve paleti `dark` sınıfıyla oraya kilitleniyordu; gündüz temasında
+  // krem bir sayfanın altına oturan kara blok olarak okunuyordu. Kilit
+  // kalkınca bant gerçek temayı izliyor: gündüzde açık, gecede koyu.
+  //
   // `-mt-*` ile bölümü fade'in tam dolduğu bölgeye yukarı çekiyoruz (z-20 ile
   // hero'nun üstünde kalır), boşluk kapanır.
   return (
@@ -64,9 +68,9 @@ export function HomeBlogSection() {
           gridin dikey ritmini uygulasak şerit bandın ortasında asılı kalıyor,
           hero'nun hemen ardına iliştirilmiş gibi durmuyordu.
 
-          Rengini `dark` sarmalayıcıdan alır — bu bölüm her iki temada da koyu,
-          o yüzden logolar tek renk marka tonunda (dark `--primary`) oturur. */}
-      <div className="dark mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
+          Renk gerçek temadan gelir (bölümün tamamı gibi): gündüz koyu kahve
+          (--primary #6D4530), gece amber (#D4A574). */}
+      <div className="mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
         {/* Şerit fold'un TAM sınırında duruyor: hangi ekran yüksekliğinde
             olursak olalım ilk ekranın alt kenarına denk geliyor, dolayısıyla
             scroll reveal'a hiç girmiyor ve animasyonsuz beliriyordu. Bu yüzden
@@ -77,10 +81,9 @@ export function HomeBlogSection() {
             animasyon ilk kareden itibaren kuruludur. Hidrasyondan sonra sınıf
             eklenseydi eleman önce görünür boyanıp sonra sıfır opaklığa düşerdi. */}
         <AnimateEnter isWhileInView={false} delay={0.58}>
-          {/* Wordmark'lar `currentColor` — renk buradan iner. `text-primary`,
-              `dark` sarmalayıcı içinde olduğumuz için koyu temanın sıcak
-              marka tonu; kart zemininde (`--card`) rahat okunuyor, o yüzden
-              eski kırma opaklığa (foreground/45) gerek kalmadı. */}
+          {/* Wordmark'lar `currentColor` — renk buradan iner. `text-primary`
+              her iki temada da markanın kendi tonu; zeminde rahat okunuyor,
+              o yüzden eski kırma opaklığa (foreground/45) gerek kalmadı. */}
           <LogoMarquee className="text-primary" />
         </AnimateEnter>
       </div>
@@ -94,7 +97,7 @@ export function HomeBlogSection() {
 
       {/* pb: altında footer var; sayfa dibi boşluğunu footer'ın kendi padding'i
           tamamlıyor, bu yüzden burada eskisinden dar. */}
-      <div className="dark mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
+      <div className="mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
         <AnimateEnter className="mb-5 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
             Blog Gönderileri

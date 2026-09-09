@@ -55,8 +55,13 @@ const MOCK_PANEL = "flex h-56 w-[calc(100%+1.25rem)] flex-col"
 const ROW_X = "pl-3.5 pr-10"
 /** Maket başlığı — kartı doğrudan gösteren iki panelde birebir aynı. Sohbet
  *  maketinde başlık kartın kendi içine iniyor, panelin tepesinde durmuyor. */
+/* Maketlerin içindeki ayırıcı/halka renkleri `white/…` DEĞİL `foreground/…`.
+   Bu bölüm eskiden her iki temada da koyuydu (`dark` sarmalayıcı), o yüzden
+   beyaz alfa sabitlenmişti. Bant artık gerçek temayı izliyor: gündüzde zemin
+   krem, beyaz alfa orada görünmez olurdu. `foreground` temayla birlikte dönüp
+   iki tarafta da aynı hafiflikte bir çizgi bırakıyor. */
 const MOCK_HEADER = cn(
-  "shrink-0 border-b border-white/10 py-2 text-sm font-medium text-foreground",
+  "shrink-0 border-b border-foreground/10 py-2 text-sm font-medium text-foreground",
   ROW_X
 )
 
@@ -64,7 +69,7 @@ function MarketAvatar({ src, className }: { src: string; className?: string }) {
   return (
     <span
       className={cn(
-        "relative flex size-7 shrink-0 overflow-hidden rounded-full bg-background ring-1 ring-white/15",
+        "relative flex size-7 shrink-0 overflow-hidden rounded-full bg-background ring-1 ring-foreground/15",
         className
       )}
     >
@@ -123,7 +128,7 @@ function ProductMatchMock() {
   return (
     <>
       <div className={MOCK_HEADER}>Eşleşen Ürünler</div>
-      <div className="flex flex-1 flex-col divide-y divide-white/10">
+      <div className="flex flex-1 flex-col divide-y divide-foreground/10">
         {MATCHES.map((match) => (
           <div
             key={match.name}
@@ -131,7 +136,7 @@ function ProductMatchMock() {
           >
             {/* Paket ikonu görselin ALTINDA duruyor: CDN karesi bir gün
                 düşerse kutu boş kalmaz, bileşenin gerçek fallback'ine iner. */}
-            <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-black/25 ring-1 ring-white/10">
+            <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-foreground/10 ring-1 ring-foreground/10">
               <PackageIcon className="absolute size-4 text-muted-foreground" />
               <Image
                 src={match.image}
@@ -179,7 +184,7 @@ function OptimizationMock() {
           gerçek karttaki 12px'in bir buçuk katı — kart seyrek görünüyordu.
           Kendi punto ölçüsünde durup panelin dibinde kalan boşluğu bulanık
           dibe bırakıyorlar; orası zaten eriyen bölge. */}
-      <div className="flex flex-col divide-y divide-white/10">
+      <div className="flex flex-col divide-y divide-foreground/10">
         <div className={cn("flex items-center gap-2.5 py-2.5", ROW_X)}>
           <MarketAvatar src="/market-logos/bim.webp" />
           <span className="flex min-w-0 flex-1 flex-col">
@@ -294,7 +299,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
       >
         <div
           className={cn(
-            "overflow-hidden rounded-xl smooth-shadow-ring-lg smooth-ring-white/15",
+            "overflow-hidden rounded-xl smooth-shadow-ring-lg smooth-ring-foreground/15",
             feature.panel ?? "bg-muted",
             MOCK_PANEL
           )}
@@ -336,10 +341,10 @@ function FeatureCard({ feature }: { feature: Feature }) {
 
 export function HomeFeaturesSection() {
   return (
-    // Kap ölçüsü şerit, blog ve footer ile birebir aynı (max-w-5xl px-4);
-    // `dark` metin/kart paletini koyu tutar — bölüm zemini her iki temada da
-    // --home-base olduğu için.
-    <div className="dark mx-auto w-full max-w-5xl px-4 pt-10 text-foreground md:pt-14">
+    // Kap ölçüsü şerit, blog ve footer ile birebir aynı (max-w-5xl px-4).
+    // Palet gerçek temadan gelir: bandın `dark` kilidi kaldırıldı (gerekçe
+    // home-blog-section.tsx'te), yani bölüm gündüzde açık, gecede koyu.
+    <div className="mx-auto w-full max-w-5xl px-4 pt-10 text-foreground md:pt-14">
       {/* Başlık + eylem satırı blog bölümüyle aynı kalıpta: iki bölüm arka
           arkaya geldiği için aynı ritmi paylaşmaları gerekiyor. */}
       <AnimateEnter className="mb-5 flex items-center justify-between gap-4">

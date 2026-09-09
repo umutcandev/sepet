@@ -33,6 +33,32 @@ export const geistSans = localFont({
   ],
 })
 
+// Vitrin (display) yüzü: yalnızca ana sayfanın iki büyük cümlesinde kullanılır
+// (hero başlığı ve kapanış çağrısı). Gövde/arayüz metni Geist'te kalır —
+// `--font-heading` DEĞİŞTİRİLMEDİ, ona bağlı `cn-font-heading` bir düzine
+// kart/dialog başlığında duruyor ve onların Geist kalması gerekiyor.
+//
+// Şimdilik yalnız 400 kayıtlı. 600 dosyası `fonts/` içinde duruyor ama BİLİNÇLİ
+// olarak buraya eklenmedi: next/font bir ailedeki tüm dosyaları preload eder,
+// yani kullanılmayan bir ağırlık her sayfaya ~25 KB bindirirdi (italik yüzlerin
+// alınmama gerekçesiyle aynı, bkz. fonts/README.md). Gerçekten gerektiğinde
+// `src` bir diziye çevrilip 600 girdisi eklenir.
+//
+// Karakter kümesi Latin-1 + Türkçe ile sınırlı (257 kod noktası); ğ Ğ ş Ş İ ı
+// hepsi içeride, ama `₺` yok. Arayüzün genelinde kullanmaya uygun değil,
+// başlıklık bir yüz.
+export const cooperDisplay = localFont({
+  src: "../fonts/Cooper-400.woff2",
+  weight: "400",
+  style: "normal",
+  variable: "--font-display",
+  display: "swap",
+  // Metrik yedeği Times'tan türetilir: Cooper bir serif, varsayılan Arial
+  // tabanı yanlış ölçüde bir ara yüz üretirdi (yükleme anında sıçrama).
+  adjustFontFallback: "Times New Roman",
+  fallback: ["Georgia", "Cambria", "Times New Roman", "serif"],
+})
+
 // Mono için otomatik metrik yedeği kapalı: next/font o yedeği Arial (orantılı
 // bir yüz) metriklerinden türetir, monospace bir aile için yanlış bir taban
 // olur. Yedek zinciri aşağıdaki gerçek monospace listesidir.

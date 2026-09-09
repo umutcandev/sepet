@@ -79,11 +79,15 @@ export function HomeCtaSection() {
 
   return (
     <section className="relative z-20 bg-[var(--home-base)]">
-      <div className="dark mx-auto flex w-full max-w-5xl flex-col items-center gap-5 px-4 py-12 text-foreground sm:py-16">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-5 px-4 py-12 text-foreground sm:py-16">
         <AnimateEnter>
+          {/* Vitrin yüzü (Cooper) — hero başlığıyla eşleşir; `cn-font-heading`
+              değil, o kart/dialog başlıklarının Geist'i. Ağırlık `font-normal`:
+              ailede yalnız 400 kayıtlı, `font-semibold` tarayıcıya sahte bold
+              çizdirirdi (bkz. lib/fonts.ts). */}
           <h2
             {...hoverProps}
-            className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-center cn-font-heading text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl"
+            className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-center cn-font-display text-2xl font-normal sm:text-3xl md:text-4xl lg:text-5xl"
           >
             <span>Hemen</span>
             {/* Logo grubu ile "Sepet'i dene." tek parça: satır sarmasında

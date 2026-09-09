@@ -1,113 +1,226 @@
 "use client"
 
 import * as React from "react"
-import { GrainGradient } from "@paper-design/shaders-react"
+import { Warp } from "@paper-design/shaders-react"
 import { useReducedMotion } from "motion/react"
-import { useTheme } from "next-themes"
 
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { useMounted } from "@/hooks/use-mounted"
 
 /* ---------------------------------------------------------------------------
-   Hero zemini: Paper "Grain Gradient / Wave" (shaders.paper.design/grain-gradient)
+   Hero zemini: Paper "Warp" (shaders.paper.design/warp)
 
-   Eskiden burada iki AVIF/WebP manzara görseli vardı (gündüz/gece), maskeyle
-   yukarı doğru söndürülüyordu. Yerine aynı kompozisyonu ÜRETEN bir shader
-   geldi: üstte düz gökyüzü, ortada dalgalı sıcak ufuk, altta koyu zemin.
+   Önceki zemin "Grain Gradient / Wave" idi: ÜÇ KATLI dikey bir kompozisyon
+   (üstte düz gökyüzü, ortada dalgalı ufuk, altta koyu zemin). Yerine akışkan,
+   yönsüz bir mermer geldi: renk alanları swirl ile birbirine dolanıyor, dikey
+   bir "ufuk" yok.
 
-   ÜÇ KENAR SÖZLEŞMESİ — bu üçü tutarsa hero'nun etrafındaki hiçbir mekanizmaya
-   dokunmak gerekmez:
+   BU FARK KENAR SÖZLEŞMESİNİ DEĞİŞTİRDİ, o yüzden aşağıdaki iki madde eskisiyle
+   birebir aynı değil:
 
-   1. `colorBack` = --background. Shader'ın üst platosu sayfanın kendi zemini
-      ile BİREBİR aynı renk. Görselde şart olan üst maske bu yüzden tamamen
-      kalktı: söndürülecek bir fark yok. (Renkler shader'a sRGB olarak giriyor,
-      arada renk uzayı dönüşümü yok — hex ne ise ekranda o.)
-   2. `colors[2]` = --home-base. Alt plato, hero'nun dibindeki `.home-hero-fade`
-      ile aynı renk. Fade'in 17rem'lik rampası artık iki farklı şeyi değil aynı
-      rengi birbirine bağlıyor; dikiş görünmez.
+   1. ÜST KENAR — Warp'ın `colorBack`i YOK: tuvalin tamamı renkle doluyor, yani
+      eski "üst plato = --background" numarası mümkün değil. Ana sayfada header
+      hero'nun ÜSTÜNDE ayrı bir şerit; zemini düz --background olduğu sürece
+      tepede sayfayı boydan boya kesen bir renk BASAMAĞI kalıyor.
+
+      İKİ DENEME BAŞARISIZ OLDU, ikisi de aynı yanlıştan: basamağı gizlemeye
+      çalışmak. (a) Canvas'ın tepesini --background'a söndüren 9rem'lik bir
+      maske — shader'ın en yoğun bölgesini yıkayıp düz, ölü bir bant bıraktı.
+      (b) Paletin baskın tonunu --background'a eşitlemek — basamağı küçülttü
+      ama <main>'in tepesindeki 48px'lik sticky `home-header-fade` zaten düz
+      `bg-background` boyadığı için soluk bant yerinde durdu.
+
+      ÇÖZÜM BASAMAĞI YOK ETMEK. Bu bileşen artık hero'nun içinde değil:
+      app-shell'de, header ile <main>'in ALTINDA duran tek bir katman. Header
+      ve sticky fade ana sayfada kendi zeminlerini scroll'a bağlı kazanıyor
+      (`HOME_HEADER_SOLID_RANGE`), yani sayfa tepedeyken shader ikisinin de
+      arkasından kesintisiz akıyor — gizlenecek bir kenar kalmıyor.
+
+      Paletlerin baskın tonu yine de --background'ın kendisi. Artık zorunluluk
+      değil ama ucuz bir emniyet: header zemini geldiği anda geçiş fark
+      edilmiyor.
+   2. ALT KENAR — eskiden colors[2] = --home-base idi, yani dipteki
+      `.home-hero-fade` aynı rengi kendine bağlıyordu ve teknik olarak görünmez
+      bir rampaydı. Warp'ta dip diye bir bölge yok; geçişin TAMAMINI artık o
+      rampa taşıyor ve YERİ DEĞİŞTİ: opak taban artık logo şeridinin altında
+      (8 → 6.5 → 1.5rem), rampa şeridin arkasından geçiyor (toplam 13.5rem).
+      Karartı hero'nun dibinde bir blok olmaktan çıkıp şeridin arkasında
+      başlayan bir geçişe döndü. Ayrıntısı ve şeridin logo rengine etkisi
+      globals.css'te `.home-hero-fade` notunda.
    3. Geometri her iki temada AYNI. Tema yalnızca paleti değiştirir.
 
-   Böylece app-shell'deki scroll rampası (header'ın --home-base'e akması),
-   --logo-swap ve `data-home-dark-start` nişanı hiç etkilenmez: onlar zaten
-   shader'ı değil token'ları okuyor.
+   app-shell'deki scroll rampası (header'ın --home-base'e akması), --logo-swap
+   ve `data-home-dark-start` nişanı yine hiç etkilenmiyor: onlar shader'ı değil
+   token'ları okuyor.
    --------------------------------------------------------------------------- */
 
-/* Kompozisyon (geometri) — iki temada ortak.
+/* Kompozisyon (geometri) — iki temada ortak, playground'daki ayarların birebir
+   karşılığı:
 
-   Dikey yerleşimin matematiği (vertex + fragment shader'dan türetildi):
+   shaders.paper.design/warp#proportion=0.44&softness=1&distortion=0.03
+     &swirl=0.68&swirlIterations=6&shape=checks&shapeScale=0&speed=5
+     &scale=1.04&rotation=64
 
-     shape_uv.y = 0.005 * (uv.y + offsetY) * heroYüksekliği(css px) / scale
+   `shapeScale: 0` yüzünden `shape: "checks"` pratikte hiçbir şey çizmiyor —
+   taban desen tamamen sönük, görüntüyü swirl + distortion kuruyor. Yine de
+   playground'daki değerle bırakıldı: shapeScale büyütüldüğünde hangi desenin
+   ortaya çıkacağı buradan okunsun.
 
-   `uv.y` üstte +0.5, altta -0.5. Geçiş bandı `shape_uv.y + wave ∈ [-1, 1]`
-   aralığı; `wave` zamanla ±0.85 salınıyor, yani ufuk sabit durmaz, süzülür.
+   `fit: "cover"` + `worldWidth/Height` PLAYGROUND'DA YOK, burada ŞART.
 
-   DİKKAT — formülde hero YÜKSEKLİĞİ var. `scale` sabit bir sayı olsaydı
-   kompozisyon pencere boyuna göre kayardı: kısa pencerede bant genişler ve
-   koyu uç yukarı, metnin arkasına tırmanır. Ölçüldü (offsetY=0.10,
-   softness=0.70): sabit scale=1 ile gündüz başlık kontrastı 1000px'lik hero'da
-   4.82:1 iken 764px'te 2.49:1, 480px'te 1.82:1'e düşüyordu — okunmuyor.
+   Warp varsayılanı `defaultPatternSizing`, yani `fit: "none"`: desen CSS
+   pikseline kilitli, ölçek MUTLAK. Playground'un ~884×502'lik tuvalinde
+   kompozisyon tam oturuyor ama boy değişince kadraj değişiyor, resim değil.
+   Telefonda (390px genişlik) mermerin yalnızca küçük bir parçası kalıyordu —
+   swirl'ün dönüşü kadraja hiç girmediği için ekranda düz, ölü bir gradyan gibi
+   görünüyordu. "Mobilde berbat" tam olarak bu.
 
-   Bu yüzden `scale` yüksekliğe ORANLI (aşağıda REFERENCE_HERO_HEIGHT).
-   Katsayı her pencerede sabit kalır, kompozisyon her ekranda birebir aynı
-   görünür ve kontrast yükseklikten bağımsız hâle gelir. Referans yükseklikte
-   çarpan 1'dir, yani buradaki değerler doğrudan playground'daki karşılıkları.
+   `cover` bunu düzeltir: dünya kutusu (aşağıdaki WORLD) tuvali kaplayacak
+   şekilde ölçekleniyor, yani kompozisyon KUTUYA ORANLI. Hangi ekranda olursak
+   olalım playground'daki kadrajın aynısını görüyoruz, sadece dar ekranda dikey
+   bir dilimi kırpılmış hâli. Kutu ölçüleri playground tuvalinin ölçüleri:
+   ayarlar orada bu kadrajda seçildi, referans o.
 
-   `scale`in yalnız dalgayı taşıması tesadüf değil: tanecik UV'si shader'da
-   önce scale'e bölünüp sonra scale ile çarpılıyor, yani grain ekrana kilitli.
-   Ölçek oynatmak dokunun inceliğini DEĞİŞTİRMEZ, sadece dalgayı ölçekler.
-
-   offsetY'yi büyütmek kompozisyonu aşağı iter (metin bölgesi daha güvenli,
-   dalga fade'in içinde kaybolur), küçültmek yukarı çeker (dalga başlığa
-   yaklaşır ve kontrast riski başlar). softness'ı büyütmek geçişi yumuşatır. */
-const REFERENCE_HERO_HEIGHT = 764
+   `scale` yine 1.04 — playground'daki değer. Artık mutlak bir piksel ölçeği
+   değil, `cover`in bulduğu ölçeğin üstüne binen bir çarpan; büyütmek dokuyu
+   iriltir, küçültmek daha çok mermer gösterir. */
+const WORLD = { worldWidth: 884, worldHeight: 502 } as const
 
 const GEOMETRY = {
-  shape: "wave",
+  shape: "checks",
+  shapeScale: 0,
+  proportion: 0.44,
+  softness: 1,
+  distortion: 0.03,
+  swirl: 0.68,
+  swirlIterations: 6,
+  scale: 1.04,
+  rotation: 64,
   offsetX: 0,
   offsetY: 0,
-  rotation: 0,
-  /* softness/intensity/noise Paper'ın "Wave" preset'inden birebir alındı —
-     shader'ın imzası bu üçlü. `noise` tanecikleri `shape`i İLERİ iter, yani
-     sıradaki renge doğru: gece gökyüzünde amber noktalara (yıldız), gündüz krem
-     gökyüzünde sıcak toz zerrelerine dönüşüyorlar. Fazla "kirli" gelirse ilk
-     kısılacak değer bu. */
-  softness: 0.70,
-  intensity: 0.15,
-  noise: 0.10,
+  fit: "cover",
+  ...WORLD,
 } as const
+
+/* Playground'daki hız. Eski zeminde 1'di; Warp'ın swirl'ü çok daha yavaş
+   ilerleyen bir deformasyon olduğu için 5 burada "hızlı" değil, canlı duruyor. */
+const SPEED = 5
+
+/* TEMA, next-themes'in `resolvedTheme`inden DEĞİL <html>'in sınıfından okunuyor.
+
+   Zemin ancak paleti bilince mount edilebilir (yanlış paletle tek kare bile
+   boyanmamalı), yani "shader ne zaman gelir" sorusunun cevabı doğrudan "tema ne
+   zaman belli olur". `resolvedTheme` bunu geç veriyordu: kullanıcı "Sistem"
+   temasındaysa next-themes değeri bir EFFECT içinde matchMedia okuyup
+   yerleştiriyor, yani hidrasyondan sonra fazladan bir render turu.
+
+   Oysa doğru cevap o anda ZATEN DOM'da: next-themes'in <head>'e koyduğu bloke
+   edici script, `dark` sınıfını daha ilk boyamadan önce <html>'e yazıyor.
+   Buradan okumak bir tur kazandırıyor — shader hidrasyonla aynı commit'te
+   mount oluyor.
+
+   `useSyncExternalStore` tam da bunun için: sunucu anlık görüntüsü null (SSR'da
+   sınıf okunamaz, zemin render edilmez), istemci anlık görüntüsü ilk render'dan
+   itibaren gerçek değer, MutationObserver da tema anahtarını yakalıyor.
+
+   BUNUN ÖTESİNDEKİ GECİKME BURADAN ÇÖZÜLMEZ: shaders paketi client bundle'ın
+   parçası, yani indirilip ayrıştırılması ve sayfanın hidrate olması gerekiyor;
+   sonra WebGL context'i kuruluyor, fragment shader derleniyor ve kütüphane
+   noise dokusunu (data URI) çözmeyi bekliyor. Bunlar canvas'ın doğal maliyeti;
+   `dynamic import` ile ertelemek işi daha da geciktirirdi. */
+const themeStore = {
+  subscribe(onStoreChange: () => void) {
+    const observer = new MutationObserver(onStoreChange)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+    return () => observer.disconnect()
+  },
+  getSnapshot(): "dark" | "light" {
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light"
+  },
+  getServerSnapshot(): null {
+    return null
+  },
+}
+
+function useDocumentTheme() {
+  return React.useSyncExternalStore(
+    themeStore.subscribe,
+    themeStore.getSnapshot,
+    themeStore.getServerSnapshot
+  )
+}
 
 /* Palet — geometri sabit, tema yalnızca RENKLERİ değiştiriyor.
 
-   İkisi de aynı sahnenin farklı saati: sıcak amber bant her iki temada da AYNI
-   yerde duruyor, değişen tek şey üstündeki gökyüzü.
+   Playground'daki üçlü (#3c1515 → #944752 → #ffc085) koyu bir kompozisyon:
+   gece tarafının şablonu o. Ama iki şeye uyarlandı:
 
-   Gündüz — alacakaranlık: aydınlık gökyüzü, ufukta sıcak sis, altta koyu zemin.
-   Rampa monoton koyulaşıyor.
+   • MARKA HUE'SU. Ortadaki #944752 gül/mürdüm; sitenin bütün paleti sıcak
+     kahve-amber. Aynı yerdeki renk kahveye çevrildi, kırmızıdaki sıcaklık
+     korundu.
+   • KONTRAST. Shader'ın üstünde kendi zemini OLMAYAN tek eleman h1; prompt,
+     çipler ve rozet kendi yüzeylerini taşıyor. Yani palet seçilirken tek ölçü
+     h1'in en kötü hâli. Aşağıdaki değerler bu yüzden hesaplandı, göz kararı
+     seçilmedi.
 
-   ARA TON KONTRASTLA SEÇİLDİ. Burada önce --chart-3 (#8C5A3C) vardı; dalga tepe
-   yaptığında başlığın (koyu kahve --foreground) arkası tam o tona oturuyor ve
-   kontrast 2.49:1'e düşüyordu — büyük metin eşiği bile 3:1. --chart-1'e
-   (#C08552) çıkınca en kötü hâl 4.59:1 oluyor, yani normal metin eşiğinin de
-   üstünde. Buradaki tonu koyulaştırırken bu ölçüyü tekrar yapmak gerekir. */
+   Gündüz — krem mermer. SIRALAMA GECEYLE AYNI YAPIDA, bu bir detay değil
+   paletin çalışma biçimi: Warp'ta colors[0] ve colors[1] geniş alanlara,
+   colors[2] dar bir vurguya düşüyor (playground referansında da öyle — iki
+   büyük kütle + tek parlak köşe).
+
+   Önceki deneme sıralamayı ters kurmuştu (#C08552 → #D4A574 → #FFF8F0): amber
+   baskın, krem yalnızca vurgu. Sonuç ekranda turuncu bir alan; sayfanın kendi
+   zemininden kopuk duruyordu ve header'ın dibinde kapatılacak fark en büyük
+   hâlindeydi. Şimdi baskın ton doğrudan --background: hem sayfayla aynı krem,
+   hem header kenarı sorunsuz (bkz. dosya başı, madde 1).
+
+   İKİ RENK DOYGUNLAŞTIRILDI, açılıp koyulaşmadı. İlk sürüm (#EFD8BB / #C08552)
+   ekranda soluk duruyordu; sebebi parlaklık değil KROMA — ikisi de token
+   ailesinin en nötr uçlarıydı ve krem alanla aralarında ton farkı kalmıyordu.
+   Aynı parlaklık bandında kalıp doygunluğu artırmak, kompozisyonu açıp
+   kontrastı bozmadan canlandırıyor.
+
+   En kötü hâl: --foreground (#3D2418) vurgu tonu #C8853F'nin üstünde 4.70:1 —
+   normal metin eşiğinin de üstünde (eski #C08552 4.59:1'di, yani doygunlaşma
+   kontrastı düşürmedi). Ara ton #F2D2A6'da 11.6:1. Vurgu tonunu koyulaştıran
+   biri bu ölçüyü tekrar yapmalı. */
 const LIGHT = {
-  colorBack: "#FFF8F0", // --background
   colors: [
-    "#D4A574", // --chart-4 · sıcak ten, ufuk sisi
-    "#C08552", // --chart-1 · amber ara ton
-    "#0d0f0c", // --home-base · zemin
+    "#FFF8F0", // --background · krem alan (baskın, header kenarını kapatan ton)
+    "#F2D2A6", // sıcak kum ara ton (--accent ailesi, belirgin şekilde daha doygun)
+    "#C8853F", // amber vurgu (--chart-1 #C08552'nin doygun hâli)
   ],
 } as const
 
-/* Gece — kutup ışığı: koyu gökyüzü, ufukta parlayan amber şerit, altta koyu
-   zemin. Rampa monoton DEĞİL (koyu → parlak → koyu); parlak bant ince kalıyor
-   çünkü shader'da colors[0] dar, colors[1] geniş bir aralığa düşüyor. Ekteki
-   gece görselindeki aurora okuması tam olarak bu. */
+/* Gece — espresso → kahve → karamel. Playground'daki koyu→parlak dizilimi
+   aynen duruyor, hue tamamen markanın eksenine çekildi.
+
+   BİR ARA DENEME GERİ ALINDI: playground'ın kırmızısına sadık kalmaya çalışan
+   #2A1410 / #6E3B2C / #A06848 üçlüsü ekranda tuğla kırmızısı, çamurlu bir alan
+   veriyordu — sitenin hiçbir yerinde olmayan bir hue. Kırmızıyı taşımaya
+   çalışmak yerine kompozisyonun YAPISI (baskın koyu alan + tek parlak köşe)
+   korundu, renkler markanın kendi rampasından seçildi.
+
+   Baskın ton doğrudan --background: üst kenarın header'la dikişsiz kapanması
+   buna bağlı (bkz. dosya başı, madde 1).
+
+   TEPE TONU BİLEREK #ffc085 DEĞİL, hatta --primary (#D4A574) bile değil.
+   Ölçüldü: --foreground (#F5E8DA) o şeftali tonunun üstünde 1.6:1, #D4A574'ün
+   üstünde 1.64:1 veriyor — başlık, parlak alan arkasına geldiği anda okunmuyor
+   ve o alan duran bir şey değil, swirl ile geziniyor. #A96A3A ile en kötü hâl
+   3.22:1: h1 her kırılımda ≥30px, yani büyük metin eşiğinin (3:1) üstünde.
+   Marka amberinin canlılığı parlaklıktan değil DOYGUNLUKTAN geliyor — tepeyi
+   açmak yerine kroması yüksek tutuldu. Daha parlak bir tepe isteyen, aynı
+   ölçüyü tekrarlamak zorunda. */
 const DARK = {
-  colorBack: "#1A130E", // --background
   colors: [
-    "#C08552", // --chart-2 · aurora tepesi
-    "#3D2D1F", // --sidebar-accent · derin kahve düşüş
-    "#1b0e08", // --home-base · zemin
+    "#1A130E", // --background · espresso alan (baskın, header kenarını kapatan ton)
+    "#5C3A24", // koyu kahve ara ton
+    "#A96A3A", // doygun karamel tepe
   ],
 } as const
 
@@ -117,17 +230,16 @@ const DARK = {
    başına yeterli değil: tavan yalnız BÜYÜK ekranlarda devreye giriyor, telefon
    hiçbir zaman ona değmiyor. Varsayılan yol şuydu — minPixelRatio 2, dpr 3 olan
    bir telefonda kütüphane NATIVE 3x'te boyuyor: 390×844'lük bir hero'da
-   1170×2532 ≈ 2.96M piksel, saniyede 60 kez, her piksel için 3 oktav fbm +
-   birkaç simplex. Mobilde kastırmasının sebebi bu. Shader'ın pahalı olması
-   "doğal", ölçeğin cihaza göre ayarlanmamış olması değil.
+   1170×2532 ≈ 2.96M piksel, saniyede 60 kez. Warp'ta her piksel için `swirl`
+   döngüsü `swirlIterations` (6) kez dönüyor, üstüne noise dokusu okunuyor —
+   yani fragment başına iş eski shader'dan az değil.
 
    Tavanı ölçekten türetiyoruz: maxPixelCount = genişlik × yükseklik × kare.
 
-   BUNU YAPABİLMEMİZİN SEBEBİ, kompozisyonun çözünürlükten BAĞIMSIZ olması.
-   Vertex shader'da `v_patternUV /= u_pixelRatio` var, yani hem dalga hem tanecik
-   CSS pikseline kilitli. Tavanı düşürmek resmi DEĞİŞTİRMEZ, aynı resmi daha
-   seyrek örnekler: yumuşak bir gradyanda fark görünmez, tanecikte biraz daha
-   iri bir doku bırakır — grain'de bu zaten kabul edilebilir bir takas.
+   BUNU YAPABİLMEMİZİN SEBEBİ, kompozisyonun çözünürlükten BAĞIMSIZ olması:
+   desen CSS pikseline kilitli (fit: "none"), tavanı düşürmek resmi DEĞİŞTİRMEZ,
+   aynı resmi daha seyrek örnekler. Warp yumuşak bir alan olduğu için (softness
+   1, sert kenar yok) bu takas eski taneli zemindekinden bile ucuz.
 
    1.5 telefonda ~4x daha az fragment işi demek (2.96M → 0.74M). Dokunmatik
    sinyali `pointer: coarse`; ekran genişliği değil, çünkü mesele boy değil
@@ -156,29 +268,27 @@ const WEBGL_CONTEXT = {
    Sonuç, zemin sayfanın geri kalanının gerisine düşüyordu. Animasyon mount olur
    olmaz başlar; hidrasyonun kendisi zaten dizideki yerini veriyor. */
 
-export function HeroShader() {
-  const mounted = useMounted()
-  const { resolvedTheme } = useTheme()
+type Props = {
+  /* Zemin tamamen kapandığında (blog bölümü header'a dayandığında) app-shell
+     bunu true'ya çeker ve animasyon donar.
+
+     Eskiden bu kararı bileşenin kendi IntersectionObserver'ı veriyordu. Artık
+     veremiyor: katman <main>'in dışında, yani kaydırma onu hiç oynatmıyor ve
+     kesişim durumu asla değişmiyor. Kapanmayı bilen tek yer scroll rampasını
+     zaten ölçen app-shell. */
+  covered?: boolean
+}
+
+export function HomeHeroBackdrop({ covered = false }: Props) {
+  const theme = useDocumentTheme()
   const reduceMotion = useReducedMotion()
   const containerRef = React.useRef<HTMLDivElement>(null)
 
-  /* Hero ekrandan çıkınca animasyon donuyor. speed=0 kütüphanede rAF döngüsünü
-     tamamen iptal ediyor (zaman da korunuyor), yani kullanıcı fiyatlandırma /
-     footer bölgesinde gezerken boşuna GPU yakılmıyor. */
-  const [onScreen, setOnScreen] = React.useState(true)
-
-  /* Kabın ölçüsü iki işe birden yarıyor: YÜKSEKLİK kompozisyonu pencere boyundan
-     bağımsız kılan ölçeği veriyor (yukarıdaki geometri notuna bak), genişlikle
-     birlikte de örnekleme tavanını.
-
-     Kabı ölçmek pencereyi ölçmekten iyi: hero'nun yüksekliği `--hero-vh` ile
-     zaten donduruluyor (mobil klavye onu oynatmasın diye) ve kap o donmuş değeri
-     taşıyor — yani klavye açılınca ne kompozisyon zıplıyor ne de canvas yeniden
-     boyutlanıyor. */
-  const [heroSize, setHeroSize] = React.useState({
-    width: 0,
-    height: REFERENCE_HERO_HEIGHT,
-  })
+  /* Kabın ölçüsü örnekleme tavanını veriyor. Kabı ölçmek pencereyi ölçmekten
+     iyi: yükseklik `--hero-vh` ile zaten donduruluyor (mobil klavye onu
+     oynatmasın diye) ve kap o donmuş değeri taşıyor — yani klavye açılınca
+     canvas yeniden boyutlanmıyor. */
+  const [heroSize, setHeroSize] = React.useState({ width: 0, height: 0 })
 
   React.useEffect(() => {
     const el = containerRef.current
@@ -197,30 +307,16 @@ export function HeroShader() {
     })
     resizeObserver.observe(el)
 
-    // root: null → viewport. Hero kaydırılabilir bir <main> içinde olsa da
-    // IntersectionObserver ara kapların kırpmasını hesaba katıyor.
-    const intersectionObserver = new IntersectionObserver(
-      ([entry]) => setOnScreen(entry?.isIntersecting ?? true),
-      { rootMargin: "128px" }
-    )
-    intersectionObserver.observe(el)
-
-    return () => {
-      resizeObserver.disconnect()
-      intersectionObserver.disconnect()
-    }
+    return () => resizeObserver.disconnect()
   }, [])
 
-  /* Tema çözülene kadar (SSR + ilk istemci render'ı) zemin hiç mount edilmiyor:
-     yanlış paletle tek kare bile boyanmasın. O ana dek hero düz --background,
-     yani shader'ın kendi gökyüzü platosuyla aynı renk; dipteki karartı da
-     ortada yok. Sayfanın dibindeki koyu bölüm (logo şeridi) kendi kenarından
-     başlar, hero'nun içine taşan gerekçesiz bir leke bırakmaz.
+  /* Tema okunana kadar (yalnız SSR) zemin mount edilmiyor: yanlış paletle tek
+     kare bile boyanmasın. O ana dek hero düz --background kalır.
 
      JS kapalıysa bu zemin hiç gelmez: hero düz --background kalır ve logo
      şeridi kendi sert kenarıyla başlar. Yumuşatma kaybolur ama düzen bozulmaz. */
-  const themeReady = mounted && Boolean(resolvedTheme)
-  const palette = resolvedTheme === "dark" ? DARK : LIGHT
+  const themeReady = theme !== null
+  const palette = theme === "dark" ? DARK : LIGHT
 
   /* Örnekleme tavanı (yukarıdaki nota bak). Kap henüz ölçülmediyse (ilk kare)
      mutlak tavana düşüyoruz; ResizeObserver boyamadan önce teslim ettiği için
@@ -240,29 +336,36 @@ export function HeroShader() {
     <div
       ref={containerRef}
       aria-hidden
-      className="pointer-events-none absolute inset-0"
+      /* Katman SidebarInset'in tepesine yapışık ve tam bir viewport boyu:
+         header (4rem) + hero (calc(--hero-vh - 4rem)) = --hero-vh, yani dibi
+         hero'nun dibiyle çakışıyor. `--hero-vh` home-hero.tsx'te donduruluyor;
+         JS çalışmazsa 100svh fallback'i devrede. */
+      className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[var(--hero-vh,100svh)] overflow-hidden"
     >
       {themeReady ? (
-        /* Giriş animasyonu (`hero-shader-fx`, globals.css): zemin de hero'nun
-           geri kalanı gibi aşağıdan yükselerek kuruluyor, patlayarak belirmiyor.
-           Sarmalayıcı AYRI bir eleman: transform dıştaki kaba binseydi
-           ResizeObserver'ın ölçtüğü yükseklik animasyon boyunca oynar ve
-           `scale` her karede yeniden hesaplanırdı.
+        /* GİRİŞ ANİMASYONU YOK — zemin mount olduğu karede tam görünür.
+           Burada bir zamanlar `hero-shader-fx` vardı (40px yükselme + 0.9s
+           sönümleme); yukarıdaki "yapay gecikme yok" notunun aynı gerekçesi
+           ona da işliyordu: canvas hidrasyon + tema çözümünden sonra geldiği
+           için zaten doğal bir bekleme var, animasyon onun ÜSTÜNE biniyor ve
+           zemin sayfanın geri kalanının gerisine düşüyordu.
 
-           Tema DEĞİŞİMİNDE ise renkler anında takas oluyor, çapraz sönümleme
-           yok: sayfanın geri kalanındaki token'lar da anında flip ediyor,
-           shader'a özel bir gecikme onu diğer her şeyin gerisine düşürürdü.
-           Animasyon yalnızca İLK belirmede oynar (bileşen tema değişiminde
-           yeniden mount olmuyor). */
-        <div className="hero-shader-fx relative size-full">
-          <GrainGradient
+           Sarmalayıcı yine de duruyor: canvas ile dipteki fade rampasını tek
+           konumlandırma bağlamında topluyor.
+
+           Tema değişiminde renkler anında takas oluyor, çapraz sönümleme yok:
+           sayfanın geri kalanındaki token'lar da anında flip ediyor, shader'a
+           özel bir gecikme onu diğer her şeyin gerisine düşürürdü. */
+        <div className="relative size-full">
+          <Warp
             {...GEOMETRY}
-            scale={heroSize.height / REFERENCE_HERO_HEIGHT}
-            colorBack={palette.colorBack}
             colors={[...palette.colors]}
             // reduce-motion: hız 0 → tek, deterministik kare. Kompozisyon
-            // duruyor, yalnızca süzülme kalkıyor.
-            speed={reduceMotion || !onScreen ? 0 : 1}
+            // duruyor, yalnızca akış kalkıyor. `covered` de aynı kapıyı
+            // kullanıyor: kütüphanede speed=0, rAF döngüsünü tamamen iptal
+            // ediyor (zaman korunur), yani kullanıcı aşağıdaki bölümlerde
+            // gezerken boşuna GPU yakılmıyor.
+            speed={reduceMotion || covered ? 0 : SPEED}
             maxPixelCount={maxPixelCount}
             webGlContextAttributes={WEBGL_CONTEXT}
             style={{ width: "100%", height: "100%" }}
@@ -270,18 +373,20 @@ export function HeroShader() {
           {/* Dibi blog bölümünün rengine (--home-base) bağlayan rampa. Gradient
               detayları `.home-hero-fade` içinde (globals.css).
 
-              SARMALAYICININ İÇİNDE, canvas'ın hemen ÜSTÜNDE duruyor. İkisi tek
-              cisim: aynı gecikme, aynı 40px, aynı eğri. Dışarıda ayrı bir kardeş
-              olsaydı ilk boyamada yerine oturur, shader ise sonradan altından
-              yükselirdi; karartı ufuksuz kalır ve logo şeridinin arkasında
-              gerekçesiz bir bant gibi görünürdü.
+              SARMALAYICININ İÇİNDE, canvas'ın hemen ÜSTÜNDE duruyor: ikisi tek
+              cisim, birlikte belirir. Dışarıda ayrı bir kardeş olsaydı tema
+              çözülmeden de boyanır, karartı ufuksuz kalır ve logo şeridinin
+              arkasında gerekçesiz bir bant gibi görünürdü.
 
               Yükseklik YÜZDE DEĞİL sabit: gradient durakları rem cinsinden ve
               üstüne binen blog bölümünün bindirmesi de sabit piksel (96/112px).
               `h-[22%]` iken kısa pencerelerde tam opak bölge bindirmeden kısa
               kalıyor, bölümün sert üst kenarı çizgi olarak görünüyordu.
-              17rem = 8rem opak dip + 9rem rampa. */}
-          <div className="home-hero-fade absolute inset-x-0 bottom-0 h-[17rem]" />
+              13.5rem = 1.5rem opak dip + 12rem rampa. Opak taban logo şeridinin
+              ALTINDA: rampa şeridin arkasından geçiyor, karartı orada başlayıp
+              şeridi geçince kapanıyor. Alfa dağılımı ((1-u)⁵) ve şeridin logo
+              renginin buna bağlı değişimi globals.css'te. */}
+          <div className="home-hero-fade absolute inset-x-0 bottom-0 h-[13.5rem]" />
         </div>
       ) : null}
     </div>
