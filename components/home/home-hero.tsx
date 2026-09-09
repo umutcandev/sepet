@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 import { HeroMarketBadge } from "@/components/hero-market-badge"
-import { HeroShader } from "@/components/home/hero-shader"
 import { AnimateEnter } from "@/components/motion/animate-enter"
 import { PressFx } from "@/components/motion/press-fx"
 import { type PromptInputMessage } from "@/components/ai-elements/prompt-input"
@@ -23,11 +22,11 @@ const CHIPS = [
 ]
 
 const ROTATING_HEADINGS = [
-  "Alışveriş listesi yapalım mı?",
-  "Market fişine göz atalım mı?",
-  "Yemek görseline bakalım mı?",
-  "Tarifinin fiyatını çıkaralım mı?",
-  "Alışveriş bütçeni planlayalım mı?",
+  "Liste yapalım mı?",
+  "Fiş okuyalım mı?",
+  "Yemeğe bakalım mı?",
+  "Tarif fiyatlayalım mı?",
+  "Bütçe kuralım mı?",
 ]
 
 const ASSISTANT_SEED_KEY = "assistant:seed"
@@ -184,18 +183,26 @@ export function HomeHero() {
       <link rel="preload" as="image" href="/market-logos/tarim-kredi.webp" />
       <link rel="preload" as="image" href="/market-logos/carrefoursa.webp" />
       <div className="relative flex min-h-[calc(var(--hero-vh,100svh)-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16">
-        {/* Tek zemin katmanı: gündüz/gece iki ayrı görsel yerine tek shader,
-            paleti temadan okuyor. Maske YOK — shader'ın üst platosu zaten
-            --background, söndürülecek bir fark kalmadı.
+        {/* ZEMİN BURADA DEĞİL. Hero'nun arkasındaki Warp shader'ı app-shell'de,
+            header ile <main>'in ALTINDA duran bir katman (HomeHeroBackdrop).
 
-            Dibe inen `.home-hero-fade` rampası da ARTIK BUNUN İÇİNDE: shader ile
-            tek parça hâlinde, aynı mesafede yukarı süzülmesi gerekiyor (bkz.
-            hero-shader.tsx). Burada ayrı bir kardeş olarak dursaydı ilk boyamada
-            yerine oturur, shader ise sonradan altından yükselirdi — karartı
-            havada asılı kalır, girişin bütünlüğü bozulurdu. */}
-        <HeroShader />
-        <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6">
-          <div className="flex flex-col items-center gap-3 text-center">
+            Sebep: shader'ın `colorBack`i yok, tuvalin tamamı renkli. Zemin
+            hero'nun içinde kaldığı sürece header ayrı bir `bg-background`
+            şeridi oluyor ve tepede sayfayı kesen bir renk basamağı kalıyordu;
+            maskeyle/fade ile gizlemeye çalışmak basamağın yerine soluk bir bant
+            koyuyordu. Tek zemin ikisinin de altından geçince basamak diye bir
+            şey kalmıyor. Gerekçenin tamamı hero-shader.tsx'in başında.
+
+            `--hero-vh` (aşağıdaki hook) o katmanın da yüksekliğini veriyor:
+            header 4rem + bu kap calc(--hero-vh - 4rem) = --hero-vh. */}
+        {/* Kolon başlıkla birlikte genişler; prompt ve chip'ler kendi
+            `max-w-2xl`lerinde kalır. Sebep: dönen başlıkların en uzunu
+            ("Abdurrahman, yemeğe bakalım mı?") Cooper'da 15.82em — büyük
+            puntoda tek satırda durabilmesi için geniş bir kap şart, ama girdi
+            alanının aynı oranda genişlemesi ergonomiyi bozar. Basamaklar
+            ölçülerek seçildi (bkz. h1). */}
+        <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6 sm:max-w-3xl lg:max-w-5xl lg:gap-8 xl:max-w-6xl">
+          <div className="flex w-full flex-col items-center gap-3 text-center">
             {/* Hero ilk ekranda: scroll beklenmez, açılışta kademeli girer.
                 Sıra rozet → başlık → prompt → chip, adım ~0.12s. Şeridin
                 gecikmesi de bu diziyi sürdürür (home-blog-section). */}
@@ -207,8 +214,32 @@ export function HomeHero() {
                 rotasyon ise 3.2s'de başlar. Sarmalayıcı olmadan ilk başlık
                 (AnimatePresence initial={false} olduğu için) animasyonsuz,
                 birden beliriyordu. */}
-            <AnimateEnter isWhileInView={false} delay={0.22}>
-              <h1 className="relative flex min-h-[2.5rem] items-center justify-center text-3xl font-bold tracking-tight">
+            <AnimateEnter isWhileInView={false} delay={0.22} className="w-full">
+              {/* Vitrin yüzü (Cooper) — kapanış çağrısındaki başlıkla eşleşir.
+                  Ağırlık `font-normal`: ailede yalnız 400 kayıtlı, `font-bold`
+                  tarayıcıya sahte bold çizdirirdi (bkz. lib/fonts.ts).
+
+                  Punto basamakları fontun gerçek hmtx metrikleriyle seçildi: en
+                  uzun cümle ("Abdurrahman, yemeğe bakalım mı?") 15.82em tutuyor,
+                  yani tek satır için text-5xl'de 760px, text-6xl'de 950px ister.
+                  Basamaklar bu yüzden kabın büyüdüğü kırılımlara bağlı: lg'de iç
+                  genişlik 992px, xl'de 1120px — ikisi de kendi puntosunu tek
+                  satırda taşıyor.
+
+                  YÜKSEKLİK REZERVİ SATIR SAYISINA GÖRE, bu yüzden iki basamaklı.
+                  Sorun şuydu: mobilde başlıkların bir kısmı tek, bir kısmı çift
+                  satır oluyor (320px'te kap 288px, en uzun cümle 475px) ve
+                  rotasyon her döndüğünde kabın boyu değişip altındaki prompt
+                  zıplıyordu. Rezerv en kötü satır sayısına sabitlenince kutunun
+                  boyu HİÇ değişmiyor; kısa başlık ortalanmış duruyor, uzun olan
+                  tam oturuyor. Ölçüldü: sm altında en fazla 2 satır, sm'den
+                  itibaren (kap 608px, punto 36px) hepsi tek satır.
+
+                  Birim `rem` değil `em`: punto her basamakta değişiyor, sabit
+                  bir rem ya fazla boşluk bırakır ya da yetmezdi. Satır yüksekliği
+                  1.06 (cn-font-display), yani 2 satır = 2.12em; 2.2em ve 1.2em
+                  değerleri o tavanların hemen üstünde duruyor. */}
+              <h1 className="relative flex min-h-[2.2em] items-center justify-center cn-font-display text-3xl font-normal sm:min-h-[1.2em] sm:text-4xl lg:text-5xl xl:text-6xl">
                 <AnimatePresence mode="wait" initial={false}>
                   {/* Anahtar index değil metnin kendisi. Ad artık yalnızca
                     rotasyonla birlikte değiştiği için metin de tam o anda
@@ -219,7 +250,10 @@ export function HomeHero() {
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
                     transition={{ duration: 0.45, ease: "easeOut" }}
-                    className="inline-block"
+                    // `text-balance`: dar ekranda uzun başlık iki satıra
+                    // düştüğünde satırlar eşit uzunlukta kırılsın, tek kelimelik
+                    // sarkan bir alt satır kalmasın.
+                    className="inline-block text-balance"
                   >
                     {headings[headingIndex]}
                   </motion.span>
@@ -228,7 +262,11 @@ export function HomeHero() {
             </AnimateEnter>
           </div>
 
-          <AnimateEnter isWhileInView={false} delay={0.34} className="w-full">
+          <AnimateEnter
+            isWhileInView={false}
+            delay={0.34}
+            className="w-full max-w-2xl"
+          >
             <AssistantPrompt
               input={input}
               setInput={setInput}
@@ -238,7 +276,11 @@ export function HomeHero() {
             />
           </AnimateEnter>
 
-          <AnimateEnter isWhileInView={false} delay={0.46}>
+          <AnimateEnter
+            isWhileInView={false}
+            delay={0.46}
+            className="w-full max-w-2xl"
+          >
             <div className="flex flex-wrap justify-center gap-2">
               {CHIPS.map((chip) => (
                 <PressFx key={chip}>

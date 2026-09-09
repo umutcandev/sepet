@@ -13,10 +13,17 @@ export default function HomePage() {
       <HomeBlogSection />
       <HomePricingSection />
       <HomeCtaSection />
+      {/* Footer bandı. Zemin --home-base'ten hafifçe koyulaşarak sayfayı
+          kapatıyor; renk gerçek temadan gelir (gündüz kum, gece espresso).
+
+          `dark` SARMALAYICI YOK: bu bant eskiden her iki temada da koyuydu ve
+          palet oraya kilitleniyordu — gündüzde krem sayfanın altında kara bir
+          blok bırakıyordu. Kilit kalkınca footer sayfanın geri kalanıyla aynı
+          temada; `SiteFooter`ın logo varyantı da (`dark:hidden`/`dark:block`)
+          doğru olanı seçiyor, ki token override'ıyla düzeltilemeyecek tek
+          şey oydu. */}
       <div className="bg-[linear-gradient(to_bottom,var(--home-base)_0%,color-mix(in_srgb,var(--home-base)_92%,black)_100%)]">
-        <div className="dark text-foreground">
-          <SiteFooter className="mt-0" />
-        </div>
+        <SiteFooter className="mt-0" />
       </div>
     </>
   )

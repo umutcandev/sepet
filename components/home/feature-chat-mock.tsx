@@ -140,7 +140,7 @@ const STATUS_ROW =
 
 // Alan görünümü: gerçek Input/NativeSelect yerine aynı ölçüde statik kutular.
 const FIELD =
-  "rounded-md bg-black/25 px-2 py-1 text-xs text-foreground ring-1 ring-white/10"
+  "rounded-md bg-foreground/10 px-2 py-1 text-xs text-foreground ring-1 ring-foreground/10"
 
 const DRAFT_ITEMS = [
   { name: "pirinç", qty: "500", unit: "g" },
@@ -306,10 +306,10 @@ function DraftItemsCard() {
     // 14px içinde duruyor. İkisi de 14px olsaydı iç içe iki eş köşe görsel
     // gerilim yaratırdı (better-ui/surfaces, eşmerkezli köşe kuralı). 10px
     // aynı zamanda balonun köşesi — paneldeki iki yüzey tek dilde konuşuyor.
-    <div className="overflow-hidden rounded-lg bg-card smooth-shadow-ring-sm smooth-ring-white/15">
+    <div className="overflow-hidden rounded-lg bg-card smooth-shadow-ring-sm smooth-ring-foreground/15">
       <motion.div
         variants={ROW}
-        className="border-b border-white/10 px-3 py-2 text-sm font-medium text-foreground"
+        className="border-b border-foreground/10 px-3 py-2 text-sm font-medium text-foreground"
       >
         Sepetindeki Kalemler
       </motion.div>
@@ -355,9 +355,9 @@ function DraftItemsCard() {
           var" hissi kalır. Çıkarılırsa kartın altında boş bir şerit oluşuyor. */}
       <motion.div
         variants={ROW}
-        className="flex items-center gap-2 border-t border-white/10 bg-black/15 px-3 py-2"
+        className="flex items-center gap-2 border-t border-foreground/10 bg-foreground/5 px-3 py-2"
       >
-        <span className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-foreground ring-1 ring-white/15">
+        <span className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-foreground ring-1 ring-foreground/15">
           <RiAddLine className="size-3" />
           Yeni kalem
         </span>

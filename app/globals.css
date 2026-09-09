@@ -25,6 +25,10 @@
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: var(--font-sans);
+    /* Vitrin yüzü (Cooper) — `font-display` utility'sini üretir. `--font-heading`
+       ile karıştırma: o, kart/dialog başlıklarının Geist'i. Bu yalnız ana
+       sayfanın iki büyük cümlesi için, bkz. lib/fonts.ts. */
+    --font-display: var(--font-display);
     /* `font-mono` bugüne dek kazara ayaktaydı: tema tarafında tanımlı değildi,
        yalnız preflight'ın `--default-mono-font-family` → `var(--font-mono)`
        zincirine ve next/font'un katmansız `.variable` sınıfının `@layer theme`i
@@ -105,14 +109,28 @@
     --sidebar-accent-foreground: #3D2418;
     --sidebar-border: #E8DDD0;
     --sidebar-ring: #C08552;
-    /* Ana sayfa hero→blog geçişinin dip rengi (gerçek temaya bağlı).
-       Gündüz: koyu yeşilimsi-siyah; gece: koyu kahve. */
-    --home-base: #0d0f0c;
-    --home-base-soft: rgba(13, 15, 12, 0.5);
+    /* Ana sayfada logo şeridinden footer'a kadar inen bandın zemini.
+
+       GÜNDÜZDE ARTIK KOYU DEĞİL. Bu bant tarih boyunca gündüz temasında da
+       koyuydu (#0d0f0c → #16100A → #1A130E → #241A12) ve her defasında aynı
+       şikâyet geldi: krem bir sayfanın altına oturan kara blok. Renk denemeleri
+       sorunu çözemedi çünkü sorun tonun kendisi değil, KARARIN kendisiydi —
+       bandın içeriği `dark` sarmalayıcılarla gece paletine kilitliydi, zemin de
+       ona uymak zorundaydı.
+
+       O kilit kaldırıldı: bölümdeki `dark` sarmalayıcıları söküldü, bant artık
+       gerçek temayı izliyor. Gündüzde zemin sıcak kum (--secondary/--muted ile
+       aynı ton), kartlar krem, metin koyu kahve; gecede aşağıdaki espresso.
+       Sayfa gündüzde baştan sona aydınlık akıyor.
+
+       DEĞER --background DEĞİL, bir tık koyu: bandın hero'dan ayrıştığı yer
+       bu fark. Aynılasaydı bölüm hero'nun devamı gibi okunur, dipteki rampanın
+       (`.home-hero-fade`) bağlayacağı bir şey kalmazdı. */
+    --home-base: #F5E8DA;
     /* Fade'in saydam ucu: bare `transparent` (= saydam SİYAH) yerine aynı rengin
-       0 alfası. Geçiş boyunca ton sabit kalır, "çamurlu/yeşilimsi" interpolasyon
-       bandı oluşmaz. */
-    --home-base-clear: rgba(13, 15, 12, 0);
+       0 alfası. Geçiş boyunca ton sabit kalır, çamurlu bir interpolasyon bandı
+       oluşmaz. */
+    --home-base-clear: rgba(245, 232, 218, 0);
 }
 
 .dark {
@@ -148,7 +166,6 @@
     --sidebar-border: #2D2218;
     --sidebar-ring: #C08552;
     --home-base: #1b0e08;
-    --home-base-soft: rgba(27, 14, 8, 0.5);
     --home-base-clear: rgba(27, 14, 8, 0);
 }
 
@@ -239,25 +256,64 @@
    Şimdi dipteki 8rem (128px) her koşulda tam opak → bindirmenin 7rem'lik en
    derin hali bile rampaya hiç değmiyor, dikiş kayboluyor.
 
-   Rampa 8rem→17rem arası 9rem (144px, eskiden ~68px) ve alfa smoothstep
-   (3t²-2t³) örneklenerek dağıtıldı: doğrusal rampanın başladığı yerde göz
-   "burada bir örtü başladı" çizgisini yakalıyordu, S eğrisinde iki uç da
-   düz teğetle giriyor. */
+   RAMPA ARTIK SMOOTHSTEP DEĞİL, DİBE YIĞILMIŞ BİR EĞRİ: alfa = (1-u)⁵.
+   (u, opak tabanın üstündeki mesafenin rampa boyuna oranı.)
+
+   Sebep şu. Eski zemin (Grain Gradient) dibe doğru zaten --home-base'e
+   KOYULUYORDU; rampa aynı rengi kendine bağladığı için ne kadar uzun ya da
+   hangi profilde olduğunun görsel bir karşılığı yoktu. Warp'ta öyle bir dip
+   yok, rampa artık gerçek bir renk farkının üstünden geçiyor — simetrik bir S
+   eğrisi (ortada %50) hero'nun ortasına kadar tırmanan gri bir duman gibi
+   okunuyordu: kullanıcı sayfayı açar açmaz, hiç kaydırmadan bir "fade" görüyor.
+
+   OPAK TABAN LOGO ŞERİDİNİN ALTINA İNDİ — asıl değişiklik bu, rampanın profili
+   değil. Önceki sürümlerde taban 8rem, sonra 6.5rem'di; ikisi de şeridin
+   ÜSTÜNDE kalıyordu, yani karartı şeride varmadan çoktan tamamlanmış oluyor ve
+   hero'nun dibinde koyu bir blok gibi duruyordu. Şerit hero'nun dibinden ~84px
+   (base) / ~92px (md) yukarıda ve ~40px boyunda; taban artık 1.5rem (24px),
+   yani şeridin ALTI. Rampa şeridin arkasından geçiyor: karartı orada başlıyor,
+   şeridi geçince kapanıyor.
+
+   Alfa dağılımı (1-u)⁵ ile hâlâ dibe yığılı ama eskisi kadar sert değil, çünkü
+   artık gizlenecek bir şey yok — geçişin görünmesi İSTENİYOR, sadece yukarı
+   tırmanmaması gerekiyor. Rampa 12rem (toplam 13.5rem): şeridin hizasında
+   (~5.8rem) alfa %10 civarında, 8rem'de %2'nin altında, üstü gözle seçilmeyen
+   uzun bir kuyruk.
+
+   YAN ETKİ, BİLEREK: şerit artık tam opak bir zeminin değil, yarı saydam bir
+   geçişin üstünde — arkasındaki renk shader'ın kendisi. Bu yüzden logolardaki
+   zorlanmış `dark` sınıfı kalktı (home-blog-section.tsx), renk gerçek temadan
+   geliyor: gündüz koyu kahve (--primary #6D4530), gece amber (#D4A574). Eski
+   hâlinde gündüz teması amber logoyu krem shader'ın üstüne koyuyordu, 1.09:1. */
 .home-hero-fade {
   background-image: linear-gradient(
     to top,
     var(--home-base) 0,
-    var(--home-base) 8rem,
-    color-mix(in srgb, var(--home-base) 96%, var(--home-base-clear)) 9.125rem,
-    color-mix(in srgb, var(--home-base) 84%, var(--home-base-clear)) 10.25rem,
-    color-mix(in srgb, var(--home-base) 68%, var(--home-base-clear)) 11.375rem,
-    var(--home-base-soft) 12.5rem,
-    color-mix(in srgb, var(--home-base) 32%, var(--home-base-clear)) 13.625rem,
-    color-mix(in srgb, var(--home-base) 16%, var(--home-base-clear)) 14.75rem,
-    color-mix(in srgb, var(--home-base) 4%, var(--home-base-clear)) 15.875rem,
-    var(--home-base-clear) 17rem
+    var(--home-base) 1.5rem,
+    color-mix(in srgb, var(--home-base) 65%, var(--home-base-clear)) 2.5rem,
+    color-mix(in srgb, var(--home-base) 40%, var(--home-base-clear)) 3.5rem,
+    color-mix(in srgb, var(--home-base) 24%, var(--home-base-clear)) 4.5rem,
+    color-mix(in srgb, var(--home-base) 13%, var(--home-base-clear)) 5.5rem,
+    color-mix(in srgb, var(--home-base) 6.7%, var(--home-base-clear)) 6.5rem,
+    color-mix(in srgb, var(--home-base) 3%, var(--home-base-clear)) 7.5rem,
+    color-mix(in srgb, var(--home-base) 1.3%, var(--home-base-clear)) 8.5rem,
+    color-mix(in srgb, var(--home-base) 0.4%, var(--home-base-clear)) 9.5rem,
+    var(--home-base-clear) 13.5rem
   );
 }
+
+/* ÜST KENARDA MASKE YOK — bir denendi, geri alındı.
+
+   Warp'ın `colorBack`i olmadığı için canvas'ın tepesini --background'a
+   söndüren 9rem'lik bir maske eklenmişti (header ana sayfada hero'nun üstünde
+   ayrı bir şerit ve zemini düz --background; amaç aradaki kenarı gizlemekti).
+   Sonuç ters çıktı: maske shader'ın en yoğun olduğu bölgeyi tepede yıkayıp
+   düz, ölü bir bant bırakıyordu — gizlenen bir dikiş yerine görünen bir leke.
+
+   Onun yerine kenar RENKLE kapatılıyor: her iki paletin baskın tonu
+   --background'a çok yakın seçildi (dark #1A130E, light #FFF8F0 = tokenin
+   kendisi), yani header'ın dibinde ayrılacak bir sınır zaten oluşmuyor.
+   Palet değiştirilirken ilk kontrol edilecek şey bu. */
 
 /* Bir düzine bileşen `cn-font-heading` kullanıyordu ama sınıf hiçbir yerde
    tanımlı değildi (shadcn'in bundle'ında da yok). `--font-heading` şu an
@@ -266,6 +322,29 @@
    burada tanımlanıyor. */
 @utility cn-font-heading {
   font-family: var(--font-heading);
+}
+
+/* Vitrin yüzü (Cooper) + optik ayarları tek sınıfta. Yüzü `font-display` ile
+   tek başına da uygulayabilirsin ama Cooper bu iki ayar OLMADAN doğru
+   görünmüyor: satır yüksekliği %106, harf aralığı -0.5px. Bu yüzden ikisi
+   aileyle birlikte, tek yerde duruyor.
+
+   Harf aralığı `px` değil `em`: tasarım 30px (hero h1'in taban puntosu)
+   üzerinden ölçüldü, -0.5/30 = -0.0167em. Başlıklar responsive punto
+   basamakları kullanıyor (hero xl'de 60px'e çıkıyor); sabit px orada büyük
+   puntoda etkisiz kalırdı, em her basamakta aynı optik sıkılığı korur. */
+@utility cn-font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.0167em;
+  /* `--tw-leading` de yazılıyor, yalnız `line-height` değil: Tailwind'de
+     `text-2xl` gibi punto sınıfları kendi satır yüksekliğini de basar
+     (`line-height: var(--tw-leading, var(--text-2xl--line-height))`). Düz bir
+     `line-height` bildirimi aynı katmanda kaldığı için kaynak sırasına kalırdı;
+     değişkeni doldurmak punto sınıfının kendi kuralını içeriden çözer, sıradan
+     bağımsız kazanır. Düz bildirim de duruyor: punto sınıfı olmayan
+     elemanlarda karşılığı o. */
+  --tw-leading: 1.06;
+  line-height: 1.06;
 }
 
 @layer base {
@@ -1041,42 +1120,16 @@
   }
 }
 
-/* ---------------------------------------------------------------------------
-   Hero shader'ının girişi (components/home/hero-shader.tsx)
+/* Hero shader'ının bir giriş animasyonu (`hero-shader-fx`) vardı: 40px'lik
+   yükselme + 0.9s sönümleme, `both` doldurmasıyla. KALDIRILDI — zemin, hero'nun
+   geri kalanı yerine oturduktan çok sonra beliriyor gibi okunuyordu. Canvas
+   zaten hidrasyon + tema çözümü sonrası geliyor (hero-shader.tsx), yani doğal
+   bir bekleme var; animasyon onun üstüne 0.9s daha bindiriyordu. Şimdi
+   mount olduğu karede tam görünür.
 
-   `enter-fx` ile aynı aileden: aynı eğri, aynı "aşağıdan yüksel" hareketi.
-   Ayrı bir utility olmasının iki sebebi var:
-
-   1. BLUR YOK. `enter-fx` bitişe kadar `filter: blur(6px)` sürüyor; tam ekran
-      bir WebGL yüzeyinde bu, her karede bütün yüzeyi bulanıklaştırmak demek ve
-      tam olarak main thread'in en yoğun olduğu açılış anına denk geliyor.
-      Burada yalnızca opacity + transform var, ikisi de compositor'da koşar.
-   2. DAHA UZUN YOL, DAHA UZUN SÜRE. Rozet gibi küçük bir elemanda 14px'lik
-      yükselme okunur; 764px'lik bir zeminde hiç fark edilmez. 40px/0.9s bu
-      yüzeyin ölçeğinde "sahne aşağıdan kuruluyor" hissini veriyor.
-
-   Yukarı kayarken üstte açılan boşluk GÖRÜNMEZ: shader'ın üst platosu zaten
-   --background, yani arkasından çıkan renk aynı renk. Altta taşan kısmı da
-   hero'nun `overflow-hidden`ı kırpıyor. */
-@utility hero-shader-fx {
-  animation: hero-shader-fx 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  @media (prefers-reduced-motion: reduce) {
-    /* Hareket azaltmada yalnızca sönümleme — `enter-fx` ile aynı davranış. */
-    animation-name: enter-fx-fade;
-    animation-duration: 0.2s;
-  }
-}
-
-@keyframes hero-shader-fx {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+   Yeniden bir giriş isteniyorsa `enter-fx` KULLANILMAZ: o, bitişe kadar
+   `filter: blur(6px)` sürdürüyor ve tam ekran bir WebGL yüzeyinde bu, main
+   thread'in en yoğun olduğu açılış anında her kareyi bulanıklaştırmak demek. */
 
 /* ---------------------------------------------------------------------------
    Logo şeridi (components/home/logo-marquee.tsx)
