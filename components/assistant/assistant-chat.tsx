@@ -57,6 +57,7 @@ import {
 } from "./basket-save-card"
 import { ThinkingText } from "./ai-thinking-text"
 import { Marker, MarkerContent } from "@/components/ui/marker"
+import { PressFx } from "@/components/motion/press-fx"
 import { cn } from "@/lib/utils"
 
 const SEED_KEY = "assistant:seed"
@@ -440,24 +441,38 @@ export function AssistantChat({
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4">
       {messages.length === 0 && !showSeedOptimistic ? (
-        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
-          <h1 className="text-3xl font-bold tracking-tight">
+        /* Kap yalnız xl'de genişliyor: başlık orada 48px'e çıkıyor ve en uzun
+           ad ("Abdurrahman, bugün ne alıyoruz?" ≈ 15.8em → ~760px) max-w-3xl'in
+           iç genişliğine (704px) sığmıyordu. 54rem − p-8 = 800px, tek satır için
+           gereken en dar basamak. Altında punto 36px (~570px), 704px zaten
+           yetiyor. Çipler kendi max-w-2xl'inde kalıyor (ana sayfayla aynı),
+           yoksa başlıkla birlikte yayılırlardı. */
+        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-3 p-8 text-center xl:max-w-[54rem]">
+          {/* Vitrin yüzü (Cooper) ve punto basamakları hero h1 ile aynı.
+              `font-normal`: ailede yalnız 400 kayıtlı, `font-bold` sahte bold
+              çizdirirdi. `tracking-tight` de gitti — sıkılık cn-font-display'in
+              kendi -0.0167em'inden geliyor, ikisi üst üste binerdi. */}
+          <h1 className="cn-font-display text-4xl font-normal xl:text-5xl">
             {firstName
               ? `${firstName}, bugün ne alıyoruz?`
               : "Bugün ne alıyoruz?"}
           </h1>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
+          {/* Çipler ana sayfadaki hero çipleriyle aynı: dolu `bg-muted` yüzey,
+              `rounded-lg`, hover'da kenar ve metin koyulaşıyor, PressFx basma
+              geri bildirimi. Öncesi saydam `rounded-full` bir outline butondu. */}
+          <div className="mt-4 flex w-full max-w-2xl flex-wrap justify-center gap-2">
             {SUGGESTIONS.map((s) => (
-              <Button
-                key={s}
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => handleSuggestionClick(s)}
-                className="h-auto rounded-full border-border px-3 py-1.5 text-xs font-normal text-muted-foreground dark:border-muted-foreground/25"
-              >
-                {s}
-              </Button>
+              <PressFx key={s}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleSuggestionClick(s)}
+                  className="h-auto rounded-lg border-border bg-muted px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/20 hover:bg-muted hover:text-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:border-muted-foreground/35 dark:hover:bg-muted"
+                >
+                  {s}
+                </Button>
+              </PressFx>
             ))}
           </div>
         </div>

@@ -50,7 +50,10 @@ const HOME_DARK_RANGE = 160
    ORTADAN KALDIRMAK: aynı shader ikisinin de arkasında.
 
    56px, header yüksekliğinin (64px) hemen altında: ilk tekerlek hareketinde
-   zemin oturuyor ama sayfa tepedeyken hiçbir iz bırakmıyor. */
+   zemin oturuyor ama sayfa tepedeyken hiçbir iz bırakmıyor.
+
+   MASAÜSTÜNDE ANA SAYFADA KULLANILMIYOR: header orada akıştan çıkmış ve
+   tamamen saydam, zemin katmanları `md:hidden`. */
 const HOME_HEADER_SOLID_RANGE = 56
 
 // Yalnızca mobil. Masaüstünde anahtar artık kenar çubuğunun kendi başlığında
@@ -280,8 +283,9 @@ export function AppShell({ blogPosts, children }: Props) {
             bırakıyordu. Basamağı yok etmenin tek yolu tek bir zeminin ikisinin
             de altından geçmesi.
 
-            Yükseklik `--hero-vh` (home-hero.tsx'te donduruluyor): header 4rem +
-            hero calc(--hero-vh - 4rem), yani katmanın dibi hero'nun dibiyle
+            Yükseklik `--hero-vh` (home-hero.tsx'te donduruluyor): mobilde
+            header 4rem + hero calc(--hero-vh - 4rem), masaüstünde header
+            akıştan çıktığı için hero tek başına --hero-vh. Katmanın dibi
             birebir çakışıyor. Katman <main>'in DIŞINDA olduğu için kaydırınca
             yerinde kalır; sayfanın geri kalanı (opak blog bölümü) üstüne akar. */}
         {isHome ? <HomeHeroBackdrop covered={heroCovered} /> : null}
@@ -295,14 +299,22 @@ export function AppShell({ blogPosts, children }: Props) {
         <div
           className={cn(
             "relative z-10 shrink-0",
-            !isHome && "bg-background"
+            !isHome && "bg-background",
+            /* PC'DE ANA SAYFADA HEADER AKIŞTAN ÇIKIYOR: yer kaplamıyor, zemin
+               katmanları kapalı (aşağıda `md:hidden`), yani tamamen saydam —
+               arkasındaki shader kesintisiz akıyor ve içerik altından geçiyor.
+               Masaüstünde bu şeritte zaten yalnız "Oturum Aç" var (logo, sidebar
+               anahtarı ve avatar `md:hidden`), o da kendi zeminini taşıyor.
+               z-20 <main>'in z-10'unun üstünde ama sheet/dialog katmanının
+               altında. Mobilde akışta kalıyor: dokunma hedefleri ve logo orada. */
+            isHome && "md:absolute md:inset-x-0 md:top-0 md:z-20"
           )}
         >
           {isHome ? (
             <motion.div
               aria-hidden
               style={{ opacity: headerSolid }}
-              className="pointer-events-none absolute inset-0 bg-background"
+              className="pointer-events-none absolute inset-0 bg-background md:hidden"
             />
           ) : null}
           {/* Koyu zemin ayrı katman ve sadece opacity ile sürülüyor: her scroll
@@ -311,7 +323,10 @@ export function AppShell({ blogPosts, children }: Props) {
           <motion.div
             aria-hidden
             style={{ opacity: darkness }}
-            className="pointer-events-none absolute inset-0 bg-[var(--home-base)]"
+            className={cn(
+              "pointer-events-none absolute inset-0 bg-[var(--home-base)]",
+              isHome && "md:hidden"
+            )}
           />
           <motion.header
             // --logo-swap tema geçişini logoya taşır. Tema çözülene kadar
@@ -451,7 +466,14 @@ export function AppShell({ blogPosts, children }: Props) {
             // her scroll karesinde gradient yeniden boyanmıyor.
             <div
               aria-hidden
-              className="home-header-fade pointer-events-none sticky top-0 z-30 -mb-12 h-12 shrink-0"
+              // MASAÜSTÜNDE YOK. Header'la birleşince tepede kalın, yıkanmış
+              // bir geçiş bandı gibi okunuyordu; geniş ekranda o mesafe
+              // fade'in çözdüğü sert kenardan daha rahatsız edici. Mobilde
+              // duruyor: orada bant oransal olarak rahatsız etmiyor ve
+              // içeriğin header'ın altından keskin geçmesi daha çok belli
+              // oluyor. `md:hidden` yüksekliği de -mb'yi de birlikte
+              // düşürüyor, düzen kaymıyor.
+              className="home-header-fade pointer-events-none sticky top-0 z-30 -mb-12 h-12 shrink-0 md:hidden"
             >
               {/* Açık katman da artık `headerSolid`e bağlı. Eskiden düz
                   `bg-background`di ve sayfa tepedeyken hero'nun ilk 48px'ini

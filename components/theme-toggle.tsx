@@ -106,10 +106,10 @@ export function ThemeMenuItems() {
   )
 }
 
-// Footer alt şeridi için yatay, yalnızca simgeli tema anahtarı. Ölçü ve çerçeve
-// yanındaki durum rozetiyle aynı (h-6, rounded-md, border-border) ki ikisi tek
-// bir kontrol kümesi gibi okunsun; renk ise nötr kalıyor, canlı sinyali taşıyan
-// primary tonu yalnız rozette dursun.
+// Footer alt şeridi için yatay, yalnızca simgeli tema anahtarı. Menü içindeki
+// hâlin aynısı, sadece etiketsiz: oyuk şerit + kabarık aktif segment. Ölçü ve
+// çerçeve yanındaki durum butonuyla aynı (h-6, border-border) ki ikisi tek bir
+// kontrol kümesi gibi okunsun.
 export function ThemeToggleInline({ className }: { className?: string }) {
   const { current, setTheme, groupRef, onKeyDown } = useThemeRadioGroup()
 

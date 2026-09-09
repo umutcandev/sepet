@@ -9,7 +9,6 @@ import { RiGithubFill, RiTwitterXFill } from "@remixicon/react"
 
 import { FooterLink } from "@/components/site-footer-link"
 import { ThemeToggleInline } from "@/components/theme-toggle"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CATEGORY_LIST } from "@/lib/blog/categories"
 import { SITE_X } from "@/lib/site"
@@ -172,19 +171,20 @@ export function SiteFooter({ className }: { className?: string }) {
           </div>
         </div>
 
-        {/* Alt şerit: solda telif, sağda aynı yükseklikteki iki kontrol —
-            durum rozeti ve tema anahtarı. */}
+        {/* Alt şerit: solda telif, sağda aynı yükseklikteki iki kontrol.
+            Durum artık rozet değil outline BUTON (size xs, h-6): sosyal
+            butonlarla aynı yüzey ve nötr metin, sadece daha kompakt ölçekte.
+            Canlı sinyalini primary tonu değil yalnız yeşil nokta taşır. */}
         <div className="mt-10 flex flex-col gap-4 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs font-medium text-muted-foreground">
             © {year}, Tüm hakları saklıdır.
           </p>
           <div className="flex flex-wrap items-center gap-2">
-            {/* Varsayılan rozetten biraz daha dar (px-1.5) ve bir tık daha
-                yüksek (h-6): yanındaki telif satırıyla optik olarak eşitlenir. */}
-            <Badge
+            <Button
               asChild
               variant="outline"
-              className="h-6 w-fit gap-1.5 bg-primary/5 px-1.5 text-primary"
+              size="xs"
+              className="gap-1.5 text-muted-foreground hover:text-foreground"
             >
               <a href={STATUS_URL} target="_blank" rel="noopener noreferrer">
                 {/* Canlı sinyali: sabit nokta + üzerinde dışa açılan halka.
@@ -195,7 +195,7 @@ export function SiteFooter({ className }: { className?: string }) {
                 </span>
                 Sistem Durumu
               </a>
-            </Badge>
+            </Button>
             <ThemeToggleInline />
           </div>
         </div>

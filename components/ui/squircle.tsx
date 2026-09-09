@@ -3,6 +3,8 @@
 import * as React from "react"
 import { SmoothCorners } from "@lisse/react"
 
+import { useDocumentTheme } from "@/hooks/use-document-theme"
+
 /**
  * Lisse'in (@lisse/react) TEK giriş noktası. Kütüphaneyi başka hiçbir yerden
  * import etme; eğri, yarıçap ve efekt kararları burada tek yerde dursun.
@@ -73,6 +75,9 @@ export type SquircleProps<E extends React.ElementType = "div"> =
   SquircleOwnProps &
     Omit<SmoothCornersProps<E>, keyof SquircleOwnProps | "corners" | "autoEffects">
 
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? React.useEffect : React.useLayoutEffect
+
 export function Squircle<E extends React.ElementType = "div">({
   radius = "lg",
   effects = false,
@@ -86,6 +91,26 @@ export function Squircle<E extends React.ElementType = "div">({
     [radius]
   )
 
+  /* Lisse CSS `border`/`box-shadow`u YALNIZ mount'ta okuyup SVG'ye taşıyor,
+     MutationObserver'ı yok. Tema değişince SVG eski renkte kalıyor: gece→gündüz
+     geçişinde kartların kenarında siyahımsı bir çerçeve olarak duruyor ve F5'e
+     kadar gitmiyordu. Kütüphanede yeniden okutmanın kapısı yok, tek çare
+     remount — `key` tema DEĞİŞİMİNDE artıyor (ilk yüklemede değil, yoksa her
+     sayfa açılışı hidrasyondan sonra boşuna remount olurdu). Layout aşamasında
+     olduğu için ekrana ara kare düşmüyor. `effects` kapalıyken okunan bir stil
+     yok, o yüzden orada hiç tetiklenmiyor. */
+  const theme = useDocumentTheme()
+  const [themeGeneration, setThemeGeneration] = React.useState(0)
+  const lastTheme = React.useRef<typeof theme>(null)
+
+  useIsomorphicLayoutEffect(() => {
+    const previous = lastTheme.current
+    lastTheme.current = theme
+    if (effects && theme && previous && previous !== theme) {
+      setThemeGeneration((generation) => generation + 1)
+    }
+  }, [effects, theme])
+
   // `SmoothCorners`ın polimorfik imzası çözülmemiş bir jenerik `E` ile
   // eşleşmiyor (TS `Omit<ComponentProps<E>, ...>`i daraltamıyor). Dışa açık
   // `SquircleProps<E>` zaten ondan türetildiği ve burada yalnız aynen
@@ -96,6 +121,7 @@ export function Squircle<E extends React.ElementType = "div">({
 
   return (
     <Component
+      key={themeGeneration}
       corners={corners}
       autoEffects={effects}
       {...(props as Record<string, unknown>)}

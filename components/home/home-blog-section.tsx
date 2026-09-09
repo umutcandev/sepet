@@ -4,7 +4,7 @@ import { RiArrowRightLine } from "@remixicon/react"
 
 import { AuthorAvatarGroup } from "@/components/blog/author-meta"
 import { HomeFeaturesSection } from "@/components/home/home-features-section"
-import { LogoMarquee } from "@/components/home/logo-marquee"
+import { HomeMarketsSection } from "@/components/home/home-markets-section"
 import { getLatestPosts } from "@/lib/blog"
 import { formatAuthorNames } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
@@ -59,41 +59,12 @@ export function HomeBlogSection() {
         data-home-dark-start
         className="absolute inset-x-0 top-0 h-px"
       />
-      {/* Logo şeridi. Kap aşağıdaki kart gridiyle BİREBİR aynı: aynı max-w,
-          aynı px — şerit kartların sol/sağ hizasında başlayıp bitiyor.
-
-          Üst boşluk kasıtlı olarak dar. Bölüm hero'nun üstüne -mt ile biniyor
-          ve hero fade'i bu bölümün üst kenarından önce zaten tam opak
-          --home-base'e ulaşıyor; yani şeridin üstünde ölçülen boşluğa, gözün
-          aynı koyu bandın parçası saydığı fade payı da ekleniyor. Buraya
-          gridin dikey ritmini uygulasak şerit bandın ortasında asılı kalıyor,
-          hero'nun hemen ardına iliştirilmiş gibi durmuyordu.
-
-          Renk gerçek temadan gelir (bölümün tamamı gibi): gündüz koyu kahve
-          (--primary #6D4530), gece amber (#D4A574). */}
-      <div className="mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
-        {/* Şerit fold'un TAM sınırında duruyor: hangi ekran yüksekliğinde
-            olursak olalım ilk ekranın alt kenarına denk geliyor, dolayısıyla
-            scroll reveal'a hiç girmiyor ve animasyonsuz beliriyordu. Bu yüzden
-            açılış moduna alındı; gecikme hero'daki diziyi sürdürür
-            (rozet 0.1 → başlık 0.22 → prompt 0.34 → chip 0.46 → şerit 0.58).
-
-            `isWhileInView={false}` sunucu HTML'ine sınıfı doğrudan yazar, yani
-            animasyon ilk kareden itibaren kuruludur. Hidrasyondan sonra sınıf
-            eklenseydi eleman önce görünür boyanıp sonra sıfır opaklığa düşerdi. */}
-        <AnimateEnter isWhileInView={false} delay={0.58}>
-          {/* Wordmark'lar `currentColor` — renk buradan iner. `text-primary`
-              her iki temada da markanın kendi tonu; zeminde rahat okunuyor,
-              o yüzden eski kırma opaklığa (foreground/45) gerek kalmadı. */}
-          <LogoMarquee className="text-primary" />
-        </AnimateEnter>
-      </div>
-
-      {/* Üç özellik kartı. Zemin (`home-dark-ground`) ve `data-home-dark-start`
-          nişanı bu section'a ait olduğu için özellik bölümü de BURADA duruyor:
-          page.tsx'te ayrı bir kardeş olsaydı hero'nun fade'iyle bu section'ın
-          -mt bindirmesinin arasına düşerdi. Kendi `dark` sarmalayıcısını
-          taşır — aşağıdaki blog bloğu gibi. */}
+      {/* Market mozaiği ve üç özellik kartı. Zemin (`home-dark-ground`) ve
+          `data-home-dark-start` nişanı bu section'a ait olduğu için ikisi de
+          BURADA duruyor: page.tsx'te ayrı birer kardeş olsalardı hero'nun
+          fade'iyle bu section'ın -mt bindirmesinin arasına düşerlerdi. İkisi de
+          kendi kabını (max-w-5xl px-4) taşır, aşağıdaki blog bloğu gibi. */}
+      <HomeMarketsSection />
       <HomeFeaturesSection />
 
       {/* pb: altında footer var; sayfa dibi boşluğunu footer'ın kendi padding'i
@@ -135,12 +106,21 @@ export function HomeBlogSection() {
                     doğuruyor; tek satırlık grid onu esnetmezse içerideki
                     `h-full` çözülemez ve kartlar eşit boyda durmaz.
 
+                    `grid-cols-[minmax(0,1fr)]` ŞART. Örtük kolon `auto`dur ve
+                    boyu sarmalayıcının min-content'ine göre belirlenir; o da
+                    aşağıdaki `truncate` (white-space: nowrap) yüzünden KESİLMEMİŞ
+                    yazar adının genişliği. İki yazarlı kartlarda 252px çıkıyor,
+                    239px'lik kolonu 13px aşıyor ve 12px'lik gap'i yiyip komşu
+                    kartın üstüne biniyordu. `min-w-0` bunu çözmez: layout'ta
+                    küçülmeye izin verir, intrinsic ölçümdeki min-content
+                    katkısını düşürmez. minmax(0,1fr) track'i kaba kilitler.
+
                     Dinlenme kenarı SVG'ye taşındığı için eski
                     `hover:border-foreground/20` artık boyanmıyor; hover geri
                     bildirimi zemin tonuna alındı. */}
                 <Link
                   href={post.permalink}
-                  className="group grid h-full rounded-xl"
+                  className="group grid h-full grid-cols-[minmax(0,1fr)] rounded-xl"
                 >
                   <Squircle
                     radius="xl"

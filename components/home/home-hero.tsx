@@ -182,7 +182,7 @@ export function HomeHero() {
       <link rel="preload" as="image" href="/market-logos/bim.webp" />
       <link rel="preload" as="image" href="/market-logos/tarim-kredi.webp" />
       <link rel="preload" as="image" href="/market-logos/carrefoursa.webp" />
-      <div className="relative flex min-h-[calc(var(--hero-vh,100svh)-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16">
+      <div className="relative flex min-h-[calc(var(--hero-vh,100svh)-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16 md:min-h-[var(--hero-vh,100svh)]">
         {/* ZEMİN BURADA DEĞİL. Hero'nun arkasındaki Warp shader'ı app-shell'de,
             header ile <main>'in ALTINDA duran bir katman (HomeHeroBackdrop).
 
@@ -193,8 +193,10 @@ export function HomeHero() {
             koyuyordu. Tek zemin ikisinin de altından geçince basamak diye bir
             şey kalmıyor. Gerekçenin tamamı hero-shader.tsx'in başında.
 
-            `--hero-vh` (aşağıdaki hook) o katmanın da yüksekliğini veriyor:
-            header 4rem + bu kap calc(--hero-vh - 4rem) = --hero-vh. */}
+            `--hero-vh` (aşağıdaki hook) o katmanın da yüksekliğini veriyor.
+            Mobilde header 4rem + bu kap calc(--hero-vh - 4rem) = --hero-vh;
+            masaüstünde header akıştan çıktığı (saydam, üstte yüzüyor) için
+            kap tek başına --hero-vh. İki halde de dip shader'la çakışıyor. */}
         {/* Kolon başlıkla birlikte genişler; prompt ve chip'ler kendi
             `max-w-2xl`lerinde kalır. Sebep: dönen başlıkların en uzunu
             ("Abdurrahman, yemeğe bakalım mı?") Cooper'da 15.82em — büyük
@@ -219,27 +221,20 @@ export function HomeHero() {
                   Ağırlık `font-normal`: ailede yalnız 400 kayıtlı, `font-bold`
                   tarayıcıya sahte bold çizdirirdi (bkz. lib/fonts.ts).
 
-                  Punto basamakları fontun gerçek hmtx metrikleriyle seçildi: en
-                  uzun cümle ("Abdurrahman, yemeğe bakalım mı?") 15.82em tutuyor,
-                  yani tek satır için text-5xl'de 760px, text-6xl'de 950px ister.
-                  Basamaklar bu yüzden kabın büyüdüğü kırılımlara bağlı: lg'de iç
-                  genişlik 992px, xl'de 1120px — ikisi de kendi puntosunu tek
-                  satırda taşıyor.
+                  Tek basamak (36px) + xl'de 48px. En uzun cümle ("Abdurrahman,
+                  yemeğe bakalım mı?") Cooper'da 15.82em: 36px'te 570px, kap
+                  sm'de 608 / lg'de 992 → tek satır; xl'de 760px, kap 1120 →
+                  yine tek satır.
 
-                  YÜKSEKLİK REZERVİ SATIR SAYISINA GÖRE, bu yüzden iki basamaklı.
-                  Sorun şuydu: mobilde başlıkların bir kısmı tek, bir kısmı çift
-                  satır oluyor (320px'te kap 288px, en uzun cümle 475px) ve
-                  rotasyon her döndüğünde kabın boyu değişip altındaki prompt
-                  zıplıyordu. Rezerv en kötü satır sayısına sabitlenince kutunun
-                  boyu HİÇ değişmiyor; kısa başlık ortalanmış duruyor, uzun olan
-                  tam oturuyor. Ölçüldü: sm altında en fazla 2 satır, sm'den
-                  itibaren (kap 608px, punto 36px) hepsi tek satır.
+                  YÜKSEKLİK REZERVİ SATIR SAYISINA GÖRE: rotasyon dönerken kabın
+                  boyu değişip altındaki prompt zıplamasın. sm altında 2 satır
+                  bekleniyor (320px'te kap 288), sm'den itibaren hep tek satır.
 
                   Birim `rem` değil `em`: punto her basamakta değişiyor, sabit
                   bir rem ya fazla boşluk bırakır ya da yetmezdi. Satır yüksekliği
                   1.06 (cn-font-display), yani 2 satır = 2.12em; 2.2em ve 1.2em
                   değerleri o tavanların hemen üstünde duruyor. */}
-              <h1 className="relative flex min-h-[2.2em] items-center justify-center cn-font-display text-3xl font-normal sm:min-h-[1.2em] sm:text-4xl lg:text-5xl xl:text-6xl">
+              <h1 className="relative flex min-h-[2.2em] items-center justify-center cn-font-display text-4xl font-normal sm:min-h-[1.2em] xl:text-5xl">
                 <AnimatePresence mode="wait" initial={false}>
                   {/* Anahtar index değil metnin kendisi. Ad artık yalnızca
                     rotasyonla birlikte değiştiği için metin de tam o anda

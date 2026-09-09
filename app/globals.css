@@ -204,103 +204,70 @@
 /* ---------------------------------------------------------------------------
    Hero'nun altındaki koyu bölümün zemini (components/home/home-blog-section.tsx)
 
-   Bölüm hero'nun üstüne -mt-24 (md: -mt-28) ile biniyor ve zemini düz
-   --home-base'ti. Sorun: hero'nun dip rampası (`.home-hero-fade`) artık
-   shader ile birlikte geliyor, bu bölüm ise ilk boyamada. Aradaki boşlukta
-   krem hero'nun dibine simsiyah bir blok KESKİN bir çizgiyle oturuyordu.
+   GEÇİŞİN TAMAMI ARTIK BURADA. Eskiden iş ikiye bölünmüştü: shader katmanının
+   dibindeki `.home-hero-fade` (13.5rem, en alt 1.5rem'i tam opak) karartıyı
+   başlatıyor, bu rampa da üstüne biniyordu. Logo şeridi hero dibinin 4-92px
+   üstünde durduğu için karartı tam şeridin ARKASINDAN başlıyordu. Hero fade'i
+   kaldırıldı; shader kendi dibine kadar temiz akıyor.
 
-   Üst kenar bu yüzden düz renk değil, 6rem'lik bir alfa rampası. İki işi var:
+   RAMPA BÖLÜMÜN ÜST KENARINDAN DEĞİL, --home-dark-start'tan başlıyor. Değer
+   "Asistanla Tanışın" başlığının 24px üstü, bölümün üst kenarından ölçülerek:
 
-   1. Rampa BİNDİRME payı kadar: bölüm, hero'nun üstünden çıktığı yerde tam
-      opak oluyor. Yani senkron kaçsa bile ortaya sert bir kenar çıkamaz, en
-      kötü ihtimalle yumuşak bir geçiş görünür.
-   2. Yerleşince GÖRÜNMEZ: hero'nun fade'i bindirme bölgesinde zaten tam opak
-      --home-base, dolayısıyla bu rampa opak rengin üstüne biniyor ve hiçbir
-      fark bırakmıyor. Oturmuş görünüm birebir eskisi gibi.
+     base : pt-3 (12) + şerit (py-3 + h-14 = 80) + pt-10 (40) − 24 = 108px
+     md   : pt-5 (20) + şerit (py-3 + h-16 = 88) + pt-14 (56) − 24 = 140px
 
-   6rem taban bindirmeye (96px) eşit; md'de bindirme 112px olduğu için rampa
-   daha erken kapanır, yani orada da hep hero'nun üstünde biter. Saydam uç
-   `--home-base-clear`: düz `transparent` saydam SİYAHTIR ve geçişte çamurlu
-   bir bant bırakırdı.
+   Yani şerit tamamen shader'ın üstünde kalıyor, karartı ondan sonra başlıyor.
+   Bu ölçüler yukarıdaki padding'lere ve şerit yüksekliğine BAĞLI: biri
+   değişirse burası da değişmeli.
 
-   `@utility` DEĞİL, aşağıdaki `.home-hero-fade` gibi DÜZ BİR SINIF. Utility
-   olarak yazıldığında kural yalnızca Tailwind sınıf adayını kaynak taramasında
-   bulursa üretilir; tek bir dosyada geçen yepyeni bir ad için bu, derleme
-   ortamına ve build cache'ine bağlı sessiz bir kırılganlık. Düz sınıf her
-   derlemede koşulsuz çıkar — hero fade'in hiç düşmemesinin sebebi de bu.
-   Durak `0px`: birimsiz `0` geçerli olsa da eski motorlarda gradient'i tümden
-   geçersiz kılabiliyor, o da bu bildirimin sessizce düşmesi demek. */
+   RAMPA 16rem VE İKİ UCU DA YUMUŞAK. 6rem'de geçiş kısa kaldığı için "fade"in
+   kendisi bir bant gibi hissediliyordu. Boyu uzatmak tek başına yetmedi:
+   yalnız başı yumuşatan bir eğri (u^2.2) sonu diklştirdiği için bu sefer DİP
+   keskin hissettiriyordu. Alfa artık smoothstep — 3u² − 2u³ (u = rampa boyunca
+   ilerleme): hem başlangıç hem bitiş teğetsel, yoğunluk ortada toplanıyor,
+   iki uçta da kenar okunmuyor. Duraklar `--home-dark-length`in oranı olarak
+   yazıldı, boy tek yerden değişiyor.
+
+   Ara opaklıklar color-mix ile tek hue üzerinde üretiliyor; saydam uç
+   `--home-base-clear`, çünkü düz `transparent` saydam SİYAHTIR ve geçişte
+   çamurlu bir bant bırakırdı.
+
+   `@utility` DEĞİL DÜZ SINIF: utility olarak yazıldığında kural yalnızca
+   Tailwind sınıf adayını kaynak taramasında bulursa üretilir; tek bir dosyada
+   geçen bir ad için bu, build cache'ine bağlı sessiz bir kırılganlık. */
 .home-dark-ground {
+  --home-dark-start: 108px;
+  --home-dark-length: 16rem;
   background-image: linear-gradient(
     to bottom,
-    var(--home-base-clear) 0px,
-    var(--home-base) 6rem
+    var(--home-base-clear) var(--home-dark-start),
+    color-mix(in srgb, var(--home-base) 6%, var(--home-base-clear))
+      calc(var(--home-dark-start) + 0.15 * var(--home-dark-length)),
+    color-mix(in srgb, var(--home-base) 22%, var(--home-base-clear))
+      calc(var(--home-dark-start) + 0.3 * var(--home-dark-length)),
+    color-mix(in srgb, var(--home-base) 43%, var(--home-base-clear))
+      calc(var(--home-dark-start) + 0.45 * var(--home-dark-length)),
+    color-mix(in srgb, var(--home-base) 58%, var(--home-base-clear))
+      calc(var(--home-dark-start) + 0.55 * var(--home-dark-length)),
+    color-mix(in srgb, var(--home-base) 78%, var(--home-base-clear))
+      calc(var(--home-dark-start) + 0.7 * var(--home-dark-length)),
+    color-mix(in srgb, var(--home-base) 94%, var(--home-base-clear))
+      calc(var(--home-dark-start) + 0.85 * var(--home-dark-length)),
+    var(--home-base) calc(var(--home-dark-start) + var(--home-dark-length))
   );
 }
 
-/* Hero görselinin alt kenarını blog dip rengine dikişsiz bağlayan fade.
-   Görselin dibi koyu bir manzara (gündüz yeşil tepeler / gece kahve tepeler);
-   fade yarı-saydam olduğu yerde o tepe siluetinin üst kenarı "çizgi" gibi
-   seçiliyordu. Bunu önlemek için:
-   • Tek hue (--home-base) üzerinde 1→0 alfa rampası; ara opaklıklar color-mix ile
-     üretilir → ne saydam-siyaha kayma ne de yeşilimsi ton oynaması olur.
-   • Duraklar arası eğim kademeli (Mach bandı / keskin çizgi oluşmaz) ve orta
-     bölge daha opak tutulur ki tepe silueti yedirilsin.
-
-   Duraklar YÜZDE DEĞİL rem: fade'in üstüne binen blog bölümü hero'ya sabit
-   piksel kadar biniyor (-mt-24 / md:-mt-28 = 96/112px) ve o bölümün zemini
-   TAM OPAK. Rampa yüzdeyle ölçülünce tam opaklığa `0.65 × 0.22 × heroYükseklik`
-   = 0.143H'de ulaşıyordu; yani ancak ~847px'den uzun pencerelerde bindirmeyi
-   kapatıyordu. Daha kısa pencerede bölümün sert üst kenarı fade henüz yarı
-   saydamken başlıyor ve görselin dibi bıçakla kesilmiş gibi duruyordu.
-   Şimdi dipteki 8rem (128px) her koşulda tam opak → bindirmenin 7rem'lik en
-   derin hali bile rampaya hiç değmiyor, dikiş kayboluyor.
-
-   RAMPA ARTIK SMOOTHSTEP DEĞİL, DİBE YIĞILMIŞ BİR EĞRİ: alfa = (1-u)⁵.
-   (u, opak tabanın üstündeki mesafenin rampa boyuna oranı.)
-
-   Sebep şu. Eski zemin (Grain Gradient) dibe doğru zaten --home-base'e
-   KOYULUYORDU; rampa aynı rengi kendine bağladığı için ne kadar uzun ya da
-   hangi profilde olduğunun görsel bir karşılığı yoktu. Warp'ta öyle bir dip
-   yok, rampa artık gerçek bir renk farkının üstünden geçiyor — simetrik bir S
-   eğrisi (ortada %50) hero'nun ortasına kadar tırmanan gri bir duman gibi
-   okunuyordu: kullanıcı sayfayı açar açmaz, hiç kaydırmadan bir "fade" görüyor.
-
-   OPAK TABAN LOGO ŞERİDİNİN ALTINA İNDİ — asıl değişiklik bu, rampanın profili
-   değil. Önceki sürümlerde taban 8rem, sonra 6.5rem'di; ikisi de şeridin
-   ÜSTÜNDE kalıyordu, yani karartı şeride varmadan çoktan tamamlanmış oluyor ve
-   hero'nun dibinde koyu bir blok gibi duruyordu. Şerit hero'nun dibinden ~84px
-   (base) / ~92px (md) yukarıda ve ~40px boyunda; taban artık 1.5rem (24px),
-   yani şeridin ALTI. Rampa şeridin arkasından geçiyor: karartı orada başlıyor,
-   şeridi geçince kapanıyor.
-
-   Alfa dağılımı (1-u)⁵ ile hâlâ dibe yığılı ama eskisi kadar sert değil, çünkü
-   artık gizlenecek bir şey yok — geçişin görünmesi İSTENİYOR, sadece yukarı
-   tırmanmaması gerekiyor. Rampa 12rem (toplam 13.5rem): şeridin hizasında
-   (~5.8rem) alfa %10 civarında, 8rem'de %2'nin altında, üstü gözle seçilmeyen
-   uzun bir kuyruk.
-
-   YAN ETKİ, BİLEREK: şerit artık tam opak bir zeminin değil, yarı saydam bir
-   geçişin üstünde — arkasındaki renk shader'ın kendisi. Bu yüzden logolardaki
-   zorlanmış `dark` sınıfı kalktı (home-blog-section.tsx), renk gerçek temadan
-   geliyor: gündüz koyu kahve (--primary #6D4530), gece amber (#D4A574). Eski
-   hâlinde gündüz teması amber logoyu krem shader'ın üstüne koyuyordu, 1.09:1. */
-.home-hero-fade {
-  background-image: linear-gradient(
-    to top,
-    var(--home-base) 0,
-    var(--home-base) 1.5rem,
-    color-mix(in srgb, var(--home-base) 65%, var(--home-base-clear)) 2.5rem,
-    color-mix(in srgb, var(--home-base) 40%, var(--home-base-clear)) 3.5rem,
-    color-mix(in srgb, var(--home-base) 24%, var(--home-base-clear)) 4.5rem,
-    color-mix(in srgb, var(--home-base) 13%, var(--home-base-clear)) 5.5rem,
-    color-mix(in srgb, var(--home-base) 6.7%, var(--home-base-clear)) 6.5rem,
-    color-mix(in srgb, var(--home-base) 3%, var(--home-base-clear)) 7.5rem,
-    color-mix(in srgb, var(--home-base) 1.3%, var(--home-base-clear)) 8.5rem,
-    color-mix(in srgb, var(--home-base) 0.4%, var(--home-base-clear)) 9.5rem,
-    var(--home-base-clear) 13.5rem
-  );
+@media (width >= 48rem) {
+  .home-dark-ground {
+    --home-dark-start: 140px;
+  }
 }
+
+/* `.home-hero-fade` KALDIRILDI. Shader katmanının dibinde 13.5rem'lik bir
+   rampaydı (en alt 1.5rem'i tam opak --home-base) ve logo şeridi hero dibinin
+   4-92px üstünde durduğu için karartıyı tam şeridin arkasından başlatıyordu.
+   Geçişin tamamı yukarıdaki `.home-dark-ground`a taşındı; şerit shader'ın
+   üstünde kalıyor, karartı "Asistanla Tanışın"ın 24px üstünde başlıyor. */
 
 /* ÜST KENARDA MASKE YOK — bir denendi, geri alındı.
 
@@ -1130,51 +1097,6 @@
    Yeniden bir giriş isteniyorsa `enter-fx` KULLANILMAZ: o, bitişe kadar
    `filter: blur(6px)` sürdürüyor ve tam ekran bir WebGL yüzeyinde bu, main
    thread'in en yoğun olduğu açılış anında her kareyi bulanıklaştırmak demek. */
-
-/* ---------------------------------------------------------------------------
-   Logo şeridi (components/home/logo-marquee.tsx)
-
-   Şerit logo setini iki kez basar; -50%'ye kadar kaydırınca ikinci kopya tam
-   birincinin yerine oturur, yani döngü başa dönerken sıçrama görünmez.
---------------------------------------------------------------------------- */
-@theme inline {
-  @keyframes logo-marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  --animate-logo-marquee: logo-marquee var(--logo-marquee-duration, 46s) linear
-    infinite;
-}
-
-/* İki uçta sert kesim yerine erime. Kısa ve dik tutuluyor: şerit kart
-   gridiyle aynı kapta (992px) ve içindeki kartların kendi kenarı var; uzun bir
-   rampa uçtaki kartı yarı yarıya soldurup "yanlış boyanmış kart" gibi
-   gösteriyordu. Kısa mesafe hem kartları temiz bırakıyor hem geçişi netleştiriyor. */
-@utility logo-marquee-fade {
-  --_fade: 0.75rem;
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black var(--_fade),
-    black calc(100% - var(--_fade)),
-    transparent
-  );
-  @media (width >= 48rem) {
-    --_fade: 1.5rem;
-  }
-}
-
-/* Hareket azaltma tercihinde şerit durur; iki kopyadan ilki sabit bir logo
-   sırası olarak görünmeye devam eder. */
-@media (prefers-reduced-motion: reduce) {
-  .animate-logo-marquee {
-    animation: none;
-  }
-}
 
 /* Prevent sticky hover on touch devices */
 @media (hover: none) {

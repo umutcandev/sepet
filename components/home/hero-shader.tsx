@@ -4,278 +4,89 @@ import * as React from "react"
 import { Warp } from "@paper-design/shaders-react"
 import { useReducedMotion } from "motion/react"
 
+import { useDocumentTheme } from "@/hooks/use-document-theme"
 import { useMediaQuery } from "@/hooks/use-media-query"
-
-/* ---------------------------------------------------------------------------
-   Hero zemini: Paper "Warp" (shaders.paper.design/warp)
-
-   Önceki zemin "Grain Gradient / Wave" idi: ÜÇ KATLI dikey bir kompozisyon
-   (üstte düz gökyüzü, ortada dalgalı ufuk, altta koyu zemin). Yerine akışkan,
-   yönsüz bir mermer geldi: renk alanları swirl ile birbirine dolanıyor, dikey
-   bir "ufuk" yok.
-
-   BU FARK KENAR SÖZLEŞMESİNİ DEĞİŞTİRDİ, o yüzden aşağıdaki iki madde eskisiyle
-   birebir aynı değil:
-
-   1. ÜST KENAR — Warp'ın `colorBack`i YOK: tuvalin tamamı renkle doluyor, yani
-      eski "üst plato = --background" numarası mümkün değil. Ana sayfada header
-      hero'nun ÜSTÜNDE ayrı bir şerit; zemini düz --background olduğu sürece
-      tepede sayfayı boydan boya kesen bir renk BASAMAĞI kalıyor.
-
-      İKİ DENEME BAŞARISIZ OLDU, ikisi de aynı yanlıştan: basamağı gizlemeye
-      çalışmak. (a) Canvas'ın tepesini --background'a söndüren 9rem'lik bir
-      maske — shader'ın en yoğun bölgesini yıkayıp düz, ölü bir bant bıraktı.
-      (b) Paletin baskın tonunu --background'a eşitlemek — basamağı küçülttü
-      ama <main>'in tepesindeki 48px'lik sticky `home-header-fade` zaten düz
-      `bg-background` boyadığı için soluk bant yerinde durdu.
-
-      ÇÖZÜM BASAMAĞI YOK ETMEK. Bu bileşen artık hero'nun içinde değil:
-      app-shell'de, header ile <main>'in ALTINDA duran tek bir katman. Header
-      ve sticky fade ana sayfada kendi zeminlerini scroll'a bağlı kazanıyor
-      (`HOME_HEADER_SOLID_RANGE`), yani sayfa tepedeyken shader ikisinin de
-      arkasından kesintisiz akıyor — gizlenecek bir kenar kalmıyor.
-
-      Paletlerin baskın tonu yine de --background'ın kendisi. Artık zorunluluk
-      değil ama ucuz bir emniyet: header zemini geldiği anda geçiş fark
-      edilmiyor.
-   2. ALT KENAR — eskiden colors[2] = --home-base idi, yani dipteki
-      `.home-hero-fade` aynı rengi kendine bağlıyordu ve teknik olarak görünmez
-      bir rampaydı. Warp'ta dip diye bir bölge yok; geçişin TAMAMINI artık o
-      rampa taşıyor ve YERİ DEĞİŞTİ: opak taban artık logo şeridinin altında
-      (8 → 6.5 → 1.5rem), rampa şeridin arkasından geçiyor (toplam 13.5rem).
-      Karartı hero'nun dibinde bir blok olmaktan çıkıp şeridin arkasında
-      başlayan bir geçişe döndü. Ayrıntısı ve şeridin logo rengine etkisi
-      globals.css'te `.home-hero-fade` notunda.
-   3. Geometri her iki temada AYNI. Tema yalnızca paleti değiştirir.
-
-   app-shell'deki scroll rampası (header'ın --home-base'e akması), --logo-swap
-   ve `data-home-dark-start` nişanı yine hiç etkilenmiyor: onlar shader'ı değil
-   token'ları okuyor.
-   --------------------------------------------------------------------------- */
-
-/* Kompozisyon (geometri) — iki temada ortak, playground'daki ayarların birebir
-   karşılığı:
-
-   shaders.paper.design/warp#proportion=0.44&softness=1&distortion=0.03
-     &swirl=0.68&swirlIterations=6&shape=checks&shapeScale=0&speed=5
-     &scale=1.04&rotation=64
-
-   `shapeScale: 0` yüzünden `shape: "checks"` pratikte hiçbir şey çizmiyor —
-   taban desen tamamen sönük, görüntüyü swirl + distortion kuruyor. Yine de
-   playground'daki değerle bırakıldı: shapeScale büyütüldüğünde hangi desenin
-   ortaya çıkacağı buradan okunsun.
-
-   `fit: "cover"` + `worldWidth/Height` PLAYGROUND'DA YOK, burada ŞART.
-
-   Warp varsayılanı `defaultPatternSizing`, yani `fit: "none"`: desen CSS
-   pikseline kilitli, ölçek MUTLAK. Playground'un ~884×502'lik tuvalinde
-   kompozisyon tam oturuyor ama boy değişince kadraj değişiyor, resim değil.
-   Telefonda (390px genişlik) mermerin yalnızca küçük bir parçası kalıyordu —
-   swirl'ün dönüşü kadraja hiç girmediği için ekranda düz, ölü bir gradyan gibi
-   görünüyordu. "Mobilde berbat" tam olarak bu.
-
-   `cover` bunu düzeltir: dünya kutusu (aşağıdaki WORLD) tuvali kaplayacak
-   şekilde ölçekleniyor, yani kompozisyon KUTUYA ORANLI. Hangi ekranda olursak
-   olalım playground'daki kadrajın aynısını görüyoruz, sadece dar ekranda dikey
-   bir dilimi kırpılmış hâli. Kutu ölçüleri playground tuvalinin ölçüleri:
-   ayarlar orada bu kadrajda seçildi, referans o.
-
-   `scale` yine 1.04 — playground'daki değer. Artık mutlak bir piksel ölçeği
-   değil, `cover`in bulduğu ölçeğin üstüne binen bir çarpan; büyütmek dokuyu
-   iriltir, küçültmek daha çok mermer gösterir. */
-const WORLD = { worldWidth: 884, worldHeight: 502 } as const
 
 const GEOMETRY = {
   shape: "checks",
   shapeScale: 0,
-  proportion: 0.44,
+  proportion: 0.50,
   softness: 1,
-  distortion: 0.03,
-  swirl: 0.68,
-  swirlIterations: 6,
-  scale: 1.04,
+  distortion: 0.30,
+  swirl: 0.80,
+  swirlIterations: 3,
   rotation: 64,
   offsetX: 0,
   offsetY: 0,
+  // cover + world: kadraj mutlak piksele değil kutuya oranlı, dar ekranda
+  // kompozisyonun dikey bir dilimi kırpılıyor (playground tuvali 884×502).
   fit: "cover",
-  ...WORLD,
+  worldWidth: 884,
+  worldHeight: 502,
 } as const
 
-/* Playground'daki hız. Eski zeminde 1'di; Warp'ın swirl'ü çok daha yavaş
-   ilerleyen bir deformasyon olduğu için 5 burada "hızlı" değil, canlı duruyor. */
 const SPEED = 5
 
-/* TEMA, next-themes'in `resolvedTheme`inden DEĞİL <html>'in sınıfından okunuyor.
+// cover'ın bulduğu ölçeğin üstüne binen çarpan: küçültmek daha çok mermer
+// gösterir. Dar ekranda kadraj zaten kırpık, 1.04 orada iri ve detaysız kalıyor.
+const SCALE_WIDE = 1.04
+const SCALE_NARROW = 0.8
+const NARROW_QUERY = "(max-width: 768px)"
 
-   Zemin ancak paleti bilince mount edilebilir (yanlış paletle tek kare bile
-   boyanmamalı), yani "shader ne zaman gelir" sorusunun cevabı doğrudan "tema ne
-   zaman belli olur". `resolvedTheme` bunu geç veriyordu: kullanıcı "Sistem"
-   temasındaysa next-themes değeri bir EFFECT içinde matchMedia okuyup
-   yerleştiriyor, yani hidrasyondan sonra fazladan bir render turu.
+/* Palet. Warp'ta colors[0..1] geniş alanlara, colors[2] dar bir vurguya düşüyor.
+   Baskın ton = --background (header kenarı dikişsiz kapansın diye).
+   Ölçü h1: shader üstünde kendi zemini olmayan tek eleman. */
 
-   Oysa doğru cevap o anda ZATEN DOM'da: next-themes'in <head>'e koyduğu bloke
-   edici script, `dark` sınıfını daha ilk boyamadan önce <html>'e yazıyor.
-   Buradan okumak bir tur kazandırıyor — shader hidrasyonla aynı commit'te
-   mount oluyor.
-
-   `useSyncExternalStore` tam da bunun için: sunucu anlık görüntüsü null (SSR'da
-   sınıf okunamaz, zemin render edilmez), istemci anlık görüntüsü ilk render'dan
-   itibaren gerçek değer, MutationObserver da tema anahtarını yakalıyor.
-
-   BUNUN ÖTESİNDEKİ GECİKME BURADAN ÇÖZÜLMEZ: shaders paketi client bundle'ın
-   parçası, yani indirilip ayrıştırılması ve sayfanın hidrate olması gerekiyor;
-   sonra WebGL context'i kuruluyor, fragment shader derleniyor ve kütüphane
-   noise dokusunu (data URI) çözmeyi bekliyor. Bunlar canvas'ın doğal maliyeti;
-   `dynamic import` ile ertelemek işi daha da geciktirirdi. */
-const themeStore = {
-  subscribe(onStoreChange: () => void) {
-    const observer = new MutationObserver(onStoreChange)
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    })
-    return () => observer.disconnect()
-  },
-  getSnapshot(): "dark" | "light" {
-    return document.documentElement.classList.contains("dark")
-      ? "dark"
-      : "light"
-  },
-  getServerSnapshot(): null {
-    return null
-  },
-}
-
-function useDocumentTheme() {
-  return React.useSyncExternalStore(
-    themeStore.subscribe,
-    themeStore.getSnapshot,
-    themeStore.getServerSnapshot
-  )
-}
-
-/* Palet — geometri sabit, tema yalnızca RENKLERİ değiştiriyor.
-
-   Playground'daki üçlü (#3c1515 → #944752 → #ffc085) koyu bir kompozisyon:
-   gece tarafının şablonu o. Ama iki şeye uyarlandı:
-
-   • MARKA HUE'SU. Ortadaki #944752 gül/mürdüm; sitenin bütün paleti sıcak
-     kahve-amber. Aynı yerdeki renk kahveye çevrildi, kırmızıdaki sıcaklık
-     korundu.
-   • KONTRAST. Shader'ın üstünde kendi zemini OLMAYAN tek eleman h1; prompt,
-     çipler ve rozet kendi yüzeylerini taşıyor. Yani palet seçilirken tek ölçü
-     h1'in en kötü hâli. Aşağıdaki değerler bu yüzden hesaplandı, göz kararı
-     seçilmedi.
-
-   Gündüz — krem mermer. SIRALAMA GECEYLE AYNI YAPIDA, bu bir detay değil
-   paletin çalışma biçimi: Warp'ta colors[0] ve colors[1] geniş alanlara,
-   colors[2] dar bir vurguya düşüyor (playground referansında da öyle — iki
-   büyük kütle + tek parlak köşe).
-
-   Önceki deneme sıralamayı ters kurmuştu (#C08552 → #D4A574 → #FFF8F0): amber
-   baskın, krem yalnızca vurgu. Sonuç ekranda turuncu bir alan; sayfanın kendi
-   zemininden kopuk duruyordu ve header'ın dibinde kapatılacak fark en büyük
-   hâlindeydi. Şimdi baskın ton doğrudan --background: hem sayfayla aynı krem,
-   hem header kenarı sorunsuz (bkz. dosya başı, madde 1).
-
-   İKİ RENK DOYGUNLAŞTIRILDI, açılıp koyulaşmadı. İlk sürüm (#EFD8BB / #C08552)
-   ekranda soluk duruyordu; sebebi parlaklık değil KROMA — ikisi de token
-   ailesinin en nötr uçlarıydı ve krem alanla aralarında ton farkı kalmıyordu.
-   Aynı parlaklık bandında kalıp doygunluğu artırmak, kompozisyonu açıp
-   kontrastı bozmadan canlandırıyor.
-
-   En kötü hâl: --foreground (#3D2418) vurgu tonu #C8853F'nin üstünde 4.70:1 —
-   normal metin eşiğinin de üstünde (eski #C08552 4.59:1'di, yani doygunlaşma
-   kontrastı düşürmedi). Ara ton #F2D2A6'da 11.6:1. Vurgu tonunu koyulaştıran
-   biri bu ölçüyü tekrar yapmalı. */
+// Üçü de açık temanın rampasından (hue 30–37°): --background, --accent'in bir
+// tık doygun hâli, --chart-4. En kötü hâl --foreground/#D4A574 = 6.4:1.
+// (Denendi, geri alındı: koyu vurgu #61390e h1'i 1.48:1'e düşürüyordu.)
 const LIGHT = {
-  colors: [
-    "#FFF8F0", // --background · krem alan (baskın, header kenarını kapatan ton)
-    "#F2D2A6", // sıcak kum ara ton (--accent ailesi, belirgin şekilde daha doygun)
-    "#C8853F", // amber vurgu (--chart-1 #C08552'nin doygun hâli)
-  ],
+  colors: ["#FFF8F0", "#F6DDB6", "#D4A574"],
 } as const
 
-/* Gece — espresso → kahve → karamel. Playground'daki koyu→parlak dizilimi
-   aynen duruyor, hue tamamen markanın eksenine çekildi.
-
-   BİR ARA DENEME GERİ ALINDI: playground'ın kırmızısına sadık kalmaya çalışan
-   #2A1410 / #6E3B2C / #A06848 üçlüsü ekranda tuğla kırmızısı, çamurlu bir alan
-   veriyordu — sitenin hiçbir yerinde olmayan bir hue. Kırmızıyı taşımaya
-   çalışmak yerine kompozisyonun YAPISI (baskın koyu alan + tek parlak köşe)
-   korundu, renkler markanın kendi rampasından seçildi.
-
-   Baskın ton doğrudan --background: üst kenarın header'la dikişsiz kapanması
-   buna bağlı (bkz. dosya başı, madde 1).
-
-   TEPE TONU BİLEREK #ffc085 DEĞİL, hatta --primary (#D4A574) bile değil.
-   Ölçüldü: --foreground (#F5E8DA) o şeftali tonunun üstünde 1.6:1, #D4A574'ün
-   üstünde 1.64:1 veriyor — başlık, parlak alan arkasına geldiği anda okunmuyor
-   ve o alan duran bir şey değil, swirl ile geziniyor. #A96A3A ile en kötü hâl
-   3.22:1: h1 her kırılımda ≥30px, yani büyük metin eşiğinin (3:1) üstünde.
-   Marka amberinin canlılığı parlaklıktan değil DOYGUNLUKTAN geliyor — tepeyi
-   açmak yerine kroması yüksek tutuldu. Daha parlak bir tepe isteyen, aynı
-   ölçüyü tekrarlamak zorunda. */
+// En kötü hâl --foreground/#A96A3A = 3.22:1; h1 her kırılımda ≥30px, büyük
+// metin eşiğinin üstünde. Tepeyi açan bu ölçüyü tekrarlamalı.
 const DARK = {
-  colors: [
-    "#1A130E", // --background · espresso alan (baskın, header kenarını kapatan ton)
-    "#5C3A24", // koyu kahve ara ton
-    "#A96A3A", // doygun karamel tepe
-  ],
+  colors: ["#1A130E", "#5C3A24", "#A96A3A"],
 } as const
 
-/* ÖRNEKLEME TAVANI — CSS pikseli başına kaç GPU pikseli boyanacak.
+/* Canvas gelene (ve WebGL hiç gelmezse sonsuza) kadar duran statik zemin.
+   Sunucuda render ediliyor, JS beklemiyor: shader zinciri (bundle + hidrasyon +
+   context + derleme) ilk boyamadan geç bittiği için hero eskiden o boşlukta düz
+   --background kalıyordu. Temayı `dark:` varyantı seçiyor, palet tek kaynak.
+   Saydam uç `transparent` değil `…00`: düz transparent saydam SİYAH. */
+function staticBackdrop([base, mid, accent]: readonly string[]) {
+  return [
+    `radial-gradient(78% 62% at 82% 16%, ${accent} 0%, ${accent}00 62%)`,
+    `radial-gradient(92% 78% at 16% 74%, ${mid} 0%, ${mid}00 70%)`,
+    `linear-gradient(154deg, ${mid} 0%, ${base} 50%, ${mid} 100%)`,
+  ].join(", ")
+}
 
-   Kütüphane `maxPixelCount`i mutlak bir piksel sayısı olarak alıyor ve tek
-   başına yeterli değil: tavan yalnız BÜYÜK ekranlarda devreye giriyor, telefon
-   hiçbir zaman ona değmiyor. Varsayılan yol şuydu — minPixelRatio 2, dpr 3 olan
-   bir telefonda kütüphane NATIVE 3x'te boyuyor: 390×844'lük bir hero'da
-   1170×2532 ≈ 2.96M piksel, saniyede 60 kez. Warp'ta her piksel için `swirl`
-   döngüsü `swirlIterations` (6) kez dönüyor, üstüne noise dokusu okunuyor —
-   yani fragment başına iş eski shader'dan az değil.
+const LIGHT_BACKDROP = staticBackdrop(LIGHT.colors)
+const DARK_BACKDROP = staticBackdrop(DARK.colors)
 
-   Tavanı ölçekten türetiyoruz: maxPixelCount = genişlik × yükseklik × kare.
+const HANDOFF_MS = 600
 
-   BUNU YAPABİLMEMİZİN SEBEBİ, kompozisyonun çözünürlükten BAĞIMSIZ olması:
-   desen CSS pikseline kilitli (fit: "none"), tavanı düşürmek resmi DEĞİŞTİRMEZ,
-   aynı resmi daha seyrek örnekler. Warp yumuşak bir alan olduğu için (softness
-   1, sert kenar yok) bu takas eski taneli zemindekinden bile ucuz.
-
-   1.5 telefonda ~4x daha az fragment işi demek (2.96M → 0.74M). Dokunmatik
-   sinyali `pointer: coarse`; ekran genişliği değil, çünkü mesele boy değil
-   pil + tile GPU + termal sınır (tabletler de bu tarafta doğru yere düşüyor). */
+// maxPixelCount = alan × cap². Telefonda native 3x ~2.96M fragment demekti;
+// 1.5 ile ~0.74M. Sinyal `pointer: coarse` (pil/tile GPU), genişlik değil.
 const RENDER_SCALE_CAP_COARSE = 1.5
 const RENDER_SCALE_CAP_FINE = 2
-
-/* Ölçekten bağımsız MUTLAK tavan; geniş monitörlerde ikinci bir emniyet.
-   ~4.1M piksel 1440p ölçeğinde bir kareye denk. */
 const ABSOLUTE_MAX_PIXEL_COUNT = 1920 * 1080 * 2
 
-/* Fullscreen bir dörtgen boyuyoruz: kenar yok, yani MSAA'nın düzelteceği hiçbir
-   şey yok — sadece tile GPU'larda bellek bant genişliği yakıyor. Derinlik ve
-   stencil de kullanılmıyor (kütüphane yalnız COLOR_BUFFER_BIT temizliyor ve
-   derinlik testi hiç açmıyor). Üçünü de kapatmak bedava kazanç. */
+// Fullscreen dörtgen: kenar yok (MSAA gereksiz), derinlik/stencil kullanılmıyor.
 const WEBGL_CONTEXT = {
   antialias: false,
   depth: false,
   stencil: false,
 } as const satisfies WebGLContextAttributes
 
-/* GİRİŞTE YAPAY GECİKME YOK. Burada bir zamanlar hero'nun kademe dizisine
-   (rozet 0.10, başlık 0.22, prompt 0.34...) eklenen 0.18s'lik bir gecikme
-   vardı. Sorun şu ki bu gecikme MOUNT anına biniyordu: canvas zaten hidrasyon
-   sonrası geliyor, yani doğal bir bekleme var ve gecikme onun ÜSTÜNE ekleniyor.
-   Sonuç, zemin sayfanın geri kalanının gerisine düşüyordu. Animasyon mount olur
-   olmaz başlar; hidrasyonun kendisi zaten dizideki yerini veriyor. */
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? React.useEffect : React.useLayoutEffect
 
 type Props = {
-  /* Zemin tamamen kapandığında (blog bölümü header'a dayandığında) app-shell
-     bunu true'ya çeker ve animasyon donar.
-
-     Eskiden bu kararı bileşenin kendi IntersectionObserver'ı veriyordu. Artık
-     veremiyor: katman <main>'in dışında, yani kaydırma onu hiç oynatmıyor ve
-     kesişim durumu asla değişmiyor. Kapanmayı bilen tek yer scroll rampasını
-     zaten ölçen app-shell. */
+  /* Zemin tamamen kapandığında app-shell true'ya çeker, animasyon donar. Katman
+     <main>'in dışında olduğu için kendi IntersectionObserver'ı bunu göremez. */
   covered?: boolean
 }
 
@@ -283,44 +94,78 @@ export function HomeHeroBackdrop({ covered = false }: Props) {
   const theme = useDocumentTheme()
   const reduceMotion = useReducedMotion()
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const canvasHostRef = React.useRef<HTMLDivElement>(null)
 
-  /* Kabın ölçüsü örnekleme tavanını veriyor. Kabı ölçmek pencereyi ölçmekten
-     iyi: yükseklik `--hero-vh` ile zaten donduruluyor (mobil klavye onu
-     oynatmasın diye) ve kap o donmuş değeri taşıyor — yani klavye açılınca
-     canvas yeniden boyutlanmıyor. */
+  // Kabın ölçüsü örnekleme tavanını veriyor (pencere değil: --hero-vh donmuş,
+  // mobil klavye canvas'ı yeniden boyutlandırmıyor).
   const [heroSize, setHeroSize] = React.useState({ width: 0, height: 0 })
 
-  React.useEffect(() => {
+  // Senkron ölçüm + layout effect şart: ResizeObserver'ın ilk callback'i geç
+  // geliyor, tavan o ana dek mutlak değere düşüyor ve canvas önce native
+  // çözünürlükte kurulup sonra yeniden boyutlanıyordu (telefonda iki kat iş).
+  useIsomorphicLayoutEffect(() => {
     const el = containerRef.current
     if (!el) return
 
-    const resizeObserver = new ResizeObserver(([entry]) => {
-      const rect = entry?.contentRect
-      if (!rect?.height) return
-      // Aynı ölçüde yeni nesne üretme: canvas boyutu değişmediği hâlde her
-      // gözlemde render tetiklenmesin.
+    const commit = (width: number, height: number) =>
       setHeroSize((prev) =>
-        prev.width === rect.width && prev.height === rect.height
-          ? prev
-          : { width: rect.width, height: rect.height }
+        prev.width === width && prev.height === height ? prev : { width, height }
       )
+
+    const rect = el.getBoundingClientRect()
+    if (rect.height) commit(rect.width, rect.height)
+
+    const resizeObserver = new ResizeObserver(([entry]) => {
+      const box = entry?.contentRect
+      if (box?.height) commit(box.width, box.height)
     })
     resizeObserver.observe(el)
 
     return () => resizeObserver.disconnect()
   }, [])
 
-  /* Tema okunana kadar (yalnız SSR) zemin mount edilmiyor: yanlış paletle tek
-     kare bile boyanmasın. O ana dek hero düz --background kalır.
-
-     JS kapalıysa bu zemin hiç gelmez: hero düz --background kalır ve logo
-     şeridi kendi sert kenarıyla başlar. Yumuşatma kaybolur ama düzen bozulmaz. */
   const themeReady = theme !== null
   const palette = theme === "dark" ? DARK : LIGHT
 
-  /* Örnekleme tavanı (yukarıdaki nota bak). Kap henüz ölçülmediyse (ilk kare)
-     mutlak tavana düşüyoruz; ResizeObserver boyamadan önce teslim ettiği için
-     bu pencere pratikte tek karelik. */
+  // Kütüphane, context + derleme + uniform'lar bittiğinde kabına
+  // `data-paper-shader` yazıyor: devir nişanı bu. Hiç gelmezse (WebGL yok)
+  // statik zemin kalıcı olarak yerinde kalır.
+  const [canvasLive, setCanvasLive] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!themeReady || canvasLive) return
+    const host = canvasHostRef.current
+    if (!host) return
+
+    let raf = 0
+    const announce = () => {
+      raf = requestAnimationFrame(() => {
+        raf = requestAnimationFrame(() => setCanvasLive(true))
+      })
+    }
+
+    if (host.querySelector("[data-paper-shader]")) {
+      announce()
+      return () => cancelAnimationFrame(raf)
+    }
+
+    const observer = new MutationObserver(() => {
+      if (!host.querySelector("[data-paper-shader]")) return
+      observer.disconnect()
+      announce()
+    })
+    observer.observe(host, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-paper-shader"],
+    })
+
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(raf)
+    }
+  }, [themeReady, canvasLive])
+
   const scaleCap = useMediaQuery("(pointer: coarse)")
     ? RENDER_SCALE_CAP_COARSE
     : RENDER_SCALE_CAP_FINE
@@ -332,63 +177,60 @@ export function HomeHeroBackdrop({ covered = false }: Props) {
       )
     : ABSOLUTE_MAX_PIXEL_COUNT
 
+  const scale = useMediaQuery(NARROW_QUERY) ? SCALE_NARROW : SCALE_WIDE
+
   return (
     <div
       ref={containerRef}
       aria-hidden
-      /* Katman SidebarInset'in tepesine yapışık ve tam bir viewport boyu:
-         header (4rem) + hero (calc(--hero-vh - 4rem)) = --hero-vh, yani dibi
-         hero'nun dibiyle çakışıyor. `--hero-vh` home-hero.tsx'te donduruluyor;
-         JS çalışmazsa 100svh fallback'i devrede. */
+      // Mobilde header 4rem + hero, masaüstünde yalnız hero (header orada
+      // akıştan çıkmış): iki halde de --hero-vh, yani katman SidebarInset'i
+      // boydan boya dolduruyor. Dip kenarı viewport dibinde kaldığı için hiç
+      // görünmez; kaydırınca bölümün saydam üst bölgesinden bu sabit zemin
+      // görünür, opak bölgesi onu kapatır. --hero-vh home-hero.tsx'te donuyor.
       className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[var(--hero-vh,100svh)] overflow-hidden"
     >
+      <div
+        className="absolute inset-0 dark:hidden"
+        style={{ background: LIGHT_BACKDROP }}
+      />
+      <div
+        className="absolute inset-0 hidden dark:block"
+        style={{ background: DARK_BACKDROP }}
+      />
+
       {themeReady ? (
-        /* GİRİŞ ANİMASYONU YOK — zemin mount olduğu karede tam görünür.
-           Burada bir zamanlar `hero-shader-fx` vardı (40px yükselme + 0.9s
-           sönümleme); yukarıdaki "yapay gecikme yok" notunun aynı gerekçesi
-           ona da işliyordu: canvas hidrasyon + tema çözümünden sonra geldiği
-           için zaten doğal bir bekleme var, animasyon onun ÜSTÜNE biniyor ve
-           zemin sayfanın geri kalanının gerisine düşüyordu.
-
-           Sarmalayıcı yine de duruyor: canvas ile dipteki fade rampasını tek
-           konumlandırma bağlamında topluyor.
-
-           Tema değişiminde renkler anında takas oluyor, çapraz sönümleme yok:
-           sayfanın geri kalanındaki token'lar da anında flip ediyor, shader'a
-           özel bir gecikme onu diğer her şeyin gerisine düşürürdü. */
-        <div className="relative size-full">
+        // Opaklık mount'a değil `canvasLive`e bağlı: mount ile ilk kare arasında
+        // aralık var, mount'ta başlayan geçiş o aralığı boşa harcar ve devir
+        // yine sıçrardı. Tema değişiminde renkler anında takas olur; alttaki
+        // statik zemin de `dark:` ile aynı anda flip ettiği için ayrışmazlar.
+        <div
+          ref={canvasHostRef}
+          className="absolute inset-0"
+          style={{
+            opacity: canvasLive ? 1 : 0,
+            transition: `opacity ${reduceMotion ? 0 : HANDOFF_MS}ms ease-out`,
+          }}
+        >
           <Warp
             {...GEOMETRY}
+            scale={scale}
             colors={[...palette.colors]}
-            // reduce-motion: hız 0 → tek, deterministik kare. Kompozisyon
-            // duruyor, yalnızca akış kalkıyor. `covered` de aynı kapıyı
-            // kullanıyor: kütüphanede speed=0, rAF döngüsünü tamamen iptal
-            // ediyor (zaman korunur), yani kullanıcı aşağıdaki bölümlerde
-            // gezerken boşuna GPU yakılmıyor.
+            // speed=0 rAF döngüsünü tamamen iptal ediyor (zaman korunur).
             speed={reduceMotion || covered ? 0 : SPEED}
             maxPixelCount={maxPixelCount}
             webGlContextAttributes={WEBGL_CONTEXT}
             style={{ width: "100%", height: "100%" }}
           />
-          {/* Dibi blog bölümünün rengine (--home-base) bağlayan rampa. Gradient
-              detayları `.home-hero-fade` içinde (globals.css).
-
-              SARMALAYICININ İÇİNDE, canvas'ın hemen ÜSTÜNDE duruyor: ikisi tek
-              cisim, birlikte belirir. Dışarıda ayrı bir kardeş olsaydı tema
-              çözülmeden de boyanır, karartı ufuksuz kalır ve logo şeridinin
-              arkasında gerekçesiz bir bant gibi görünürdü.
-
-              Yükseklik YÜZDE DEĞİL sabit: gradient durakları rem cinsinden ve
-              üstüne binen blog bölümünün bindirmesi de sabit piksel (96/112px).
-              `h-[22%]` iken kısa pencerelerde tam opak bölge bindirmeden kısa
-              kalıyor, bölümün sert üst kenarı çizgi olarak görünüyordu.
-              13.5rem = 1.5rem opak dip + 12rem rampa. Opak taban logo şeridinin
-              ALTINDA: rampa şeridin arkasından geçiyor, karartı orada başlayıp
-              şeridi geçince kapanıyor. Alfa dağılımı ((1-u)⁵) ve şeridin logo
-              renginin buna bağlı değişimi globals.css'te. */}
-          <div className="home-hero-fade absolute inset-x-0 bottom-0 h-[13.5rem]" />
         </div>
       ) : null}
+
+      {/* Dip rampası BURADA DEĞİL. Eskiden 13.5rem'lik `.home-hero-fade` vardı
+          ve en alt 1.5rem'i tam opak --home-base'ti; logo şeridi hero dibinin
+          4-92px üstünde durduğu için karartı tam şeridin arkasından başlıyordu.
+          Geçişin tamamı artık bölümün kendi zemininde (`.home-dark-ground`),
+          "Asistanla Tanışın" başlığının 24px üstünden başlıyor. Shader kendi
+          dibine kadar temiz akıyor. */}
     </div>
   )
 }

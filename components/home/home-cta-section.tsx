@@ -4,8 +4,8 @@
 // Tek satırlık başlık ve tek bir eylem düğmesinden ibarettir: sayfayı okuyup
 // aşağıya inen kullanıcıya son bir giriş noktası verir.
 //
-// "Sepet" kelimesinin hemen soluna market logoları shadcn avatar grubu olarak
-// yerleşir. Avatarlar `em` cinsinden ölçülür (size-[0.82em]) — böylece
+// "Sepet" kelimesinin hemen soluna market logoları bindirmeli bir grup olarak
+// yerleşir. Logolar `em` cinsinden ölçülür (size-[0.92em]) — böylece
 // başlığın responsive punto basamaklarında ayrıca ayarlanmaya gerek kalmadan
 // metinle aynı boyda kalırlar.
 //
@@ -20,12 +20,6 @@ import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarGroup,
-  AvatarImage,
-} from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { AnimateEnter } from "@/components/motion/animate-enter"
 import { PressFx } from "@/components/motion/press-fx"
@@ -33,12 +27,12 @@ import { SPRING_SLIDE, STAGGER_STEP } from "@/lib/motion"
 
 // Sıra, kayan pencerenin sırasını belirler — HeroMarketBadge ile aynı dizilim.
 const MARKETS = [
-  { src: "/market-logos/a101.webp", alt: "A101", short: "A" },
-  { src: "/market-logos/migros.webp", alt: "Migros", short: "M" },
-  { src: "/market-logos/sok.webp", alt: "ŞOK", short: "Ş" },
-  { src: "/market-logos/bim.webp", alt: "BİM", short: "B" },
-  { src: "/market-logos/tarim-kredi.webp", alt: "Tarım Kredi", short: "T" },
-  { src: "/market-logos/carrefoursa.webp", alt: "CarrefourSA", short: "C" },
+  { src: "/market-logos/a101.webp", alt: "A101" },
+  { src: "/market-logos/migros.webp", alt: "Migros" },
+  { src: "/market-logos/sok.webp", alt: "ŞOK" },
+  { src: "/market-logos/bim.webp", alt: "BİM" },
+  { src: "/market-logos/tarim-kredi.webp", alt: "Tarım Kredi" },
+  { src: "/market-logos/carrefoursa.webp", alt: "CarrefourSA" },
 ] as const
 
 // Aynı anda gösterilen logo sayısı ve her adım arasındaki süre.
@@ -93,7 +87,15 @@ export function HomeCtaSection() {
             {/* Logo grubu ile "Sepet'i dene." tek parça: satır sarmasında
               logolar kelimeden kopup üst satırda yalnız kalmaz. */}
             <span className="inline-flex items-center gap-[0.25em]">
-              <AvatarGroup className="-space-x-[0.28em]">
+              {/* Hero rozetiyle aynı kurulum: shadcn `Avatar` primitifi YOK.
+                O primitif her avatara iki kontur katmanı bindiriyor (iç rim +
+                `mix-blend-darken` kenarlık); bindirmeli bir grupta blend
+                alttaki avatarın kenarını yukarı geçiriyor, üst üste iki halka
+                okunuyordu. Ayrıcı halka da `--background` değil bölümün gerçek
+                zeminini (`--home-base`) taşımalı — ikisi bilinçli olarak farklı
+                renkler, o yüzden halka ayırıcı değil soluk bir hale gibi
+                duruyordu. */}
+              <span className="inline-flex -space-x-[0.31em]">
                 <AnimatePresence mode="popLayout" initial={false}>
                   {windowLogos.map((market) => (
                     <motion.span
@@ -107,24 +109,23 @@ export function HomeCtaSection() {
                         ...slide,
                         opacity: { duration: 0.2, ease: "easeOut" },
                       }}
-                      className="inline-flex shrink-0"
+                      title={market.alt}
+                      className="relative inline-flex size-[0.92em] shrink-0 rounded-full bg-[var(--home-base)] ring-[0.075em] ring-[var(--home-base)]"
                     >
-                      {/* Halka avatarın kendisinde: AvatarGroup'un doğrudan
-                        çocukları artık motion sarmalayıcıları, grubun
-                        `*:data-[slot=avatar]` seçicisi avatara ulaşmıyor. */}
-                      <Avatar
-                        className="size-[0.82em] ring-[0.05em] ring-background"
-                        title={market.alt}
-                      >
-                        <AvatarImage src={market.src} alt={market.alt} />
-                        <AvatarFallback className="text-[0.3em]">
-                          {market.short}
-                        </AvatarFallback>
-                      </Avatar>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={market.src}
+                        alt={market.alt}
+                        decoding="async"
+                        className="size-full rounded-full object-cover"
+                      />
+                      {/* Beyaz zeminli logolar krem sayfada kaybolmasın diye
+                        tek bir ince kenar — blend yok, altı geçirmez. */}
+                      <span className="pointer-events-none absolute inset-0 rounded-full border border-black/10 dark:border-white/10" />
                     </motion.span>
                   ))}
                 </AnimatePresence>
-              </AvatarGroup>
+              </span>
               <span>Sepet&apos;i dene.</span>
             </span>
           </h2>
