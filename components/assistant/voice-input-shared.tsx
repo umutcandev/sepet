@@ -1,13 +1,30 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, Loader2Icon, MicIcon, SquareIcon, XIcon } from "lucide-react"
+import {
+  RiCheckLine,
+  RiCloseLine,
+  RiLoader4Line,
+  RiMicLine,
+  RiStopFill,
+} from "@remixicon/react"
 
 import { PromptInputButton } from "@/components/ai-elements/prompt-input"
 import { cn } from "@/lib/utils"
 
+// Dolgu her yönde eşit. Önceden sol %10'du (`pl-2.5`) çünkü kayıt sırasında
+// soldaki çocuk dalga formu / düz metin oluyor ve nefes payı gerekiyordu; ama
+// gözden geçirme adımında soldaki çocuk İPTAL HAPININ kendisi, o yüzden hap
+// üstten/alttan 4px, soldan 10px boşlukla oturup şeridi eğri gösteriyordu.
+// Payı artık ihtiyacı olan çocuk kendisi taşıyor (aşağıya bkz.).
 export const voiceContainerClass =
-  "flex items-center gap-1 rounded-full border bg-background/80 py-1 pr-1 pl-2.5"
+  "flex items-center gap-1 rounded-full border bg-background/80 p-1"
+
+// Hap ölçeği rozetle aynı: ~24px yükseklikte tam yuvarlak bir yüzeyde 1px rim
+// çepeçevre sert bir kontura dönüşür, o yüzden buton değil ÇİP kabartması
+// kullanılıyor (bkz. globals.css, surface-raised-chip). `surface-tint`
+// gerekiyor çünkü bunlar shadcn varyantı değil, `data-variant` yazmıyorlar.
+const voicePillSurface = "surface-tint surface-raised-chip"
 
 export interface VoiceMicButtonProps {
   onClick: () => void
@@ -24,7 +41,7 @@ export function VoiceMicButton({ onClick, disabled, className }: VoiceMicButtonP
       aria-label="Sesle yaz"
       tooltip="Sesle yaz"
     >
-      <MicIcon className="size-4" />
+      <RiMicLine className="size-4" />
     </PromptInputButton>
   )
 }
@@ -52,14 +69,15 @@ export function VoiceStopButton({
       aria-busy={loading || undefined}
       disabled={disabled}
       className={cn(
-        "flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-90",
+        voicePillSurface,
+        "flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-background [--surface-base:var(--foreground)] transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-90",
         className,
       )}
     >
       {loading ? (
-        <Loader2Icon className="size-3 animate-spin" />
+        <RiLoader4Line className="size-3 animate-spin" />
       ) : (
-        <SquareIcon className="size-3 fill-current" />
+        <RiStopFill className="size-3" />
       )}
     </button>
   )
@@ -83,11 +101,12 @@ export function VoiceCancelButton({
       disabled={disabled}
       aria-label="Ses kaydını iptal et"
       className={cn(
-        "flex h-6 shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-2 text-xs font-medium text-foreground transition-colors hover:bg-muted/80 disabled:cursor-not-allowed disabled:opacity-60",
+        voicePillSurface,
+        "flex h-6 shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-2 text-xs font-medium text-foreground [--surface-base:var(--muted)] transition-colors hover:bg-muted/80 disabled:cursor-not-allowed disabled:opacity-60",
         className,
       )}
     >
-      <XIcon className="size-3" />
+      <RiCloseLine className="size-3" />
       <span>İptal</span>
     </button>
   )
@@ -116,14 +135,15 @@ export function VoiceConfirmButton({
       aria-label="Sesi yazıya çevir ve metne ekle"
       aria-busy={loading || undefined}
       className={cn(
-        "flex h-6 shrink-0 items-center justify-center gap-1 rounded-full bg-foreground px-2.5 text-xs font-medium text-background transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-80",
+        voicePillSurface,
+        "flex h-6 shrink-0 items-center justify-center gap-1 rounded-full bg-foreground px-2.5 text-xs font-medium text-background [--surface-base:var(--foreground)] transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-80",
         className,
       )}
     >
       {loading ? (
-        <Loader2Icon className="size-3 animate-spin" />
+        <RiLoader4Line className="size-3 animate-spin" />
       ) : (
-        <CheckIcon className="size-3" />
+        <RiCheckLine className="size-3" />
       )}
       <span>İlet</span>
       {elapsedLabel && !loading && (

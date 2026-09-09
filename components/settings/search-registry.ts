@@ -1,22 +1,22 @@
 import type * as React from "react"
 import {
-  ChartColumnIcon,
-  CircleHelpIcon,
-  CookieIcon,
-  CreditCardIcon,
-  DownloadIcon,
-  FileTextIcon,
-  KeyRoundIcon,
-  LogOutIcon,
-  MapPinIcon,
-  MonitorIcon,
-  Settings2Icon,
-  ShieldCheckIcon,
-  ShieldIcon,
-  Trash2Icon,
-  UserIcon,
-  UserRoundIcon,
-} from "lucide-react"
+  RiBankCardLine,
+  RiBarChartLine,
+  RiComputerLine,
+  RiCookieLine,
+  RiDeleteBinLine,
+  RiDownloadLine,
+  RiEqualizerLine,
+  RiFileTextLine,
+  RiKey2Line,
+  RiLogoutBoxLine,
+  RiMapPinLine,
+  RiQuestionLine,
+  RiShieldCheckLine,
+  RiShieldLine,
+  RiUser3Line,
+  RiUserLine,
+} from "@remixicon/react"
 
 export type TabKey = "genel" | "hesap" | "gizlilik" | "abonelik" | "kullanim"
 
@@ -27,11 +27,11 @@ export const NAV_ITEMS: Array<{
   label: string
   icon: IconType
 }> = [
-  { key: "genel", label: "Genel", icon: Settings2Icon },
-  { key: "hesap", label: "Hesap", icon: UserIcon },
-  { key: "gizlilik", label: "Gizlilik", icon: ShieldIcon },
-  { key: "abonelik", label: "Abonelik", icon: CreditCardIcon },
-  { key: "kullanim", label: "Kullanım", icon: ChartColumnIcon },
+  { key: "genel", label: "Genel", icon: RiEqualizerLine },
+  { key: "hesap", label: "Hesap", icon: RiUserLine },
+  { key: "gizlilik", label: "Gizlilik", icon: RiShieldLine },
+  { key: "abonelik", label: "Abonelik", icon: RiBankCardLine },
+  { key: "kullanim", label: "Kullanım", icon: RiBarChartLine },
 ]
 
 export const TAB_LABEL: Record<TabKey, string> = {
@@ -56,25 +56,25 @@ const GENEL_SETTINGS: SettingEntry[] = [
     target: "avatar",
     title: "Avatar",
     keywords: "profil fotoğraf resim avatar görsel pp",
-    icon: UserRoundIcon,
+    icon: RiUser3Line,
   },
   {
     target: "tam-ad",
     title: "Tam ad",
     keywords: "isim ad kullanıcı adı profil",
-    icon: UserIcon,
+    icon: RiUserLine,
   },
   {
     target: "konum",
     title: "Konum",
     keywords: "konum adres sehir mahalle harita market sube bolge",
-    icon: MapPinIcon,
+    icon: RiMapPinLine,
   },
   {
     target: "tema",
     title: "Tema",
     keywords: "tema gorunum acik koyu sistem dark light renk",
-    icon: MonitorIcon,
+    icon: RiComputerLine,
   },
 ]
 
@@ -83,32 +83,32 @@ const HESAP_SETTINGS: SettingEntry[] = [
     target: "cikis",
     title: "Tüm cihazlardan çıkış yap",
     keywords: "cikis oturum kapat logout cihaz",
-    icon: LogOutIcon,
+    icon: RiLogoutBoxLine,
   },
   {
     target: "hesap-sil",
     title: "Hesabımı sil",
     keywords: "hesap sil arsiv kapat kaldir delete",
-    icon: Trash2Icon,
+    icon: RiDeleteBinLine,
   },
   {
     target: "sifre",
     title: "Şifre",
     keywords: "sifre parola password degistir belirle guvenlik hesap",
-    icon: KeyRoundIcon,
+    icon: RiKey2Line,
   },
   {
     target: "iki-adimli-dogrulama",
     title: "İki adımlı doğrulama",
     keywords:
       "iki adimli dogrulama 2fa two factor totp authenticator kod guvenlik kurtarma",
-    icon: ShieldCheckIcon,
+    icon: RiShieldCheckLine,
   },
   {
     target: "oturumlar",
     title: "Aktif oturumlar",
     keywords: "oturum cihaz session aktif giris",
-    icon: MonitorIcon,
+    icon: RiComputerLine,
   },
 ]
 
@@ -117,37 +117,37 @@ const GIZLILIK_SETTINGS: SettingEntry[] = [
     target: "veri-disa-aktar",
     title: "Verilerini dışa aktar",
     keywords: "veri disa aktar export indir zip yedek tasima gdpr kvkk",
-    icon: DownloadIcon,
+    icon: RiDownloadLine,
   },
   {
     target: "sohbet-sil",
     title: "Tüm sohbetleri sil",
     keywords: "sohbet asistan gecmis sil temizle toplu",
-    icon: Trash2Icon,
+    icon: RiDeleteBinLine,
   },
   {
     target: "sepet-sil",
     title: "Tüm sepetleri sil",
     keywords: "sepet liste sil temizle toplu",
-    icon: Trash2Icon,
+    icon: RiDeleteBinLine,
   },
   {
     target: "fis-sil",
     title: "Tüm fişleri sil",
     keywords: "fis fatura makbuz sil temizle toplu gorsel",
-    icon: Trash2Icon,
+    icon: RiDeleteBinLine,
   },
   {
     target: "analiz-cerezleri",
     title: "Analiz çerezleri",
     keywords: "cerez analiz analytics gizlilik izleme takip opt out",
-    icon: CookieIcon,
+    icon: RiCookieLine,
   },
   {
     target: "gizlilik-politikasi",
     title: "Gizlilik Politikası",
     keywords: "gizlilik politika yasal kvkk gdpr veri haklar",
-    icon: FileTextIcon,
+    icon: RiFileTextLine,
   },
 ]
 
@@ -156,33 +156,33 @@ const ABONELIK_SETTINGS: SettingEntry[] = [
     target: "pro-yukselt",
     title: "Pro'ya yükselt",
     keywords: "pro yukselt abonelik satin al odeme aylik yillik plan upgrade",
-    icon: CreditCardIcon,
+    icon: RiBankCardLine,
   },
   {
     target: "abonelik-durumu",
     title: "Abonelik durumu",
     keywords: "abonelik durum plan pro yenilenme iptal fatura",
-    icon: CreditCardIcon,
+    icon: RiBankCardLine,
   },
   {
     target: "abonelik-yonet",
     title: "Aboneliği yönet",
     keywords: "abonelik yonet iptal portal fatura odeme degistir",
-    icon: CreditCardIcon,
+    icon: RiBankCardLine,
   },
   {
     target: "sss",
     title: "Sıkça sorulan sorular",
     keywords:
       "sss sik sorulan soru faq yardim iptal iade odeme guvenlik limit fiyat yenilenme",
-    icon: CircleHelpIcon,
+    icon: RiQuestionLine,
   },
   {
     target: "sozlesmeler",
     title: "Yasal sözleşmeler",
     keywords:
       "mesafeli satis sozlesme iptal iade gizlilik yasal odeme fatura polar kayitli satici",
-    icon: FileTextIcon,
+    icon: RiFileTextLine,
   },
 ]
 
@@ -191,33 +191,33 @@ const KULLANIM_SETTINGS: SettingEntry[] = [
     target: "limits",
     title: "Kullanım Limitleri",
     keywords: "limit kota plan abonelik free pro yenilenir",
-    icon: ChartColumnIcon,
+    icon: RiBarChartLine,
   },
-  { target: "chat", title: "Sohbet", keywords: "mesaj asistan konuşma", icon: ChartColumnIcon },
+  { target: "chat", title: "Sohbet", keywords: "mesaj asistan konuşma", icon: RiBarChartLine },
   {
     target: "text-messages",
     title: "Asistan mesajları",
     keywords: "metin sohbet mesaj yazı",
-    icon: ChartColumnIcon,
+    icon: RiBarChartLine,
   },
   {
     target: "image-analyses",
     title: "Görsel analizleri",
     keywords: "resim fotoğraf analiz görüntü kamera",
-    icon: ChartColumnIcon,
+    icon: RiBarChartLine,
   },
-  { target: "storage", title: "Depolama", keywords: "kayıt saklama alan", icon: ChartColumnIcon },
+  { target: "storage", title: "Depolama", keywords: "kayıt saklama alan", icon: RiBarChartLine },
   {
     target: "saved-baskets",
     title: "Sepet kaydetme",
     keywords: "sepet kayıt liste",
-    icon: ChartColumnIcon,
+    icon: RiBarChartLine,
   },
   {
     target: "saved-receipts",
     title: "Fiş kaydetme",
     keywords: "fiş fatura kayıt makbuz",
-    icon: ChartColumnIcon,
+    icon: RiBarChartLine,
   },
 ]
 

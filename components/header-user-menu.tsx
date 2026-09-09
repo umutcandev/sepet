@@ -16,11 +16,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-  ChartColumnIcon,
-  CreditCardIcon,
-  LogOutIcon,
-  SettingsIcon,
-} from "lucide-react"
+  RiBankCardLine,
+  RiBarChartLine,
+  RiLogoutBoxLine,
+  RiSettings3Line,
+} from "@remixicon/react"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { ThemeMenuItems } from "@/components/theme-toggle"
 import { SettingsDialog } from "@/components/settings/settings-dialog"
@@ -93,7 +93,7 @@ export function HeaderUserMenu({
               openSettings("genel")
             }}
           >
-            <SettingsIcon />
+            <RiSettings3Line />
             Ayarlar
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -102,7 +102,7 @@ export function HeaderUserMenu({
               openSettings("abonelik")
             }}
           >
-            <CreditCardIcon />
+            <RiBankCardLine />
             Abonelik
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -111,7 +111,7 @@ export function HeaderUserMenu({
               openSettings("kullanim")
             }}
           >
-            <ChartColumnIcon />
+            <RiBarChartLine />
             Kullanım
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -124,7 +124,7 @@ export function HeaderUserMenu({
             void signOut()
           }}
         >
-          <LogOutIcon />
+          <RiLogoutBoxLine />
           Çıkış yap
         </DropdownMenuItem>
       </DropdownMenuContent>

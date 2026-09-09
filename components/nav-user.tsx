@@ -21,12 +21,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-  ChartColumnIcon,
-  ChevronsUpDownIcon,
-  CreditCardIcon,
-  LogOutIcon,
-  SettingsIcon,
-} from "lucide-react"
+  RiBankCardLine,
+  RiBarChartLine,
+  RiExpandUpDownLine,
+  RiLogoutBoxLine,
+  RiSettings3Line,
+} from "@remixicon/react"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { ThemeMenuItems } from "@/components/theme-toggle"
 import { SettingsDialog } from "@/components/settings/settings-dialog"
@@ -89,7 +89,7 @@ export function NavUser({
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
-              <ChevronsUpDownIcon className="ms-auto size-4" />
+              <RiExpandUpDownLine className="ms-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -120,7 +120,7 @@ export function NavUser({
                   openSettings("genel")
                 }}
               >
-                <SettingsIcon />
+                <RiSettings3Line />
                 Ayarlar
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -129,7 +129,7 @@ export function NavUser({
                   openSettings("abonelik")
                 }}
               >
-                <CreditCardIcon />
+                <RiBankCardLine />
                 Abonelik
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -138,7 +138,7 @@ export function NavUser({
                   openSettings("kullanim")
                 }}
               >
-                <ChartColumnIcon />
+                <RiBarChartLine />
                 Kullanım
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -151,7 +151,7 @@ export function NavUser({
                 void signOut()
               }}
             >
-              <LogOutIcon />
+              <RiLogoutBoxLine />
               Çıkış yap
             </DropdownMenuItem>
           </DropdownMenuContent>

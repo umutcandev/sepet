@@ -1,5 +1,6 @@
 "use client"
 
+import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
 
 import { SaveRecordRow } from "@/components/assistant/save-record-row"
@@ -43,7 +44,7 @@ export function BasketSaveCard({
   }, [])
 
   return (
-    <div className="rounded-xl border bg-card">
+    <Squircle className="border bg-card" radius="xl" effects>
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Sepeti Kaydet</span>
       </div>
@@ -68,6 +69,6 @@ export function BasketSaveCard({
         successMessage="Sepet kaydedildi."
         errorMessage="Sepet kaydedilemedi. Lütfen tekrar dene."
       />
-    </div>
+    </Squircle>
   )
 }

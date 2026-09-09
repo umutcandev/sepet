@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { AlertCircleIcon, ImageIcon, SearchIcon } from "lucide-react"
+import { RiErrorWarningLine, RiImageLine, RiSearchLine } from "@remixicon/react"
 
 import {
   ResponsiveDialog,
@@ -125,7 +125,7 @@ function RecordItemRow({
 
           {item.plan?.sizeMismatch && (
             <span className="inline-flex shrink-0 items-center gap-1 text-[0.625rem] text-amber-600 dark:text-amber-400">
-              <AlertCircleIcon className="size-2.5" />
+              <RiErrorWarningLine className="size-2.5" />
               Farklı Boyut
             </span>
           )}
@@ -150,7 +150,7 @@ function RecordItemRow({
                 href={`/urun-ara?q=${encodeURIComponent(item.searchQuery)}`}
                 className="inline-flex items-center gap-1 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
               >
-                <SearchIcon className="size-3" />
+                <RiSearchLine className="size-3" />
                 Kendin ara
               </Link>
             )}
@@ -234,7 +234,7 @@ function Thumb({ url }: { url: string | null }) {
         )}
         aria-hidden
       >
-        <ImageIcon className="size-4" />
+        <RiImageLine className="size-4" />
       </div>
     )
   }

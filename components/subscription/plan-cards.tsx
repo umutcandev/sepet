@@ -10,11 +10,11 @@ import * as React from "react"
 import NumberFlow from "@number-flow/react"
 import { motion, useReducedMotion } from "motion/react"
 import {
-  ImageIcon,
-  MessageSquareIcon,
-  ReceiptIcon,
-  ShoppingBasketIcon,
-} from "lucide-react"
+  RiChat1Line,
+  RiImageLine,
+  RiReceiptLine,
+  RiShoppingBasketLine,
+} from "@remixicon/react"
 
 import { EASE_OUT_SOFT, SPRING_PILL } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -39,17 +39,17 @@ type Feature = {
 }
 
 export const FREE_FEATURES: Feature[] = [
-  { icon: MessageSquareIcon, label: "Aylık 50 asistan mesajı" },
-  { icon: ImageIcon, label: "Aylık 10 görsel analizi" },
-  { icon: ShoppingBasketIcon, label: "20 sepet kaydı" },
-  { icon: ReceiptIcon, label: "20 fiş kaydı" },
+  { icon: RiChat1Line, label: "Aylık 50 asistan mesajı" },
+  { icon: RiImageLine, label: "Aylık 10 görsel analizi" },
+  { icon: RiShoppingBasketLine, label: "20 sepet kaydı" },
+  { icon: RiReceiptLine, label: "20 fiş kaydı" },
 ]
 
 export const PRO_FEATURES: Feature[] = [
-  { icon: MessageSquareIcon, label: "Aylık 500 asistan mesajı" },
-  { icon: ImageIcon, label: "Aylık 250 görsel analizi" },
-  { icon: ShoppingBasketIcon, label: "Sınırsız sepet kaydı" },
-  { icon: ReceiptIcon, label: "Sınırsız fiş kaydı" },
+  { icon: RiChat1Line, label: "Aylık 500 asistan mesajı" },
+  { icon: RiImageLine, label: "Aylık 250 görsel analizi" },
+  { icon: RiShoppingBasketLine, label: "Sınırsız sepet kaydı" },
+  { icon: RiReceiptLine, label: "Sınırsız fiş kaydı" },
 ]
 
 // Pro kullanıcıya gösterilen Ücretsiz↔Pro karşılaştırma satırları. Değerler
@@ -117,7 +117,7 @@ export function BillingToggle({
       role="group"
       aria-label="Faturalandırma aralığı"
       className={cn(
-        "inline-flex w-fit items-center gap-0.5 rounded-lg border border-border bg-muted/60 p-0.5",
+        "surface-inset inline-flex w-fit items-center gap-0.5 rounded-lg border border-border bg-muted/60 p-0.5",
         sm ? "h-7 text-xs" : "h-8 text-sm"
       )}
     >
@@ -144,7 +144,7 @@ export function BillingToggle({
               <motion.span
                 layoutId={pillId}
                 aria-hidden
-                className="absolute inset-0 rounded-md bg-background smooth-shadow-xs"
+                className="surface-raised-tight absolute inset-0 rounded-md bg-background"
                 transition={reduce ? { duration: 0 } : SPRING_PILL}
               />
             )}

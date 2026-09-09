@@ -1,7 +1,12 @@
 "use client"
 
+import { Squircle } from "@/components/ui/squircle"
 import { Fragment, useState } from "react"
-import { AlertCircleIcon, ChevronDownIcon, TrendingDownIcon } from "lucide-react"
+import {
+  RiArrowDownLine,
+  RiArrowDownSLine,
+  RiErrorWarningLine,
+} from "@remixicon/react"
 import { Badge } from "@/components/ui/badge"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
@@ -88,7 +93,7 @@ function AllocationBreakdown({
                       </div>
                       {e.sizeMismatch && (
                         <div className="flex items-center gap-1 text-[0.625rem] text-amber-600 dark:text-amber-400">
-                          <AlertCircleIcon className="size-2.5" />
+                          <RiErrorWarningLine className="size-2.5" />
                           Farklı Boyut
                         </div>
                       )}
@@ -159,7 +164,7 @@ function OptionRow({
           {formatTL(total)}
         </span>
         {canExpand && (
-          <ChevronDownIcon
+          <RiArrowDownSLine
             className={cn(
               "size-4 shrink-0 text-muted-foreground transition-transform",
               open && "rotate-180",
@@ -226,7 +231,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
             variant="outline"
             className="border-emerald-500/40 px-1.5 py-0 text-[0.625rem] text-emerald-700 dark:text-emerald-300"
           >
-            <TrendingDownIcon className="mr-0.5 size-2.5" />%
+            <RiArrowDownLine className="mr-0.5 size-2.5" />%
             {twoMarketCombo.savingsPct.toFixed(1)}
           </Badge>
         ) : undefined
@@ -249,7 +254,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
   ) : null
 
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Squircle className="border bg-card" radius="xl" effects>
       <div className="flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2">
         <span className="text-sm font-medium">Sepet Özeti</span>
       </div>
@@ -266,6 +271,6 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
           </>
         )}
       </div>
-    </div>
+    </Squircle>
   )
 }

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ImageIcon } from "lucide-react"
+import { RiImageLine } from "@remixicon/react"
 
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -193,7 +193,7 @@ function DetailThumb({ url }: { url: string | null }) {
   if (!url) {
     return (
       <div className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-        <ImageIcon className="size-5" />
+        <RiImageLine className="size-5" />
       </div>
     )
   }

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { MoreHorizontalIcon } from "lucide-react"
+import { RiMoreLine } from "@remixicon/react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -133,7 +133,7 @@ export function SessionsTable() {
                       // Mobilde her zaman görünür; masaüstünde hover/açıkken belirir.
                       className="relative text-muted-foreground transition-opacity after:absolute after:-inset-2 sm:opacity-0 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
                     >
-                      <MoreHorizontalIcon />
+                      <RiMoreLine />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="min-w-40">

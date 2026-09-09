@@ -4,7 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { PanelLeftIcon, PlusIcon } from "lucide-react"
+import { RiAddLine, RiLayoutLeftLine } from "@remixicon/react"
 import { useTheme } from "next-themes"
 import { animate, motion, useMotionValue, useMotionValueEvent } from "motion/react"
 
@@ -16,6 +16,7 @@ import { AssistantHeaderActions } from "@/components/assistant/assistant-header-
 import { HomeHeroBackdrop } from "@/components/home/hero-shader"
 import type { BlogNavItem } from "@/components/blog/blog-posts-group"
 import { Button } from "@/components/ui/button"
+import { BrandContextMenu } from "@/components/brand/brand-context-menu"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { HeaderUserMenu } from "@/components/header-user-menu"
@@ -71,7 +72,7 @@ function SidebarToggleButton() {
       aria-label={openMobile ? "Kenar çubuğunu kapat" : "Kenar çubuğunu aç"}
       className="-ml-1 md:hidden"
     >
-      <PanelLeftIcon className="cn-rtl-flip size-4" />
+      <RiLayoutLeftLine className="cn-rtl-flip size-4" />
     </Button>
   )
 }
@@ -97,7 +98,7 @@ function NewConversationButton() {
     <>
       <Button asChild size="sm" className="hidden h-7 gap-1.5 md:inline-flex">
         <Link href="/asistan" onClick={handleClick}>
-          <PlusIcon className="size-3.5" />
+          <RiAddLine className="size-3.5" />
           Yeni Sohbet
         </Link>
       </Button>
@@ -108,7 +109,7 @@ function NewConversationButton() {
         aria-label="Yeni Sohbet"
       >
         <Link href="/asistan" onClick={handleClick}>
-          <PlusIcon className="size-4" />
+          <RiAddLine className="size-4" />
         </Link>
       </Button>
     </>
@@ -345,24 +346,26 @@ export function AppShell({ blogPosts, children }: Props) {
                 // üstüne zaman tabanlı bir geçiş koymak logoyu zeminin gerisine
                 // düşürürdü. Tema değişiminin yumuşaklığı `--logo-swap`ı yaya
                 // bağlayan app-shell tarafında sağlanır.
-                <span className="relative inline-flex h-5 shrink-0 md:hidden">
-                  <Image
-                    src="/brand/sepet-dark.svg"
-                    alt="Sepet"
-                    width={846}
-                    height={178}
-                    priority
-                    className="logo-on-light h-5 w-auto"
-                  />
-                  <Image
-                    src="/brand/sepet-light.svg"
-                    alt=""
-                    aria-hidden
-                    width={846}
-                    height={178}
-                    className="logo-on-dark absolute inset-0 h-5 w-auto"
-                  />
-                </span>
+                <BrandContextMenu>
+                  <span className="relative inline-flex h-5 shrink-0 md:hidden">
+                    <Image
+                      src="/brand/sepet-dark.svg"
+                      alt="Sepet"
+                      width={846}
+                      height={178}
+                      priority
+                      className="logo-on-light h-5 w-auto"
+                    />
+                    <Image
+                      src="/brand/sepet-light.svg"
+                      alt=""
+                      aria-hidden
+                      width={846}
+                      height={178}
+                      className="logo-on-dark absolute inset-0 h-5 w-auto"
+                    />
+                  </span>
+                </BrandContextMenu>
               )}
             </div>
             <div className="flex min-w-0 flex-1 items-center justify-center">

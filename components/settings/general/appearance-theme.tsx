@@ -22,7 +22,7 @@ export function AppearanceTheme() {
     <div
       role="radiogroup"
       aria-label="Tema seçimi"
-      className="flex items-center gap-0.5 rounded-md bg-muted p-0.5"
+      className="surface-inset flex items-center gap-0.5 rounded-md bg-muted p-0.5"
     >
       {OPTIONS.map(({ value, label }) => {
         const selected = current === value
@@ -36,7 +36,7 @@ export function AppearanceTheme() {
             className={cn(
               "rounded-sm px-2.5 py-1 text-xs transition-colors",
               selected
-                ? "bg-background text-foreground smooth-shadow-xs"
+                ? "surface-raised-tight bg-background text-foreground"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >

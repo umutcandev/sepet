@@ -10,7 +10,7 @@ export type ReceiptSort = "date_desc" | "date_asc" | "market_asc" | "market_desc
 
 export const DEFAULT_RECEIPT_SORT: ReceiptSort = "date_desc"
 
-// Etiket, ortadaki ok bir kütüphane ikonu (lucide ArrowRight) olacak şekilde
+// Etiket, ortadaki ok bir kütüphane ikonu (RiArrowRightLine) olacak şekilde
 // "prefix → suffix" olarak parçalanır; menüde ikon iki parçanın arasına girer.
 export const RECEIPT_SORTS: ReadonlyArray<{
   value: ReceiptSort

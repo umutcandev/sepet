@@ -1,7 +1,7 @@
 ﻿"use client"
 
 import * as React from "react"
-import { XIcon } from "lucide-react"
+import { RiCloseLine } from "@remixicon/react"
 import { Dialog as SheetPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
@@ -97,7 +97,7 @@ function SheetContent({
               className="absolute top-3 right-3"
               size="icon-sm"
             >
-              <XIcon />
+              <RiCloseLine />
               <span className="sr-only">Close</span>
             </Button>
           </SheetPrimitive.Close>

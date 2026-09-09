@@ -15,7 +15,7 @@
 //    aynı `height` verildiğinde logolar gerçekten eşit yükseklikte oturuyor
 //    (viewBox içinde artık ölü boşluk yok).
 //
-// Boyut çağrı yerinden className ile verilir (bkz. components/blog/brand-icons.tsx).
+// Boyut çağrı yerinden className ile verilir.
 import * as React from "react"
 
 type WordmarkProps = React.SVGProps<SVGSVGElement>

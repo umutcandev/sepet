@@ -1,3 +1,4 @@
+import { Squircle } from "@/components/ui/squircle"
 import {
   A101Wordmark,
   BimWordmark,
@@ -63,12 +64,23 @@ export function LogoMarquee({ className }: { className?: string }) {
                   //
                   // `--border` ise yanındaki blog kartlarının kenarıyla aynı
                   // token: iki kart tipi tek kenar dilinde buluşuyor.
-                  className="flex h-14 min-w-36 shrink-0 items-center justify-center rounded-xl bg-card px-6 smooth-shadow-ring-xs smooth-ring-border md:h-16 md:min-w-40 md:px-7"
+                  //
+                  // Yüzey içerideki `Squircle`da: `effects` açıkken Lisse SVG
+                  // katmanı için bir sarmalayıcı div doğuruyor ve `div` bir
+                  // `ul`nin doğrudan çocuğu olamaz. `li` flex öğesi olarak
+                  // kalıyor, kırpma onun içinde.
+                  className="flex shrink-0"
                 >
-                  {/* Tek ölçü: yükseklik. Genişlik en/boy oranından gelir,
-                      viewBox'lar mürekkebe kırpılı olduğu için hepsi
-                      gerçekten aynı yükseklikte oturur. */}
-                  <Logo className="h-5 w-auto md:h-6" />
+                  <Squircle
+                    radius="xl"
+                    effects
+                    className="flex h-14 min-w-36 items-center justify-center bg-card px-6 smooth-shadow-ring-xs smooth-ring-border md:h-16 md:min-w-40 md:px-7"
+                  >
+                    {/* Tek ölçü: yükseklik. Genişlik en/boy oranından gelir,
+                        viewBox'lar mürekkebe kırpılı olduğu için hepsi
+                        gerçekten aynı yükseklikte oturur. */}
+                    <Logo className="h-5 w-auto md:h-6" />
+                  </Squircle>
                 </li>
               ))}
             </ul>

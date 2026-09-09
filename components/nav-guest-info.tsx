@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ArrowUpRightIcon, XIcon } from "lucide-react"
+import { RiArrowRightUpLine, RiCloseLine } from "@remixicon/react"
 
 import { useMounted } from "@/hooks/use-mounted"
 
@@ -42,7 +42,7 @@ export function NavGuestInfo() {
         aria-label="Kapat"
         className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md text-muted-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-foreground"
       >
-        <XIcon className="size-4" />
+        <RiCloseLine className="size-4" />
       </button>
 
       <p className="pr-6 text-sm font-medium leading-tight text-foreground">
@@ -59,7 +59,7 @@ export function NavGuestInfo() {
         className="mt-3 inline-flex items-center gap-1 text-[0.8125rem] font-medium text-foreground underline-offset-2 transition-colors hover:underline"
       >
         GitHub&apos;da katkıda bulun
-        <ArrowUpRightIcon className="size-3.5" />
+        <RiArrowRightUpLine className="size-3.5" />
       </a>
     </div>
   )

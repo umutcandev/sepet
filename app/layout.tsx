@@ -4,7 +4,7 @@ import { Suspense } from "react"
 import "./globals.css"
 import { AppShell } from "@/components/app-shell"
 import { JsonLd } from "@/components/blog/json-ld"
-import { organizationLd, websiteLd } from "@/lib/blog/jsonld"
+import { siteGraphLd } from "@/lib/blog/jsonld"
 import { LoginDialogHost } from "@/components/auth/login-dialog-host"
 import { LocationHost } from "@/components/location/location-host"
 import { OnboardingHost } from "@/components/onboarding/onboarding-host"
@@ -41,6 +41,13 @@ export const metadata: Metadata = {
     template: "%s",
   },
   description: siteDescription,
+  // Göreli "./" HER rotada o rotanın kendi yoluna çözülür (Next metadata
+  // canonical'ı pathname'e göre çözer) — yani tek satır tüm sayfaları kapsar,
+  // kök layout'un yolunu çocuklara MİRAS BIRAKMADAN. Blog sayfaları kendi
+  // canonical'ını zaten açıkça veriyor (app/blog/**), onlar bunu ezer.
+  // Apex trysepet.com → www yönlendirmesi olduğu için bu alan önemli: her
+  // sayfa tek bir otoriter host bildirir.
+  alternates: { canonical: "./" },
   openGraph: {
     type: "website",
     locale: "tr_TR",
@@ -95,8 +102,8 @@ export default function RootLayout({
             kuralları yanlış olanı gizler → statik sayfada oturum flicker'ı
             yaşanmaz. Kaynak: lib/auth/session-snapshot.ts */}
         <script dangerouslySetInnerHTML={{ __html: SESSION_HINT_SCRIPT }} />
-        {/* Site geneli kök JSON-LD: Organization + WebSite (Rich Snippet). */}
-        <JsonLd data={[organizationLd(), websiteLd()]} />
+        {/* Site geneli kök JSON-LD: Organization + WebSite tek @graph içinde. */}
+        <JsonLd data={siteGraphLd()} />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

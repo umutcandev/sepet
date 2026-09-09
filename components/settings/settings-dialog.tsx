@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { SearchIcon, Settings2Icon } from "lucide-react"
+import { RiEqualizerLine, RiSearchLine } from "@remixicon/react"
 
 import {
   Dialog,
@@ -158,7 +158,7 @@ export function SettingsDialog({
             </div>
             {/* Arama yalnızca masaüstünde gösterilir */}
             <div className="relative hidden px-0.5 pt-0.5 sm:block">
-              <SearchIcon className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
+              <RiSearchLine className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="search"
                 value={query}
@@ -275,7 +275,7 @@ export function SettingsDialog({
 // İşlevi henüz hazır olmayan sekmeler (Gizlilik, Abonelik) için yer tutucu.
 function ComingSoonPanel({ tab }: { tab: TabKey }) {
   const item = NAV_ITEMS.find((n) => n.key === tab)
-  const Icon = item?.icon ?? Settings2Icon
+  const Icon = item?.icon ?? RiEqualizerLine
   const title = TAB_LABEL[tab]
 
   return (

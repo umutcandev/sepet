@@ -1,11 +1,12 @@
+import { Squircle } from "@/components/ui/squircle"
 import Image from "next/image"
 import Link from "next/link"
 import {
-  ArrowRight,
-  ChevronDownIcon,
-  PackageIcon,
-  TrendingDownIcon,
-} from "lucide-react"
+  RiArrowDownLine,
+  RiArrowDownSLine,
+  RiArrowRightLine,
+  RiBox3Line,
+} from "@remixicon/react"
 
 import { FeatureChatMock } from "@/components/home/feature-chat-mock"
 import { AnimateEnter } from "@/components/motion/animate-enter"
@@ -48,7 +49,11 @@ import { cn } from "@/lib/utils"
    veri değil. */
 
 /** Maket kutusu: pt-6 + panel h-56 = 24 + 224 = 248, yani kutu tam panelde biter. */
-const MOCK_FRAME = "h-[15.5rem] pt-6 pl-5"
+/** Üst ve sol boşluk EŞİT (20px) olmalı: sol, panelin sağdan taşma
+ *  miktarına (`w-[calc(100%+1.25rem)]`) bağlı olduğu için sabit; üst de
+ *  ona uyar. Yükseklik 15.25rem = 20px boşluk + `h-56` panel, yani panel
+ *  yine çerçevenin altına tam oturuyor. */
+const MOCK_FRAME = "h-[15.25rem] pt-5 pl-5"
 /** Panel: pl-5 kadar içeriden başlar, kartın sağından tam 20px taşar. */
 const MOCK_PANEL = "flex h-56 w-[calc(100%+1.25rem)] flex-col"
 /** Satır içi yatay ritim. */
@@ -137,7 +142,7 @@ function ProductMatchMock() {
             {/* Paket ikonu görselin ALTINDA duruyor: CDN karesi bir gün
                 düşerse kutu boş kalmaz, bileşenin gerçek fallback'ine iner. */}
             <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-foreground/10 ring-1 ring-foreground/10">
-              <PackageIcon className="absolute size-4 text-muted-foreground" />
+              <RiBox3Line className="absolute size-4 text-muted-foreground" />
               <Image
                 src={match.image}
                 alt=""
@@ -201,7 +206,7 @@ function OptimizationMock() {
           <span className="shrink-0 text-lg font-bold text-foreground tabular-nums">
             {formatTL(113.25)}
           </span>
-          <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+          <RiArrowDownSLine className="size-3.5 shrink-0 text-muted-foreground" />
         </div>
 
         <div className={cn("flex items-center gap-2.5 py-2.5", ROW_X)}>
@@ -221,7 +226,7 @@ function OptimizationMock() {
             <span className="flex min-w-0 items-center gap-1 text-[0.6875rem]/[1rem] font-medium text-muted-foreground">
               <span className="truncate">İki market</span>
               <span className="flex shrink-0 items-center rounded-md border border-emerald-500/40 px-1 text-[0.625rem]/[0.875rem] text-emerald-300">
-                <TrendingDownIcon className="mr-0.5 size-2.5" />
+                <RiArrowDownLine className="mr-0.5 size-2.5" />
                 %7,8
               </span>
             </span>
@@ -235,7 +240,7 @@ function OptimizationMock() {
           <span className="shrink-0 text-lg font-bold text-foreground tabular-nums">
             {formatTL(104.45)}
           </span>
-          <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+          <RiArrowDownSLine className="size-3.5 shrink-0 text-muted-foreground" />
         </div>
       </div>
     </>
@@ -287,7 +292,12 @@ function FeatureCard({ feature }: { feature: Feature }) {
     // EKLENMEZ, halka zaten gölgenin içinde. `smooth-ring-border` şart —
     // bu bölüm sayfa içi bir `dark` sarmalayıcıda ve plugin'in nötr beyaz
     // halkası yoksa kazanıyor (bkz. logo-marquee'deki uzun not).
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-card smooth-shadow-ring-sm smooth-ring-border">
+    <Squircle
+      as="article"
+      radius="2xl"
+      effects
+      className="flex h-full flex-col bg-card smooth-shadow-ring-sm smooth-ring-border"
+    >
       {/* Maket kutusu. Radyal maske sol-üstten açılıp sağ-alta doğru eritir. */}
       <div
         aria-hidden
@@ -297,15 +307,17 @@ function FeatureCard({ feature }: { feature: Feature }) {
           MOCK_FRAME
         )}
       >
-        <div
+        <Squircle
+          radius="xl"
+          effects
           className={cn(
-            "overflow-hidden rounded-xl smooth-shadow-ring-lg smooth-ring-foreground/15",
+            "smooth-shadow-ring-lg smooth-ring-foreground/15",
             feature.panel ?? "bg-muted",
             MOCK_PANEL
           )}
         >
           {feature.mock}
-        </div>
+        </Squircle>
         {/* Bulanık dip. Üç iş birden yapıyor, üçü de aynı rampada:
 
             1. `backdrop-blur` arkasını kademeli bulandırır — radyal maske yalnız
@@ -335,7 +347,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
           {feature.description}
         </p>
       </div>
-    </article>
+    </Squircle>
   )
 }
 
@@ -355,7 +367,7 @@ export function HomeFeaturesSection() {
           <Button asChild size="sm" className="group shrink-0">
             <Link href="/asistan">
               Asistanı dene
-              <ArrowRight
+              <RiArrowRightLine
                 className="transition-transform group-hover:translate-x-0.5"
                 aria-hidden
               />

@@ -5,7 +5,8 @@
    gölgenin SON katmanı olarak 1px'lik hairline'ı da içerir. Böylece kenar
    gölgenin içinde erir; `border`/`ring` + `shadow` ikilisinin çizdiği "önce
    sert çizgi, hemen dışında yumuşak gölge" çift kenarı oluşmaz.
-   Bu yüzeylerde ASLA ayrıca `border`/`ring` kullanma — halka zaten içinde. */
+   Bu yüzeylerde ASLA ayrıca `border`/`ring` kullanma — halka zaten içinde.
+   Kaynak: https://shadow.floriankiem.com */
 @import "shadow-plugin";
 @import "./style-nova.css";
 
@@ -564,9 +565,9 @@
   width: 0.95rem;
   height: 0.95rem;
   background-color: var(--muted-foreground);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='2.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M10%2013a5%205%200%200%200%207.54.54l3-3a5%205%200%200%200-7.07-7.07l-1.72%201.71'/%3E%3Cpath%20d='M14%2011a5%205%200%200%200-7.54-.54l-3%203a5%205%200%200%200%207.07%207.07l1.71-1.71'/%3E%3C/svg%3E")
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='black'%3E%3Cpath%20d='M13.0607%208.11097L14.4749%209.52518C17.2086%2012.2589%2017.2086%2016.691%2014.4749%2019.4247L14.1214%2019.7782C11.3877%2022.5119%206.95555%2022.5119%204.22188%2019.7782C1.48821%2017.0446%201.48821%2012.6124%204.22188%209.87874L5.6361%2011.293C3.68348%2013.2456%203.68348%2016.4114%205.6361%2018.364C7.58872%2020.3166%2010.7545%2020.3166%2012.7072%2018.364L13.0607%2018.0105C15.0133%2016.0578%2015.0133%2012.892%2013.0607%2010.9394L11.6465%209.52518L13.0607%208.11097ZM19.7782%2014.1214L18.364%2012.7072C20.3166%2010.7545%2020.3166%207.58872%2018.364%205.6361C16.4114%203.68348%2013.2456%203.68348%2011.293%205.6361L10.9394%205.98965C8.98678%207.94227%208.98678%2011.1081%2010.9394%2013.0607L12.3536%2014.4749L10.9394%2015.8891L9.52518%2014.4749C6.79151%2011.7413%206.79151%207.30911%209.52518%204.57544L9.87874%204.22188C12.6124%201.48821%2017.0446%201.48821%2019.7782%204.22188C22.5119%206.95555%2022.5119%2011.3877%2019.7782%2014.1214Z'/%3E%3C/svg%3E")
     center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='black'%20stroke-width='2.5'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M10%2013a5%205%200%200%200%207.54.54l3-3a5%205%200%200%200-7.07-7.07l-1.72%201.71'/%3E%3Cpath%20d='M14%2011a5%205%200%200%200-7.54-.54l-3%203a5%205%200%200%200%207.07%207.07l1.71-1.71'/%3E%3C/svg%3E")
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='black'%3E%3Cpath%20d='M13.0607%208.11097L14.4749%209.52518C17.2086%2012.2589%2017.2086%2016.691%2014.4749%2019.4247L14.1214%2019.7782C11.3877%2022.5119%206.95555%2022.5119%204.22188%2019.7782C1.48821%2017.0446%201.48821%2012.6124%204.22188%209.87874L5.6361%2011.293C3.68348%2013.2456%203.68348%2016.4114%205.6361%2018.364C7.58872%2020.3166%2010.7545%2020.3166%2012.7072%2018.364L13.0607%2018.0105C15.0133%2016.0578%2015.0133%2012.892%2013.0607%2010.9394L11.6465%209.52518L13.0607%208.11097ZM19.7782%2014.1214L18.364%2012.7072C20.3166%2010.7545%2020.3166%207.58872%2018.364%205.6361C16.4114%203.68348%2013.2456%203.68348%2011.293%205.6361L10.9394%205.98965C8.98678%207.94227%208.98678%2011.1081%2010.9394%2013.0607L12.3536%2014.4749L10.9394%2015.8891L9.52518%2014.4749C6.79151%2011.7413%206.79151%207.30911%209.52518%204.57544L9.87874%204.22188C12.6124%201.48821%2017.0446%201.48821%2019.7782%204.22188C22.5119%206.95555%2022.5119%2011.3877%2019.7782%2014.1214Z'/%3E%3C/svg%3E")
     center / contain no-repeat;
 }
 /* Sadece hover yeteneği olan cihazlarda etkin; mobilde (hover yok) gizli. */
@@ -611,6 +612,409 @@
 }
 .dark {
   --logo-swap: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Yüzey derinliği — "flat" görünümü kıran katmanlar
+   ---------------------------------------------------------------------------
+   Referans arayüzlerden piksel ölçümüyle çıkarıldı. Üç kural:
+
+   1. Dolgu düz renk değil, dikey gradyan (üst açık → alt koyu). Fark %5-8.
+      DİKKAT: bu gradyan üste NÖTR BEYAZ bindirilerek yapılmaz. Yarı saydam
+      beyaz doygunluğu düşürür; sıcak/doygun bir palette yüzeyin üstü
+      tebeşirli, "tozlu" görünür. Referans buton nötr siyah olduğu için
+      orada fark edilmiyordu.
+
+      Alfalar kasten DÜŞÜK tutulur. Ölçüm: referansta üst rim, dolgunun
+      +55 seviye üstünde; %75'lik bir karışım kahve üzerinde +109 veriyordu,
+      yani iki katı. Sıcak kahve bir yüzeyde parlak beyaz çizgi en çabuk
+      göze batan şey — buradaki hedef referanstan bile bir tık altı (+38).
+
+      Bunun yerine RİM paletin kendi sıcak ucundan türetilir: light'ta
+      `--background` (krem), dark'ta `--foreground` (sıcak açık ton). Rim
+      1px'lik ve yüksek alfalı olduğu için rengi gerçekten okunur.
+      Fizik de bunu söylüyor — aydınlanan yüzey beyazlaşmaz, kendi renginin
+      daha parlak hâline döner. Karakteri daha güçlü, altın bir rim isteniyorsa
+      bu iki satırda `--primary`ye çevirmek yeterli.
+
+      Gövdede yalnız ALTA doğru hafif bir koyulaşma var; yukarıdaki aydınlık
+      hissini 1px'lik üst rim taşıyor. Ara ton çamurlanmasın diye
+      interpolasyon oklab'da.
+   2. Kenar üniform DEĞİL: üst rim, alt rimin ~iki katı parlaklıkta. Işık
+      tepeden gelir; nesnenin üst kenarı onu yakalar, alt kenar zeminden
+      sekeni alır.
+   3. Gölge iki katman: 1px'lik sert "temas" (nesneyi zemine oturtur) +
+      geniş yumuşak "ortam" (yüksekliği anlatır). Tek katman ya yapışık ya
+      uçuyor görünür.
+
+   İki kutup var ve karıştırılmamalı:
+     surface-raised → yukarı çıkan nesne (buton, thumb, aktif segment, kart)
+     surface-inset  → içeri oyulmuş yüzey (input, track, progress yolu).
+   Inset'te aydınlatma TERSİNE döner: üstte gölge, altta sekme. Ölçümde
+   switch track'i tam da böyleydi (üst rim 71, alt rim 87 — alt daha parlak).
+
+   Alt rim `currentColor`dan türetilir, TEMADAN değil. Polarite yüzeyin
+   kendi açıklığına bağlıdır: koyu bir yüzeyde metin açıktır → alt kenar
+   açık çıkar (zeminden seken ışık); açık bir yüzeyde metin koyudur → alt
+   kenar koyu çıkar (gölgede kalan alt kenar). Tek satır, dört kombinasyonun
+   dördünde de doğru — dark temadaki AÇIK primary buton dahil, ki tema
+   tabanlı sabit bir değer tam orada yanlış sonuç veriyordu.
+
+   box-shadow doğrudan yazılmaz; Tailwind'in --tw-* zinciri korunur ki
+   focus-visible:ring-* bu yüzeylerde ezilmesin. */
+:root {
+  /* Paletin iki ucu. Derinlik NÖTR siyah/beyazla değil, bunlarla üretilir:
+     oklab'da siyaha karışmak L ile birlikte KROMAYI da düşürür, sıcak bir
+     kahve yüzey griye/çeliğe kayar. Aynı paletin koyu kahvesine karışmak ise
+     tonu koruyup yalnız parlaklığı indirir. */
+  --surface-ink: var(--foreground);
+  --surface-paper: var(--background);
+  --surface-shade: color-mix(in oklab, var(--surface-ink) 8%, transparent);
+  --surface-rim-top: color-mix(in oklab, var(--surface-paper) 26%, transparent);
+  --surface-rim-bottom: color-mix(in srgb, currentColor 6%, transparent);
+  --surface-contact: color-mix(in oklab, var(--surface-ink) 11%, transparent);
+  --surface-ambient: color-mix(in oklab, var(--surface-ink) 7%, transparent);
+  --surface-knob-cast: color-mix(in oklab, var(--surface-ink) 22%, transparent);
+  --surface-ring-inner: color-mix(in oklab, var(--surface-ink) 12%, transparent);
+  /* Türetme oranları: koyu bir zeminde aynı oran çok daha sert okunur,
+     bu yüzden dark'ta hem karışım hem alfa düşer. */
+  --surface-shade-depth: 82%;
+  --surface-shade-alpha: 60%;
+  --surface-rim-lift: 74%;
+  --surface-rim-alpha: 55%;
+  /* OYUK — butonla aynı prensip: tek bir yüzey rengi, ondan türeyen iki uç.
+     Önceki hâlde alanlara nötr mürekkep/krem yıkaması biniyordu; bu doygunluğu
+     düşürüp yüzeyi "tozlu" gösteriyordu. Buton toz yapmıyor çünkü hem gölgesini
+     hem ışığını KENDİ renginden alıyor. Alan da artık öyle.
+
+     `--surface-well` alanın gövde rengi — BUTONUN dolgusuyla aynı ailede
+     durmak zorunda. Sayfadan belirgin koyu bir gövde denenmişti: tozu
+     gidermişti ama alanı butonların yanında donuk bir levha gibi
+     gösteriyordu. Artık sayfadan yalnız bir tık aşağıda; oyuğu ANLATAN şey
+     gövdenin koyuluğu değil, gradyanının ve dış gölgesinin olmaması.
+
+     %94 denendi ve light'ta fazla koyu kaldı — gradyan kalkınca gövdenin
+     tamamı o tek tonda okunuyor, oysa gradyanlı hâlde yalnız alt ucu o
+     koyulukta. %98: sayfadan ayırt edilecek kadar, levha gibi durmayacak
+     kadar. Üst rim buna bağlı olarak neredeyse görünmez hâle geliyor; butonun
+     light'taki üst rim'i de zaten görünmüyor (tabanı sayfanın kendisi), yani
+     iki yüzey bu konuda da aynı yere düşüyor. */
+  --surface-well: color-mix(in oklab, var(--background) 98%, var(--surface-ink));
+  /* Etkileşimli alanların (select tetikleyicisi gibi) hover yüzeyi. Ayrı bir
+     token gerekiyor: `surface-inset` dolguyu OPAK bir `background-image`
+     katmanıyla basıyor, dolayısıyla `hover:bg-*` sınıfları bu yüzeylerde
+     görünmez — hover'ı ancak yüzeyin kendi rengini değiştirerek anlatabiliriz. */
+  --surface-well-hover: color-mix(in oklab, var(--background) 92%, var(--surface-ink));
+}
+
+.dark {
+  /* Dark'ta mürekkep sayfanın KENDİSİNDEN de koyu olmalı ki gölge okunsun;
+     saf siyah yerine zeminin sıcak, daha karanlık hâli kullanılır. */
+  --surface-ink: color-mix(in oklab, var(--background) 40%, black);
+  --surface-paper: var(--foreground);
+  --surface-shade: color-mix(in oklab, var(--surface-ink) 10%, transparent);
+  --surface-rim-top: color-mix(in oklab, var(--surface-paper) 9%, transparent);
+  --surface-rim-bottom: color-mix(in srgb, currentColor 6%, transparent);
+  --surface-contact: color-mix(in oklab, var(--surface-ink) 40%, transparent);
+  --surface-ambient: color-mix(in oklab, var(--surface-ink) 26%, transparent);
+  --surface-knob-cast: color-mix(in oklab, var(--surface-ink) 48%, transparent);
+  --surface-ring-inner: color-mix(in oklab, var(--surface-paper) 10%, transparent);
+  --surface-shade-depth: 91%;
+  --surface-shade-alpha: 40%;
+  --surface-rim-lift: 88%;
+  --surface-rim-alpha: 34%;
+  /* Dark'ta alan da butonun outline varyantıyla AYNI dolguyu taşır
+     (`bg-input/30`), yani sayfadan bir tık AÇIK. Daha koyu bir gövde
+     denenmişti; alanı butonların yanında bir delik gibi gösteriyordu. */
+  --surface-well: color-mix(in oklab, var(--input) 30%, var(--background));
+  /* Dinlenme %30; hover'da %50 — kaldırılan `dark:hover:bg-input/50`in
+     amaçladığı değerin aynısı, bu sefer gerçekten görünür yerden. */
+  --surface-well-hover: color-mix(in oklab, var(--input) 50%, var(--background));
+}
+
+/* Tailwind'in box-shadow zinciri. Halkalar (ring) ve gölge ayrı değişkenlerde
+   tutulduğu için ikisi birlikte yaşayabilir; fallback'ler @property tanımı
+   gelmese de kuralın geçersiz olmamasını sağlar. */
+/* ─── Yüzeyin kendi renginden türetilen ışık/gölge ───
+   Nötr beyaz/siyah bindirmek en kolay yol ama yanlış olanı: yarı saydam siyah
+   bir yüzeyi karartırken KROMA katmaz, dolayısıyla düşük kromalı krem bir
+   zeminde sonuç "gri" okunur; yarı saydam beyaz da tersini yapıp tebeşirler.
+   Fiziksel doğrusu, aydınlanan yüzeyin kendi renginin daha parlak, gölgede
+   kalanın da daha koyu hâline dönmesi.
+
+   CSS bir elemanın kendi background-color'ını okuyamaz, bu yüzden her varyant
+   kendi taban rengini `--surface-base` olarak bildirir; türetme tek yerde.
+   Buton `data-variant` yazdığı için eşleme öznitelik üzerinden kurulur —
+   sınıf dizisine uzun arbitrary değerler serpmeye gerek kalmaz. */
+[data-slot="button"][data-variant="default"],
+[data-slot="badge"][data-variant="default"] {
+  --surface-base: var(--primary);
+}
+[data-slot="button"][data-variant="secondary"],
+[data-slot="badge"][data-variant="secondary"] {
+  --surface-base: var(--secondary);
+}
+[data-slot="button"][data-variant="outline"] {
+  --surface-base: var(--background);
+}
+/* DİKKAT — taban, varyantın ADI değil GERÇEKTE GÖRÜNEN renktir. Destructive'in
+   zemini `bg-destructive/10`, yani solgun bir pembe; buraya `--destructive`
+   yazmak tam güçte kırmızıyı solgun pembenin üstüne boyayıp butonu baştan
+   aşağı boyanmış gibi gösteriyordu (ölçüm: kırmızı kanalında 53 seviye
+   düşüş, referansta bu ~%10). Karışımı burada kurup gerçek yüzeyi veriyoruz. */
+[data-slot="button"][data-variant="destructive"] {
+  --surface-base: color-mix(in oklab, var(--destructive) 10%, var(--background));
+}
+/* Outline dark'ta saydam değil `bg-input/30` taşır. */
+.dark [data-slot="button"][data-variant="outline"] {
+  --surface-base: color-mix(in oklab, var(--input) 30%, var(--background));
+}
+.dark [data-slot="button"][data-variant="destructive"] {
+  --surface-base: color-mix(in oklab, var(--destructive) 20%, var(--background));
+}
+
+[data-slot="badge"][data-variant="destructive"] {
+  --surface-base: color-mix(in oklab, var(--destructive) 10%, var(--background));
+}
+.dark [data-slot="badge"][data-variant="destructive"] {
+  --surface-base: color-mix(in oklab, var(--destructive) 20%, var(--background));
+}
+
+/* Outline rozet, outline BUTONLA aynı yüzeyi taşır: ikisi de zeminin
+   üzerinde duran, kenarlıklı, dolgusuz kontrollerdir. Rozet tarafı
+   atlanmıştı, bu yüzden footer'daki "Sistem Durumu" rozeti düz kalıyordu. */
+[data-slot="badge"][data-variant="outline"] {
+  --surface-base: var(--background);
+}
+
+[data-slot="button"][data-variant],
+[data-slot="badge"][data-variant] {
+  /* Alt gölge: aynı rengin %18 siyaha çekilmiş hâli, %60 alfayla. */
+  --surface-shade: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-base) var(--surface-shade-depth), var(--surface-ink))
+      var(--surface-shade-alpha),
+    transparent
+  );
+  /* Üst rim: aynı rengin %26 beyaza çekilmiş hâli. Nötr beyaz değil, yani
+     kahve bir butonda rim de sıcak kahve kalır. */
+  --surface-rim-top: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-base) var(--surface-rim-lift), var(--surface-paper))
+      var(--surface-rim-alpha),
+    transparent
+  );
+}
+
+/* Yukarıdaki türetme `data-slot`/`data-variant` yazan bileşenlere bağlı.
+   Elle yazılmış kontroller (ör. sesli girişin İptal/İlet düğmeleri) bu
+   öznitelikleri taşımaz; onlar `--surface-base`ini kendisi bildirip bu
+   yardımcıyı ekler. Öznitelik kuralı (0,2,0) sınıftan (0,1,0) güçlü olduğu
+   için bileşenlerin mevcut değerleri etkilenmez. */
+@utility surface-tint {
+  --surface-shade: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-base) var(--surface-shade-depth), var(--surface-ink))
+      var(--surface-shade-alpha),
+    transparent
+  );
+  --surface-rim-top: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-base) var(--surface-rim-lift), var(--surface-paper))
+      var(--surface-rim-alpha),
+    transparent
+  );
+}
+
+/* Tıklanabilir alanlar (select tetikleyicisi, native select, combobox) için
+   hover. `surface-inset` ile birlikte kullanılır. */
+@utility surface-inset-interactive {
+  &:hover:not(:disabled):not([data-disabled]) {
+    --surface-well: var(--surface-well-hover);
+  }
+}
+
+@utility surface-shadow-chain {
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+@utility surface-raised {
+  background-image: linear-gradient(
+    to bottom in oklab,
+    transparent 40%,
+    var(--surface-shade)
+  );
+  --tw-inset-shadow:
+    inset 0 1px 0 0 var(--surface-rim-top),
+    inset 0 -1px 0 0 var(--surface-rim-bottom);
+  --tw-shadow:
+    0 1px 2px -1px var(--surface-contact), 0 3px 8px -3px var(--surface-ambient);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Gölgesiz kabartma: bir oyuğun İÇİNDE oturan parçalar (switch thumb, aktif
+   sekme) için. Kendi gölgesini taşır ama sayfaya değil, içinde durduğu
+   yuvaya düşürür — bu yüzden ortam katmanı yok, yalnız sıkı temas. */
+@utility surface-raised-tight {
+  background-image: linear-gradient(
+    to bottom in oklab,
+    transparent 45%,
+    var(--surface-shade)
+  );
+  --tw-inset-shadow:
+    inset 0 1px 0 0 var(--surface-rim-top),
+    inset 0 -1px 0 0 var(--surface-rim-bottom);
+  --tw-shadow: 0 1px 2px -1px var(--surface-contact);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Düğme/knob — switch thumb'ı gibi AÇIK, küçük ve bir oyuğun içinde yüzen
+   parçalar. Genel `surface-raised` burada çalışmaz: onun rim'i paletin sıcak
+   ucundan türer ve neredeyse beyaz bir yüzeyde kaybolur.
+
+   Referans ölçümü (thumb yatay kesiti): kenarlar 255, gövde 240-245, yani
+   halka gövdeden PARLAK. Dikeyde gövde 255 → 227 koyulaşıyor, en altta yine
+   255'lik bir sekme çizgisi var. Track dolgusu thumb'ın iki yanında da
+   57'den 51'e düşüyor — yani düğme çepeçevre gölge düşürüyor, yalnız aşağı
+   değil. Üçü birlikte parçayı "yüzüyor" gösteren şey. */
+@utility surface-knob {
+  /* İki katman. Radyal olan İÇERİYİ koyultur, en dış 1px'i boyamaz — böylece
+     kenar çepeçevre parlak kalır (ölçüm: referans thumb kenarları 255, gövde
+     240). Halkayı BEYAZLA çizmiyoruz: beyaz halka düğmenin açık olduğunu
+     varsayar ve koyu bir thumb'da gümüş bir çembere dönüşür. Koyultma ise
+     rengi ne olursa olsun doğru çalışır, yani polariteden bağımsız 360°
+     kabartma. Doğrusal olan ışığın tepeden geldiğini söyler. */
+  background-image:
+    radial-gradient(
+      closest-side circle at 50% 50%,
+      color-mix(in oklab, var(--surface-ink) 11%, transparent) 60%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom in oklab,
+      transparent 45%,
+      color-mix(in oklab, var(--surface-ink) 10%, transparent)
+    ),
+    /* Düz koyultma: diskin toplam beyazlığını indirir ama radyal katmanın
+       ürettiği kenar-gövde FARKI korunur, yani 360° kabartma kaybolmaz. */
+    linear-gradient(
+      color-mix(in oklab, var(--surface-ink) 7%, transparent),
+      color-mix(in oklab, var(--surface-ink) 7%, transparent)
+    );
+  --tw-shadow:
+    0 1px 3px -0.5px var(--surface-knob-cast),
+    0 0 3px -1px var(--surface-knob-cast);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Çip ölçeği — badge gibi ~20px yüksekliğindeki küçük yüzeyler. Burada 1px'lik
+   rim ORANTISIZ: yükseklik 20px iken üstte ve altta birer çizgi, yüzeyin
+   onda birini kaplayıp bevel değil sert bir kontur gibi okunuyor (hele büyük
+   radius'ta, çünkü rim yuvarlağı takip edip tam bir halkaya dönüşüyor).
+   Bu ölçekte derinliği rim değil GÖLGE taşımalı: yalnız gövde gradyanı +
+   sıkı temas gölgesi. */
+@utility surface-raised-chip {
+  /* Butonla AYNI ışık modeli (üstte ışık, altta gölge), farklı primitif.
+     Butonda bunu doğrusal gövde gradyanı taşır; kenarları düz bir yüzeyde
+     doğru sonuç verir. Çipte geometri başka: yükseklik 20px, radius 8px —
+     yarıçap yüksekliğin ~%40'ı, yani alt kenar düz değil EĞRİ. Doğrusal
+     gradyan radius'u bilmez, koyu ucu eğrinin üstüne düşüp köşelerde
+     toplanır ve kalın bir yay çizer (kısa rozette düz bölüm kalmadığı için
+     daha da belirgin).
+
+     `inset` gölge ise border-radius'u takip eder: eğri boyunca 1px kalır.
+     Bu yüzden çipte ışık modeli gradyanla değil rim'le anlatılır. Alfalar
+     buton ölçeğinin altında, çünkü 20px'te 1px yüksekliğin %5'i. */
+  --tw-inset-shadow:
+    inset 0 1px 0 0
+      color-mix(in oklab, var(--surface-rim-top) 22%, transparent),
+    inset 0 -1px 0 0
+      color-mix(in oklab, var(--surface-shade) 45%, transparent);
+  --tw-shadow: 0 1px 1.5px -1px var(--surface-contact);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+@utility surface-inset {
+  /* Oyuk: üstte ışık, altta gölge. Gövde gradyanı ve dış gölge YOK — kabartmayı
+     alandan ayıran şey bu ikisi.
+
+     DOLGU BASMAZ. Bir ara buraya opak bir `background-image` katmanı konmuştu
+     ve `surface-inset` taşıyan 22 parçanın çoğu kendi rengini getirdiği için
+     (`bg-muted`, `bg-primary`, `bg-input`…) hepsini örttü: switch açık/kapalı
+     aynı renge düştü, sekme şeridi `--muted`ini kaybetti. Kendi zemini olmayan
+     alanlar dolguyu `surface-well-fill` ile ayrıca ister.
+
+     Üst rim `--surface-rim-top`u DEĞİL kendi adını kullanır. O token kabartmanın
+     tokenı ve miras alınıyor: burada ezilince oyuğun İÇİNDE oturan parçalar
+     (switch thumb'ı, aktif sekme) kendi renginin rim'i yerine oyuğunkini
+     alıyordu. Alt rim global `--surface-rim-bottom`, `currentColor`dan türediği
+     için her öğede kendi rengine göre çözülür — ezmeye gerek yok. */
+  --surface-well-rim: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--surface-well) var(--surface-rim-lift), var(--surface-paper))
+      var(--surface-rim-alpha),
+    transparent
+  );
+  --tw-inset-shadow:
+    inset 0 1px 0 0 var(--surface-well-rim),
+    inset 0 -1px 0 0 var(--surface-rim-bottom);
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+/* Alanın gövde rengi. Yalnız KENDİ zemini olmayan alanlar (`bg-transparent`
+   input, textarea, select, combobox) ekler. `background-image` seçildi çünkü
+   `background-color`ın üstünde durur, yani sınıf sırası yarışına girmez. */
+@utility surface-well-fill {
+  background-image: linear-gradient(var(--surface-well), var(--surface-well));
+}
+
+
+
+/* ─── Leaflet ───
+   Kütüphanenin kendi CSS'i nötr beyaz bir atıf bandı çiziyor (rgba(255,255,255,.8),
+   12px, #333) — sıcak palette yamalı duruyor ve haritanın altını kaplıyor.
+   Metnin KENDİSİ değişmez: "© OpenStreetMap contributors" atfı hukuken gerekli,
+   yalnız sunumu tokenlara bağlanır. Leaflet'in kendi "Leaflet" öneki ise
+   zorunlu olmadığı için haritada setPrefix(false) ile kapatılıyor
+   (bkz. components/location/location-map.tsx).
+
+   Seçiciye `.leaflet-control` ekli: Leaflet zemini `.leaflet-container
+   .leaflet-control-attribution` (0,2,0) ile yazıyor ve kendi CSS'i bileşende
+   import edildiği için bizden SONRA yükleniyor — eşit özgüllükte kaybederdik.
+   Öğe zaten `leaflet-control` sınıfını taşıyor, (0,3,0)'a çıkmak yetiyor;
+   !important gerekmiyor. */
+.leaflet-container .leaflet-control-attribution.leaflet-control {
+  background: color-mix(in oklab, var(--background) 78%, transparent);
+  color: var(--muted-foreground);
+  padding: 0 5px;
+  font-size: 10px;
+  line-height: 1.5;
+  border-top-left-radius: var(--radius-sm);
+  backdrop-filter: blur(6px);
+}
+
+.leaflet-container .leaflet-control-attribution a {
+  color: var(--muted-foreground);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 @utility logo-on-light {

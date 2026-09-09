@@ -16,7 +16,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { MoreHorizontalIcon, FolderIcon, ShareIcon, Trash2Icon } from "lucide-react"
+import {
+  RiDeleteBinLine,
+  RiFolderLine,
+  RiMoreLine,
+  RiShareLine,
+} from "@remixicon/react"
 
 export function NavProjects({
   projects,
@@ -47,7 +52,7 @@ export function NavProjects({
                   showOnHover
                   className="aria-expanded:bg-muted"
                 >
-                  <MoreHorizontalIcon
+                  <RiMoreLine
                   />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
@@ -58,16 +63,16 @@ export function NavProjects({
                 align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
-                  <FolderIcon className="text-muted-foreground" />
+                  <RiFolderLine className="text-muted-foreground" />
                   <span>View Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <ShareIcon className="text-muted-foreground" />
+                  <RiShareLine className="text-muted-foreground" />
                   <span>Share Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Trash2Icon className="text-muted-foreground" />
+                  <RiDeleteBinLine className="text-muted-foreground" />
                   <span>Delete Project</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -76,7 +81,7 @@ export function NavProjects({
         ))}
         <SidebarMenuItem>
           <SidebarMenuButton>
-            <MoreHorizontalIcon
+            <RiMoreLine
             />
             <span>More</span>
           </SidebarMenuButton>

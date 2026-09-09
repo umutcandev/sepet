@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { SearchXIcon } from "lucide-react"
+import { RiSearchLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 
@@ -17,7 +17,7 @@ export function RecordNotFoundState({
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16 text-center">
       <div className="mx-auto mb-4 flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground">
-        <SearchXIcon className="size-5" />
+        <RiSearchLine className="size-5" />
       </div>
       <h1 className="text-lg font-semibold">{title}</h1>
       <p className="mt-2 text-sm text-muted-foreground">{description}</p>

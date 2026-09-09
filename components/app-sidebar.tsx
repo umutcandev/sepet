@@ -5,19 +5,20 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  HomeIcon,
-  MessagesSquareIcon,
-  PanelLeftIcon,
-  PlusIcon,
-  ReceiptIcon,
-  ShoppingBasketIcon,
-  SparklesIcon,
-  SearchIcon,
-} from "lucide-react"
+  RiAddLine,
+  RiHomeLine,
+  RiLayoutLeftLine,
+  RiQuestionAnswerLine,
+  RiReceiptLine,
+  RiSearchLine,
+  RiShoppingBasketLine,
+  RiSparklingLine,
+} from "@remixicon/react"
 
 import { NavGuest } from "@/components/nav-guest"
 import { NavGuestInfo } from "@/components/nav-guest-info"
 import { NavUser } from "@/components/nav-user"
+import { BrandContextMenu } from "@/components/brand/brand-context-menu"
 import { SepetMark } from "@/components/brand/sepet-mark"
 import { IconSwap } from "@/components/motion/icon-swap"
 import { Button } from "@/components/ui/button"
@@ -56,23 +57,23 @@ type NavItem = {
 }
 
 const nav: NavItem[] = [
-  { title: "Ana Sayfa", url: "/", icon: HomeIcon },
-  { title: "Sohbetler", url: "/sohbetler", icon: MessagesSquareIcon },
-  { title: "Ürün Ara", url: "/urun-ara", icon: SearchIcon },
+  { title: "Ana Sayfa", url: "/", icon: RiHomeLine },
+  { title: "Sohbetler", url: "/sohbetler", icon: RiQuestionAnswerLine },
+  { title: "Ürün Ara", url: "/urun-ara", icon: RiSearchLine },
   {
     title: "Sepetlerim",
     url: "/sepetlerim",
-    icon: ShoppingBasketIcon,
+    icon: RiShoppingBasketLine,
   },
   {
     title: "Fişlerim",
     url: "/fis-gecmisi",
-    icon: ReceiptIcon,
+    icon: RiReceiptLine,
   },
   {
     title: "Asistan",
     url: "/asistan",
-    icon: SparklesIcon,
+    icon: RiSparklingLine,
   },
 ]
 
@@ -126,7 +127,7 @@ function SidebarBrandToggle() {
         >
           <IconSwap swapKey={active ? "toggle" : "mark"}>
             {active ? (
-              <PanelLeftIcon className="cn-rtl-flip size-4" />
+              <RiLayoutLeftLine className="cn-rtl-flip size-4" />
             ) : (
               // h-6: genişken burada duran wordmark ile birebir aynı yükseklik.
               <SepetMark className="h-6" />
@@ -169,7 +170,7 @@ function SidebarPanelToggle() {
           aria-label="Kenar çubuğunu kapat"
           className="shrink-0 text-sidebar-foreground/70 group-data-[collapsible=icon]:hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
         >
-          <PanelLeftIcon className="cn-rtl-flip size-4" />
+          <RiLayoutLeftLine className="cn-rtl-flip size-4" />
         </Button>
       </TooltipTrigger>
       {/* Mobilde tooltip YOK. Bu düğme daraltılmış rayda gizlenir
@@ -236,30 +237,36 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
             {/* Genişken wordmark + kapatma anahtarı, daralınca üstüne gelince
                 anahtara dönüşen kare işaret. Hangisinin görüneceğine
                 `data-collapsible` karar verir. */}
-            <SidebarMenuButton
-              size="lg"
-              asChild
-              className="hover:bg-transparent active:bg-transparent group-data-[collapsible=icon]:hidden"
-            >
-              <Link href="/">
-                <Image
-                  src="/brand/sepet-dark.svg"
-                  alt="Sepet"
-                  width={846}
-                  height={178}
-                  priority
-                  className="h-6 w-auto dark:hidden"
-                />
-                <Image
-                  src="/brand/sepet-light.svg"
-                  alt=""
-                  aria-hidden
-                  width={846}
-                  height={178}
-                  className="hidden h-6 w-auto dark:block"
-                />
-              </Link>
-            </SidebarMenuButton>
+            {/* Sağ tık / basılı tutma → marka menüsü. Sarmalayıcı
+                SidebarMenuButton'ın DIŞINDA: o `asChild` ile Slot kullanıyor ve
+                tek bir eleman çocuk bekliyor. İçine konduğunda prop'lar (sınıf,
+                ref) Link'e hiç ulaşmıyor ve menü hiç açılmıyordu. */}
+            <BrandContextMenu>
+              <SidebarMenuButton
+                size="lg"
+                asChild
+                className="hover:bg-transparent active:bg-transparent group-data-[collapsible=icon]:hidden"
+              >
+                <Link href="/">
+                  <Image
+                    src="/brand/sepet-dark.svg"
+                    alt="Sepet"
+                    width={846}
+                    height={178}
+                    priority
+                    className="h-6 w-auto dark:hidden"
+                  />
+                  <Image
+                    src="/brand/sepet-light.svg"
+                    alt=""
+                    aria-hidden
+                    width={846}
+                    height={178}
+                    className="hidden h-6 w-auto dark:block"
+                  />
+                </Link>
+              </SidebarMenuButton>
+            </BrandContextMenu>
             <SidebarBrandToggle />
             <SidebarPanelToggle />
           </SidebarMenuItem>
@@ -288,7 +295,7 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
                     className="justify-center group-data-[collapsible=icon]:justify-start"
                   >
                     <Link href="/asistan" onClick={handleNewChatClick}>
-                      <PlusIcon />
+                      <RiAddLine />
                       <span>Yeni Sohbet</span>
                     </Link>
                   </SidebarMenuButton>

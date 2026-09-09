@@ -3,12 +3,12 @@
 import * as React from "react"
 import { AnimatePresence, motion } from "motion/react"
 import {
-  ImageIcon,
-  PaperclipIcon,
-  PlusIcon,
-  RefreshCwIcon,
-  XIcon,
-} from "lucide-react"
+  RiAddLine,
+  RiAttachment2,
+  RiCloseLine,
+  RiImageLine,
+  RiRefreshLine,
+} from "@remixicon/react"
 import { toast } from "@/components/ui/sonner"
 
 import {
@@ -335,11 +335,11 @@ function AddAttachmentMenu() {
   return (
     <PromptInputActionMenu>
       <PromptInputActionMenuTrigger aria-label="Ek yükle" className="rounded-full">
-        <PlusIcon aria-hidden="true" className="size-4" />
+        <RiAddLine aria-hidden="true" className="size-4" />
       </PromptInputActionMenuTrigger>
       <PromptInputActionMenuContent>
         <PromptInputActionMenuItem onSelect={() => att.openFileDialog()}>
-          <ImageIcon className="size-4" />
+          <RiImageLine className="size-4" />
           Resim yükle
         </PromptInputActionMenuItem>
       </PromptInputActionMenuContent>
@@ -384,7 +384,7 @@ function AttachmentHeader() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={url} alt={f.filename ?? "fiş"} />
                 ) : (
-                  <PaperclipIcon />
+                  <RiAttachment2 />
                 )}
                 {state === "uploading" && (
                   <span className="absolute inset-0 flex items-center justify-center bg-background/40">
@@ -420,14 +420,14 @@ function AttachmentHeader() {
                       })
                     }
                   >
-                    <RefreshCwIcon />
+                    <RiRefreshLine />
                   </AttachmentAction>
                 )}
                 <AttachmentAction
                   aria-label="Eki kaldır"
                   onClick={() => att.remove(f.id)}
                 >
-                  <XIcon />
+                  <RiCloseLine />
                 </AttachmentAction>
               </AttachmentActions>
             </Attachment>

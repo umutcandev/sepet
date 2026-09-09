@@ -11,7 +11,7 @@
 // (section'a sabitlenmez, yoksa değişken gece değerine kilitlenirdi).
 
 import * as React from "react"
-import { CheckIcon, InfinityIcon } from "lucide-react"
+import { RiCheckLine, RiInfinityLine } from "@remixicon/react"
 
 import {
   AnimatedAmount,
@@ -163,12 +163,12 @@ function ValueCell({ value }: { value: Cell }) {
     <td className={cn(CELL, COL_DIVIDER, "border-t border-border text-center")}>
       {value === true ? (
         <>
-          <CheckIcon className="mx-auto size-4 text-primary" aria-hidden />
+          <RiCheckLine className="mx-auto size-4 text-primary" aria-hidden />
           <span className="sr-only">Dahil</span>
         </>
       ) : value === UNLIMITED ? (
         <>
-          <InfinityIcon className="mx-auto size-5 text-primary" aria-hidden />
+          <RiInfinityLine className="mx-auto size-5 text-primary" aria-hidden />
           <span className="sr-only">Sınırsız</span>
         </>
       ) : (

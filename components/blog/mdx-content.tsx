@@ -3,7 +3,7 @@
 import * as React from "react"
 import * as runtime from "react/jsx-runtime"
 import Link from "next/link"
-import { CopyIcon } from "lucide-react"
+import { RiFileCopyLine } from "@remixicon/react"
 
 import { CopiedIconSwap, copyText } from "@/components/blog/article-actions"
 import { cn } from "@/lib/utils"
@@ -252,7 +252,7 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
         >
           <CopiedIconSwap
             copied={copied}
-            idleIcon={CopyIcon}
+            idleIcon={RiFileCopyLine}
             className="size-3.5"
             copiedClassName="text-primary"
           />

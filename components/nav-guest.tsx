@@ -2,7 +2,7 @@
 
 
 
-import { LogInIcon } from "lucide-react"
+import { RiLoginBoxLine } from "@remixicon/react"
 
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { loginDialog } from "@/lib/stores/login-dialog"
@@ -24,7 +24,7 @@ export function NavGuest() {
           {/* Daraltılmış rayda düğme 32 piksele iner ve metin kırpılır → ikon
               devreye girer, adı tooltip söyler. Genişken tam tersi: ortalanmış
               metnin yanında bir ikon dengeyi bozardı. */}
-          <LogInIcon className="hidden group-data-[collapsible=icon]:block" />
+          <RiLoginBoxLine className="hidden group-data-[collapsible=icon]:block" />
           <span className="group-data-[collapsible=icon]:hidden">
             Oturum Açın
           </span>

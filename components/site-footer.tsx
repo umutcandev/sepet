@@ -5,8 +5,8 @@
 // Yeni bir sayfaya eklerken bu bileşeni import et; kopya footer dosyası açma.
 import Image from "next/image"
 import Link from "next/link"
+import { RiGithubFill, RiTwitterXFill } from "@remixicon/react"
 
-import { GitHubLogo, XLogo } from "@/components/blog/brand-icons"
 import { FooterLink } from "@/components/site-footer-link"
 import { ThemeToggleInline } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
@@ -33,8 +33,8 @@ const legalLinks = [
 ]
 
 const socials = [
-  { label: "X", href: SITE_X, icon: XLogo },
-  { label: "GitHub", href: GITHUB_URL, icon: GitHubLogo },
+  { label: "X", href: SITE_X, icon: RiTwitterXFill },
+  { label: "GitHub", href: GITHUB_URL, icon: RiGithubFill },
 ]
 
 function FooterColumn({

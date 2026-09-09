@@ -2,7 +2,12 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ImageIcon, ScanBarcodeIcon, SearchIcon, TriangleAlertIcon } from "lucide-react"
+import {
+  RiAlertLine,
+  RiBarcodeBoxLine,
+  RiImageLine,
+  RiSearchLine,
+} from "@remixicon/react"
 
 import { BarcodeScannerDialog } from "@/components/barcode-scanner-dialog"
 import { ProductDetailPanel } from "@/components/product-detail-panel"
@@ -269,7 +274,7 @@ export function ProductSearchPage({
         className="mb-6 flex max-w-xl items-center gap-2"
       >
         <div className="relative flex-1">
-          <SearchIcon className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+          <RiSearchLine className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -296,7 +301,7 @@ export function ProductSearchPage({
             openScanner()
           }}
         >
-          <ScanBarcodeIcon className="size-4" />
+          <RiBarcodeBoxLine className="size-4" />
           Barkod
         </Button>
         <Button
@@ -308,7 +313,7 @@ export function ProductSearchPage({
           {view.kind === "loading" ? (
             <Spinner className="size-3.5" />
           ) : (
-            <SearchIcon className="size-3.5" />
+            <RiSearchLine className="size-3.5" />
           )}
           Ara
         </Button>
@@ -366,7 +371,7 @@ function ResultArea({
           role="alert"
           className="flex items-center gap-1.5 text-sm text-destructive"
         >
-          <TriangleAlertIcon aria-hidden="true" className="size-4 shrink-0" />
+          <RiAlertLine aria-hidden="true" className="size-4 shrink-0" />
           Hata: {result.message}
         </p>
       </EmptyState>
@@ -463,7 +468,7 @@ function ProductCard({
           />
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
-            <ImageIcon className="size-8" />
+            <RiImageLine className="size-8" />
           </div>
         )}
       </div>

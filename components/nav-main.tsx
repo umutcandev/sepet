@@ -16,7 +16,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import { ChevronRightIcon } from "lucide-react"
+import { RiArrowRightSLine } from "@remixicon/react"
 
 export function NavMain({
   items,
@@ -49,7 +49,7 @@ export function NavMain({
                 <>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuAction className="data-[state=open]:rotate-90">
-                      <ChevronRightIcon
+                      <RiArrowRightSLine
                       />
                       <span className="sr-only">Toggle</span>
                     </SidebarMenuAction>

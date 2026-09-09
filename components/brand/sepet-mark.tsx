@@ -1,3 +1,4 @@
+import { MARK_PATHS, MARK_VIEWBOX } from "@/lib/brand/mark"
 import { cn } from "@/lib/utils"
 
 /**
@@ -5,17 +6,18 @@ import { cn } from "@/lib/utils"
  * dar yuvalarda kullanılır; şu an daraltılmış kenar çubuğunun başlığında
  * duruyor (bkz. components/app-sidebar.tsx).
  *
- * MÜREKKEP wordmark'takinin aynısı. Kaynak dosyadaki sabit `#E2E2E2` yalnız
- * koyu zeminde okunuyordu; `currentColor`a bağlanıp aşağıdaki iki marka rengiyle
- * sürülüyor — bunlar `sepet-dark.svg` (#6D4530, açık zemin) ve `sepet-light.svg`
- * (#F2C897, koyu zemin) içindeki değerlerin birebir kendisi. Wordmark statik bir
- * dosya olduğu için token'a bağlanamıyor; o dosyalar değişirse burası da elle
- * güncellenmeli.
+ * Çizim verisi `lib/brand/mark.ts`te: aynı yollardan hem bu bileşen hem de
+ * `public/brand/sepet-logo-*.svg` dosyaları (scripts/build-brand-kit.mjs)
+ * üretiliyor, böylece indirilen varlık ekrandakinden sapmıyor.
  *
- * viewBox çizimin kendi sınırlarına daraltıldı (kaynakta 300×300 kutunun içinde
- * 67–234 / 8–292 aralığını dolduruyordu). Böylece `h-6` demek "çizim 24 piksel"
- * demek oluyor ve işaret, yerini aldığı `h-6` wordmark ile TAM aynı yükseklikte
- * duruyor — kenar çubuğu açılıp kapanırken logo büyüyüp küçülmüyor.
+ * MÜREKKEP wordmark'takinin aynısı. Kaynak dosyadaki sabit `#E2E2E2` yalnız
+ * koyu zeminde okunuyordu; `currentColor`a bağlanıp iki marka rengiyle
+ * sürülüyor. Wordmark statik bir dosya olduğu için token'a bağlanamıyor; o
+ * dosyalar değişirse `lib/brand/mark.ts` de elle güncellenmeli.
+ *
+ * viewBox çizimin kendi sınırlarına daraltıldı. Böylece `h-6` demek "çizim 24
+ * piksel" demek oluyor ve işaret, yerini aldığı `h-6` wordmark ile TAM aynı
+ * yükseklikte duruyor — kenar çubuğu açılıp kapanırken logo büyüyüp küçülmüyor.
  */
 export function SepetMark({
   className,
@@ -23,38 +25,24 @@ export function SepetMark({
 }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="67 8 166.65 284"
+      viewBox={MARK_VIEWBOX}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
-      className={cn("w-auto shrink-0 text-[#6D4530] dark:text-[#F2C897]", className)}
+      // Sınıflar LİTERAL yazılmak zorunda: Tailwind kaynağı metin olarak
+      // tarar, template literal içindeki değişkenden utility üretmez. Değerler
+      // `MARK_INK` ile aynı olmalı (#6D4530 / #F2C897) — orası script'in,
+      // burası ekranın kaynağı.
+      className={cn(
+        "w-auto shrink-0 text-[#6D4530] dark:text-[#F2C897]",
+        className,
+      )}
       {...props}
     >
-      <path
-        d="M158.196 93.258C159.637 93.1766 161.804 94.6943 163.148 95.4367L173.428 101.12L203.672 117.973C209.108 121.003 214.552 124.015 219.981 127.058C220.553 127.397 220.945 127.561 221.276 128.224C222.496 130.666 223.4 133.473 224.383 136.052C226.196 140.704 227.959 145.38 229.673 150.078C230.475 150.497 231.277 150.917 232.078 151.337V196.207C229.652 196.84 227.243 197.468 224.879 198.069L184.637 208.333C176.774 210.347 168.784 212.467 160.913 214.369L165.66 259.804C165.813 261.267 166.045 263.093 166.132 264.533L215.847 249.37L229.294 245.263C229.662 245.15 230.771 244.845 232.078 244.458V274.369H195.237L169.153 278.487L162.523 280.475C161.165 280.886 159.78 281.329 158.412 281.674C157.79 281.831 157.493 281.792 156.944 281.43C154.974 280.129 152.988 278.675 151.056 277.311L138.922 268.699L121.099 255.914C118.034 253.715 114.934 251.534 111.892 249.299C111.063 248.752 110.315 247.811 110.06 246.746C109.402 244.003 108.875 241.147 108.321 238.372L104.996 221.785L100.107 197.363C99.2238 192.964 98.1802 188.141 97.4478 183.732C95.4081 182.581 92.5119 181.028 90.6412 179.557C90.4503 179.407 90.0868 178.743 89.9507 178.492C89.8504 176.593 89.9151 174.026 89.9146 172.087C89.8953 168.763 89.9076 165.438 89.9498 162.114L90.0269 161.979C91.2262 159.937 93.3574 159.928 95.3921 159.466L102.079 157.944L126.964 152.305L140.837 115.557C142.877 110.157 144.74 104.578 146.976 99.2834C147.202 98.7491 147.489 98.004 147.908 97.633C149.09 96.5849 156.24 94.0303 158.196 93.258ZM113.461 192.064C113.781 194.511 114.427 197.607 114.889 200.083L117.552 214.155L120.753 230.805C121.229 233.239 121.739 236.261 122.294 238.635L143.864 254.661L150.238 259.36C151 259.922 152.808 261.315 153.579 261.73L148.545 214.291C140.434 209.227 132.351 204.098 124.298 198.907C121.002 196.806 116.792 193.909 113.461 192.064ZM194.103 151.905C193.804 151.653 193.41 151.729 193.06 151.798L110.442 171.077L126.8 181.409C129.534 183.149 153.242 198.425 154.336 198.527C155.751 198.655 160.721 197.123 162.476 196.682L179.46 192.459L189.469 165.277L192.717 156.432C193.051 155.521 194.316 152.643 194.103 151.905ZM211.626 143.535C210.068 147.136 208.334 152.227 206.934 155.998L199.321 176.483C197.871 180.386 196.313 184.79 194.774 188.614L205.919 185.822L225.186 181.001C223.783 176.909 212.262 144.265 211.626 143.535ZM148.271 137.358C146.903 141.06 145.506 145.078 144.088 148.712C147.068 148.21 150.976 147.271 153.968 146.57C158.605 145.546 164.153 144.496 168.676 143.297C167.632 140.482 157.753 114.222 157.124 113.556L148.271 137.358ZM173.206 118.085C173.668 119.474 174.217 120.786 174.722 122.149C176.971 128.211 179.516 134.215 181.702 140.3C185.187 139.521 190.349 138.109 193.82 138.115C194.391 138.117 197.711 139.259 198.704 139.481C199.329 137.71 200.04 135.795 200.597 134.009L182.249 123.287C179.766 121.838 175.643 119.24 173.206 118.085Z"
-        fill="currentColor"
-      />
-      <path
-        d="M160.855 231.13L163.686 247.608L216.654 233.831L211.632 218.365L160.855 231.13Z"
-        fill="currentColor"
-      />
-      <path
-        d="M228.197 158.142L200.726 140.618V156.248L228.197 173.772V158.142Z"
-        fill="currentColor"
-      />
-      <path
-        d="M115.564 208.806L118.777 222.35L152.861 246.89L150.546 229.923L115.025 206.387L115.564 208.806Z"
-        fill="currentColor"
-      />
-      <path
-        d="M233.644 7.99987L232.078 60.5824L232.078 111.94L232.078 209.153C232.101 254.948 233.644 246.268 233.644 291.234H210.672V253.816L210.672 177.561V106.99L210.672 58.2052L210.672 30.0471C172.926 29.26 127.608 30.0807 89.5309 30.0471C90.3238 2.26332 84.762 36.6694 84.4247 8.76612H125.694L161.461 8.76612H195.853L233.644 7.99987Z"
-        fill="currentColor"
-      />
-      <path
-        d="M67 292L68.5653 207.319L68.5653 149.542L68.5653 119.736C68.5653 96.3496 68.5653 59.207 67 8.76636L89.972 8.76636L89.972 46.1835L89.972 122.439L89.972 193.01L89.972 241.795L89.972 269.953C127.718 270.74 173.036 269.919 211.113 269.953C210.32 297.737 214.506 263.789 214.843 291.692L174.949 291.234L139.182 291.234H104.791L67 292Z"
-        fill="currentColor"
-      />
+      {MARK_PATHS.map((d) => (
+        <path key={d.slice(0, 24)} d={d} fill="currentColor" />
+      ))}
     </svg>
   )
 }

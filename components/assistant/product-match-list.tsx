@@ -1,12 +1,13 @@
 "use client"
 
+import { Squircle } from "@/components/ui/squircle"
 import Image from "next/image"
 import {
-  PackageIcon,
-  AlertCircleIcon,
-  CreditCardIcon,
-  ChevronDownIcon,
-} from "lucide-react"
+  RiArrowDownSLine,
+  RiBankCardLine,
+  RiBox3Line,
+  RiErrorWarningLine,
+} from "@remixicon/react"
 import {
   Collapsible,
   CollapsibleContent,
@@ -21,7 +22,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
   if (!matches?.length) return null
 
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Squircle className="border bg-card" radius="xl" effects>
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Eşleşen Ürünler</span>
       </div>
@@ -45,7 +46,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                     unoptimized
                   />
                 ) : (
-                  <PackageIcon className="size-5 text-muted-foreground" />
+                  <RiBox3Line className="size-5 text-muted-foreground" />
                 )}
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -58,7 +59,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                       {m.bestMatch.brand && <span>{m.bestMatch.brand}</span>}
                       {m.sizeMismatch && (
                         <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
-                          <AlertCircleIcon className="size-3" />
+                          <RiErrorWarningLine className="size-3" />
                           Farklı Boyut
                         </span>
                       )}
@@ -66,17 +67,17 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                   </>
                 ) : m.lookupStatus === "api_quota" ? (
                   <div className="flex items-center gap-1.5 text-sm text-amber-700 dark:text-amber-400">
-                    <CreditCardIcon className="size-3.5" />
+                    <RiBankCardLine className="size-3.5" />
                     API kotası tükendi
                   </div>
                 ) : m.lookupStatus === "api_error" ? (
                   <div className="flex items-center gap-1.5 text-sm text-destructive">
-                    <AlertCircleIcon className="size-3.5" />
+                    <RiErrorWarningLine className="size-3.5" />
                     API hatası
                   </div>
                 ) : (
                   <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                    <AlertCircleIcon className="size-3.5 shrink-0" />
+                    <RiErrorWarningLine className="size-3.5 shrink-0" />
                     <span className="truncate">
                       <span className="font-medium text-foreground">
                         {m.searchQuery}
@@ -113,7 +114,7 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
                   <span>
                     Diğer marketlerdeki fiyatları gör
                   </span>
-                  <ChevronDownIcon className="size-3.5 transition-transform group-data-[state=open]:rotate-180" />
+                  <RiArrowDownSLine className="size-3.5 transition-transform group-data-[state=open]:rotate-180" />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <ul className="grid divide-y border-t bg-muted/20">
@@ -142,6 +143,6 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
         )
       })}
       </div>
-    </div>
+    </Squircle>
   )
 }

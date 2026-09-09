@@ -4,7 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
-import { ArrowLeftIcon, ArrowUpRightIcon } from "lucide-react"
+import { RiArrowLeftLine, RiArrowRightUpLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -338,7 +338,7 @@ export function LoginForm({ callbackUrl }: Props) {
           aria-label="Geri"
           onClick={() => goStage(back)}
         >
-          <ArrowLeftIcon />
+          <RiArrowLeftLine />
         </Button>
       ) : null}
 
@@ -831,7 +831,7 @@ function TermsDialog() {
           className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
         >
           Tam sayfada aç
-          <ArrowUpRightIcon className="size-3" />
+          <RiArrowRightUpLine className="size-3" />
         </Link>
       </DialogContent>
     </Dialog>
@@ -866,7 +866,7 @@ function PrivacyDialog() {
           className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
         >
           Tam sayfada aç
-          <ArrowUpRightIcon className="size-3" />
+          <RiArrowRightUpLine className="size-3" />
         </Link>
       </DialogContent>
     </Dialog>

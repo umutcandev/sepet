@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { RefreshCwIcon } from "lucide-react"
+import { RiRefreshLine } from "@remixicon/react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -107,7 +107,7 @@ export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
             onClick={refresh}
             disabled={refreshing}
           >
-            <RefreshCwIcon className={cn(refreshing && "animate-spin")} />
+            <RiRefreshLine className={cn(refreshing && "animate-spin")} />
             Tekrar dene
           </Button>
         </div>
@@ -177,7 +177,7 @@ export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
               // genişletilir (bkz. checkbox/radio-group aynı kalıbı kullanıyor).
               className="relative after:absolute after:-inset-2"
             >
-              <RefreshCwIcon
+              <RiRefreshLine
                 className={cn("size-3.5", refreshing && "animate-spin")}
               />
             </Button>

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDownIcon, ExpandIcon } from "lucide-react"
+import { RiArrowDownSLine, RiFullscreenLine } from "@remixicon/react"
 
 import {
   Dialog,
@@ -38,7 +38,7 @@ export function ReceiptImage({ url }: { url: string }) {
         className="flex min-h-12 w-full items-center gap-2 border-b px-4 py-2 text-left md:hidden"
       >
         <span className="text-sm font-medium">Fiş Görseli</span>
-        <ChevronDownIcon
+        <RiArrowDownSLine
           className={cn(
             "ml-auto size-4 text-muted-foreground transition-transform",
             open && "rotate-180",
@@ -64,7 +64,7 @@ export function ReceiptImage({ url }: { url: string }) {
                 className="block max-h-[240px] w-full object-contain"
               />
               <span className="pointer-events-none absolute right-2 top-2 flex size-7 items-center justify-center rounded-md bg-background/80 text-muted-foreground opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-                <ExpandIcon className="size-3.5" />
+                <RiFullscreenLine className="size-3.5" />
               </span>
             </button>
           </DialogTrigger>

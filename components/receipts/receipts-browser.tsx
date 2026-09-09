@@ -4,12 +4,12 @@ import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
 import {
-  ArrowRightIcon,
-  ListFilterIcon,
-  SearchIcon,
-  SparklesIcon,
-  XIcon,
-} from "lucide-react"
+  RiArrowRightLine,
+  RiCloseLine,
+  RiFilter3Line,
+  RiSearchLine,
+  RiSparklingLine,
+} from "@remixicon/react"
 import { toast } from "@/components/ui/sonner"
 
 import {
@@ -389,7 +389,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
       {isEmpty ? (
         <div className="flex flex-col items-center gap-3 rounded-2xl border bg-card px-6 py-12 text-center">
           <div className="rounded-full bg-secondary p-3 text-primary">
-            <SparklesIcon className="size-5" />
+            <RiSparklingLine className="size-5" />
           </div>
           <h2 className="text-base font-medium">Henüz fiş kaydetmedin</h2>
           <p className="max-w-sm text-sm text-muted-foreground">
@@ -405,7 +405,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
           {/* Arama + sıralama */}
           <div className="flex items-center gap-2">
             <div className="relative flex-1">
-              <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+              <RiSearchLine className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="search"
                 inputMode="search"
@@ -441,7 +441,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                     aria-label="Aramayı temizle"
                     className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    <XIcon className="size-4" />
+                    <RiCloseLine className="size-4" />
                   </button>
                 ) : null}
               </div>
@@ -455,7 +455,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                   aria-label="Sırala"
                   className="size-9 shrink-0 text-muted-foreground"
                 >
-                  <ListFilterIcon className="size-4" />
+                  <RiFilter3Line className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-48">
@@ -468,7 +468,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                     <DropdownMenuRadioItem key={opt.value} value={opt.value}>
                       <span className="flex items-center gap-1">
                         {opt.prefix}
-                        <ArrowRightIcon
+                        <RiArrowRightLine
                           className="size-3.5 text-muted-foreground"
                           aria-hidden
                         />

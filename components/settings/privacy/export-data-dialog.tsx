@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckCircle2Icon } from "lucide-react"
+import { RiCheckboxCircleLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -144,7 +144,7 @@ export function ExportDataDialog() {
             <>
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <CheckCircle2Icon className="size-4 text-primary" />
+                  <RiCheckboxCircleLine className="size-4 text-primary" />
                   Verilerin hazır
                 </DialogTitle>
                 <DialogDescription>

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { XIcon } from "lucide-react"
+import { RiCloseLine } from "@remixicon/react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
 import { Button } from "@/components/ui/button"
@@ -78,7 +78,7 @@ function MobileDialog({ open, onOpenChange, callbackUrl }: Props) {
               className="absolute right-3 top-[calc(env(safe-area-inset-top)+0.75rem)] z-10"
               aria-label="Kapat"
             >
-              <XIcon />
+              <RiCloseLine />
             </Button>
           </DialogPrimitive.Close>
         </DialogPrimitive.Content>
@@ -127,7 +127,7 @@ function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
               className="absolute top-3 right-3 z-10"
               aria-label="Kapat"
             >
-              <XIcon />
+              <RiCloseLine />
             </Button>
           </DialogPrimitive.Close>
         </DialogPrimitive.Content>

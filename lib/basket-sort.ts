@@ -8,7 +8,7 @@ export type BasketSort = "date_desc" | "date_asc" | "name_asc" | "name_desc"
 
 export const DEFAULT_BASKET_SORT: BasketSort = "date_desc"
 
-// Etiket, ortadaki ok bir kütüphane ikonu (lucide ArrowRight) olacak şekilde
+// Etiket, ortadaki ok bir kütüphane ikonu (RiArrowRightLine) olacak şekilde
 // "prefix → suffix" olarak parçalanır; menüde ikon iki parçanın arasına girer.
 export const BASKET_SORTS: ReadonlyArray<{
   value: BasketSort
