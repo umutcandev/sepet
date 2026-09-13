@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Command } from "cmdk"
+import { Command as CommandPrimitive } from "cmdk"
 import {
   RiArrowDownSLine,
   RiCheckLine,
@@ -15,6 +15,8 @@ import {
 import { CATEGORIES, CATEGORY_LIST, type CategoryId } from "@/lib/blog/categories"
 import { searchDocs, type Highlight, type SearchDoc } from "@/lib/blog/search"
 import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Drawer,
   DrawerClose,
@@ -23,12 +25,28 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+} from "@/components/ui/input-group"
 import { Skeleton } from "@/components/ui/skeleton"
 
-// Blog index araç çubuğu (Vercel blog esinli): solda kategori filtresi, sağda
-// RSS'in solunda anlık arama. Arama tamamen istemcide (veri build-time) → tek
-// harfte bile gecikmesiz. Mobilde kategoriler drawer'a, arama tam genişlik bir
-// alana açılır.
+/* Uçan panel: Radix popper kullanmadığımız için `DropdownMenuContent`in
+   (ui/dropdown-menu.tsx) görsel yarısı burada birebir tekrarlanıyor —
+   yarıçap, padding, gölge ve giriş animasyonu aynı kalsın diye. */
+const PANEL_CLASS =
+  "z-50 overflow-hidden rounded-lg bg-popover p-1 text-popover-foreground smooth-shadow-ring-md duration-100 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
+
+/* Sonuç satırı: `CommandItem` (ui/command.tsx) ile aynı ölçüler ve aynı seçim
+   tokenı. Primitive'in kendisi kullanılamıyor, sonundaki onay ikonu bu çok
+   satırlı düzende görünmez bir satır kadar yer kaplıyor. */
+const ITEM_CLASS =
+  "group/command-item relative flex cursor-pointer flex-col gap-1 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-selected:bg-accent data-selected:text-accent-foreground"
+
+// Blog index araç çubuğu: solda kategori filtresi, sağda RSS'in solunda anlık
+// arama. Arama tamamen istemcide (veri build-time). Mobilde kategoriler
+// drawer'a, arama tam genişlik bir alana açılır.
 export function BlogToolbar({
   active,
   docs,
@@ -119,22 +137,18 @@ export function BlogToolbar({
       className="relative flex items-center justify-between gap-2"
     >
       {/* Kategori filtresi: masaüstünde pill satırı, mobilde drawer tetikleyici */}
-      <div
-        className={cn(
-          "-mx-1 hidden flex-wrap items-center gap-2 px-1 sm:flex",
-        )}
-      >
-        <Link href="/blog" className={pillClass(!active)}>
+      <div className="-mx-1 hidden flex-wrap items-center gap-2 px-1 sm:flex">
+        <CategoryPill href="/blog" active={!active}>
           Tümü
-        </Link>
+        </CategoryPill>
         {CATEGORY_LIST.map((category) => (
-          <Link
+          <CategoryPill
             key={category.id}
             href={`/blog?kategori=${category.slug}`}
-            className={pillClass(active === category.id)}
+            active={active === category.id}
           >
             {category.label}
-          </Link>
+          </CategoryPill>
         ))}
       </div>
 
@@ -151,20 +165,18 @@ export function BlogToolbar({
         )}
       >
         {/* Mobil: aramayı açan ikon (kapalıyken) */}
-        <button
-          type="button"
+        <Button
+          variant="secondary"
+          size="icon"
           aria-label="Ara"
           onClick={openMobileSearch}
-          className={cn(
-            "flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground sm:hidden",
-            searchOpen && "hidden",
-          )}
+          className={cn("sm:hidden", searchOpen && "hidden")}
         >
-          <RiSearchLine className="size-4" />
-        </button>
+          <RiSearchLine />
+        </Button>
 
         {/* Arama: masaüstünde her zaman; mobilde yalnız searchOpen iken */}
-        <Command
+        <CommandPrimitive
           shouldFilter={false}
           loop
           className={cn(
@@ -172,10 +184,15 @@ export function BlogToolbar({
             searchOpen ? "flex flex-1" : "hidden",
           )}
         >
-          <div className="surface-inset flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-muted/40 pr-1.5 pl-3 transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/40">
-            <RiSearchLine className="size-4 shrink-0 text-muted-foreground" />
-            <Command.Input
+          {/* `surface-well-fill`: InputGroup oyuğu çizer ama dolguyu basmaz
+              (bkz. globals.css). Input primitive'i de bu ikiliyi kullanıyor. */}
+          <InputGroup className="surface-well-fill">
+            <InputGroupAddon>
+              <RiSearchLine className="text-muted-foreground" />
+            </InputGroupAddon>
+            <CommandPrimitive.Input
               ref={inputRef}
+              data-slot="input-group-control"
               value={query}
               onValueChange={handleQueryChange}
               onFocus={() => {
@@ -190,40 +207,49 @@ export function BlogToolbar({
               }}
               aria-label="Yazılarda ara"
               placeholder="Yazılarda ara..."
-              className="h-full w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              // `pr-2.5`: temizle düğmesi yokken (masaüstü, boş sorgu) sağda
+              // hiç addon olmuyor. Düğme belirince InputGroup'un `:has()`
+              // kuralı daha yüksek özgüllükle `pr-1.5`e çekiyor.
+              // `text-base md:text-sm`: iOS 16px altı inputta sayfayı zoomluyor
+              // (Input primitive'iyle aynı önlem).
+              className="h-full min-w-0 flex-1 bg-transparent pr-2.5 text-base outline-none placeholder:text-muted-foreground md:text-sm"
             />
             {(trimmed || searchOpen) && (
-              <button
-                type="button"
-                aria-label="Aramayı temizle"
-                onClick={clear}
-                className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                <RiCloseLine className="size-4" />
-              </button>
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  size="icon-xs"
+                  aria-label="Aramayı temizle"
+                  onClick={clear}
+                >
+                  <RiCloseLine />
+                </InputGroupButton>
+              </InputGroupAddon>
             )}
-          </div>
+          </InputGroup>
 
           {showPanel && (
-            <div className="absolute top-[calc(100%+8px)] right-0 left-0 z-50 overflow-hidden rounded-xl bg-popover p-1.5 smooth-shadow-ring-lg sm:left-auto sm:w-[28rem] sm:max-w-[calc(100vw-2rem)]">
-              <Command.List className="cn-scrollbar-thin max-h-[min(60vh,22rem)] overflow-x-hidden overflow-y-auto">
+            <div
+              className={cn(
+                PANEL_CLASS,
+                "absolute top-[calc(100%+8px)] right-0 left-0 sm:left-auto sm:w-[28rem] sm:max-w-[calc(100vw-2rem)]",
+              )}
+            >
+              <CommandPrimitive.List className="cn-scrollbar-thin max-h-[min(60vh,22rem)] scroll-py-1 overflow-x-hidden overflow-y-auto">
                 {loading ? (
                   <SearchSkeletons />
                 ) : results.length > 0 ? (
                   results.map(({ doc, titleHl, descHl }) => (
-                    <Command.Item
+                    <CommandPrimitive.Item
                       key={doc.slug}
                       value={doc.slug}
                       onSelect={() => go(doc.permalink)}
-                      className="flex cursor-pointer flex-col gap-1.5 rounded-lg px-3 py-2.5 data-[selected=true]:bg-muted/60"
+                      className={ITEM_CLASS}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
+                        <span className="min-w-0 flex-1 truncate font-medium text-foreground">
                           <Highlighted text={doc.title} ranges={titleHl} />
                         </span>
-                        <span className="shrink-0 rounded-md border border-border px-1.5 py-0.5 text-[0.6875rem] font-medium text-muted-foreground">
-                          {doc.categoryLabel}
-                        </span>
+                        <Badge variant="outline">{doc.categoryLabel}</Badge>
                       </div>
                       <span className="text-xs text-muted-foreground">
                         {doc.dateLabel}
@@ -231,38 +257,42 @@ export function BlogToolbar({
                       <span className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                         <Highlighted text={doc.description} ranges={descHl} />
                       </span>
-                    </Command.Item>
+                    </CommandPrimitive.Item>
                   ))
                 ) : (
-                  <div className="px-3 py-8 text-center text-sm text-muted-foreground">
+                  <div className="py-6 text-center text-sm text-muted-foreground">
                     <span className="text-foreground">“{trimmed}”</span> için
                     sonuç bulunamadı.
                   </div>
                 )}
-              </Command.List>
+              </CommandPrimitive.List>
             </div>
           )}
-        </Command>
+        </CommandPrimitive>
 
-        <a
-          href="/blog/rss.xml"
-          aria-label="RSS akışı"
-          title="RSS akışı"
-          className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
-        >
-          <RiRssLine className="size-4" />
-        </a>
+        <Button asChild variant="secondary" size="icon" title="RSS akışı">
+          <a href="/blog/rss.xml" aria-label="RSS akışı">
+            <RiRssLine />
+          </a>
+        </Button>
       </div>
     </div>
   )
 }
 
-function pillClass(active: boolean) {
-  return cn(
-    "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-    active
-      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-      : "bg-muted text-muted-foreground hover:bg-muted/70 hover:text-foreground",
+function CategoryPill({
+  href,
+  active,
+  children,
+}: {
+  href: string
+  active: boolean
+  children: React.ReactNode
+}) {
+  return (
+    <Button asChild variant={active ? "default" : "secondary"}>
+      <Link href={href}>{children}</Link>
+    </Button>
   )
 }
 
@@ -270,10 +300,10 @@ function SearchSkeletons() {
   return (
     <div className="flex flex-col">
       {[0, 1, 2].map((i) => (
-        <div key={i} className="flex flex-col gap-2 px-3 py-2.5">
+        <div key={i} className="flex flex-col gap-1 px-2 py-1.5">
           <div className="flex items-center gap-2">
-            <Skeleton className="h-4 w-2/3" />
-            <Skeleton className="h-4 w-14 rounded-md" />
+            <Skeleton className="h-5 w-2/3" />
+            <Skeleton className="h-5 w-14 rounded-md" />
           </div>
           <Skeleton className="h-3 w-20" />
           <Skeleton className="h-3 w-full" />
@@ -325,14 +355,11 @@ function CategoryDrawer({
   const label = active ? CATEGORIES[active].label : "Tümü"
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger
-        className={cn(
-          "flex h-8 shrink-0 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90",
-          className,
-        )}
-      >
-        {label}
-        <RiArrowDownSLine className="size-4 text-primary-foreground/70" />
+      <DrawerTrigger asChild>
+        <Button className={className}>
+          {label}
+          <RiArrowDownSLine className="text-primary-foreground/70" />
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
@@ -364,11 +391,12 @@ function CategoryDrawer({
   )
 }
 
+/* Menü öğesi tokenları (`accent`), dokunma hedefi için daha yüksek padding. */
 function drawerItemClass(active: boolean) {
   return cn(
-    "flex items-center rounded-lg px-3 py-2.5 text-sm transition-colors",
+    "flex items-center rounded-md px-2 py-2.5 text-sm transition-colors",
     active
-      ? "bg-muted font-medium text-foreground"
-      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
+      ? "bg-accent font-medium text-accent-foreground"
+      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
   )
 }

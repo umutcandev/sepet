@@ -17,6 +17,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/blog"
 import { getAuthor } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
@@ -121,7 +122,7 @@ export default async function BlogPostPage({
             className="mt-6"
           />
 
-          <hr className="my-8 border-border" />
+          <Separator className="my-8" />
 
           <div className="prose max-w-none">
             <MdxContent code={post.content} />

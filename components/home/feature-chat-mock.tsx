@@ -174,10 +174,6 @@ export function FeatureChatMock() {
     setPhase("idle")
 
     const timers: number[] = []
-    // armed: bir sonraki görünürlükte oynatılabilir mi. Observer görünürlük
-    // değiştikçe birden çok kez tetiklenir; bu bayrak olmasa kullanıcı
-    // izlerken dizi baştan sarardı.
-    let armed = true
 
     const clear = () => {
       for (const id of timers) window.clearTimeout(id)
@@ -185,8 +181,6 @@ export function FeatureChatMock() {
     }
 
     const play = () => {
-      if (!armed) return
-      armed = false
       setPhase("sent")
       timers.push(
         window.setTimeout(() => setPhase("tool"), SEND_MS),
@@ -209,18 +203,17 @@ export function FeatureChatMock() {
       )
     }
 
+    // ÖMÜRDE TEK KEZ oynar; observer ilk görünürlükte kendini söker.
+    //
+    // Eskiden kart ekrandan tamamen çıkınca dizi başa sarıyor ve her dönüşte
+    // yeniden oynuyordu. Sayfa boyunca gezinen biri için bu, kaydırdıkça bir
+    // şeylerin yüklendiği izlenimi veriyordu — maket bir demo, bir ilerleme
+    // göstergesi değil. Bir kez izlenir, sonra dinlenme hâlinde kalır.
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          play()
-          return
-        }
-        // Tamamen çıktı: kalan beat'leri iptal et ve başa sar. Sıfırlama ekran
-        // dışında olduğu için görünmez; kullanıcı geri döndüğünde diziyi
-        // baştan izler.
-        clear()
-        armed = true
-        setPhase("idle")
+        if (!entry.isIntersecting) return
+        io.disconnect()
+        play()
       },
       // Kartın üst kenarı ekranın son %10'una girmeden dizi başlamasın: aksi
       // hâlde beat'ler kart daha okunmadan tükeniyordu.

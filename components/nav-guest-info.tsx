@@ -3,6 +3,8 @@
 import * as React from "react"
 import { RiArrowRightUpLine, RiCloseLine } from "@remixicon/react"
 
+import { Button } from "@/components/ui/button"
+import { Squircle } from "@/components/ui/squircle"
 import { useMounted } from "@/hooks/use-mounted"
 
 const DISMISS_KEY = "sepet:guest-beta-notice-dismissed"
@@ -35,32 +37,47 @@ export function NavGuestInfo() {
   if (!mounted || dismissed) return null
 
   return (
-    <div className="relative mb-2 rounded-lg border border-sidebar-border bg-sidebar-accent/40 p-3.5 group-data-[collapsible=icon]:hidden">
-      <button
-        type="button"
-        onClick={handleDismiss}
-        aria-label="Kapat"
-        className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md text-muted-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-foreground"
+    // Sarmalayıcı gizlemeyi ve marjı taşır, Squircle'ın kendisi değil: `effects`
+    // açıkken Lisse araya bir div doğuruyor ve `hidden` içerideki elemana
+    // düştüğü için rayda o boş kutu footer'ın gap'inden pay almaya devam ederdi.
+    <div className="mb-2 group-data-[collapsible=icon]:hidden">
+      {/* Yüzey reçetesi sitedeki diğer kartlarla BİREBİR (bkz. featured-post-card):
+          radius="xl" + effects + bg-card + smooth-shadow-ring-sm, `border` YOK.
+          Kapat düğmesinin odak halkası 8px içeride, clip-path'e takılmıyor. */}
+      <Squircle
+        radius="xl"
+        effects
+        className="relative bg-card p-3.5 smooth-shadow-ring-sm"
       >
-        <RiCloseLine className="size-4" />
-      </button>
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          onClick={handleDismiss}
+          aria-label="Kapat"
+          className="absolute top-2 right-2 text-muted-foreground/60 hover:text-foreground"
+        >
+          <RiCloseLine />
+        </Button>
 
-      <p className="pr-6 text-sm font-medium leading-tight text-foreground">
-        Geri bildirim
-      </p>
-      <p className="mt-2 text-[0.8125rem] leading-relaxed text-muted-foreground">
-        Sepet geliştirme aşamasındadır. Bir hata fark edersen ya da fikrin varsa
-        GitHub üzerinden bize ulaşabilirsin.
-      </p>
-      <a
-        href="https://github.com/umutcandev/sepet"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-3 inline-flex items-center gap-1 text-[0.8125rem] font-medium text-foreground underline-offset-2 transition-colors hover:underline"
-      >
-        GitHub&apos;da katkıda bulun
-        <RiArrowRightUpLine className="size-3.5" />
-      </a>
+        <p className="cn-font-heading pr-6 text-sm leading-snug font-medium text-card-foreground">
+          Geri bildirim
+        </p>
+        <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-muted-foreground">
+          Sepet geliştirme aşamasındadır. Bir hata fark edersen ya da fikrin
+          varsa GitHub üzerinden bize ulaşabilirsin.
+        </p>
+        {/* Buton DEĞİL bağlantı: hemen altında Oturum Açın düğmesi duruyor, iki
+            dolu yüzey üst üste gelince hangisinin asıl eylem olduğu kayboluyor. */}
+        <a
+          href="https://github.com/umutcandev/sepet"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex items-center gap-1 text-[0.8125rem] font-medium text-foreground underline-offset-4 transition-colors hover:underline"
+        >
+          GitHub&apos;da katkıda bulun
+          <RiArrowRightUpLine className="size-3.5" />
+        </a>
+      </Squircle>
     </div>
   )
 }

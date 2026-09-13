@@ -10,9 +10,7 @@ import { formatAuthorNames } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
 import { formatPostDateMedium } from "@/lib/blog/format"
 import { Button } from "@/components/ui/button"
-import { AnimateEnter } from "@/components/motion/animate-enter"
 import { PressFx } from "@/components/motion/press-fx"
-import { stagger } from "@/lib/motion"
 
 // Ana sayfa "son 4 yazı" bölümü (plan §7.3). getLatestPosts ile beslenir.
 export function HomeBlogSection() {
@@ -70,7 +68,7 @@ export function HomeBlogSection() {
       {/* pb: altında footer var; sayfa dibi boşluğunu footer'ın kendi padding'i
           tamamlıyor, bu yüzden burada eskisinden dar. */}
       <div className="mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
-        <AnimateEnter className="mb-5 flex items-center justify-between gap-4">
+        <div className="mb-5 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
             Blog Gönderileri
           </h2>
@@ -85,19 +83,13 @@ export function HomeBlogSection() {
               </Link>
             </Button>
           </PressFx>
-        </AnimateEnter>
+        </div>
 
-        {/* Kartlar 80 ms aralıkla girer: dört kart tek tek sayılmak yerine tek
-            bir dalga olarak okunur. */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {posts.map((post, i) => {
+          {posts.map((post) => {
             const category = getCategory(post.category)
             return (
-              <AnimateEnter
-                key={post.slug}
-                delay={stagger(i)}
-                className="h-full"
-              >
+              <div key={post.slug} className="h-full">
                 {/* Yüzey (kenar + zemin) içerideki `Squircle`de duruyor:
                     clip-path elemanın KENDİ odak halkasını da sildiği için
                     `Link` kırpılmadan dışarıda kalıyor, klavye odağı onun
@@ -117,7 +109,18 @@ export function HomeBlogSection() {
 
                     Dinlenme kenarı SVG'ye taşındığı için eski
                     `hover:border-foreground/20` artık boyanmıyor; hover geri
-                    bildirimi zemin tonuna alındı. */}
+                    bildirimi zemin tonuna alındı.
+
+                    YÜZEY REÇETESİ FEATURE KARTLARIYLA AYNI: `smooth-shadow-ring-sm`,
+                    ayrıca `border` YOK — halka zaten gölgenin içinde. Eskiden
+                    `border border-border` idi ve gölgesizdi: hemen üstlerindeki
+                    üç feature kartı gölgeliyken dört blog kartı düz duruyordu,
+                    üstelik kenar rengi de başkaydı (opak `--border`a karşı
+                    halkanın hairline'ı). `bg-clip-padding` da gitti, CSS
+                    kenarı kalmayınca padding-box ile border-box aynı şey.
+
+                    Radius farkı (xl'e karşı feature'ların 2xl'i) KALIYOR: kart
+                    küçüldükçe köşe de küçülür, bu drift değil ölçek. */}
                 <Link
                   href={post.permalink}
                   className="group grid h-full grid-cols-[minmax(0,1fr)] rounded-xl"
@@ -125,7 +128,7 @@ export function HomeBlogSection() {
                   <Squircle
                     radius="xl"
                     effects
-                    className="flex h-full flex-col border border-border bg-card p-4 transition-colors group-hover:bg-muted/40 [&_[data-slot=avatar]]:ring-card"
+                    className="flex h-full flex-col bg-card p-4 smooth-shadow-ring-sm transition-colors group-hover:bg-muted/40 [&_[data-slot=avatar]]:ring-card"
                   >
                     <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-muted-foreground">
                       <time dateTime={post.publishedAt}>
@@ -152,7 +155,7 @@ export function HomeBlogSection() {
                     </div>
                   </Squircle>
                 </Link>
-              </AnimateEnter>
+              </div>
             )
           })}
         </div>

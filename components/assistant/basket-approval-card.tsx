@@ -111,14 +111,15 @@ export function BasketApprovalCard({
   }
 
   return (
-    <Squircle className="border bg-card" radius="xl" effects>
+    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
+    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
+    // (gerekçenin tamamı product-match-list.tsx'te).
+    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Sepetindeki Kalemler</span>
         <div className="ml-auto flex flex-wrap gap-1.5">
           {readOnly ? (
-            <Badge variant="secondary" className="text-[0.625rem]">
-              <RiCheckLine className="mr-1 size-3" /> ONAYLANDI
-            </Badge>
+            <Badge variant="secondary">Onaylandı</Badge>
           ) : null}
         </div>
       </div>
@@ -234,7 +235,7 @@ export function BasketApprovalCard({
             size="sm"
             onClick={addItem}
           >
-            <RiAddLine className="mr-1 size-3.5" />
+            <RiAddLine data-icon="inline-start" />
             Yeni kalem
           </Button>
           <div className="ml-auto flex flex-wrap items-center gap-2">
@@ -247,7 +248,7 @@ export function BasketApprovalCard({
               onClick={handleApprove}
               disabled={items.length === 0}
             >
-              <RiCheckLine className="mr-1 size-3.5" />
+              <RiCheckLine data-icon="inline-start" />
               Onayla
             </Button>
           </div>

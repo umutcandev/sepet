@@ -772,8 +772,13 @@ export function AssistantChat({
                   <Squircle
                     role="alert"
                     radius="xl"
-                    effects
-                    className="mx-auto flex w-full max-w-3xl items-start gap-2 border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+                    // Kenar kartlarla aynı teknikte (içeride), ama rengi
+                    // BİLEREK hairline değil: destructive yüzeyler kendi
+                    // semantik kenarlarını taşır (bkz. badge'in destructive
+                    // varyantı). CSS `border` yerine `inset-ring` olmasının
+                    // sebebi `effects`i kapatabilmek — düz bir border
+                    // clip-path'le köşeden kesilirdi.
+                    className="mx-auto flex w-full max-w-3xl items-start gap-2 rounded-xl bg-destructive/10 p-3 text-sm text-destructive inset-ring inset-ring-destructive/40"
                   >
                     <RiAlertLine
                       aria-hidden="true"
@@ -825,8 +830,7 @@ function renderToolPart(
         key={key}
         role="alert"
         radius="xl"
-        effects
-        className="flex items-start gap-2 border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+        className="flex items-start gap-2 rounded-xl bg-destructive/10 p-3 text-sm text-destructive inset-ring inset-ring-destructive/40"
       >
         <RiAlertLine aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
         <span>{part.errorText ?? "Bir hata oluştu, tekrar deneyebilir misin?"}</span>
@@ -882,7 +886,13 @@ function QuotaExceededCard({
       }).format(new Date(resetAt))
     : null
   return (
-    <Squircle className="mx-auto w-full max-w-3xl border bg-card p-4" radius="xl" effects>
+    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu
+    // `overflow-hidden` olduğu için dış gölge kırpılırdı (gerekçenin tamamı
+    // product-match-list.tsx'te).
+    <Squircle
+      className="mx-auto w-full max-w-3xl rounded-xl bg-card p-4 inset-ring inset-ring-hairline"
+      radius="xl"
+    >
       <div className="flex items-start gap-3">
         <RiSparklingLine className="mt-0.5 size-5 shrink-0 text-foreground" />
         <div className="flex flex-col gap-1">

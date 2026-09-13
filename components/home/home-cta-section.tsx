@@ -21,9 +21,8 @@ import Link from "next/link"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
-import { AnimateEnter } from "@/components/motion/animate-enter"
 import { PressFx } from "@/components/motion/press-fx"
-import { SPRING_SLIDE, STAGGER_STEP } from "@/lib/motion"
+import { SPRING_SLIDE } from "@/lib/motion"
 
 // Sıra, kayan pencerenin sırasını belirler — HeroMarketBadge ile aynı dizilim.
 const MARKETS = [
@@ -74,20 +73,19 @@ export function HomeCtaSection() {
   return (
     <section className="relative z-20 bg-[var(--home-base)]">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-5 px-4 py-12 text-foreground sm:py-16">
-        <AnimateEnter>
-          {/* Vitrin yüzü (Cooper) — hero başlığıyla eşleşir; `cn-font-heading`
-              değil, o kart/dialog başlıklarının Geist'i. Ağırlık `font-normal`:
-              ailede yalnız 400 kayıtlı, `font-semibold` tarayıcıya sahte bold
-              çizdirirdi (bkz. lib/fonts.ts). */}
-          <h2
-            {...hoverProps}
-            className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-center cn-font-display text-2xl font-normal sm:text-3xl md:text-4xl lg:text-5xl"
-          >
-            <span>Hemen</span>
-            {/* Logo grubu ile "Sepet'i dene." tek parça: satır sarmasında
+        {/* Vitrin yüzü (Cooper) — hero başlığıyla eşleşir; `cn-font-heading`
+            değil, o kart/dialog başlıklarının Geist'i. Ağırlık `font-normal`:
+            ailede yalnız 400 kayıtlı, `font-semibold` tarayıcıya sahte bold
+            çizdirirdi (bkz. lib/fonts.ts). */}
+        <h2
+          {...hoverProps}
+          className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-center cn-font-display text-2xl font-normal sm:text-3xl md:text-4xl lg:text-5xl"
+        >
+          <span>Hemen</span>
+          {/* Logo grubu ile "Sepet'i dene." tek parça: satır sarmasında
               logolar kelimeden kopup üst satırda yalnız kalmaz. */}
-            <span className="inline-flex items-center gap-[0.25em]">
-              {/* Hero rozetiyle aynı kurulum: shadcn `Avatar` primitifi YOK.
+          <span className="inline-flex items-center gap-[0.25em]">
+            {/* Hero rozetiyle aynı kurulum: shadcn `Avatar` primitifi YOK.
                 O primitif her avatara iki kontur katmanı bindiriyor (iç rim +
                 `mix-blend-darken` kenarlık); bindirmeli bir grupta blend
                 alttaki avatarın kenarını yukarı geçiriyor, üst üste iki halka
@@ -95,54 +93,51 @@ export function HomeCtaSection() {
                 zeminini (`--home-base`) taşımalı — ikisi bilinçli olarak farklı
                 renkler, o yüzden halka ayırıcı değil soluk bir hale gibi
                 duruyordu. */}
-              <span className="inline-flex -space-x-[0.31em]">
-                <AnimatePresence mode="popLayout" initial={false}>
-                  {windowLogos.map((market) => (
-                    <motion.span
-                      key={market.index}
-                      layout
-                      initial={{ opacity: 0, scale: 0.5, x: 12 }}
-                      animate={{ opacity: 1, scale: 1, x: 0 }}
-                      exit={{ opacity: 0, scale: 0.5, x: -12 }}
-                      // Giren/çıkan logo aynı anda küçülürken silikleşsin.
-                      transition={{
-                        ...slide,
-                        opacity: { duration: 0.2, ease: "easeOut" },
-                      }}
-                      title={market.alt}
-                      className="relative inline-flex size-[0.92em] shrink-0 rounded-full bg-[var(--home-base)] ring-[0.075em] ring-[var(--home-base)]"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={market.src}
-                        alt={market.alt}
-                        decoding="async"
-                        className="size-full rounded-full object-cover"
-                      />
-                      {/* Beyaz zeminli logolar krem sayfada kaybolmasın diye
+            <span className="inline-flex -space-x-[0.31em]">
+              <AnimatePresence mode="popLayout" initial={false}>
+                {windowLogos.map((market) => (
+                  <motion.span
+                    key={market.index}
+                    layout
+                    initial={{ opacity: 0, scale: 0.5, x: 12 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.5, x: -12 }}
+                    // Giren/çıkan logo aynı anda küçülürken silikleşsin.
+                    transition={{
+                      ...slide,
+                      opacity: { duration: 0.2, ease: "easeOut" },
+                    }}
+                    title={market.alt}
+                    className="relative inline-flex size-[0.92em] shrink-0 rounded-full bg-[var(--home-base)] ring-[0.075em] ring-[var(--home-base)]"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={market.src}
+                      alt={market.alt}
+                      decoding="async"
+                      className="size-full rounded-full object-cover"
+                    />
+                    {/* Beyaz zeminli logolar krem sayfada kaybolmasın diye
                         tek bir ince kenar — blend yok, altı geçirmez. */}
-                      <span className="pointer-events-none absolute inset-0 rounded-full border border-black/10 dark:border-white/10" />
-                    </motion.span>
-                  ))}
-                </AnimatePresence>
-              </span>
-              <span>Sepet&apos;i dene.</span>
+                    <span className="pointer-events-none absolute inset-0 rounded-full border border-black/10 dark:border-white/10" />
+                  </motion.span>
+                ))}
+              </AnimatePresence>
             </span>
-          </h2>
-        </AnimateEnter>
+            <span>Sepet&apos;i dene.</span>
+          </span>
+        </h2>
 
-        <AnimateEnter delay={STAGGER_STEP}>
-          <PressFx>
-            <Button
-              {...hoverProps}
-              asChild
-              size="lg"
-              className="h-10 rounded-full px-5"
-            >
-              <Link href="/asistan">Ücretsiz başla</Link>
-            </Button>
-          </PressFx>
-        </AnimateEnter>
+        <PressFx>
+          <Button
+            {...hoverProps}
+            asChild
+            size="lg"
+            className="h-10 rounded-full px-5"
+          >
+            <Link href="/asistan">Ücretsiz başla</Link>
+          </Button>
+        </PressFx>
       </div>
     </section>
   )

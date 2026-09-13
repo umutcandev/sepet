@@ -44,7 +44,10 @@ export function BasketSaveCard({
   }, [])
 
   return (
-    <Squircle className="border bg-card" radius="xl" effects>
+    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
+    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
+    // (gerekçenin tamamı product-match-list.tsx'te).
+    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Sepeti Kaydet</span>
       </div>

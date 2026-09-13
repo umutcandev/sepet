@@ -168,7 +168,7 @@ export function MarketLogoTrack() {
       // dışarı hiçbir şey boyamıyor (gölge yok, kenar Lisse'in clip-path'i
       // içinde), dolayısıyla kırpma kutusu tam hizada durabiliyor: ne kesik
       // kenar ne sızan komşu.
-      className="flex snap-x snap-mandatory gap-[3px] overflow-x-auto [scrollbar-width:none] @lg/markets:grid @lg/markets:snap-none @lg/markets:grid-cols-3 @lg/markets:overflow-visible [&::-webkit-scrollbar]:hidden"
+      className="flex snap-x snap-mandatory [scrollbar-width:none] gap-[3px] overflow-x-auto @lg/markets:grid @lg/markets:snap-none @lg/markets:grid-cols-3 @lg/markets:overflow-visible [&::-webkit-scrollbar]:hidden"
     >
       {[0, 1].map((copy) =>
         MARKETS.map(({ Logo, name, size }) => (
@@ -181,9 +181,15 @@ export function MarketLogoTrack() {
             // doğrudan çocuğu olamayacağı için yüzey içerideki `Squircle`da.
             className={`grid w-[calc(50%-1.5px)] shrink-0 snap-start @lg/markets:w-auto ${copy === 1 ? "@lg/markets:hidden" : ""}`}
           >
-            {/* Kart dili blog kartlarıyla ve metin paneliyle BİREBİR:
-                `radius="xl"` + `effects` + düz `border border-border`, gölge
-                yok.
+            {/* Kart dili metin paneliyle BİREBİR: `radius="xl"` + `effects` +
+                `border border-hairline`, gölge yok.
+
+                KENAR ARTIK DARK'TA DA VAR. Eskiden `border-border` idi ve
+                dark'ta `--border` (#2D2218) bu kutunun kendi zeminiyle
+                (`dark:bg-muted`, yine #2D2218) birebir aynı renkti: altı kutu
+                gecede kenarsız duruyor, yanındaki panel ise (`dark:bg-card`)
+                kenarını koruyordu. `--hairline` dark'ta alfa olduğu için
+                farkını hangi zeminde durursa dursun aynı tutuyor.
 
                 `bg-clip-padding` ŞART: zemin varsayılan olarak `border-box`a
                 kadar boyanıyor, Lisse'in SVG'ye taşıdığı kenar ise squircle
@@ -192,13 +198,13 @@ export function MarketLogoTrack() {
                 ayrık gösteriyordu. `padding-box` zemini içeri çekiyor, dış
                 sınırı tek çizen SVG kalıyor.
 
-                Zemin tema başına ayrı, panelin TERSİ: kutular panelden açık
-                durmalı ama token sırası temalarda ters dönüyor (gerekçe
-                home-markets-section.tsx'te). */}
+                Zemin tek token (`--home-tile`), panelin bir tık AÇIĞI. Eskiden
+                light'ta `--card` (#FFFBF5) yani kâğıt beyazıydı; sıcak krem bir
+                bandın ortasında altı beyaz dikdörtgen olarak okunuyordu. */}
             <Squircle
               radius="xl"
               effects
-              className="flex aspect-[4/3] items-center justify-center border border-border bg-card bg-clip-padding p-4 @lg/markets:p-6 dark:bg-muted"
+              className="flex aspect-[4/3] items-center justify-center border border-hairline bg-[var(--home-tile)] bg-clip-padding p-4 @lg/markets:p-6"
             >
               {/* Wordmark'lar `currentColor`: renk `text-primary` — eski
                   şeritteki canlı marka tonu, iki temada da (gündüz koyu kahve,

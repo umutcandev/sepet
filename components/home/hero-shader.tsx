@@ -10,10 +10,10 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 const GEOMETRY = {
   shape: "checks",
   shapeScale: 0,
-  proportion: 0.50,
+  proportion: 0.5,
   softness: 1,
-  distortion: 0.30,
-  swirl: 0.80,
+  distortion: 0.3,
+  swirl: 0.8,
   swirlIterations: 3,
   rotation: 64,
   offsetX: 0,
@@ -109,7 +109,9 @@ export function HomeHeroBackdrop({ covered = false }: Props) {
 
     const commit = (width: number, height: number) =>
       setHeroSize((prev) =>
-        prev.width === width && prev.height === height ? prev : { width, height }
+        prev.width === width && prev.height === height
+          ? prev
+          : { width, height }
       )
 
     const rect = el.getBoundingClientRect()

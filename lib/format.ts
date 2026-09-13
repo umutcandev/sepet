@@ -30,6 +30,18 @@ export function formatAmount(value: number): string {
   return decimalFmt.format(value)
 }
 
+const percentFmt = new Intl.NumberFormat("tr-TR", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+})
+
+/** "%0,8" — işaret sayının SOLUNDA, ondalık ayracı virgül. `toFixed(1)` bunun
+ *  yerine geçmez: nokta üretir ve aynı satırdaki `formatTL` çıktısıyla
+ *  ("₺198,64") çakışır. */
+export function formatPercent(value: number): string {
+  return `%${percentFmt.format(value)}`
+}
+
 // ─── Tarih ───
 
 const dateLongFmt = new Intl.DateTimeFormat("tr-TR", {

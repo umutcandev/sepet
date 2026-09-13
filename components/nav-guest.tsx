@@ -21,9 +21,8 @@ export function NavGuest() {
           // oynamaz (bkz. nav-user.tsx'teki aynı hesap).
           className="h-9 justify-center font-medium group-data-[collapsible=icon]:my-0.5"
         >
-          {/* Daraltılmış rayda düğme 32 piksele iner ve metin kırpılır → ikon
-              devreye girer, adı tooltip söyler. Genişken tam tersi: ortalanmış
-              metnin yanında bir ikon dengeyi bozardı. */}
+          {/* Genişken ikon YOK: ortalanmış metnin yanında dengeyi bozuyor.
+              Rayda etiketin yerini alır, adı tooltip söyler. */}
           <RiLoginBoxLine className="hidden group-data-[collapsible=icon]:block" />
           <span className="group-data-[collapsible=icon]:hidden">
             Oturum Açın

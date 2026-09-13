@@ -11,6 +11,7 @@ import { PressFx } from "@/components/motion/press-fx"
 import { type PromptInputMessage } from "@/components/ai-elements/prompt-input"
 import { AssistantPrompt } from "@/components/assistant/assistant-prompt"
 
+import { HOME_ENTER } from "@/lib/motion"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 import { useRequireLocation } from "@/lib/hooks/use-require-location"
 import { useCurrentUser } from "@/components/providers/session-provider"
@@ -205,10 +206,11 @@ export function HomeHero() {
             ölçülerek seçildi (bkz. h1). */}
         <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6 sm:max-w-3xl lg:max-w-5xl lg:gap-8 xl:max-w-6xl">
           <div className="flex w-full flex-col items-center gap-3 text-center">
-            {/* Hero ilk ekranda: scroll beklenmez, açılışta kademeli girer.
-                Sıra rozet → başlık → prompt → chip, adım ~0.12s. Şeridin
-                gecikmesi de bu diziyi sürdürür (home-blog-section). */}
-            <AnimateEnter isWhileInView={false} delay={0.1}>
+            {/* Açılış dizisinin ilk dört adımı: rozet → başlık → prompt →
+                chip. Gecikmeler HOME_ENTER'dan gelir (lib/motion.ts). Dizi
+                hero'nun dibine binen market mozaiğiyle biter; onun altındaki
+                bölümler animasyonsuz (gerekçe lib/motion.ts). */}
+            <AnimateEnter delay={HOME_ENTER.heroBadge}>
               <HeroMarketBadge />
             </AnimateEnter>
             {/* Başlık da diziye dahil. İçindeki AnimatePresence ile çakışmaz:
@@ -216,7 +218,7 @@ export function HomeHero() {
                 rotasyon ise 3.2s'de başlar. Sarmalayıcı olmadan ilk başlık
                 (AnimatePresence initial={false} olduğu için) animasyonsuz,
                 birden beliriyordu. */}
-            <AnimateEnter isWhileInView={false} delay={0.22} className="w-full">
+            <AnimateEnter delay={HOME_ENTER.heroTitle} className="w-full">
               {/* Vitrin yüzü (Cooper) — kapanış çağrısındaki başlıkla eşleşir.
                   Ağırlık `font-normal`: ailede yalnız 400 kayıtlı, `font-bold`
                   tarayıcıya sahte bold çizdirirdi (bkz. lib/fonts.ts).
@@ -258,8 +260,7 @@ export function HomeHero() {
           </div>
 
           <AnimateEnter
-            isWhileInView={false}
-            delay={0.34}
+            delay={HOME_ENTER.heroPrompt}
             className="w-full max-w-2xl"
           >
             <AssistantPrompt
@@ -272,8 +273,7 @@ export function HomeHero() {
           </AnimateEnter>
 
           <AnimateEnter
-            isWhileInView={false}
-            delay={0.46}
+            delay={HOME_ENTER.heroChips}
             className="w-full max-w-2xl"
           >
             <div className="flex flex-wrap justify-center gap-2">
@@ -284,7 +284,17 @@ export function HomeHero() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleChip(chip)}
-                    className="h-auto rounded-lg border-border bg-muted px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/20 hover:bg-muted hover:text-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:border-muted-foreground/35 dark:hover:bg-muted"
+                    // Kenar `border-hairline`: eskiden light'ta `border-border`,
+                    // dark'ta `muted-foreground/25` idi. Çatalın sebebi dark'ta
+                    // `--border` ile `--muted`in birebir aynı renk olması;
+                    // token o basamağı kaldırdığı için tema başına ayrı değer
+                    // gerekmiyor. Light'ta değer zaten `--border`ın kendisi,
+                    // yani chip'lerin görünümü değişmiyor.
+                    //
+                    // Hover /20 değil /15: dinlenme çizgisi artık daha sessiz
+                    // bir tonda durduğu için /20 dark'ta 27 seviyelik bir
+                    // sıçrama yapıyordu. /15 iki temada da ~15-17'de kalıyor.
+                    className="h-auto rounded-lg border-hairline bg-control px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/15 hover:bg-control hover:text-foreground dark:bg-control dark:hover:bg-control"
                   >
                     {chip}
                   </Button>

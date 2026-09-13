@@ -19,10 +19,15 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
+        // `surface-raised-chip` diğer dolu varyantlarla aynı sebeple burada:
+        // bu ikisi onsuzdu ve yan yana geldiklerinde düz kalıyorlardı. Rim'in
+        // beslendiği `--surface-base` globals.css'te tanımlı (destructive ile
+        // aynı kalıp: görünen yüzey varyantın ADI değil, alfalı dolgunun
+        // zeminle karışmış hâli).
         success:
-          "bg-emerald-500/15 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300",
+          "surface-raised-chip bg-emerald-500/15 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300",
         warning:
-          "bg-amber-500/15 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300",
+          "surface-raised-chip bg-amber-500/15 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300",
       },
     },
     defaultVariants: {

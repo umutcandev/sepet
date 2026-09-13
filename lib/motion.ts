@@ -6,8 +6,8 @@
  * kapanış CTA'sında birebir kopyalanmıştı; ikisi de artık `SPRING_SLIDE`
  * kullanıyor, dolayısıyla biri değiştiğinde diğeri sessizce ayrışmıyor.
  *
- * CSS tarafındaki karşılıkları `app/globals.css` içindeki `enter-fx` /
- * `reveal-fx` utility'lerinde duruyor — oradaki `cubic-bezier` değerleri
+ * CSS tarafındaki karşılığı `app/globals.css` içindeki `enter-fx`
+ * utility'sinde duruyor — oradaki `cubic-bezier` değerleri
  * `EASE_OUT_EXPO` ile aynı sayılardır, biri güncellenirse diğeri de
  * güncellenmelidir.
  */
@@ -61,13 +61,25 @@ export const SPRING_PILL = {
 } as const
 
 /**
- * Bölüm içi kademe adımı (saniye). 80 ms bilinçli bir değerdir: daha büyük
- * seçilirse kartlar tek tek sayılmaya başlar ve tek bir dalga olarak
- * okunmaz.
+ * Ana sayfa açılış dizisi — HERO + HEMEN ALTINDAKİ MARKET MOZAİĞİ.
+ *
+ * Dizi eskiden kapanış CTA'sına kadar iniyordu ve son adım 2,06s'de
+ * başlıyordu. O adımların çoğu ekran DIŞINDA oynuyordu: ilk saniyelerde aşağı
+ * kaydıran biri bölümleri tam girerken yakalayıp bunu kaydırmaya bağlı bir
+ * reveal sanıyordu. Mozaiğin altında kalan her şey artık animasyonsuz, ilk
+ * boyamada yerinde.
+ *
+ * BURAYA YENİ ADIM EKLENMEZ. Ölçü şu: öğe açılışta göz önünde mi. Mozaik
+ * hero'nun dibine biniyor ve uzun ekranlarda daha ilk karede görünüyor, o
+ * yüzden dizinin parçası. Daha aşağısı görünmez, ve görünmeyen yerde oynayan
+ * her giriş aynı yanılsamayı geri getirir.
+ *
+ * Toplam 1,1s'de biter (son adım 0,5 + 0,6s süre).
  */
-export const STAGGER_STEP = 0.08
-
-/** i. öğenin kademe gecikmesi. */
-export function stagger(index: number, step = STAGGER_STEP) {
-  return index * step
+export const HOME_ENTER = {
+  heroBadge: 0.1,
+  heroTitle: 0.2,
+  heroPrompt: 0.3,
+  heroChips: 0.4,
+  markets: 0.5,
 }

@@ -117,8 +117,8 @@ export function BillingToggle({
       role="group"
       aria-label="Faturalandırma aralığı"
       className={cn(
-        "surface-inset inline-flex w-fit items-center gap-0.5 rounded-lg border border-border bg-muted/60 p-0.5",
-        sm ? "h-7 text-xs" : "h-8 text-sm"
+        "inline-flex w-fit items-center rounded-lg border border-border bg-muted/60 surface-inset",
+        sm ? "h-6 gap-px p-px text-[0.6875rem]" : "h-8 gap-0.5 p-0.5 text-sm"
       )}
     >
       {(["month", "year"] as const).map((iv) => {
@@ -131,7 +131,7 @@ export function BillingToggle({
             aria-pressed={active}
             className={cn(
               "relative flex items-center self-stretch rounded-md font-medium transition-colors",
-              sm ? "gap-0.5 px-2" : "gap-1 px-3",
+              sm ? "gap-0.5 px-1.5" : "gap-1 px-3",
               active
                 ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground"
@@ -144,7 +144,7 @@ export function BillingToggle({
               <motion.span
                 layoutId={pillId}
                 aria-hidden
-                className="surface-raised-tight absolute inset-0 rounded-md bg-background"
+                className="absolute inset-0 rounded-md bg-background surface-raised-tight"
                 transition={reduce ? { duration: 0 } : SPRING_PILL}
               />
             )}
@@ -155,7 +155,7 @@ export function BillingToggle({
               <span
                 className={cn(
                   "relative z-10 rounded-full px-1 py-px font-mono leading-none font-medium transition-colors",
-                  sm ? "text-[0.5625rem]" : "text-[0.625rem]",
+                  sm ? "text-[0.5rem]" : "text-[0.625rem]",
                   active
                     ? "bg-primary/15 text-primary"
                     : "bg-muted-foreground/10 text-muted-foreground"
@@ -352,7 +352,7 @@ function FeatureList({ items, muted }: { items: Feature[]; muted?: boolean }) {
 
 // Polar logosu. fill="currentColor" olduğundan içinde bulunduğu metnin
 // rengini (muted-foreground) alır ve "Polar" sözcüğünün soluna oturur.
-function PolarIcon({ className }: { className?: string }) {
+export function PolarIcon({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 300 300"
