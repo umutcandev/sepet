@@ -4,6 +4,7 @@ import * as React from "react"
 import { RiComputerLine, RiMoonLine, RiSunLine } from "@remixicon/react"
 import { useTheme } from "next-themes"
 
+import { DropdownMenuLabel } from "@/components/ui/dropdown-menu"
 import { useMounted } from "@/hooks/use-mounted"
 import { cn } from "@/lib/utils"
 
@@ -67,10 +68,10 @@ export function ThemeMenuItems() {
 
   return (
     <>
-      <span className="px-1.5 py-1 text-xs font-normal text-muted-foreground">
-        Tema
-      </span>
-      <div className="px-1 pb-1">
+      <DropdownMenuLabel>Tema</DropdownMenuLabel>
+      {/* `pb` YOK: altındaki ayırıcı `my-1` ile zaten 4px taşıyor, dolgu
+          eklenince o bant üstteki ayırıcının iki katı kalınlıkta okunuyordu. */}
+      <div className="px-1">
         <div
           ref={groupRef}
           role="radiogroup"

@@ -525,13 +525,14 @@ const sidebarMenuButtonVariants = cva(
     variants: {
       variant: {
         default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        // outline/primary = EYLEM satırları (Oturum Açın, Yeni Sohbet). Gezinme
+        // satırlarından farklı olarak ui/button.tsx'in yüzey reçetesini birebir
+        // taşırlar: rounded-lg + surface-raised + aynı basma fiziği. Rayda p-0:
+        // kenarlık 1px yediği için p-2 kalsaydı 32px kutuda ikon kırpılırdı.
         outline:
-          "bg-background shadow-[0_0_0_1px_var(--sidebar-border)] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_var(--sidebar-accent)]",
-        // Menünün tek eylem satırı için (Yeni Sohbet). Taban sınıflardaki
-        // sidebar-accent hover/active'ini bilerek eziyor — cva varyantı tabandan
-        // SONRA geldiği için tailwind-merge bu sınıfları kazandırır.
+          "rounded-lg border border-border bg-background bg-clip-padding transition-all surface-raised hover:bg-muted hover:text-foreground active:translate-y-px active:scale-[0.98] active:bg-muted active:text-foreground active:[--surface-ambient:transparent] dark:border-input dark:border-t-[color-mix(in_oklab,var(--foreground)_17%,transparent)] dark:bg-input/30 dark:[--surface-rim-top:transparent] dark:hover:bg-input/50 dark:active:bg-input/50 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:[&>span]:hidden",
         primary:
-          "bg-primary text-primary-foreground hover:bg-primary/85 hover:text-primary-foreground active:bg-primary/85 active:text-primary-foreground",
+          "rounded-lg border border-primary bg-primary bg-clip-padding text-primary-foreground transition-all surface-raised hover:bg-primary/85 hover:text-primary-foreground active:translate-y-px active:scale-[0.98] active:bg-primary/85 active:text-primary-foreground active:[--surface-ambient:transparent] group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:[&>span]:hidden",
       },
       size: {
         default: "h-8 text-sm",
@@ -567,6 +568,7 @@ function SidebarMenuButton({
       data-slot="sidebar-menu-button"
       data-sidebar="menu-button"
       data-size={size}
+      data-variant={variant}
       data-active={isActive}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
       {...props}

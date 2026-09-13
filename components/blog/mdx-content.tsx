@@ -6,6 +6,7 @@ import Link from "next/link"
 import { RiFileCopyLine } from "@remixicon/react"
 
 import { CopiedIconSwap, copyText } from "@/components/blog/article-actions"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 type MdxComponents = Record<string, React.ComponentType<unknown>>
@@ -237,18 +238,17 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
             {label}
           </span>
         </div>
-        <button
-          type="button"
+        {/* Etiket sabit kalır: odaklı bir düğmenin `aria-label`'ını değiştirmek
+            ekran okuyucularda güvenilir seslendirilmiyor. Onay aşağıdaki sabit
+            durum bölgesinden duyuruluyor (paylaş butonundaki toast'un karşılığı).
+            Hover `accent`e alındı: ghost'un `muted`ı `--code-chrome` ile aynı
+            renk, şeridin üstünde hiç görünmezdi. */}
+        <Button
+          variant="ghost"
+          size="icon-sm"
           onClick={copy}
-          // Etiket sabit kalır: odaklı bir düğmenin `aria-label`'ını değiştirmek
-          // ekran okuyucularda güvenilir seslendirilmiyor. Onay aşağıdaki sabit
-          // durum bölgesinden duyuruluyor (paylaş butonundaki toast'un karşılığı).
           aria-label="Kodu kopyala"
-          className={cn(
-            "inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors",
-            "hover:bg-foreground/[0.06] hover:text-foreground",
-            "focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
-          )}
+          className="text-muted-foreground hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent"
         >
           <CopiedIconSwap
             copied={copied}
@@ -256,7 +256,7 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
             className="size-3.5"
             copiedClassName="text-primary"
           />
-        </button>
+        </Button>
       </div>
       {/* rehype `tabIndex=0` verir (kaydırılabilir bölge klavyeyle gezilebilsin);
           etiket olmadan ekran okuyucuda isimsiz bir bölge olarak duyuruluyordu. */}

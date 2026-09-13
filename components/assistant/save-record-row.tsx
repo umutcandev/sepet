@@ -95,12 +95,12 @@ export function SaveRecordRow({
       {savedId ? (
         <div className="flex items-center gap-2">
           <Button type="button" size={size} variant="secondary" disabled>
-            <RiCheckLine className="mr-1 size-3.5" />
+            <RiCheckLine data-icon="inline-start" />
             Kaydedildi
           </Button>
           <Button type="button" size={size} variant="outline" asChild>
             <Link href={viewHref(savedId)}>
-              <RiExternalLinkLine className="mr-1 size-3.5" />
+              <RiExternalLinkLine data-icon="inline-start" />
               Görüntüle
             </Link>
           </Button>
@@ -113,9 +113,9 @@ export function SaveRecordRow({
           disabled={saving || disabled}
         >
           {saving ? (
-            <RiLoader4Line className="mr-1 size-3.5 animate-spin" />
+            <RiLoader4Line className="animate-spin" data-icon="inline-start" />
           ) : (
-            <RiSaveLine className="mr-1 size-3.5" />
+            <RiSaveLine data-icon="inline-start" />
           )}
           {saveLabel}
         </Button>

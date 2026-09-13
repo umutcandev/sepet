@@ -188,16 +188,8 @@ export function AssistantPrompt({
         maxFiles={1}
         onSubmit={handleSubmit}
         className={cn(
-          // Yükseltilmiş yüzey: kenar `smooth-shadow-ring-*`in içindeki hairline.
-          // `border-0` InputGroup'un kendi `border`ını düşürür — border + shadow
-          // ikilisi çift kenar çizerdi (bkz. globals.css'teki not).
-          "rounded-xl border-0 bg-muted transition-[background-color,box-shadow] smooth-shadow-ring-sm dark:bg-muted",
-          // Odakta tek değişen şey halkanın rengi; gölge aynı kalıyor. Gölgeyi
-          // burada tekrar yazmak ŞART: InputGroup'un `ring-3` odak kuralı da
-          // box-shadow yazıyor ve `has-[]` özgüllüğüyle dinlenme kuralını ezip
-          // yumuşak gölgeyi tamamen siliyor. `!` onu geri alıyor.
-          "has-[[data-slot=input-group-control]:focus-visible]:smooth-shadow-ring-sm! has-[[data-slot=input-group-control]:focus-visible]:smooth-ring-ring/55",
-          "has-disabled:bg-muted has-disabled:opacity-100 dark:has-disabled:bg-muted",
+          "rounded-xl border-hairline bg-control transition-[background-color,border-color,box-shadow] dark:bg-control",
+          "has-disabled:bg-control has-disabled:opacity-100 dark:has-disabled:bg-control",
           className,
         )}
       >
@@ -209,7 +201,7 @@ export function AssistantPrompt({
             onChange={(e) => setInput(e.target.value)}
             aria-label="Asistana mesajın"
             placeholder="Alışveriş listeni, yemek görselini veya fiş fotoğrafını yükle."
-            className="text-sm placeholder:text-foreground/60"
+            className="text-sm placeholder:text-muted-foreground/40"
           />
         </PromptInputBody>
         <PromptInputFooter>

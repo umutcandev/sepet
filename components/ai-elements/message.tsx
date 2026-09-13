@@ -66,8 +66,22 @@ export const MessageContent = ({
 }: MessageContentProps) => {
   const from = useContext(MessageFromContext);
   const classes = cn(
-    "is-user:dark flex w-fit min-w-0 max-w-full flex-col gap-2 overflow-hidden text-sm",
+    // `is-user:dark` KALDIRILDI: `is-user` diye bir varyant tanımlı değil,
+    // Tailwind adayı sessizce düşürüyordu. Balonun paleti zaten aşağıdaki
+    // `bg-secondary` + `text-foreground` ile açıkça yazılı.
+    "flex w-fit min-w-0 max-w-full flex-col gap-2 overflow-hidden text-sm",
     "group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:bg-secondary group-[.is-user]:px-3 group-[.is-user]:py-1.5 group-[.is-user]:text-foreground",
+    // Kenar: kartların, mozaiğin ve input'un taşıdığı `--hairline`ın ta kendisi.
+    //
+    // HALKA İÇERİDE (`inset-ring`), dışarıda değil. `smooth-shadow-ring-*` ve
+    // `surface-raised-*`in temas gölgesi DIŞ katmanlar; Lisse balonu clip-path
+    // ile kestiği için ikisi de hiç boyanmaz (bkz. aşağıdaki not). Inset halka
+    // kutunun içinde durur, kırpmadan sağ çıkar ve `effects` açmayı gerektirmez.
+    //
+    // `surface-raised-chip` denendi, GÖRÜNMÜYOR: rim `--surface-base`den
+    // türerken iki kez zayıflıyor (rim-alpha %55 × chip'in %22'si) ve
+    // `--secondary` zaten zemine çok yakın — ölçtük, light'ta 1 gece 2 seviye.
+    "group-[.is-user]:inset-ring group-[.is-user]:inset-ring-hairline",
     "group-[.is-assistant]:text-foreground",
     className
   );
@@ -75,8 +89,17 @@ export const MessageContent = ({
   // Squircle YALNIZ kullanıcı balonuna. Asistan mesajının görünür bir yüzeyi
   // yok (saydam akıyor), dolayısıyla kesecek bir köşe de yok; clip-path orada
   // yalnız kod bloğu / mermaid taşmalarını kırpma riski getirirdi.
-  // `effects` kapalı: balonun kenarı da gölgesi de yok, SVG katmanına gerek
-  // duymuyor — bu aynı zamanda en ucuz mount yolu (sarmalayıcı div de doğmaz).
+  //
+  // `effects` KAPALI, ve kenarın inset olmasının sebebi bu. Lisse `effects`
+  // açıkken CSS border/box-shadow'u söküp SVG'ye taşıyor (dış halka ancak öyle
+  // görünürdü) ama karşılığında HER BALONA bir sarmalayıcı div ekliyor ve tema
+  // değişiminde remount istiyor (bkz. squircle.tsx). Uzun bir sohbette bu hem
+  // DOM'u şişirir hem de balonun `ml-auto` hizasını sarmalayıcıya taşırdı.
+  //
+  // Inset halka bu bedeli ödemeden aynı çizgiyi veriyor: clip-path elemanın
+  // boyamasını kırpıyor, ama halka kutunun İÇİNDE. Squircle yolu yuvarlak
+  // dikdörtgenin içinde kaldığı için köşede sapma bu radius'ta yarım pikselin
+  // altında.
   //
   // `group-[.is-user]:rounded-lg` BİLEREK duruyor: hidrasyondan önce clip-path
   // yok, köşeyi o veriyor. CSS border-radius'u clip-path ile kesiştirdiği ve

@@ -87,20 +87,20 @@ export function ReceiptComparisonCard({
   }, [receiptContext.marketName])
 
   return (
-    <Squircle className="border bg-card" radius="xl" effects>
+    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
+    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
+    // (gerekçenin tamamı product-match-list.tsx'te).
+    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Fiş Karşılaştırması</span>
         {isStale ? (
-          <span className="ml-auto inline-flex items-center gap-1 text-xs text-muted-foreground">
-            <RiInformationLine className="size-3.5" />
+          <Badge variant="secondary" className="ml-auto">
+            <RiInformationLine data-icon="inline-start" />
             Fişiniz Eski
-          </span>
+          </Badge>
         ) : (
           comparison.totalSavingsTL > 0 && (
-            <Badge
-              variant="outline"
-              className="ml-auto border-emerald-500/40 text-emerald-700 dark:text-emerald-300"
-            >
+            <Badge variant="success" className="ml-auto">
               {formatTLOrDash(comparison.totalSavingsTL)} tasarruf mümkündü
             </Badge>
           )
@@ -215,7 +215,10 @@ export function ReceiptComparisonCard({
                           <div className="mb-1.5 text-[0.6875rem] font-medium uppercase tracking-wide text-muted-foreground">
                             Diğer Marketlerdeki Fiyatlar
                           </div>
-                          <ul className="grid divide-y rounded-md border bg-background">
+                          {/* Kakma yüzey: gölge yok, kenar `border-hairline`.
+                              İçerideki `divide-y` `--border`da kalıyor —
+                              ayraç, dış kenardan zayıf olmalı. */}
+                          <ul className="grid divide-y rounded-md border border-hairline bg-background">
                             {otherPrices.map((mp, i) => (
                               <li
                                 key={`${mp.market}-${i}`}

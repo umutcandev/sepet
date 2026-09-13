@@ -36,7 +36,14 @@ export function MarketLogo({ name, size = "default", className }: MarketLogoProp
   const showImage = !!entry?.icon && failedSrc !== entry.icon
 
   return (
-    <Avatar size={size} className={cn("bg-background", className)}>
+    // Zemin `--background` DEĞİL: logolar saydam PNG ve neredeyse hep kart
+    // yüzeyinde duruyor, yani dairenin içi sayfanın kremini gösterip karttan
+    // ayrılıyordu (#FFF8F0 / #FFFBF5). Halkayla aynı değişkeni okuyor ki ikisi
+    // birlikte dönsün (bkz. ui/avatar.tsx).
+    <Avatar
+      size={size}
+      className={cn("bg-[var(--avatar-surface,var(--card))]", className)}
+    >
       {showImage ? (
         <Image
           src={entry!.icon!}

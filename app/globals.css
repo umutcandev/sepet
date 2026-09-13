@@ -23,93 +23,114 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
-    /* Vitrin yüzü (Cooper) — `font-display` utility'sini üretir. `--font-heading`
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  /* Vitrin yüzü (Cooper) — `font-display` utility'sini üretir. `--font-heading`
        ile karıştırma: o, kart/dialog başlıklarının Geist'i. Bu yalnız ana
        sayfanın iki büyük cümlesi için, bkz. lib/fonts.ts. */
-    --font-display: var(--font-display);
-    /* `font-mono` bugüne dek kazara ayaktaydı: tema tarafında tanımlı değildi,
+  --font-display: var(--font-display);
+  /* `font-mono` bugüne dek kazara ayaktaydı: tema tarafında tanımlı değildi,
        yalnız preflight'ın `--default-mono-font-family` → `var(--font-mono)`
        zincirine ve next/font'un katmansız `.variable` sınıfının `@layer theme`i
        yenmesine bağlıydı. Burada açıkça tanımlanıyor; `inline` sayesinde
        Tailwind `:root`'a kendi değerini yazmaz, utility doğrudan çalışma
        zamanındaki `--font-mono`ya bağlanır (sans ile aynı desen). */
-    --font-mono: var(--font-mono);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  --font-mono: var(--font-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  /* Düz CSS `border` taşıyan yüzeylerin kenarı (mozaik panelleri, hero
+       chip'leri, rozet, input). Gölgeli kartların kenarı buradan DEĞİL,
+       `smooth-shadow-ring-*`in halkasından gelir — ikisi farklı yerde boyandığı
+       için ayrı token, ama ölçülünce aynı çizgiye düşerler (gerekçe aşağıda,
+       `--smooth-ring-color`da).
+
+       `--border` yerine ayrı bir token olmasının tek sebebi dark: orada
+       `--border` ile `--muted` birebir aynı renk ve `bg-muted` yüzeylerin
+       kenarı kayboluyor. Light'ta değer zaten `--border`ın kendisi. */
+  --color-hairline: var(--hairline);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  /* Sayfa zemininin üstünde duran dolgulu kontroller (hero rozeti, chip'ler,
+       prompt alanı). `--muted`ten ayrı çünkü dark'ta kenar çubuğuyla aynı
+       tonda durmaları gerekiyor; gerekçe `--control` tanımında. */
+  --color-control: var(--control);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 :root {
-    --background: #FFF8F0;
-    --foreground: #3D2418;
-    --card: #FFFBF5;
-    --card-foreground: #3D2418;
-    --popover: #FFFBF5;
-    --popover-foreground: #3D2418;
-    --primary: #6D4530;
-    --primary-foreground: #FFF8F0;
-    --secondary: #F5E8DA;
-    --secondary-foreground: #3D2418;
-    --muted: #F5E8DA;
-    --muted-foreground: #8C5A3C;
-    --accent: #F0E0CB;
-    --accent-foreground: #3D2418;
-    --destructive: #B8442E;
-    --border: #E8DDD0;
-    --input: #E8DDD0;
-    --ring: #C08552;
-    --chart-1: #C08552;
-    --chart-2: #A06848;
-    --chart-3: #8C5A3C;
-    --chart-4: #D4A574;
-    --chart-5: #3D2418;
-    --radius: 0.625rem;
-    --sidebar: #FCF3E6;
-    --sidebar-foreground: #3D2418;
-    --sidebar-primary: #6D4530;
-    --sidebar-primary-foreground: #FFF8F0;
-    --sidebar-accent: #F0E0CB;
-    --sidebar-accent-foreground: #3D2418;
-    --sidebar-border: #E8DDD0;
-    --sidebar-ring: #C08552;
-    /* Ana sayfada logo şeridinden footer'a kadar inen bandın zemini.
+  --background: #fff8f0;
+  --foreground: #3d2418;
+  --card: #fffbf5;
+  --card-foreground: #3d2418;
+  --popover: #fffbf5;
+  --popover-foreground: #3d2418;
+  --primary: #6d4530;
+  --primary-foreground: #fff8f0;
+  --secondary: #f5e8da;
+  --secondary-foreground: #3d2418;
+  --muted: #f5e8da;
+  --muted-foreground: #8c5a3c;
+  /* Light'ta ayrışmaya gerek yok: `--sidebar` (#FCF3E6) burada zeminin
+     (#FFF8F0) neredeyse aynısı, kontroller ona eşitlenseydi kaybolurlardı. */
+  --control: var(--muted);
+  --accent: #f0e0cb;
+  --accent-foreground: #3d2418;
+  --destructive: #b8442e;
+  --border: #e8ddd0;
+  --input: #e8ddd0;
+  /* Light'ta `--border`ın ta kendisi: blog ve feature kartlarının bugün
+       taşıdığı çizgi buydu ve doğru olan da bu. Ayrı bir token olmasının tek
+       sebebi dark (bkz. `.dark`). */
+  --hairline: #e8ddd0;
+  --ring: #c08552;
+  --chart-1: #c08552;
+  --chart-2: #a06848;
+  --chart-3: #8c5a3c;
+  --chart-4: #d4a574;
+  --chart-5: #3d2418;
+  --radius: 0.625rem;
+  --sidebar: #fcf3e6;
+  --sidebar-foreground: #3d2418;
+  --sidebar-primary: #6d4530;
+  --sidebar-primary-foreground: #fff8f0;
+  --sidebar-accent: #f0e0cb;
+  --sidebar-accent-foreground: #3d2418;
+  --sidebar-border: #e8ddd0;
+  --sidebar-ring: #c08552;
+  /* Ana sayfada logo şeridinden footer'a kadar inen bandın zemini.
 
        GÜNDÜZDE ARTIK KOYU DEĞİL. Bu bant tarih boyunca gündüz temasında da
        koyuydu (#0d0f0c → #16100A → #1A130E → #241A12) ve her defasında aynı
@@ -126,79 +147,123 @@
        DEĞER --background DEĞİL, bir tık koyu: bandın hero'dan ayrıştığı yer
        bu fark. Aynılasaydı bölüm hero'nun devamı gibi okunur, dipteki rampanın
        (`.home-hero-fade`) bağlayacağı bir şey kalmazdı. */
-    --home-base: #F5E8DA;
-    /* Fade'in saydam ucu: bare `transparent` (= saydam SİYAH) yerine aynı rengin
+  --home-base: #f5e8da;
+  /* Fade'in saydam ucu: bare `transparent` (= saydam SİYAH) yerine aynı rengin
        0 alfası. Geçiş boyunca ton sabit kalır, çamurlu bir interpolasyon bandı
        oluşmaz. */
-    --home-base-clear: rgba(245, 232, 218, 0);
+  --home-base-clear: rgba(245, 232, 218, 0);
+  /* Market mozaiğinin iki yüzeyi. Bandın (`--home-base`) İKİ YANINA eşit
+       adımlarla oturur: panel bir tık koyu, kutular bir tık açık.
+       Önceden `--muted`/`--card` çiftiydi ve ikisi de yanlış uçtaydı — panel
+       bandın TAM kendi rengi (#F5E8DA), kutular kâğıt beyazı (#FFFBF5).
+       Sıralama iki temada da aynı yönde: panel < bant < kutular. */
+  --home-panel: #f0e0cb;
+  --home-tile: #faf3e9;
 }
 
 .dark {
-    --background: #1A130E;
-    --foreground: #F5E8DA;
-    --card: #221A14;
-    --card-foreground: #F5E8DA;
-    --popover: #221A14;
-    --popover-foreground: #F5E8DA;
-    --primary: #D4A574;
-    --primary-foreground: #1A130E;
-    --secondary: #2D2218;
-    --secondary-foreground: #F5E8DA;
-    --muted: #2D2218;
-    --muted-foreground: #B89A78;
-    --accent: #3D2D1F;
-    --accent-foreground: #F5E8DA;
-    --destructive: #E07259;
-    --border: #2D2218;
-    --input: #2D2218;
-    --ring: #C08552;
-    --chart-1: #D4A574;
-    --chart-2: #C08552;
-    --chart-3: #A06848;
-    --chart-4: #8C5A3C;
-    --chart-5: #F5E8DA;
-    --sidebar: #1F1812;
-    --sidebar-foreground: #F5E8DA;
-    --sidebar-primary: #D4A574;
-    --sidebar-primary-foreground: #1A130E;
-    --sidebar-accent: #3D2D1F;
-    --sidebar-accent-foreground: #F5E8DA;
-    --sidebar-border: #2D2218;
-    --sidebar-ring: #C08552;
-    --home-base: #1b0e08;
-    --home-base-clear: rgba(27, 14, 8, 0);
+  --background: #1a130e;
+  --foreground: #f5e8da;
+  --card: #221a14;
+  --card-foreground: #f5e8da;
+  --popover: #221a14;
+  --popover-foreground: #f5e8da;
+  --primary: #d4a574;
+  --primary-foreground: #1a130e;
+  --secondary: #2d2218;
+  --secondary-foreground: #f5e8da;
+  --muted: #2d2218;
+  --muted-foreground: #b89a78;
+  /* Kontroller `--muted` (#2D2218) taşıdığı sürece kenar çubuğundan (#1F1812)
+     ~5 L* açık kalıyordu: hero'daki rozet/chip/prompt üçlüsü uygulamanın
+     chrome'undan kopuk, sayfanın üstünde yüzer gibi duruyordu. Değer doğrudan
+     `--sidebar`: yeni bir ton uydurmak yerine zaten var olan chrome tonuna
+     eşitleniyorlar. Türetilmiş yüzeyler de buna zaten yakındı — outline
+     butonun `--surface-base`i ve alanların `--surface-well`i
+     `color-mix(--input 30%, --background)`, yani ~#201811. */
+  --control: var(--sidebar);
+  --accent: #3d2d1f;
+  --accent-foreground: #f5e8da;
+  --destructive: #e07259;
+  --border: #2d2218;
+  --input: #2d2218;
+  /* Token'ın var olma sebebi dark. --border (#2D2218) burada
+       --muted/--secondary/--input ile BİREBİR aynı renk: `bg-muted` taşıyan her
+       yüzeyin kenarı gecede tamamen kayboluyor (logo kutuları, hero rozeti,
+       chip'ler — üçü de bunu tema başına elle yazılmış ayrı border
+       renkleriyle yamıyordu).
+
+       DEĞER ALFA, VE ÇOK DÜŞÜK. Buraya bir ara sabit bir #3A2E23 konmuştu:
+       çakışmayı çözüyordu ama --card üstünde 24 seviyelik bir fark bırakıp
+       çizgiyi sertleştiriyordu. Ölçü, paletin kendi yumuşaklığı olmalı — dark'ta
+       beğenilen kenar --card (#221A14) üstündeki --border, yani ~11 seviye.
+
+       %6 bunu her yüzeyde SABİT tutuyor, çünkü border elemanın kendi zemininin
+       üstünde çözülür: --card üstünde rgb(47,38,32), --muted üstünde
+       rgb(57,46,40). İkisinde de fark ~12-13. Sabit bir renk bunu yapamaz;
+       bir yüzeyde doğruysa diğerinde ya kaybolur ya sertleşir.
+
+       `color-mix(… var(--foreground) 6% …)` DEĞİL, düz rgba. İkisi aynı sonucu
+       veriyor ama Tailwind color-mix'i bir `@supports` bloğuna alıp öncesine
+       fallback yazıyor ve o fallback tam opak `var(--foreground)` oluyor:
+       desteklemeyen bir tarayıcıda gecede bütün kenarlar parlak krem olurdu.
+       Değer --foreground'un (#F5E8DA) %6'sı, paletin geri kalanı gibi literal. */
+  --hairline: rgba(245, 232, 218, 0.06);
+  --ring: #c08552;
+  --chart-1: #d4a574;
+  --chart-2: #c08552;
+  --chart-3: #a06848;
+  --chart-4: #8c5a3c;
+  --chart-5: #f5e8da;
+  --sidebar: #1f1812;
+  --sidebar-foreground: #f5e8da;
+  --sidebar-primary: #d4a574;
+  --sidebar-primary-foreground: #1a130e;
+  --sidebar-accent: #3d2d1f;
+  --sidebar-accent-foreground: #f5e8da;
+  --sidebar-border: #2d2218;
+  --sidebar-ring: #c08552;
+  --home-base: #1b0e08;
+  --home-base-clear: rgba(27, 14, 8, 0);
+  --home-panel: #221a14;
+  --home-tile: #2d2218;
 }
 
 /* shadow-plugin'in hairline'ı varsayılan olarak nötrdür (siyah %5 / beyaz %18).
-   Palet sıcak olduğu için halkayı `--foreground`dan türetiyoruz: tonu temayla
-   birlikte döner ve kenar nötr griye kaymaz.
+   Palet sıcak olduğu için halkayı devralıyoruz — ve devraldığımız değer
+   `--hairline`, yani CSS `border` olarak kullandığımız çizginin AYNISI.
 
-   Alfalar kasıtlı olarak asimetrik. Halka DIŞ katman: yüzeyin değil, arkasındaki
-   sayfanın üstüne boyanır, yani görünen rengini sayfa zemini belirler. Light'ta
-   koyu bir hairline açık zeminden UZAKLAŞIR, düşük alfa yeter. Dark'ta açık bir
-   hairline yükseltilmiş yüzeye DOĞRU açılır; alfa düşükse halka yüzeyin kendi
-   rengine oturup kaybolur. Ölçtük: dark'ta %18, sayfanın (#1A130E) üstünde
-   rgb(65,57,51) veriyor, popover yüzeyi (#221A14) rgb(34,26,20) — yaklaşık 31
-   seviyelik ayrım, kenar rahat okunuyor.
+   TEK ÇİZGİ KURALI. Sayfada iki tür kenar var: gölgeye gömülü halka (kartlar,
+   dialoglar) ve düz `border` (mozaik panelleri, chip'ler, input). İkisi ayrı
+   kaynaktan beslendiği sürece yan yana geldiklerinde tutmuyorlar — kartın
+   kenarı bir renk, hemen yanındaki panelin kenarı başka bir renk oluyordu.
+   Buraya bağlanınca fark kalmıyor.
 
-   Seçici kümesi plugin'inkiyle BİREBİR aynı olmalı ve her blok `--smooth-ring-color`ı
-   yeniden bildirmeli. İkisi de eşit özgüllükte (0,1,0); plugin daha önce import
-   edildiği için kaynak sırasıyla buradaki kazanır. Yalnız `--smooth-ring-alpha`
-   set etmek YETMEZ: `--smooth-ring-color` bildirildiği elemanda hesaplanıp aşağı
-   inen bir değer, alfayı iç içe bir sarmalayıcıda değiştirmek onu geri
-   hesaplatmaz. `:root`ta alfa set etmek işe yarar (aynı eleman), ama sayfa
-   içindeki bir `.dark` sarmalayıcıda plugin'in nötr beyaz kuralı kazanır ve
-   kenar griye kayardı — ana sayfa bölümleri tam olarak öyle sarmalanıyor. */
+   DEĞER `--border`. Önceden `--foreground` %8/%18 idi; dark'ta %18 halkayı
+   sayfanın üstünde rgb(65,54,47)'ye çıkarıyor, yani kartın kenarını paletin
+   kendi yumuşaklığından belirgin sertleştiriyordu. Referans zaten elimizdeydi:
+   feature kartları `smooth-ring-border` ile, blog kartları düz `border-border`
+   ile bugüne dek `--border` taşıyordu ve doğru görünen buydu. Halkayı oraya
+   bağlamak, o iki kartın kenarını değiştirmeden geri kalan her yüzeyi onlara
+   eşitliyor.
+
+   `--hairline` DEĞİL, bilinçli. O token CSS `border` içindir ve elemanın KENDİ
+   zemininin üstünde çözülür; halka ise DIŞ katmandır, arkasındaki sayfanın
+   üstüne boyanır. Aynı sayıyı iki yere koymak ikisini eşitlemez, ayırır.
+   Ölçüldüğünde bu ikisi zaten aynı yere düşüyor: dark'ta halka --card'ın
+   yanında rgb(45,34,24), border rgb(47,38,32).
+
+   Seçici kümesi plugin'inkiyle BİREBİR aynı olmalı: ikisi de eşit özgüllükte
+   (0,1,0) ve plugin daha önce import edildiği için kaynak sırasıyla buradaki
+   kazanır. */
 :root,
 .light,
 [data-theme="light"] {
-  --smooth-ring-alpha: 8%;
-  --smooth-ring-color: color-mix(in oklab, var(--foreground) var(--smooth-ring-alpha), transparent);
+  --smooth-ring-color: var(--border);
 }
 .dark,
 [data-theme="dark"] {
-  --smooth-ring-alpha: 18%;
-  --smooth-ring-color: color-mix(in oklab, var(--foreground) var(--smooth-ring-alpha), transparent);
+  --smooth-ring-color: var(--border);
 }
 
 /* ---------------------------------------------------------------------------
@@ -317,13 +382,13 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
   body {
     @apply bg-background text-foreground;
-    }
+  }
   html {
     @apply font-sans;
-    }
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -351,7 +416,11 @@
    Gövde metni okunabilir ama başlıklardan soluk: foreground'un yumuşatılmış
    karışımı (tam muted yerine), başlıklar tam foreground. */
 .prose {
-  --tw-prose-body: color-mix(in oklab, var(--foreground) 82%, var(--background));
+  --tw-prose-body: color-mix(
+    in oklab,
+    var(--foreground) 82%,
+    var(--background)
+  );
   --tw-prose-headings: var(--foreground);
   --tw-prose-lead: var(--muted-foreground);
   --tw-prose-links: var(--primary);
@@ -388,7 +457,11 @@
      renginin altında, ama ≥3:1 kontrastta tutulur. */
   --code-gutter: #957e6a;
   --code-rule: color-mix(in oklab, var(--border) 70%, var(--code-surface));
-  --code-highlight: color-mix(in oklab, var(--primary) 10%, var(--code-surface));
+  --code-highlight: color-mix(
+    in oklab,
+    var(--primary) 10%,
+    var(--code-surface)
+  );
 }
 .dark .prose [data-slot="code-block"] {
   --code-gutter: #877260;
@@ -451,8 +524,8 @@
      kaydırmada kod çizginin dibinde yarım harf göstermeden tamamen altına
      girer. (`border-right` kutunun en sağına düştüğü için bunu yapamıyordu.) */
   background:
-    linear-gradient(var(--code-rule), var(--code-rule)) no-repeat calc(100% - 1rem) 0 /
-      1px 100%,
+    linear-gradient(var(--code-rule), var(--code-rule)) no-repeat
+      calc(100% - 1rem) 0 / 1px 100%,
     var(--code-gutter-bg, var(--code-surface));
   font-variant-numeric: tabular-nums;
   user-select: none;
@@ -642,13 +715,26 @@
   --surface-contact: color-mix(in oklab, var(--surface-ink) 11%, transparent);
   --surface-ambient: color-mix(in oklab, var(--surface-ink) 7%, transparent);
   --surface-knob-cast: color-mix(in oklab, var(--surface-ink) 22%, transparent);
-  --surface-ring-inner: color-mix(in oklab, var(--surface-ink) 12%, transparent);
+  --surface-ring-inner: color-mix(
+    in oklab,
+    var(--surface-ink) 12%,
+    transparent
+  );
   /* Türetme oranları: koyu bir zeminde aynı oran çok daha sert okunur,
      bu yüzden dark'ta hem karışım hem alfa düşer. */
   --surface-shade-depth: 82%;
   --surface-shade-alpha: 60%;
   --surface-rim-lift: 74%;
   --surface-rim-alpha: 55%;
+  /* Oyuğun iki rim'i. Kabartmanınkilerden farklı olarak yüzeyin RENGİNDEN değil
+     mürekkep/kâğıttan türeyen saydam yıkamalar: `surface-inset` taşıyan parçalar
+     dolgusunu kendi getiriyor (`bg-muted`, `bg-primary`, `bg-input`…) ve
+     `--surface-well` onların hiçbirine eşit değil.
+
+     Işık modelini her temada KONTRAST PAYI olan uç taşır; ikisi birden değil.
+     Light'ta kâğıt oyuğun kendi tonu, sekme görünmez → üst gölge anlatır. */
+  --surface-well-shade: color-mix(in oklab, var(--surface-ink) 9%, transparent);
+  --surface-well-lift: color-mix(in oklab, var(--surface-paper) 2%, transparent);
   /* OYUK — butonla aynı prensip: tek bir yüzey rengi, ondan türeyen iki uç.
      Önceki hâlde alanlara nötr mürekkep/krem yıkaması biniyordu; bu doygunluğu
      düşürüp yüzeyi "tozlu" gösteriyordu. Buton toz yapmıyor çünkü hem gölgesini
@@ -666,12 +752,20 @@
      kadar. Üst rim buna bağlı olarak neredeyse görünmez hâle geliyor; butonun
      light'taki üst rim'i de zaten görünmüyor (tabanı sayfanın kendisi), yani
      iki yüzey bu konuda da aynı yere düşüyor. */
-  --surface-well: color-mix(in oklab, var(--background) 98%, var(--surface-ink));
+  --surface-well: color-mix(
+    in oklab,
+    var(--background) 98%,
+    var(--surface-ink)
+  );
   /* Etkileşimli alanların (select tetikleyicisi gibi) hover yüzeyi. Ayrı bir
      token gerekiyor: `surface-inset` dolguyu OPAK bir `background-image`
      katmanıyla basıyor, dolayısıyla `hover:bg-*` sınıfları bu yüzeylerde
      görünmez — hover'ı ancak yüzeyin kendi rengini değiştirerek anlatabiliriz. */
-  --surface-well-hover: color-mix(in oklab, var(--background) 92%, var(--surface-ink));
+  --surface-well-hover: color-mix(
+    in oklab,
+    var(--background) 92%,
+    var(--surface-ink)
+  );
 }
 
 .dark {
@@ -685,18 +779,32 @@
   --surface-contact: color-mix(in oklab, var(--surface-ink) 40%, transparent);
   --surface-ambient: color-mix(in oklab, var(--surface-ink) 26%, transparent);
   --surface-knob-cast: color-mix(in oklab, var(--surface-ink) 48%, transparent);
-  --surface-ring-inner: color-mix(in oklab, var(--surface-paper) 10%, transparent);
+  --surface-ring-inner: color-mix(
+    in oklab,
+    var(--surface-paper) 10%,
+    transparent
+  );
   --surface-shade-depth: 91%;
   --surface-shade-alpha: 40%;
   --surface-rim-lift: 88%;
   --surface-rim-alpha: 34%;
+  /* Dark'ta polarite TERSİNE dönmez, taşıyıcı uç değişir. Mürekkep burada
+     popover'ın (#221A14) tonuna düşüyor: görünür bir üst gölge oyuğun İÇİ değil
+     DIŞI gibi okunup üst oluğu yutuyordu (menüdeki tema segmenti tam buydu).
+     Koyulaşacak pay yok, o yüzden oyuğu alt sekme anlatır. */
+  --surface-well-shade: color-mix(in oklab, var(--surface-ink) 2%, transparent);
+  --surface-well-lift: color-mix(in oklab, var(--surface-paper) 4%, transparent);
   /* Dark'ta alan da butonun outline varyantıyla AYNI dolguyu taşır
      (`bg-input/30`), yani sayfadan bir tık AÇIK. Daha koyu bir gövde
      denenmişti; alanı butonların yanında bir delik gibi gösteriyordu. */
   --surface-well: color-mix(in oklab, var(--input) 30%, var(--background));
   /* Dinlenme %30; hover'da %50 — kaldırılan `dark:hover:bg-input/50`in
      amaçladığı değerin aynısı, bu sefer gerçekten görünür yerden. */
-  --surface-well-hover: color-mix(in oklab, var(--input) 50%, var(--background));
+  --surface-well-hover: color-mix(
+    in oklab,
+    var(--input) 50%,
+    var(--background)
+  );
 }
 
 /* Tailwind'in box-shadow zinciri. Halkalar (ring) ve gölge ayrı değişkenlerde
@@ -730,21 +838,37 @@
    aşağı boyanmış gibi gösteriyordu (ölçüm: kırmızı kanalında 53 seviye
    düşüş, referansta bu ~%10). Karışımı burada kurup gerçek yüzeyi veriyoruz. */
 [data-slot="button"][data-variant="destructive"] {
-  --surface-base: color-mix(in oklab, var(--destructive) 10%, var(--background));
+  --surface-base: color-mix(
+    in oklab,
+    var(--destructive) 10%,
+    var(--background)
+  );
 }
 /* Outline dark'ta saydam değil `bg-input/30` taşır. */
 .dark [data-slot="button"][data-variant="outline"] {
   --surface-base: color-mix(in oklab, var(--input) 30%, var(--background));
 }
 .dark [data-slot="button"][data-variant="destructive"] {
-  --surface-base: color-mix(in oklab, var(--destructive) 20%, var(--background));
+  --surface-base: color-mix(
+    in oklab,
+    var(--destructive) 20%,
+    var(--background)
+  );
 }
 
 [data-slot="badge"][data-variant="destructive"] {
-  --surface-base: color-mix(in oklab, var(--destructive) 10%, var(--background));
+  --surface-base: color-mix(
+    in oklab,
+    var(--destructive) 10%,
+    var(--background)
+  );
 }
 .dark [data-slot="badge"][data-variant="destructive"] {
-  --surface-base: color-mix(in oklab, var(--destructive) 20%, var(--background));
+  --surface-base: color-mix(
+    in oklab,
+    var(--destructive) 20%,
+    var(--background)
+  );
 }
 
 /* Outline rozet, outline BUTONLA aynı yüzeyi taşır: ikisi de zeminin
@@ -754,12 +878,66 @@
   --surface-base: var(--background);
 }
 
+/* Kenar çubuğunun eylem satırları (Oturum Açın, Yeni Sohbet) butonun yüzey
+   reçetesini taşır ama `data-slot="button"` yazmaz — tabanlarını burada
+   bildiriyorlar, dolgularıyla birebir aynı renkte. */
+[data-sidebar="menu-button"][data-variant="primary"] {
+  --surface-base: var(--primary);
+}
+[data-sidebar="menu-button"][data-variant="outline"] {
+  --surface-base: var(--background);
+}
+.dark [data-sidebar="menu-button"][data-variant="outline"] {
+  --surface-base: color-mix(in oklab, var(--input) 30%, var(--background));
+}
+
+/* Success/warning, destructive ile AYNI kalıp: dolgu alfalı (`/15`, dark'ta
+   `/20`), yani görünen yüzey saf emerald/amber değil onun zeminle karışmış
+   hâli. Taban buradan kurulmazsa `--surface-base` tanımsız kalır, rim de
+   `:root`un genel değerine düşüp varyantın rengini bilmez.
+   Bu iki varyant `surface-raised-chip`i yeni aldı (bkz. ui/badge.tsx); onsuz
+   sayfadaki tek düz rozetlerdi. */
+[data-slot="badge"][data-variant="success"] {
+  --surface-base: color-mix(
+    in oklab,
+    var(--color-emerald-500) 15%,
+    var(--background)
+  );
+}
+.dark [data-slot="badge"][data-variant="success"] {
+  --surface-base: color-mix(
+    in oklab,
+    var(--color-emerald-500) 20%,
+    var(--background)
+  );
+}
+[data-slot="badge"][data-variant="warning"] {
+  --surface-base: color-mix(
+    in oklab,
+    var(--color-amber-500) 15%,
+    var(--background)
+  );
+}
+.dark [data-slot="badge"][data-variant="warning"] {
+  --surface-base: color-mix(
+    in oklab,
+    var(--color-amber-500) 20%,
+    var(--background)
+  );
+}
+
 [data-slot="button"][data-variant],
-[data-slot="badge"][data-variant] {
+[data-slot="badge"][data-variant],
+[data-sidebar="menu-button"][data-variant="primary"],
+[data-sidebar="menu-button"][data-variant="outline"] {
   /* Alt gölge: aynı rengin %18 siyaha çekilmiş hâli, %60 alfayla. */
   --surface-shade: color-mix(
     in oklab,
-    color-mix(in oklab, var(--surface-base) var(--surface-shade-depth), var(--surface-ink))
+    color-mix(
+        in oklab,
+        var(--surface-base) var(--surface-shade-depth),
+        var(--surface-ink)
+      )
       var(--surface-shade-alpha),
     transparent
   );
@@ -767,7 +945,11 @@
      kahve bir butonda rim de sıcak kahve kalır. */
   --surface-rim-top: color-mix(
     in oklab,
-    color-mix(in oklab, var(--surface-base) var(--surface-rim-lift), var(--surface-paper))
+    color-mix(
+        in oklab,
+        var(--surface-base) var(--surface-rim-lift),
+        var(--surface-paper)
+      )
       var(--surface-rim-alpha),
     transparent
   );
@@ -781,13 +963,21 @@
 @utility surface-tint {
   --surface-shade: color-mix(
     in oklab,
-    color-mix(in oklab, var(--surface-base) var(--surface-shade-depth), var(--surface-ink))
+    color-mix(
+        in oklab,
+        var(--surface-base) var(--surface-shade-depth),
+        var(--surface-ink)
+      )
       var(--surface-shade-alpha),
     transparent
   );
   --surface-rim-top: color-mix(
     in oklab,
-    color-mix(in oklab, var(--surface-base) var(--surface-rim-lift), var(--surface-paper))
+    color-mix(
+        in oklab,
+        var(--surface-base) var(--surface-rim-lift),
+        var(--surface-paper)
+      )
       var(--surface-rim-alpha),
     transparent
   );
@@ -827,17 +1017,23 @@
 
 /* Gölgesiz kabartma: bir oyuğun İÇİNDE oturan parçalar (switch thumb, aktif
    sekme) için. Kendi gölgesini taşır ama sayfaya değil, içinde durduğu
-   yuvaya düşürür — bu yüzden ortam katmanı yok, yalnız sıkı temas. */
+   yuvaya düşürür — bu yüzden ortam katmanı yok, yalnız sıkı temas.
+
+   Gövde gradyanı YOK, `surface-raised-chip`teki gerekçeyle: bu utility'yi alan
+   parçaların hepsi ≤28px (sekme, segment, checkbox, radio, slider thumb) ve o
+   ölçekte doğrusal gradyanın koyu ucu alt kenarın EĞRİSİNE düşüyor. Light'ta
+   dahası var: parçanın dolgusu `--background`, gradyanın alt ucu da tam olarak
+   track'in `--muted` tonuna iniyor, yani alt kenar yuvaya karışıp kayboluyordu.
+   Işık modelini rim'ler taşır; onlar border-radius'u takip eder.
+
+   Temas gölgesi `surface-raised-chip` ölçüsünde (2px değil 1.5px blur): bu
+   parçaların oluğu 2-3px ve daha geniş bir gölge oluğun tamamını kaplayıp alt
+   boşluğu üsttekinden koyu gösteriyordu — asimetriyi üreten tek yön buydu. */
 @utility surface-raised-tight {
-  background-image: linear-gradient(
-    to bottom in oklab,
-    transparent 45%,
-    var(--surface-shade)
-  );
   --tw-inset-shadow:
     inset 0 1px 0 0 var(--surface-rim-top),
     inset 0 -1px 0 0 var(--surface-rim-bottom);
-  --tw-shadow: 0 1px 2px -1px var(--surface-contact);
+  --tw-shadow: 0 1px 1.5px -1px var(--surface-contact);
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
@@ -873,10 +1069,10 @@
     ),
     /* Düz koyultma: diskin toplam beyazlığını indirir ama radyal katmanın
        ürettiği kenar-gövde FARKI korunur, yani 360° kabartma kaybolmaz. */
-    linear-gradient(
-      color-mix(in oklab, var(--surface-ink) 7%, transparent),
-      color-mix(in oklab, var(--surface-ink) 7%, transparent)
-    );
+      linear-gradient(
+        color-mix(in oklab, var(--surface-ink) 7%, transparent),
+        color-mix(in oklab, var(--surface-ink) 7%, transparent)
+      );
   --tw-shadow:
     0 1px 3px -0.5px var(--surface-knob-cast),
     0 0 3px -1px var(--surface-knob-cast);
@@ -905,10 +1101,8 @@
      Bu yüzden çipte ışık modeli gradyanla değil rim'le anlatılır. Alfalar
      buton ölçeğinin altında, çünkü 20px'te 1px yüksekliğin %5'i. */
   --tw-inset-shadow:
-    inset 0 1px 0 0
-      color-mix(in oklab, var(--surface-rim-top) 22%, transparent),
-    inset 0 -1px 0 0
-      color-mix(in oklab, var(--surface-shade) 45%, transparent);
+    inset 0 1px 0 0 color-mix(in oklab, var(--surface-rim-top) 22%, transparent),
+    inset 0 -1px 0 0 color-mix(in oklab, var(--surface-shade) 45%, transparent);
   --tw-shadow: 0 1px 1.5px -1px var(--surface-contact);
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
@@ -917,8 +1111,8 @@
 }
 
 @utility surface-inset {
-  /* Oyuk: üstte ışık, altta gölge. Gövde gradyanı ve dış gölge YOK — kabartmayı
-     alandan ayıran şey bu ikisi.
+  /* Oyuk: üstte GÖLGE, altta sekme — kabartmanın tam TERSİ. Gövde gradyanı ve
+     dış gölge YOK; kabartmayı alandan ayıran şey bu ikisi.
 
      DOLGU BASMAZ. Bir ara buraya opak bir `background-image` katmanı konmuştu
      ve `surface-inset` taşıyan 22 parçanın çoğu kendi rengini getirdiği için
@@ -926,20 +1120,18 @@
      aynı renge düştü, sekme şeridi `--muted`ini kaybetti. Kendi zemini olmayan
      alanlar dolguyu `surface-well-fill` ile ayrıca ister.
 
-     Üst rim `--surface-rim-top`u DEĞİL kendi adını kullanır. O token kabartmanın
-     tokenı ve miras alınıyor: burada ezilince oyuğun İÇİNDE oturan parçalar
-     (switch thumb'ı, aktif sekme) kendi renginin rim'i yerine oyuğunkini
-     alıyordu. Alt rim global `--surface-rim-bottom`, `currentColor`dan türediği
-     için her öğede kendi rengine göre çözülür — ezmeye gerek yok. */
-  --surface-well-rim: color-mix(
-    in oklab,
-    color-mix(in oklab, var(--surface-well) var(--surface-rim-lift), var(--surface-paper))
-      var(--surface-rim-alpha),
-    transparent
-  );
+     Rimler `--surface-rim-*`ı DEĞİL kendi adlarını kullanır. Onlar kabartmanın
+     tokenları ve miras alınıyor: burada ezilince oyuğun İÇİNDE oturan parçalar
+     (switch thumb'ı, aktif sekme) kendi renginin rim'i yerine oyuğunkini alır.
+
+     Alt rim eskiden global `--surface-rim-bottom`tu (currentColor türevi). Bir
+     oyukta bu yanlış: metin rengi oyuğun derinliğini bilmez, light'ta üste değil
+     ALTA koyu çizgi çizip polariteyi kabartmaya çeviriyordu. Aktif sekme/thumb
+     zaten aşağı gölge düşürdüğü için alt oluk iki kat koyulaşıyor, üst oluk boş
+     kalıyordu — parça yukarı yapışmış görünüyordu. */
   --tw-inset-shadow:
-    inset 0 1px 0 0 var(--surface-well-rim),
-    inset 0 -1px 0 0 var(--surface-rim-bottom);
+    inset 0 1px 0 0 var(--surface-well-shade),
+    inset 0 -1px 0 0 var(--surface-well-lift);
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
@@ -952,8 +1144,6 @@
 @utility surface-well-fill {
   background-image: linear-gradient(var(--surface-well), var(--surface-well));
 }
-
-
 
 /* ─── Leaflet ───
    Kütüphanenin kendi CSS'i nötr beyaz bir atıf bandı çiziyor (rgba(255,255,255,.8),
@@ -1004,17 +1194,48 @@
   );
 }
 
+/* Fiyat tablosunda Pro başlığının vurgusu (home-pricing-section.tsx). Kendi
+   katmanında durur: maske <th> üzerinde olsaydı "Pro" yazısını da soldururdu.
+   Tepeden inen sıcak yıkama + ince köşegen tarama; ikisi de --primary'den
+   türer, yani tema ile birlikte döner. Maske dokuyu aşağı doğru söndürüp
+   tablonun gövdesine bağlar, alt kenarda sert bir kesik bırakmaz. */
+@utility pro-sheen {
+  /* Üç katman, üstten alta: tarama → sıcak parıltı → taban.
+     Renkler paletin SICAK ucundan gelir, nötr griden değil: `--accent` (gündüz
+     kum, gece kahve) tabanı kurar, `--primary` (gündüz koyu kahve, gece ten)
+     parıltıyı verir, `--ring` (#c08552, iki temada da aynı karamel) aradaki
+     halkada doygunluğu tutar — onsuz düşük alfalı kahve kremin üstünde griye
+     kaçıyordu. Gece/gündüz uyumu tokenların kendi yönünden gelir: gündüz
+     `--primary` koyu olduğu için hücreyi koyultur, gece açık olduğu için
+     aydınlatır; her iki durumda da yön "sıcağa doğru"dur. */
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in oklab, var(--primary) 13%, transparent) 0 1px,
+      transparent 1px 6px
+    ),
+    radial-gradient(
+      130% 105% at 50% 0%,
+      color-mix(in oklab, var(--primary) 24%, transparent),
+      color-mix(in oklab, var(--ring) 14%, transparent) 45%,
+      transparent 78%
+    ),
+    linear-gradient(
+      color-mix(in oklab, var(--accent) 65%, transparent),
+      color-mix(in oklab, var(--accent) 65%, transparent)
+    );
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 1) 30%, rgb(0 0 0 / 0));
+}
+
 /* ---------------------------------------------------------------------------
-   Giriş / scroll reveal (components/motion/animate-enter.tsx)
+   Giriş animasyonu (components/motion/animate-enter.tsx)
 
-   Animasyon BİLEREK CSS'te, JS'te değil. Motion yalnızca "ne zaman" kararını
-   verir; "nasıl"ı buradaki kurallar yapar. İki sebebi var:
+   Animasyon BİLEREK CSS'te, JS'te değil: CSS animasyonları compositor'da koşar,
+   `initial={{opacity:0}}` ile kurulan bir JS reveal'de main thread tıkanırsa
+   animasyon hiç başlamaz ve içerik sonsuza kadar görünmez kalırdı.
 
-   1. CSS animasyonları compositor'da koşar. `initial={{opacity:0}}` ile
-      kurulan bir JS reveal'de main thread tıkanırsa animasyon hiç başlamaz ve
-      içerik SONSUZA KADAR görünmez kalır. Burada böyle bir durum yok.
-   2. Dinlenme hâli (SSR'den gelen hâl) zaten görünürdür. JS hiç çalışmazsa
-      sayfa animasyonsuz ama eksiksiz görünür.
+   Tetikleyici scroll DEĞİL, yalnızca gecikme; kapsam da ilk ekranla sınırlı
+   (bkz. `HOME_ENTER`, lib/motion.ts).
 
    Eğri `EASE_OUT_EXPO` ile aynı sayıdır (lib/motion.ts) — biri değişirse
    diğeri de değişmelidir.
@@ -1030,33 +1251,6 @@
   @media (prefers-reduced-motion: reduce) {
     animation-name: enter-fx-fade;
     animation-duration: 0.2s;
-  }
-}
-
-@utility reveal-fx {
-  /* Scroll reveal: dinlenme hâli GÖRÜNÜR. AnimateEnter yalnızca fold'un
-     altında başlayan elemanlara, ilk boyamadan önce data-reveal="pending"
-     ekler; kesişimde "shown"a çevirir ve aşağıdaki transition koşar.
-     Ekranda zaten görünen bir eleman hiçbir zaman gizlenmez. */
-  transition:
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-
-  &[data-reveal="pending"] {
-    opacity: 0;
-    transform: translateY(18px);
-    filter: blur(6px);
-    /* Gizlenme anı animasyonlu OLMAMALI: aksi hâlde eleman önce görünür
-       boyanıp sonra süzülerek kaybolur. */
-    transition: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    &[data-reveal="pending"] {
-      transform: none;
-      filter: none;
-    }
   }
 }
 
@@ -1143,7 +1337,7 @@
   --_base: currentColor;
   --_highlight: var(
     --shimmer-color,
-    oklch(from currentColor l c h / calc(alpha * 0.2))
+    oklch(from currentColor l c h / calc(alpha* 0.2))
   );
 
   background-image: var(
@@ -1223,8 +1417,14 @@
 }
 
 @keyframes conv-typing-blink {
-  0%, 80%, 100% { opacity: 0.25; }
-  40% { opacity: 1; }
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
 }
 
 .conv-typing-dot {
@@ -1292,16 +1492,19 @@
   height: 6px;
 }
 .cn-scrollbar-thin::-webkit-scrollbar-track,
-.cn-scrollbar-thin-table [data-slot="table-container"]::-webkit-scrollbar-track {
+.cn-scrollbar-thin-table
+  [data-slot="table-container"]::-webkit-scrollbar-track {
   background: transparent;
 }
 .cn-scrollbar-thin::-webkit-scrollbar-thumb,
-.cn-scrollbar-thin-table [data-slot="table-container"]::-webkit-scrollbar-thumb {
+.cn-scrollbar-thin-table
+  [data-slot="table-container"]::-webkit-scrollbar-thumb {
   border-radius: 9999px;
   background: var(--border);
 }
 .cn-scrollbar-thin:hover::-webkit-scrollbar-thumb,
-.cn-scrollbar-thin-table [data-slot="table-container"]:hover::-webkit-scrollbar-thumb {
+.cn-scrollbar-thin-table
+  [data-slot="table-container"]:hover::-webkit-scrollbar-thumb {
   background: var(--muted-foreground);
 }
 

@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
-import { formatTL } from "@/lib/format"
+import { formatPercent, formatTL } from "@/lib/format"
 import { DepotInfo } from "@/components/assistant/depot-info"
 import type { MarketAllocation, OptimizationSummary } from "@/lib/ai/schemas"
 
@@ -81,9 +81,9 @@ function AllocationBreakdown({
                           {capitalize(e.rawName) || e.productName}
                         </span>
                         {multiPack && (
-                          <span className="shrink-0 rounded bg-muted px-1 text-[0.625rem] font-medium tabular-nums text-muted-foreground">
+                          <Badge variant="secondary" className="tabular-nums">
                             {e.quantity}×
-                          </span>
+                          </Badge>
                         )}
                         <DepotInfo depotName={e.depotName} market={e.market} />
                       </div>
@@ -92,10 +92,10 @@ function AllocationBreakdown({
                         {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
                       </div>
                       {e.sizeMismatch && (
-                        <div className="flex items-center gap-1 text-[0.625rem] text-amber-600 dark:text-amber-400">
-                          <RiErrorWarningLine className="size-2.5" />
-                          Farklı Boyut
-                        </div>
+                        <Badge variant="warning" className="mt-0.5">
+                          <RiErrorWarningLine data-icon="inline-start" />
+                          Farklı boyut
+                        </Badge>
                       )}
                     </TableCell>
                     <TableCell className="py-1 text-right align-top text-xs tabular-nums">
@@ -120,6 +120,7 @@ function OptionRow({
   subtitle,
   subtitleClassName,
   total,
+  totalNote,
   allocation,
   markets,
 }: {
@@ -130,6 +131,8 @@ function OptionRow({
   subtitle: React.ReactNode
   subtitleClassName: string
   total: number
+  /** Tutarın ALTINA giren açıklama (ör. "₺1,65 tasarruf"). */
+  totalNote?: React.ReactNode
   allocation: MarketAllocation[]
   markets: string[]
 }) {
@@ -153,16 +156,29 @@ function OptionRow({
       >
         {logo}
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5 text-[0.6875rem] font-medium text-muted-foreground">
+          <div className="text-[0.6875rem] font-medium text-muted-foreground">
             {label}
+          </div>
+          {/* Rozet market adlarının SAĞINDA. Etiket satırındayken neyi nitelediği
+              belirsizdi ("İki market kombinasyonu"nun sıfatı gibi okunuyordu);
+              indirim bu kombinasyona ait, o yüzden adların yanında duruyor.
+              `min-w-0` şart, yoksa uzun adlarda `truncate` iş görmez. */}
+          <div className="flex items-center gap-1.5">
+            <span className="min-w-0 truncate text-base font-semibold">
+              {title}
+            </span>
             {badge}
           </div>
-          <div className="truncate text-base font-semibold">{title}</div>
           <div className={subtitleClassName}>{subtitle}</div>
         </div>
-        <span className="shrink-0 text-xl font-bold tabular-nums">
-          {formatTL(total)}
-        </span>
+        {/* Tutar + indirim tek kolonda: indirim toplamın açıklaması, satırın
+            sol ucundayken aralarındaki bağ kopuyordu. */}
+        <div className="flex shrink-0 flex-col items-end">
+          <span className="text-xl font-bold tabular-nums">
+            {formatTL(total)}
+          </span>
+          {totalNote}
+        </div>
         {canExpand && (
           <RiArrowDownSLine
             className={cn(
@@ -227,25 +243,23 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
       }
       badge={
         twoMarketCombo.savingsTL > 0 ? (
-          <Badge
-            variant="outline"
-            className="border-emerald-500/40 px-1.5 py-0 text-[0.625rem] text-emerald-700 dark:text-emerald-300"
-          >
-            <RiArrowDownLine className="mr-0.5 size-2.5" />%
-            {twoMarketCombo.savingsPct.toFixed(1)}
+          <Badge variant="success">
+            <RiArrowDownLine data-icon="inline-start" />
+            {formatPercent(twoMarketCombo.savingsPct)}
           </Badge>
         ) : undefined
       }
       title={twoMarketCombo.markets.join(" + ")}
-      subtitle={
-        twoMarketCombo.savingsTL > 0
-          ? `${formatTL(twoMarketCombo.savingsTL)} tasarruf`
-          : `${totalItems}/${totalItems} kalem`
-      }
-      subtitleClassName={
-        twoMarketCombo.savingsTL > 0
-          ? "text-[0.6875rem] font-medium text-emerald-700 dark:text-emerald-300"
-          : "text-[0.6875rem] text-muted-foreground"
+      // Kalem sayısı artık her iki satırda da altyazı: tasarruf tutarı sağa,
+      // tutarın altına taşındı ve burası boş kalıyordu.
+      subtitle={`${totalItems}/${totalItems} kalem`}
+      subtitleClassName="text-[0.6875rem] text-muted-foreground"
+      totalNote={
+        twoMarketCombo.savingsTL > 0 ? (
+          <span className="text-[0.6875rem] font-medium text-emerald-700 dark:text-emerald-300">
+            {formatTL(twoMarketCombo.savingsTL)} tasarruf
+          </span>
+        ) : undefined
       }
       total={twoMarketCombo.total}
       allocation={twoMarketCombo.allocation}
@@ -254,7 +268,10 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
   ) : null
 
   return (
-    <Squircle className="border bg-card" radius="xl" effects>
+    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
+    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
+    // (gerekçenin tamamı product-match-list.tsx'te).
+    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
       <div className="flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2">
         <span className="text-sm font-medium">Sepet Özeti</span>
       </div>

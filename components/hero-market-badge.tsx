@@ -70,7 +70,17 @@ export function HeroMarketBadge() {
       href="/asistan"
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
-      className="group inline-flex items-center gap-2 rounded-full border border-border bg-muted py-1 pr-2.5 pl-1.5 transition-colors select-none hover:border-foreground/20 dark:border-muted-foreground/20 dark:bg-muted dark:hover:border-muted-foreground/35"
+      // Yüzey reçetesi hero chip'leriyle BİREBİR: `surface-*` ışık modeli +
+      // `border-hairline` + aynı hover. Rozet eskiden ikisini de taşımıyordu
+      // (düz bir `Link`ti, kendi kenar rengiyle) ve 12px altındaki chip'lerin
+      // yanında yassı duruyordu.
+      //
+      // Model `surface-raised` DEĞİL `surface-raised-chip`: o, derinliği
+      // doğrusal bir gövde gradyanıyla anlatıyor ve gradyan radius'u bilmiyor.
+      // Rozet `rounded-full`, yani yarıçap yüksekliğin yarısı — düz kenar hiç
+      // yok, gradyanın koyu ucu eğrinin üstünde toplanırdı. Chip ölçeğindeki
+      // rim ise radius'u takip ediyor (bkz. globals.css).
+      className="group surface-raised-chip inline-flex items-center gap-2 rounded-full border border-hairline bg-control py-1 pr-2.5 pl-1.5 transition-colors select-none hover:border-foreground/20"
     >
       <div className="flex -space-x-2">
         <AnimatePresence mode="popLayout" initial={false}>
@@ -86,7 +96,7 @@ export function HeroMarketBadge() {
                 ...slide,
                 opacity: { duration: 0.2, ease: "easeOut" },
               }}
-              className="relative size-6 shrink-0 rounded-full ring-2 ring-muted"
+              className="relative size-6 shrink-0 rounded-full ring-2 ring-control"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -102,7 +112,9 @@ export function HeroMarketBadge() {
         </AnimatePresence>
       </div>
 
-      <span className="text-[0.8125rem] font-medium text-muted-foreground">
+      {/* Hover'da metin de koyulaşır — chip'lerdeki `hover:text-foreground`in
+          karşılığı. Rozette geri bildirim yalnız kenardaydı. */}
+      <span className="text-[0.8125rem] font-medium text-muted-foreground transition-colors group-hover:text-foreground">
         Tüm zincir marketler burada!
       </span>
 
@@ -116,7 +128,7 @@ export function HeroMarketBadge() {
           scale: ARROW_SPRING,
           x: arrowIdle ? ARROW_IDLE : ARROW_SPRING,
         }}
-        className="text-muted-foreground"
+        className="text-muted-foreground transition-colors group-hover:text-foreground"
       >
         <RiArrowRightLine className="size-3.5" />
       </motion.span>

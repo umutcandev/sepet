@@ -32,7 +32,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { CheckboxVisual } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogContent,
@@ -593,12 +593,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                         isSelected && "bg-secondary/40",
                       )}
                     >
-                      <Checkbox
-                        checked={isSelected}
-                        tabIndex={-1}
-                        aria-hidden
-                        className="pointer-events-none"
-                      />
+                      <CheckboxVisual checked={isSelected} />
                       <span className="min-w-0 flex-1 truncate text-sm">
                         {c.title}
                       </span>
@@ -622,8 +617,10 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                           <RiStarFill className="size-3.5 shrink-0 text-amber-500" />
                         ) : null}
                       </Link>
-                      <div className="flex shrink-0 items-center pr-1">
-                        <span className="text-xs text-muted-foreground tabular-nums transition-opacity group-focus-within:opacity-0 group-hover:opacity-0 group-has-[[aria-expanded=true]]:opacity-0">
+                      {/* Mobilde aksiyon tarihin sağında sabit durur; sm+ hover'da
+                          tarihin yerini alır. */}
+                      <div className="flex shrink-0 items-center gap-1 pr-1 sm:gap-0">
+                        <span className="text-xs text-muted-foreground tabular-nums transition-opacity sm:group-focus-within:opacity-0 sm:group-hover:opacity-0 sm:group-has-[[aria-expanded=true]]:opacity-0">
                           {date}
                         </span>
                         <DropdownMenu>
@@ -632,7 +629,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                               variant="ghost"
                               size="icon-xs"
                               aria-label="Sohbet eylemleri"
-                              className="absolute right-2 text-muted-foreground opacity-0 transition-opacity after:absolute after:-inset-2 group-focus-within:opacity-100 group-hover:opacity-100 aria-expanded:opacity-100"
+                              className="relative text-muted-foreground transition-opacity after:absolute after:-inset-2 sm:absolute sm:right-2 sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
                             >
                               <RiMoreLine className="size-4" />
                             </Button>

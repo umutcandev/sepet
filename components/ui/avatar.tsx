@@ -17,7 +17,13 @@ function Avatar({
       data-slot="avatar"
       data-size={size}
       className={cn(
-        "group/avatar relative flex size-8 shrink-0 rounded-full select-none before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-full before:shadow-[inset_0_0_0_1px_var(--surface-ring-inner)] after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 data-[size=xs]:size-5 dark:after:mix-blend-lighten",
+        // `isolate` ŞART. Aşağıdaki `::after` kenarı `mix-blend-darken` ile
+        // boyanıyor ve harmanın zemini, en yakın stacking context'e kadar
+        // ALTTAKİ HER ŞEY. `relative` tek başına context yaratmıyor (z-index
+        // yok), dolayısıyla bir avatar grubunda öndeki avatarın kenarı
+        // arkasındaki avatarın üstünde harmanlanıp bindirme yerinde koyu bir
+        // yay bırakıyordu. `isolate` harmanı avatarın kendi boyamasına kapatır.
+        "group/avatar isolate relative flex size-8 shrink-0 rounded-full select-none before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-full before:shadow-[inset_0_0_0_1px_var(--surface-ring-inner)] after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 data-[size=xs]:size-5 dark:after:mix-blend-lighten",
         className
       )}
       {...props}
@@ -80,7 +86,14 @@ function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
       className={cn(
         // xs'te 8px bindirme 20px'lik avatarın neredeyse yarısını yiyor; halka
         // payıyla birlikte arkadaki avatar okunmaz hale geliyordu.
-        "group/avatar-group flex -space-x-2 has-data-[size=xs]:-space-x-1.5 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background",
+        //
+        // HALKA YÜZEYİN RENGİ OLMALI, sayfanınki değil. İşi arkadaki avatarı
+        // "delmek"; rengi altında durduğu zeminden şaşarsa delik değil, ayrı
+        // renkte bir hale olarak okunur. Varsayılan `--card` çünkü gruplar
+        // pratikte hep kart/popover üstünde duruyor (ikisi de aynı değer) —
+        // `--background` iken market logoları kartın üstünde görünür bir
+        // halka çiziyordu. Farklı bir zeminde `--avatar-surface`ı ayarla.
+        "group/avatar-group flex -space-x-2 has-data-[size=xs]:-space-x-1.5 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-[var(--avatar-surface,var(--card))]",
         className
       )}
       {...props}
@@ -96,7 +109,7 @@ function AvatarGroupCount({
     <div
       data-slot="avatar-group-count"
       className={cn(
-        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground ring-2 ring-background group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 group-has-data-[size=xs]/avatar-group:size-5 group-has-data-[size=xs]/avatar-group:text-[10px] [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3 group-has-data-[size=xs]/avatar-group:[&>svg]:size-3",
+        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground ring-2 ring-[var(--avatar-surface,var(--card))] group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 group-has-data-[size=xs]/avatar-group:size-5 group-has-data-[size=xs]/avatar-group:text-[10px] [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3 group-has-data-[size=xs]/avatar-group:[&>svg]:size-3",
         className
       )}
       {...props}

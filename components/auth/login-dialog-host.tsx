@@ -30,7 +30,10 @@ const AUTH_ERROR_MESSAGES = new Map<string, string>([
   ],
   ["OAuthCallbackError", "Giriş tamamlanamadı, tekrar dener misin?"],
   ["CredentialsSignin", "E-posta ya da şifren hatalı."],
-  ["MissingCSRF", "Oturum doğrulaması geçersiz. Sayfayı yenileyip tekrar dene."],
+  [
+    "MissingCSRF",
+    "Oturum doğrulaması geçersiz. Sayfayı yenileyip tekrar dene.",
+  ],
   // kind: "error" → pages.error
   ["AccessDenied", "Giriş izni verilmedi."],
   ["Verification", "Bağlantının süresi dolmuş. Yeniden dene."],
@@ -42,15 +45,23 @@ const AUTH_ERROR_MESSAGES = new Map<string, string>([
   ],
 ])
 
-// NextAuth'un eklediği parametreler. `callbackUrl`'i pages.signIn yönlendirmesi
-// koyuyor; ikisi de bize ait, işlendikten sonra adres çubuğunda kalmamalı ve
-// aşağıdaki callbackUrl'e sızmamalı.
-const AUTH_PARAMS = ["error", "callbackUrl"] as const
+// NextAuth'un eklediği parametreler + oturumsuz ziyaretçiyi ödeme rotalarından
+// geri getiren `login=1` (bkz. api/checkout, api/portal). Hepsi bize ait,
+// işlendikten sonra adres çubuğunda kalmamalı ve aşağıdaki callbackUrl'e
+// sızmamalı — `login=1` sızarsa giriş sonrası modal yeniden açılırdı.
+const AUTH_PARAMS = ["error", "callbackUrl", "login"] as const
 
 function withoutAuthParams(params: URLSearchParams | null): string {
   const rest = new URLSearchParams(params?.toString() ?? "")
   for (const key of AUTH_PARAMS) rest.delete(key)
   return rest.toString()
+}
+
+// Snapshot'ta gerçek bir kullanıcı varsa (pending ipucu değil) bu tarayıcı
+// oturumlu görünüyordur; ona giriş istemi göstermenin anlamı yok.
+function looksSignedIn(): boolean {
+  const snapshot = sessionSnapshot.get()
+  return snapshot !== null && !("pending" in snapshot)
 }
 
 export function LoginDialogHost() {
@@ -95,10 +106,7 @@ export function LoginDialogHost() {
     // birine gönderilen ".../sayfa?error=..." linki onu misafir durumuna düşürüp
     // (data-session="guest" → header avatardan "Hemen Başla"ya döner) gerçek
     // domainde sahte bir giriş istemi göstermesin. Parametreyi sessizce temizle.
-    const snapshot = sessionSnapshot.get()
-    const looksSignedIn = snapshot !== null && !("pending" in snapshot)
-
-    if (!looksSignedIn) {
+    if (!looksSignedIn()) {
       // Butona basılırken markPending() yazılmıştı; başarısız dönüşte bu iyimser
       // "authed" ipucu temizlenmezse header /api/me cevaplayana dek avatar
       // skeleton'ında takılı kalır.
@@ -115,5 +123,22 @@ export function LoginDialogHost() {
     })
   }, [authError, pathname, router, searchParams, setOpen])
 
-  return <LoginDialog open={open} onOpenChange={setOpen} callbackUrl={callbackUrl} />
+  // Ödeme rotaları (api/checkout, api/portal) oturumsuz ziyaretçiyi "/?login=1"
+  // ile buraya yollar: yönlendirme sessiz bir geri dönüş olmasın, modal açılsın.
+  // Parametre hemen silinir — yenilemede tekrar açılmaz, callbackUrl'e girmez.
+  const loginRequested = searchParams?.get("login") === "1"
+
+  React.useEffect(() => {
+    if (!loginRequested) return
+    if (!looksSignedIn()) setOpen(true)
+
+    const qs = withoutAuthParams(searchParams)
+    router.replace(qs ? `${pathname}?${qs}` : (pathname ?? "/"), {
+      scroll: false,
+    })
+  }, [loginRequested, pathname, router, searchParams, setOpen])
+
+  return (
+    <LoginDialog open={open} onOpenChange={setOpen} callbackUrl={callbackUrl} />
+  )
 }

@@ -75,7 +75,7 @@ function TocMenu({ toc }: { toc: TocEntry[] }) {
                     href={item.url}
                     onClick={handleClick(id)}
                     style={{ paddingLeft: 8 + item.depth * 14 }}
-                    className="flex gap-2 rounded-md py-1.5 pr-2 text-sm leading-snug text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    className="flex gap-2 rounded-md py-1.5 pr-2 text-sm leading-snug text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                   >
                     <span className="shrink-0 tabular-nums text-muted-foreground/60">
                       {item.number}

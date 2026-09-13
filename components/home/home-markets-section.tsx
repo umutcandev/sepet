@@ -5,6 +5,7 @@ import { SepetMark } from "@/components/brand/sepet-mark"
 import { Squircle } from "@/components/ui/squircle"
 import { AnimateEnter } from "@/components/motion/animate-enter"
 import { MarketLogoTrack } from "@/components/home/market-logo-track"
+import { HOME_ENTER } from "@/lib/motion"
 
 // Hero'nun hemen altındaki market mozaiği: solda cümle + CTA, sağda logo
 // kutuları. Eskiden sonsuz kayan bir şeritti (`logo-marquee`); artık masaüstünde
@@ -23,17 +24,10 @@ export function HomeMarketsSection() {
     // bölününce metin paneli 140px'e düşüp her satırda iki kelime sarıyordu.
     // Kap sorgusu gerçekte kalan yeri ölçtüğü için kenar çubuğu açılıp
     // kapandığında düzen kendiliğinden doğru olanı seçiyor.
-    <div className="mx-auto w-full max-w-5xl px-4 pt-3 text-foreground @container/markets md:pt-5">
-      {/* Blok fold'un TAM sınırında başlıyor: üst kenarı hangi ekran
-          yüksekliğinde olursa olsun ilk ekranın dibine denk geliyor, yani
-          scroll reveal'a hiç girmiyor ve animasyonsuz beliriyordu. Bu yüzden
-          açılış modunda; gecikme hero'daki diziyi sürdürür (rozet 0.1 →
-          başlık 0.22 → prompt 0.34 → chip 0.46 → mozaik 0.58).
-
-          `isWhileInView={false}` sınıfı sunucu HTML'ine doğrudan yazar;
-          hidrasyondan sonra eklenseydi eleman önce görünür boyanıp sonra sıfır
-          opaklığa düşerdi. */}
-      <AnimateEnter isWhileInView={false} delay={0.58}>
+    <div className="@container/markets mx-auto w-full max-w-5xl px-4 pt-3 text-foreground md:pt-5">
+      {/* Açılış dizisinin son adımı. Mozaik hero'nun dibine bindiği için uzun
+          ekranlarda ilk karede göz önünde; hero'yla aynı dalgada girer. */}
+      <AnimateEnter delay={HOME_ENTER.markets}>
         {/* İki kolona ancak kap 896px'i geçince bölünüyor. Altında metin
             paneli tam genişlikte üstte, kutular altında kalıyor: dar alanda
             2fr'lik bir kolon cümleyi satır başına iki kelimeye düşürüyordu. */}
@@ -47,10 +41,12 @@ export function HomeMarketsSection() {
               içeriği kadar kısa kalıp logo kolonunun yanında yarım asılıyordu
               (aynı kalıp blog kartlarında da var). */}
           <div className="grid">
-            {/* Kart dili blog kartlarıyla ve logo kutularıyla BİREBİR:
-                `radius="xl"` + `effects` + düz `border border-border`, gölge
-                yok (gölgenin halkası elemanın DIŞINA boyuyor ve yatay rayda
-                kırpma kutusuna denk gelip kesiliyordu).
+            {/* Kart dili logo kutularıyla BİREBİR: `radius="xl"` + `effects` +
+                `border border-hairline`, gölge yok. Mozaik YÜZER DEĞİL, kakma:
+                3px'lik dikişlerle oturan altı kutunun her birine gölge vermek
+                bandı kabartırdı, ayrıca gölgenin halkası elemanın DIŞINA
+                boyanıyor ve yatay rayda kırpma kutusuna denk gelip kesiliyor.
+                Kenar rengi yine de aşağıdaki gölgeli kartlarla aynı token.
 
                 `bg-clip-padding` ŞART. Lisse kenarı SVG'ye taşıyor ve o çizgi
                 squircle yolunun üstünde duruyor, zemin ise varsayılan olarak
@@ -59,11 +55,12 @@ export function HomeMarketsSection() {
                 kenardan ayrık gösteriyordu. Zemini `padding-box`a çekince dış
                 sınırı tek çizen SVG kalıyor.
 
-                ZEMİN TEMA BAŞINA AYRI. Metin paneli logo kutularından KOYU
-                olmalı, ama token'ların sırası temalarda ters: gündüz
-                --muted (#F5E8DA) --card'dan (#FFFBF5) koyu, gecede ise
-                --muted (#2D2218) --card'dan (#221A14) AÇIK. Tek token ikisini
-                birden veremiyor. */}
+                ZEMİN TEK TOKEN. Burada bir zamanlar `bg-muted dark:bg-card`
+                vardı, çünkü paletin sırası temalarda ters dönüyor. İki sorunu
+                birden taşıyordu: light'ta --muted, bandın (--home-base) TAM
+                kendi rengi — panelin zemini yoktu, yalnız kenarı vardı. Şimdi
+                --home-panel bandın bir tık KOYUSU, kutular bir tık AÇIĞI; sıra
+                iki temada da aynı yönde (bkz. globals.css). */}
             <Squircle
               radius="xl"
               effects
@@ -71,9 +68,12 @@ export function HomeMarketsSection() {
               // `justify-between` iş yapmıyor ve cümle ile CTA arasındaki tek
               // ölçü bu boşluk. İki kolona geçince panel kutuların boyuna
               // esniyor, aralığı `justify-between` veriyor.
-              className="flex h-full flex-col justify-between gap-10 border border-border bg-muted bg-clip-padding p-6 @4xl/markets:gap-8 @4xl/markets:p-7 dark:bg-card"
+              className="flex h-full flex-col justify-between gap-10 border border-hairline bg-[var(--home-panel)] bg-clip-padding p-6 @4xl/markets:gap-8 @4xl/markets:p-7"
             >
-              <p className="text-[21px] leading-7 tracking-[-0.02em] text-balance text-foreground">
+              {/* Punto skaladan: eskiden `text-[21px] leading-7`di, yani
+                  sayfadaki hiçbir kademeye denk gelmeyen elle bir değer.
+                  `text-xl` zaten 20px/28px, fark gözle ayırt edilmiyor. */}
+              <p className="text-xl tracking-[-0.02em] text-balance text-foreground">
                 A101&apos;den Tarım Kredi&apos;ye altı zincir market, tek
                 alışveriş listesinde{" "}
                 {/* İşaret marka adından kopmasın: ikisi tek satırda kalır.
@@ -91,7 +91,7 @@ export function HomeMarketsSection() {
 
               <Link
                 href="/asistan"
-                className="group inline-flex w-max items-center gap-2 rounded-md text-[17px] text-foreground/70 transition-colors hover:text-foreground"
+                className="group inline-flex w-max items-center gap-2 rounded-md text-base text-foreground/70 transition-colors hover:text-foreground"
               >
                 Sepetini oluştur
                 <RiArrowRightLine

@@ -9,11 +9,9 @@ import {
 } from "@remixicon/react"
 
 import { FeatureChatMock } from "@/components/home/feature-chat-mock"
-import { AnimateEnter } from "@/components/motion/animate-enter"
 import { PressFx } from "@/components/motion/press-fx"
 import { Button } from "@/components/ui/button"
 import { formatTL } from "@/lib/format"
-import { stagger } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 // Ana sayfada logo şeridi ile blog kartları arasında duran üç özellik kartı.
@@ -289,14 +287,20 @@ function FeatureCard({ feature }: { feature: Feature }) {
     // metin her zaman onun altından başlıyor.
     //
     // Kenar + gölge tek katmanda (smooth-shadow-ring): ayrıca `border`
-    // EKLENMEZ, halka zaten gölgenin içinde. `smooth-ring-border` şart —
-    // bu bölüm sayfa içi bir `dark` sarmalayıcıda ve plugin'in nötr beyaz
-    // halkası yoksa kazanıyor (bkz. logo-marquee'deki uzun not).
+    // EKLENMEZ, halka zaten gölgenin içinde.
+    //
+    // `smooth-ring-border` KALDIRILDI — ama rengi değişmedi, sadece yeri.
+    // O satır bölüm sayfa içi bir `dark` sarmalayıcının altındayken plugin'in
+    // nötr beyaz halkasını yenmek içindi; sarmalayıcılar söküldü (bkz.
+    // home-blog-section.tsx). Halkanın `--border` okuması artık globals.css'te
+    // `--smooth-ring-color` üzerinden GENEL kural: bu kartların kenarı sayfadaki
+    // her yüzeyin referansı oldu, tek tek bileşende tekrarlanan bir override
+    // değil.
     <Squircle
       as="article"
       radius="2xl"
       effects
-      className="flex h-full flex-col bg-card smooth-shadow-ring-sm smooth-ring-border"
+      className="flex h-full flex-col bg-card smooth-shadow-ring-sm"
     >
       {/* Maket kutusu. Radyal maske sol-üstten açılıp sağ-alta doğru eritir. */}
       <div
@@ -359,7 +363,7 @@ export function HomeFeaturesSection() {
     <div className="mx-auto w-full max-w-5xl px-4 pt-10 text-foreground md:pt-14">
       {/* Başlık + eylem satırı blog bölümüyle aynı kalıpta: iki bölüm arka
           arkaya geldiği için aynı ritmi paylaşmaları gerekiyor. */}
-      <AnimateEnter className="mb-5 flex items-center justify-between gap-4">
+      <div className="mb-5 flex items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
           Asistanla Tanışın
         </h2>
@@ -374,19 +378,15 @@ export function HomeFeaturesSection() {
             </Link>
           </Button>
         </PressFx>
-      </AnimateEnter>
+      </div>
 
       {/* lg altında tek sütun: üç sütuna sıkışan kartta maketin fiyat sütunu
           okunmaz hâle geliyordu. */}
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        {FEATURES.map((feature, i) => (
-          <AnimateEnter
-            key={feature.title}
-            delay={stagger(i)}
-            className="h-full"
-          >
+        {FEATURES.map((feature) => (
+          <div key={feature.title} className="h-full">
             <FeatureCard feature={feature} />
-          </AnimateEnter>
+          </div>
         ))}
       </div>
     </div>

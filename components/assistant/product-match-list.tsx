@@ -22,7 +22,19 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
   if (!matches?.length) return null
 
   return (
-    <Squircle className="border bg-card" radius="xl" effects>
+    // Kenar `--hairline`: balon, input ve ana sayfa kartlarıyla aynı çizgi.
+    // Ama halka İÇERİDE (`inset-ring`), dış gölge yok.
+    //
+    // DIŞ GÖLGE BU SÜTUNDA ÇALIŞMAZ. `smooth-shadow-ring-sm` 18px offset +
+    // 47px blur ister; kart hem `MessageContent`in hem sohbet sütununun
+    // `overflow-hidden`ı içinde, ikisi de gölgeyi sağdan/soldan/alttan düz
+    // kesiyor ve kart kırpılmış görünüyor. Ana sayfada kartlar açık bir
+    // grid'de durduğu için orada aynı sınıf sorunsuz.
+    //
+    // `effects` de KAPALI: SVG'ye taşınacak CSS border/box-shadow kalmadı,
+    // inset halka clip-path'ten sağ çıkıyor. Lisse'in karta eklediği
+    // sarmalayıcı div ve tema değişimindeki remount da böylece gitti.
+    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
       <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
         <span className="text-sm font-medium">Eşleşen Ürünler</span>
       </div>
