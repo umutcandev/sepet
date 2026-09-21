@@ -1,0 +1,349 @@
+{
+  "term": "sarımsak",
+  "category": "Taze sebze",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:54:43.514Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0149",
+      "name": "File Sarımsak 200 Gr",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 39.5,
+      "maxPrice": 39.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 39.5
+        }
+      ]
+    },
+    {
+      "productId": "20J9",
+      "name": "Knorr Fırında Tavuk Çeşnisi Baharat ve Sarımsak 34 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 50.96,
+      "maxPrice": 67.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 50.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 67.95
+        }
+      ]
+    },
+    {
+      "productId": "1PZF",
+      "name": "Bağdat Sarımsak Tozu 70 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 52.46,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 52.46
+        },
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0R0G",
+      "name": "Bağdat Sarımsak Granül 40 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "0RIK",
+      "name": "Melis Sarımsak Turşusu 180 Gr",
+      "brand": "Melis",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 76.97,
+      "maxPrice": 76.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 76.97
+        }
+      ]
+    },
+    {
+      "productId": "0HDH",
+      "name": "Taşköprü Sarımsak 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 2,
+      "minPrice": 99,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99
+        },
+        {
+          "market": "hakmar",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1TT1",
+      "name": "Bağdat Toz Sarımsak 48 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 107.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 107.5
+        }
+      ]
+    },
+    {
+      "productId": "1DAZ",
+      "name": "Carrefour Sarımsak Soslu Hamsi Marine 200 Gr",
+      "brand": "Carrefour",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 110,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "1L3E",
+      "name": "Bioblas Botanic Oils Sarımsak Şampuanı 360 Ml",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "1WNO",
+      "name": "Milgo Taze Sarımsak Ve Kekik Sürülebilir Peynir 180 Gr",
+      "brand": "Milgo",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 129.9,
+      "maxPrice": 135.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 135.5
+        }
+      ]
+    },
+    {
+      "productId": "1ADC",
+      "name": "Dünyahayat Sarımsak Öğütülmüş 120 Gr",
+      "brand": "Dünyahayat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 141.95,
+      "maxPrice": 141.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 141.95
+        }
+      ]
+    },
+    {
+      "productId": "1OGC",
+      "name": "Berrak Sarımsak Turşusu 340 Gr",
+      "brand": "Berrak",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 146.97,
+      "maxPrice": 146.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 146.97
+        }
+      ]
+    },
+    {
+      "productId": "04HR",
+      "name": "Sarımsak 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1ZYD",
+      "name": "Heinz Sarımsak Sosu 230 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 154.5,
+      "maxPrice": 154.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 154.5
+        }
+      ]
+    },
+    {
+      "productId": "0SG2",
+      "name": "Siha Sarımsak Ezmesi 90 Gr",
+      "brand": "Siha",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 162.95,
+      "maxPrice": 162.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 162.95
+        }
+      ]
+    },
+    {
+      "productId": "0S2P",
+      "name": "Kuru Sarımsak 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "0RMR",
+      "name": "The Black Garlic Siyah Sarımsak Püresi 100 Gr",
+      "brand": "The Black Garlic",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 189.9,
+      "maxPrice": 189.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 189.9
+        }
+      ]
+    },
+    {
+      "productId": "1T71",
+      "name": "Bioblas Tüm Saç Tipi İçin Sarımsak Şampuan 360 Ml",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 209.95,
+      "maxPrice": 209.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 209.95
+        }
+      ]
+    },
+    {
+      "productId": "0L87",
+      "name": "Berrak Sarımsak Turşusu 340 Ml",
+      "brand": "Berrak",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 218,
+      "maxPrice": 218,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 218
+        }
+      ]
+    },
+    {
+      "productId": "0OTE",
+      "name": "Bioblas Sarımsak & Keratin Şampuan 1 Lt",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 229,
+      "maxPrice": 229,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 229
+        }
+      ]
+    },
+    {
+      "productId": "0QLH",
+      "name": "Tresan Sarımsak Onarıcı Bakım Şampuanı 300 Ml",
+      "brand": "Tresan",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 399.95,
+      "maxPrice": 399.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 399.95
+        }
+      ]
+    }
+  ]
+}

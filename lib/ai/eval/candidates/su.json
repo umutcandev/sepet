@@ -1,0 +1,1166 @@
+{
+  "term": "su",
+  "category": "İçecek",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:02:58.119Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "22KS",
+      "name": "Su 60x180 Ml",
+      "brand": "Markasız",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 2,
+      "maxPrice": 2,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 2
+        }
+      ]
+    },
+    {
+      "productId": "21EF",
+      "name": "Su 500 Ml",
+      "brand": "Markasız",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 4.25,
+      "maxPrice": 4.25,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 4.25
+        }
+      ]
+    },
+    {
+      "productId": "0PQA",
+      "name": "Assu Su 500 Ml",
+      "brand": "Assu",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 6.75,
+      "maxPrice": 6.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 6.75
+        }
+      ]
+    },
+    {
+      "productId": "16JA",
+      "name": "Su 1.5 Lt",
+      "brand": "Markasız",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 10,
+      "maxPrice": 10,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 10
+        }
+      ]
+    },
+    {
+      "productId": "0FX9",
+      "name": "Güzelpınar Su 1.5 Lt",
+      "brand": "Güzelpınar",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 12.15,
+      "maxPrice": 12.15,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 12.15
+        }
+      ]
+    },
+    {
+      "productId": "0006",
+      "name": "Erikli Su 500 Ml",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 3,
+      "minPrice": 15,
+      "maxPrice": 23.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 15
+        },
+        {
+          "market": "Migros",
+          "price": 23.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 23.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z2V",
+      "name": "Saka Su 500 Ml",
+      "brand": "Saka",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "006Q",
+      "name": "Pınar Su 500 Ml",
+      "brand": "Pınar",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 20.95,
+      "maxPrice": 20.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 20.95
+        }
+      ]
+    },
+    {
+      "productId": "0XUK",
+      "name": "Munzur Su 500 Ml",
+      "brand": "Munzur Su",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 22.95,
+      "maxPrice": 22.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 22.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZVR",
+      "name": "Hayat Su 1 Lt",
+      "brand": "Hayat",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 26.9,
+      "maxPrice": 26.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 26.9
+        }
+      ]
+    },
+    {
+      "productId": "10BC",
+      "name": "Hayat Su 1.5 Lt",
+      "brand": "Hayat",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 29.95,
+      "maxPrice": 35,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 29.95
+        },
+        {
+          "market": "A101",
+          "price": 35
+        }
+      ]
+    },
+    {
+      "productId": "1ZOJ",
+      "name": "Erikli Su 1.5 Lt",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 32.95,
+      "maxPrice": 41.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 32.95
+        },
+        {
+          "market": "Migros",
+          "price": 41.95
+        }
+      ]
+    },
+    {
+      "productId": "0HCL",
+      "name": "Güzelpınar Su 5 Lt",
+      "brand": "Güzelpınar",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 36,
+      "maxPrice": 36,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 36
+        }
+      ]
+    },
+    {
+      "productId": "12HG",
+      "name": "Su 5 Lt",
+      "brand": "Markasız",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 36,
+      "maxPrice": 36,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 36
+        }
+      ]
+    },
+    {
+      "productId": "065T",
+      "name": "Erikli Su 330 Ml",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 38.5,
+      "maxPrice": 38.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 38.5
+        }
+      ]
+    },
+    {
+      "productId": "1YC3",
+      "name": "Hayat Su 5 Lt",
+      "brand": "Hayat",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 52.95,
+      "maxPrice": 61,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 52.95
+        },
+        {
+          "market": "A101",
+          "price": 61
+        }
+      ]
+    },
+    {
+      "productId": "0XGR",
+      "name": "Güzelpınar Su 12x250 Ml",
+      "brand": "Güzelpınar",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 63.25,
+      "maxPrice": 63.25,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 63.25
+        }
+      ]
+    },
+    {
+      "productId": "07SC",
+      "name": "Assu Su 12x250 Ml",
+      "brand": "Assu",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 63.25,
+      "maxPrice": 63.25,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 63.25
+        }
+      ]
+    },
+    {
+      "productId": "2B1T",
+      "name": "Assu Su 3 Lt",
+      "brand": "Assu",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 63.25,
+      "maxPrice": 63.25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 63.25
+        }
+      ]
+    },
+    {
+      "productId": "19KN",
+      "name": "Su 12x330 Ml",
+      "brand": "Markasız",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 66.75,
+      "maxPrice": 66.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 66.75
+        }
+      ]
+    },
+    {
+      "productId": "1P6M",
+      "name": "Saka Su 10 Lt",
+      "brand": "Saka",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 95.5,
+      "maxPrice": 95.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 95.5
+        }
+      ]
+    },
+    {
+      "productId": "0V4P",
+      "name": "Damla Su 6 Lt",
+      "brand": "Damla",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 118,
+      "maxPrice": 118,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 118
+        }
+      ]
+    },
+    {
+      "productId": "1WRN",
+      "name": "Erikli Su 6 Lt",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 119,
+      "maxPrice": 196.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119
+        },
+        {
+          "market": "Migros",
+          "price": 196.5
+        }
+      ]
+    },
+    {
+      "productId": "1J4E",
+      "name": "Erikli Su 12x0.5 Lt",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 179.95,
+      "maxPrice": 179.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 179.95
+        }
+      ]
+    },
+    {
+      "productId": "0EK9",
+      "name": "Carrefour Discount Su 330 Ml",
+      "brand": "Carrefour",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 6.5,
+      "maxPrice": 6.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 6.5
+        }
+      ]
+    },
+    {
+      "productId": "0H8J",
+      "name": "Güzelpınar Su 500 Ml",
+      "brand": "Güzelpınar",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 6.75,
+      "maxPrice": 6.75,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 6.75
+        }
+      ]
+    },
+    {
+      "productId": "1TOJ",
+      "name": "Assu Mineralli Su 500 Ml",
+      "brand": "Assu",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 6.95,
+      "maxPrice": 6.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 6.95
+        }
+      ]
+    },
+    {
+      "productId": "0GAY",
+      "name": "Mila Pet Su 330 Ml",
+      "brand": "Mila",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 11.9,
+      "maxPrice": 11.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 11.9
+        }
+      ]
+    },
+    {
+      "productId": "0J6T",
+      "name": "Carrefour Discount Su 1.5 Lt",
+      "brand": "Carrefour",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 12.95,
+      "maxPrice": 12.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 12.95
+        }
+      ]
+    },
+    {
+      "productId": "0RZ2",
+      "name": "Hayat Su 500 Ml",
+      "brand": "Hayat",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 18.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 18.5
+        },
+        {
+          "market": "A101",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZZJ",
+      "name": "Hayat Su Looney Tunes 330 Ml",
+      "brand": "Hayat",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 18.5,
+      "maxPrice": 23.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 18.5
+        },
+        {
+          "market": "Migros",
+          "price": 23.95
+        }
+      ]
+    },
+    {
+      "productId": "0446",
+      "name": "Damla Su 500 Ml",
+      "brand": "Damla",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 22.25,
+      "maxPrice": 22.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 22.25
+        }
+      ]
+    },
+    {
+      "productId": "0UU2",
+      "name": "Sultan Su 800 Ml",
+      "brand": "Sultan",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 23.95,
+      "maxPrice": 23.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 23.95
+        }
+      ]
+    },
+    {
+      "productId": "0WDF",
+      "name": "Uludağ Premium Su 400 Ml",
+      "brand": "Uludağ",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 29.5,
+      "maxPrice": 29.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 29.5
+        }
+      ]
+    },
+    {
+      "productId": "0PWF",
+      "name": "Saka Doğal Mineralli Su 1 Lt",
+      "brand": "Saka",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 32.25,
+      "maxPrice": 32.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 32.25
+        }
+      ]
+    },
+    {
+      "productId": "1WD7",
+      "name": "Pınar Su 1 Lt",
+      "brand": "Pınar",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 35.95,
+      "maxPrice": 35.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 35.95
+        },
+        {
+          "market": "Migros",
+          "price": 35.95
+        }
+      ]
+    },
+    {
+      "productId": "06ZT",
+      "name": "Carrefour Discount Su 5 Lt",
+      "brand": "Carrefour",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "0PQB",
+      "name": "Munzur Su 1.5 Lt",
+      "brand": "Munzur Su",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 37.95,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1QPL",
+      "name": "Damla Su 1 Lt",
+      "brand": "Damla",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 39.5,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "06OV",
+      "name": "Erikli Su 12x330 Ml",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 44.9,
+      "maxPrice": 44.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 44.9
+        }
+      ]
+    },
+    {
+      "productId": "1KCS",
+      "name": "Erikli Su 5 Lt",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 3,
+      "minPrice": 55,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 55
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 57.95
+        },
+        {
+          "market": "Migros",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "0R5E",
+      "name": "Damla Premium Su 330 Ml",
+      "brand": "Damla",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 58.95,
+      "maxPrice": 58.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 58.95
+        }
+      ]
+    },
+    {
+      "productId": "0OV9",
+      "name": "Munzur Su 5 Lt",
+      "brand": "Munzur Su",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 72,
+      "maxPrice": 72,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 72
+        }
+      ]
+    },
+    {
+      "productId": "0Y4P",
+      "name": "Uludağ Premium Su 750 Ml",
+      "brand": "Uludağ Premium",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "0VRP",
+      "name": "Damla Premium Su 750 Ml",
+      "brand": "Damla",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 104.5,
+      "maxPrice": 104.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 104.5
+        }
+      ]
+    },
+    {
+      "productId": "1RT6",
+      "name": "Hayat Su Bebek 1.98 Lt",
+      "brand": "Hayat Su",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 136.5,
+      "maxPrice": 136.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 136.5
+        }
+      ]
+    },
+    {
+      "productId": "0M42",
+      "name": "Erikli Su 2x5 Lt",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 170.95,
+      "maxPrice": 170.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 170.95
+        }
+      ]
+    },
+    {
+      "productId": "2L1L",
+      "name": "Erikli Su 12x500 Ml",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 241.95,
+      "maxPrice": 241.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 241.95
+        }
+      ]
+    },
+    {
+      "productId": "0TL1",
+      "name": "Assu Su 1.5 Lt",
+      "brand": "Assu",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 12.25,
+      "maxPrice": 12.25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 12.25
+        }
+      ]
+    },
+    {
+      "productId": "1OJJ",
+      "name": "Assu Mineralli Su 1.5 Lt",
+      "brand": "Assu",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 12.95,
+      "maxPrice": 12.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 12.95
+        }
+      ]
+    },
+    {
+      "productId": "1EJQ",
+      "name": "Sultan Premium Su 400 Ml",
+      "brand": "Sultan",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "1ZD2",
+      "name": "Hayat Su Batman & Superman 330 Ml",
+      "brand": "Hayat",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 18.5,
+      "maxPrice": 23.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 18.5
+        },
+        {
+          "market": "Migros",
+          "price": 23.95
+        }
+      ]
+    },
+    {
+      "productId": "1RS8",
+      "name": "Saka Doğal Mineralli Su 500 Ml",
+      "brand": "Saka",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "1R8F",
+      "name": "Erikli Su 330 Ml",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 19.75
+        },
+        {
+          "market": "Migros",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "0QE4",
+      "name": "Erikli Premium Su 330 Ml",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 20.95,
+      "maxPrice": 20.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 20.95
+        },
+        {
+          "market": "Migros",
+          "price": 20.95
+        }
+      ]
+    },
+    {
+      "productId": "039N",
+      "name": "Buzdağı Doğal Mineralli Su 1.5 Lt",
+      "brand": "Buzdağı",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 29.95,
+      "maxPrice": 29.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 29.95
+        }
+      ]
+    },
+    {
+      "productId": "0NJA",
+      "name": "Hayat Su Spor Kapak 750 Ml",
+      "brand": "Hayat Su",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 30.5,
+      "maxPrice": 30.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 30.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z29",
+      "name": "Saka Doğal Mineralli Su 1.5 Lt",
+      "brand": "Saka",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 35.75,
+      "maxPrice": 37,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 35.75
+        },
+        {
+          "market": "Migros",
+          "price": 37
+        }
+      ]
+    },
+    {
+      "productId": "1SBC",
+      "name": "Erikli Premium Su 750 Ml",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 35.95,
+      "maxPrice": 35.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 35.95
+        },
+        {
+          "market": "Migros",
+          "price": 35.95
+        }
+      ]
+    },
+    {
+      "productId": "0OV8",
+      "name": "Assu Su 5 Lt",
+      "brand": "Assu",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 36,
+      "maxPrice": 36,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 36
+        }
+      ]
+    },
+    {
+      "productId": "1TM2",
+      "name": "Hayat Su 750 Ml",
+      "brand": "Hayat",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "1QEJ",
+      "name": "Assu Mineralli Su 5 Lt",
+      "brand": "Assu",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "0SXL",
+      "name": "Pınar Su 1.5 Lt",
+      "brand": "Pınar",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 37.95,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1RHU",
+      "name": "Erikli Su 1 Lt",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 2,
+      "minPrice": 39.5,
+      "maxPrice": 40.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 40.95
+        }
+      ]
+    },
+    {
+      "productId": "0CP4",
+      "name": "Hayat Uludağ Cam Su 750 Ml",
+      "brand": "Hayat",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 56.5,
+      "maxPrice": 56.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 56.5
+        }
+      ]
+    },
+    {
+      "productId": "06ES",
+      "name": "Hipp Doğal Mineralli Su 1 Lt",
+      "brand": "Hipp",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 75.95,
+      "maxPrice": 75.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 75.95
+        }
+      ]
+    },
+    {
+      "productId": "3WZY",
+      "name": "Kardelen Su 10 Lt",
+      "brand": "Kardelen",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZN4",
+      "name": "Saka Doğal Mineralli Su 10 Lt",
+      "brand": "Saka",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 95.5,
+      "maxPrice": 95.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 95.5
+        }
+      ]
+    },
+    {
+      "productId": "1P7Z",
+      "name": "Saka Doğal Mineralli Su 3 Lt",
+      "brand": "Saka",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1TQO",
+      "name": "Erikli Su Avantajlı Paket 6x1.5 Lt",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "1P2C",
+      "name": "Erikli Su 10 Lt",
+      "brand": "Erikli",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 147.5,
+      "maxPrice": 147.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 147.5
+        }
+      ]
+    },
+    {
+      "productId": "1LPJ",
+      "name": "Saka Doğal Mineralli Su 6x1.5 Lt",
+      "brand": "Saka",
+      "category": "Su",
+      "marketCount": 1,
+      "minPrice": 178,
+      "maxPrice": 178,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 178
+        }
+      ]
+    }
+  ]
+}

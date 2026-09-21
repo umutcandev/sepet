@@ -1,0 +1,1150 @@
+{
+  "term": "yağ",
+  "category": "Yağ & sos",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:56:43.146Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "05JB",
+      "name": "Organix Bitkisel Yağ Serisi 50 Ml",
+      "brand": "Organix",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 44.9,
+      "maxPrice": 44.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 44.9
+        }
+      ]
+    },
+    {
+      "productId": "03LX",
+      "name": "Güldal Yağ Çöz Sprey 750 Ml",
+      "brand": "Güldal",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 49,
+      "maxPrice": 49,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 49
+        }
+      ]
+    },
+    {
+      "productId": "2A17",
+      "name": "Layf Sır Yağ Çözücü Sprey 750 Ml",
+      "brand": "Layf Sır",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 49,
+      "maxPrice": 49,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 49
+        }
+      ]
+    },
+    {
+      "productId": "3WWM",
+      "name": "Newo Çamaşır Suyu Katkılı Yağ Çözücü Köpük Sprey 750 Ml",
+      "brand": "Newo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 62.95,
+      "maxPrice": 62.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 62.95
+        }
+      ]
+    },
+    {
+      "productId": "065P",
+      "name": "Mintax Yağ Çözücü 1 Lt",
+      "brand": "Mintax",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0RQH",
+      "name": "Migros Yağ Çözücü Sprey 1 Lt",
+      "brand": "Migros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 66.95,
+      "maxPrice": 66.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.95
+        }
+      ]
+    },
+    {
+      "productId": "1XZO",
+      "name": "Cif Ultra Kir Ve Yağ Sökücü Sprey 1.025 Lt",
+      "brand": "Cif",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 90,
+      "maxPrice": 138,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 90
+        },
+        {
+          "market": "Şok",
+          "price": 138
+        }
+      ]
+    },
+    {
+      "productId": "1INZ",
+      "name": "Bingo Sprey Yağ Çözücü 900 Ml",
+      "brand": "Bingo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 129.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 129.95
+        }
+      ]
+    },
+    {
+      "productId": "20NK",
+      "name": "Cillit Bang Yağ Çözücü Sprey 750 Ml",
+      "brand": "Cillit Bang",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        },
+        {
+          "market": "Migros",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "1N0S",
+      "name": "Porçöz Yağ Çözücü 1 Lt",
+      "brand": "Porçöz",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 104.95,
+      "maxPrice": 104.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z3J",
+      "name": "Porçöz Yağ Çözücü Sprey 750 Ml",
+      "brand": "Porçöz",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "1UG0",
+      "name": "Cif Limon Ultra Yağ Çözücü Sprey 750 Ml",
+      "brand": "Cif",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 109.95,
+      "maxPrice": 160.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 160.5
+        }
+      ]
+    },
+    {
+      "productId": "1OU8",
+      "name": "Asperox Ultra Yağ Çözücü Sprey 1 Lt",
+      "brand": "Asperox",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 119,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 119
+        },
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "0AOA",
+      "name": "Cif Yağ Çözücü Sprey Anında Etki 1 Lt",
+      "brand": "Cif",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "2B29",
+      "name": "Selpak Yağ Emici Kağıt Havlu 8 Adet",
+      "brand": "Selpak",
+      "category": "Kağıt Havlu",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "1SW6",
+      "name": "Clonet Mutfak Yağ Sökücü Sprey 750 Ml",
+      "brand": "Clonet",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 197.9,
+      "maxPrice": 197.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 197.9
+        }
+      ]
+    },
+    {
+      "productId": "0RJW",
+      "name": "U Green Clean Ağır Yağ Çözücü 500 Ml",
+      "brand": "U Green Clean",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 209.5,
+      "maxPrice": 209.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 209.5
+        }
+      ]
+    },
+    {
+      "productId": "0UGX",
+      "name": "Eda Taşpınar Yoğun Bronzlaştırıcı Yağ 50 Ml",
+      "brand": "Eda Taşpınar",
+      "category": "Cilt Bakımı",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "0AO8",
+      "name": "Turmepa Yağ Çözücü 500 Ml",
+      "brand": "Turmepa",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 237.5,
+      "maxPrice": 237.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 237.5
+        }
+      ]
+    },
+    {
+      "productId": "1YX6",
+      "name": "Selpak Yağ Emici Havlu 8 Adet",
+      "brand": "Selpak",
+      "category": "Kağıt Havlu",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "0XIV",
+      "name": "Pantene Hindistan Cevizi Özlü Yağ 100 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 359.95,
+      "maxPrice": 359.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 359.95
+        }
+      ]
+    },
+    {
+      "productId": "20P4",
+      "name": "Lurpak Tuzsuz Sürülebilir Yağ 250 Gr",
+      "brand": "Lurpak",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 494.95,
+      "maxPrice": 514.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 494.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 514.9
+        }
+      ]
+    },
+    {
+      "productId": "1SA1",
+      "name": "Lurpak Organik Sürülebilir Yağ 200 Gr",
+      "brand": "Lurpak",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 494.95,
+      "maxPrice": 514.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 494.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 514.9
+        }
+      ]
+    },
+    {
+      "productId": "0A3S",
+      "name": "Vtr Sade Yağ 350 Gr",
+      "brand": "Vtr",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 654.9,
+      "maxPrice": 654.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 654.9
+        }
+      ]
+    },
+    {
+      "productId": "1PEG",
+      "name": "İpek Yağ Hazinesi Şampuan 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 69,
+      "maxPrice": 69,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69
+        }
+      ]
+    },
+    {
+      "productId": "1USP",
+      "name": "Sleepy Yağ Çözücü Yüzey Temizlik Havlusu 30 Adet",
+      "brand": "Sleepy",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "21LZ",
+      "name": "Sleepy Yağ Çözücü Yüzey Temizleme Havlusu 30 Adet",
+      "brand": "Sleepy",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "1LFM",
+      "name": "İpek Kuru Yıpranmış Yağ Hazinesi Saç Kremi 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 94.95,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "1WO8",
+      "name": "Johnson's Bebek Yağı 200 Ml",
+      "brand": "Johnson's",
+      "category": "Bebek Gereçleri",
+      "marketCount": 3,
+      "minPrice": 119.95,
+      "maxPrice": 135.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        },
+        {
+          "market": "Şok",
+          "price": 125
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 135.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y1H",
+      "name": "L'Oréal Paris Elseve Mucizevi Yağ Besleyici Bakım Kremi 250 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 2,
+      "minPrice": 164.95,
+      "maxPrice": 234,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.95
+        },
+        {
+          "market": "Şok",
+          "price": 234
+        }
+      ]
+    },
+    {
+      "productId": "1YR4",
+      "name": "L'Oréal Paris Elseve Mucizevi Yağ Besleyici Bakım Şampuanı 300 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 2,
+      "minPrice": 164.95,
+      "maxPrice": 234,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.95
+        },
+        {
+          "market": "Şok",
+          "price": 234
+        }
+      ]
+    },
+    {
+      "productId": "1T90",
+      "name": "Selpak Yağ Emici Havlu 6 Adet",
+      "brand": "Selpak",
+      "category": "Kağıt Havlu",
+      "marketCount": 1,
+      "minPrice": 174.95,
+      "maxPrice": 174.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 174.95
+        }
+      ]
+    },
+    {
+      "productId": "1C9P",
+      "name": "Restorex 7 Besleyici Yağ Besleyici Bakım Şampuanı 900 Ml",
+      "brand": "Restorex",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "1HCJ",
+      "name": "Gürata Safflower Aspir Yağı 1 Lt",
+      "brand": "Gürata",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "0L3M",
+      "name": "Neutrogena Yağ İle Zenginleştirilmiş Losyon 250 Ml",
+      "brand": "Neutrogena",
+      "category": "Cilt Bakımı",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "1SXG",
+      "name": "Elseve Dream Long Mükemmel Düz Pürüzsüz Serum 100 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 314.95,
+      "maxPrice": 314.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 314.95
+        }
+      ]
+    },
+    {
+      "productId": "1CA3",
+      "name": "Elseve Mucizevi Yağ Şampuan 400 Ml + Saç Kremi 150 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 334.95,
+      "maxPrice": 334.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 334.95
+        }
+      ]
+    },
+    {
+      "productId": "0X7I",
+      "name": "Amoy Susam Yağı 150 Gr",
+      "brand": "Amoy",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 346.5,
+      "maxPrice": 346.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 346.5
+        }
+      ]
+    },
+    {
+      "productId": "0K5U",
+      "name": "Oneva Keten Tohumu Yağı 250 Ml",
+      "brand": "Oneva",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 355.95,
+      "maxPrice": 355.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 355.95
+        }
+      ]
+    },
+    {
+      "productId": "1T83",
+      "name": "Pantene Argan Yağı Terapisi Serum 100 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 379.95,
+      "maxPrice": 379.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 379.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q2N",
+      "name": "Elseve Hydra Hyaluronic Saç Serumu 150 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 399.95,
+      "maxPrice": 399.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 399.95
+        }
+      ]
+    },
+    {
+      "productId": "05BF",
+      "name": "Lee Kum Kee Susam Yağı 207 Ml",
+      "brand": "Lee Kum Kee",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 407,
+      "maxPrice": 407,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 407
+        }
+      ]
+    },
+    {
+      "productId": "1MEG",
+      "name": "L'Oréal Paris Elseve Mucizevi Yağ Saç Güzelleştirici Krem 100 Ml",
+      "brand": "L'Oréal Paris",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 449.95,
+      "maxPrice": 449.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 449.95
+        }
+      ]
+    },
+    {
+      "productId": "000H",
+      "name": "Lurpak Tuzlu Sürülebilir Yağ 250 Gr",
+      "brand": "Lurpak",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 494.95,
+      "maxPrice": 514.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 494.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 514.9
+        }
+      ]
+    },
+    {
+      "productId": "1SC3",
+      "name": "Eda Taşpınar Yoğun Bronzlaştırıcı Yağ 200 Ml",
+      "brand": "Eda Taşpınar",
+      "category": "Cilt Bakımı",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599.95
+        }
+      ]
+    },
+    {
+      "productId": "0DM2",
+      "name": "Oneva Çörekotu Yağı 250 Ml",
+      "brand": "Oneva",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 609.95,
+      "maxPrice": 609.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 609.95
+        }
+      ]
+    },
+    {
+      "productId": "1SPE",
+      "name": "Eda Taşpınar Bronzlaştırıcı Koruyucu Yağ 200 Ml",
+      "brand": "Eda Taşpınar",
+      "category": "Cilt Bakımı",
+      "marketCount": 1,
+      "minPrice": 699.95,
+      "maxPrice": 699.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 699.95
+        }
+      ]
+    },
+    {
+      "productId": "0LPB",
+      "name": "Hasmandıra Ghee İnek Sade Yağ 300 Gr",
+      "brand": "Hasmandıra",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 729.9,
+      "maxPrice": 729.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 729.9
+        }
+      ]
+    },
+    {
+      "productId": "1FRB",
+      "name": "Güldal Fırçalı Köpük Ocak Temizleyici 500 Ml",
+      "brand": "Güldal",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "1RW1",
+      "name": "Fairy Power Spray 500 Ml",
+      "brand": "Fairy",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 139.95,
+      "maxPrice": 238,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 238
+        }
+      ]
+    },
+    {
+      "productId": "21CE",
+      "name": "Asperox Sarı Güç Genel Amaçlı Temizlik Sıvısı 1 Lt",
+      "brand": "Asperox",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "210Y",
+      "name": "Porçöz Fırın Temizleyici Sprey 750 Ml",
+      "brand": "Porçöz",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159.95,
+      "maxPrice": 159.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        }
+      ]
+    },
+    {
+      "productId": "1RQQ",
+      "name": "Dalin Sprey Bebek Yağı 200 Ml",
+      "brand": "Dalin",
+      "category": "Bebek Gereçleri",
+      "marketCount": 2,
+      "minPrice": 164.95,
+      "maxPrice": 174.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 164.95
+        },
+        {
+          "market": "Migros",
+          "price": 174.95
+        }
+      ]
+    },
+    {
+      "productId": "0TVO",
+      "name": "Newo Fırın Ve Izgara Temizleyici Köpük Limon 500 Ml",
+      "brand": "Newo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 165.95,
+      "maxPrice": 165.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 165.95
+        }
+      ]
+    },
+    {
+      "productId": "0TR7",
+      "name": "Johnson's Bedtime Bebek Yağı 300 Ml",
+      "brand": "Johnson's",
+      "category": "Bebek Gereçleri",
+      "marketCount": 1,
+      "minPrice": 173.34,
+      "maxPrice": 173.34,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 173.34
+        }
+      ]
+    },
+    {
+      "productId": "0M5F",
+      "name": "Dalin Nem & Koruma Yağı 300 Ml",
+      "brand": "Dalin",
+      "category": "Bebek Gereçleri",
+      "marketCount": 1,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 189.95
+        }
+      ]
+    },
+    {
+      "productId": "0TSO",
+      "name": "Bioblas Saç Bakım Yağı 100 Ml",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "1NRS",
+      "name": "Bioblas Botanicoils Argan Bakım Yağı 100 Ml",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "1ZYL",
+      "name": "Cif Perfect Power Ocak & Fırın Sprey 435 Ml",
+      "brand": "Cif",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 249.5,
+      "maxPrice": 249.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 249.5
+        }
+      ]
+    },
+    {
+      "productId": "23G6",
+      "name": "Komili Lezzetli Yumuşak Sızma Zeytinyağı 1 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "1PH8",
+      "name": "Elidor Saç Bakım Yağı Avokado Üzüm 80 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0HKC",
+      "name": "Johnson's Bebek Yağı 500 Ml",
+      "brand": "Johnson's",
+      "category": "Bebek Gereçleri",
+      "marketCount": 1,
+      "minPrice": 300.54,
+      "maxPrice": 300.54,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 300.54
+        }
+      ]
+    },
+    {
+      "productId": "0HN7",
+      "name": "Johnson's Aloe Vera Bebek Yağı 500 Ml",
+      "brand": "Johnson's",
+      "category": "Bebek Gereçleri",
+      "marketCount": 1,
+      "minPrice": 309.54,
+      "maxPrice": 309.54,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 309.54
+        }
+      ]
+    },
+    {
+      "productId": "1OMX",
+      "name": "Elseve Hydra Pure Yağlanma Karşıtı Serum 102 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 349.95,
+      "maxPrice": 349.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q0B",
+      "name": "Bioblas Argan Yağı 100 Ml",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 374.95,
+      "maxPrice": 374.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 374.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q44",
+      "name": "Gliss Full Hair Wonder Saç Derisi Serumu 100 Ml",
+      "brand": "Gliss",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 387.95,
+      "maxPrice": 387.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 387.95
+        }
+      ]
+    },
+    {
+      "productId": "1CLK",
+      "name": "Elseve Dream Long Saç Serumu 150 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 449.95,
+      "maxPrice": 449.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 449.95
+        }
+      ]
+    },
+    {
+      "productId": "1RPT",
+      "name": "Elseve Sıradışı Bakım Yağı Tüm Saçlar 100 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 449.95,
+      "maxPrice": 449.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 449.95
+        }
+      ]
+    },
+    {
+      "productId": "1AIK",
+      "name": "Pantene Keratin Yağı Yoğun Bakım 100 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 457.95,
+      "maxPrice": 457.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 457.95
+        }
+      ]
+    },
+    {
+      "productId": "04M5",
+      "name": "Ogx Yenileyici Argan Oil Of Morocco 100 Ml",
+      "brand": "Ogx",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599.95
+        }
+      ]
+    },
+    {
+      "productId": "1WPC",
+      "name": "Tariş Naturel Sızma Zeytinyağı 2 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 824.96,
+      "maxPrice": 824.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 824.96
+        }
+      ]
+    },
+    {
+      "productId": "1T5W",
+      "name": "Tariş Riviera Zeytinyağı 2 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 869.95,
+      "maxPrice": 869.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 869.95
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1138 @@
+{
+  "term": "sucuk",
+  "category": "Et & protein",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:46:55.436Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1OBP",
+      "name": "Keskinoğlu Dilimli Piliç Sucuk 400 Gr",
+      "brand": "Keskinoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "2AEI",
+      "name": "Beşler Hünkar Piliç Sucuk 400 Gr",
+      "brand": "Beşler",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "0OGT",
+      "name": "Pınar Hindi Doyum Sucuk 225 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 165,
+      "maxPrice": 165,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 165
+        }
+      ]
+    },
+    {
+      "productId": "1Z9I",
+      "name": "Pınar Mangal Keyfi Sucuk 300 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 165,
+      "maxPrice": 189,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 165
+        },
+        {
+          "market": "Migros",
+          "price": 189
+        }
+      ]
+    },
+    {
+      "productId": "01W3",
+      "name": "Emin Dana Dilimli Sucuk 250 Gr",
+      "brand": "Emin",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 209,
+      "maxPrice": 209,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 209
+        }
+      ]
+    },
+    {
+      "productId": "06VB",
+      "name": "Namet Dilimli Dana Sucuk 250 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 209,
+      "maxPrice": 209,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 209
+        }
+      ]
+    },
+    {
+      "productId": "0ULS",
+      "name": "Torku Sucuk 225 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 260,
+      "maxPrice": 260,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 260
+        }
+      ]
+    },
+    {
+      "productId": "0N0H",
+      "name": "Çatal Sucuk İlikli Dana Kangal Sucuk 450 Gr",
+      "brand": "Çatal Sucuk",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 379,
+      "maxPrice": 379,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 379
+        }
+      ]
+    },
+    {
+      "productId": "1M20",
+      "name": "Dana Fermente Mangal Sucuk 400 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 379,
+      "maxPrice": 379,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 379
+        }
+      ]
+    },
+    {
+      "productId": "03AL",
+      "name": "Cumhuriyet Dana Kangal Sucuk 400 Gr",
+      "brand": "Cumhuriyet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 399,
+      "maxPrice": 399,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 399
+        }
+      ]
+    },
+    {
+      "productId": "1SJT",
+      "name": "Torku Vakumlu Sucuk 225 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 425,
+      "maxPrice": 425,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 425
+        }
+      ]
+    },
+    {
+      "productId": "0UXS",
+      "name": "Torku Vakumlu Acılı Sucuk 225 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 425,
+      "maxPrice": 425,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 425
+        }
+      ]
+    },
+    {
+      "productId": "0R29",
+      "name": "Namet Kangal Sucuk 200 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 445.5,
+      "maxPrice": 445.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 445.5
+        }
+      ]
+    },
+    {
+      "productId": "04FQ",
+      "name": "Maret Boncuk Kangal Sucuk 250 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 454.5,
+      "maxPrice": 454.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 454.5
+        }
+      ]
+    },
+    {
+      "productId": "0SFT",
+      "name": "Erşan Dana Kasap Sucuk 300 Gr",
+      "brand": "Erşan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 470,
+      "maxPrice": 470,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 470
+        }
+      ]
+    },
+    {
+      "productId": "1BL1",
+      "name": "Başyazıcı Kangal Sucuk 200 Gr",
+      "brand": "Başyazıcı",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 477.9,
+      "maxPrice": 477.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 477.9
+        }
+      ]
+    },
+    {
+      "productId": "0UOK",
+      "name": "Pınar İllaki Dana Sucuk 240 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 515,
+      "maxPrice": 515,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 515
+        }
+      ]
+    },
+    {
+      "productId": "20DZ",
+      "name": "Namet Kangal Sucuk 240 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 519,
+      "maxPrice": 539.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 519
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 539.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZQE",
+      "name": "Polonez Sucuk 240 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 585,
+      "maxPrice": 585,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 585
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 585
+        }
+      ]
+    },
+    {
+      "productId": "01T5",
+      "name": "Coşkun Çatal Sucuk 1 Kg",
+      "brand": "Coşkun",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 999.9,
+      "maxPrice": 999.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 999.9
+        }
+      ]
+    },
+    {
+      "productId": "0A8S",
+      "name": "Namet Kangal Sucuk Acılı 1 Kg",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 1775,
+      "maxPrice": 1775,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1775
+        }
+      ]
+    },
+    {
+      "productId": "03FY",
+      "name": "Namet Parmak Sucuk 1 Kg",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 1775,
+      "maxPrice": 1775,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1775
+        }
+      ]
+    },
+    {
+      "productId": "04FH",
+      "name": "Cumhuriyet Kangal Sucuk 1 Kg",
+      "brand": "Cumhuriyet",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 2190,
+      "maxPrice": 2199,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2190
+        },
+        {
+          "market": "Migros",
+          "price": 2199
+        }
+      ]
+    },
+    {
+      "productId": "0D5Q",
+      "name": "Başyazıcı Fermente Kangal Sucuk 1 Kg",
+      "brand": "Başyazıcı",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2199.9,
+      "maxPrice": 2199.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2199.9
+        }
+      ]
+    },
+    {
+      "productId": "027P",
+      "name": "Adana Sucuk 1 Kg",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 21.9,
+      "maxPrice": 21.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 21.9
+        }
+      ]
+    },
+    {
+      "productId": "1P7N",
+      "name": "Banvit Piliç Kangal Sucuk 250 Gr",
+      "brand": "Banvit",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "05WC",
+      "name": "Doyfarm Vakumlu Piliç Sucuk 250 Gr",
+      "brand": "Doyfarm",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "05R6",
+      "name": "Tombik Dilimli Piliç Sucuk 400 Gr",
+      "brand": "Tombik",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "2AFA",
+      "name": "Beşler Hünkar Dilimli Piliç Sucuk 260 Gr",
+      "brand": "Beşler",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "0U3B",
+      "name": "Gedik Dilimli Piliç Sucuk 400 Gr",
+      "brand": "Gedik",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1ISN",
+      "name": "Pınar Aç Bitir Isıl İşlem Görmüş Dana Sucuk 75 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 129.5,
+      "maxPrice": 129.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 129.5
+        }
+      ]
+    },
+    {
+      "productId": "1UD3",
+      "name": "Aytaç Çiftlik Kangal Sucuk Isıl İşlem 250 Gr",
+      "brand": "Aytaç",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 189,
+      "maxPrice": 189,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 189
+        }
+      ]
+    },
+    {
+      "productId": "0YVS",
+      "name": "Sultan Dilimli Dana Sucuk 250 Gr",
+      "brand": "Sultan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 209,
+      "maxPrice": 209,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 209
+        }
+      ]
+    },
+    {
+      "productId": "01UO",
+      "name": "Beşler Gold Fermente Dana Sucuk 250 Gr",
+      "brand": "Beşler",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 239
+        }
+      ]
+    },
+    {
+      "productId": "277O",
+      "name": "Torku Acılı Sucuk 225 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 260,
+      "maxPrice": 260,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 260
+        }
+      ]
+    },
+    {
+      "productId": "0CWM",
+      "name": "Erşan Vakumlu Kangal Sucuk 200 Gr",
+      "brand": "Erşan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 275,
+      "maxPrice": 275,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 275
+        }
+      ]
+    },
+    {
+      "productId": "0ATO",
+      "name": "Coşkun Yarım Ay Kangal Sucuk 300 Gr",
+      "brand": "Coşkun",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 299.9,
+      "maxPrice": 299.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299.9
+        }
+      ]
+    },
+    {
+      "productId": "1O8N",
+      "name": "Isıl İşlem Görmüş Dana Kangal Sucuk 500 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 319,
+      "maxPrice": 319,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 319
+        }
+      ]
+    },
+    {
+      "productId": "07QH",
+      "name": "Beşler Nostalji Fermente Dana Sucuk 300 Gr",
+      "brand": "Beşler",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 369,
+      "maxPrice": 369,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 369
+        }
+      ]
+    },
+    {
+      "productId": "2MOI",
+      "name": "Başyazıcı Dana Isıl İşlem Görmüş Sucuk 450 Gr",
+      "brand": "Başyazıcı",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 379,
+      "maxPrice": 379,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 379
+        }
+      ]
+    },
+    {
+      "productId": "1USM",
+      "name": "Müslümoğlu Kasap Sucuk 400 Gr",
+      "brand": "Müslümoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 415,
+      "maxPrice": 415,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 415
+        }
+      ]
+    },
+    {
+      "productId": "112R",
+      "name": "Torku Isıl İşlem Dana Kangal Sucuk 450 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 419,
+      "maxPrice": 419,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 419
+        }
+      ]
+    },
+    {
+      "productId": "1NOU",
+      "name": "Pınar Gurme Sucuk 250 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 449,
+      "maxPrice": 609,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 449
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 609
+        }
+      ]
+    },
+    {
+      "productId": "0B3T",
+      "name": "Cumhuriyet Evlik Fermente Dana Sucuk 300 Gr",
+      "brand": "Cumhuriyet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 449,
+      "maxPrice": 449,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 449
+        }
+      ]
+    },
+    {
+      "productId": "0L2K",
+      "name": "Pınar Klasik Sucuk 225 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 469,
+      "maxPrice": 469,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 469
+        }
+      ]
+    },
+    {
+      "productId": "209C",
+      "name": "Apikoğlu Tavalık Sucuk 200 Gr",
+      "brand": "Apikoğlu",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 529,
+      "maxPrice": 546.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 529
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 546.5
+        }
+      ]
+    },
+    {
+      "productId": "204Q",
+      "name": "Polonez Kasap Sucuk 1 Kg",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 1999.9,
+      "maxPrice": 1999.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 1999.9
+        }
+      ]
+    },
+    {
+      "productId": "02JE",
+      "name": "Polonez Dana Fermente Kangal Sucuk 1 Kg",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2349.9,
+      "maxPrice": 2349.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2349.9
+        }
+      ]
+    },
+    {
+      "productId": "07H3",
+      "name": "Tombik Piliç Kangal Sucuk 250 Gr",
+      "brand": "Tombik",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "2DQ2",
+      "name": "Keskinoğlu Piliç Sucuk 250 Gr",
+      "brand": "Keskinoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 72.9,
+      "maxPrice": 72.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 72.9
+        }
+      ]
+    },
+    {
+      "productId": "069M",
+      "name": "Piliç Baton Sucuk 300 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "1YF2",
+      "name": "Gedik Baton Piliç Sucuk 450 Gr",
+      "brand": "Gedik",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 135,
+      "maxPrice": 135,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 135
+        }
+      ]
+    },
+    {
+      "productId": "12NA",
+      "name": "Fermente Dana Kangal Sucuk 200 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "0QS6",
+      "name": "Erşan Vakumlu Kangal Sucuk 250 Gr",
+      "brand": "Erşan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "0LIY",
+      "name": "Migros Dana Sucuk 250 Gr",
+      "brand": "Migros",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 260,
+      "maxPrice": 260,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 260
+        }
+      ]
+    },
+    {
+      "productId": "0OGR",
+      "name": "İkbal Geleneksel Dana Sucuk 160 Gr",
+      "brand": "İkbal",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 275,
+      "maxPrice": 275,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 275
+        }
+      ]
+    },
+    {
+      "productId": "13ZX",
+      "name": "Torku Dana Kangal Sucuk 500 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 319,
+      "maxPrice": 319,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 319
+        }
+      ]
+    },
+    {
+      "productId": "1KEL",
+      "name": "Başyazıcı Dana Kasap Sucuk 400 Gr",
+      "brand": "Başyazıcı",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 379,
+      "maxPrice": 399.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 379
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 399.9
+        }
+      ]
+    },
+    {
+      "productId": "0GTA",
+      "name": "Fermente Dana Parmak Sucuk 400 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 379,
+      "maxPrice": 379,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 379
+        }
+      ]
+    },
+    {
+      "productId": "030I",
+      "name": "Çapanoğlu Dana Parmak Sucuk 500 Gr",
+      "brand": "Çapanoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 389,
+      "maxPrice": 389,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 389
+        }
+      ]
+    },
+    {
+      "productId": "10O0",
+      "name": "Dana Evlik Fermente Sucuk 400 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 399,
+      "maxPrice": 399,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 399
+        }
+      ]
+    },
+    {
+      "productId": "205H",
+      "name": "Apikoğlu Parmak Sucuk 200 Gr",
+      "brand": "Apikoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 399.9,
+      "maxPrice": 399.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 399.9
+        }
+      ]
+    },
+    {
+      "productId": "0S2X",
+      "name": "Başyazıcı İnan Dana Sucuk 400 Gr",
+      "brand": "Başyazıcı",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 415,
+      "maxPrice": 415,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 415
+        }
+      ]
+    },
+    {
+      "productId": "1OCC",
+      "name": "Pınar Klasik Kangal Sucuk 225 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 469,
+      "maxPrice": 469,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 469
+        }
+      ]
+    },
+    {
+      "productId": "0D38",
+      "name": "Başyazıcı Efsane Parmak Sucuk 300 Gr",
+      "brand": "Başyazıcı",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 490,
+      "maxPrice": 490,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 490
+        }
+      ]
+    },
+    {
+      "productId": "1UJZ",
+      "name": "Polonez Acılı Sucuk 240 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 585,
+      "maxPrice": 585,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 585
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 585
+        }
+      ]
+    },
+    {
+      "productId": "0VZD",
+      "name": "Apikoğlu Kangal Sucuk 340 Gr",
+      "brand": "Apikoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 879,
+      "maxPrice": 879,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 879
+        }
+      ]
+    },
+    {
+      "productId": "09B6",
+      "name": "Namet Kangal Sucuk 1 Kg",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 1775,
+      "maxPrice": 1879.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1775
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 1879.9
+        }
+      ]
+    },
+    {
+      "productId": "0KLC",
+      "name": "Cumhuriyet Parmak Sucuk 1 Kg",
+      "brand": "Cumhuriyet",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 2190,
+      "maxPrice": 2199,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2190
+        },
+        {
+          "market": "Migros",
+          "price": 2199
+        }
+      ]
+    },
+    {
+      "productId": "0M4U",
+      "name": "Apikoğlu Parmak Sucuk 1 Kg",
+      "brand": "Apikoğlu",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 2390,
+      "maxPrice": 2399,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2390
+        },
+        {
+          "market": "Migros",
+          "price": 2399
+        }
+      ]
+    },
+    {
+      "productId": "0JRY",
+      "name": "Apikoğlu Kangal Sucuk 1 Kg",
+      "brand": "Apikoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2390,
+      "maxPrice": 2390,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2390
+        }
+      ]
+    },
+    {
+      "productId": "00YA",
+      "name": "Apikoğlu Baton Sucuk 1 Kg",
+      "brand": "Apikoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2549.9,
+      "maxPrice": 2549.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2549.9
+        }
+      ]
+    }
+  ]
+}

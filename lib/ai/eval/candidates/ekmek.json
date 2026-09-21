@@ -1,0 +1,1134 @@
+{
+  "term": "ekmek",
+  "category": "Ekmek & unlu",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:42:53.690Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0WVB",
+      "name": "İHE Glutensiz Ekmek 50 Gr",
+      "brand": "Ihe",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 10,
+      "maxPrice": 10,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 10
+        }
+      ]
+    },
+    {
+      "productId": "051L",
+      "name": "İHE Fındıklı Ve Üzümlü Ekmek 50 Gr",
+      "brand": "Ihe",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "1OLH",
+      "name": "Ekmek 1 Adet",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 17.5,
+      "maxPrice": 17.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 17.5
+        }
+      ]
+    },
+    {
+      "productId": "12IZ",
+      "name": "Sade Baget Ekmek 75 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 19.95,
+      "maxPrice": 19.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.95
+        }
+      ]
+    },
+    {
+      "productId": "0YV5",
+      "name": "Odun Ekmek 1 Adet",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 20,
+      "maxPrice": 20,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 20
+        }
+      ]
+    },
+    {
+      "productId": "0SMF",
+      "name": "Papatya Ekmek 1 Adet",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 22.5,
+      "maxPrice": 22.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 22.5
+        }
+      ]
+    },
+    {
+      "productId": "0BJ9",
+      "name": "La Lorraine Baget Ekmek 255 Gr",
+      "brand": "La Lorraine",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "1VI2",
+      "name": "Bagetta Çavdar Unlu Ekmek 1 Adet",
+      "brand": "Bagetta",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "020O",
+      "name": "Büyük Ekmek 1 Adet",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "1F8D",
+      "name": "Zeytinli Kekikli Artizan Baget Ekmek 285 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "1F92",
+      "name": "Kuru Domates Fesleğenli Artizan Baget Ekmek 285 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "20NR",
+      "name": "Tombul Ekmek 265 Gr",
+      "brand": "Tombul",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "0BJA",
+      "name": "La Lorraine Tombul Ekmek 320 Gr",
+      "brand": "La Lorraine",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "0PNO",
+      "name": "Tamköy Ekşi Mayalı Ekmek 1 Kg",
+      "brand": "Tamköy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 64.95,
+      "maxPrice": 64.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 64.95
+        }
+      ]
+    },
+    {
+      "productId": "0W8S",
+      "name": "İHE Organik Ekmek 500 Gr",
+      "brand": "Ihe",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1E3I",
+      "name": "Ekmek Dünyası Favori Ekşi Mayalı Tam Buğday Unlu Ekmek 475 Gr",
+      "brand": "Ekmek Dünyası",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 74.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "3WOT",
+      "name": "Fit Ekmek Lavaş Ekmek Çeşitleri 300 Gr",
+      "brand": "Fit Ekmek",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "0KO5",
+      "name": "Mlife Glutensiz Ekmek 200 Gr",
+      "brand": "Mlife",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 87.9,
+      "maxPrice": 87.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 87.9
+        }
+      ]
+    },
+    {
+      "productId": "1GOF",
+      "name": "Ekşi Mayalı Çok Tahıllı Ekmek 380 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0OA1",
+      "name": "Ege Glutensiz Ekmek 285 Gr",
+      "brand": "Ege",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 113.5,
+      "maxPrice": 113.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 113.5
+        }
+      ]
+    },
+    {
+      "productId": "1YJZ",
+      "name": "Untad Light Hafif Ekmek 500 Gr",
+      "brand": "Untad",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 118,
+      "maxPrice": 118,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 118
+        }
+      ]
+    },
+    {
+      "productId": "0ZR5",
+      "name": "Schar Glutensiz Ekmek 250 Gr",
+      "brand": "Schar",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 165.95,
+      "maxPrice": 165.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 165.95
+        }
+      ]
+    },
+    {
+      "productId": "0UTL",
+      "name": "Schar Pan Rustico Glutensiz Ekmek 250 Gr",
+      "brand": "Schar",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 192.95,
+      "maxPrice": 192.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 192.95
+        }
+      ]
+    },
+    {
+      "productId": "0BYW",
+      "name": "Schär Rustico Lifli Ekmek Glutensiz 225 Gr",
+      "brand": "Schär",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 203,
+      "maxPrice": 203,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 203
+        }
+      ]
+    },
+    {
+      "productId": "0ZV3",
+      "name": "Ekmek Baget Kepekli Mini 60 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 10.5,
+      "maxPrice": 10.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 10.5
+        }
+      ]
+    },
+    {
+      "productId": "0V6O",
+      "name": "İhe Altınçerez Fındıklı Ve Üzümlü Ekmek 60 Gr",
+      "brand": "Ihe Altınçerez",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "1V4Z",
+      "name": "La Lorraine 1/3 Baget Ekmek 75 Gr",
+      "brand": "La Lorraine",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 19.95,
+      "maxPrice": 19.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 19.95
+        }
+      ]
+    },
+    {
+      "productId": "1JQZ",
+      "name": "Simit Ekmek 1 Adet",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "09OI",
+      "name": "Gülümoğlu Lavaş Ekmek 5 Adet",
+      "brand": "Gülümoğlu",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "15UF",
+      "name": "Baget Ekmek Sade 255 Gr 1 Adet",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "0UTJ",
+      "name": "M Ekmek Ekşi Mayalı 200 Gr",
+      "brand": "M Ekmek",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 37.95,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1NXG",
+      "name": "Tamköy Tam Buğday Unlu Ekmek 1 Adet",
+      "brand": "Tamköy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "0D7T",
+      "name": "Rustik Kepekli Ekmek 95 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 41.95,
+      "maxPrice": 41.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 41.95
+        }
+      ]
+    },
+    {
+      "productId": "0VCU",
+      "name": "Tam Buğday Ekmek 370 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 45,
+      "maxPrice": 45,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "productId": "16TE",
+      "name": "İyilik Çavdarlı Ekmek 400 Gr",
+      "brand": "İyilik",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "03CI",
+      "name": "Tazepan Çok Tahıllı Ekmek 430 Gr",
+      "brand": "Tazepan",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "2CT7",
+      "name": "Uno Tam Buğdaylı & Chia Tohumlu Ekmek 400 Gr",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "087K",
+      "name": "Tam Buğday Unlu Ekmek 350 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "01H2",
+      "name": "La Lorraine Tam Buğday Unlu Ekmek 360 Gr",
+      "brand": "La Lorraine",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1YBP",
+      "name": "Uno Ekşi Mayalı Tam Buğday Ekmek 450 Gr",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 97.5,
+      "maxPrice": 97.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 97.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 97.5
+        }
+      ]
+    },
+    {
+      "productId": "1I0L",
+      "name": "Ekşi Mayalı Kare Rustik Ekmek 380 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1VRA",
+      "name": "La Lorraine Çok Tahıllı Kare Ekmek 400 Gr",
+      "brand": "La Lorraine",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1SWL",
+      "name": "Wasa İnce Gevrek Ekmek 270 Gr",
+      "brand": "Wasa",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 139.9,
+      "maxPrice": 139.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.9
+        }
+      ]
+    },
+    {
+      "productId": "1PZ9",
+      "name": "Wasa Susamlı Gevrek Ekmek 200 Gr",
+      "brand": "Wasa",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 139.9,
+      "maxPrice": 139.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139.9
+        },
+        {
+          "market": "Migros",
+          "price": 139.9
+        }
+      ]
+    },
+    {
+      "productId": "0GEG",
+      "name": "Schär Pan Blanco Dilimli Ekmek Glutensiz 200 Gr",
+      "brand": "Schär",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 182.5,
+      "maxPrice": 182.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 182.5
+        }
+      ]
+    },
+    {
+      "productId": "1VPZ",
+      "name": "Happy Roots Glutensiz Ekmek Kıtırı 100 Gr",
+      "brand": "Happy Roots",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 208,
+      "maxPrice": 208,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 208
+        }
+      ]
+    },
+    {
+      "productId": "1PB0",
+      "name": "Unabella Senza Crosta Tam Buğdaylı Çavdar Unlu Ekmek 500 Gr",
+      "brand": "Unabella",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 235,
+      "maxPrice": 235,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 235
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 235
+        }
+      ]
+    },
+    {
+      "productId": "1R6M",
+      "name": "Wasa Glutensiz Gevrek Ekmek 240 Gr",
+      "brand": "Wasa",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 315.5,
+      "maxPrice": 315.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 315.5
+        }
+      ]
+    },
+    {
+      "productId": "0VXF",
+      "name": "Ekmek Dünyası Favori Kanepe Sandviç 200 Gr",
+      "brand": "Ekmek Dünyası",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZYB",
+      "name": "Nimet Tost Ekmeği 550 Gr",
+      "brand": "Nimet",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 50.5,
+      "maxPrice": 50.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 50.5
+        }
+      ]
+    },
+    {
+      "productId": "1XZD",
+      "name": "Eti Etimek Klasik Kızarmış Ekmek 143 Gr",
+      "brand": "Eti",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 4,
+      "minPrice": 56,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 56
+        },
+        {
+          "market": "Migros",
+          "price": 57.5
+        },
+        {
+          "market": "hakmar",
+          "price": 59.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1TPE",
+      "name": "Eti Etimek Tuzsuz Kızarmış Ekmek 148 Gr",
+      "brand": "Eti",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 57.5,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "13V6",
+      "name": "Unlüx Lavaş Ekmek 20 Cm 540 Gr",
+      "brand": "Unlüx",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "13TG",
+      "name": "Unlüx Lavaş Ekmek 30 Cm 720 Gr",
+      "brand": "Unlüx",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1PL0",
+      "name": "İHE Tost Ekmeği 670 Gr",
+      "brand": "Ihe",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 60,
+      "maxPrice": 60,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "productId": "0HSX",
+      "name": "Sinangil Köy Ekmek Unu 500 Gr",
+      "brand": "Sinangil",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1OKY",
+      "name": "Eti Cicibebe Şekersiz Ekmek 125 Gr",
+      "brand": "Eti",
+      "category": "Bebek Mamaları",
+      "marketCount": 2,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "2K2Q",
+      "name": "Maretti Bruschette Pizza Aroma Kızartılmış Ekmek 70 Gr",
+      "brand": "Maretti",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0V3E",
+      "name": "İyilik Sandviç Ekmeği 455 Gr",
+      "brand": "İyilik",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "0VQQ",
+      "name": "İyilik Hamburger Ekmeği 8x54 Gr",
+      "brand": "İyilik",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 77,
+      "maxPrice": 77,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 77
+        }
+      ]
+    },
+    {
+      "productId": "0UTH",
+      "name": "Wasa Fibre Gevrek Ekmek 230 Gr",
+      "brand": "Wasa",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 77.5,
+      "maxPrice": 139.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 77.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 139.9
+        }
+      ]
+    },
+    {
+      "productId": "1V4X",
+      "name": "Wasa Sesam Gevrek Ekmek 200 Gr",
+      "brand": "Wasa",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "1YFB",
+      "name": "Wasa Sade Gevrek Ekmek 275 Gr",
+      "brand": "Wasa",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 79,
+      "maxPrice": 139.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79
+        },
+        {
+          "market": "Migros",
+          "price": 139.9
+        }
+      ]
+    },
+    {
+      "productId": "0RRI",
+      "name": "Unistanbul Cartocci Çikolatalı Portakallı Ekmek Cipsi 110 Gr",
+      "brand": "Unİstanbul",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "0OZR",
+      "name": "Unistanbul Cartocci Ballı Tarçınlı Ekmek Cipsi 110 Gr",
+      "brand": "Unİstanbul",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "1QYK",
+      "name": "Eti Form Kızartılmış Kepekli Ekmek Dilimleri 138 Gr",
+      "brand": "Eti",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 80,
+      "maxPrice": 80,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "productId": "1LKU",
+      "name": "Eti Form Kızarmış Kepekli Ekmek 138 Gr",
+      "brand": "Eti",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 80,
+      "maxPrice": 80,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "productId": "0NU6",
+      "name": "Panko Japon Ekmek Kırıntısı 200 Gr",
+      "brand": "Panko",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 81.25,
+      "maxPrice": 81.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 81.25
+        }
+      ]
+    },
+    {
+      "productId": "0PJF",
+      "name": "Untad Sandviç Ekmeği 6 Adet",
+      "brand": "Untad",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 108,
+      "maxPrice": 108,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 108
+        }
+      ]
+    },
+    {
+      "productId": "1QAS",
+      "name": "Unistanbul Domates Fesleğenli Ekmek Kıtırı 110 Gr",
+      "brand": "Unİstanbul",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "1SN7",
+      "name": "Wasa Lifli Gevrek Ekmek 230 Gr",
+      "brand": "Wasa",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 139.9,
+      "maxPrice": 139.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.9
+        }
+      ]
+    },
+    {
+      "productId": "1IVU",
+      "name": "Eti Etimek Klasik Kızarmış Ekmek 3x143 Gr",
+      "brand": "Eti",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 185.5,
+      "maxPrice": 185.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 185.5
+        }
+      ]
+    }
+  ]
+}

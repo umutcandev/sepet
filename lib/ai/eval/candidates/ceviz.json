@@ -1,0 +1,356 @@
+{
+  "term": "ceviz",
+  "category": "Bakliyat & kuruyemiş",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:55:49.077Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0JYT",
+      "name": "Carrefour Bio Organik Ceviz İncir Ezmesi 25 Gr",
+      "brand": "Carrefour Bio",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 39.9,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "0BX5",
+      "name": "Carrefour Çiğ Ceviz İçi 70 Gr",
+      "brand": "Carrefour",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 50.9,
+      "maxPrice": 50.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 50.9
+        }
+      ]
+    },
+    {
+      "productId": "20NH",
+      "name": "Sek Quark İncir-Ceviz 140 Gr",
+      "brand": "Sek",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 65.95,
+      "maxPrice": 65.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 65.95
+        }
+      ]
+    },
+    {
+      "productId": "1LBJ",
+      "name": "Sek Quark İncir Ceviz 140 Gr",
+      "brand": "Sek",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 66.9,
+      "maxPrice": 66.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 66.9
+        }
+      ]
+    },
+    {
+      "productId": "0FLY",
+      "name": "Tadım Ceviz İçi 70 Gr",
+      "brand": "Tadım",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 77.9,
+      "maxPrice": 77.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 77.9
+        }
+      ]
+    },
+    {
+      "productId": "1DTV",
+      "name": "Wefood Glutensiz Granola Kuru İncir Ceviz 60 Gr",
+      "brand": "Wefood",
+      "category": "Kahvaltılık Gevrek Bar ve Granola",
+      "marketCount": 1,
+      "minPrice": 77.9,
+      "maxPrice": 77.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 77.9
+        }
+      ]
+    },
+    {
+      "productId": "0EIX",
+      "name": "Amigo Ceviz İçi 150 Gr",
+      "brand": "Amigo",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "04IU",
+      "name": "Simbat Ceviz İçi 150 Gr",
+      "brand": "Simbat",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "02WM",
+      "name": "Çerezim Ceviz İçi 150 Gr",
+      "brand": "Çerezim",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "0T8U",
+      "name": "Migros İç Ceviz 150 Gr",
+      "brand": "Migros",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109.9,
+      "maxPrice": 109.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.9
+        }
+      ]
+    },
+    {
+      "productId": "06HA",
+      "name": "Carrefour Ceviz İçi 150 Gr",
+      "brand": "Carrefour",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109.9,
+      "maxPrice": 109.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.9
+        }
+      ]
+    },
+    {
+      "productId": "1Z1Q",
+      "name": "Master Farm İç Ceviz 150 Gr",
+      "brand": "Master Farm",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 2,
+      "minPrice": 119.9,
+      "maxPrice": 175.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 175.5
+        }
+      ]
+    },
+    {
+      "productId": "0FC6",
+      "name": "Emsal Ceviz İçi 150 Gr",
+      "brand": "Emsal",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 129.95,
+      "maxPrice": 129.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.95
+        }
+      ]
+    },
+    {
+      "productId": "0NM0",
+      "name": "By İzzet Ceviz İçi 150 Gr",
+      "brand": "By İzzet",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 147.95,
+      "maxPrice": 147.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 147.95
+        }
+      ]
+    },
+    {
+      "productId": "1ONP",
+      "name": "Tadım Ceviz İçi 150 Gr",
+      "brand": "Tadım",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 2,
+      "minPrice": 165,
+      "maxPrice": 175.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 165
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 175.5
+        }
+      ]
+    },
+    {
+      "productId": "1LWR",
+      "name": "Peyman Bahçeden İç Ceviz 140 Gr",
+      "brand": "Peyman Bahçeden",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 176.5,
+      "maxPrice": 176.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 176.5
+        }
+      ]
+    },
+    {
+      "productId": "034P",
+      "name": "Ceviz İnce Kabuklu 1 Kg",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "1435",
+      "name": "Simbat Ekonomik Kırık Ceviz İçi 400 Gr",
+      "brand": "Simbat",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "1ZAQ",
+      "name": "Ceviz İçi Kelebek 250 Gr",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 239.9,
+      "maxPrice": 239.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 239.9
+        }
+      ]
+    },
+    {
+      "productId": "0ODJ",
+      "name": "Kabuklu Ceviz 1 Kg",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 2,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 249
+        },
+        {
+          "market": "BİM",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "1V8N",
+      "name": "Wefood Glutensiz Granül Kuru İncir Ceviz 250 Gr",
+      "brand": "Wefood",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 259.9,
+      "maxPrice": 259.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 259.9
+        }
+      ]
+    },
+    {
+      "productId": "005Q",
+      "name": "Simbat İri Kırık Ceviz İçi 400 Gr",
+      "brand": "Simbat",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 260,
+      "maxPrice": 260,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 260
+        }
+      ]
+    }
+  ]
+}

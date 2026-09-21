@@ -1,0 +1,1154 @@
+{
+  "term": "tereyağı",
+  "category": "Süt ürünleri",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:41:08.397Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1WDQ",
+      "name": "Sütaş Tereyağı 125 Gr",
+      "brand": "Sütaş",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 119.95,
+      "maxPrice": 129.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 129.5
+        }
+      ]
+    },
+    {
+      "productId": "1TFP",
+      "name": "Pınar Tereyağı 125 Gr",
+      "brand": "Pınar",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 127.9,
+      "maxPrice": 129.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 127.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 129.5
+        }
+      ]
+    },
+    {
+      "productId": "07U3",
+      "name": "Carrefour Tereyağı 250 Gr",
+      "brand": "Carrefour",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 155.9,
+      "maxPrice": 155.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 155.9
+        }
+      ]
+    },
+    {
+      "productId": "1IA2",
+      "name": "Pınar Folyo Tereyağı 200 Gr",
+      "brand": "Pınar",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 195,
+      "maxPrice": 195,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 195
+        },
+        {
+          "market": "Migros",
+          "price": 195
+        }
+      ]
+    },
+    {
+      "productId": "03CA",
+      "name": "Carrefour Kozalak Tereyağı 350 Gr",
+      "brand": "Carrefour",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 219.5,
+      "maxPrice": 219.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 219.5
+        }
+      ]
+    },
+    {
+      "productId": "0NE7",
+      "name": "Sek Tereyağı 225 Gr",
+      "brand": "Sek",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 224.95,
+      "maxPrice": 224.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 224.95
+        }
+      ]
+    },
+    {
+      "productId": "10QB",
+      "name": "Mis Tereyağı 500 Gr",
+      "brand": "Mis",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 239
+        }
+      ]
+    },
+    {
+      "productId": "1Z42",
+      "name": "President Tuzlu Tereyağı 200 Gr",
+      "brand": "President",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 242.5,
+      "maxPrice": 242.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 242.5
+        }
+      ]
+    },
+    {
+      "productId": "0V55",
+      "name": "Polonezköy Hususi Tereyağı 200 Gr",
+      "brand": "Polonezköy",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 252.9,
+      "maxPrice": 252.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 252.9
+        }
+      ]
+    },
+    {
+      "productId": "0WEU",
+      "name": "Mis Tuzlu Tereyağı 500 Gr",
+      "brand": "Mis",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 295,
+      "maxPrice": 295,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 295
+        }
+      ]
+    },
+    {
+      "productId": "0N0Q",
+      "name": "Polonezköy Tereyağı 400 Gr",
+      "brand": "Polonezköy",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 329,
+      "maxPrice": 329,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 329
+        }
+      ]
+    },
+    {
+      "productId": "0429",
+      "name": "Haktat Tereyağı 500 Gr",
+      "brand": "Haktat",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 369,
+      "maxPrice": 369,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 369
+        }
+      ]
+    },
+    {
+      "productId": "0ULO",
+      "name": "Hasmandıra Tava Tereyağı 350 Gr",
+      "brand": "Hasmandıra",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 376.9,
+      "maxPrice": 376.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 376.9
+        }
+      ]
+    },
+    {
+      "productId": "0K2W",
+      "name": "Kanlıca Tereyağı 400 Gr",
+      "brand": "Kanlıca",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 379.9,
+      "maxPrice": 379.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 379.9
+        }
+      ]
+    },
+    {
+      "productId": "1IQ9",
+      "name": "Kebir Tereyağı 500 Gr",
+      "brand": "Kebir",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 4,
+      "minPrice": 385,
+      "maxPrice": 445,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 385
+        },
+        {
+          "market": "BİM",
+          "price": 399
+        },
+        {
+          "market": "Şok",
+          "price": 445
+        },
+        {
+          "market": "hakmar",
+          "price": 445
+        }
+      ]
+    },
+    {
+      "productId": "0RUX",
+      "name": "Mis Tereyağı 1 Kg",
+      "brand": "Mis",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 469,
+      "maxPrice": 469,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 469
+        }
+      ]
+    },
+    {
+      "productId": "1667",
+      "name": "Carrefour Tereyağı 1 Kg",
+      "brand": "Carrefour",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 479,
+      "maxPrice": 479,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 479
+        }
+      ]
+    },
+    {
+      "productId": "0WDX",
+      "name": "Otat Rulo Tereyağı 1 Kg",
+      "brand": "Otat",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 499,
+      "maxPrice": 499,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 499
+        }
+      ]
+    },
+    {
+      "productId": "09MW",
+      "name": "Göynük Tereyağı 1 Kg",
+      "brand": "Göynük",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 499,
+      "maxPrice": 499,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 499
+        }
+      ]
+    },
+    {
+      "productId": "0HE1",
+      "name": "Hasmandıra Kova Tereyağı 500 Gr",
+      "brand": "Hasmandıra",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 509.95,
+      "maxPrice": 509.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 509.95
+        }
+      ]
+    },
+    {
+      "productId": "0WH6",
+      "name": "Lazkızı Tereyağı 700 Gr",
+      "brand": "Lazkızı",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 774.9,
+      "maxPrice": 774.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 774.9
+        }
+      ]
+    },
+    {
+      "productId": "1S72",
+      "name": "Pınar Tereyağı 1 Kg",
+      "brand": "Pınar",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 845,
+      "maxPrice": 845,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 845
+        }
+      ]
+    },
+    {
+      "productId": "1PGX",
+      "name": "İçim Tereyağı 1 Kg",
+      "brand": "İçim",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 947.9,
+      "maxPrice": 947.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 947.9
+        },
+        {
+          "market": "Migros",
+          "price": 947.9
+        }
+      ]
+    },
+    {
+      "productId": "0QVB",
+      "name": "Sütaş Dilimli Tereyağı 1 Kg",
+      "brand": "Sütaş",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 949.95,
+      "maxPrice": 949.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 949.95
+        }
+      ]
+    },
+    {
+      "productId": "1WSJ",
+      "name": "Sek Tereyağı 100 Gr",
+      "brand": "Sek",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 103.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 103.9
+        }
+      ]
+    },
+    {
+      "productId": "035D",
+      "name": "Mis Tereyağı 250 Gr",
+      "brand": "Mis",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 155,
+      "maxPrice": 155,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 155
+        }
+      ]
+    },
+    {
+      "productId": "1ZW9",
+      "name": "Sek Tereyağı 200 Gr",
+      "brand": "Sek",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 191.9,
+      "maxPrice": 193.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 191.9
+        },
+        {
+          "market": "Migros",
+          "price": 193.95
+        }
+      ]
+    },
+    {
+      "productId": "1OO1",
+      "name": "İçim Tereyağı 225 Gr",
+      "brand": "İçim",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 195,
+      "maxPrice": 195,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 195
+        }
+      ]
+    },
+    {
+      "productId": "0060",
+      "name": "President Tuzsuz Tereyağı 200 Gr",
+      "brand": "President",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 199.9,
+      "maxPrice": 242.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 242.5
+        }
+      ]
+    },
+    {
+      "productId": "0LM0",
+      "name": "İçim Yayık Tereyağı 225 Gr",
+      "brand": "İçim",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 217.9,
+      "maxPrice": 217.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 217.9
+        }
+      ]
+    },
+    {
+      "productId": "0NVL",
+      "name": "Mis Kozalak Tereyağı 350 Gr",
+      "brand": "Mis",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "030C",
+      "name": "Pervin Kozalak Tereyağı 350 Gr",
+      "brand": "Pervin",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "20EL",
+      "name": "Sütaş Yayık Tereyağı 225 Gr",
+      "brand": "Sütaş",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 235.5,
+      "maxPrice": 235.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 235.5
+        }
+      ]
+    },
+    {
+      "productId": "0CYD",
+      "name": "Sütaş Yayık Tereyağı 250 Gr",
+      "brand": "Sütaş",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 270.9,
+      "maxPrice": 270.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 270.9
+        }
+      ]
+    },
+    {
+      "productId": "0U4I",
+      "name": "Lazkızı Tereyağı 250 Gr",
+      "brand": "Lazkızı",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 279.9,
+      "maxPrice": 279.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 279.9
+        }
+      ]
+    },
+    {
+      "productId": "1JAL",
+      "name": "Sütaş Yayık Tereyağı 350 Gr",
+      "brand": "Sütaş",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0FN3",
+      "name": "Carrefour Tereyağı 500 Gr",
+      "brand": "Carrefour",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 309.9,
+      "maxPrice": 309.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 309.9
+        }
+      ]
+    },
+    {
+      "productId": "0X0D",
+      "name": "Lazkızı Tereyağı 400 Gr",
+      "brand": "Lazkızı",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 444.9,
+      "maxPrice": 444.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 444.9
+        }
+      ]
+    },
+    {
+      "productId": "0R5U",
+      "name": "İçim Geleneksel Tereyağı 400 Gr",
+      "brand": "İçim",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 457.9,
+      "maxPrice": 457.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 457.9
+        }
+      ]
+    },
+    {
+      "productId": "1RI2",
+      "name": "İçim Tereyağı 500 Gr",
+      "brand": "İçim",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 469,
+      "maxPrice": 469,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 469
+        }
+      ]
+    },
+    {
+      "productId": "0KL9",
+      "name": "Hasmandıra Topak Tereyağı 500 Gr",
+      "brand": "Hasmandıra",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 507.9,
+      "maxPrice": 507.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 507.9
+        }
+      ]
+    },
+    {
+      "productId": "0KZN",
+      "name": "Ariste Tereyağı 500 Gr",
+      "brand": "Ariste",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 549.9,
+      "maxPrice": 549.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 549.9
+        }
+      ]
+    },
+    {
+      "productId": "1P2M",
+      "name": "Sek Tereyağı 1 Kg",
+      "brand": "Sek",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 599,
+      "maxPrice": 599,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599
+        }
+      ]
+    },
+    {
+      "productId": "0DYJ",
+      "name": "Mengen Çiftliği Tereyağı 1 Kg",
+      "brand": "Mengen Çiftliği",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 674.95,
+      "maxPrice": 674.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 674.95
+        }
+      ]
+    },
+    {
+      "productId": "1YYS",
+      "name": "Yörüksüt Tereyağı 1 Kg",
+      "brand": "Yörüksüt",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 695.95,
+      "maxPrice": 695.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 695.95
+        }
+      ]
+    },
+    {
+      "productId": "26QF",
+      "name": "Torku Rulo Tereyağı 1 Kg",
+      "brand": "Torku",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 749.95,
+      "maxPrice": 749.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 749.95
+        }
+      ]
+    },
+    {
+      "productId": "0M1G",
+      "name": "Yörsan Tereyağı 1 Kg",
+      "brand": "Yörsan",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 813.95,
+      "maxPrice": 813.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 813.95
+        }
+      ]
+    },
+    {
+      "productId": "04CZ",
+      "name": "Koçulu Kars Tereyağı 1 Kg",
+      "brand": "Koçulu",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 1003,
+      "maxPrice": 1003,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 1003
+        }
+      ]
+    },
+    {
+      "productId": "01XW",
+      "name": "Pınar Tereyağı 15 Gr",
+      "brand": "Pınar",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 20.5,
+      "maxPrice": 20.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 20.5
+        }
+      ]
+    },
+    {
+      "productId": "0YRV",
+      "name": "Sana Tereyağı Lezzeti Margarin 250 Gr",
+      "brand": "Sana",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 35,
+      "maxPrice": 35,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 35
+        }
+      ]
+    },
+    {
+      "productId": "1NN3",
+      "name": "Becel Klasik Tereyağı Keyfi Margarin 250 Gr",
+      "brand": "Becel",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 43,
+      "maxPrice": 43,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 43
+        }
+      ]
+    },
+    {
+      "productId": "1S1Y",
+      "name": "Sana Tereyağı Lezzeti Paket Margarin 250 Gr",
+      "brand": "Sana",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 44.9,
+      "maxPrice": 44.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 44.9
+        }
+      ]
+    },
+    {
+      "productId": "1Q4B",
+      "name": "Becel Tereyağı Keyfi Kase Margarin 250 Gr",
+      "brand": "Becel",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 59.95,
+      "maxPrice": 86,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.95
+        },
+        {
+          "market": "Migros",
+          "price": 86
+        }
+      ]
+    },
+    {
+      "productId": "2AFH",
+      "name": "Becel Tereyağı Keyfi Kase Margarin 250 Gr",
+      "brand": "Becel",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 86,
+      "maxPrice": 86,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 86
+        }
+      ]
+    },
+    {
+      "productId": "1QE1",
+      "name": "Sana Tereyağı Lezzeti Kase Margarin 500 Gr",
+      "brand": "Sana",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "1NNM",
+      "name": "Becel Tereyağı Keyfi Kase Margarin 500 Gr",
+      "brand": "Becel",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 104.95,
+      "maxPrice": 165,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 104.95
+        },
+        {
+          "market": "Migros",
+          "price": 165
+        }
+      ]
+    },
+    {
+      "productId": "02QS",
+      "name": "Pervin Folyo Tereyağ 250 Gr",
+      "brand": "Pervin",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 155,
+      "maxPrice": 155,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 155
+        }
+      ]
+    },
+    {
+      "productId": "02PB",
+      "name": "Güneşoğlu Köy Tereyağı 250 Gr",
+      "brand": "Güneşoğlu",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 155,
+      "maxPrice": 155,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 155
+        }
+      ]
+    },
+    {
+      "productId": "0LVG",
+      "name": "Tahsildaroğlu Geleneksel Pastörize Tereyağı 300 Gr",
+      "brand": "Tahsildaroğlu",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 278,
+      "maxPrice": 278,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 278
+        }
+      ]
+    },
+    {
+      "productId": "0AQ4",
+      "name": "Sütaş Tereyağı 350 Gr",
+      "brand": "Sütaş",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "1CJ4",
+      "name": "Milgo Sarımsaklı Biberiye Tereyağ 250 Gr",
+      "brand": "Milgo",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 361.9,
+      "maxPrice": 361.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 361.9
+        }
+      ]
+    },
+    {
+      "productId": "1CIZ",
+      "name": "Milgo Sade Tereyağ 250 Gr",
+      "brand": "Milgo",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 361.9,
+      "maxPrice": 361.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 361.9
+        }
+      ]
+    },
+    {
+      "productId": "023X",
+      "name": "Tereyağ 500 Gr",
+      "brand": "Markasız",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 389,
+      "maxPrice": 389,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 389
+        }
+      ]
+    },
+    {
+      "productId": "01VQ",
+      "name": "Pervin Tereyağ 1 Kg",
+      "brand": "Pervin",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 469,
+      "maxPrice": 469,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 469
+        }
+      ]
+    },
+    {
+      "productId": "1YEK",
+      "name": "Gürata Tam Yağlı Tuzsuz Tereyağı 500 Gr",
+      "brand": "Gürata",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 479.9,
+      "maxPrice": 479.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 479.9
+        }
+      ]
+    },
+    {
+      "productId": "20P4",
+      "name": "Lurpak Tuzsuz Sürülebilir Yağ 250 Gr",
+      "brand": "Lurpak",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 494.95,
+      "maxPrice": 514.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 494.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 514.9
+        }
+      ]
+    },
+    {
+      "productId": "1SA1",
+      "name": "Lurpak Organik Sürülebilir Yağ 200 Gr",
+      "brand": "Lurpak",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 494.95,
+      "maxPrice": 514.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 494.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 514.9
+        }
+      ]
+    },
+    {
+      "productId": "000H",
+      "name": "Lurpak Tuzlu Sürülebilir Yağ 250 Gr",
+      "brand": "Lurpak",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 2,
+      "minPrice": 494.95,
+      "maxPrice": 514.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 494.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 514.9
+        }
+      ]
+    },
+    {
+      "productId": "0A3S",
+      "name": "Vtr Sade Yağ 350 Gr",
+      "brand": "Vtr",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 654.9,
+      "maxPrice": 654.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 654.9
+        }
+      ]
+    },
+    {
+      "productId": "0H3S",
+      "name": "Karagöl Tereyağı 1 Kg",
+      "brand": "Karagöl",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 840,
+      "maxPrice": 840,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 840
+        }
+      ]
+    },
+    {
+      "productId": "1RD6",
+      "name": "Torku Tereyağ 1 Kg",
+      "brand": "Torku",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 949.9,
+      "maxPrice": 949.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 949.9
+        }
+      ]
+    },
+    {
+      "productId": "0TOP",
+      "name": "Pınar Tereyağ 1 Kg",
+      "brand": "Pınar",
+      "category": "Tereyağı ve Margarin",
+      "marketCount": 1,
+      "minPrice": 999,
+      "maxPrice": 999,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 999
+        }
+      ]
+    }
+  ]
+}

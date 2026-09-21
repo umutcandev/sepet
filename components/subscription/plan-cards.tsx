@@ -17,50 +17,73 @@ import {
 } from "@remixicon/react"
 
 import { EASE_OUT_SOFT, SPRING_PILL } from "@/lib/motion"
+import { limitCell, limitFeature, type Plan } from "@/lib/usage/limits"
 import { cn } from "@/lib/utils"
 
 export type Interval = "month" | "year"
 
-// Görüntülenen fiyatlar Polar'daki Pro ürünleriyle aynıdır (₺99/ay, ₺990/yıl).
-// Tahsilat her zaman Polar tarafından yapılır; bunlar yalnızca vitrin metnidir.
-export const MONTHLY_PRICE = 99
-export const YEARLY_PRICE = 990
-// Aylık ödemeyle bir yılın liste karşılığı (12 × ₺99) — yıllıkta üzeri çizilir.
+// Görüntülenen fiyatlar Polar'daki Pro ürünleriyle aynıdır. Tahsilat her zaman
+// Polar tarafından yapılır; bunlar yalnızca vitrin metnidir. Polar'da fiyat
+// değişirse BURASI DA DEĞİŞMELİ — iki kaynak var ve senkron tutmak elle.
+//
+// Fiyat KDV DAHİLDİR: 249 TL'nin 207,50'si net gelir, 41,50'si vergi (sipariş
+// kaydında doğrulandı: net_amount × 1,20 = total_amount). Üstüne Polar'ın
+// sabit ağırlıklı komisyonu biner (~$0,40 + %4). Fiyatı düşürmeden önce
+// lib/usage/limits.ts'teki AI maliyeti hesabına bak: 60 + 15 kotası aylık
+// ~$1,51 tutuyor ve bu, net gelirin yarısı civarında kalmalı.
+export const MONTHLY_PRICE = 249
+export const YEARLY_PRICE = 2490
+// Aylık ödemeyle bir yılın liste karşılığı (12 × aylık) — yıllıkta üzeri çizilir.
 const YEARLY_LIST = MONTHLY_PRICE * 12
 
 const priceFmt = new Intl.NumberFormat("tr-TR")
 
-// Free ve Pro özellikleri. Sayılar lib/usage/limits.ts'teki PLAN_LIMITS ile
-// hizalıdır; orada değişirse buradaki vitrin metni de güncellenmelidir. Her
-// satır, tick yerine ilgili metriği anlatan bir ikonla gösterilir.
+// Free ve Pro özellikleri PLAN_LIMITS'ten TÜRETİLİR — sayı buraya elle
+// yazılmaz. Daha önce yazılıyordu ve limit değiştiğinde vitrin eski sayıyı
+// göstermeye devam etti. Her satır, tick yerine ilgili metriği anlatan bir
+// ikonla gösterilir.
 type Feature = {
   icon: React.ComponentType<{ className?: string }>
   label: string
 }
 
-export const FREE_FEATURES: Feature[] = [
-  { icon: RiChat1Line, label: "Aylık 50 asistan mesajı" },
-  { icon: RiImageLine, label: "Aylık 10 görsel analizi" },
-  { icon: RiShoppingBasketLine, label: "20 sepet kaydı" },
-  { icon: RiReceiptLine, label: "20 fiş kaydı" },
-]
+const METRIC_ICONS = {
+  textMessages: RiChat1Line,
+  imageAnalyses: RiImageLine,
+  savedBaskets: RiShoppingBasketLine,
+  savedReceipts: RiReceiptLine,
+} as const
 
-export const PRO_FEATURES: Feature[] = [
-  { icon: RiChat1Line, label: "Aylık 500 asistan mesajı" },
-  { icon: RiImageLine, label: "Aylık 250 görsel analizi" },
-  { icon: RiShoppingBasketLine, label: "Sınırsız sepet kaydı" },
-  { icon: RiReceiptLine, label: "Sınırsız fiş kaydı" },
-]
+const METRIC_ORDER = [
+  "textMessages",
+  "imageAnalyses",
+  "savedBaskets",
+  "savedReceipts",
+] as const
 
-// Pro kullanıcıya gösterilen Ücretsiz↔Pro karşılaştırma satırları. Değerler
-// yukarıdaki FREE_FEATURES/PRO_FEATURES ile aynı PLAN_LIMITS kaynağından gelir.
+const featuresFor = (plan: Plan): Feature[] =>
+  METRIC_ORDER.map((metric) => ({
+    icon: METRIC_ICONS[metric],
+    label: limitFeature(plan, metric),
+  }))
+
+export const FREE_FEATURES: Feature[] = featuresFor("free")
+export const PRO_FEATURES: Feature[] = featuresFor("pro")
+
+// Pro kullanıcıya gösterilen Ücretsiz↔Pro karşılaştırma satırları.
 export const PLAN_COMPARISON: { feature: string; free: string; pro: string }[] =
-  [
-    { feature: "Asistan mesajları", free: "50 / ay", pro: "500 / ay" },
-    { feature: "Görsel analizleri", free: "10 / ay", pro: "250 / ay" },
-    { feature: "Sepet kaydetme", free: "20", pro: "Sınırsız" },
-    { feature: "Fiş kaydetme", free: "20", pro: "Sınırsız" },
-  ]
+  (
+    [
+      ["Asistan mesajları", "textMessages"],
+      ["Görsel analizleri", "imageAnalyses"],
+      ["Sepet kaydetme", "savedBaskets"],
+      ["Fiş kaydetme", "savedReceipts"],
+    ] as const
+  ).map(([feature, metric]) => ({
+    feature,
+    free: limitCell("free", metric),
+    pro: limitCell("pro", metric),
+  }))
 
 // ─── Sıcak gradyan kenar + parıltı sarmalayıcı (Pro vurgusu) ───
 // Dış katman degrade "kenar"ı çizer (2px), iç katman kart zeminini taşır.

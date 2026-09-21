@@ -1,0 +1,1166 @@
+{
+  "term": "salam",
+  "category": "Et & protein",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:47:29.417Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "147C",
+      "name": "Açık Büfe Hindi Salam 50 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 14.5,
+      "maxPrice": 14.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 14.5
+        }
+      ]
+    },
+    {
+      "productId": "0ENU",
+      "name": "Carrefour Hindi Salam 50 Gr",
+      "brand": "Carrefour",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 21.95,
+      "maxPrice": 21.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 21.95
+        }
+      ]
+    },
+    {
+      "productId": "19A6",
+      "name": "Dilimli Hindi Salam 75 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "2AKD",
+      "name": "Danet Dilimli Hindi Füme Salam 60 Gr",
+      "brand": "Danet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "20VO",
+      "name": "Pınar Aç Bitir Hindi Salam Büyük Dilim 60 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 35.18,
+      "maxPrice": 35.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 35.18
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 35.5
+        }
+      ]
+    },
+    {
+      "productId": "1OLZ",
+      "name": "Polonez Piliç Füme Salam 60 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 37,
+      "maxPrice": 37,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 37
+        }
+      ]
+    },
+    {
+      "productId": "2AYW",
+      "name": "Namet Piliç Füme Etli Dilimli Salam 60 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "0K4A",
+      "name": "Banvit Piliç Salam 250 Gr",
+      "brand": "Banvit",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "1Y8Y",
+      "name": "Namet Dana Macar Salam 60 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 3,
+      "minPrice": 56.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 56.5
+        },
+        {
+          "market": "Şok",
+          "price": 56.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "1RPF",
+      "name": "Polonez Macar Salam 50 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 79.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.9
+        },
+        {
+          "market": "Migros",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "13JB",
+      "name": "Dana Macar Salam 150 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 89,
+      "maxPrice": 89,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 89
+        }
+      ]
+    },
+    {
+      "productId": "0SIR",
+      "name": "Polonez Hindi Parça Etli Salam 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "274O",
+      "name": "Torku Dilimli Salam 60 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "0M1J",
+      "name": "Torku Dilimli Fıstıklı Salam 50 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1OV5",
+      "name": "Banvit Piliç Büfe Salam 850 Gr",
+      "brand": "Banvit",
+      "category": "Şarküteri",
+      "marketCount": 4,
+      "minPrice": 95,
+      "maxPrice": 128.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 95
+        },
+        {
+          "market": "hakmar",
+          "price": 109
+        },
+        {
+          "market": "Migros",
+          "price": 124.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 128.9
+        }
+      ]
+    },
+    {
+      "productId": "04UV",
+      "name": "Tombik Piliç Salam 900 Gr",
+      "brand": "Tombik",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "1GMX",
+      "name": "Hindi Baton Salam 500 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "07G3",
+      "name": "Piliç Salam 1 Kg",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "1SOX",
+      "name": "Polonez Fıstıklı Salam 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 149.9,
+      "maxPrice": 159.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.9
+        },
+        {
+          "market": "Migros",
+          "price": 159.9
+        }
+      ]
+    },
+    {
+      "productId": "0JGL",
+      "name": "Pınar Doyum Salam 700 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 179.95,
+      "maxPrice": 179.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 179.95
+        }
+      ]
+    },
+    {
+      "productId": "1N33",
+      "name": "Aytaç Hindi Salam 500 Gr",
+      "brand": "Aytaç",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 255.5,
+      "maxPrice": 255.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 255.5
+        }
+      ]
+    },
+    {
+      "productId": "0EW1",
+      "name": "Pınar Fıstıklı Salam 1 Kg",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 1499,
+      "maxPrice": 1499,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1499
+        }
+      ]
+    },
+    {
+      "productId": "0683",
+      "name": "Namet Macar Salam 1 Kg",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 1765,
+      "maxPrice": 1765,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1765
+        }
+      ]
+    },
+    {
+      "productId": "0AUY",
+      "name": "Polonez Macar Salam 1 Kg",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2079.9,
+      "maxPrice": 2079.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2079.9
+        }
+      ]
+    },
+    {
+      "productId": "0HTU",
+      "name": "Sultan Dilimli Piliç Salam 50 Gr",
+      "brand": "Sultan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 23.92,
+      "maxPrice": 23.92,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 23.92
+        }
+      ]
+    },
+    {
+      "productId": "0AID",
+      "name": "Banvit Dilimli Piliç Salam 60 Gr",
+      "brand": "Banvit",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 24,
+      "maxPrice": 24,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 24
+        }
+      ]
+    },
+    {
+      "productId": "228Y",
+      "name": "Namet 7/24 Hindi Salam 60 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 26.75,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 26.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "011G",
+      "name": "Sultan Dilimli Hindi Salam 50 Gr",
+      "brand": "Sultan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 29.52,
+      "maxPrice": 29.52,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 29.52
+        }
+      ]
+    },
+    {
+      "productId": "0RF0",
+      "name": "Pınar Keyifle Hindi Salam 75 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "10LI",
+      "name": "Namet Fıstıklı Hindi Salam 2x50 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "07SU",
+      "name": "Carrefour Dana Macar Salam 50 Gr",
+      "brand": "Carrefour",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 37.95,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "2AYN",
+      "name": "Beşler Dana Macar Salam 55 Gr",
+      "brand": "Beşler",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 42.5,
+      "maxPrice": 42.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 42.5
+        }
+      ]
+    },
+    {
+      "productId": "10B9",
+      "name": "Pınar Dilimli Macar Dana Salam 50 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "0E67",
+      "name": "Sultan Dilimli Macar Salam 50 Gr",
+      "brand": "Sultan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 49.52,
+      "maxPrice": 49.52,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.52
+        }
+      ]
+    },
+    {
+      "productId": "05W0",
+      "name": "Dilimli Piliç Salam 150 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "1QFZ",
+      "name": "Maret Pratik Hindi Salam 60 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 55.75,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "1TQ1",
+      "name": "Polonez Hindi Fıstıklı Salam 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 69.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.9
+        },
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1J0T",
+      "name": "Maret Pratik Macar Salam 50 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 84.5,
+      "maxPrice": 84.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 84.5
+        }
+      ]
+    },
+    {
+      "productId": "0KQV",
+      "name": "Polonez Hindi Salam 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1KKR",
+      "name": "Torku Dana Dilimli Macar Salam 60 Gr",
+      "brand": "Torku",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "2CS5",
+      "name": "Gedik Piliç Salam 700 Gr",
+      "brand": "Gedik",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 100,
+      "maxPrice": 100,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 100
+        }
+      ]
+    },
+    {
+      "productId": "0ZCP",
+      "name": "Pınar Keyifle Hindi Salam 500 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        },
+        {
+          "market": "hakmar",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "07XW",
+      "name": "Beşler Dana Macar Salam 240 Gr",
+      "brand": "Beşler",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 145,
+      "maxPrice": 145,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 145
+        }
+      ]
+    },
+    {
+      "productId": "14OU",
+      "name": "Açık Büfe Hindi Salam 900 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "0MQQ",
+      "name": "Polonez Macar Salam 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 159.9,
+      "maxPrice": 159.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.9
+        }
+      ]
+    },
+    {
+      "productId": "0LMD",
+      "name": "Pınar Hindi Salam Uzun 1 Kg",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 679,
+      "maxPrice": 679,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 679
+        }
+      ]
+    },
+    {
+      "productId": "0PHI",
+      "name": "Pınar Fıstıklı Uzun Hindi Salam 1 Kg",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 679,
+      "maxPrice": 679,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 679
+        }
+      ]
+    },
+    {
+      "productId": "08TB",
+      "name": "Polonez Biberli Salam 1 Kg",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 1799,
+      "maxPrice": 1799,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 1799
+        }
+      ]
+    },
+    {
+      "productId": "1OUQ",
+      "name": "Banvit Bir Dilim Piliç Macar Salam 60 Gr",
+      "brand": "Banvit",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 24,
+      "maxPrice": 35.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 24
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 35.9
+        }
+      ]
+    },
+    {
+      "productId": "2AIO",
+      "name": "Namet Fıstıklı Dilimli Hindi Salam 50 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "1BSC",
+      "name": "Pınar Lezzet Keyfi Hindi Salam 75 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 25.5,
+      "maxPrice": 25.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 25.5
+        }
+      ]
+    },
+    {
+      "productId": "0Z6C",
+      "name": "Pınar Keyifle Hindi Fıstıklı Salam 50 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "1YL3",
+      "name": "Namet Hindi Fıstıklı Salam 7/24 50 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 3,
+      "minPrice": 27.5,
+      "maxPrice": 33.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 27.5
+        },
+        {
+          "market": "Migros",
+          "price": 32.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.5
+        }
+      ]
+    },
+    {
+      "productId": "2B68",
+      "name": "Namet Dilimli Hindi Füme Salam 60 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 29.75,
+      "maxPrice": 29.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 29.75
+        }
+      ]
+    },
+    {
+      "productId": "2A6T",
+      "name": "Maret Dilimli Pratik Hindi Salam 60 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 29.75,
+      "maxPrice": 29.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 29.75
+        }
+      ]
+    },
+    {
+      "productId": "0MAW",
+      "name": "Migros Tam Yetti Hindi Parça Etli Salam 60 Gr",
+      "brand": "Migros",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 33.5,
+      "maxPrice": 33.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 33.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z6F",
+      "name": "Pınar Aç Bitir Hindi Salam 75 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 34.95,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.95
+        },
+        {
+          "market": "Migros",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "1TL7",
+      "name": "Mr. No Peynir Salam Baton Sandviç 130 Gr",
+      "brand": "Mr. No",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "0CT9",
+      "name": "Maret Enfes Dana Macar Salam 60 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 42.5,
+      "maxPrice": 42.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 42.5
+        }
+      ]
+    },
+    {
+      "productId": "023E",
+      "name": "Emin Sade Fıstıklı Dilimli Dana Salam 60 Gr",
+      "brand": "Emin",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 42.5,
+      "maxPrice": 42.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 42.5
+        }
+      ]
+    },
+    {
+      "productId": "0NP0",
+      "name": "Namet 7/24 Macar Dana Dilimli Salam 50 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 42.5,
+      "maxPrice": 42.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 42.5
+        }
+      ]
+    },
+    {
+      "productId": "113M",
+      "name": "Pınar Aç Bitir Dilimli Hindi Salam 70 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "2ADO",
+      "name": "Pınar Hindi Salam Büyük Dilimli 60 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "1PFD",
+      "name": "Pınar Aç Bitir Fıstıklı Hindi Salam 50 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 45.75,
+      "maxPrice": 46.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 45.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 46.5
+        }
+      ]
+    },
+    {
+      "productId": "1BJ6",
+      "name": "Namet Dana Macar Salam 100 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "1RX1",
+      "name": "Pınar Aç Bitir Dana Macar Salam Büyük Dilim 50 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 76.5,
+      "maxPrice": 76.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 76.5
+        }
+      ]
+    },
+    {
+      "productId": "1YCM",
+      "name": "Pınar Aç Bitir Macar Salam 60 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 91.5,
+      "maxPrice": 91.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 91.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 91.5
+        }
+      ]
+    },
+    {
+      "productId": "1SFF",
+      "name": "Maret Pratik Dana Macar Salam 50 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "19VL",
+      "name": "Orvital Organik Dilimli Dana Salam 60 Gr",
+      "brand": "Orvital",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 127,
+      "maxPrice": 127,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 127
+        }
+      ]
+    },
+    {
+      "productId": "1ORX",
+      "name": "Pınar Doyum Büfe Hindi Salam 700 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 290,
+      "maxPrice": 290,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 290
+        }
+      ]
+    },
+    {
+      "productId": "041S",
+      "name": "Namet Dilimli Fıstıklı Salam 150 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 331.5,
+      "maxPrice": 331.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 331.5
+        }
+      ]
+    },
+    {
+      "productId": "0KWR",
+      "name": "Pınar Kahvaltılık Macar Salam 250 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 399,
+      "maxPrice": 399,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 399
+        }
+      ]
+    }
+  ]
+}

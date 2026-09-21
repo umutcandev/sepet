@@ -1,0 +1,1178 @@
+{
+  "term": "yoğurt",
+  "category": "Süt ürünleri",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:40:36.910Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "216L",
+      "name": "Eker Çilekli Yoğurt 65 Gr",
+      "brand": "Eker",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 34.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 34.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "1PQF",
+      "name": "Eker İncirli Yulaflı Probiyotik Yoğurt 125 Gr",
+      "brand": "Eker",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 37.95,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1W7E",
+      "name": "Danone Hüpper Çilek Aromalı Yoğurt 67 Gr",
+      "brand": "Danone",
+      "category": "Yoğurt",
+      "marketCount": 3,
+      "minPrice": 39,
+      "maxPrice": 39.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39
+        },
+        {
+          "market": "Şok",
+          "price": 39
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 39.5
+        }
+      ]
+    },
+    {
+      "productId": "1PJR",
+      "name": "Danone Süprix Çilek Aromalı Yoğurt 90 Gr",
+      "brand": "Danone",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "16PM",
+      "name": "Mis Tam Yağlı Homojenize Yoğurt 750 Gr",
+      "brand": "Mis",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 57.9,
+      "maxPrice": 57.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 57.9
+        }
+      ]
+    },
+    {
+      "productId": "2CL9",
+      "name": "Sek Meyveli Yoğurt Kayısı & Kinoa 140 Gr",
+      "brand": "Sek",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1QER",
+      "name": "İçim Yoğurt 750 Gr",
+      "brand": "İçim",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZJC",
+      "name": "Eker Kaymaklı Yoğurt 500 Gr",
+      "brand": "Eker",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 73.95,
+      "maxPrice": 73.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 73.95
+        }
+      ]
+    },
+    {
+      "productId": "19OY",
+      "name": "Sek Yarım Yağlı Yoğurt 750 Gr",
+      "brand": "Sek",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "20X1",
+      "name": "Eker Çırpılmış Yoğurt 500 Gr",
+      "brand": "Eker",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 84.95,
+      "maxPrice": 84.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 84.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z3F",
+      "name": "İçim Laktozsuz Yoğurt 750 Gr",
+      "brand": "İçim",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1LUK",
+      "name": "İçim Organik Yoğurt 750 Gr",
+      "brand": "İçim",
+      "category": "Yoğurt",
+      "marketCount": 3,
+      "minPrice": 103.5,
+      "maxPrice": 103.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 103.5
+        },
+        {
+          "market": "Migros",
+          "price": 103.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 103.5
+        }
+      ]
+    },
+    {
+      "productId": "1OJ4",
+      "name": "Activia Probiyotik Yoğurt Orman Meyveli 4x100 Gr",
+      "brand": "Activia",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 114.5,
+      "maxPrice": 114.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 114.5
+        }
+      ]
+    },
+    {
+      "productId": "20XX",
+      "name": "Activia Probiyotik Laktozsuz Sade Yoğurt 400 Gr",
+      "brand": "Activia",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 114.5,
+      "maxPrice": 119.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 114.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 119.5
+        }
+      ]
+    },
+    {
+      "productId": "1VLI",
+      "name": "Eker Probiyotik Yoğurt 900 Gr",
+      "brand": "Eker",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 124.95,
+      "maxPrice": 124.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 124.95
+        }
+      ]
+    },
+    {
+      "productId": "13MO",
+      "name": "Dost %0.6 Az Yağlı Yoğurt 3 Kg",
+      "brand": "Dost",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "285L",
+      "name": "Torku Yoğurt 2 Kg",
+      "brand": "Torku",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 154.95,
+      "maxPrice": 154.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 154.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZFL",
+      "name": "Tire Süt Organik Kaymaklı Yoğurt 750 Gr",
+      "brand": "Tire Süt Kooperatifi",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 175.5,
+      "maxPrice": 175.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 175.5
+        }
+      ]
+    },
+    {
+      "productId": "02SD",
+      "name": "Göynük Tam Yağlı Yoğurt 3 Kg",
+      "brand": "Göynük",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 192,
+      "maxPrice": 192,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 192
+        }
+      ]
+    },
+    {
+      "productId": "0CXV",
+      "name": "Yörüksüt Çömlek Yoğurt 700 Gr",
+      "brand": "Yörüksüt",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 193.9,
+      "maxPrice": 193.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 193.9
+        }
+      ]
+    },
+    {
+      "productId": "1HOB",
+      "name": "Sütaş Kaymaklı Yoğurt 1.75 Kg",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 194.5,
+      "maxPrice": 194.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 194.5
+        }
+      ]
+    },
+    {
+      "productId": "1BLG",
+      "name": "Yörüksüt Yarım Yağlı Yoğurt 3 Kg",
+      "brand": "Yörüksüt",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "0035",
+      "name": "Velioğlu Manda Sütlü Çömlek Yoğurt 750 Gr",
+      "brand": "Velioğlu",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 247.95,
+      "maxPrice": 247.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 247.95
+        }
+      ]
+    },
+    {
+      "productId": "0OJZ",
+      "name": "Arslan Tam Yağlı Kaymaklı Yoğurt 1.4 Kg",
+      "brand": "Arslan",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 249.9,
+      "maxPrice": 249.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.9
+        }
+      ]
+    },
+    {
+      "productId": "2A2G",
+      "name": "Sütaş Hüptrik Meyveli Yoğurt 3x30 Gr",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 18.5,
+      "maxPrice": 18.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 18.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZIU",
+      "name": "Pınar Yoğurt 150 Gr",
+      "brand": "Pınar",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 30.5,
+      "maxPrice": 30.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 30.9
+        }
+      ]
+    },
+    {
+      "productId": "03UP",
+      "name": "Dost Gurme Karma Meyveli Yoğurt 125 Gr",
+      "brand": "Dost",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "0YIY",
+      "name": "Mis Meyveli Yoğurt Çilekli 2x125 Gr",
+      "brand": "Mis",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 39.5,
+      "maxPrice": 39.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 39.5
+        }
+      ]
+    },
+    {
+      "productId": "1T7S",
+      "name": "Danone Suprix Yoğurt Meyveli 90 Gr",
+      "brand": "Danone",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 46,
+      "maxPrice": 58.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 46
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 58.5
+        }
+      ]
+    },
+    {
+      "productId": "208E",
+      "name": "Sek Light Yoğurt 500 Gr",
+      "brand": "Sek",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 54.95,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 54.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "0RPH",
+      "name": "Sütaş Light Yoğurt 650 Gr",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1OTF",
+      "name": "Danone Mix Çikolata Topu Vanilya Aromalı Yoğurt 180 Gr",
+      "brand": "Danone",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 59.9,
+      "maxPrice": 59.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "productId": "0DBB",
+      "name": "Mis Yarım Yağlı Homojenize Yoğurt 1.5 Kg",
+      "brand": "Mis",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 84,
+      "maxPrice": 84,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 84
+        }
+      ]
+    },
+    {
+      "productId": "01VW",
+      "name": "Vivo Probiyotik Yoğurt Mayası 4 Gr",
+      "brand": "Vivo",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 89,
+      "maxPrice": 89,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89
+        }
+      ]
+    },
+    {
+      "productId": "1ZXV",
+      "name": "Sek Laktozsuz Yoğurt 750 Gr",
+      "brand": "Sek",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 89.95,
+      "maxPrice": 90.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 90.9
+        }
+      ]
+    },
+    {
+      "productId": "1P6E",
+      "name": "Sütaş Yoğurt 1 Kg",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1HI5",
+      "name": "İçim Yoğurt 1.2 Kg",
+      "brand": "İçim",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "2AWC",
+      "name": "Eker Süzme Yoğurt Kase 500 Gr",
+      "brand": "Eker",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "1AUL",
+      "name": "Sek Ekşi Maya Yoğurt 750 Gr",
+      "brand": "Sek",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 109.95,
+      "maxPrice": 111.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 111.5
+        }
+      ]
+    },
+    {
+      "productId": "1YDP",
+      "name": "Danone Activia Çilekli Yoğurt 400 Gr",
+      "brand": "Activia",
+      "category": "Yoğurt",
+      "marketCount": 3,
+      "minPrice": 114.5,
+      "maxPrice": 115.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 114.5
+        },
+        {
+          "market": "Migros",
+          "price": 114.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 115.9
+        }
+      ]
+    },
+    {
+      "productId": "0X0F",
+      "name": "Sütaş Yoğurt 1.5 Kg",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 127.5,
+      "maxPrice": 127.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 127.5
+        }
+      ]
+    },
+    {
+      "productId": "1EJT",
+      "name": "Aynes %0.6 Yağlı Yoğurt 3 Kg",
+      "brand": "Aynes",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "1TH6",
+      "name": "Torku Yoğurt 1.5 Kg",
+      "brand": "Torku",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 152.95,
+      "maxPrice": 152.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 152.95
+        }
+      ]
+    },
+    {
+      "productId": "1KE1",
+      "name": "Tire Süt Kooperatifi Tam Yağlı Süzme Yoğurt 500 Gr",
+      "brand": "Tire Süt Kooperatifi",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 167.5,
+      "maxPrice": 167.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 167.5
+        }
+      ]
+    },
+    {
+      "productId": "00FP",
+      "name": "Mis Tam Yağlı Homojenize Yoğurt 3 Kg",
+      "brand": "Mis",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 192,
+      "maxPrice": 192,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 192
+        }
+      ]
+    },
+    {
+      "productId": "1BJ2",
+      "name": "Torku %3 Yağlı Yoğurt 3 Kg",
+      "brand": "Torku",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 199.5,
+      "maxPrice": 199.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 199.5
+        }
+      ]
+    },
+    {
+      "productId": "0EVT",
+      "name": "Pınar Yoğurt 2 Kg",
+      "brand": "Pınar",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 215,
+      "maxPrice": 215,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 215
+        }
+      ]
+    },
+    {
+      "productId": "20PR",
+      "name": "Tire Kaymaklı Yoğurt 1.5 Kg",
+      "brand": "Tire Süt Kooperatifi",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 240,
+      "maxPrice": 240,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 240
+        }
+      ]
+    },
+    {
+      "productId": "0WDG",
+      "name": "Sütaş Kaymaksız Yoğurt 200 Gr",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 25.9,
+      "maxPrice": 25.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 25.9
+        }
+      ]
+    },
+    {
+      "productId": "00JK",
+      "name": "Dost Homojenize Yoğurt 500 Gr",
+      "brand": "Dost",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 34.5,
+      "maxPrice": 34.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 34.5
+        }
+      ]
+    },
+    {
+      "productId": "1M5S",
+      "name": "Danone Hüpper Çilek ve Çikolatalı Yoğurt 67 Gr",
+      "brand": "Danone",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 39,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "20G1",
+      "name": "Sütaş Kaymaksız Yoğurt 600 Gr",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 59.5,
+      "maxPrice": 72.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 72.5
+        }
+      ]
+    },
+    {
+      "productId": "0MSR",
+      "name": "Mis Laktozsuz Yoğurt 750 Gr",
+      "brand": "Mis",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 64.9,
+      "maxPrice": 64.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 64.9
+        }
+      ]
+    },
+    {
+      "productId": "1HMQ",
+      "name": "Sütaş Sarımsaklı Yoğurt 500 Gr",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 78.5,
+      "maxPrice": 78.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 78.5
+        }
+      ]
+    },
+    {
+      "productId": "0OVQ",
+      "name": "İçim Doğal Yoğurt 750 Gr",
+      "brand": "İçim",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 84.9,
+      "maxPrice": 84.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 84.9
+        }
+      ]
+    },
+    {
+      "productId": "06LL",
+      "name": "Dost Homojenize Yoğurt 1.5 Kg",
+      "brand": "Dost",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 87,
+      "maxPrice": 87,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 87
+        }
+      ]
+    },
+    {
+      "productId": "1NVE",
+      "name": "Activia Probiyotik Yoğurt 400 Gr",
+      "brand": "Activia",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 89.5,
+      "maxPrice": 89.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 89.5
+        }
+      ]
+    },
+    {
+      "productId": "1V16",
+      "name": "Sütaş Kaymaksız Yoğurt 1 Kg",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 3,
+      "minPrice": 89.9,
+      "maxPrice": 112.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 89.9
+        },
+        {
+          "market": "hakmar",
+          "price": 95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 112.5
+        }
+      ]
+    },
+    {
+      "productId": "0PGK",
+      "name": "Mis Kaymaklı Yoğurt 1 Kg",
+      "brand": "Mis",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 94.9,
+      "maxPrice": 94.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 94.9
+        }
+      ]
+    },
+    {
+      "productId": "1WO5",
+      "name": "İçim Süzme Yoğurt 500 Gr",
+      "brand": "İçim",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 116.5,
+      "maxPrice": 116.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 116.5
+        }
+      ]
+    },
+    {
+      "productId": "1XFE",
+      "name": "İçim Doğal Yoğurt 1.2 Kg",
+      "brand": "İçim",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 124.9,
+      "maxPrice": 124.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 124.9
+        }
+      ]
+    },
+    {
+      "productId": "1W0J",
+      "name": "Sütaş Süzme Yoğurt 750 Gr",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 125,
+      "maxPrice": 175.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 175.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZRS",
+      "name": "Eker Efsane Yoğurt 1.25 Kg",
+      "brand": "Eker",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 125.95,
+      "maxPrice": 141.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 141.5
+        }
+      ]
+    },
+    {
+      "productId": "1VLG",
+      "name": "Tire Kaymaklı Yoğurt 850 Gr",
+      "brand": "Tire Süt Kooperatifi",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 149.5,
+      "maxPrice": 149.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.5
+        }
+      ]
+    },
+    {
+      "productId": "0WKZ",
+      "name": "Arslan Kaymaklı Yoğurt 900 Gr",
+      "brand": "Arslan",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "0X49",
+      "name": "Torku Homojenize Yoğurt 1.5 Kg",
+      "brand": "Torku",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 159.5,
+      "maxPrice": 159.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 159.5
+        }
+      ]
+    },
+    {
+      "productId": "1KP3",
+      "name": "Yörüksüt Bidon Yoğurt 2 Kg",
+      "brand": "Yörüksüt",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 170.9,
+      "maxPrice": 170.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 170.9
+        }
+      ]
+    },
+    {
+      "productId": "0X4A",
+      "name": "Sek Çiftlik Yoğurt 750 Gr",
+      "brand": "Sek",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 175,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "2140",
+      "name": "İçim Kaymaksız Yoğurt 2 Kg",
+      "brand": "İçim",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 182.9,
+      "maxPrice": 182.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 182.9
+        },
+        {
+          "market": "Migros",
+          "price": 182.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZRT",
+      "name": "Eker Bidon Yoğurt 2 Kg",
+      "brand": "Eker",
+      "category": "Yoğurt",
+      "marketCount": 2,
+      "minPrice": 188.5,
+      "maxPrice": 190.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 188.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 190.5
+        }
+      ]
+    },
+    {
+      "productId": "1MS0",
+      "name": "Sütaş Kaymaksız Yoğurt 2 Kg",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 189.9,
+      "maxPrice": 189.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 189.9
+        }
+      ]
+    },
+    {
+      "productId": "0FNF",
+      "name": "Yörüksüt Süzme Yoğurt 900 Gr",
+      "brand": "Yörüksüt",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 189.95
+        }
+      ]
+    }
+  ]
+}

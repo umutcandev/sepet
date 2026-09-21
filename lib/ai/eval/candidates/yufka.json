@@ -1,0 +1,408 @@
+{
+  "term": "yufka",
+  "category": "Ekmek & unlu",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:44:35.611Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0WFI",
+      "name": "Tamköy Üçgen Yufka 360 Gr",
+      "brand": "Tamköy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 53,
+      "maxPrice": 53,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 53
+        }
+      ]
+    },
+    {
+      "productId": "11MH",
+      "name": "Nimet Üçgen Yufka 360 Gr",
+      "brand": "Nimet",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 57,
+      "maxPrice": 57,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 57
+        }
+      ]
+    },
+    {
+      "productId": "141R",
+      "name": "Ekmecik Baklavalık Ve Böreklik Yufka 800 Gr",
+      "brand": "Ekmecik",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "13PO",
+      "name": "Mühür Baklavalık Ve Böreklik Yufka 800 Gr",
+      "brand": "Mühür",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "01W4",
+      "name": "Yufkacı Kemal Usta Yufka 5'li Paket 5 Adet",
+      "brand": "Yufkacı Kemal Usta",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "0XUH",
+      "name": "Tamköy Yufka 500 Gr",
+      "brand": "Tamköy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZQR",
+      "name": "Nimet Yufka 500 Gr",
+      "brand": "Nimet",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "02UU",
+      "name": "Undy Baklavalık Yufka 800 Gr",
+      "brand": "Undy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 87.5,
+      "maxPrice": 87.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 87.5
+        }
+      ]
+    },
+    {
+      "productId": "0LX0",
+      "name": "Nimet Su Böreklik Yufka 700 Gr",
+      "brand": "Nimet",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "0CGU",
+      "name": "Dureldo Baklavalık Böreklik Yufka 800 Gr",
+      "brand": "Dureldo",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 90.95,
+      "maxPrice": 90.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 90.95
+        }
+      ]
+    },
+    {
+      "productId": "09LD",
+      "name": "Tamköy Böreklik Yufka 700 Gr",
+      "brand": "Tamköy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "0RXW",
+      "name": "Myfresh Yufka 500 Gr",
+      "brand": "Myfresh",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 95.5,
+      "maxPrice": 95.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 95.5
+        }
+      ]
+    },
+    {
+      "productId": "0MXU",
+      "name": "Tamköy Baklavalık Yufka 800 Gr",
+      "brand": "Tamköy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 97.5,
+      "maxPrice": 97.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 97.5
+        }
+      ]
+    },
+    {
+      "productId": "15ZL",
+      "name": "Aly Üçgen Yufka 360 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZIK",
+      "name": "Nimet Yufka 1 Kg",
+      "brand": "Nimet",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0Q42",
+      "name": "Myfresh Üçgen Yufka 360 Gr",
+      "brand": "Myfresh",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "00BV",
+      "name": "Tamköy Yufka 1 Kg",
+      "brand": "Tamköy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "1BHN",
+      "name": "Gün Işığı Yufka 1 Kg",
+      "brand": "Gün Işığı",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "0C1U",
+      "name": "Myfresh Yufka 1 Kg",
+      "brand": "Myfresh",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "0GSI",
+      "name": "Aly Baklavalık Yufka 800 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 139.9,
+      "maxPrice": 139.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139.9
+        }
+      ]
+    },
+    {
+      "productId": "0R8E",
+      "name": "Bereket Yufka 5 Yaprak 500 Gr",
+      "brand": "Bereket",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "0NXG",
+      "name": "Unistanbul 3 Yapraklı Yufka 500 Gr",
+      "brand": "Unİstanbul",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 189.95
+        }
+      ]
+    },
+    {
+      "productId": "0JBS",
+      "name": "Untad Baklavalık & Böreklik Yufka 800 Gr",
+      "brand": "Untad",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 195,
+      "maxPrice": 195,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 195
+        }
+      ]
+    },
+    {
+      "productId": "1Q5R",
+      "name": "Unabella Kare Böreklik Yufka 24 Yaprak 800 Gr",
+      "brand": "Unabella",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "01HD",
+      "name": "Yufkacı Kemal Usta Üçgen Yufka 25 Adet",
+      "brand": "Yufkacı Kemal Usta",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "05SH",
+      "name": "Unabella Sade Pastaban 2 Kat 280 Gr",
+      "brand": "Unabella",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 150,
+      "maxPrice": 150,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 150
+        }
+      ]
+    }
+  ]
+}

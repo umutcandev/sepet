@@ -1,0 +1,1234 @@
+{
+  "term": "makarna",
+  "category": "Ekmek & unlu",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:43:20.436Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "083Q",
+      "name": "Cardella Fiyonk Makarna 500 Gr",
+      "brand": "Cardella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "0B11",
+      "name": "Piyale Burgu Makarna 500 Gr",
+      "brand": "Piyale",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17,
+      "maxPrice": 17,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 17
+        }
+      ]
+    },
+    {
+      "productId": "0M0A",
+      "name": "Piyale Fiyonk Makarna 500 Gr",
+      "brand": "Piyale",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17,
+      "maxPrice": 17,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 17
+        }
+      ]
+    },
+    {
+      "productId": "1P8W",
+      "name": "Arbella Burgu Makarna 500 Gr",
+      "brand": "Arbella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 3,
+      "minPrice": 17,
+      "maxPrice": 34.25,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 17
+        },
+        {
+          "market": "Migros",
+          "price": 33.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 34.25
+        }
+      ]
+    },
+    {
+      "productId": "16KS",
+      "name": "Tat Yüksük Makarna 500 Gr",
+      "brand": "Tat",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17,
+      "maxPrice": 17,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 17
+        }
+      ]
+    },
+    {
+      "productId": "0DYK",
+      "name": "Carrefour Burgu Makarna 500 Gr",
+      "brand": "Carrefour",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17.95,
+      "maxPrice": 17.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 17.95
+        }
+      ]
+    },
+    {
+      "productId": "20FP",
+      "name": "Mutlu Penne Makarna 500 Gr",
+      "brand": "Mutlu",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 4,
+      "minPrice": 19.5,
+      "maxPrice": 33.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        },
+        {
+          "market": "hakmar",
+          "price": 26.75
+        },
+        {
+          "market": "BİM",
+          "price": 28.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZAK",
+      "name": "Mutlu Çarliston Makarna 500 Gr",
+      "brand": "Mutlu",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 4,
+      "minPrice": 19.5,
+      "maxPrice": 33.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        },
+        {
+          "market": "BİM",
+          "price": 19.75
+        },
+        {
+          "market": "hakmar",
+          "price": 26.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZOU",
+      "name": "Mutlu Yüksük Makarna 500 Gr",
+      "brand": "Mutlu",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 3,
+      "minPrice": 19.5,
+      "maxPrice": 33.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        },
+        {
+          "market": "BİM",
+          "price": 19.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.95
+        }
+      ]
+    },
+    {
+      "productId": "0QCP",
+      "name": "Oba Burgu Makarna 500 Gr",
+      "brand": "Oba",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "0QCU",
+      "name": "Oba Yüksük Makarna 500 Gr",
+      "brand": "Oba",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "21XQ",
+      "name": "Arbella Papatya Makarna 500 Gr",
+      "brand": "Arbella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 22.5,
+      "maxPrice": 22.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 22.5
+        }
+      ]
+    },
+    {
+      "productId": "20KF",
+      "name": "Filiz Yüksük Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 3,
+      "minPrice": 24.5,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 24.5
+        },
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1T5Y",
+      "name": "Filiz Kelebek Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 27.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        }
+      ]
+    },
+    {
+      "productId": "207R",
+      "name": "Filiz Boncuk Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 3,
+      "minPrice": 24.9,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        },
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "1YQJ",
+      "name": "Filiz Fiyonk Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 4,
+      "minPrice": 24.9,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        },
+        {
+          "market": "Şok",
+          "price": 36.5
+        },
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "1TBA",
+      "name": "Filiz Fırın Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 27.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        }
+      ]
+    },
+    {
+      "productId": "2166",
+      "name": "Pastavilla Dirsek Makarna 500 Gr",
+      "brand": "Pastavilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 35.21,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 35.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "20JO",
+      "name": "Filiz Yumurtalı Bukle Makarna 350 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 46.95,
+      "maxPrice": 46.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 46.95
+        },
+        {
+          "market": "Migros",
+          "price": 46.95
+        }
+      ]
+    },
+    {
+      "productId": "0SVU",
+      "name": "Barilla Fiyonk Makarna 500 Gr",
+      "brand": "Barilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 60.5,
+      "maxPrice": 60.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 60.5
+        }
+      ]
+    },
+    {
+      "productId": "1SYB",
+      "name": "Pastavilla Veggi Glutensiz Makarna 350 Gr",
+      "brand": "Pastavilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 92.96,
+      "maxPrice": 92.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.96
+        }
+      ]
+    },
+    {
+      "productId": "1B0U",
+      "name": "Hüma Organik Karışık Sebzeli Makarna 250 Gr",
+      "brand": "Hüma Organik",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "20Z3",
+      "name": "Potamya Sarı Mercimek Fusilli Makarna 240 Gr",
+      "brand": "Potamya",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 119.95,
+      "maxPrice": 123.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 123.5
+        }
+      ]
+    },
+    {
+      "productId": "1OOY",
+      "name": "Schär Glutensiz Burgu Makarna 250 Gr",
+      "brand": "Schär",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 200.9,
+      "maxPrice": 200.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 200.9
+        }
+      ]
+    },
+    {
+      "productId": "07A4",
+      "name": "Cardella Burgu Makarna 500 Gr",
+      "brand": "Cardella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "16L0",
+      "name": "Tat Burgu Makarna 500 Gr",
+      "brand": "Tat",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17,
+      "maxPrice": 17,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 17
+        }
+      ]
+    },
+    {
+      "productId": "16JS",
+      "name": "Tat Fiyonk Makarna 500 Gr",
+      "brand": "Tat",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17,
+      "maxPrice": 17,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 17
+        }
+      ]
+    },
+    {
+      "productId": "0TE3",
+      "name": "Migros Burgu Makarna 500 Gr",
+      "brand": "Migros",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17.95,
+      "maxPrice": 17.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 17.95
+        }
+      ]
+    },
+    {
+      "productId": "0LH1",
+      "name": "Migros Yüksük Makarna 500 Gr",
+      "brand": "Migros",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17.95,
+      "maxPrice": 17.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 17.95
+        }
+      ]
+    },
+    {
+      "productId": "20R6",
+      "name": "Mutlu Burgu Makarna 500 Gr",
+      "brand": "Mutlu",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 19.5,
+      "maxPrice": 33.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.95
+        }
+      ]
+    },
+    {
+      "productId": "0FRO",
+      "name": "Oba Kalem Kesme Makarna 500 Gr",
+      "brand": "Oba",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "1NCS",
+      "name": "Pastavilla Kalem Burgu Makarna 500 Gr",
+      "brand": "Pastavilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 24.5,
+      "maxPrice": 24.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 24.5
+        }
+      ]
+    },
+    {
+      "productId": "20R5",
+      "name": "Nuh'un Ankara Burgu Makarna 500 Gr",
+      "brand": "Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1XZP",
+      "name": "Nuh'un Ankara Fiyonk Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "0QJ1",
+      "name": "Nuh'un Ankara Kelebek Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 24.9,
+      "maxPrice": 24.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        }
+      ]
+    },
+    {
+      "productId": "1BXM",
+      "name": "Pasta Veneta Rigatoni Makarna 500 Gr",
+      "brand": "Pasta Veneta",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 26,
+      "maxPrice": 26,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 26
+        }
+      ]
+    },
+    {
+      "productId": "1BXR",
+      "name": "Pasta Veneta Burgu Makarna 500 Gr",
+      "brand": "Pasta Veneta",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 26,
+      "maxPrice": 26,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 26
+        }
+      ]
+    },
+    {
+      "productId": "1VTR",
+      "name": "Filiz Dirsek Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 27.95,
+      "maxPrice": 27.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        }
+      ]
+    },
+    {
+      "productId": "1S7V",
+      "name": "Filiz Kısa Kalem Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 27.95,
+      "maxPrice": 27.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        }
+      ]
+    },
+    {
+      "productId": "03X8",
+      "name": "Arbella Fiyonk Makarna 500 Gr",
+      "brand": "Arbella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 34.25,
+      "maxPrice": 34.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.25
+        }
+      ]
+    },
+    {
+      "productId": "0CKN",
+      "name": "Nuh'un Ankara Kalem Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 36.5,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 36.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "0WXL",
+      "name": "Nuh'un Ankara Vitaminli Fiyonk Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "2A1V",
+      "name": "Nuh'un Ankara Fiyonk Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "00IE",
+      "name": "Sade Organik Kalem Makarna 500 Gr",
+      "brand": "Sade Organik",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 100.5,
+      "maxPrice": 100.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 100.5
+        }
+      ]
+    },
+    {
+      "productId": "17NL",
+      "name": "Civita Glutensiz Teddy Makarna 450 Gr",
+      "brand": "Civita",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 165.5,
+      "maxPrice": 165.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 165.5
+        }
+      ]
+    },
+    {
+      "productId": "1NSW",
+      "name": "Schär Glutensiz Kalem Makarna 250 Gr",
+      "brand": "Schär",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 194.95,
+      "maxPrice": 194.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 194.95
+        }
+      ]
+    },
+    {
+      "productId": "0KAM",
+      "name": "Schär Penne Kalem Makarna Glutensiz 250 Gr",
+      "brand": "Schär",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 200.9,
+      "maxPrice": 200.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 200.9
+        }
+      ]
+    },
+    {
+      "productId": "1HTE",
+      "name": "Bonatelli Vegan Siyez Burgu Makarna 350 Gr",
+      "brand": "Bonatelli",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 207,
+      "maxPrice": 207,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 207
+        }
+      ]
+    },
+    {
+      "productId": "01UF",
+      "name": "Cardella Boncuk Makarna 500 Gr",
+      "brand": "Cardella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "0Z4A",
+      "name": "Piyale Boncuk Makarna 500 Gr",
+      "brand": "Piyale",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17,
+      "maxPrice": 17,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 17
+        }
+      ]
+    },
+    {
+      "productId": "1PVO",
+      "name": "Mutlu Fiyonk Makarna 500 Gr",
+      "brand": "Mutlu",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 19.5,
+      "maxPrice": 33.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z1N",
+      "name": "Filiz Burgu Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 4,
+      "minPrice": 24.9,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        },
+        {
+          "market": "Şok",
+          "price": 36.5
+        },
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "20GD",
+      "name": "Filiz Kalem Makarna 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 24.9,
+      "maxPrice": 24.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        }
+      ]
+    },
+    {
+      "productId": "1RLM",
+      "name": "Nuh'un Ankara Yüksük Kesme Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1QE2",
+      "name": "Nuh'un Ankara Boncuk Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1BXO",
+      "name": "Pasta Veneta Kalem Makarna 500 Gr",
+      "brand": "Pasta Veneta",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 26,
+      "maxPrice": 26,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 26
+        }
+      ]
+    },
+    {
+      "productId": "1WAG",
+      "name": "Filiz Sebzeli Burgu Makarna 350 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 3,
+      "minPrice": 27.25,
+      "maxPrice": 42.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 27.25
+        },
+        {
+          "market": "BİM",
+          "price": 29.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 42.95
+        }
+      ]
+    },
+    {
+      "productId": "21Q4",
+      "name": "Nuh'un Ankara Vitaminli Boncuk Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "10FZ",
+      "name": "Nuh'un Ankara Vitaminli Burgu Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "2AI3",
+      "name": "Nuh'un Ankara Yüksük Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "2A1W",
+      "name": "Nuh'un Ankara Boncuk Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "2A1T",
+      "name": "Nuh'un Ankara Burgu Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "0LDW",
+      "name": "Ankara Fırın Makarna 500 Gr",
+      "brand": "Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 37.95,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1LEW",
+      "name": "Filiz Tam Buğday Burgu Makarna 350 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 39.95
+        },
+        {
+          "market": "Migros",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "1RNQ",
+      "name": "Barilla Tam Buğday Burgu Makarna 400 Gr",
+      "brand": "Barilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 42,
+      "maxPrice": 42,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 42
+        }
+      ]
+    },
+    {
+      "productId": "1P6B",
+      "name": "Barilla Burgu Makarna 500 Gr",
+      "brand": "Barilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "0TTQ",
+      "name": "Barilla Pasta Love Kalpli Makarna 400 Gr",
+      "brand": "Barilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 89.96,
+      "maxPrice": 89.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.96
+        }
+      ]
+    },
+    {
+      "productId": "1AQ5",
+      "name": "Hüma Organik Sebzeli Burgu Makarna 250 Gr",
+      "brand": "Hüma Organik",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1YFT",
+      "name": "City Farm Organik Burgu Makarna 500 Gr",
+      "brand": "City Farm",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 107,
+      "maxPrice": 107,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 107
+        }
+      ]
+    },
+    {
+      "productId": "17PW",
+      "name": "City Farm Organik Kalem Makarna 500 Gr",
+      "brand": "City Farm",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 107,
+      "maxPrice": 107,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 107
+        }
+      ]
+    },
+    {
+      "productId": "1H4S",
+      "name": "Happy Roots Üzüm Çekirdekli Siyez Makarna 200 Gr",
+      "brand": "Happy Roots",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 145.5,
+      "maxPrice": 145.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 145.5
+        }
+      ]
+    },
+    {
+      "productId": "1PG4",
+      "name": "Barilla Glutensiz Penne Rigate Makarna 400 Gr",
+      "brand": "Barilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 209.9,
+      "maxPrice": 209.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 209.9
+        }
+      ]
+    }
+  ]
+}

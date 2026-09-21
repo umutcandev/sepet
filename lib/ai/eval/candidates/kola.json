@@ -1,0 +1,1178 @@
+{
+  "term": "kola",
+  "category": "İçecek",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:03:45.266Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0ZI9",
+      "name": "Sarıyer Kola Gazlı İçecek 250 Ml",
+      "brand": "Sarıyer",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 14,
+      "maxPrice": 14,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "productId": "1IYT",
+      "name": "Chupa Chups Melody Pops Kola 15 Gr",
+      "brand": "Chupa Chups",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 17.75,
+      "maxPrice": 17.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 17.75
+        }
+      ]
+    },
+    {
+      "productId": "00FU",
+      "name": "Jelly Party Ayı Kola Meyve Jelibon 100 Gr",
+      "brand": "Jelly Party",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "3WZQ",
+      "name": "Crown Şekersiz Kola Kutu 330 Ml",
+      "brand": "Crown",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 23,
+      "maxPrice": 23,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 23
+        }
+      ]
+    },
+    {
+      "productId": "03GI",
+      "name": "Le'Cola Şekersiz Kola Gazlı İçecek 330 Ml",
+      "brand": "Le'cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 23,
+      "maxPrice": 23,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 23
+        }
+      ]
+    },
+    {
+      "productId": "0ZRZ",
+      "name": "Pıt Pıt Kola Aromalı Yumuşak Şeker 160 Gr",
+      "brand": "Pıt Pıt",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "1NNI",
+      "name": "Ülker Yupo Jelly Metre Kola 50 Gr",
+      "brand": "Ülker",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 25.45,
+      "maxPrice": 25.45,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 25.45
+        }
+      ]
+    },
+    {
+      "productId": "1IXJ",
+      "name": "Ülker Yupo Jelly Kola Aromalı Yumuşak Şeker 80 Gr",
+      "brand": "Ülker",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 32.45,
+      "maxPrice": 32.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 32.45
+        }
+      ]
+    },
+    {
+      "productId": "200Q",
+      "name": "Kent Jelibon Kola 80 Gr",
+      "brand": "Kent",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 2,
+      "minPrice": 35,
+      "maxPrice": 35.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 35
+        },
+        {
+          "market": "Migros",
+          "price": 35.95
+        }
+      ]
+    },
+    {
+      "productId": "1KLF",
+      "name": "Ülker Yupo Jelly Kola 80 Gr",
+      "brand": "Ülker",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 44.95,
+      "maxPrice": 44.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 44.95
+        }
+      ]
+    },
+    {
+      "productId": "0YAB",
+      "name": "Pepsi Kola 1 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 45,
+      "maxPrice": 57,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 45
+        },
+        {
+          "market": "A101",
+          "price": 57
+        }
+      ]
+    },
+    {
+      "productId": "0ZLP",
+      "name": "Pepsi Kola 330 Ml",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZPL",
+      "name": "Coca-Cola Zero Sugar 250 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 54,
+      "maxPrice": 54,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 54
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 54
+        }
+      ]
+    },
+    {
+      "productId": "1O9J",
+      "name": "Coca-Cola 1 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 3,
+      "minPrice": 55,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 55
+        },
+        {
+          "market": "Şok",
+          "price": 70
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "3X1Z",
+      "name": "Pepsi Zero Sugar Kola 1 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 57,
+      "maxPrice": 57,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 57
+        }
+      ]
+    },
+    {
+      "productId": "0WO8",
+      "name": "Bi Kola Gazlı İçecek 2.5 Lt",
+      "brand": "Bi Kola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 64,
+      "maxPrice": 64,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 64
+        }
+      ]
+    },
+    {
+      "productId": "20X2",
+      "name": "Kristal Şekersiz Kola Gazlı İçecek 2.5 Lt",
+      "brand": "Kristal",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0ZND",
+      "name": "Coca-Cola Kola 1.75 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "1NJY",
+      "name": "Coca-Cola Zero Sugar 1 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 3,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 70
+        },
+        {
+          "market": "Şok",
+          "price": 70
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "0SRF",
+      "name": "Coca-Cola Şekersiz Kola 2.5 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "10BG",
+      "name": "Coca-Cola Kola 3 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 97.5,
+      "maxPrice": 97.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 97.5
+        }
+      ]
+    },
+    {
+      "productId": "0UTX",
+      "name": "Haribo Starmix Meyve Ve Kola Aromalı Şekerleme 200 Gr",
+      "brand": "Haribo",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 114.45,
+      "maxPrice": 114.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 114.45
+        }
+      ]
+    },
+    {
+      "productId": "0TUC",
+      "name": "Haribo Happy Kola Aromalı Yumuşak Şekerleme 200 Gr",
+      "brand": "Haribo",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 114.45,
+      "maxPrice": 114.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 114.45
+        }
+      ]
+    },
+    {
+      "productId": "1N3U",
+      "name": "Pepsi Kola 4x1 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "0VTW",
+      "name": "Crown Cola Pet 250 Ml",
+      "brand": "Crown",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 14,
+      "maxPrice": 14,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "productId": "03KE",
+      "name": "Le Cola Gazlı İçecek 330 Ml",
+      "brand": "Le Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "10N7",
+      "name": "Crown Cola Şekersiz 1 Lt",
+      "brand": "Crown",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 29.9,
+      "maxPrice": 29.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "productId": "0L26",
+      "name": "Cola Turka Gazlı İçecek 1 Lt",
+      "brand": "Cola Turka",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 45,
+      "maxPrice": 45,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "productId": "1ONJ",
+      "name": "Coca-Cola Orijinal Tat 250 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 54,
+      "maxPrice": 54,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 54
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 54
+        }
+      ]
+    },
+    {
+      "productId": "1O0I",
+      "name": "Coca-Cola Orijinal Tat 450 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "1NOS",
+      "name": "Coca-Cola 330 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "0NJ8",
+      "name": "Pepsi Twist 1 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 57,
+      "maxPrice": 57,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 57
+        }
+      ]
+    },
+    {
+      "productId": "027H",
+      "name": "Crown Cola 2.5 Lt",
+      "brand": "Crown",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 64,
+      "maxPrice": 64,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 64
+        }
+      ]
+    },
+    {
+      "productId": "01QC",
+      "name": "Le'Cola Şekersiz Gazlı İçecek 2.5 Lt",
+      "brand": "Le'cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 64,
+      "maxPrice": 64,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 64
+        }
+      ]
+    },
+    {
+      "productId": "1LVT",
+      "name": "Pepsi Max 1.5 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 67,
+      "maxPrice": 67,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 67
+        }
+      ]
+    },
+    {
+      "productId": "1POJ",
+      "name": "Pepsi 1.5 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 67,
+      "maxPrice": 67,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 67
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 67
+        }
+      ]
+    },
+    {
+      "productId": "1KJ7",
+      "name": "Pepsi Zero Sugar 1.5 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 67,
+      "maxPrice": 67,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 67
+        }
+      ]
+    },
+    {
+      "productId": "1OZS",
+      "name": "Coca-Cola Orijinal Tat 1 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "2A71",
+      "name": "Coca-Cola Gazlı İçecek 1.5 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "00Y6",
+      "name": "Pepsi Cola Gazlı İçecek 2.5 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 3,
+      "minPrice": 81,
+      "maxPrice": 81,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 81
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 81
+        },
+        {
+          "market": "BİM",
+          "price": 81
+        }
+      ]
+    },
+    {
+      "productId": "1RUF",
+      "name": "Coca-Cola Zero Sugar 2.5 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 89.9,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1P98",
+      "name": "Coca-Cola 2.5 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 100,
+      "maxPrice": 100,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 100
+        }
+      ]
+    },
+    {
+      "productId": "1M2O",
+      "name": "Pepsi Cola 6x200 Ml",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 119.9,
+      "maxPrice": 119.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.9
+        }
+      ]
+    },
+    {
+      "productId": "1HI8",
+      "name": "Pepsi Cola 4x330 Ml",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 124.9,
+      "maxPrice": 124.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 124.9
+        }
+      ]
+    },
+    {
+      "productId": "0RLE",
+      "name": "Coca-Cola Orijinal Tat 2.7 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "3WR7",
+      "name": "Pepsi Kutu 4x330 Ml",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 187.5,
+      "maxPrice": 187.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 187.5
+        }
+      ]
+    },
+    {
+      "productId": "2NEM",
+      "name": "Coca-Cola 4x1 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 225,
+      "maxPrice": 225,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 225
+        }
+      ]
+    },
+    {
+      "productId": "0HR9",
+      "name": "Coca-Cola Gazlı İçecek Karma Paket 4x1 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 240,
+      "maxPrice": 240,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 240
+        }
+      ]
+    },
+    {
+      "productId": "01L1",
+      "name": "Le Cola Gazlı İçecek 250 Ml",
+      "brand": "Le Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 14,
+      "maxPrice": 14,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "productId": "2CRN",
+      "name": "Cola Turka Gazlı İçecek 200 Ml",
+      "brand": "Cola Turka",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "01JD",
+      "name": "Le Cola Gazlı İçecek 1 Lt",
+      "brand": "Le Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "111J",
+      "name": "Coca-Cola Şekersiz Gazlı İçecek 200 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 40,
+      "maxPrice": 40,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 40
+        }
+      ]
+    },
+    {
+      "productId": "09V0",
+      "name": "Coca Cola Gazlı İçecek 200 Ml",
+      "brand": "Coca Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 40,
+      "maxPrice": 40,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 40
+        }
+      ]
+    },
+    {
+      "productId": "16JK",
+      "name": "Pepsi Zero Sugar 330 Ml",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 47.5,
+      "maxPrice": 48.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 47.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 48.95
+        }
+      ]
+    },
+    {
+      "productId": "1P59",
+      "name": "Pepsi 330 Ml",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "1Q4S",
+      "name": "Coca-Cola Light 250 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 54,
+      "maxPrice": 54,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 54
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 54
+        }
+      ]
+    },
+    {
+      "productId": "0NPO",
+      "name": "Coca-Cola Şekersiz Gazlı İçecek 1 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 55,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 55
+        },
+        {
+          "market": "hakmar",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "0XUG",
+      "name": "Coca-Cola Zero Sugar 450 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 55,
+      "maxPrice": 55.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 55.9
+        }
+      ]
+    },
+    {
+      "productId": "1K0T",
+      "name": "Coca-Cola Zero Sugar 330 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 55
+        },
+        {
+          "market": "Migros",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "1S5S",
+      "name": "Coca-Cola Orijinal Tat 330 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "04BG",
+      "name": "Le Cola Gazlı İçecek 2.5 Lt",
+      "brand": "Le Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 64,
+      "maxPrice": 64,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 64
+        }
+      ]
+    },
+    {
+      "productId": "084H",
+      "name": "Meysu Cola Gazlı İçecek 2.5 Lt",
+      "brand": "Meysu",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 64,
+      "maxPrice": 64,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64
+        }
+      ]
+    },
+    {
+      "productId": "1JJQ",
+      "name": "Coca-Cola 1.5 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 67,
+      "maxPrice": 80,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 67
+        },
+        {
+          "market": "Şok",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "productId": "0VV1",
+      "name": "Coca-Cola Light 1.5 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 67,
+      "maxPrice": 67.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 67
+        },
+        {
+          "market": "Migros",
+          "price": 67.9
+        }
+      ]
+    },
+    {
+      "productId": "1LKW",
+      "name": "Pepsi Cola Gazlı İçecek 1.5 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 67,
+      "maxPrice": 67,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 67
+        }
+      ]
+    },
+    {
+      "productId": "2A32",
+      "name": "Pepsi Gazlı İçecek 1.5 Lt",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 67,
+      "maxPrice": 67,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 67
+        }
+      ]
+    },
+    {
+      "productId": "0ZUK",
+      "name": "Coca-Cola Light 1 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 70
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "29UI",
+      "name": "Coca-Cola Gazlı İçecek 2.5 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1O2N",
+      "name": "Coca-Cola Orijinal Tat Daha Az Kalori 2.5 Lt",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 100,
+      "maxPrice": 100,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 100
+        }
+      ]
+    },
+    {
+      "productId": "0S1Z",
+      "name": "Coca-Cola Zero Sugar 6x450 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "1HG2",
+      "name": "Pepsi Zero Sugar 4x330 Ml",
+      "brand": "Pepsi",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 187.5,
+      "maxPrice": 187.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 187.5
+        }
+      ]
+    },
+    {
+      "productId": "1T8I",
+      "name": "Coca-Cola Zero Sugar Şişe 6x250 Ml",
+      "brand": "Coca-Cola",
+      "category": "Gazlı İçecekler",
+      "marketCount": 2,
+      "minPrice": 209.9,
+      "maxPrice": 334.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 209.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 334.95
+        }
+      ]
+    }
+  ]
+}

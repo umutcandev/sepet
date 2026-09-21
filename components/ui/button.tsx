@@ -9,7 +9,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "surface-raised border-primary bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        // Hover `[a]:` ile sınırlı değil: dolgulu birincil buton gerçek
+        // `<button>` olduğunda da tepki vermeli. Kenarlık dolguyla birlikte
+        // koyulaşır, yoksa `bg-clip-padding` yüzünden 1px açık bir halka kalır.
+        default:
+          "surface-raised border-primary bg-primary text-primary-foreground hover:border-primary-hover hover:bg-primary-hover",
         outline:
           // Görünür kenarlığı OLAN yüzeyde ayrıca iç rim çizilmez: ikisi üst
           // üste binince tepede iki paralel açık çizgi oluşup kalın bir border

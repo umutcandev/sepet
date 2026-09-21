@@ -1,0 +1,4347 @@
+[
+  {
+    "term": "süt",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "answer": {
+      "accept": "B+D",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Aromalı / tatlandırılmış süt",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Sade UHT süt (tam yağlı / normal)",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Az yağlı süt (%0,5 – %1,8)",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Pastörize / günlük süt",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Çoklu paket (6'lı / 9'lu kutu)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Barista / protein sütü",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade UHT süt (tam yağlı / normal)",
+    "policyLine": "Sade UHT süt (tam yağlı / normal), Az yağlı süt (%0,5 – %1,8) KABUL. Aromalı / tatlandırılmış süt, Özel diyet varyant (light / laktozsuz / organik / vegan), Pastörize / günlük süt, Çoklu paket (6'lı / 9'lu kutu), Barista / protein sütü RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade UHT süt (tam yağlı / normal)."
+  },
+  {
+    "term": "yoğurt",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "answer": {
+      "accept": "A+D+F+G",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade yoğurt (homojenize / klasik)",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Meyveli / aromalı / katkılı yoğurt",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Kaymaklı yoğurt",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Süzme yoğurt",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Kaymaksız yoğurt",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Az / yarım yağlı yoğurt",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Çömlek / ekşi maya / manda yoğurdu",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Probiyotik yoğurt",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Yoğurt mayası (yoğurt değil)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade yoğurt (homojenize / klasik)",
+    "policyLine": "Sade yoğurt (homojenize / klasik), Kaymaklı yoğurt, Kaymaksız yoğurt, Az / yarım yağlı yoğurt KABUL. Meyveli / aromalı / katkılı yoğurt, Özel diyet varyant (light / laktozsuz / organik / vegan), Süzme yoğurt, Çömlek / ekşi maya / manda yoğurdu, Probiyotik yoğurt, Yoğurt mayası (yoğurt değil) RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade yoğurt (homojenize / klasik)."
+  },
+  {
+    "term": "peynir",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "answer": {
+      "accept": "A",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Beyaz peynir (inek / klasik)",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Süzme peynir",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Krem peynir / sürülebilir",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Olgunlaştırılmış / eski / ezine / tulum",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Otlu / kekikli / zeytinli aromalı taze peynir",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Tel / top / çubuk / örgü peynir",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Sade taze peynir",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Üçgen / dilimli tost peyniri",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Beyaz peynir (inek / klasik)",
+    "policyLine": "Beyaz peynir (inek / klasik) KABUL. Süzme peynir, Krem peynir / sürülebilir, Olgunlaştırılmış / eski / ezine / tulum, Otlu / kekikli / zeytinli aromalı taze peynir, Tel / top / çubuk / örgü peynir, Sade taze peynir, Özel diyet varyant (light / laktozsuz / organik / vegan), Üçgen / dilimli tost peyniri RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Beyaz peynir (inek / klasik)."
+  },
+  {
+    "term": "ayran",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "answer": {
+      "accept": "A+D",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade ayran",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Kefir (ayran değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Ekşi maya / kara maya ayran",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Az / yarım yağlı ayran",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Naneli / aromalı ayran",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Aromalı probiyotik içecek (ayran değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Çoklu paket ayran",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade ayran",
+    "policyLine": "Sade ayran, Az / yarım yağlı ayran KABUL. Kefir (ayran değil), Ekşi maya / kara maya ayran, Naneli / aromalı ayran, Aromalı probiyotik içecek (ayran değil), Çoklu paket ayran RED. Kart için: Sade ayran."
+  },
+  {
+    "term": "tereyağı",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "answer": {
+      "accept": "A+B?+E?+F?",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade tereyağı",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Yayık / geleneksel / köy tereyağı",
+        "verdict": "unknown"
+      },
+      {
+        "id": "C",
+        "label": "Margarin (tereyağı değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Sürülebilir yağ / sade yağ (tereyağı değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Tuzsuz tereyağı",
+        "verdict": "unknown"
+      },
+      {
+        "id": "F",
+        "label": "Tuzlu tereyağı",
+        "verdict": "unknown"
+      },
+      {
+        "id": "G",
+        "label": "Aromalı / katkılı tereyağı",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade tereyağı",
+    "policyLine": "Sade tereyağı KABUL. Margarin (tereyağı değil), Sürülebilir yağ / sade yağ (tereyağı değil), Aromalı / katkılı tereyağı RED. Kart için: Sade tereyağı."
+  },
+  {
+    "term": "krema",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "answer": {
+      "accept": "B+E",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Krema dolgulu atıştırmalık (gofret / bisküvi / kek)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Sade süt kreması (%18 – %35 yağlı)",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Fındık / kakao kreması (sürülebilir)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Ekşi krema aromalı cips / kraker",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Bitkisel krema",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Ekşi krema / smetana",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Kahve kreması",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Sprey krema",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Aromalı yemeklik krema",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade süt kreması (%18 – %35 yağlı)",
+    "policyLine": "Sade süt kreması (%18 – %35 yağlı), Bitkisel krema KABUL. Krema dolgulu atıştırmalık (gofret / bisküvi / kek), Fındık / kakao kreması (sürülebilir), Ekşi krema aromalı cips / kraker, Ekşi krema / smetana, Kahve kreması, Sprey krema, Aromalı yemeklik krema RED. Kart için: Sade süt kreması (%18 – %35 yağlı)."
+  },
+  {
+    "term": "kaymak",
+    "category": "Süt ürünleri",
+    "split": "holdout",
+    "answer": {
+      "accept": "B+C",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Dondurma / kornet (kaymak aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Rulo kaymak",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Sade kaymak",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Yoğurt (kaymak değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Ballı kaymak",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Rulo kaymak",
+    "policyLine": "Rulo kaymak, Sade kaymak KABUL. Dondurma / kornet (kaymak aromalı), Yoğurt (kaymak değil), Ballı kaymak RED. Kart için: Rulo kaymak."
+  },
+  {
+    "term": "labne",
+    "category": "Süt ürünleri",
+    "split": "holdout",
+    "answer": {
+      "accept": "A",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade labne",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Çoklu paket labne",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Aromalı labne (pesto / zeytinli kekikli)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Keçi labnesi",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade labne",
+    "policyLine": "Sade labne KABUL. Çoklu paket labne, Özel diyet varyant (light / laktozsuz / organik / vegan), Aromalı labne (pesto / zeytinli kekikli), Keçi labnesi RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade labne."
+  },
+  {
+    "term": "kefir",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "answer": {
+      "accept": "B+A?",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Meyveli / aromalı kefir",
+        "verdict": "unknown"
+      },
+      {
+        "id": "B",
+        "label": "Sade kefir",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Ayran (kefir değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Kefir mayası",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Aromalı probiyotik içecek (kefir değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Keçi kefiri",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade kefir",
+    "policyLine": "Sade kefir KABUL. Ayran (kefir değil), Özel diyet varyant (light / laktozsuz / organik / vegan), Kefir mayası, Aromalı probiyotik içecek (kefir değil), Keçi kefiri RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade kefir."
+  },
+  {
+    "term": "lor",
+    "category": "Süt ürünleri",
+    "split": "holdout",
+    "answer": {
+      "accept": "A+B",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade lor peyniri",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Yağsız / yarım yağlı lor",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Torba lor",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Sürülebilir lor",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Kaşar loru",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade lor peyniri",
+    "policyLine": "Sade lor peyniri, Yağsız / yarım yağlı lor KABUL. Torba lor, Sürülebilir lor, Kaşar loru RED. Kart için: Sade lor peyniri."
+  },
+  {
+    "term": "ekmek",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "answer": {
+      "accept": "B+D+E+F+H+I",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kızarmış / gevrek ekmek (kraker)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Tam buğday / kepekli / çavdarlı / çok tahıllı",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Baget ekmek",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Sade ekmek",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Tost / sandviç / hamburger ekmeği",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Ekmek cipsi / kıtırı",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Lavaş ekmek",
+        "verdict": "accept"
+      },
+      {
+        "id": "I",
+        "label": "Ekşi mayalı ekmek",
+        "verdict": "accept"
+      },
+      {
+        "id": "J",
+        "label": "Katkılı ekmek (fındıklı / zeytinli / fesleğenli)",
+        "verdict": "reject"
+      },
+      {
+        "id": "K",
+        "label": "Ekmek unu (ekmek değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "L",
+        "label": "Ekmek kırıntısı / panko",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Tam buğday / kepekli / çavdarlı / çok tahıllı",
+    "policyLine": "Tam buğday / kepekli / çavdarlı / çok tahıllı, Baget ekmek, Sade ekmek, Tost / sandviç / hamburger ekmeği, Lavaş ekmek, Ekşi mayalı ekmek KABUL. Kızarmış / gevrek ekmek (kraker), Özel diyet varyant (light / laktozsuz / organik / vegan), Ekmek cipsi / kıtırı, Katkılı ekmek (fındıklı / zeytinli / fesleğenli), Ekmek unu (ekmek değil), Ekmek kırıntısı / panko RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Tam buğday / kepekli / çavdarlı / çok tahıllı."
+  },
+  {
+    "term": "un",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "answer": {
+      "accept": "A+G",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade buğday unu",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Özel diyet / tıbbi un (glutensiz, organik, düşük proteinli)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Galeta unu",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Mısır / pirinç / çavdar unu",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Alternatif un (badem, hindistan cevizi, mercimek, karabuğday)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Marka adı tuzağı: Un Do Tre (ürün makarna)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Tam buğday unu",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Kepekli / esmer / çok tahıllı un",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Baklavalık / böreklik un",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Un kurabiyesi (un değil)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade buğday unu",
+    "policyLine": "Sade buğday unu, Tam buğday unu KABUL. Özel diyet / tıbbi un (glutensiz, organik, düşük proteinli), Galeta unu, Mısır / pirinç / çavdar unu, Alternatif un (badem, hindistan cevizi, mercimek, karabuğday), Marka adı tuzağı: Un Do Tre (ürün makarna), Kepekli / esmer / çok tahıllı un, Baklavalık / böreklik un, Un kurabiyesi (un değil) RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade buğday unu."
+  },
+  {
+    "term": "makarna",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "answer": {
+      "accept": "A+E",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Klasik makarna (burgu / fiyonk / kalem / yüksük)",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Sebzeli / mercimekli / özel tahıl makarna",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Vitaminli makarna",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Tam buğday makarna",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Fırın makarnası",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Yumurtalı makarna",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Figürlü / özel form makarna",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Klasik makarna (burgu / fiyonk / kalem / yüksük)",
+    "policyLine": "Klasik makarna (burgu / fiyonk / kalem / yüksük), Tam buğday makarna KABUL. Özel diyet varyant (light / laktozsuz / organik / vegan), Sebzeli / mercimekli / özel tahıl makarna, Vitaminli makarna, Fırın makarnası, Yumurtalı makarna, Figürlü / özel form makarna RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Klasik makarna (burgu / fiyonk / kalem / yüksük)."
+  },
+  {
+    "term": "pirinç",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "answer": {
+      "accept": "A+B+C+D",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Osmancık pirinç",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Baldo pirinç",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Pilavlık / genel pirinç",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Basmati pirinç",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Jasmin / yasemin pirinci",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Siyah / kahverengi / kepekli pirinç",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Kırık pirinç",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Arborio / risotto pirinci",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Osmancık pirinç",
+    "policyLine": "Osmancık pirinç, Baldo pirinç, Pilavlık / genel pirinç, Basmati pirinç KABUL. Özel diyet varyant (light / laktozsuz / organik / vegan), Jasmin / yasemin pirinci, Siyah / kahverengi / kepekli pirinç, Kırık pirinç, Arborio / risotto pirinci RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Osmancık pirinç."
+  },
+  {
+    "term": "bulgur",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "answer": {
+      "accept": "A",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Pilavlık bulgur",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Köftelik / ince bulgur",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Esmer / çiğköftelik / tam tane bulgur",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Hazır bulgur pilavı (bulgur değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Şehriyeli / başbaşı bulgur",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Siyez bulguru",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "İçli köftelik bulgur",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Genel bulgur",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Firik bulgur",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Pilavlık bulgur",
+    "policyLine": "Pilavlık bulgur KABUL. Köftelik / ince bulgur, Esmer / çiğköftelik / tam tane bulgur, Hazır bulgur pilavı (bulgur değil), Özel diyet varyant (light / laktozsuz / organik / vegan), Şehriyeli / başbaşı bulgur, Siyez bulguru, İçli köftelik bulgur, Genel bulgur, Firik bulgur RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Pilavlık bulgur."
+  },
+  {
+    "term": "irmik",
+    "category": "Ekmek & unlu",
+    "split": "holdout",
+    "answer": {
+      "accept": "B",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Un (irmik değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Sade buğday irmiği",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Nişasta (irmik değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Galeta unu / panko (irmik değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Organik irmik",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "İrmik helvası (hazır tatlı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Mısır irmiği",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade buğday irmiği",
+    "policyLine": "Sade buğday irmiği KABUL. Un (irmik değil), Nişasta (irmik değil), Galeta unu / panko (irmik değil), Organik irmik, İrmik helvası (hazır tatlı), Mısır irmiği RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade buğday irmiği."
+  },
+  {
+    "term": "galeta unu",
+    "category": "Ekmek & unlu",
+    "split": "holdout",
+    "answer": {
+      "accept": "A",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade galeta unu",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Panko (Japon ekmek kırıntısı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade galeta unu",
+    "policyLine": "Sade galeta unu KABUL. Panko (Japon ekmek kırıntısı), Özel diyet varyant (light / laktozsuz / organik / vegan) RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade galeta unu."
+  },
+  {
+    "term": "yufka",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "answer": {
+      "accept": "B+A+C",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Baklavalık / böreklik yufka",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Sade yufka",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Üçgen yufka",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Yaprak / kat sayılı yufka",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade yufka",
+    "policyLine": "Sade yufka, Baklavalık / böreklik yufka, Üçgen yufka KABUL. Yaprak / kat sayılı yufka RED. Kart için: Sade yufka."
+  },
+  {
+    "term": "şehriye",
+    "category": "Ekmek & unlu",
+    "split": "holdout",
+    "answer": {
+      "accept": "A+B+G",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Arpa şehriye",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Tel şehriye",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Çorbalık kesme makarna (şehriye değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Vitaminli şehriye",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Pirinç şehriyesi",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Yıldız şehriye",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Arpa şehriye",
+    "policyLine": "Arpa şehriye, Tel şehriye, Yıldız şehriye KABUL. Özel diyet varyant (light / laktozsuz / organik / vegan), Çorbalık kesme makarna (şehriye değil), Vitaminli şehriye, Pirinç şehriyesi RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Arpa şehriye."
+  },
+  {
+    "term": "et",
+    "category": "Et & protein",
+    "split": "train",
+    "answer": {
+      "accept": "G+A?",
+      "primary": "G",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Füme / kuru et (şarküteri)",
+        "verdict": "unknown"
+      },
+      {
+        "id": "B",
+        "label": "Hazır döner",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Et bulyon / çeşni / baharat",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Karides eti (deniz ürünü)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Et çubukları / atıştırmalık",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Tantuni / dürüm hazır yemek",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Çiğ dana eti (kuşbaşı / sote)",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Konserve / kavurma",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Çiğ dana eti (kuşbaşı / sote)",
+    "policyLine": "Çiğ dana eti (kuşbaşı / sote) KABUL. Hazır döner, Et bulyon / çeşni / baharat, Karides eti (deniz ürünü), Et çubukları / atıştırmalık, Tantuni / dürüm hazır yemek, Konserve / kavurma RED. Kart için: Çiğ dana eti (kuşbaşı / sote)."
+  },
+  {
+    "term": "kıyma",
+    "category": "Et & protein",
+    "split": "train",
+    "answer": {
+      "accept": "HEPSİ",
+      "primary": "farketmez",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Yağlı kıyma (%15 – %20)",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Sade dana kıyma",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Yağsız kıyma",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Dana kuzu karışık kıyma",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Dondurulmuş kıyma",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": null,
+    "policyLine": "Yağlı kıyma (%15 – %20), Sade dana kıyma, Yağsız kıyma, Dana kuzu karışık kıyma, Dondurulmuş kıyma KABUL."
+  },
+  {
+    "term": "tavuk",
+    "category": "Et & protein",
+    "split": "train",
+    "answer": {
+      "accept": "D",
+      "primary": "D",
+      "note": "Bütün tavuk tercihi öncelik olmalıdır."
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Bulyon / çeşni / tavuk suyu",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Hazır yemek (burger / döner / sote / salata)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Hazır noodle",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Çiğ tavuk parçaları (but / göğüs / kanat / baget)",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Tavuk yumurtası (tavuk eti değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Hazır çorba",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Tavuk ciğeri",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Tavukgöğsü tatlısı",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Füme tavuk (şarküteri)",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Çiğ tavuk parçaları (but / göğüs / kanat / baget)",
+    "policyLine": "Çiğ tavuk parçaları (but / göğüs / kanat / baget) KABUL. Bulyon / çeşni / tavuk suyu, Hazır yemek (burger / döner / sote / salata), Hazır noodle, Tavuk yumurtası (tavuk eti değil), Hazır çorba, Tavuk ciğeri, Tavukgöğsü tatlısı, Füme tavuk (şarküteri), Özel diyet varyant (light / laktozsuz / organik / vegan) RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Çiğ tavuk parçaları (but / göğüs / kanat / baget)."
+  },
+  {
+    "term": "balık",
+    "category": "Et & protein",
+    "split": "train",
+    "answer": {
+      "accept": "E",
+      "primary": "E",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Ton balığı konservesi",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Kalamar / ahtapot / midye / yengeç",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Balık kraker (atıştırmalık)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Karides",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Taze / dondurulmuş bütün balık",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Hazır / çıtır balık ürünü",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Füme balık",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Balık sosu",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze / dondurulmuş bütün balık",
+    "policyLine": "Taze / dondurulmuş bütün balık KABUL. Ton balığı konservesi, Kalamar / ahtapot / midye / yengeç, Balık kraker (atıştırmalık), Karides, Hazır / çıtır balık ürünü, Füme balık, Balık sosu RED. Kart için: Taze / dondurulmuş bütün balık."
+  },
+  {
+    "term": "yumurta",
+    "category": "Et & protein",
+    "split": "train",
+    "answer": {
+      "accept": "A+B+D+E+F+G",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Organik yumurta",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Sade yumurta",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Sürpriz / oyuncaklı yumurta (oyuncak)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Gezen tavuk / free range yumurta",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Kahverengi / beyaz yumurta",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Jumbo / L / XL boy yumurta",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Omega 3 yumurta",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Yumurta kabuk makarna (yumurta değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Bıldırcın yumurtası",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade yumurta",
+    "policyLine": "Organik yumurta, Sade yumurta, Gezen tavuk / free range yumurta, Kahverengi / beyaz yumurta, Jumbo / L / XL boy yumurta, Omega 3 yumurta KABUL. Sürpriz / oyuncaklı yumurta (oyuncak), Yumurta kabuk makarna (yumurta değil), Bıldırcın yumurtası RED. Kart için: Sade yumurta."
+  },
+  {
+    "term": "sucuk",
+    "category": "Et & protein",
+    "split": "train",
+    "answer": {
+      "accept": "A+B+C+F+G+I",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kangal sucuk",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Piliç / hindi sucuk (kanatlı)",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Sade dana sucuk",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Fermente sucuk",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Parmak / baton sucuk",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Kasap / geleneksel sucuk",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Isıl işlem görmüş sucuk",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Acılı sucuk",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Dilimli sucuk",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Kangal sucuk",
+    "policyLine": "Kangal sucuk, Piliç / hindi sucuk (kanatlı), Sade dana sucuk, Kasap / geleneksel sucuk, Isıl işlem görmüş sucuk, Dilimli sucuk KABUL. Fermente sucuk, Parmak / baton sucuk, Acılı sucuk RED. Kart için: Kangal sucuk."
+  },
+  {
+    "term": "salam",
+    "category": "Et & protein",
+    "split": "holdout",
+    "answer": {
+      "accept": "A+B+C+E+G+H",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Hindi salam",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Macar salam",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Piliç salam",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Fıstıklı salam",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Genel salam",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Salamlı sandviç (hazır ürün)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Organik salam",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Dana salam",
+        "verdict": "accept"
+      },
+      {
+        "id": "I",
+        "label": "Biberli salam",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Hindi salam",
+    "policyLine": "Hindi salam, Macar salam, Piliç salam, Genel salam, Organik salam, Dana salam KABUL. Fıstıklı salam, Salamlı sandviç (hazır ürün), Biberli salam RED. Kart için: Hindi salam."
+  },
+  {
+    "term": "hindi",
+    "category": "Et & protein",
+    "split": "holdout",
+    "answer": {
+      "accept": "C",
+      "primary": "C",
+      "note": "Salam seçenekleri için, hindi değilde hindi salam şeklinde veya hindi füme şeklinde belirtilmesi daha uygun olur."
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Hindi salam",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Hindi füme",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Çiğ hindi parçaları (but / göğüs / külbastı)",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Hindi konservesi",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Pişmiş / hazır hindi",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Hindi sosis",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Hindi jambon",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Hindi sucuk",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Çiğ hindi parçaları (but / göğüs / külbastı)",
+    "policyLine": "Çiğ hindi parçaları (but / göğüs / külbastı) KABUL. Hindi salam, Hindi füme, Hindi konservesi, Pişmiş / hazır hindi, Hindi sosis, Hindi jambon, Hindi sucuk RED. Kart için: Çiğ hindi parçaları (but / göğüs / külbastı)."
+  },
+  {
+    "term": "kuzu",
+    "category": "Et & protein",
+    "split": "train",
+    "answer": {
+      "accept": "H+C",
+      "primary": "H",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Hazır köfte / kebap",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Kokoreç",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Dana kuzu karışık kıyma",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Kuzu kulağı (bitki, et değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Kuzu kemik suyu",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Kuzu döner",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Kuzu kavurma",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Çiğ kuzu eti (kuşbaşı)",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Çiğ kuzu eti (kuşbaşı)",
+    "policyLine": "Çiğ kuzu eti (kuşbaşı), Dana kuzu karışık kıyma KABUL. Hazır köfte / kebap, Kokoreç, Kuzu kulağı (bitki, et değil), Kuzu kemik suyu, Kuzu döner, Kuzu kavurma RED. Kart için: Çiğ kuzu eti (kuşbaşı)."
+  },
+  {
+    "term": "pastırma",
+    "category": "Et & protein",
+    "split": "holdout",
+    "answer": {
+      "accept": "HEPSİ",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Çemensiz / çemeni sıyrılmış pastırma",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Dilimli pastırma",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Antrikot pastırma",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Parça / seçme pastırma",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Sade dana pastırma",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Dilimli pastırma",
+    "policyLine": "Çemensiz / çemeni sıyrılmış pastırma, Dilimli pastırma, Antrikot pastırma, Parça / seçme pastırma, Sade dana pastırma KABUL. Kart için: Dilimli pastırma."
+  },
+  {
+    "term": "domates",
+    "category": "Taze sebze",
+    "split": "train",
+    "answer": {
+      "accept": "C",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Domates salçası",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Domates rendesi / rendelenmiş",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Taze domates (kg)",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Domates püresi",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Doğranmış / soyulmuş konserve domates",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Kokteyl / şeker / atıştırmalık domates",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Kurutulmuş domates",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Hazır domates çorbası",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Domates suyu",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Bruschetta / hazır meze",
+        "verdict": "reject"
+      },
+      {
+        "id": "K",
+        "label": "Zeytin (domates değil)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze domates (kg)",
+    "policyLine": "Taze domates (kg) KABUL. Domates salçası, Domates rendesi / rendelenmiş, Domates püresi, Doğranmış / soyulmuş konserve domates, Kokteyl / şeker / atıştırmalık domates, Kurutulmuş domates, Hazır domates çorbası, Domates suyu, Bruschetta / hazır meze, Zeytin (domates değil) RED. Kart için: Taze domates (kg)."
+  },
+  {
+    "term": "salatalık",
+    "category": "Taze sebze",
+    "split": "train",
+    "answer": {
+      "accept": "C",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Salatalık turşusu (klasik)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Tatlı / hafif / yabancı tip turşu",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Taze salatalık / hıyar",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Kornişon turşusu",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Deodorant (salatalık aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "İçecek (salatalık aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Turşuluk taze kornişon",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Burger / dilimli turşu",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze salatalık / hıyar",
+    "policyLine": "Taze salatalık / hıyar KABUL. Salatalık turşusu (klasik), Tatlı / hafif / yabancı tip turşu, Kornişon turşusu, Deodorant (salatalık aromalı), İçecek (salatalık aromalı), Turşuluk taze kornişon, Burger / dilimli turşu RED. Kart için: Taze salatalık / hıyar."
+  },
+  {
+    "term": "biber",
+    "category": "Taze sebze",
+    "split": "train",
+    "answer": {
+      "accept": "F",
+      "primary": "F",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Biber salçası",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Közlenmiş biber",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Acı biber turşusu",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Pul biber / toz biber (baharat)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Jalapeno turşusu",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Taze biber (kapya / çarliston / dolma / sivri)",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Yunan / makedon / misket / frenk biber turşusu",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Peynir dolgulu biber (meze)",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Genel biber",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze biber (kapya / çarliston / dolma / sivri)",
+    "policyLine": "Taze biber (kapya / çarliston / dolma / sivri) KABUL. Biber salçası, Közlenmiş biber, Acı biber turşusu, Pul biber / toz biber (baharat), Jalapeno turşusu, Yunan / makedon / misket / frenk biber turşusu, Peynir dolgulu biber (meze), Genel biber RED. Kart için: Taze biber (kapya / çarliston / dolma / sivri)."
+  },
+  {
+    "term": "soğan",
+    "category": "Taze sebze",
+    "split": "train",
+    "answer": {
+      "accept": "D+G?",
+      "primary": "D",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Cips / çerez (soğan aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Özel çeşit soğan (kırmızı / mor / gümüş / arpacık)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Soğan halkası (hazır)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Kuru soğan",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Soğan tozu / granül",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Doğranmış / dondurulmuş soğan",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Taze / yeşil soğan",
+        "verdict": "unknown"
+      },
+      {
+        "id": "H",
+        "label": "Çıtır kaplamalı soğan",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Kurutulmuş soğan",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Soğan turşusu",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Kuru soğan",
+    "policyLine": "Kuru soğan KABUL. Cips / çerez (soğan aromalı), Özel çeşit soğan (kırmızı / mor / gümüş / arpacık), Soğan halkası (hazır), Soğan tozu / granül, Doğranmış / dondurulmuş soğan, Çıtır kaplamalı soğan, Kurutulmuş soğan, Soğan turşusu RED. Kart için: Kuru soğan."
+  },
+  {
+    "term": "patates",
+    "category": "Taze sebze",
+    "split": "train",
+    "answer": {
+      "accept": "C+D+B?",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Patates cipsi",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Dondurulmuş hazır patates (parmak / çıtır)",
+        "verdict": "unknown"
+      },
+      {
+        "id": "C",
+        "label": "Taze patates (kg / file / mini)",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Kızartmalık / haşlamalık patates",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Patates çeşnisi (baharat)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Patates püresi (hazır)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Tatlı patates",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze patates (kg / file / mini)",
+    "policyLine": "Taze patates (kg / file / mini), Kızartmalık / haşlamalık patates KABUL. Patates cipsi, Patates çeşnisi (baharat), Patates püresi (hazır), Tatlı patates RED. Kart için: Taze patates (kg / file / mini)."
+  },
+  {
+    "term": "havuç",
+    "category": "Taze sebze",
+    "split": "train",
+    "answer": {
+      "accept": "E",
+      "primary": "E",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Havuç suyu / içecek",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Havuç püresi (bebek maması)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Havuç tarator (meze)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Havuç reçeli",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Taze havuç",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze havuç",
+    "policyLine": "Taze havuç KABUL. Havuç suyu / içecek, Havuç püresi (bebek maması), Havuç tarator (meze), Havuç reçeli RED. Kart için: Taze havuç."
+  },
+  {
+    "term": "patlıcan",
+    "category": "Taze sebze",
+    "split": "holdout",
+    "answer": {
+      "accept": "E",
+      "primary": "E",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Közlenmiş / köz patlıcan",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Patlıcan salatası / ezmesi (meze)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Patlıcan kızartma (hazır)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Kuru / kurutulmuş patlıcan",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Taze patlıcan",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Saç boyası (patlıcan moru)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Hazır patlıcan yemeği (dolma)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze patlıcan",
+    "policyLine": "Taze patlıcan KABUL. Közlenmiş / köz patlıcan, Patlıcan salatası / ezmesi (meze), Patlıcan kızartma (hazır), Kuru / kurutulmuş patlıcan, Saç boyası (patlıcan moru), Hazır patlıcan yemeği (dolma) RED. Kart için: Taze patlıcan."
+  },
+  {
+    "term": "kabak",
+    "category": "Taze sebze",
+    "split": "holdout",
+    "answer": {
+      "accept": "E",
+      "primary": "E",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kabak çekirdeği",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Kabak lifli sabun",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Kabak tatlısı / reçeli",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Bal kabağı",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Taze kabak (sakız)",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Granola (kabak çekirdekli)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Kabak mücveri (hazır)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze kabak (sakız)",
+    "policyLine": "Taze kabak (sakız) KABUL. Kabak çekirdeği, Kabak lifli sabun, Kabak tatlısı / reçeli, Bal kabağı, Granola (kabak çekirdekli), Kabak mücveri (hazır) RED. Kart için: Taze kabak (sakız)."
+  },
+  {
+    "term": "sarımsak",
+    "category": "Taze sebze",
+    "split": "train",
+    "answer": {
+      "accept": "C",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sarımsak şampuanı / saç bakımı",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Sarımsak tozu / granül",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Taze / kuru sarımsak",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Sarımsaklı gıda (peynir / hamsi / çeşni)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Sarımsak turşusu",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Siyah sarımsak",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Sarımsak ezmesi",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Sarımsak sosu",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Taze / kuru sarımsak",
+    "policyLine": "Taze / kuru sarımsak KABUL. Sarımsak şampuanı / saç bakımı, Sarımsak tozu / granül, Sarımsaklı gıda (peynir / hamsi / çeşni), Sarımsak turşusu, Siyah sarımsak, Sarımsak ezmesi, Sarımsak sosu RED. Kart için: Taze / kuru sarımsak."
+  },
+  {
+    "term": "mercimek",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "answer": {
+      "accept": "A+B+C+G",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kırmızı mercimek",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Organik mercimek",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Yeşil mercimek",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Mercimek cipsi / kraker / kavrulmuş",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Mercimek çorbası (hazır)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Mercimekli makarna",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Sarı mercimek",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Mercimek unu",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Filizlendirilmiş mercimek",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Beluga mercimeği",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Kırmızı mercimek",
+    "policyLine": "Kırmızı mercimek, Organik mercimek, Yeşil mercimek, Sarı mercimek KABUL. Mercimek cipsi / kraker / kavrulmuş, Mercimek çorbası (hazır), Mercimekli makarna, Mercimek unu, Filizlendirilmiş mercimek, Beluga mercimeği RED. Kart için: Kırmızı mercimek."
+  },
+  {
+    "term": "nohut",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "answer": {
+      "accept": "D+B+C",
+      "primary": "D",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Nohut cipsi / patlağı",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Haşlanmış / konserve nohut",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Organik nohut",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Kuru nohut",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Koçbaşı / iri boy nohut",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Beyaz nohut",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Nohut unu",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Etli nohut (hazır yemek)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Kuru nohut",
+    "policyLine": "Kuru nohut, Haşlanmış / konserve nohut, Organik nohut KABUL. Nohut cipsi / patlağı, Koçbaşı / iri boy nohut, Beyaz nohut, Nohut unu, Etli nohut (hazır yemek) RED. Kart için: Kuru nohut."
+  },
+  {
+    "term": "fasulye",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "answer": {
+      "accept": "E+A+B",
+      "primary": "E",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Dermason / şeker / battal / horoz kuru fasulye",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Haşlanmış / konserve fasulye",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Taze / dondurulmuş fasulye",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Maş / meksika / kırmızı / siyah fasulye",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Genel kuru fasulye",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Fasulye pilaki (hazır yemek)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Organik kuru fasulye",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Etli / pastırmalı hazır kuru fasulye",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Diğer fasulye ürünü (turşu / sos / filiz)",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Zeytinyağlı fasulye (meze)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Genel kuru fasulye",
+    "policyLine": "Genel kuru fasulye, Dermason / şeker / battal / horoz kuru fasulye, Haşlanmış / konserve fasulye KABUL. Taze / dondurulmuş fasulye, Maş / meksika / kırmızı / siyah fasulye, Fasulye pilaki (hazır yemek), Organik kuru fasulye, Etli / pastırmalı hazır kuru fasulye, Diğer fasulye ürünü (turşu / sos / filiz), Zeytinyağlı fasulye (meze) RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Genel kuru fasulye."
+  },
+  {
+    "term": "barbunya",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "holdout",
+    "answer": {
+      "accept": "B+C",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Barbunya pilaki (hazır yemek)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Kuru barbunya",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Haşlanmış barbunya",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Dondurulmuş barbunya",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Kuru barbunya",
+    "policyLine": "Kuru barbunya, Haşlanmış barbunya KABUL. Barbunya pilaki (hazır yemek), Dondurulmuş barbunya RED. Kart için: Kuru barbunya."
+  },
+  {
+    "term": "ceviz",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "answer": {
+      "accept": "B hariç HEPSİ",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Ceviz içi",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Cevizli ürün (ezme / quark / granola)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Kabuklu ceviz",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Kırık ceviz içi",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Kelebek ceviz içi",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Ceviz içi",
+    "policyLine": "Ceviz içi, Kabuklu ceviz, Kırık ceviz içi, Kelebek ceviz içi KABUL. Cevizli ürün (ezme / quark / granola) RED. Kart için: Ceviz içi."
+  },
+  {
+    "term": "fındık",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "answer": {
+      "accept": "E+F",
+      "primary": "F",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Gofret / bisküvi / çikolata / draje",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Fındık ezmesi",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Fındık kreması (sürülebilir)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Kavrulmuş fındık",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Çiğ fındık",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Fındık içi (genel)",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Fındık yağı",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Fındık sütü / içeceği",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Tuzlu / kaplamalı fındık",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Kıyılmış / dilimlenmiş fındık",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Fındık içi (genel)",
+    "policyLine": "Çiğ fındık, Fındık içi (genel) KABUL. Gofret / bisküvi / çikolata / draje, Fındık ezmesi, Fındık kreması (sürülebilir), Kavrulmuş fındık, Fındık yağı, Fındık sütü / içeceği, Tuzlu / kaplamalı fındık, Kıyılmış / dilimlenmiş fındık RED. Kart için: Fındık içi (genel)."
+  },
+  {
+    "term": "badem",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "answer": {
+      "accept": "C+D+F",
+      "primary": "D",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Badem dondurma",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Çikolata / draje / kraker / bar / granola",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Çiğ badem",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Badem içi (genel)",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Badem sütü / içeceği",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Kavrulmuş badem",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Badem unu",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Badem ezmesi",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Duş jeli (badem aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Badem helvası",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Badem içi (genel)",
+    "policyLine": "Çiğ badem, Badem içi (genel), Kavrulmuş badem KABUL. Badem dondurma, Çikolata / draje / kraker / bar / granola, Badem sütü / içeceği, Badem unu, Badem ezmesi, Duş jeli (badem aromalı), Badem helvası RED. Kart için: Badem içi (genel)."
+  },
+  {
+    "term": "leblebi",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "holdout",
+    "answer": {
+      "accept": "E+F+G hariç HEPSİ",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Beyaz leblebi",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Sarı leblebi",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Çifte kavrulmuş leblebi",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Tuzlu leblebi",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Şeker leblebi",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Crispy / kaplamalı leblebi",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Benekli leblebi",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Genel leblebi",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Beyaz leblebi",
+    "policyLine": "Beyaz leblebi, Sarı leblebi, Çifte kavrulmuş leblebi, Tuzlu leblebi, Genel leblebi KABUL. Şeker leblebi, Crispy / kaplamalı leblebi, Benekli leblebi RED. Kart için: Beyaz leblebi."
+  },
+  {
+    "term": "yağ",
+    "category": "Yağ & sos",
+    "split": "train",
+    "answer": {
+      "accept": "HİÇBİRİ",
+      "primary": "farketmez",
+      "note": "Ayçiçek Yağı aramasındaki sonuçların esas alınması önemli, gıda anlamında yağ araması buradakilere cevap bulamaz."
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Yağ çözücü / sökücü (temizlik)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Saç bakım yağı / şampuan / serum",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Bebek yağı",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Özel yemeklik yağ (susam / keten / çörekotu / aspir)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Sürülebilir yağ / ghee / sade yağ",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Bronzlaştırıcı / vücut yağı",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Yağ emici kağıt havlu",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Zeytinyağı",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Bitkisel yağ serisi",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": null,
+    "policyLine": "\"yağ\" için bu listede gerçek aday yok; boş dön."
+  },
+  {
+    "term": "zeytinyağı",
+    "category": "Yağ & sos",
+    "split": "train",
+    "answer": {
+      "accept": "F+G hariç HEPSİ",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sızma zeytinyağı (genel)",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Riviera zeytinyağı",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Naturel sızma zeytinyağı",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Organik zeytinyağı",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Soğuk sıkım zeytinyağı",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Sprey zeytinyağı",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Aromalı zeytinyağı (mantarlı / sarımsaklı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Genel zeytinyağı",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sızma zeytinyağı (genel)",
+    "policyLine": "Sızma zeytinyağı (genel), Riviera zeytinyağı, Naturel sızma zeytinyağı, Organik zeytinyağı, Soğuk sıkım zeytinyağı, Genel zeytinyağı KABUL. Sprey zeytinyağı, Aromalı zeytinyağı (mantarlı / sarımsaklı) RED. Kart için: Sızma zeytinyağı (genel)."
+  },
+  {
+    "term": "zeytin",
+    "category": "Yağ & sos",
+    "split": "train",
+    "answer": {
+      "accept": "A+B+C+D+H+I+J+K",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Siyah zeytin",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Kırma / çizik yeşil zeytin",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Genel zeytin",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Kuru sele / sele zeytin",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Dilimli zeytin",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Zeytin ezmesi",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Zeytin salatası",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Dolgulu zeytin",
+        "verdict": "accept"
+      },
+      {
+        "id": "I",
+        "label": "Izgara zeytin",
+        "verdict": "accept"
+      },
+      {
+        "id": "J",
+        "label": "Yeşil zeytin",
+        "verdict": "accept"
+      },
+      {
+        "id": "K",
+        "label": "Çekirdeksiz zeytin",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Siyah zeytin",
+    "policyLine": "Siyah zeytin, Kırma / çizik yeşil zeytin, Genel zeytin, Kuru sele / sele zeytin, Dolgulu zeytin, Izgara zeytin, Yeşil zeytin, Çekirdeksiz zeytin KABUL. Dilimli zeytin, Zeytin ezmesi, Zeytin salatası RED. Kart için: Siyah zeytin."
+  },
+  {
+    "term": "salça",
+    "category": "Yağ & sos",
+    "split": "train",
+    "answer": {
+      "accept": "A+B+D+F+H+I",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Domates salçası",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Tatlı biber salçası",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Domates rendesi / rendelenmiş",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Acı biber salçası",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Doğranmış / soyulmuş domates",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Organik salça",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Domates püresi",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Biber salçası (genel)",
+        "verdict": "accept"
+      },
+      {
+        "id": "I",
+        "label": "Karışık domates-biber salçası",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Domates salçası",
+    "policyLine": "Domates salçası, Tatlı biber salçası, Acı biber salçası, Organik salça, Biber salçası (genel), Karışık domates-biber salçası KABUL. Domates rendesi / rendelenmiş, Doğranmış / soyulmuş domates, Domates püresi RED. Kart için: Domates salçası."
+  },
+  {
+    "term": "sirke",
+    "category": "Yağ & sos",
+    "split": "holdout",
+    "answer": {
+      "accept": "H+I hariç HEPSİ",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Elma sirkesi",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Üzüm sirkesi",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Beyaz sirke",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Diğer sirke (alıç / pirinç / ananas / malt / bal)",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Balsamik sirke",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Organik sirke",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Detoks sirkesi",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Temizlik ürünü (sirke özlü)",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Cips (sirke aromalı)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Beyaz sirke",
+    "policyLine": "Elma sirkesi, Üzüm sirkesi, Beyaz sirke, Diğer sirke (alıç / pirinç / ananas / malt / bal), Balsamik sirke, Organik sirke, Detoks sirkesi KABUL. Temizlik ürünü (sirke özlü), Cips (sirke aromalı) RED. Kart için: Beyaz sirke."
+  },
+  {
+    "term": "mayonez",
+    "category": "Yağ & sos",
+    "split": "holdout",
+    "answer": {
+      "accept": "B+F?+A?",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Aromalı mayonez (sarımsaklı / trüflü / sriracha / acılı)",
+        "verdict": "unknown"
+      },
+      {
+        "id": "B",
+        "label": "Sade mayonez",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Ketçap + mayonez seti",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Diğer sos / sirke (mayonez değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Ketçap (mayonez değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Light / az yağlı mayonez",
+        "verdict": "unknown"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade mayonez",
+    "policyLine": "Sade mayonez KABUL. Ketçap + mayonez seti, Diğer sos / sirke (mayonez değil), Ketçap (mayonez değil) RED. Kart için: Sade mayonez."
+  },
+  {
+    "term": "ketçap",
+    "category": "Yağ & sos",
+    "split": "train",
+    "answer": {
+      "accept": "A",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade ketçap",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Diğer sos / sirke (ketçap değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Ketçap + mayonez seti",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Acı ketçap",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Cips / çerez (ketçap aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Tatlı ketçap",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Aromalı ketçap (pickle / sweet chili / cajun / sarımsaklı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Mayonez (ketçap değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Organik ketçap",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade ketçap",
+    "policyLine": "Sade ketçap KABUL. Diğer sos / sirke (ketçap değil), Ketçap + mayonez seti, Acı ketçap, Cips / çerez (ketçap aromalı), Tatlı ketçap, Aromalı ketçap (pickle / sweet chili / cajun / sarımsaklı), Mayonez (ketçap değil), Organik ketçap RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade ketçap."
+  },
+  {
+    "term": "tahin",
+    "category": "Yağ & sos",
+    "split": "train",
+    "answer": {
+      "accept": "C",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Tahin helvası",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Tahin + pekmez karışımı / seti",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Sade tahin",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Organik tahin",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Çifte kavrulmuş tahin",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Tahin kreması",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Çikolatalı tahin karışımı",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Esmer / kabuklu susam tahini",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade tahin",
+    "policyLine": "Sade tahin KABUL. Tahin helvası, Tahin + pekmez karışımı / seti, Organik tahin, Çifte kavrulmuş tahin, Tahin kreması, Çikolatalı tahin karışımı, Esmer / kabuklu susam tahini RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Sade tahin."
+  },
+  {
+    "term": "şeker",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "answer": {
+      "accept": "A+C+F",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Toz şeker",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Şekerleme / yumuşak şeker (tatlı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Küp şeker",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Kahverengi / esmer şeker",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Sargılı küp şeker",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Kristal toz şeker",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Stick toz şeker",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Dökme şeker",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Toz şeker",
+    "policyLine": "Toz şeker, Küp şeker, Kristal toz şeker KABUL. Şekerleme / yumuşak şeker (tatlı), Kahverengi / esmer şeker, Sargılı küp şeker, Stick toz şeker, Dökme şeker RED. Kart için: Toz şeker."
+  },
+  {
+    "term": "tuz",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "answer": {
+      "accept": "C+I",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kaya / deniz tuzu",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Himalaya tuzu",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "İyotlu sofra tuzu",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Baharatlı / aromalı tuz",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Bulaşık makinesi tuzu",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "İri salamura tuzu",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Özel tuz (iyotsuz / sodyumu azaltılmış / mineralli)",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Sofrada öğütme / değirmen tuzu",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Genel tuz",
+        "verdict": "accept"
+      },
+      {
+        "id": "J",
+        "label": "Tuz ruhu (temizlik)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "İyotlu sofra tuzu",
+    "policyLine": "İyotlu sofra tuzu, Genel tuz KABUL. Kaya / deniz tuzu, Himalaya tuzu, Baharatlı / aromalı tuz, Bulaşık makinesi tuzu, İri salamura tuzu, Özel tuz (iyotsuz / sodyumu azaltılmış / mineralli), Sofrada öğütme / değirmen tuzu, Tuz ruhu (temizlik) RED. Kart için: İyotlu sofra tuzu."
+  },
+  {
+    "term": "bal",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "answer": {
+      "accept": "A+G?",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Çiçek balı / süzme bal",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Çam / kestane balı",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Cips / bar / dondurma (bal aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Ballı ürün (sirke / propolis / reçel)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Saç boyası (bal rengi)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Bal kabağı",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Petek / karakovan balı",
+        "verdict": "unknown"
+      },
+      {
+        "id": "H",
+        "label": "Organik bal",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Genel bal",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Sabun (ballı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "K",
+        "label": "Krem bal",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Çiçek balı / süzme bal",
+    "policyLine": "Çiçek balı / süzme bal KABUL. Çam / kestane balı, Cips / bar / dondurma (bal aromalı), Ballı ürün (sirke / propolis / reçel), Saç boyası (bal rengi), Bal kabağı, Organik bal, Genel bal, Sabun (ballı), Krem bal RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Çiçek balı / süzme bal."
+  },
+  {
+    "term": "pekmez",
+    "category": "Tatlandırıcı & baharat",
+    "split": "holdout",
+    "answer": {
+      "accept": "C",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Helva (pekmez değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Tahin + pekmez karışımı / seti",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Üzüm pekmezi",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Organik pekmez",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Tahin (pekmez değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Keçiboynuzu / harnup pekmezi",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Dut pekmezi",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Keçiboynuzu özü",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Hurma pekmezi",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Üzüm pekmezi",
+    "policyLine": "Üzüm pekmezi KABUL. Helva (pekmez değil), Tahin + pekmez karışımı / seti, Organik pekmez, Tahin (pekmez değil), Keçiboynuzu / harnup pekmezi, Dut pekmezi, Keçiboynuzu özü, Hurma pekmezi RED. İSTİSNA: adında organik/bio geçen varyantlar KABUL. Kart için: Üzüm pekmezi."
+  },
+  {
+    "term": "karabiber",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "answer": {
+      "accept": "B+C",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Tane karabiber",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Genel karabiber",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Öğütülmüş / toz karabiber",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Genel karabiber",
+    "policyLine": "Genel karabiber, Öğütülmüş / toz karabiber KABUL. Tane karabiber RED. Kart için: Genel karabiber."
+  },
+  {
+    "term": "pul biber",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "answer": {
+      "accept": "A+B",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Genel pul biber",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Acı / ekstra acı pul biber",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "İsot biber",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Ekonomik paket pul biber",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Genel pul biber",
+    "policyLine": "Genel pul biber, Acı / ekstra acı pul biber KABUL. İsot biber, Ekonomik paket pul biber RED. Kart için: Genel pul biber."
+  },
+  {
+    "term": "su",
+    "category": "İçecek",
+    "split": "train",
+    "answer": {
+      "accept": "B+A+E+G",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Büyük boy su (3 – 10 L)",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Sade pet su",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Doğal mineralli su",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Çoklu paket / koli",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Premium su",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Lisanslı / figürlü su",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Spor kapak / cam şişe su",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Bebek suyu",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade pet su",
+    "policyLine": "Sade pet su, Büyük boy su (3 – 10 L), Premium su, Spor kapak / cam şişe su KABUL. Doğal mineralli su, Çoklu paket / koli, Lisanslı / figürlü su, Bebek suyu RED. Kart için: Sade pet su."
+  },
+  {
+    "term": "çay",
+    "category": "İçecek",
+    "split": "train",
+    "answer": {
+      "accept": "A+B+C",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Siyah çay (rize / tiryaki / harman / filiz)",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Yeşil çay",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Poşet çay (demlik / bardak / süzen)",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Matcha çay",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Beyaz çay",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Form / bitki / probiyotik çayı",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Aromalı siyah çay (earl grey / bergamot)",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Dökme çay",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Granül / CTC çay",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Siyah çay (rize / tiryaki / harman / filiz)",
+    "policyLine": "Siyah çay (rize / tiryaki / harman / filiz), Yeşil çay, Poşet çay (demlik / bardak / süzen) KABUL. Matcha çay, Beyaz çay, Form / bitki / probiyotik çayı, Aromalı siyah çay (earl grey / bergamot), Dökme çay, Granül / CTC çay RED. Kart için: Siyah çay (rize / tiryaki / harman / filiz)."
+  },
+  {
+    "term": "kahve",
+    "category": "İçecek",
+    "split": "train",
+    "answer": {
+      "accept": "B+A+C+D",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Filtre kahve",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Granül / çözünebilir (instant) kahve",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "3'ü 1 arada / hazır kahve karışımı",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Çekirdek kahve",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Kahve beyazlatıcısı / kreması",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Kapsül kahve",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Öğütülmüş kahve",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Kafeinsiz kahve",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Türk kahvesi / dibek",
+        "verdict": "reject"
+      },
+      {
+        "id": "J",
+        "label": "Genel kahve",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Granül / çözünebilir (instant) kahve",
+    "policyLine": "Granül / çözünebilir (instant) kahve, Filtre kahve, 3'ü 1 arada / hazır kahve karışımı, Çekirdek kahve KABUL. Kahve beyazlatıcısı / kreması, Kapsül kahve, Öğütülmüş kahve, Kafeinsiz kahve, Türk kahvesi / dibek, Genel kahve RED. Kart için: Granül / çözünebilir (instant) kahve."
+  },
+  {
+    "term": "kola",
+    "category": "İçecek",
+    "split": "train",
+    "answer": {
+      "accept": "A",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Klasik kola",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Şekersiz / zero / light kola",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Jelibon / şekerleme (kola aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Çoklu paket / koli",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Aromalı kola (twist)",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Klasik kola",
+    "policyLine": "Klasik kola KABUL. Şekersiz / zero / light kola, Jelibon / şekerleme (kola aromalı), Çoklu paket / koli, Aromalı kola (twist) RED. Kart için: Klasik kola."
+  },
+  {
+    "term": "meyve suyu",
+    "category": "İçecek",
+    "split": "train",
+    "answer": {
+      "accept": "A+D+I",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Meyveli içecek / nektar",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Diğer meyve bazlı içecek",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Aromalı içecek (meyve suyu değil)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Organik meyve suyu",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Mocktail / kokteyl içecek",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Soğuk çay (fuse tea)",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Detoks içeceği",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Meyve suyu",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "%100 / sıkma meyve suyu",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Meyveli içecek / nektar",
+    "policyLine": "Meyveli içecek / nektar, Organik meyve suyu, %100 / sıkma meyve suyu KABUL. Diğer meyve bazlı içecek, Aromalı içecek (meyve suyu değil), Mocktail / kokteyl içecek, Soğuk çay (fuse tea), Detoks içeceği, Meyve suyu RED. Kart için: Meyveli içecek / nektar."
+  },
+  {
+    "term": "maden suyu",
+    "category": "İçecek",
+    "split": "holdout",
+    "answer": {
+      "accept": "B",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Aromalı / meyveli maden suyu",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Sade maden suyu",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Çoklu paket / koli",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Premium / signature maden suyu",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade maden suyu",
+    "policyLine": "Sade maden suyu KABUL. Aromalı / meyveli maden suyu, Çoklu paket / koli, Premium / signature maden suyu RED. Kart için: Sade maden suyu."
+  },
+  {
+    "term": "soda",
+    "category": "İçecek",
+    "split": "holdout",
+    "answer": {
+      "accept": "C",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Çamaşır sodası (temizlik)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Cream soda (aromalı gazlı içecek)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Sade soda",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade soda",
+    "policyLine": "Sade soda KABUL. Çamaşır sodası (temizlik), Cream soda (aromalı gazlı içecek) RED. Kart için: Sade soda."
+  },
+  {
+    "term": "soya sosu",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "answer": {
+      "accept": "HEPSİ",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade soya sosu",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Az tuzlu / sodyumu azaltılmış soya sosu",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Glutensiz soya sosu",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Organik soya sosu",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Acı soya sosu",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Koyu soya sosu",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade soya sosu",
+    "policyLine": "Sade soya sosu, Az tuzlu / sodyumu azaltılmış soya sosu, Glutensiz soya sosu, Organik soya sosu, Acı soya sosu, Koyu soya sosu KABUL. Kart için: Sade soya sosu."
+  },
+  {
+    "term": "köri",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "answer": {
+      "accept": "B+C",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Köri noodle (hazır)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Köri baharatı",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Köri sos",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Köri baharatı",
+    "policyLine": "Köri baharatı, Köri sos KABUL. Köri noodle (hazır) RED. Kart için: Köri baharatı."
+  },
+  {
+    "term": "mozzarella",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "answer": {
+      "accept": "F+B",
+      "primary": "F",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Mozzarellalı sandviç (hazır)",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Rende mozzarella",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Mozzarellalı pizza (hazır)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Suda / top mozzarella",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Mozzarella çubukları (kızartmalık)",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Genel mozzarella peyniri",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Genel mozzarella peyniri",
+    "policyLine": "Genel mozzarella peyniri, Rende mozzarella KABUL. Mozzarellalı sandviç (hazır), Mozzarellalı pizza (hazır), Suda / top mozzarella, Mozzarella çubukları (kızartmalık) RED. Kart için: Genel mozzarella peyniri."
+  },
+  {
+    "term": "parmesan",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "answer": {
+      "accept": "E+D+C",
+      "primary": "E",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Grana padano parmesan",
+        "verdict": "reject"
+      },
+      {
+        "id": "B",
+        "label": "Vegan parmesan alternatifi",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Toz / rende parmesan",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Eritme parmesan",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Genel parmesan peyniri",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Genel parmesan peyniri",
+    "policyLine": "Genel parmesan peyniri, Eritme parmesan, Toz / rende parmesan KABUL. Grana padano parmesan, Vegan parmesan alternatifi RED. Kart için: Genel parmesan peyniri."
+  },
+  {
+    "term": "noodle",
+    "category": "Dünya mutfağı",
+    "split": "holdout",
+    "answer": {
+      "accept": "HEPSİ",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Bardak noodle",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Çoklu paket noodle",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Köri aromalı noodle",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Diğer aromalı noodle (spesiyal / soya / tom yum)",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Tavuk aromalı noodle",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Jumbo noodle",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Erişte (Çin / Kore usulü)",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Sebze aromalı noodle",
+        "verdict": "accept"
+      },
+      {
+        "id": "I",
+        "label": "Egg noodle (kuru)",
+        "verdict": "accept"
+      },
+      {
+        "id": "J",
+        "label": "Vegan / tam buğdaylı noodle",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Bardak noodle",
+    "policyLine": "Bardak noodle, Çoklu paket noodle, Köri aromalı noodle, Diğer aromalı noodle (spesiyal / soya / tom yum), Tavuk aromalı noodle, Jumbo noodle, Erişte (Çin / Kore usulü), Sebze aromalı noodle, Egg noodle (kuru), Vegan / tam buğdaylı noodle KABUL. Kart için: Bardak noodle."
+  },
+  {
+    "term": "tortilla",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "answer": {
+      "accept": "A+B+C+E+H",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Tortilla",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Genel lavaş",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Tandır / sac ekmeği lavaş",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Taco kabuğu / shells",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Tam buğday lavaş",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Tortilla cipsi",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Glutensiz lavaş",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Dürümlük lavaş",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Tortilla",
+    "policyLine": "Tortilla, Genel lavaş, Tandır / sac ekmeği lavaş, Tam buğday lavaş, Dürümlük lavaş KABUL. Taco kabuğu / shells, Tortilla cipsi, Glutensiz lavaş RED. Kart için: Tortilla."
+  },
+  {
+    "term": "hummus",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "answer": {
+      "accept": "A+B",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Aromalı humus (falafelli / köz biberli)",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Klasik humus",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Humus kraker (atıştırmalık)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Kıtır ekmekli humus seti",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Klasik humus",
+    "policyLine": "Aromalı humus (falafelli / köz biberli), Klasik humus KABUL. Humus kraker (atıştırmalık), Kıtır ekmekli humus seti RED. Kart için: Klasik humus."
+  },
+  {
+    "term": "pesto",
+    "category": "Dünya mutfağı",
+    "split": "holdout",
+    "answer": {
+      "accept": "E+A",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Pesto makarna sosu",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Pesto soslu hazır yemek",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Cips / çerez (pesto aromalı)",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Pesto soslu süt ürünü (labne / taze peynir)",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Genel pesto",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Pesto mayonez",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Hazır çabuk makarna",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Pesto makarna sosu",
+    "policyLine": "Genel pesto, Pesto makarna sosu KABUL. Pesto soslu hazır yemek, Cips / çerez (pesto aromalı), Pesto soslu süt ürünü (labne / taze peynir), Pesto mayonez, Hazır çabuk makarna RED. Kart için: Pesto makarna sosu."
+  },
+  {
+    "term": "deterjan",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "answer": {
+      "accept": "A+B",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Toz deterjan",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Sıvı deterjan",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Hassas / hipoalerjenik deterjan",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Jel deterjan",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Bebek deterjanı",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Elde yıkama deterjanı",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Toz deterjan",
+    "policyLine": "Toz deterjan, Sıvı deterjan KABUL. Hassas / hipoalerjenik deterjan, Jel deterjan, Bebek deterjanı, Elde yıkama deterjanı RED. Kart için: Toz deterjan."
+  },
+  {
+    "term": "bulaşık deterjanı",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "answer": {
+      "accept": "HEPSİ",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kokulu / aromalı bulaşık deterjanı",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Sıvı bulaşık deterjanı",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Genel bulaşık deterjanı",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Losyon bulaşık deterjanı",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Hassas / sensitive bulaşık deterjanı",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Bitkisel / eco / bio bulaşık deterjanı",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Genel bulaşık deterjanı",
+    "policyLine": "Kokulu / aromalı bulaşık deterjanı, Sıvı bulaşık deterjanı, Genel bulaşık deterjanı, Losyon bulaşık deterjanı, Hassas / sensitive bulaşık deterjanı, Bitkisel / eco / bio bulaşık deterjanı KABUL. Kart için: Genel bulaşık deterjanı."
+  },
+  {
+    "term": "çamaşır suyu",
+    "category": "Temizlik & kağıt",
+    "split": "holdout",
+    "answer": {
+      "accept": "C+B+A+D",
+      "primary": "C",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Parfümlü / kokulu çamaşır suyu",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Ultra / yoğun çamaşır suyu",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Klasik çamaşır suyu",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Köpük çamaşır suyu",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Jel / kıvamlı çamaşır suyu",
+        "verdict": "reject"
+      },
+      {
+        "id": "F",
+        "label": "Mutfak çamaşır suyu",
+        "verdict": "reject"
+      },
+      {
+        "id": "G",
+        "label": "Lavabo açıcı",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Bitkisel çamaşır suyu",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Klasik çamaşır suyu",
+    "policyLine": "Klasik çamaşır suyu, Ultra / yoğun çamaşır suyu, Parfümlü / kokulu çamaşır suyu, Köpük çamaşır suyu KABUL. Jel / kıvamlı çamaşır suyu, Mutfak çamaşır suyu, Lavabo açıcı, Bitkisel çamaşır suyu RED. Kart için: Klasik çamaşır suyu."
+  },
+  {
+    "term": "peçete",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "answer": {
+      "accept": "A+C+E+F",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade peçete",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Kağıt mendil (genel)",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Desenli / temalı peçete",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Kutu mendil",
+        "verdict": "reject"
+      },
+      {
+        "id": "E",
+        "label": "Sunum / servis peçetesi",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Premium / extra peçete",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Cep mendili",
+        "verdict": "reject"
+      },
+      {
+        "id": "H",
+        "label": "Çek-al mendil",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sade peçete",
+    "policyLine": "Sade peçete, Desenli / temalı peçete, Sunum / servis peçetesi, Premium / extra peçete KABUL. Kağıt mendil (genel), Kutu mendil, Cep mendili, Çek-al mendil RED. Kart için: Sade peçete."
+  },
+  {
+    "term": "tuvalet kağıdı",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "answer": {
+      "accept": "HEPSİ",
+      "primary": "B",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Geri dönüşüm / eko / natural tuvalet kağıdı",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Genel tuvalet kağıdı",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Bambu katkılı tuvalet kağıdı",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "2 / çift katlı tuvalet kağıdı",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "3 katlı tuvalet kağıdı",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Parfümlü / pudralı tuvalet kağıdı",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Pamuk / kaşmir katkılı tuvalet kağıdı",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "4 katlı tuvalet kağıdı",
+        "verdict": "accept"
+      },
+      {
+        "id": "I",
+        "label": "Islak tuvalet kağıdı",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Genel tuvalet kağıdı",
+    "policyLine": "Geri dönüşüm / eko / natural tuvalet kağıdı, Genel tuvalet kağıdı, Bambu katkılı tuvalet kağıdı, 2 / çift katlı tuvalet kağıdı, 3 katlı tuvalet kağıdı, Parfümlü / pudralı tuvalet kağıdı, Pamuk / kaşmir katkılı tuvalet kağıdı, 4 katlı tuvalet kağıdı, Islak tuvalet kağıdı KABUL. Kart için: Genel tuvalet kağıdı."
+  },
+  {
+    "term": "şampuan",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "answer": {
+      "accept": "A+D+E+F+G+I",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Genel şampuan",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Bitkisel / yağ özlü şampuan",
+        "verdict": "reject"
+      },
+      {
+        "id": "C",
+        "label": "Nem / parlaklık şampuanı",
+        "verdict": "reject"
+      },
+      {
+        "id": "D",
+        "label": "Onarıcı / yıpranmış saç şampuanı",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Kepek karşıtı şampuan",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Erkek şampuanı",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Dökülme karşıtı şampuan",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Kuru şampuan",
+        "verdict": "reject"
+      },
+      {
+        "id": "I",
+        "label": "Duş jeli + şampuan",
+        "verdict": "accept"
+      },
+      {
+        "id": "J",
+        "label": "Renk koruyucu / mor şampuan",
+        "verdict": "reject"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Genel şampuan",
+    "policyLine": "Genel şampuan, Onarıcı / yıpranmış saç şampuanı, Kepek karşıtı şampuan, Erkek şampuanı, Dökülme karşıtı şampuan, Duş jeli + şampuan KABUL. Bitkisel / yağ özlü şampuan, Nem / parlaklık şampuanı, Kuru şampuan, Renk koruyucu / mor şampuan RED. Kart için: Genel şampuan."
+  },
+  {
+    "term": "sabun",
+    "category": "Temizlik & kağıt",
+    "split": "holdout",
+    "answer": {
+      "accept": "HEPSİ",
+      "primary": "A",
+      "note": ""
+    },
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sıvı sabun",
+        "verdict": "accept"
+      },
+      {
+        "id": "B",
+        "label": "Zeytinyağlı sabun",
+        "verdict": "accept"
+      },
+      {
+        "id": "C",
+        "label": "Kalıp / katı sabun",
+        "verdict": "accept"
+      },
+      {
+        "id": "D",
+        "label": "Genel sabun",
+        "verdict": "accept"
+      },
+      {
+        "id": "E",
+        "label": "Köpük sabun",
+        "verdict": "accept"
+      },
+      {
+        "id": "F",
+        "label": "Yüz sabunu / cream bar",
+        "verdict": "accept"
+      },
+      {
+        "id": "G",
+        "label": "Antibakteriyel / hassas sabun",
+        "verdict": "accept"
+      },
+      {
+        "id": "H",
+        "label": "Kabak lifli sabun",
+        "verdict": "accept"
+      }
+    ],
+    "excludePattern": null,
+    "primaryLabel": "Sıvı sabun",
+    "policyLine": "Sıvı sabun, Zeytinyağlı sabun, Kalıp / katı sabun, Genel sabun, Köpük sabun, Yüz sabunu / cream bar, Antibakteriyel / hassas sabun, Kabak lifli sabun KABUL. Kart için: Sıvı sabun."
+  }
+]

@@ -1,0 +1,417 @@
+{
+  "createdAt": "2026-09-21T19:33:49.857Z",
+  "promptVersion": "48b7aa246927",
+  "model": "google/gemini-2.5-flash",
+  "cases": [
+    {
+      "id": "ayran-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "badem-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "bal-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "balik-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "barbunya-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "biber-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "bulasik-deterjani-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "bulgur-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "camasir-suyu-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "cay-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "ceviz-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "deterjan-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "domates-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "ekmek-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "et-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "fasulye-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "findik-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "galeta-unu-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "havuc-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "hindi-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "hummus-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "irmik-01",
+      "split": "holdout",
+      "passed": true
+    },
+    {
+      "id": "kabak-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "kahve-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "karabiber-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "kaymak-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "kefir-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "ketcap-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "kiyma-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "kola-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "kori-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "krema-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "kuzu-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "labne-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "leblebi-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "lor-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "maden-suyu-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "makarna-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "mayonez-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "mercimek-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "meyve-suyu-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "mozzarella-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "nohut-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "noodle-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "parmesan-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "pastirma-01",
+      "split": "holdout",
+      "passed": true
+    },
+    {
+      "id": "patates-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "patlican-01",
+      "split": "holdout",
+      "passed": true
+    },
+    {
+      "id": "pecete-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "pekmez-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "pesto-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "peynir-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "pirinc-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "pul-biber-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "sabun-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "salam-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "salatalik-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "salca-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "sampuan-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "sarimsak-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "sehriye-01",
+      "split": "holdout",
+      "passed": false
+    },
+    {
+      "id": "seker-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "sirke-01",
+      "split": "holdout",
+      "passed": true
+    },
+    {
+      "id": "soda-01",
+      "split": "holdout",
+      "passed": true
+    },
+    {
+      "id": "sogan-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "soya-sosu-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "su-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "sucuk-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "sut-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "tahin-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "tavuk-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "tereyagi-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "tortilla-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "tuvalet-kagidi-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "tuz-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "un-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "yag-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "yogurt-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "yufka-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "yumurta-01",
+      "split": "train",
+      "passed": false
+    },
+    {
+      "id": "zeytin-01",
+      "split": "train",
+      "passed": true
+    },
+    {
+      "id": "zeytinyagi-01",
+      "split": "train",
+      "passed": false
+    }
+  ]
+}

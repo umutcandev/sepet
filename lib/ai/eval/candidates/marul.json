@@ -1,0 +1,29 @@
+{
+  "term": "marul",
+  "category": "Taze sebze",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:53:41.036Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1NYC",
+      "name": "Eurofresh Yıkanmış Yaprak Marul 250 Gr",
+      "brand": "Eurofresh",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 73.9,
+      "maxPrice": 73.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 73.9
+        }
+      ]
+    }
+  ]
+}

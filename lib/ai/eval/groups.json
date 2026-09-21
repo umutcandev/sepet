@@ -1,0 +1,8910 @@
+[
+  {
+    "term": "süt",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Aromalı / tatlandırılmış süt",
+        "members": [
+          "1M3M",
+          "0ZL5",
+          "1P44",
+          "1SW0",
+          "1ZNC",
+          "1IYV",
+          "1PGU",
+          "1KU3",
+          "1QXS",
+          "0N7G",
+          "1RNC",
+          "10VG",
+          "0YXV",
+          "0ADF",
+          "1OL6",
+          "1O0V",
+          "1PMF",
+          "1M3X",
+          "0RM7",
+          "01RI",
+          "01XV",
+          "02Y7",
+          "0KI6",
+          "11LC",
+          "0TLK",
+          "1QEN",
+          "21ED",
+          "1HFO",
+          "1PO4",
+          "1MCE",
+          "1K60"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade UHT süt (tam yağlı / normal)",
+        "members": [
+          "1YG9",
+          "1YXB",
+          "0FV9",
+          "0LSL",
+          "1T9S",
+          "20WL",
+          "0OM4",
+          "06EX",
+          "0G47",
+          "1T8M",
+          "10NM",
+          "1KUJ",
+          "26QG",
+          "05DV",
+          "1KDQ",
+          "20IY",
+          "2266",
+          "1QKO",
+          "0YUC",
+          "1HEV"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "1T2S",
+          "20QE",
+          "1I9X",
+          "1CFQ",
+          "0385",
+          "1RT9",
+          "21MB",
+          "1I5D",
+          "01J5"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Az yağlı süt (%0,5 – %1,8)",
+        "members": [
+          "1H2F",
+          "0VK4",
+          "149S",
+          "1FJ0",
+          "0OGK",
+          "1NNL"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Pastörize / günlük süt",
+        "members": [
+          "1OI6",
+          "1SWV",
+          "00DR"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Çoklu paket (6'lı / 9'lu kutu)",
+        "members": [
+          "1VHJ",
+          "1LJO"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Barista / protein sütü",
+        "members": [
+          "0APR"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "yoğurt",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade yoğurt (homojenize / klasik)",
+        "members": [
+          "16PM",
+          "1QER",
+          "20X1",
+          "285L",
+          "02SD",
+          "1ZIU",
+          "1P6E",
+          "1HI5",
+          "0X0F",
+          "1TH6",
+          "00FP",
+          "1BJ2",
+          "0EVT",
+          "00JK",
+          "0OVQ",
+          "06LL",
+          "1XFE",
+          "1ZRS",
+          "0X49",
+          "1KP3",
+          "0X4A",
+          "1ZRT"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Meyveli / aromalı / katkılı yoğurt",
+        "members": [
+          "216L",
+          "1PQF",
+          "1W7E",
+          "1PJR",
+          "2CL9",
+          "1OJ4",
+          "2A2G",
+          "03UP",
+          "0YIY",
+          "1T7S",
+          "1OTF",
+          "1YDP",
+          "1M5S",
+          "1HMQ"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "1Z3F",
+          "1LUK",
+          "20XX",
+          "1ZFL",
+          "208E",
+          "0RPH",
+          "1ZXV",
+          "0MSR"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kaymaklı yoğurt",
+        "members": [
+          "1ZJC",
+          "1HOB",
+          "0OJZ",
+          "20PR",
+          "0PGK",
+          "1VLG",
+          "0WKZ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Süzme yoğurt",
+        "members": [
+          "2AWC",
+          "1KE1",
+          "1WO5",
+          "1W0J",
+          "0FNF"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Kaymaksız yoğurt",
+        "members": [
+          "0WDG",
+          "20G1",
+          "1V16",
+          "2140",
+          "1MS0"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Az / yarım yağlı yoğurt",
+        "members": [
+          "19OY",
+          "13MO",
+          "1BLG",
+          "0DBB",
+          "1EJT"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Çömlek / ekşi maya / manda yoğurdu",
+        "members": [
+          "0CXV",
+          "0035",
+          "1AUL"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Probiyotik yoğurt",
+        "members": [
+          "1VLI",
+          "1NVE"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Yoğurt mayası (yoğurt değil)",
+        "members": [
+          "01VW"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "peynir",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Beyaz peynir (inek / klasik)",
+        "members": [
+          "0D0Q",
+          "087J",
+          "0CAL",
+          "01OX",
+          "1RRG",
+          "0XUN",
+          "1C2J",
+          "1IS2",
+          "0YZH",
+          "01RZ",
+          "0KZF",
+          "1ITH",
+          "0VCY",
+          "141G",
+          "1UAA",
+          "0QA2",
+          "3WIP",
+          "169T"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Süzme peynir",
+        "members": [
+          "2CSA",
+          "1SJM",
+          "1JM2",
+          "1MMA",
+          "2AJ3",
+          "1KV0",
+          "1WSO",
+          "1JTT",
+          "0Z0N",
+          "0QIY",
+          "1YB5",
+          "1ZWQ",
+          "1X7N",
+          "1OJR",
+          "1KUX",
+          "2A5P"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Krem peynir / sürülebilir",
+        "members": [
+          "1F9N",
+          "1L22",
+          "2AJE",
+          "04SV",
+          "0LLO",
+          "2ARC",
+          "0NGP",
+          "1HEP",
+          "01VK"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Olgunlaştırılmış / eski / ezine / tulum",
+        "members": [
+          "00AR",
+          "2CRS",
+          "12JJ",
+          "2AU3",
+          "01VC",
+          "0DYE",
+          "03A3"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Otlu / kekikli / zeytinli aromalı taze peynir",
+        "members": [
+          "1EW8",
+          "0E2B",
+          "1NY5",
+          "1Z07",
+          "1RVR",
+          "1DC3"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Tel / top / çubuk / örgü peynir",
+        "members": [
+          "0512",
+          "216I",
+          "1TH0",
+          "0ZC6",
+          "2BCR",
+          "1X2Q"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Sade taze peynir",
+        "members": [
+          "1SQ0",
+          "0YKM",
+          "0203",
+          "0HDS"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "1Z85",
+          "1868",
+          "1SE4"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Üçgen / dilimli tost peyniri",
+        "members": [
+          "0LP1",
+          "20CZ",
+          "1MZA"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "ayran",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade ayran",
+        "members": [
+          "06FT",
+          "06WA",
+          "2026",
+          "0I6T",
+          "0DHE",
+          "0RPG",
+          "1Q7H",
+          "1UJR",
+          "039F",
+          "1K5Q",
+          "1QVI",
+          "17ZE",
+          "1OC9",
+          "0YZE",
+          "1GJZ",
+          "02GF",
+          "1RJL",
+          "1KGX",
+          "2AAC",
+          "10K4",
+          "182K",
+          "0LAG",
+          "0I3S",
+          "0NS1",
+          "09GS",
+          "10CZ",
+          "1ZEO",
+          "1NC6",
+          "0V7Q",
+          "0E2Y",
+          "0QD3",
+          "0CR8",
+          "0T0I",
+          "0YAY",
+          "1SBJ",
+          "1YSA",
+          "0VVO",
+          "0NGS",
+          "1PDG",
+          "05MK",
+          "1O7J"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Kefir (ayran değil)",
+        "members": [
+          "0ZZH",
+          "1PGV",
+          "20V4",
+          "1WH6",
+          "1UJN",
+          "1Y2I",
+          "20A9",
+          "182H",
+          "1ZLM",
+          "0S98",
+          "1WGM",
+          "1YLD",
+          "1WGR",
+          "20EJ",
+          "1Y6R"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Ekşi maya / kara maya ayran",
+        "members": [
+          "0XOV",
+          "1ZVI",
+          "1QZ7",
+          "0PO0",
+          "1FJJ",
+          "1AL4",
+          "20YK"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Az / yarım yağlı ayran",
+        "members": [
+          "21AW",
+          "1FZ5",
+          "1X2R",
+          "0WMB"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Naneli / aromalı ayran",
+        "members": [
+          "1FRK",
+          "1MNR",
+          "1XEI"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Aromalı probiyotik içecek (ayran değil)",
+        "members": [
+          "1RM4"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Çoklu paket ayran",
+        "members": [
+          "1P2K"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "tereyağı",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade tereyağı",
+        "members": [
+          "1WDQ",
+          "1TFP",
+          "07U3",
+          "1IA2",
+          "03CA",
+          "0NE7",
+          "10QB",
+          "0429",
+          "0ULO",
+          "0K2W",
+          "1IQ9",
+          "0RUX",
+          "1667",
+          "0WDX",
+          "09MW",
+          "0HE1",
+          "0WH6",
+          "1S72",
+          "1PGX",
+          "0QVB",
+          "1WSJ",
+          "035D",
+          "1ZW9",
+          "1OO1",
+          "0NVL",
+          "030C",
+          "0U4I",
+          "0FN3",
+          "0X0D",
+          "1RI2",
+          "0KL9",
+          "0KZN",
+          "1P2M",
+          "0DYJ",
+          "1YYS",
+          "26QF",
+          "0M1G",
+          "04CZ",
+          "01XW",
+          "02QS",
+          "0AQ4",
+          "1CIZ",
+          "023X",
+          "01VQ",
+          "0H3S",
+          "1RD6",
+          "0TOP"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Yayık / geleneksel / köy tereyağı",
+        "members": [
+          "0V55",
+          "0N0Q",
+          "0LM0",
+          "20EL",
+          "0CYD",
+          "1JAL",
+          "0R5U",
+          "02PB",
+          "0LVG"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Margarin (tereyağı değil)",
+        "members": [
+          "0YRV",
+          "1NN3",
+          "1S1Y",
+          "1Q4B",
+          "2AFH",
+          "1QE1",
+          "1NNM"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Sürülebilir yağ / sade yağ (tereyağı değil)",
+        "members": [
+          "20P4",
+          "1SA1",
+          "000H",
+          "0A3S"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Tuzsuz tereyağı",
+        "members": [
+          "0060",
+          "1YEK"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Tuzlu tereyağı",
+        "members": [
+          "1Z42",
+          "0WEU"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Aromalı / katkılı tereyağı",
+        "members": [
+          "1CJ4"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "krema",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Krema dolgulu atıştırmalık (gofret / bisküvi / kek)",
+        "members": [
+          "2CLE",
+          "110S",
+          "2098",
+          "203C",
+          "1B0M",
+          "146G",
+          "03Q5",
+          "1XBR",
+          "1GSA",
+          "1O9V",
+          "1OIY",
+          "1YN5",
+          "1Z3Q",
+          "0MWB",
+          "02YX",
+          "3WP2",
+          "1UUM",
+          "049I"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade süt kreması (%18 – %35 yağlı)",
+        "members": [
+          "1OPU",
+          "2650",
+          "0F9H",
+          "01RL",
+          "0FHZ",
+          "209M",
+          "1QVH",
+          "0TFV",
+          "05RH",
+          "1T0H",
+          "1ZO1",
+          "0RF7",
+          "1R2Q",
+          "1NKE",
+          "2AML",
+          "0YTG"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Fındık / kakao kreması (sürülebilir)",
+        "members": [
+          "1KF5",
+          "2655",
+          "033T",
+          "3WRE",
+          "3WRF",
+          "1Y2M",
+          "21MP",
+          "0ZNK",
+          "0QUN",
+          "1ZFB",
+          "29WG",
+          "09Q9",
+          "0U4F",
+          "1G0M"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Ekşi krema aromalı cips / kraker",
+        "members": [
+          "1GMH",
+          "0GKW",
+          "1Z2O",
+          "1CLG",
+          "1ZDL",
+          "1U70",
+          "0GTP"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Bitkisel krema",
+        "members": [
+          "149F",
+          "21ZQ",
+          "0Y7E",
+          "1VKH",
+          "1R4W",
+          "219Y",
+          "1QT3"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Ekşi krema / smetana",
+        "members": [
+          "08UB",
+          "0E3C",
+          "0VZ1",
+          "0TFW"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Kahve kreması",
+        "members": [
+          "04S8",
+          "0L2H",
+          "2A3O"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Sprey krema",
+        "members": [
+          "0FYY",
+          "20P3"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Aromalı yemeklik krema",
+        "members": [
+          "1Z40"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "kaymak",
+    "category": "Süt ürünleri",
+    "split": "holdout",
+    "candidateCount": 26,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Dondurma / kornet (kaymak aromalı)",
+        "members": [
+          "01CK",
+          "03LH",
+          "0ZAL",
+          "037L",
+          "18E6",
+          "0WDS",
+          "1O0L",
+          "1T8N",
+          "169Y",
+          "0RH0",
+          "0M6A",
+          "20V5"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Rulo kaymak",
+        "members": [
+          "214G",
+          "1NCE",
+          "1ZSU",
+          "1E38",
+          "00LZ",
+          "06DM",
+          "0YB2",
+          "0628"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Sade kaymak",
+        "members": [
+          "205G",
+          "0S8Z",
+          "06FK",
+          "20H8"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Yoğurt (kaymak değil)",
+        "members": [
+          "0UOJ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Ballı kaymak",
+        "members": [
+          "13YB"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "labne",
+    "category": "Süt ürünleri",
+    "split": "holdout",
+    "candidateCount": 38,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade labne",
+        "members": [
+          "0L0B",
+          "002P",
+          "1YV3",
+          "04E1",
+          "1Z1Z",
+          "0KT4",
+          "1S60",
+          "0L31",
+          "1Y1Y",
+          "19KX",
+          "1ZJW",
+          "1DX4",
+          "1SV2",
+          "20JZ",
+          "0XK9",
+          "1KSH",
+          "0U7F",
+          "1RE9",
+          "1UH5",
+          "2AB6",
+          "1T1K",
+          "2A5F",
+          "1UO1",
+          "1SYC",
+          "1R2M"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Çoklu paket labne",
+        "members": [
+          "1RRI",
+          "1ROA",
+          "1WX7",
+          "1TQU",
+          "02NM",
+          "1KPB"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "1NE8",
+          "0SV7",
+          "215Z",
+          "0FD1"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Aromalı labne (pesto / zeytinli kekikli)",
+        "members": [
+          "1PIJ",
+          "1PGS"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Keçi labnesi",
+        "members": [
+          "1T6H"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "kefir",
+    "category": "Süt ürünleri",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Meyveli / aromalı kefir",
+        "members": [
+          "0Z22",
+          "1VRO",
+          "0ULJ",
+          "1O91",
+          "26DB",
+          "1WH6",
+          "1TH1",
+          "1SJP",
+          "1NMO",
+          "0YTU",
+          "15Z1",
+          "1YTE",
+          "1YLD",
+          "1PY9",
+          "1ZST",
+          "11Z8",
+          "1UG5",
+          "1XXY",
+          "207Z",
+          "1PGV",
+          "1UJN",
+          "0K2N",
+          "0X43",
+          "001Z",
+          "1T9K",
+          "1LKK",
+          "2CPZ",
+          "1ZRR",
+          "01PS",
+          "1Y6R",
+          "1ZBA",
+          "1LL3",
+          "209N",
+          "1YUZ",
+          "1W7L",
+          "1X2S",
+          "1TZR",
+          "1I2S",
+          "1NE9",
+          "1CD3",
+          "21EJ",
+          "1QH7"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade kefir",
+        "members": [
+          "0ZZH",
+          "1Y2I",
+          "182H",
+          "1I9Y",
+          "0S98",
+          "20EJ",
+          "21X9",
+          "217Z",
+          "20V4",
+          "05GV",
+          "1WGM",
+          "200D",
+          "0DFV",
+          "1N0Y"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Ayran (kefir değil)",
+        "members": [
+          "10CZ",
+          "2026",
+          "1FRK",
+          "1K5Q",
+          "0V7Q",
+          "0CR8",
+          "0YAY",
+          "2AAC",
+          "10K4"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "20A9",
+          "1ZLM",
+          "1WGR",
+          "2AQV"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Kefir mayası",
+        "members": [
+          "1JY3"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Aromalı probiyotik içecek (kefir değil)",
+        "members": [
+          "1RM4"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Keçi kefiri",
+        "members": [
+          "1SHJ"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "lor",
+    "category": "Süt ürünleri",
+    "split": "holdout",
+    "candidateCount": 13,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade lor peyniri",
+        "members": [
+          "015V",
+          "1624",
+          "29U8",
+          "1Z94",
+          "0W5X"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Yağsız / yarım yağlı lor",
+        "members": [
+          "0YAV",
+          "14D4",
+          "0XZ1",
+          "201V"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Torba lor",
+        "members": [
+          "0TC2",
+          "1JRG"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Sürülebilir lor",
+        "members": [
+          "1ZEM"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Kaşar loru",
+        "members": [
+          "0W2N"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "ekmek",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kızarmış / gevrek ekmek (kraker)",
+        "members": [
+          "1SWL",
+          "1PZ9",
+          "1R6M",
+          "1XZD",
+          "1TPE",
+          "2K2Q",
+          "0UTH",
+          "1V4X",
+          "1YFB",
+          "1QYK",
+          "1LKU",
+          "1SN7",
+          "1IVU"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Tam buğday / kepekli / çavdarlı / çok tahıllı",
+        "members": [
+          "1E3I",
+          "1GOF",
+          "1NXG",
+          "0D7T",
+          "0VCU",
+          "16TE",
+          "03CI",
+          "2CT7",
+          "087K",
+          "01H2",
+          "1YBP",
+          "1VRA",
+          "1PB0"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "0WVB",
+          "0W8S",
+          "0KO5",
+          "0OA1",
+          "1YJZ",
+          "0ZR5",
+          "0UTL",
+          "0BYW",
+          "0GEG",
+          "1OKY"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Baget ekmek",
+        "members": [
+          "12IZ",
+          "0BJ9",
+          "1VI2",
+          "1F8D",
+          "1F92",
+          "0ZV3",
+          "1V4Z",
+          "15UF"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Sade ekmek",
+        "members": [
+          "1OLH",
+          "0YV5",
+          "0SMF",
+          "020O",
+          "20NR",
+          "0BJA",
+          "1JQZ"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Tost / sandviç / hamburger ekmeği",
+        "members": [
+          "0VXF",
+          "0ZYB",
+          "1PL0",
+          "0V3E",
+          "0VQQ",
+          "0PJF"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Ekmek cipsi / kıtırı",
+        "members": [
+          "1VPZ",
+          "0RRI",
+          "0OZR",
+          "1QAS"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Lavaş ekmek",
+        "members": [
+          "3WOT",
+          "09OI",
+          "13V6",
+          "13TG"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Ekşi mayalı ekmek",
+        "members": [
+          "0PNO",
+          "0UTJ",
+          "1I0L"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Katkılı ekmek (fındıklı / zeytinli / fesleğenli)",
+        "members": [
+          "051L",
+          "0V6O"
+        ]
+      },
+      {
+        "id": "K",
+        "label": "Ekmek unu (ekmek değil)",
+        "members": [
+          "0HSX"
+        ]
+      },
+      {
+        "id": "L",
+        "label": "Ekmek kırıntısı / panko",
+        "members": [
+          "0NU6"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "un",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade buğday unu",
+        "members": [
+          "1TNY",
+          "0Y3L",
+          "0STQ",
+          "0AC0",
+          "1S10",
+          "0WC7",
+          "1RSN",
+          "07QX",
+          "045Q",
+          "0XQN",
+          "06G8",
+          "0QZ6",
+          "1LGG",
+          "1NDD",
+          "0A0V",
+          "0AKI",
+          "0F74",
+          "18L8",
+          "02VH",
+          "0T7W",
+          "05T1"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Özel diyet / tıbbi un (glutensiz, organik, düşük proteinli)",
+        "members": [
+          "20TD",
+          "2CT2",
+          "0N41",
+          "1V33",
+          "0R1U",
+          "030H",
+          "0ECY",
+          "1AUJ",
+          "0DNF",
+          "1WVD",
+          "1JJR",
+          "0HYI"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Galeta unu",
+        "members": [
+          "1CJT",
+          "01JV",
+          "09WJ",
+          "0M68",
+          "1STP",
+          "0V9M",
+          "0P3H"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Mısır / pirinç / çavdar unu",
+        "members": [
+          "1OBQ",
+          "0C4R",
+          "1FRZ",
+          "02AC",
+          "0A7B",
+          "0705",
+          "0FBM"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Alternatif un (badem, hindistan cevizi, mercimek, karabuğday)",
+        "members": [
+          "1PB7",
+          "0OU5",
+          "1XOL",
+          "1UG9",
+          "0VNE",
+          "0B1Q",
+          "1TCN"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Marka adı tuzağı: Un Do Tre (ürün makarna)",
+        "members": [
+          "1T7C",
+          "20SQ",
+          "1YBO",
+          "16QY",
+          "16QW",
+          "16QM"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Tam buğday unu",
+        "members": [
+          "1Z5Y",
+          "1A6X",
+          "0BZ2",
+          "1H4Z",
+          "1JDD"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Kepekli / esmer / çok tahıllı un",
+        "members": [
+          "1UCJ",
+          "1Q2X",
+          "0L6F",
+          "1YGY"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Baklavalık / böreklik un",
+        "members": [
+          "1PSL",
+          "0T7O"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Un kurabiyesi (un değil)",
+        "members": [
+          "0YL0"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "makarna",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Klasik makarna (burgu / fiyonk / kalem / yüksük)",
+        "members": [
+          "083Q",
+          "0B11",
+          "0M0A",
+          "1P8W",
+          "16KS",
+          "0DYK",
+          "20FP",
+          "1ZAK",
+          "1ZOU",
+          "0QCP",
+          "0QCU",
+          "21XQ",
+          "20KF",
+          "1T5Y",
+          "207R",
+          "1YQJ",
+          "2166",
+          "0SVU",
+          "07A4",
+          "16L0",
+          "16JS",
+          "0TE3",
+          "0LH1",
+          "20R6",
+          "0FRO",
+          "1NCS",
+          "20R5",
+          "1XZP",
+          "0QJ1",
+          "1BXM",
+          "1BXR",
+          "1VTR",
+          "1S7V",
+          "03X8",
+          "0CKN",
+          "2A1V",
+          "01UF",
+          "0Z4A",
+          "1PVO",
+          "1Z1N",
+          "20GD",
+          "1RLM",
+          "1QE2",
+          "1BXO",
+          "2AI3",
+          "2A1W",
+          "2A1T",
+          "1P6B"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "1SYB",
+          "1B0U",
+          "1OOY",
+          "00IE",
+          "17NL",
+          "1NSW",
+          "0KAM",
+          "1HTE",
+          "1AQ5",
+          "1YFT",
+          "17PW",
+          "1PG4"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Sebzeli / mercimekli / özel tahıl makarna",
+        "members": [
+          "20Z3",
+          "1WAG",
+          "1H4S"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Vitaminli makarna",
+        "members": [
+          "0WXL",
+          "21Q4",
+          "10FZ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Tam buğday makarna",
+        "members": [
+          "1LEW",
+          "1RNQ"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Fırın makarnası",
+        "members": [
+          "1TBA",
+          "0LDW"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Yumurtalı makarna",
+        "members": [
+          "20JO"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Figürlü / özel form makarna",
+        "members": [
+          "0TTQ"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "pirinç",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Osmancık pirinç",
+        "members": [
+          "0X4O",
+          "0XG5",
+          "117K",
+          "0CI4",
+          "0PRZ",
+          "15TJ",
+          "02MV",
+          "06R7",
+          "08G2",
+          "0HS1",
+          "0P6A",
+          "0Z9P",
+          "0409",
+          "0MPK",
+          "0KML",
+          "1RQT",
+          "07QD",
+          "0WYX",
+          "13OG"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Baldo pirinç",
+        "members": [
+          "04LS",
+          "0P95",
+          "1K1O",
+          "0H1X",
+          "0MAX",
+          "06G7",
+          "0UT3",
+          "0IO8",
+          "0J9O",
+          "04IN",
+          "1N2B",
+          "0YGM",
+          "04MB",
+          "1AHV",
+          "0AYV",
+          "1ESC",
+          "16UU",
+          "134E"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Pilavlık / genel pirinç",
+        "members": [
+          "07U1",
+          "1AP3",
+          "05UZ",
+          "00RM",
+          "10D6",
+          "05AH",
+          "02BP",
+          "005A",
+          "13TP",
+          "144G",
+          "02LV",
+          "00PD",
+          "0WYR"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Basmati pirinç",
+        "members": [
+          "2ASH",
+          "0PS7",
+          "1Z5E",
+          "1ZVP",
+          "1R0T",
+          "0KG9",
+          "1Z8S"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "1F0V",
+          "20AG",
+          "0IQH",
+          "1V8J"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Jasmin / yasemin pirinci",
+        "members": [
+          "1OGZ",
+          "04AM",
+          "1RMR"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Siyah / kahverengi / kepekli pirinç",
+        "members": [
+          "0UC1",
+          "1NNG",
+          "06LD"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Kırık pirinç",
+        "members": [
+          "13UZ",
+          "0P0J",
+          "0H0T"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Arborio / risotto pirinci",
+        "members": [
+          "1C8M",
+          "1QFE"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "bulgur",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "candidateCount": 71,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Pilavlık bulgur",
+        "members": [
+          "0W77",
+          "06Y3",
+          "08WG",
+          "132G",
+          "1PU8",
+          "08VO",
+          "1ROP",
+          "0F2Q",
+          "0VWW",
+          "1AX4",
+          "1I1K",
+          "1SO8",
+          "06HW",
+          "21TD",
+          "0WCD",
+          "0SBF",
+          "1PHS",
+          "1ULL"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Köftelik / ince bulgur",
+        "members": [
+          "0YSI",
+          "0577",
+          "049D",
+          "1ZRK",
+          "1R35",
+          "14G7",
+          "1OOR",
+          "04F6",
+          "1QWY",
+          "0Q0L",
+          "1WQZ",
+          "20Q1",
+          "1YSO"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Esmer / çiğköftelik / tam tane bulgur",
+        "members": [
+          "0T7R",
+          "0DF8",
+          "08I7",
+          "0SJJ",
+          "20E5",
+          "1J7E",
+          "08JA",
+          "00P3",
+          "101Z",
+          "1S0X",
+          "0V96"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Hazır bulgur pilavı (bulgur değil)",
+        "members": [
+          "01TZ",
+          "0A6G",
+          "03C1",
+          "1SM8",
+          "1Q4Y",
+          "0E2H",
+          "1OVY",
+          "07YG",
+          "0YNZ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "1YIH",
+          "1N0Q",
+          "010I",
+          "1F0R",
+          "0EJ1",
+          "06RE",
+          "0Y6G",
+          "0JWG",
+          "1O9O"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Şehriyeli / başbaşı bulgur",
+        "members": [
+          "1X4Y",
+          "1YKV",
+          "1SZV",
+          "00W5"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Siyez bulguru",
+        "members": [
+          "0EEV",
+          "1SS0"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "İçli köftelik bulgur",
+        "members": [
+          "1924",
+          "065E"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Genel bulgur",
+        "members": [
+          "1LQE",
+          "1L7N"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Firik bulgur",
+        "members": [
+          "1R7T"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "irmik",
+    "category": "Ekmek & unlu",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Un (irmik değil)",
+        "members": [
+          "1A6X",
+          "1H4Z",
+          "1JDD",
+          "18L8",
+          "0XQN",
+          "0QZ6",
+          "02AC",
+          "20TD",
+          "1OBQ",
+          "0AKI",
+          "0A7B",
+          "0705",
+          "05MD",
+          "1UCJ",
+          "0C4R",
+          "1S10",
+          "0BZ2",
+          "0N41",
+          "0WC7",
+          "0OU5",
+          "1XOL",
+          "1NDD",
+          "1UG9",
+          "1FRZ",
+          "20N2",
+          "0Y3L",
+          "02VH",
+          "0AC0",
+          "1PUX",
+          "0L6F",
+          "05T1",
+          "06G8",
+          "1PB7",
+          "0T7O",
+          "1WVD",
+          "0A0V",
+          "0B1Q"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade buğday irmiği",
+        "members": [
+          "0UW3",
+          "0765",
+          "1CJS",
+          "08V1",
+          "04OZ",
+          "1SUC",
+          "0MTF",
+          "0RO6",
+          "00KD",
+          "1JQ3",
+          "1YFK"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Nişasta (irmik değil)",
+        "members": [
+          "0RO0",
+          "1B8U",
+          "1AOQ",
+          "08P5",
+          "0ZN0",
+          "07JR",
+          "13K6",
+          "0KMX"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Galeta unu / panko (irmik değil)",
+        "members": [
+          "1CJT",
+          "0V9M",
+          "01JV",
+          "09WJ",
+          "0M68",
+          "1STP",
+          "0NU6"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Organik irmik",
+        "members": [
+          "0BEN",
+          "09R8",
+          "0HYI",
+          "0FBM",
+          "030H",
+          "0ECY"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "İrmik helvası (hazır tatlı)",
+        "members": [
+          "1PJI",
+          "0G6B"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Mısır irmiği",
+        "members": [
+          "0RH3"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "galeta unu",
+    "category": "Ekmek & unlu",
+    "split": "holdout",
+    "candidateCount": 11,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade galeta unu",
+        "members": [
+          "0M68",
+          "0GTT",
+          "1STP",
+          "0V9M",
+          "1CJT",
+          "01JV",
+          "09WJ",
+          "0P3H"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Panko (Japon ekmek kırıntısı)",
+        "members": [
+          "1AQ7",
+          "0NU6"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "16HI"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "yufka",
+    "category": "Ekmek & unlu",
+    "split": "train",
+    "candidateCount": 26,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Baklavalık / böreklik yufka",
+        "members": [
+          "141R",
+          "13PO",
+          "02UU",
+          "0LX0",
+          "0CGU",
+          "09LD",
+          "0MXU",
+          "0GSI",
+          "0JBS",
+          "1Q5R"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade yufka",
+        "members": [
+          "0XUH",
+          "0ZQR",
+          "0RXW",
+          "0ZIK",
+          "00BV",
+          "1BHN",
+          "0C1U"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Üçgen yufka",
+        "members": [
+          "0WFI",
+          "11MH",
+          "15ZL",
+          "0Q42",
+          "01HD"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Yaprak / kat sayılı yufka",
+        "members": [
+          "01W4",
+          "0R8E",
+          "0NXG",
+          "05SH"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "şehriye",
+    "category": "Ekmek & unlu",
+    "split": "holdout",
+    "candidateCount": 32,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Arpa şehriye",
+        "members": [
+          "05LC",
+          "107G",
+          "0VH6",
+          "0F4O",
+          "201N",
+          "0TLT",
+          "1NLE",
+          "1Z1Y",
+          "03NA",
+          "1Z9B",
+          "2A1X",
+          "20SD",
+          "1PSM"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Tel şehriye",
+        "members": [
+          "01Q1",
+          "0XHX",
+          "1K2A",
+          "1RU2",
+          "20OS",
+          "0ABY",
+          "20OR",
+          "0MCH",
+          "0B3Z",
+          "2A1Y"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "1ADG",
+          "0F3C",
+          "1YJG",
+          "18RK",
+          "1ADI"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Çorbalık kesme makarna (şehriye değil)",
+        "members": [
+          "0363"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Vitaminli şehriye",
+        "members": [
+          "1YRZ"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Pirinç şehriyesi",
+        "members": [
+          "027O"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Yıldız şehriye",
+        "members": [
+          "1Z7A"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "et",
+    "category": "Et & protein",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Füme / kuru et (şarküteri)",
+        "members": [
+          "050J",
+          "19F6",
+          "01VP",
+          "1VX2",
+          "2LZB",
+          "0TLR",
+          "1VW3",
+          "0MKH",
+          "1TM9",
+          "0N4F",
+          "1ZMC",
+          "0S9I",
+          "206J",
+          "02G3",
+          "20US",
+          "1Z6H",
+          "208Z",
+          "1S8O",
+          "1ZFM",
+          "1U5R",
+          "1Y2N",
+          "20UA",
+          "1Y8W",
+          "0OM8",
+          "0I1V",
+          "0ULR"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Hazır döner",
+        "members": [
+          "1YE9",
+          "208G",
+          "35RB",
+          "1QSC",
+          "0PVE",
+          "0PG3",
+          "0NSH",
+          "1W4S",
+          "0YY5",
+          "004U",
+          "1HYO",
+          "1UHN",
+          "1800",
+          "03W5",
+          "010W",
+          "1MTF",
+          "03JJ",
+          "0335",
+          "1KL1",
+          "0156",
+          "05LB",
+          "0VP5"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Et bulyon / çeşni / baharat",
+        "members": [
+          "01I8",
+          "1L91",
+          "1X0Q",
+          "21QP",
+          "0TBG",
+          "0GLH",
+          "0YCD",
+          "1ORG"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Karides eti (deniz ürünü)",
+        "members": [
+          "1339",
+          "0DD6",
+          "04QA",
+          "0WHE",
+          "19S6",
+          "1YD9",
+          "0MHB"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Et çubukları / atıştırmalık",
+        "members": [
+          "0S9H",
+          "1TID",
+          "0NGW",
+          "06P2"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Tantuni / dürüm hazır yemek",
+        "members": [
+          "13I5",
+          "1SCR"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Çiğ dana eti (kuşbaşı / sote)",
+        "members": [
+          "01RG",
+          "024W"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Konserve / kavurma",
+        "members": [
+          "0UU9"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "kıyma",
+    "category": "Et & protein",
+    "split": "train",
+    "candidateCount": 14,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Yağlı kıyma (%15 – %20)",
+        "members": [
+          "002E",
+          "15PL",
+          "0XP9",
+          "0666",
+          "0BD7"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade dana kıyma",
+        "members": [
+          "0MO4",
+          "12Y7",
+          "0MQU",
+          "0GYU"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Yağsız kıyma",
+        "members": [
+          "099I",
+          "07A7"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Dana kuzu karışık kıyma",
+        "members": [
+          "18TW",
+          "0RPW"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Dondurulmuş kıyma",
+        "members": [
+          "147T"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "tavuk",
+    "category": "Et & protein",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Bulyon / çeşni / tavuk suyu",
+        "members": [
+          "0XRC",
+          "0TK7",
+          "1IW4",
+          "01NT",
+          "0OB8",
+          "1NNF",
+          "1PR0",
+          "3WHI",
+          "1QFR",
+          "2BH7",
+          "1T01",
+          "1HGJ",
+          "1HVI",
+          "1SMG",
+          "0AQG",
+          "1TPK",
+          "1L6L",
+          "1JO5",
+          "1ZRO",
+          "1N8I",
+          "1SKZ"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Hazır yemek (burger / döner / sote / salata)",
+        "members": [
+          "1CRL",
+          "1IM3",
+          "02ZU",
+          "13I5",
+          "0N3X",
+          "13BW",
+          "1DKR",
+          "3WPN",
+          "03W5",
+          "1RWX",
+          "1Y3X",
+          "0KLH",
+          "1DCO"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Hazır noodle",
+        "members": [
+          "1IBK",
+          "1YQU",
+          "0Z3W",
+          "2A77",
+          "0XQR",
+          "1L7M",
+          "1WYV",
+          "1LB9",
+          "2C9H",
+          "1ZGV"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Çiğ tavuk parçaları (but / göğüs / kanat / baget)",
+        "members": [
+          "04XI",
+          "00S1",
+          "03XY",
+          "09LN",
+          "1384",
+          "07M4",
+          "0BDT",
+          "16F1",
+          "0066",
+          "07WJ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Tavuk yumurtası (tavuk eti değil)",
+        "members": [
+          "1582",
+          "0WKG",
+          "1Q6F",
+          "02J6",
+          "09XA",
+          "070D",
+          "1VSS"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Hazır çorba",
+        "members": [
+          "3WDE",
+          "0YGB",
+          "0YLX",
+          "1YGU",
+          "005T",
+          "1UNJ"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Tavuk ciğeri",
+        "members": [
+          "042O",
+          "03XS"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Tavukgöğsü tatlısı",
+        "members": [
+          "1T89"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Füme tavuk (şarküteri)",
+        "members": [
+          "086Z"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Özel diyet varyant (light / laktozsuz / organik / vegan)",
+        "members": [
+          "0BTI"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "balık",
+    "category": "Et & protein",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Ton balığı konservesi",
+        "members": [
+          "0ZDE",
+          "20PP",
+          "0XHQ",
+          "1KDC",
+          "1ZRQ",
+          "0S63",
+          "211W",
+          "1ZG5",
+          "1ZAS",
+          "0ASX",
+          "0CHX",
+          "05WT",
+          "0G0Y",
+          "0AYC",
+          "06X4",
+          "03P6",
+          "0ATY",
+          "0VLO",
+          "0TLE",
+          "1JE6",
+          "20S1",
+          "1KJ3",
+          "219D",
+          "0FP6",
+          "0PNS",
+          "1PWA",
+          "0WGU",
+          "1T7L",
+          "1SRH",
+          "1U5Z",
+          "0TUO",
+          "0XOC",
+          "1TJE"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Kalamar / ahtapot / midye / yengeç",
+        "members": [
+          "1YB0",
+          "0E4P",
+          "05IE",
+          "02SK",
+          "20UB",
+          "1IKC",
+          "1SYF",
+          "1Z87",
+          "00KF",
+          "0D8P",
+          "1CBN"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Balık kraker (atıştırmalık)",
+        "members": [
+          "0XRE",
+          "1YHC",
+          "1E9D",
+          "1KSU",
+          "1ZJ5",
+          "1RKL",
+          "1DBO",
+          "1SZ4",
+          "1Z6T"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Karides",
+        "members": [
+          "0D8Q",
+          "08ED",
+          "0FT1",
+          "218U",
+          "1IAH",
+          "2082",
+          "0MHB"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Taze / dondurulmuş bütün balık",
+        "members": [
+          "1NG9",
+          "1PS7",
+          "1LWQ",
+          "0VZK",
+          "21R3",
+          "0UAC"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Hazır / çıtır balık ürünü",
+        "members": [
+          "20CI",
+          "1OJV",
+          "1GV6"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Füme balık",
+        "members": [
+          "1RGY",
+          "1QHC"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Balık sosu",
+        "members": [
+          "1CZ3"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "yumurta",
+    "category": "Et & protein",
+    "split": "train",
+    "candidateCount": 63,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Organik yumurta",
+        "members": [
+          "0QE9",
+          "0GWI",
+          "0IPM",
+          "1YQ1",
+          "0BV2",
+          "0TJ5",
+          "0TGC",
+          "1T4C",
+          "0BGE",
+          "20VP",
+          "0C8Z",
+          "1586",
+          "0O8T",
+          "16BT",
+          "1R0I",
+          "073M"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade yumurta",
+        "members": [
+          "07JT",
+          "1PRW",
+          "01PV",
+          "1Q2F",
+          "0O21",
+          "0Z7H",
+          "0GZ3",
+          "1M3O",
+          "0RWI",
+          "1RQJ",
+          "0QQ6",
+          "0PU6",
+          "01RD"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Sürpriz / oyuncaklı yumurta (oyuncak)",
+        "members": [
+          "0Y4B",
+          "0ET9",
+          "1NM8",
+          "0VNZ",
+          "1OX9",
+          "3WB3",
+          "1M8A",
+          "01XN",
+          "0LWJ",
+          "3X2F",
+          "20VF",
+          "1NJZ"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Gezen tavuk / free range yumurta",
+        "members": [
+          "02J6",
+          "09XA",
+          "070D",
+          "1582",
+          "0WKG",
+          "1RMQ",
+          "0VTP",
+          "1Q6F",
+          "1VSS"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Kahverengi / beyaz yumurta",
+        "members": [
+          "182O",
+          "2CRW",
+          "01DF",
+          "05OK",
+          "0SCV"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Jumbo / L / XL boy yumurta",
+        "members": [
+          "0F45",
+          "0CI6",
+          "0R2K",
+          "21M4"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Omega 3 yumurta",
+        "members": [
+          "0OCL",
+          "1TNR"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Yumurta kabuk makarna (yumurta değil)",
+        "members": [
+          "1H37"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Bıldırcın yumurtası",
+        "members": [
+          "1OLM"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "sucuk",
+    "category": "Et & protein",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kangal sucuk",
+        "members": [
+          "0N0H",
+          "03AL",
+          "0R29",
+          "04FQ",
+          "1BL1",
+          "20DZ",
+          "04FH",
+          "0CWM",
+          "0ATO",
+          "0QS6",
+          "13ZX",
+          "1OCC",
+          "0VZD",
+          "09B6",
+          "0JRY"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Piliç / hindi sucuk (kanatlı)",
+        "members": [
+          "1OBP",
+          "2AEI",
+          "0OGT",
+          "1P7N",
+          "05WC",
+          "05R6",
+          "2AFA",
+          "0U3B",
+          "07H3",
+          "2DQ2",
+          "069M",
+          "1YF2"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Sade dana sucuk",
+        "members": [
+          "1Z9I",
+          "0ULS",
+          "1SJT",
+          "0UOK",
+          "1ZQE",
+          "027P",
+          "1NOU",
+          "0L2K",
+          "209C",
+          "0LIY",
+          "0S2X"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Fermente sucuk",
+        "members": [
+          "1M20",
+          "0D5Q",
+          "01UO",
+          "07QH",
+          "0B3T",
+          "02JE",
+          "12NA",
+          "0GTA",
+          "10O0"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Parmak / baton sucuk",
+        "members": [
+          "03FY",
+          "030I",
+          "205H",
+          "0D38",
+          "0KLC",
+          "0M4U",
+          "00YA"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Kasap / geleneksel sucuk",
+        "members": [
+          "0SFT",
+          "01T5",
+          "1USM",
+          "204Q",
+          "0OGR",
+          "1KEL"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Isıl işlem görmüş sucuk",
+        "members": [
+          "1ISN",
+          "1UD3",
+          "1O8N",
+          "2MOI",
+          "112R"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Acılı sucuk",
+        "members": [
+          "0UXS",
+          "0A8S",
+          "277O",
+          "1UJZ"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Dilimli sucuk",
+        "members": [
+          "01W3",
+          "06VB",
+          "0YVS"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "salam",
+    "category": "Et & protein",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Hindi salam",
+        "members": [
+          "147C",
+          "0ENU",
+          "19A6",
+          "2AKD",
+          "20VO",
+          "0SIR",
+          "1GMX",
+          "1N33",
+          "228Y",
+          "011G",
+          "0RF0",
+          "10LI",
+          "1QFZ",
+          "1TQ1",
+          "0KQV",
+          "0ZCP",
+          "14OU",
+          "0LMD",
+          "0PHI",
+          "2AIO",
+          "1BSC",
+          "0Z6C",
+          "1YL3",
+          "2B68",
+          "2A6T",
+          "0MAW",
+          "1Z6F",
+          "113M",
+          "2ADO",
+          "1PFD",
+          "1ORX"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Macar salam",
+        "members": [
+          "1Y8Y",
+          "1RPF",
+          "13JB",
+          "0683",
+          "0AUY",
+          "07SU",
+          "2AYN",
+          "10B9",
+          "0E67",
+          "1J0T",
+          "1KKR",
+          "07XW",
+          "0MQQ",
+          "1OUQ",
+          "0CT9",
+          "0NP0",
+          "1BJ6",
+          "1RX1",
+          "1YCM",
+          "1SFF",
+          "0KWR"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Piliç salam",
+        "members": [
+          "1OLZ",
+          "2AYW",
+          "0K4A",
+          "1OV5",
+          "04UV",
+          "07G3",
+          "0HTU",
+          "0AID",
+          "05W0",
+          "2CS5"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Fıstıklı salam",
+        "members": [
+          "0M1J",
+          "1SOX",
+          "0EW1",
+          "041S"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Genel salam",
+        "members": [
+          "274O",
+          "0JGL"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Salamlı sandviç (hazır ürün)",
+        "members": [
+          "1TL7"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Organik salam",
+        "members": [
+          "19VL"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Dana salam",
+        "members": [
+          "023E"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Biberli salam",
+        "members": [
+          "08TB"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "hindi",
+    "category": "Et & protein",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Hindi salam",
+        "members": [
+          "0ENU",
+          "0Z6C",
+          "19A6",
+          "1Z6F",
+          "2ADO",
+          "0KQV",
+          "147C",
+          "1YL3",
+          "0RF0",
+          "10LI",
+          "1QFZ",
+          "1TQ1",
+          "0ZCP",
+          "1N33",
+          "2AIO",
+          "1BSC",
+          "011G",
+          "2B68",
+          "2A6T",
+          "2AKD",
+          "0MAW",
+          "1PFD",
+          "0SIR",
+          "1GMX",
+          "1ORX",
+          "0PHI"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Hindi füme",
+        "members": [
+          "0BHW",
+          "19F6",
+          "1KSY",
+          "0URV",
+          "20K5",
+          "1O3J",
+          "20US",
+          "1NYR",
+          "1U5R",
+          "1Y2N",
+          "1LJX",
+          "06P2",
+          "208Z",
+          "1OYC",
+          "1S8O",
+          "1UKC",
+          "1DM6",
+          "20UA",
+          "0XSQ",
+          "0I1V",
+          "0ULR"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Çiğ hindi parçaları (but / göğüs / külbastı)",
+        "members": [
+          "1ZQD",
+          "1DKO",
+          "0JOR",
+          "0T6G",
+          "0XES",
+          "0T6F",
+          "0SFR"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Hindi konservesi",
+        "members": [
+          "0OGF",
+          "1TM4",
+          "1R2K",
+          "0UO4",
+          "1NE6",
+          "1SM7"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Pişmiş / hazır hindi",
+        "members": [
+          "1NHN",
+          "1M5B",
+          "1QVA",
+          "0Q1P",
+          "1KHS"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Hindi sosis",
+        "members": [
+          "1DG3",
+          "1D1O",
+          "1DCT",
+          "20BC"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Hindi jambon",
+        "members": [
+          "1OE8",
+          "0DPU"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Hindi sucuk",
+        "members": [
+          "0OGT"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "kuzu",
+    "category": "Et & protein",
+    "split": "train",
+    "candidateCount": 18,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Hazır köfte / kebap",
+        "members": [
+          "00LQ",
+          "0J4Q",
+          "0Z3H",
+          "0X7U",
+          "0KQD"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Kokoreç",
+        "members": [
+          "1IQK",
+          "1E42",
+          "1S51"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Dana kuzu karışık kıyma",
+        "members": [
+          "18TW",
+          "0RPW",
+          "0BD7"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kuzu kulağı (bitki, et değil)",
+        "members": [
+          "0MA4",
+          "0FON"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Kuzu kemik suyu",
+        "members": [
+          "1Q7R",
+          "1P6H"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Kuzu döner",
+        "members": [
+          "004U"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Kuzu kavurma",
+        "members": [
+          "099F"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Çiğ kuzu eti (kuşbaşı)",
+        "members": [
+          "2KEK"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "pastırma",
+    "category": "Et & protein",
+    "split": "holdout",
+    "candidateCount": 25,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Çemensiz / çemeni sıyrılmış pastırma",
+        "members": [
+          "07Y3",
+          "09L9",
+          "104X",
+          "0CDK",
+          "1ENK",
+          "0PWZ",
+          "2141",
+          "0TS9",
+          "0Q59",
+          "0WAZ"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Dilimli pastırma",
+        "members": [
+          "0Q4K",
+          "0PL4",
+          "0F2H",
+          "0TCJ",
+          "0CCQ"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Antrikot pastırma",
+        "members": [
+          "0OVS",
+          "0S9G",
+          "00BB",
+          "0PWY"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Parça / seçme pastırma",
+        "members": [
+          "011L",
+          "1Y6Z",
+          "20SX"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Sade dana pastırma",
+        "members": [
+          "0OBB",
+          "0RMH",
+          "0QSC"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "domates",
+    "category": "Taze sebze",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Domates salçası",
+        "members": [
+          "1ZKZ",
+          "02YV",
+          "0TO8",
+          "0I0D",
+          "1I61",
+          "1ZZK",
+          "1AN9",
+          "08IJ",
+          "239B",
+          "1UKT",
+          "20PN",
+          "1ZHR",
+          "1S3N",
+          "20VU",
+          "0X7M",
+          "20QT",
+          "1WRY",
+          "1YQD",
+          "3X5R",
+          "0L4Y",
+          "0KZC",
+          "1RVP",
+          "17Q2",
+          "0ESF",
+          "0ZHG",
+          "2AFO",
+          "29WX",
+          "0EUH",
+          "0NOS",
+          "1RO6",
+          "1O5D",
+          "0JTS",
+          "1VHC",
+          "088N"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Domates rendesi / rendelenmiş",
+        "members": [
+          "2246",
+          "2CNO",
+          "1RLZ",
+          "21JW",
+          "1SBG",
+          "0A0F",
+          "083M",
+          "1ZBU"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Taze domates (kg)",
+        "members": [
+          "1OMF",
+          "0009",
+          "10TW",
+          "034L",
+          "1ISV",
+          "1I0Y",
+          "05K7",
+          "1IQ0"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Domates püresi",
+        "members": [
+          "1AVS",
+          "0C26",
+          "1UZ9",
+          "216F",
+          "08JJ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Doğranmış / soyulmuş konserve domates",
+        "members": [
+          "3WSD",
+          "1SF4",
+          "1Z6A",
+          "0RSG",
+          "0WJH"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Kokteyl / şeker / atıştırmalık domates",
+        "members": [
+          "1NXF",
+          "1Z0L",
+          "1J28",
+          "051J"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Kurutulmuş domates",
+        "members": [
+          "20A6",
+          "0F64",
+          "1ECG"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Hazır domates çorbası",
+        "members": [
+          "1MTT",
+          "1UZW"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Domates suyu",
+        "members": [
+          "0XA8"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Bruschetta / hazır meze",
+        "members": [
+          "0OL8"
+        ]
+      },
+      {
+        "id": "K",
+        "label": "Zeytin (domates değil)",
+        "members": [
+          "0GLJ"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "salatalık",
+    "category": "Taze sebze",
+    "split": "train",
+    "candidateCount": 36,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Salatalık turşusu (klasik)",
+        "members": [
+          "0BD5",
+          "0LMI",
+          "1OO6",
+          "15XZ",
+          "1GQC",
+          "1NMX",
+          "0M4X",
+          "1Z7J",
+          "0JW7",
+          "1IJS",
+          "1PKF",
+          "0ZBZ",
+          "1XEN",
+          "16GZ",
+          "0WHD",
+          "1H5D"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Tatlı / hafif / yabancı tip turşu",
+        "members": [
+          "2070",
+          "2BIX",
+          "0NJH",
+          "1R0D",
+          "1ZWC",
+          "1YTC",
+          "0C8R",
+          "09DT",
+          "1ZB8"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Taze salatalık / hıyar",
+        "members": [
+          "0Q7Q",
+          "1LTT",
+          "0JRN",
+          "1MZQ",
+          "0L8F"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kornişon turşusu",
+        "members": [
+          "02WN",
+          "21C5"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Deodorant (salatalık aromalı)",
+        "members": [
+          "0WNF"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "İçecek (salatalık aromalı)",
+        "members": [
+          "1G8T"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Turşuluk taze kornişon",
+        "members": [
+          "1GRQ"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Burger / dilimli turşu",
+        "members": [
+          "1S4V"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "biber",
+    "category": "Taze sebze",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Biber salçası",
+        "members": [
+          "04ZW",
+          "3X2B",
+          "1KUO",
+          "2BYM",
+          "0RP3",
+          "0RIJ",
+          "1VHC",
+          "0HTX",
+          "0YSO",
+          "0URO",
+          "04BO",
+          "024B",
+          "0DXP",
+          "0UWC",
+          "1T12",
+          "3X5S",
+          "1OAX",
+          "1XU7",
+          "0MAK",
+          "11EY",
+          "1V5B"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Közlenmiş biber",
+        "members": [
+          "0REV",
+          "1S0W",
+          "0TUN",
+          "0LV8",
+          "1ZNA",
+          "1FEC",
+          "06CQ",
+          "1Q3G",
+          "1N3R",
+          "17YX"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Acı biber turşusu",
+        "members": [
+          "1HJK",
+          "1NKH",
+          "0JH1",
+          "0C90",
+          "04H7",
+          "0B2V",
+          "15V1",
+          "1GGT",
+          "1Y8Z",
+          "0IK6"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Pul biber / toz biber (baharat)",
+        "members": [
+          "0ROL",
+          "1VA2",
+          "014F",
+          "1E4F",
+          "1RBX",
+          "1PW0",
+          "0ZO6",
+          "057A"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Jalapeno turşusu",
+        "members": [
+          "0762",
+          "1ZWD",
+          "1V9P",
+          "1R1I",
+          "202Y",
+          "1X1Z",
+          "16FK"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Taze biber (kapya / çarliston / dolma / sivri)",
+        "members": [
+          "0AIR",
+          "1VVZ",
+          "1NS4",
+          "134Z",
+          "0VYZ",
+          "096P",
+          "1ITJ"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Yunan / makedon / misket / frenk biber turşusu",
+        "members": [
+          "1B89",
+          "0SKT",
+          "1B86",
+          "1B8D",
+          "0SOI"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Peynir dolgulu biber (meze)",
+        "members": [
+          "1EBR",
+          "1ECL",
+          "1ECP"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Genel biber",
+        "members": [
+          "101R"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "soğan",
+    "category": "Taze sebze",
+    "split": "train",
+    "candidateCount": 41,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Cips / çerez (soğan aromalı)",
+        "members": [
+          "13GN",
+          "1ZZE",
+          "1Z2O",
+          "1M3U",
+          "2CPS",
+          "1IJ6",
+          "1W7Y",
+          "16MQ",
+          "1YZJ",
+          "2CIG",
+          "0GTP",
+          "1Y1K",
+          "21TV",
+          "1J0K",
+          "0K2A",
+          "2L8V"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Özel çeşit soğan (kırmızı / mor / gümüş / arpacık)",
+        "members": [
+          "0K3S",
+          "0PVW",
+          "0T9L",
+          "2F4D",
+          "0UCS",
+          "0016",
+          "0AE5"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Soğan halkası (hazır)",
+        "members": [
+          "0RXD",
+          "23JN",
+          "20IA",
+          "1TDG"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kuru soğan",
+        "members": [
+          "1YYM",
+          "0JDD",
+          "13LA",
+          "12L9"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Soğan tozu / granül",
+        "members": [
+          "1ACV",
+          "1LV8",
+          "1JKJ"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Doğranmış / dondurulmuş soğan",
+        "members": [
+          "1Q17",
+          "1R0F"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Taze / yeşil soğan",
+        "members": [
+          "051R",
+          "0S0R"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Çıtır kaplamalı soğan",
+        "members": [
+          "0QXC"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Kurutulmuş soğan",
+        "members": [
+          "16GQ"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Soğan turşusu",
+        "members": [
+          "1HAQ"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "patates",
+    "category": "Taze sebze",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Patates cipsi",
+        "members": [
+          "2JOS",
+          "1Q4H",
+          "13NG",
+          "1GNI",
+          "1FWY",
+          "0EG8",
+          "0BCZ",
+          "03S9",
+          "1C4H",
+          "26CD",
+          "2B98",
+          "1J0K",
+          "2CPS",
+          "2CPL",
+          "1DFQ",
+          "1AG8",
+          "1THP",
+          "1IYP",
+          "1CKU",
+          "1CL6",
+          "2JMQ",
+          "2018",
+          "2CQZ",
+          "0RBV",
+          "1R26",
+          "1Z0K",
+          "1LSC",
+          "2CPM",
+          "21LO",
+          "2CPT",
+          "2CPQ",
+          "1DN7",
+          "1K46",
+          "1GHN",
+          "1GL5",
+          "2B4A",
+          "1LMP",
+          "1VJI",
+          "1CLM",
+          "0IHV",
+          "18TC",
+          "2JN2",
+          "13ZZ",
+          "1STQ",
+          "2CPJ",
+          "1CLG"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Dondurulmuş hazır patates (parmak / çıtır)",
+        "members": [
+          "02B7",
+          "3X02",
+          "1AHY",
+          "1AZC",
+          "1ZUH",
+          "262Z",
+          "20K7",
+          "1UCN",
+          "1P5B",
+          "1TH7",
+          "216N",
+          "1UAF",
+          "1Y1F",
+          "204T"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Taze patates (kg / file / mini)",
+        "members": [
+          "0CLG",
+          "1NCL",
+          "06O4",
+          "1JAM",
+          "10HA"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kızartmalık / haşlamalık patates",
+        "members": [
+          "0W3A",
+          "1LK2",
+          "0RG1"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Patates çeşnisi (baharat)",
+        "members": [
+          "182Q",
+          "1H5E"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Patates püresi (hazır)",
+        "members": [
+          "20D8"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Tatlı patates",
+        "members": [
+          "196I"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "marul",
+    "category": "Taze sebze",
+    "split": "holdout",
+    "candidateCount": 1,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Yıkanmış yaprak marul",
+        "members": [
+          "1NYC"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "havuç",
+    "category": "Taze sebze",
+    "split": "train",
+    "candidateCount": 13,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Havuç suyu / içecek",
+        "members": [
+          "20VH",
+          "1ZRR",
+          "0JK8",
+          "1PF1",
+          "0KEJ",
+          "1LWP",
+          "20SS"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Havuç püresi (bebek maması)",
+        "members": [
+          "192S",
+          "1YDF"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Havuç tarator (meze)",
+        "members": [
+          "1CDP",
+          "0VVU"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Havuç reçeli",
+        "members": [
+          "1YFA"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Taze havuç",
+        "members": [
+          "1U5E"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "patlıcan",
+    "category": "Taze sebze",
+    "split": "holdout",
+    "candidateCount": 28,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Közlenmiş / köz patlıcan",
+        "members": [
+          "1KD3",
+          "0Q6A",
+          "0YDH",
+          "0475",
+          "1FWP",
+          "1QWX",
+          "1ZJ9",
+          "1AGT",
+          "0YAL",
+          "1FNB",
+          "20H6",
+          "213V",
+          "1XAI"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Patlıcan salatası / ezmesi (meze)",
+        "members": [
+          "0FI2",
+          "1PD1",
+          "0LMP",
+          "3WZW"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Patlıcan kızartma (hazır)",
+        "members": [
+          "0D1Y",
+          "200R",
+          "0CSY"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kuru / kurutulmuş patlıcan",
+        "members": [
+          "06F8",
+          "0CLV",
+          "1CIY"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Taze patlıcan",
+        "members": [
+          "12A1",
+          "1YOW",
+          "0NZJ"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Saç boyası (patlıcan moru)",
+        "members": [
+          "1TMM"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Hazır patlıcan yemeği (dolma)",
+        "members": [
+          "1E2B"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "kabak",
+    "category": "Taze sebze",
+    "split": "holdout",
+    "candidateCount": 26,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kabak çekirdeği",
+        "members": [
+          "097U",
+          "13HJ",
+          "0X9Y",
+          "0AMJ",
+          "09O5",
+          "015L",
+          "0KWF",
+          "0PGX",
+          "1ZQA",
+          "1XDW",
+          "1GAE",
+          "207H",
+          "1AS7",
+          "1EHC",
+          "0AYU"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Kabak lifli sabun",
+        "members": [
+          "1CG8",
+          "1CHC",
+          "1VC6"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Kabak tatlısı / reçeli",
+        "members": [
+          "0WD6",
+          "1HZY"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Bal kabağı",
+        "members": [
+          "1GZL",
+          "02EQ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Taze kabak (sakız)",
+        "members": [
+          "102P",
+          "0B2C"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Granola (kabak çekirdekli)",
+        "members": [
+          "1ZHK"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Kabak mücveri (hazır)",
+        "members": [
+          "1EX1"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "sarımsak",
+    "category": "Taze sebze",
+    "split": "train",
+    "candidateCount": 21,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sarımsak şampuanı / saç bakımı",
+        "members": [
+          "1L3E",
+          "1T71",
+          "0OTE",
+          "0QLH"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sarımsak tozu / granül",
+        "members": [
+          "1PZF",
+          "0R0G",
+          "1TT1",
+          "1ADC"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Taze / kuru sarımsak",
+        "members": [
+          "0149",
+          "0HDH",
+          "04HR",
+          "0S2P"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Sarımsaklı gıda (peynir / hamsi / çeşni)",
+        "members": [
+          "20J9",
+          "1DAZ",
+          "1WNO"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Sarımsak turşusu",
+        "members": [
+          "0RIK",
+          "1OGC",
+          "0L87"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Siyah sarımsak",
+        "members": [
+          "0RMR"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Sarımsak ezmesi",
+        "members": [
+          "0SG2"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Sarımsak sosu",
+        "members": [
+          "1ZYD"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "mercimek",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "candidateCount": 64,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kırmızı mercimek",
+        "members": [
+          "0YOC",
+          "052U",
+          "03W7",
+          "12QB",
+          "1TUZ",
+          "1IBI",
+          "13SR",
+          "20E4",
+          "0MIW",
+          "1T24",
+          "0343",
+          "03PU",
+          "01QL",
+          "09M6",
+          "1BWF",
+          "14HR"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Organik mercimek",
+        "members": [
+          "1PL1",
+          "1P8S",
+          "0DER",
+          "1F0T",
+          "138U",
+          "017X",
+          "0QMN",
+          "0163",
+          "2LVF",
+          "0UUJ",
+          "0CB7"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Yeşil mercimek",
+        "members": [
+          "011I",
+          "0O6N",
+          "10HW",
+          "0J7S",
+          "016K",
+          "1OSH",
+          "0RDI",
+          "0U0T",
+          "0FZK",
+          "1UXA",
+          "1NSK"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Mercimek cipsi / kraker / kavrulmuş",
+        "members": [
+          "1GKL",
+          "0DH9",
+          "1CJ3",
+          "1DMC",
+          "1DFL",
+          "0LUB",
+          "1GKW",
+          "1GKJ",
+          "1GYP",
+          "0GXW"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Mercimek çorbası (hazır)",
+        "members": [
+          "0ZQ7",
+          "005Z",
+          "1XY4",
+          "1T6F",
+          "1PVA",
+          "1IPO",
+          "09RG",
+          "1CEL"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Mercimekli makarna",
+        "members": [
+          "1BO2",
+          "20Z3",
+          "0Y3N"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Sarı mercimek",
+        "members": [
+          "0N9C",
+          "21TO"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Mercimek unu",
+        "members": [
+          "1XOL"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Filizlendirilmiş mercimek",
+        "members": [
+          "1G38"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Beluga mercimeği",
+        "members": [
+          "1QHX"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "nohut",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "candidateCount": 50,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Nohut cipsi / patlağı",
+        "members": [
+          "18JH",
+          "0H6R",
+          "086I",
+          "05PM",
+          "2006",
+          "1GOU",
+          "1NYJ",
+          "1Z82",
+          "1YP3",
+          "1ZFC",
+          "1ROS",
+          "1P5M",
+          "1DNS",
+          "1WAZ",
+          "20JP",
+          "01PC",
+          "1NQ7"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Haşlanmış / konserve nohut",
+        "members": [
+          "0MPQ",
+          "1LEF",
+          "0RIL",
+          "008C",
+          "1QVB",
+          "1QJA",
+          "0T35",
+          "1CGI",
+          "205S"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Organik nohut",
+        "members": [
+          "12W5",
+          "14LU",
+          "010H",
+          "1R34",
+          "1LKI",
+          "00IA"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kuru nohut",
+        "members": [
+          "04Q4",
+          "10KL",
+          "0GTV",
+          "0BAA",
+          "13HY",
+          "1FOC"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Koçbaşı / iri boy nohut",
+        "members": [
+          "1QSD",
+          "0ONV",
+          "1NAO",
+          "1T3J",
+          "0JNH"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Beyaz nohut",
+        "members": [
+          "09OO",
+          "0TDB",
+          "06D9",
+          "07ZT",
+          "1TW0"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Nohut unu",
+        "members": [
+          "1VO8"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Etli nohut (hazır yemek)",
+        "members": [
+          "1RY3"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "fasulye",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Dermason / şeker / battal / horoz kuru fasulye",
+        "members": [
+          "0YKZ",
+          "003P",
+          "0FUQ",
+          "0Y3C",
+          "0A83",
+          "1YA3",
+          "01LH",
+          "1TE3",
+          "1O3S",
+          "1S4D",
+          "1Q6T",
+          "0J59",
+          "01C4",
+          "0MIP",
+          "0WQ8",
+          "071K",
+          "1B1G"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Haşlanmış / konserve fasulye",
+        "members": [
+          "1KCN",
+          "1CGI",
+          "0ZL1",
+          "1JMI",
+          "0VYU",
+          "1SHE",
+          "1FJP",
+          "0J36",
+          "0GXK",
+          "1NHM",
+          "1VB6",
+          "1Q3F",
+          "216G"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Taze / dondurulmuş fasulye",
+        "members": [
+          "3WDB",
+          "0ZTC",
+          "08IT",
+          "0SOZ",
+          "1R19",
+          "2CJ8",
+          "20DG",
+          "1L9G",
+          "1SFJ"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Maş / meksika / kırmızı / siyah fasulye",
+        "members": [
+          "1JPD",
+          "1X4T",
+          "1MWL",
+          "1PXF",
+          "1NJ5",
+          "12AO",
+          "1S1E",
+          "17LV"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Genel kuru fasulye",
+        "members": [
+          "1YA7",
+          "034U",
+          "2CZ0",
+          "0WV5",
+          "0FTK",
+          "0XY2"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Fasulye pilaki (hazır yemek)",
+        "members": [
+          "0UPX",
+          "1Y1N",
+          "0SKI",
+          "047J",
+          "1I9G"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Organik kuru fasulye",
+        "members": [
+          "07FQ",
+          "1IBF",
+          "0JIR",
+          "1JSA",
+          "0D3U"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Etli / pastırmalı hazır kuru fasulye",
+        "members": [
+          "2AL5",
+          "1WWS",
+          "1TKW",
+          "0K2C"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Diğer fasulye ürünü (turşu / sos / filiz)",
+        "members": [
+          "1ZFG",
+          "1D91",
+          "0QYN"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Zeytinyağlı fasulye (meze)",
+        "members": [
+          "1Y5L",
+          "1ZPP"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "barbunya",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "holdout",
+    "candidateCount": 22,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Barbunya pilaki (hazır yemek)",
+        "members": [
+          "0V9K",
+          "02Z1",
+          "03XK",
+          "28T1",
+          "0ZAF",
+          "0MF7",
+          "07EP",
+          "1Q9Z",
+          "1LQ5",
+          "1NTS",
+          "0MNC",
+          "1ZFH"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Kuru barbunya",
+        "members": [
+          "0GOY",
+          "0T7Z",
+          "07KA",
+          "06X6",
+          "1OF3",
+          "0NTI"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Haşlanmış barbunya",
+        "members": [
+          "0ZJF",
+          "0BYY",
+          "1R70"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Dondurulmuş barbunya",
+        "members": [
+          "1SFJ"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "ceviz",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "candidateCount": 22,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Ceviz içi",
+        "members": [
+          "0BX5",
+          "0FLY",
+          "0EIX",
+          "04IU",
+          "02WM",
+          "0T8U",
+          "06HA",
+          "1Z1Q",
+          "0FC6",
+          "0NM0",
+          "1ONP",
+          "1LWR"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Cevizli ürün (ezme / quark / granola)",
+        "members": [
+          "0JYT",
+          "20NH",
+          "1LBJ",
+          "1DTV",
+          "1V8N"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Kabuklu ceviz",
+        "members": [
+          "034P",
+          "0ODJ"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kırık ceviz içi",
+        "members": [
+          "1435",
+          "005Q"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Kelebek ceviz içi",
+        "members": [
+          "1ZAQ"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "fındık",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Gofret / bisküvi / çikolata / draje",
+        "members": [
+          "20LB",
+          "0PNA",
+          "20NZ",
+          "1YM2",
+          "1C5W",
+          "1KZP",
+          "1O9V",
+          "20OW",
+          "00TT",
+          "1KH7",
+          "1I4P",
+          "1OCM",
+          "0QQN",
+          "205O",
+          "03E3",
+          "20Q5",
+          "0OEG",
+          "14SG",
+          "1535",
+          "206W",
+          "0624",
+          "1HGP",
+          "1Z2F",
+          "21FB",
+          "1ZGG",
+          "146G"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Fındık ezmesi",
+        "members": [
+          "3WZX",
+          "1I38",
+          "0806",
+          "1YNI",
+          "17X7",
+          "0LS0",
+          "0FYF",
+          "1QQJ",
+          "1P9J",
+          "1TD0",
+          "1JFC",
+          "1S07",
+          "20NS",
+          "1IJX"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Fındık kreması (sürülebilir)",
+        "members": [
+          "1ZFB",
+          "183P",
+          "1Y8G",
+          "0ZNK",
+          "29WG",
+          "01A7",
+          "1YEB",
+          "1A5P",
+          "1YIN",
+          "09Q9",
+          "0PNL",
+          "0U4F"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kavrulmuş fındık",
+        "members": [
+          "0MGN",
+          "1JBZ",
+          "0L4T",
+          "0YAG"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Çiğ fındık",
+        "members": [
+          "0ZUE",
+          "0TDW",
+          "0AGY",
+          "0NYD"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Fındık içi (genel)",
+        "members": [
+          "06VE",
+          "0Z25",
+          "0HIP",
+          "0IR3"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Fındık yağı",
+        "members": [
+          "0VKI",
+          "0VNC",
+          "0S4J"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Fındık sütü / içeceği",
+        "members": [
+          "0MGZ",
+          "0XB5"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Tuzlu / kaplamalı fındık",
+        "members": [
+          "0S8H",
+          "059C"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Kıyılmış / dilimlenmiş fındık",
+        "members": [
+          "0T8K"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "badem",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Badem dondurma",
+        "members": [
+          "0AKW",
+          "05KH",
+          "17R0",
+          "0VP1",
+          "1K8Z",
+          "1LN4",
+          "09ZZ",
+          "0S5L",
+          "17R9",
+          "20O3",
+          "1ZKG",
+          "20FK",
+          "1NAF",
+          "1PNM",
+          "1NVC",
+          "1OW4",
+          "2A67",
+          "0S9A",
+          "1RPC",
+          "1Q3M",
+          "0NIC",
+          "17RV",
+          "0FQ9",
+          "1NKN",
+          "1597",
+          "1KH0",
+          "2A2L",
+          "0SCN",
+          "207J",
+          "1T9T",
+          "1OJN",
+          "1LQV",
+          "1JT6"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Çikolata / draje / kraker / bar / granola",
+        "members": [
+          "01PT",
+          "1OZM",
+          "20ZU",
+          "1U7S",
+          "0QAE",
+          "1XDB",
+          "1O9S",
+          "0268",
+          "0S1B",
+          "1RWM"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Çiğ badem",
+        "members": [
+          "0GJD",
+          "0BI6",
+          "0HLY",
+          "00RE",
+          "0V0C",
+          "096V",
+          "0U62",
+          "0Q4X",
+          "1JB0",
+          "212M"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Badem içi (genel)",
+        "members": [
+          "0OXD",
+          "04Z7",
+          "0IN3",
+          "0QRD",
+          "1Z5O",
+          "09VJ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Badem sütü / içeceği",
+        "members": [
+          "0T3B",
+          "0VIF",
+          "1TEH",
+          "1QDC"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Kavrulmuş badem",
+        "members": [
+          "0JWJ",
+          "1V4F",
+          "0UD0"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Badem unu",
+        "members": [
+          "0VNE",
+          "1TCN"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Badem ezmesi",
+        "members": [
+          "0E1D",
+          "1GTI"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Duş jeli (badem aromalı)",
+        "members": [
+          "1RK4"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Badem helvası",
+        "members": [
+          "0B02"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "leblebi",
+    "category": "Bakliyat & kuruyemiş",
+    "split": "holdout",
+    "candidateCount": 16,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Beyaz leblebi",
+        "members": [
+          "0J3U",
+          "10CU",
+          "02M4",
+          "2103",
+          "0N3P"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sarı leblebi",
+        "members": [
+          "0ZYN",
+          "05SX",
+          "067V"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Çifte kavrulmuş leblebi",
+        "members": [
+          "0X73",
+          "1U9M"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Tuzlu leblebi",
+        "members": [
+          "20OZ",
+          "1ZNY"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Şeker leblebi",
+        "members": [
+          "014J"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Crispy / kaplamalı leblebi",
+        "members": [
+          "07I0"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Benekli leblebi",
+        "members": [
+          "1Z83"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Genel leblebi",
+        "members": [
+          "0RP0"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "yağ",
+    "category": "Yağ & sos",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Yağ çözücü / sökücü (temizlik)",
+        "members": [
+          "03LX",
+          "2A17",
+          "3WWM",
+          "065P",
+          "0RQH",
+          "1XZO",
+          "1INZ",
+          "20NK",
+          "1N0S",
+          "1Z3J",
+          "1UG0",
+          "1OU8",
+          "0AOA",
+          "1SW6",
+          "0RJW",
+          "0AO8",
+          "1USP",
+          "21LZ",
+          "1FRB",
+          "1RW1",
+          "21CE",
+          "210Y",
+          "0TVO",
+          "1ZYL"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Saç bakım yağı / şampuan / serum",
+        "members": [
+          "0XIV",
+          "1PEG",
+          "1LFM",
+          "1Y1H",
+          "1YR4",
+          "1C9P",
+          "1SXG",
+          "1CA3",
+          "1T83",
+          "1Q2N",
+          "1MEG",
+          "0TSO",
+          "1NRS",
+          "1PH8",
+          "1OMX",
+          "1Q0B",
+          "1Q44",
+          "1CLK",
+          "1RPT",
+          "1AIK",
+          "04M5"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Bebek yağı",
+        "members": [
+          "1WO8",
+          "1RQQ",
+          "0TR7",
+          "0M5F",
+          "0HKC",
+          "0HN7"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Özel yemeklik yağ (susam / keten / çörekotu / aspir)",
+        "members": [
+          "1HCJ",
+          "0X7I",
+          "0K5U",
+          "05BF",
+          "0DM2"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Sürülebilir yağ / ghee / sade yağ",
+        "members": [
+          "20P4",
+          "1SA1",
+          "0A3S",
+          "000H",
+          "0LPB"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Bronzlaştırıcı / vücut yağı",
+        "members": [
+          "0UGX",
+          "0L3M",
+          "1SC3",
+          "1SPE"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Yağ emici kağıt havlu",
+        "members": [
+          "2B29",
+          "1YX6",
+          "1T90"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Zeytinyağı",
+        "members": [
+          "23G6",
+          "1WPC",
+          "1T5W"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Bitkisel yağ serisi",
+        "members": [
+          "05JB"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "zeytinyağı",
+    "category": "Yağ & sos",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sızma zeytinyağı (genel)",
+        "members": [
+          "23G6",
+          "1EV7",
+          "1IVO",
+          "0MDB",
+          "1I82",
+          "0O0U",
+          "0902",
+          "14BK",
+          "1490",
+          "0FA2",
+          "0VKW",
+          "2A8X",
+          "0KJX",
+          "011R",
+          "1K9O",
+          "1G0B",
+          "0M2S",
+          "1RDR",
+          "03A2",
+          "1GDW",
+          "2001",
+          "1Q4A",
+          "0GS9",
+          "0WRC",
+          "1ZL9"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Riviera zeytinyağı",
+        "members": [
+          "0VO0",
+          "1IB0",
+          "0YR4",
+          "1FYV",
+          "0ZAC",
+          "1Y3O",
+          "0IE3",
+          "1L3Q",
+          "1ZC5",
+          "1T5W",
+          "215R",
+          "1E1W",
+          "1R3A",
+          "0O3M",
+          "1QK0",
+          "0MCG",
+          "12N3",
+          "0XQQ",
+          "1NZL"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Naturel sızma zeytinyağı",
+        "members": [
+          "033E",
+          "217Y",
+          "1WPC",
+          "3WUQ",
+          "1RAJ",
+          "2CED",
+          "1853",
+          "3X4F",
+          "18L6",
+          "01Y1",
+          "1DD2",
+          "0S7R",
+          "06PV",
+          "18B7",
+          "1B8W"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Organik zeytinyağı",
+        "members": [
+          "1MJO",
+          "0BQ4",
+          "1F83",
+          "1UGN"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Soğuk sıkım zeytinyağı",
+        "members": [
+          "0AXW",
+          "0UQ5",
+          "1ARU"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Sprey zeytinyağı",
+        "members": [
+          "2003",
+          "1SN2"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Aromalı zeytinyağı (mantarlı / sarımsaklı)",
+        "members": [
+          "01AX",
+          "06ZY"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Genel zeytinyağı",
+        "members": [
+          "099G",
+          "164O"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "zeytin",
+    "category": "Yağ & sos",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Siyah zeytin",
+        "members": [
+          "0272",
+          "03VX",
+          "03X0",
+          "0AHC",
+          "161F",
+          "0OSV",
+          "0T97",
+          "0GO7",
+          "0W30",
+          "0GO4",
+          "0EW7",
+          "1DYE",
+          "0VFW",
+          "1HVT",
+          "1SFI",
+          "0A12",
+          "0PX0",
+          "00GF",
+          "19JY",
+          "0Q17",
+          "0G59",
+          "0HE6",
+          "14AO",
+          "1NED",
+          "0URW"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Kırma / çizik yeşil zeytin",
+        "members": [
+          "11ML",
+          "0LPP",
+          "1ZTW",
+          "1XHO",
+          "1NOW",
+          "1QWS",
+          "0JVW",
+          "05LM",
+          "047I",
+          "0DZW",
+          "0DN0",
+          "1T5B",
+          "0NH0"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Genel zeytin",
+        "members": [
+          "1ZH7",
+          "0EW5",
+          "02O3",
+          "0A4C",
+          "05AV",
+          "0GLJ",
+          "1NFU",
+          "12RE",
+          "1OAS",
+          "1OTX",
+          "0FIN",
+          "0AC6"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kuru sele / sele zeytin",
+        "members": [
+          "0VBK",
+          "00DA",
+          "1REE",
+          "074L",
+          "1XZH",
+          "07S6",
+          "1M7K",
+          "0E3T"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Dilimli zeytin",
+        "members": [
+          "0TH3",
+          "1N5E",
+          "0MNR"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Zeytin ezmesi",
+        "members": [
+          "1S3V",
+          "1PIL"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Zeytin salatası",
+        "members": [
+          "0R2A",
+          "1H6D"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Dolgulu zeytin",
+        "members": [
+          "0N4G",
+          "04KD"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Izgara zeytin",
+        "members": [
+          "1Z5B",
+          "00XH"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Yeşil zeytin",
+        "members": [
+          "017J",
+          "037E"
+        ]
+      },
+      {
+        "id": "K",
+        "label": "Çekirdeksiz zeytin",
+        "members": [
+          "0SIS"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "salça",
+    "category": "Yağ & sos",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Domates salçası",
+        "members": [
+          "07K0",
+          "0TO8",
+          "0I0D",
+          "1I61",
+          "1ZZK",
+          "08IJ",
+          "239B",
+          "3X5R",
+          "1UKT",
+          "20PN",
+          "0L4Y",
+          "1S3N",
+          "20VU",
+          "1ZKZ",
+          "02YV",
+          "1AN9",
+          "20QT",
+          "0EUH",
+          "0NOS",
+          "1WRY",
+          "1RO6",
+          "1YQD",
+          "1ZHR",
+          "088N",
+          "0X7M",
+          "2AFO",
+          "29WX",
+          "0ZHG"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Tatlı biber salçası",
+        "members": [
+          "0RP3",
+          "1OAX",
+          "11EY",
+          "1V5B",
+          "0URO",
+          "04ZW",
+          "2BYM",
+          "1T12",
+          "1KUO"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Domates rendesi / rendelenmiş",
+        "members": [
+          "2246",
+          "2CNO",
+          "1RLZ",
+          "21JW",
+          "1SBG",
+          "1ZBU",
+          "0A0F"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Acı biber salçası",
+        "members": [
+          "0YSO",
+          "04BO",
+          "0RIJ",
+          "0UWC",
+          "024B",
+          "3X5S",
+          "3X2B"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Doğranmış / soyulmuş domates",
+        "members": [
+          "3WSD",
+          "1Z6A",
+          "1SF4",
+          "0RSG",
+          "0WJH"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Organik salça",
+        "members": [
+          "0HTX",
+          "1RVP",
+          "17Q2",
+          "0ESF",
+          "0KZC"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Domates püresi",
+        "members": [
+          "0C26",
+          "1UZ9",
+          "216F",
+          "1AVS"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Biber salçası (genel)",
+        "members": [
+          "1XU7",
+          "0DXP",
+          "0MAK",
+          "1YUX"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Karışık domates-biber salçası",
+        "members": [
+          "0JTS",
+          "1O5D",
+          "1VHC"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "sirke",
+    "category": "Yağ & sos",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Elma sirkesi",
+        "members": [
+          "01QF",
+          "0WJL",
+          "00MD",
+          "2054",
+          "1VU4",
+          "1UD2",
+          "1QU7",
+          "0DQO",
+          "08D4",
+          "0IKE",
+          "1Z9U",
+          "1S3C",
+          "1S5Z",
+          "0GM3"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Üzüm sirkesi",
+        "members": [
+          "03IH",
+          "080N",
+          "030F",
+          "214Q",
+          "20TW",
+          "0CQ7",
+          "1ZRN",
+          "12V8",
+          "0Z78",
+          "013N",
+          "1ZBN",
+          "1YFF",
+          "1TLT",
+          "0RKX"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Beyaz sirke",
+        "members": [
+          "09V5",
+          "0ZSU",
+          "03PJ",
+          "0VKV",
+          "0901",
+          "10MI",
+          "1TD7",
+          "12DX",
+          "1WQD",
+          "1Q2R",
+          "20II",
+          "1Z91"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Diğer sirke (alıç / pirinç / ananas / malt / bal)",
+        "members": [
+          "0HKE",
+          "1R79",
+          "1R6R",
+          "20N5",
+          "1PZH",
+          "3WSY",
+          "17LC",
+          "1TBI"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Balsamik sirke",
+        "members": [
+          "158Q",
+          "158H",
+          "1X98",
+          "1YID",
+          "203B",
+          "03VD",
+          "0DHM"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Organik sirke",
+        "members": [
+          "0832",
+          "0441",
+          "1QCX",
+          "0Y3X",
+          "045A",
+          "0F7X",
+          "1H66"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Detoks sirkesi",
+        "members": [
+          "20P2",
+          "1YCC",
+          "1P5T",
+          "1TJ2",
+          "1QWF"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Temizlik ürünü (sirke özlü)",
+        "members": [
+          "1OD2",
+          "0E54",
+          "0RFS",
+          "2121"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Cips (sirke aromalı)",
+        "members": [
+          "0LUB"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "mayonez",
+    "category": "Yağ & sos",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Aromalı mayonez (sarımsaklı / trüflü / sriracha / acılı)",
+        "members": [
+          "0W36",
+          "1P9X",
+          "06FI",
+          "1OCH",
+          "1KKV",
+          "1QJH",
+          "1SMH",
+          "1SM6",
+          "1NG0",
+          "04WA",
+          "0PE9",
+          "1B31",
+          "1PYC",
+          "1S2S",
+          "1Q16",
+          "0NJT",
+          "0NZ7",
+          "1S3P",
+          "1Q02",
+          "0DBR",
+          "0ABM",
+          "03IR",
+          "0JN2",
+          "16I6"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade mayonez",
+        "members": [
+          "145T",
+          "0YGK",
+          "1D49",
+          "0L1G",
+          "1ZSW",
+          "0415",
+          "2CR7",
+          "003R",
+          "1QJG",
+          "1YQN",
+          "1ZNZ",
+          "1GSV",
+          "1RZE",
+          "20YI",
+          "0ZNO",
+          "0XAS",
+          "1KOR",
+          "074Y",
+          "1QUC",
+          "0L17",
+          "20YD",
+          "0KBW",
+          "0PAV",
+          "20DE"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Ketçap + mayonez seti",
+        "members": [
+          "2AI5",
+          "1XPL",
+          "1QOR",
+          "199Q",
+          "1R2J",
+          "13NU",
+          "1ECB",
+          "0OOV",
+          "0QKF",
+          "0QB6",
+          "1QZ4"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Diğer sos / sirke (mayonez değil)",
+        "members": [
+          "0BFN",
+          "1DFY",
+          "3WPM",
+          "20QU",
+          "1ZAU",
+          "214Q",
+          "20YT",
+          "3WW9",
+          "1ZP0",
+          "20N5"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Ketçap (mayonez değil)",
+        "members": [
+          "1Z90",
+          "1MSO"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Light / az yağlı mayonez",
+        "members": [
+          "1JO1"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "ketçap",
+    "category": "Yağ & sos",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade ketçap",
+        "members": [
+          "143U",
+          "054R",
+          "1CZ8",
+          "1YFQ",
+          "1JYM",
+          "1TDF",
+          "12RU",
+          "1P3D",
+          "20BE",
+          "1T54",
+          "0W5S",
+          "1Z57",
+          "1OAY",
+          "20WK",
+          "21Z5",
+          "1GT3",
+          "1S67",
+          "0FCM"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Diğer sos / sirke (ketçap değil)",
+        "members": [
+          "3WPM",
+          "20QU",
+          "1SMI",
+          "1ZAU",
+          "214Q",
+          "20YT",
+          "1YJK",
+          "3WW9",
+          "1T7U",
+          "1QCX",
+          "1ZP0",
+          "1QU7",
+          "20N5"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Ketçap + mayonez seti",
+        "members": [
+          "199Q",
+          "0QB6",
+          "1QOR",
+          "2AI5",
+          "1ECB",
+          "0QKF",
+          "1XPL",
+          "1R2J",
+          "13NU",
+          "0OOV",
+          "1QZ4"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Acı ketçap",
+        "members": [
+          "018B",
+          "1ZXY",
+          "0ZW7",
+          "10EA",
+          "1PQC",
+          "1ZQZ",
+          "204M",
+          "1Y3W",
+          "1L76"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Cips / çerez (ketçap aromalı)",
+        "members": [
+          "1AYV",
+          "1GNI",
+          "1A6J",
+          "1YNZ",
+          "1J0K",
+          "1THP"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Tatlı ketçap",
+        "members": [
+          "0TO2",
+          "0V0G",
+          "0ZP1",
+          "1Z43",
+          "20YE",
+          "1IPV"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Aromalı ketçap (pickle / sweet chili / cajun / sarımsaklı)",
+        "members": [
+          "1FGB",
+          "1TUR",
+          "1FH0",
+          "1FH4",
+          "1WTI"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Mayonez (ketçap değil)",
+        "members": [
+          "1MSO",
+          "20DE"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Organik ketçap",
+        "members": [
+          "1Z90",
+          "1WOO"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "tahin",
+    "category": "Yağ & sos",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Tahin helvası",
+        "members": [
+          "1Z5K",
+          "0SFH",
+          "0Y43",
+          "0WVR",
+          "0VL9",
+          "0NRD",
+          "1Z3S",
+          "1LTP",
+          "1GU7",
+          "0IU8",
+          "16RO",
+          "16RR",
+          "1HYV",
+          "207D",
+          "1BD9",
+          "215X",
+          "121A",
+          "0XUB",
+          "1SNE",
+          "0S48",
+          "1GTL",
+          "1HJF",
+          "1Z4Y",
+          "0EG7",
+          "0P7D",
+          "1O5Y"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Tahin + pekmez karışımı / seti",
+        "members": [
+          "0LUN",
+          "04MC",
+          "1SNG",
+          "0V4T",
+          "3WBG",
+          "219B",
+          "0GAC",
+          "0BL3",
+          "0JW8",
+          "1NO7",
+          "1SYA",
+          "028N",
+          "11C7",
+          "0Y6T",
+          "20RB",
+          "1FNZ"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Sade tahin",
+        "members": [
+          "0GM9",
+          "0W4S",
+          "0MG5",
+          "1YH6",
+          "0G66",
+          "07SX",
+          "05AG",
+          "00RC",
+          "13DX",
+          "14E0",
+          "1Z39",
+          "0SXG",
+          "1OHD",
+          "0MG8"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Organik tahin",
+        "members": [
+          "1ZI7",
+          "1Z4Z",
+          "1T8H",
+          "1LDA",
+          "0I17",
+          "0WGG"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Çifte kavrulmuş tahin",
+        "members": [
+          "0P1Z",
+          "05X9",
+          "0N6O",
+          "185O",
+          "1SY3"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Tahin kreması",
+        "members": [
+          "3WYT",
+          "3WYP",
+          "3WYQ"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Çikolatalı tahin karışımı",
+        "members": [
+          "1TGR"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Esmer / kabuklu susam tahini",
+        "members": [
+          "08NK"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "şeker",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Toz şeker",
+        "members": [
+          "1SU8",
+          "03XV",
+          "07CD",
+          "1NSF",
+          "0ZQ4",
+          "12DI",
+          "10PN",
+          "1PK8",
+          "02EE",
+          "2AWS",
+          "0WFK",
+          "21HD",
+          "1PCF",
+          "1NX5",
+          "04GE",
+          "087E",
+          "21EL",
+          "0V6D",
+          "00GW",
+          "06MY",
+          "12UT",
+          "1WA9",
+          "09MO",
+          "1PXH",
+          "0P2B",
+          "0JV6",
+          "0SZG",
+          "1BQC",
+          "17W6"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Şekerleme / yumuşak şeker (tatlı)",
+        "members": [
+          "1A7S",
+          "2AUV",
+          "10XR",
+          "1URS",
+          "01ID",
+          "1YO9",
+          "04QR",
+          "1YVZ",
+          "06A5",
+          "140B",
+          "03WZ",
+          "264U",
+          "1YZW",
+          "1ZHG",
+          "3WZF",
+          "20M0"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Küp şeker",
+        "members": [
+          "06R0",
+          "0R80",
+          "21MZ",
+          "0ICB",
+          "1SQS",
+          "0052",
+          "10J3",
+          "07IU",
+          "03BK",
+          "0ICJ"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kahverengi / esmer şeker",
+        "members": [
+          "0HE8",
+          "0KAB",
+          "0VX5",
+          "0ZAV",
+          "0QM6",
+          "20TU",
+          "20BP",
+          "0W1J",
+          "0C5G"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Sargılı küp şeker",
+        "members": [
+          "0F28",
+          "20UX",
+          "0XQK",
+          "0KS6"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Kristal toz şeker",
+        "members": [
+          "1SXQ",
+          "1ILH"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Stick toz şeker",
+        "members": [
+          "0YLH"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Dökme şeker",
+        "members": [
+          "0Y74"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "tuz",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kaya / deniz tuzu",
+        "members": [
+          "1LCC",
+          "1OSQ",
+          "0A55",
+          "1Q8B",
+          "058M",
+          "1H62",
+          "1ROX",
+          "1Q72",
+          "1RIX",
+          "1SJ2",
+          "26RV",
+          "1571",
+          "0BVE",
+          "1IJW",
+          "0FVP",
+          "0T8B",
+          "2132",
+          "1TV2",
+          "0SJZ",
+          "21SE"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Himalaya tuzu",
+        "members": [
+          "1OP2",
+          "1WT9",
+          "0GYZ",
+          "0KEV",
+          "0OLH",
+          "1NXQ",
+          "0GA4",
+          "1T7E",
+          "0Y0F",
+          "21RG",
+          "088Q",
+          "20I0",
+          "06GH",
+          "0XCB",
+          "0VXO",
+          "0N4T"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "İyotlu sofra tuzu",
+        "members": [
+          "00O6",
+          "1XUF",
+          "008E",
+          "09IC",
+          "1VU0",
+          "1PLP",
+          "1OR3",
+          "1NQL",
+          "1R6Q",
+          "08DR",
+          "0XX9",
+          "0K6C",
+          "0UHH",
+          "1FNG",
+          "0QJE",
+          "0NO7"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Baharatlı / aromalı tuz",
+        "members": [
+          "0EM1",
+          "0A3P",
+          "1K2W",
+          "1PPL",
+          "1KZU",
+          "1T3R"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Bulaşık makinesi tuzu",
+        "members": [
+          "1WIC",
+          "0RL4",
+          "1QDL"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "İri salamura tuzu",
+        "members": [
+          "0LEH",
+          "0AZD",
+          "0KHN"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Özel tuz (iyotsuz / sodyumu azaltılmış / mineralli)",
+        "members": [
+          "20LX",
+          "1NQK",
+          "1Y28"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Sofrada öğütme / değirmen tuzu",
+        "members": [
+          "1OX5",
+          "1WLJ"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Genel tuz",
+        "members": [
+          "0UZB",
+          "29X3"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Tuz ruhu (temizlik)",
+        "members": [
+          "0R9P"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "bal",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Çiçek balı / süzme bal",
+        "members": [
+          "01NK",
+          "0V4Z",
+          "05C5",
+          "2CS6",
+          "20TK",
+          "0QDT",
+          "0XPW",
+          "0TKP",
+          "0EYY",
+          "061B",
+          "1G6B",
+          "0UHO",
+          "01QN",
+          "00EF",
+          "214R",
+          "10FK",
+          "0K1P",
+          "0D8G",
+          "1Q60",
+          "0BYG",
+          "0T3A",
+          "0N6M",
+          "0AVF",
+          "0X1X",
+          "04CX",
+          "1ORB",
+          "1YKX",
+          "1LJ6",
+          "1SCJ",
+          "0DCW",
+          "1Q8F",
+          "1XGO",
+          "1ZQ7",
+          "0S59",
+          "1ZYZ",
+          "1Y6I"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Çam / kestane balı",
+        "members": [
+          "02TB",
+          "0D5H",
+          "0BTJ",
+          "202A",
+          "14JC",
+          "012U",
+          "3WQ1",
+          "1YBZ",
+          "03UD",
+          "20ZB"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Cips / bar / dondurma (bal aromalı)",
+        "members": [
+          "1RIV",
+          "1YN7",
+          "03VU",
+          "09ZZ",
+          "1LQV",
+          "1ZEE",
+          "1MLM"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Ballı ürün (sirke / propolis / reçel)",
+        "members": [
+          "0WZR",
+          "1P5T",
+          "1C4S",
+          "0SN5"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Saç boyası (bal rengi)",
+        "members": [
+          "0LY0",
+          "1MF4",
+          "1QAI"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Bal kabağı",
+        "members": [
+          "1GZL",
+          "02EQ",
+          "1HZY"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Petek / karakovan balı",
+        "members": [
+          "07MJ",
+          "03UQ",
+          "0DCH"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Organik bal",
+        "members": [
+          "0VL6",
+          "1C56"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Genel bal",
+        "members": [
+          "1QQ4",
+          "0SNA"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Sabun (ballı)",
+        "members": [
+          "1JI0"
+        ]
+      },
+      {
+        "id": "K",
+        "label": "Krem bal",
+        "members": [
+          "0O7U"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "pekmez",
+    "category": "Tatlandırıcı & baharat",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Helva (pekmez değil)",
+        "members": [
+          "215X",
+          "1Z4Y",
+          "0ZL6",
+          "05X7",
+          "1HYV",
+          "0593",
+          "0SFH",
+          "0VL9",
+          "1BD9",
+          "0NRD",
+          "0WOS",
+          "07SJ",
+          "1TUC",
+          "121A",
+          "21FS",
+          "20KP",
+          "16RO",
+          "16RR",
+          "0VUI"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Tahin + pekmez karışımı / seti",
+        "members": [
+          "0LUN",
+          "04MC",
+          "1SNG",
+          "0V4T",
+          "219B",
+          "0GAC",
+          "0BL3",
+          "0JW8",
+          "1NO7",
+          "1SYA",
+          "028N",
+          "11C7",
+          "3WBG"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Üzüm pekmezi",
+        "members": [
+          "0GSW",
+          "0JPO",
+          "149Y",
+          "20I4",
+          "04DP",
+          "0RHO",
+          "1ZRC",
+          "1HWM",
+          "0G1B",
+          "0LAH",
+          "1Q22",
+          "1OZV"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Organik pekmez",
+        "members": [
+          "0Y6T",
+          "0DX9",
+          "20RB",
+          "0E9Y",
+          "0J4E",
+          "0FWM",
+          "0282",
+          "0C91",
+          "1Y5F",
+          "0IIG"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Tahin (pekmez değil)",
+        "members": [
+          "1Z39",
+          "0MG5",
+          "05X9",
+          "1Z4Z",
+          "0MG8"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Keçiboynuzu / harnup pekmezi",
+        "members": [
+          "0JCK",
+          "1S5O",
+          "0NLQ",
+          "1FNZ",
+          "00B2"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Dut pekmezi",
+        "members": [
+          "20DS",
+          "08XK",
+          "1GFF",
+          "03K3"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Keçiboynuzu özü",
+        "members": [
+          "1PXW",
+          "0UX8",
+          "0NY2"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Hurma pekmezi",
+        "members": [
+          "0LOM"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "karabiber",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "candidateCount": 18,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Tane karabiber",
+        "members": [
+          "3WZK",
+          "06BS",
+          "1RQ0",
+          "08GN",
+          "1H7J",
+          "1VTX",
+          "1ACZ"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Genel karabiber",
+        "members": [
+          "039U",
+          "07FW",
+          "0QA4",
+          "0ZFP",
+          "05ZG",
+          "1NDQ",
+          "1AQ6"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Öğütülmüş / toz karabiber",
+        "members": [
+          "1YBR",
+          "0E4Q",
+          "1PVZ",
+          "1AD0"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "pul biber",
+    "category": "Tatlandırıcı & baharat",
+    "split": "train",
+    "candidateCount": 25,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Genel pul biber",
+        "members": [
+          "0Z2B",
+          "0ROL",
+          "014F",
+          "1E4F",
+          "16VP",
+          "1VA2",
+          "0DFO",
+          "1RBX",
+          "0J5U",
+          "1PW0",
+          "0ZO6",
+          "1ADD",
+          "1TPJ",
+          "16W3",
+          "057A"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Acı / ekstra acı pul biber",
+        "members": [
+          "09D8",
+          "024Z",
+          "2AJN",
+          "1ZHO",
+          "01RK",
+          "0CUS"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "İsot biber",
+        "members": [
+          "1PB8",
+          "17YU"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Ekonomik paket pul biber",
+        "members": [
+          "1Z4V",
+          "10TH"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "kimyon",
+    "category": "Tatlandırıcı & baharat",
+    "split": "holdout",
+    "candidateCount": 8,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Öğütülmüş kimyon",
+        "members": [
+          "109C",
+          "02MX",
+          "035P",
+          "0VC3",
+          "16VQ",
+          "1QLP",
+          "1ZVV",
+          "1ADA"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "su",
+    "category": "İçecek",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Büyük boy su (3 – 10 L)",
+        "members": [
+          "16JA",
+          "0FX9",
+          "10BC",
+          "1ZOJ",
+          "0HCL",
+          "12HG",
+          "1YC3",
+          "2B1T",
+          "1P6M",
+          "0V4P",
+          "1WRN",
+          "0J6T",
+          "06ZT",
+          "0PQB",
+          "1KCS",
+          "0OV9",
+          "0TL1",
+          "0OV8",
+          "0SXL",
+          "3WZY",
+          "1P2C"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade pet su",
+        "members": [
+          "21EF",
+          "0PQA",
+          "0006",
+          "1Z2V",
+          "006Q",
+          "0XUK",
+          "1ZVR",
+          "065T",
+          "0EK9",
+          "0H8J",
+          "0GAY",
+          "0RZ2",
+          "0446",
+          "0UU2",
+          "1WD7",
+          "1QPL",
+          "1R8F",
+          "1TM2",
+          "1RHU"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Doğal mineralli su",
+        "members": [
+          "1TOJ",
+          "0PWF",
+          "1OJJ",
+          "1RS8",
+          "039N",
+          "1Z29",
+          "1QEJ",
+          "06ES",
+          "0ZN4",
+          "1P7Z",
+          "1LPJ"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Çoklu paket / koli",
+        "members": [
+          "22KS",
+          "0XGR",
+          "07SC",
+          "19KN",
+          "1J4E",
+          "06OV",
+          "0M42",
+          "2L1L",
+          "1TQO"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Premium su",
+        "members": [
+          "0WDF",
+          "0R5E",
+          "0Y4P",
+          "0VRP",
+          "1EJQ",
+          "0QE4",
+          "1SBC"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Lisanslı / figürlü su",
+        "members": [
+          "1ZZJ",
+          "1ZD2"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Spor kapak / cam şişe su",
+        "members": [
+          "0NJA",
+          "0CP4"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Bebek suyu",
+        "members": [
+          "1RT6"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "çay",
+    "category": "İçecek",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Siyah çay (rize / tiryaki / harman / filiz)",
+        "members": [
+          "1XCH",
+          "01KL",
+          "1YFO",
+          "1YP2",
+          "0Q6W",
+          "06RO",
+          "0A82",
+          "0655",
+          "1SO9",
+          "210G",
+          "0VTT",
+          "092Q",
+          "29Z2",
+          "0SCQ",
+          "0VGX",
+          "0XGC",
+          "0ZRI",
+          "05N0",
+          "0TQG",
+          "1Z7S",
+          "210F",
+          "1UKI",
+          "1IPB",
+          "1Y2W",
+          "0B5Y",
+          "1U81",
+          "1WF0",
+          "0K0Y",
+          "02H6",
+          "1L5J",
+          "0W41"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Yeşil çay",
+        "members": [
+          "12SG",
+          "0UJP",
+          "21IK",
+          "1YLP",
+          "0SJN",
+          "1HXI",
+          "1M0K",
+          "1L54",
+          "1Z99",
+          "0EGV",
+          "0KCK",
+          "1OQH",
+          "1QUU",
+          "1VFC",
+          "1JZM",
+          "0XD7",
+          "05AY",
+          "3X23",
+          "0FAP",
+          "02W4"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Poşet çay (demlik / bardak / süzen)",
+        "members": [
+          "083P",
+          "0MJ1",
+          "06P0",
+          "0W1F",
+          "1K96"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Matcha çay",
+        "members": [
+          "1X0H",
+          "1UG7",
+          "2050",
+          "1U8V"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Beyaz çay",
+        "members": [
+          "0OIH",
+          "0DHU",
+          "1R8Z"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Form / bitki / probiyotik çayı",
+        "members": [
+          "1LE2",
+          "1YB3",
+          "10O3"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Aromalı siyah çay (earl grey / bergamot)",
+        "members": [
+          "0M88",
+          "0LDS",
+          "0INC"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Dökme çay",
+        "members": [
+          "20OP",
+          "2FMM"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Granül / CTC çay",
+        "members": [
+          "0GPJ"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "kahve",
+    "category": "İçecek",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Filtre kahve",
+        "members": [
+          "103Q",
+          "201M",
+          "20QL",
+          "1AFH",
+          "1NDA",
+          "1SGZ",
+          "1OKN",
+          "0VQE",
+          "0AXI",
+          "1B50",
+          "1XXU",
+          "20TC",
+          "1Q9H",
+          "1S7U",
+          "0LKE",
+          "0GQF",
+          "1J20",
+          "1AFU"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Granül / çözünebilir (instant) kahve",
+        "members": [
+          "0DR6",
+          "2BPB",
+          "2CQJ",
+          "0U8Q",
+          "1T3L",
+          "2CQK",
+          "06OD",
+          "00MT",
+          "2A3N",
+          "0IGP",
+          "2A4W",
+          "2CRU"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "3'ü 1 arada / hazır kahve karışımı",
+        "members": [
+          "0QD4",
+          "0HTL",
+          "1IOF",
+          "1IB4",
+          "00XW",
+          "1QFH",
+          "1OCG",
+          "29UK",
+          "1YR5",
+          "0ABN"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Çekirdek kahve",
+        "members": [
+          "1WQO",
+          "0924",
+          "3WS7",
+          "1Y0C",
+          "10PU",
+          "1AF6",
+          "1WQX",
+          "0PM7",
+          "1Z6N",
+          "1M7E"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Kahve beyazlatıcısı / kreması",
+        "members": [
+          "0S4D",
+          "0667",
+          "0PMS",
+          "00RG",
+          "2A3O",
+          "0KRY",
+          "04S8",
+          "1NUE"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Kapsül kahve",
+        "members": [
+          "290C",
+          "0EF8",
+          "1REU",
+          "1ZRZ",
+          "0HMO"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Öğütülmüş kahve",
+        "members": [
+          "085Q",
+          "1REW",
+          "1TW3"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Kafeinsiz kahve",
+        "members": [
+          "1OQJ",
+          "1TF6"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Türk kahvesi / dibek",
+        "members": [
+          "0Y6H",
+          "02YD"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Genel kahve",
+        "members": [
+          "0BNF",
+          "0G7L"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "kola",
+    "category": "İçecek",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Klasik kola",
+        "members": [
+          "0ZI9",
+          "0YAB",
+          "0ZLP",
+          "1O9J",
+          "0WO8",
+          "0ZND",
+          "10BG",
+          "0VTW",
+          "03KE",
+          "0L26",
+          "1ONJ",
+          "1O0I",
+          "1NOS",
+          "027H",
+          "1POJ",
+          "1OZS",
+          "2A71",
+          "00Y6",
+          "1P98",
+          "0RLE",
+          "01L1",
+          "2CRN",
+          "01JD",
+          "09V0",
+          "1P59",
+          "1S5S",
+          "04BG",
+          "084H",
+          "1JJQ",
+          "1LKW",
+          "2A32",
+          "29UI"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Şekersiz / zero / light kola",
+        "members": [
+          "3WZQ",
+          "03GI",
+          "1ZPL",
+          "3X1Z",
+          "20X2",
+          "1NJY",
+          "0SRF",
+          "10N7",
+          "01QC",
+          "1LVT",
+          "1KJ7",
+          "1RUF",
+          "111J",
+          "16JK",
+          "1Q4S",
+          "0NPO",
+          "0XUG",
+          "1K0T",
+          "0VV1",
+          "0ZUK",
+          "1O2N",
+          "0S1Z",
+          "1HG2",
+          "1T8I"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Jelibon / şekerleme (kola aromalı)",
+        "members": [
+          "1IYT",
+          "00FU",
+          "0ZRZ",
+          "1NNI",
+          "1IXJ",
+          "200Q",
+          "1KLF",
+          "0UTX",
+          "0TUC"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Çoklu paket / koli",
+        "members": [
+          "1N3U",
+          "1M2O",
+          "1HI8",
+          "3WR7",
+          "2NEM",
+          "0HR9"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Aromalı kola (twist)",
+        "members": [
+          "0NJ8"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "meyve suyu",
+    "category": "İçecek",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Meyveli içecek / nektar",
+        "members": [
+          "20VB",
+          "029R",
+          "1A9N",
+          "05PU",
+          "1FO8",
+          "0NOI",
+          "1UUW",
+          "0Y78",
+          "1RN8",
+          "2B3G",
+          "0SI5",
+          "20WI",
+          "1FNS",
+          "0Y1E",
+          "09RW",
+          "0EJE",
+          "29UW",
+          "1Y8E",
+          "1NOQ",
+          "006V",
+          "20UP",
+          "20JD",
+          "1QOF",
+          "1Z7I",
+          "10A3",
+          "1ZGI",
+          "0Q1G",
+          "0KQE",
+          "0Z62",
+          "0UXE"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Diğer meyve bazlı içecek",
+        "members": [
+          "0WBN",
+          "06N3",
+          "027I",
+          "0BG7",
+          "1024",
+          "1Z8Z",
+          "0080",
+          "0RYR",
+          "10KU",
+          "1UZJ",
+          "099L"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Aromalı içecek (meyve suyu değil)",
+        "members": [
+          "1O1H",
+          "0X9N",
+          "1C2G",
+          "2CRC",
+          "1C8T",
+          "3WYY",
+          "1YC4"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Organik meyve suyu",
+        "members": [
+          "0UZC",
+          "0VCK",
+          "0Q1J",
+          "0WW1",
+          "16FM",
+          "0ODI"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Mocktail / kokteyl içecek",
+        "members": [
+          "0ELN",
+          "0R8V",
+          "0WOZ",
+          "0ORW"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Soğuk çay (fuse tea)",
+        "members": [
+          "1PCZ",
+          "1S2D",
+          "1S8F",
+          "1OFW"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Detoks içeceği",
+        "members": [
+          "0EIS",
+          "0M18",
+          "0PTI",
+          "0W5L"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Meyve suyu",
+        "members": [
+          "0LS2",
+          "1PF1",
+          "1JM4",
+          "1RRB"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "%100 / sıkma meyve suyu",
+        "members": [
+          "0ORV",
+          "1FSE"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "maden suyu",
+    "category": "İçecek",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Aromalı / meyveli maden suyu",
+        "members": [
+          "0XZC",
+          "2AFW",
+          "0CK5",
+          "02XX",
+          "1AQ9",
+          "1IVV",
+          "08VB",
+          "2AJT",
+          "09S0",
+          "1YPR",
+          "06QC",
+          "1TWN",
+          "0MWT",
+          "1JZO",
+          "0SS5",
+          "1CXL",
+          "0A4I",
+          "1TKT",
+          "01UV",
+          "0TXS",
+          "0RLJ",
+          "1BAG",
+          "0PYX",
+          "1SE0",
+          "1QU4",
+          "1LIS",
+          "1BVX",
+          "20XE",
+          "1OJH",
+          "1VSQ",
+          "1RKT",
+          "0SKC",
+          "1S4R",
+          "1TFI",
+          "1OTB",
+          "1RE4",
+          "1R3R",
+          "1R4S",
+          "1IU0"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sade maden suyu",
+        "members": [
+          "1KI7",
+          "25HA",
+          "1WEU",
+          "1L0U",
+          "1LPP",
+          "0M3W",
+          "2CNJ",
+          "0T23",
+          "1TJ7",
+          "0JSV",
+          "0VY7",
+          "1RJA",
+          "0WDD",
+          "09LC",
+          "1IY7",
+          "0HBY"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Çoklu paket / koli",
+        "members": [
+          "1MJP",
+          "20JW",
+          "1NBQ",
+          "1P7S",
+          "1NFI",
+          "1NME",
+          "1KJQ",
+          "1P29",
+          "1YLR",
+          "0KG5",
+          "1K49",
+          "1P6A",
+          "1ZS8",
+          "1SJE"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Premium / signature maden suyu",
+        "members": [
+          "0X6U",
+          "0ZNV",
+          "1BS5"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "soda",
+    "category": "İçecek",
+    "split": "holdout",
+    "candidateCount": 11,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Çamaşır sodası (temizlik)",
+        "members": [
+          "0OW4",
+          "002U",
+          "102S",
+          "0RFS",
+          "2121"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Cream soda (aromalı gazlı içecek)",
+        "members": [
+          "1HW9",
+          "1HWI",
+          "1HW7",
+          "1HWC"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Sade soda",
+        "members": [
+          "0ZA6",
+          "0ZWI"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "soya sosu",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "candidateCount": 24,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade soya sosu",
+        "members": [
+          "1D7B",
+          "1DHL",
+          "1DJO",
+          "1D0V",
+          "1D6N",
+          "20I9",
+          "20QG",
+          "211C",
+          "1DH8",
+          "1D6L",
+          "1DE4",
+          "1D0B",
+          "1DIE"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Az tuzlu / sodyumu azaltılmış soya sosu",
+        "members": [
+          "1CY8",
+          "1D32",
+          "1QV1",
+          "1DJJ",
+          "1D5L",
+          "1X21",
+          "1D2M"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Glutensiz soya sosu",
+        "members": [
+          "1D0O"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Organik soya sosu",
+        "members": [
+          "1ZE2"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Acı soya sosu",
+        "members": [
+          "1PO9"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Koyu soya sosu",
+        "members": [
+          "1DTC"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "köri",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "candidateCount": 15,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Köri noodle (hazır)",
+        "members": [
+          "1YWW",
+          "0WH1",
+          "2B36",
+          "1IBK",
+          "1KQG",
+          "2A78",
+          "1USL"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Köri baharatı",
+        "members": [
+          "04L4",
+          "05EN",
+          "16VL",
+          "1SG0",
+          "1PLJ"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Köri sos",
+        "members": [
+          "1ZS9",
+          "1DKR",
+          "0NH2"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "mozzarella",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "candidateCount": 12,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Mozzarellalı sandviç (hazır)",
+        "members": [
+          "1XZN",
+          "1M6W",
+          "20NJ"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Rende mozzarella",
+        "members": [
+          "0ZHO",
+          "1ZDG",
+          "1YHK"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Mozzarellalı pizza (hazır)",
+        "members": [
+          "20BF",
+          "0T3P"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Suda / top mozzarella",
+        "members": [
+          "1QPP",
+          "1LUQ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Mozzarella çubukları (kızartmalık)",
+        "members": [
+          "1POC"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Genel mozzarella peyniri",
+        "members": [
+          "1ZE1"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "parmesan",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "candidateCount": 6,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Grana padano parmesan",
+        "members": [
+          "0B0I",
+          "1LZM"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Vegan parmesan alternatifi",
+        "members": [
+          "0E2V"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Toz / rende parmesan",
+        "members": [
+          "1QXR"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Eritme parmesan",
+        "members": [
+          "0PZF"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Genel parmesan peyniri",
+        "members": [
+          "1T6J"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "noodle",
+    "category": "Dünya mutfağı",
+    "split": "holdout",
+    "candidateCount": 55,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Bardak noodle",
+        "members": [
+          "1YOC",
+          "20T8",
+          "1VYK",
+          "2A78",
+          "1WYV",
+          "1KQG",
+          "1HKI",
+          "2C9H",
+          "1HKX",
+          "1HKL"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Çoklu paket noodle",
+        "members": [
+          "1ZGV",
+          "1K0G",
+          "2B52",
+          "3WCM",
+          "1GIU",
+          "1USL",
+          "05AC",
+          "2B51",
+          "0CQD"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Köri aromalı noodle",
+        "members": [
+          "1SUB",
+          "0O9Y",
+          "21HE",
+          "1YWW",
+          "0WH1",
+          "2B36",
+          "1IBK",
+          "2A77"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Diğer aromalı noodle (spesiyal / soya / tom yum)",
+        "members": [
+          "1SPH",
+          "06GC",
+          "1KVM",
+          "1DRA",
+          "1HTY",
+          "2AN8",
+          "1M81",
+          "1S5F"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Tavuk aromalı noodle",
+        "members": [
+          "1YQU",
+          "0XQR",
+          "0X0N",
+          "0Z3W",
+          "1L7M",
+          "1LB9"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Jumbo noodle",
+        "members": [
+          "1RRZ",
+          "1KYP",
+          "2AN9",
+          "1XXS"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Erişte (Çin / Kore usulü)",
+        "members": [
+          "1OZ4",
+          "18DE",
+          "0FNS"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Sebze aromalı noodle",
+        "members": [
+          "1UTD",
+          "2B2C",
+          "1JPF"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Egg noodle (kuru)",
+        "members": [
+          "1JKT",
+          "11FI"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Vegan / tam buğdaylı noodle",
+        "members": [
+          "1HTQ",
+          "1HKU"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "tortilla",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "candidateCount": 48,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Tortilla",
+        "members": [
+          "0A7N",
+          "2COK",
+          "00XQ",
+          "2CO9",
+          "2COA",
+          "20Z6",
+          "1Z6O",
+          "1QWA",
+          "1P7B",
+          "0Q3Y",
+          "0MFN",
+          "1Q1S",
+          "0O11",
+          "1RCU",
+          "1Q9M",
+          "0OIT"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Genel lavaş",
+        "members": [
+          "0H6X",
+          "13TG",
+          "09OI",
+          "1CE6",
+          "13V6",
+          "103B",
+          "3WOT",
+          "1HM2",
+          "2CT8",
+          "1YGR",
+          "0GS8",
+          "0ERV",
+          "1V1X"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Tandır / sac ekmeği lavaş",
+        "members": [
+          "0KKZ",
+          "0Q0S",
+          "0P6M",
+          "3WVC",
+          "0PGW",
+          "1Z4T",
+          "03XB",
+          "1TLP",
+          "0XGL"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Taco kabuğu / shells",
+        "members": [
+          "21R1",
+          "1XCS",
+          "1JE7"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Tam buğday lavaş",
+        "members": [
+          "1ZS2",
+          "1R4D",
+          "0SU6"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Tortilla cipsi",
+        "members": [
+          "0Y3R",
+          "00TO"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Glutensiz lavaş",
+        "members": [
+          "1ZPH"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Dürümlük lavaş",
+        "members": [
+          "0YAJ"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "hummus",
+    "category": "Dünya mutfağı",
+    "split": "train",
+    "candidateCount": 6,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Aromalı humus (falafelli / köz biberli)",
+        "members": [
+          "1GW0",
+          "1GWK"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Klasik humus",
+        "members": [
+          "0SCU",
+          "1AXO"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Humus kraker (atıştırmalık)",
+        "members": [
+          "1GYW"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kıtır ekmekli humus seti",
+        "members": [
+          "1LR7"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "pesto",
+    "category": "Dünya mutfağı",
+    "split": "holdout",
+    "candidateCount": 24,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Pesto makarna sosu",
+        "members": [
+          "1D77",
+          "1SMJ",
+          "1JDF",
+          "1DE2",
+          "1T1F",
+          "1RJF",
+          "1NZJ",
+          "3WW8",
+          "20QY",
+          "1T7U",
+          "21RK"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Pesto soslu hazır yemek",
+        "members": [
+          "1D00",
+          "1DD0",
+          "1J5E",
+          "1KW5"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Cips / çerez (pesto aromalı)",
+        "members": [
+          "1DN7",
+          "1AG8",
+          "1DMT"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Pesto soslu süt ürünü (labne / taze peynir)",
+        "members": [
+          "1PIJ",
+          "1DC3"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Genel pesto",
+        "members": [
+          "1DLC",
+          "1DH0"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Pesto mayonez",
+        "members": [
+          "1PYC"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Hazır çabuk makarna",
+        "members": [
+          "1Q9I"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "deterjan",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Toz deterjan",
+        "members": [
+          "29ZI",
+          "15Z4",
+          "006L",
+          "07KR",
+          "01PH",
+          "1NIG",
+          "1H4X",
+          "07CU",
+          "00C2",
+          "1KCV",
+          "1GXB",
+          "0T44",
+          "19EN",
+          "06V2",
+          "04ZY",
+          "29YI",
+          "1RJY",
+          "2CS8",
+          "2A16",
+          "015G",
+          "1YNV",
+          "02OA",
+          "2AH7",
+          "0N4V",
+          "1RDG",
+          "1A5X",
+          "1YL1",
+          "15Z0",
+          "21DX",
+          "05P7",
+          "1PH7",
+          "1PKJ",
+          "1Q3U",
+          "2121",
+          "1NC1",
+          "2CH7",
+          "0W4M",
+          "0TPR",
+          "1ZMD"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sıvı deterjan",
+        "members": [
+          "0WEE",
+          "050A",
+          "1KQE",
+          "1ZPD",
+          "1XF3",
+          "1YKO",
+          "1YSC",
+          "0UFZ",
+          "1Z9K",
+          "0C9R",
+          "1I6F",
+          "20HN",
+          "0WXQ",
+          "1ZMY",
+          "1XLX",
+          "210U",
+          "03MV",
+          "1BPH",
+          "0ZGN",
+          "0NNZ",
+          "0QBN",
+          "2122",
+          "1SU3",
+          "1II4",
+          "0MUA",
+          "1ZDS"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Hassas / hipoalerjenik deterjan",
+        "members": [
+          "0GKX",
+          "1UOF",
+          "201I"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Jel deterjan",
+        "members": [
+          "1PJO",
+          "1UB3"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Bebek deterjanı",
+        "members": [
+          "1T37"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Elde yıkama deterjanı",
+        "members": [
+          "0V4Y"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "bulaşık deterjanı",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "candidateCount": 52,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Kokulu / aromalı bulaşık deterjanı",
+        "members": [
+          "0YN0",
+          "1SL5",
+          "1YEN",
+          "11F3",
+          "1SP1",
+          "1R1O",
+          "05VB",
+          "0POB",
+          "1Y2R",
+          "1MIN",
+          "2A3B",
+          "0RG2",
+          "0Y8A",
+          "2244",
+          "1KTZ",
+          "1X7F",
+          "147Z",
+          "1T6T",
+          "0UOV",
+          "2ADJ",
+          "0NMW",
+          "0T9O",
+          "1T8X",
+          "1K71",
+          "1ZKI",
+          "0ZZO",
+          "1T5F",
+          "1ZCS"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Sıvı bulaşık deterjanı",
+        "members": [
+          "035S",
+          "1QF1",
+          "1IOQ",
+          "016N",
+          "1N7X",
+          "02A1",
+          "0YFC",
+          "1UGB"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Genel bulaşık deterjanı",
+        "members": [
+          "0WBJ",
+          "0N3A",
+          "0FAW",
+          "0ZEX",
+          "1H0V",
+          "21E3"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Losyon bulaşık deterjanı",
+        "members": [
+          "0LFT",
+          "0SQY",
+          "10JS",
+          "1SD2"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Hassas / sensitive bulaşık deterjanı",
+        "members": [
+          "1ZVK",
+          "20FM",
+          "0F2D"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Bitkisel / eco / bio bulaşık deterjanı",
+        "members": [
+          "0HPT",
+          "03DM",
+          "0HEB"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "çamaşır suyu",
+    "category": "Temizlik & kağıt",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Parfümlü / kokulu çamaşır suyu",
+        "members": [
+          "0LJK",
+          "0MLM",
+          "00F8",
+          "214I",
+          "0Z5V",
+          "1REL",
+          "0AEV",
+          "0E7T",
+          "0SOT",
+          "1ILF",
+          "01PZ",
+          "0IM5",
+          "05JX",
+          "0FT6",
+          "0GNO",
+          "0WHN",
+          "1OQ3",
+          "1Y4A",
+          "146B",
+          "1N3A",
+          "1IAP",
+          "2086",
+          "1WKN",
+          "1NI2",
+          "0Y84",
+          "1RDF",
+          "1MOF",
+          "1YJO"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Ultra / yoğun çamaşır suyu",
+        "members": [
+          "0LIL",
+          "2A15",
+          "1O6W",
+          "0LVH",
+          "0XIH",
+          "0SVY",
+          "081N",
+          "05VU",
+          "0WNR",
+          "06RN",
+          "0HF3",
+          "13D9",
+          "13ZI",
+          "0RFF",
+          "0FLC",
+          "0OBK",
+          "05OF",
+          "2NPH",
+          "1Q3S",
+          "0641",
+          "1FVV",
+          "1VCU",
+          "1KA0",
+          "1JSP"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Klasik çamaşır suyu",
+        "members": [
+          "1P4Y",
+          "1SV6",
+          "099Q",
+          "1JCY",
+          "0G07",
+          "1NEM",
+          "0HV2",
+          "1N30",
+          "0EMR"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Köpük çamaşır suyu",
+        "members": [
+          "1F13",
+          "1G8E",
+          "1GEQ",
+          "13YG"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Jel / kıvamlı çamaşır suyu",
+        "members": [
+          "20TN",
+          "1XFA",
+          "1U7T"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Mutfak çamaşır suyu",
+        "members": [
+          "20P8",
+          "20HO"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Lavabo açıcı",
+        "members": [
+          "0QU1"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Bitkisel çamaşır suyu",
+        "members": [
+          "0ZZ6"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "peçete",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "candidateCount": 62,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sade peçete",
+        "members": [
+          "104N",
+          "0403",
+          "09BF",
+          "05LO",
+          "1W4F",
+          "13DC",
+          "10E2",
+          "0Y6Z",
+          "0NHL",
+          "0BSZ",
+          "08V9",
+          "0A9D",
+          "05ZU"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Kağıt mendil (genel)",
+        "members": [
+          "02OO",
+          "1QHK",
+          "1ZWG",
+          "1RW5",
+          "0LHI",
+          "2A0K",
+          "19BZ",
+          "0OPW",
+          "1TAU",
+          "0QVU",
+          "0WKB",
+          "0R6L"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Desenli / temalı peçete",
+        "members": [
+          "13UL",
+          "149Q",
+          "1RUU",
+          "13Y2",
+          "1OUC",
+          "1VYL",
+          "0MUK",
+          "0MEB",
+          "0WKC"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Kutu mendil",
+        "members": [
+          "0TPC",
+          "0XLK",
+          "1WNP",
+          "0QI3",
+          "0PS2",
+          "16K6",
+          "1WRL",
+          "1VW2"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Sunum / servis peçetesi",
+        "members": [
+          "1FZA",
+          "3WO5",
+          "1X6O",
+          "144I",
+          "149R",
+          "1TSF"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Premium / extra peçete",
+        "members": [
+          "1TJW",
+          "2ATV",
+          "0N53",
+          "1PRK",
+          "1W5V",
+          "10QQ"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Cep mendili",
+        "members": [
+          "02RL",
+          "052O",
+          "1VFT",
+          "0KLV"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Çek-al mendil",
+        "members": [
+          "1BMT",
+          "1WDK",
+          "1UZS",
+          "0HX6"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "tuvalet kağıdı",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "candidateCount": 47,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Geri dönüşüm / eko / natural tuvalet kağıdı",
+        "members": [
+          "07K9",
+          "1CQA",
+          "1PDS",
+          "0NEZ",
+          "1UOH",
+          "21JG",
+          "07S4",
+          "0RTC",
+          "09QT",
+          "1Q7V",
+          "196W",
+          "0WKA"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Genel tuvalet kağıdı",
+        "members": [
+          "1FX8",
+          "0J6D",
+          "0MOH",
+          "1PMN",
+          "0UBB",
+          "1ADR",
+          "1WZZ",
+          "1WUP",
+          "0OT0",
+          "0BKC",
+          "1EOS"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Bambu katkılı tuvalet kağıdı",
+        "members": [
+          "0O96",
+          "1IAM",
+          "20KZ",
+          "1NOO",
+          "14BN",
+          "1WO9"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "2 / çift katlı tuvalet kağıdı",
+        "members": [
+          "0458",
+          "1WJO",
+          "1WE3",
+          "1476",
+          "089G"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "3 katlı tuvalet kağıdı",
+        "members": [
+          "2B28",
+          "0008",
+          "135M",
+          "0SOX"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Parfümlü / pudralı tuvalet kağıdı",
+        "members": [
+          "00HH",
+          "07Q1",
+          "35G5"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Pamuk / kaşmir katkılı tuvalet kağıdı",
+        "members": [
+          "0O5P",
+          "1GF3",
+          "1DQ6"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "4 katlı tuvalet kağıdı",
+        "members": [
+          "1XJZ",
+          "1SL9"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Islak tuvalet kağıdı",
+        "members": [
+          "0T6T"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "şampuan",
+    "category": "Temizlik & kağıt",
+    "split": "train",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Genel şampuan",
+        "members": [
+          "00FB",
+          "06AZ",
+          "1WLN",
+          "1J6F",
+          "0YEX",
+          "1L60",
+          "1O4A",
+          "1NAZ",
+          "1C15",
+          "2BLL",
+          "1M73",
+          "1TZU",
+          "2163",
+          "1OFP",
+          "1ODU",
+          "1YJF",
+          "2AFN",
+          "2CPV",
+          "184H",
+          "0YHL",
+          "1KMX",
+          "1HPS"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Bitkisel / yağ özlü şampuan",
+        "members": [
+          "1PEG",
+          "1Y7J",
+          "0WY3",
+          "092S",
+          "1TYR",
+          "0OTE",
+          "0TZ7",
+          "0SLN",
+          "0UVW",
+          "1E6H",
+          "0UMB",
+          "1WOG",
+          "1RX9",
+          "17M0",
+          "0PI9",
+          "0MIC"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Nem / parlaklık şampuanı",
+        "members": [
+          "1NZ2",
+          "0VJF",
+          "1ZI0",
+          "1TB0",
+          "1QDS",
+          "21YE",
+          "3X09",
+          "1PE1",
+          "10R5",
+          "1NDK",
+          "1YMO",
+          "0OZ5",
+          "1S8W"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Onarıcı / yıpranmış saç şampuanı",
+        "members": [
+          "1YTT",
+          "1TXW",
+          "1UFB",
+          "0ZZF",
+          "1TJY",
+          "0KFJ"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Kepek karşıtı şampuan",
+        "members": [
+          "1WJS",
+          "1PCK",
+          "0ZWM",
+          "1ON9",
+          "1PII"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Erkek şampuanı",
+        "members": [
+          "1PKU",
+          "1TDW",
+          "1PDY",
+          "1TAZ"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Dökülme karşıtı şampuan",
+        "members": [
+          "1H9B",
+          "0K5F",
+          "1OUO"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Kuru şampuan",
+        "members": [
+          "1O56"
+        ]
+      },
+      {
+        "id": "I",
+        "label": "Duş jeli + şampuan",
+        "members": [
+          "1JYZ"
+        ]
+      },
+      {
+        "id": "J",
+        "label": "Renk koruyucu / mor şampuan",
+        "members": [
+          "1WRI"
+        ]
+      }
+    ],
+    "ungrouped": []
+  },
+  {
+    "term": "sabun",
+    "category": "Temizlik & kağıt",
+    "split": "holdout",
+    "candidateCount": 72,
+    "groups": [
+      {
+        "id": "A",
+        "label": "Sıvı sabun",
+        "members": [
+          "01PQ",
+          "0O0R",
+          "06TI",
+          "1IBT",
+          "07L2",
+          "1BE3",
+          "1ZAG",
+          "200W",
+          "1V49",
+          "0XID",
+          "0D5Y",
+          "0DEI",
+          "12M8",
+          "04SS",
+          "1WE4",
+          "0XF5",
+          "1YVA",
+          "1TEK",
+          "0HAB",
+          "10FF",
+          "1YX7",
+          "03Z7",
+          "1ZMW",
+          "1O6O",
+          "0O5I",
+          "09UA"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "Zeytinyağlı sabun",
+        "members": [
+          "1XEX",
+          "0QL9",
+          "0MXV",
+          "1ZG8",
+          "12MB",
+          "1N5N",
+          "1ZCR",
+          "1RMB",
+          "05US",
+          "01D5",
+          "0AM4",
+          "1KLX",
+          "1PH3"
+        ]
+      },
+      {
+        "id": "C",
+        "label": "Kalıp / katı sabun",
+        "members": [
+          "0MOQ",
+          "0QHU",
+          "2BMV",
+          "1JYY",
+          "1YQL",
+          "0FNZ",
+          "1Y90",
+          "1MLB",
+          "2MR2",
+          "1YP5"
+        ]
+      },
+      {
+        "id": "D",
+        "label": "Genel sabun",
+        "members": [
+          "0N9T",
+          "1NWB",
+          "1UAL",
+          "0HA7",
+          "0PAU",
+          "0XIO",
+          "0MU8",
+          "1SEB",
+          "1C60"
+        ]
+      },
+      {
+        "id": "E",
+        "label": "Köpük sabun",
+        "members": [
+          "1S9S",
+          "2MFD",
+          "1TVT",
+          "0CUK"
+        ]
+      },
+      {
+        "id": "F",
+        "label": "Yüz sabunu / cream bar",
+        "members": [
+          "0VIU",
+          "0QVT",
+          "0S3A",
+          "1N5T"
+        ]
+      },
+      {
+        "id": "G",
+        "label": "Antibakteriyel / hassas sabun",
+        "members": [
+          "06QE",
+          "1KWR",
+          "0C4H",
+          "1S6A"
+        ]
+      },
+      {
+        "id": "H",
+        "label": "Kabak lifli sabun",
+        "members": [
+          "1CG8",
+          "1VC6"
+        ]
+      }
+    ],
+    "ungrouped": []
+  }
+]

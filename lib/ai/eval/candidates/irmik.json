@@ -1,0 +1,1126 @@
+{
+  "term": "irmik",
+  "category": "Ekmek & unlu",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:44:07.080Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0UW3",
+      "name": "Piyale İrmik 500 Gr",
+      "brand": "Piyale",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "0765",
+      "name": "Yazgan İrmik 500 Gr",
+      "brand": "Yazgan",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "1CJS",
+      "name": "Tat İrmik 500 Gr",
+      "brand": "Tat",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "08V1",
+      "name": "Carrefour İrmik 500 Gr",
+      "brand": "Carrefour",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 20.5,
+      "maxPrice": 20.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 20.5
+        }
+      ]
+    },
+    {
+      "productId": "04OZ",
+      "name": "Migros İrmik 500 Gr",
+      "brand": "Migros",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 20.5,
+      "maxPrice": 20.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 20.5
+        }
+      ]
+    },
+    {
+      "productId": "1SUC",
+      "name": "Mutlu İrmik 500 Gr",
+      "brand": "Mutlu",
+      "category": "Un ve İrmik",
+      "marketCount": 2,
+      "minPrice": 34.9,
+      "maxPrice": 38.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.9
+        },
+        {
+          "market": "Migros",
+          "price": 38.95
+        }
+      ]
+    },
+    {
+      "productId": "0RO0",
+      "name": "Kenton Mısır Nişastası 200 Gr",
+      "brand": "Kenton",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 41.95,
+      "maxPrice": 41.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 41.95
+        }
+      ]
+    },
+    {
+      "productId": "1CJT",
+      "name": "Piyale Galeta Unu 400 Gr",
+      "brand": "Piyale",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 42,
+      "maxPrice": 42,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 42
+        }
+      ]
+    },
+    {
+      "productId": "0MTF",
+      "name": "Filiz İrmik 500 Gr",
+      "brand": "Filiz",
+      "category": "Un ve İrmik",
+      "marketCount": 2,
+      "minPrice": 42.95,
+      "maxPrice": 42.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 42.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 42.95
+        }
+      ]
+    },
+    {
+      "productId": "0RO6",
+      "name": "Arbella İrmik 500 Gr",
+      "brand": "Arbella",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 42.95,
+      "maxPrice": 42.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 42.95
+        }
+      ]
+    },
+    {
+      "productId": "00KD",
+      "name": "Pastavilla Vakumlu İrmik 500 Gr",
+      "brand": "Pastavilla",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 44.75,
+      "maxPrice": 44.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 44.75
+        }
+      ]
+    },
+    {
+      "productId": "1JQ3",
+      "name": "Nuh'un Ankara İrmik 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 45.5,
+      "maxPrice": 45.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 45.5
+        }
+      ]
+    },
+    {
+      "productId": "1PJI",
+      "name": "Dr. Oetker Sade İrmik Helvası 360 Gr",
+      "brand": "Dr. Oetker",
+      "category": "Tatlılar",
+      "marketCount": 2,
+      "minPrice": 46,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 46
+        },
+        {
+          "market": "Migros",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "1YFK",
+      "name": "Sinangil İrmik 500 Gr",
+      "brand": "Sinangil",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 48,
+      "maxPrice": 48,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 48
+        }
+      ]
+    },
+    {
+      "productId": "1A6X",
+      "name": "Efsane Tam Buğday Unu 2 Kg",
+      "brand": "Efsane",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1H4Z",
+      "name": "Carrefour Tam Buğday Unu 2 Kg",
+      "brand": "Carrefour",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 72,
+      "maxPrice": 72,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 72
+        }
+      ]
+    },
+    {
+      "productId": "1JDD",
+      "name": "Söke Tam Buğday Unu 1 Kg",
+      "brand": "Söke",
+      "category": "Un ve İrmik",
+      "marketCount": 2,
+      "minPrice": 75.95,
+      "maxPrice": 76.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 75.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 76.5
+        }
+      ]
+    },
+    {
+      "productId": "0G6B",
+      "name": "Gurmepack İrmik Helvası 150 Gr",
+      "brand": "Gurmepack",
+      "category": "Tatlılar",
+      "marketCount": 1,
+      "minPrice": 89,
+      "maxPrice": 89,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89
+        }
+      ]
+    },
+    {
+      "productId": "0BEN",
+      "name": "Sade Organik Buğday İrmiği 500 Gr",
+      "brand": "Sade",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 91.5,
+      "maxPrice": 91.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 91.5
+        }
+      ]
+    },
+    {
+      "productId": "09R8",
+      "name": "City Farm Organik İrmik 500 Gr",
+      "brand": "City Farm",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 95.9,
+      "maxPrice": 95.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 95.9
+        }
+      ]
+    },
+    {
+      "productId": "18L8",
+      "name": "Özde Buğday Unu 5 Kg",
+      "brand": "Özde",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "0XQN",
+      "name": "Piyale Un 5 Kg",
+      "brand": "Piyale",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 135,
+      "maxPrice": 135,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 135
+        }
+      ]
+    },
+    {
+      "productId": "0RH3",
+      "name": "Ege Glutensiz Mısır İrmiği 500 Gr",
+      "brand": "Ege",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 139.95,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "0QZ6",
+      "name": "Söke Un 5 Kg",
+      "brand": "Söke",
+      "category": "Un ve İrmik",
+      "marketCount": 2,
+      "minPrice": 159.9,
+      "maxPrice": 169.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 159.9
+        },
+        {
+          "market": "Migros",
+          "price": 169.95
+        }
+      ]
+    },
+    {
+      "productId": "1B8U",
+      "name": "Migros Mısır Nişastası 250 Gr",
+      "brand": "Migros",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 18.45,
+      "maxPrice": 18.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 18.45
+        }
+      ]
+    },
+    {
+      "productId": "02AC",
+      "name": "Rençber Mısır Unu 500 Gr",
+      "brand": "Rençber",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "20TD",
+      "name": "Söke Glutensiz Un 250 Gr",
+      "brand": "Söke",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 29.5,
+      "maxPrice": 29.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 29.5
+        }
+      ]
+    },
+    {
+      "productId": "1AOQ",
+      "name": "Migros Buğday Nişastası 250 Gr",
+      "brand": "Migros",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 30.95,
+      "maxPrice": 30.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30.95
+        }
+      ]
+    },
+    {
+      "productId": "1OBQ",
+      "name": "Bağdat Mısır Unu 250 Gr",
+      "brand": "Bağdat",
+      "category": "Un ve İrmik",
+      "marketCount": 2,
+      "minPrice": 31.95,
+      "maxPrice": 32.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 31.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 32.95
+        }
+      ]
+    },
+    {
+      "productId": "0AKI",
+      "name": "Carrefour Buğday Unu 1 Kg",
+      "brand": "Carrefour",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 35,
+      "maxPrice": 35,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 35
+        }
+      ]
+    },
+    {
+      "productId": "08P5",
+      "name": "Öykü Mısır Nişastası 500 Gr",
+      "brand": "Öykü",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 39.5,
+      "maxPrice": 39.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 39.5
+        }
+      ]
+    },
+    {
+      "productId": "0V9M",
+      "name": "Bağdat Galeta Unu Ekonomik 250 Gr",
+      "brand": "Bağdat",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "01JV",
+      "name": "Ekmecik Galeta Unu 400 Gr",
+      "brand": "Ekmecik",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 42,
+      "maxPrice": 42,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 42
+        }
+      ]
+    },
+    {
+      "productId": "09WJ",
+      "name": "Öykü Galeta Unu 400 Gr",
+      "brand": "Öykü",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 42,
+      "maxPrice": 42,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 42
+        }
+      ]
+    },
+    {
+      "productId": "0A7B",
+      "name": "Sinangil Mısır Unu 500 Gr",
+      "brand": "Sinangil",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 42.9,
+      "maxPrice": 42.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 42.9
+        }
+      ]
+    },
+    {
+      "productId": "0705",
+      "name": "Öykü Pirinç Unu 500 Gr",
+      "brand": "Öykü",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 49,
+      "maxPrice": 49,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 49
+        }
+      ]
+    },
+    {
+      "productId": "05MD",
+      "name": "Nuh'un Ankara Buğday Kepeği 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 54.5,
+      "maxPrice": 54.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 54.5
+        }
+      ]
+    },
+    {
+      "productId": "1UCJ",
+      "name": "Söke Çok Tahıllı Un Karışımı 500 Gr",
+      "brand": "Söke",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 54.95,
+      "maxPrice": 54.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 54.95
+        }
+      ]
+    },
+    {
+      "productId": "0C4R",
+      "name": "Doğalsan Çavdar Unu 1 Kg",
+      "brand": "Doğalsan",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 64.95,
+      "maxPrice": 64.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 64.95
+        }
+      ]
+    },
+    {
+      "productId": "1S10",
+      "name": "Sinangil Un 2 Kg",
+      "brand": "Sinangil",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 68.18,
+      "maxPrice": 68.18,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 68.18
+        }
+      ]
+    },
+    {
+      "productId": "0BZ2",
+      "name": "Piyale Tam Buğday Unu 2 Kg",
+      "brand": "Piyale",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 72,
+      "maxPrice": 72,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 72
+        }
+      ]
+    },
+    {
+      "productId": "0N41",
+      "name": "Mlife Glutensiz Un 500 Gr",
+      "brand": "Mlife",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 81.95,
+      "maxPrice": 81.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 81.95
+        }
+      ]
+    },
+    {
+      "productId": "0WC7",
+      "name": "Gelenek Un Buğday 2 Kg",
+      "brand": "Gelenek",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "0HYI",
+      "name": "Sade Organik Tam Buğday Unu 1 Kg",
+      "brand": "Sade Organik",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 145.9,
+      "maxPrice": 145.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 145.9
+        }
+      ]
+    },
+    {
+      "productId": "0OU5",
+      "name": "Oneva Hindistan Cevizi Unu 200 Gr",
+      "brand": "Oneva",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 172.95,
+      "maxPrice": 172.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 172.95
+        }
+      ]
+    },
+    {
+      "productId": "1XOL",
+      "name": "Reis Glutensiz Kırmızı Mercimek Unu 500 Gr",
+      "brand": "Reis",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 194.9,
+      "maxPrice": 194.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 194.9
+        }
+      ]
+    },
+    {
+      "productId": "1NDD",
+      "name": "Sinangil Un 5 Kg",
+      "brand": "Sinangil",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 198.9,
+      "maxPrice": 198.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 198.9
+        }
+      ]
+    },
+    {
+      "productId": "1UG9",
+      "name": "Reis Glutensiz Çiğ Karabuğday Unu 500 Gr",
+      "brand": "Reis",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 207.9,
+      "maxPrice": 207.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 207.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZN0",
+      "name": "Piyale Mısır Nişastası 200 Gr",
+      "brand": "Piyale",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 16.5,
+      "maxPrice": 16.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 16.5
+        }
+      ]
+    },
+    {
+      "productId": "07JR",
+      "name": "Yazgan Mısır Nişastası 200 Gr",
+      "brand": "Yazgan",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 16.5,
+      "maxPrice": 16.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 16.5
+        }
+      ]
+    },
+    {
+      "productId": "13K6",
+      "name": "Sanita Buğday Nişastası 200 Gr",
+      "brand": "Sanita",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 17.25,
+      "maxPrice": 17.25,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 17.25
+        }
+      ]
+    },
+    {
+      "productId": "1FRZ",
+      "name": "Nimet Mısır Unu 400 Gr",
+      "brand": "Nimet",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 21.5,
+      "maxPrice": 21.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 21.5
+        }
+      ]
+    },
+    {
+      "productId": "0M68",
+      "name": "Migros Galeta Unu 250 Gr",
+      "brand": "Migros",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 26.75,
+      "maxPrice": 26.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 26.75
+        }
+      ]
+    },
+    {
+      "productId": "1STP",
+      "name": "Bağdat Galeta Unu 250 Gr",
+      "brand": "Bağdat",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 37.95,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "20N2",
+      "name": "Dr. Oetker Pirinç Unu 200 Gr",
+      "brand": "Dr. Oetker",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 47.75,
+      "maxPrice": 47.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 47.75
+        }
+      ]
+    },
+    {
+      "productId": "0Y3L",
+      "name": "Söke Un 1 Kg",
+      "brand": "Söke",
+      "category": "Un ve İrmik",
+      "marketCount": 3,
+      "minPrice": 50,
+      "maxPrice": 54.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 50
+        },
+        {
+          "market": "Migros",
+          "price": 54.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 54.95
+        }
+      ]
+    },
+    {
+      "productId": "0KMX",
+      "name": "Kenton Buğday Nişastası 200 Gr",
+      "brand": "Kenton",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 51.95,
+      "maxPrice": 51.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 51.95
+        }
+      ]
+    },
+    {
+      "productId": "02VH",
+      "name": "Efsane Buğday Unu 2 Kg",
+      "brand": "Efsane",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "0AC0",
+      "name": "Akun Çorumlu Un 2 Kg",
+      "brand": "Akun",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 60,
+      "maxPrice": 60,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "productId": "1PUX",
+      "name": "Dr. Oetker Glutensiz Pirinç Unu 175 Gr",
+      "brand": "Dr. Oetker",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 61.25,
+      "maxPrice": 61.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 61.25
+        }
+      ]
+    },
+    {
+      "productId": "0L6F",
+      "name": "Söke Mor Un 500 Gr",
+      "brand": "Söke",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 75.95,
+      "maxPrice": 75.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 75.95
+        }
+      ]
+    },
+    {
+      "productId": "0FBM",
+      "name": "City Farm Organik Mısır Unu 500 Gr",
+      "brand": "City Farm",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 77.9,
+      "maxPrice": 77.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 77.9
+        }
+      ]
+    },
+    {
+      "productId": "0NU6",
+      "name": "Panko Japon Ekmek Kırıntısı 200 Gr",
+      "brand": "Panko",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 81.25,
+      "maxPrice": 81.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 81.25
+        }
+      ]
+    },
+    {
+      "productId": "030H",
+      "name": "City Farm Organik Beyaz Un 1 Kg",
+      "brand": "City Farm",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 132.5,
+      "maxPrice": 132.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 132.5
+        }
+      ]
+    },
+    {
+      "productId": "05T1",
+      "name": "Efsane Buğday Unu 5 Kg",
+      "brand": "Efsane",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 135,
+      "maxPrice": 135,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 135
+        }
+      ]
+    },
+    {
+      "productId": "06G8",
+      "name": "Akun Un 5 Kg",
+      "brand": "Akun",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 135,
+      "maxPrice": 135,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 135
+        }
+      ]
+    },
+    {
+      "productId": "1PB7",
+      "name": "Arifoğlu Keçiboynuzu Unu 180 Gr",
+      "brand": "Arifoğlu",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 135.15,
+      "maxPrice": 135.15,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 135.15
+        }
+      ]
+    },
+    {
+      "productId": "0T7O",
+      "name": "Söke Baklavalık Ve Böreklik Un 2 Kg",
+      "brand": "Söke",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 135.95,
+      "maxPrice": 135.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 135.95
+        }
+      ]
+    },
+    {
+      "productId": "0ECY",
+      "name": "Sade Organik Beyaz Un 1 Kg",
+      "brand": "Sade",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 145.9,
+      "maxPrice": 145.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 145.9
+        }
+      ]
+    },
+    {
+      "productId": "1WVD",
+      "name": "Schär Farina Glutensiz Un 1 Kg",
+      "brand": "Schär",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 251,
+      "maxPrice": 251,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 251
+        }
+      ]
+    },
+    {
+      "productId": "0A0V",
+      "name": "Sinangil Un 8 Kg",
+      "brand": "Sinangil",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0B1Q",
+      "name": "Oneva Badem Unu 350 Gr",
+      "brand": "Oneva",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 452.95,
+      "maxPrice": 452.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 452.95
+        }
+      ]
+    }
+  ]
+}

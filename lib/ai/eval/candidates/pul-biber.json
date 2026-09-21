@@ -1,0 +1,405 @@
+{
+  "term": "pul biber",
+  "category": "Tatlandırıcı & baharat",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:02:10.940Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "09D8",
+      "name": "Edalı Acı Pul Biber 75 Gr",
+      "brand": "Edalı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 32,
+      "maxPrice": 32,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 32
+        }
+      ]
+    },
+    {
+      "productId": "0Z2B",
+      "name": "Anadolu Mutfağı Kırmızı Pul Biber 75 Gr",
+      "brand": "Anadolu Mutfağı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 32.9,
+      "maxPrice": 32.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 32.9
+        }
+      ]
+    },
+    {
+      "productId": "0ROL",
+      "name": "Migros Pul Biber 85 Gr",
+      "brand": "Migros",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "014F",
+      "name": "Pul Biber 100 Gr",
+      "brand": "Markasız",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 43,
+      "maxPrice": 43,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 43
+        }
+      ]
+    },
+    {
+      "productId": "1E4F",
+      "name": "Güzin Pul Biber 250 Gr",
+      "brand": "Güzin",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "16VP",
+      "name": "Deva Pul Biber 65 Gr",
+      "brand": "Deva",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 63.95,
+      "maxPrice": 63.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 63.95
+        }
+      ]
+    },
+    {
+      "productId": "024Z",
+      "name": "Carrefour Acı Kırmızı Biber 100 Gr",
+      "brand": "Carrefour",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1VA2",
+      "name": "Bağdat Pul Biber 80 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 65.96,
+      "maxPrice": 88.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 65.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 88.9
+        }
+      ]
+    },
+    {
+      "productId": "0DFO",
+      "name": "Carrefour Pul Kırmızı Biber Pet 100 Gr",
+      "brand": "Carrefour",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 74.5,
+      "maxPrice": 74.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74.5
+        }
+      ]
+    },
+    {
+      "productId": "2AJN",
+      "name": "Bağdat Acı Pul Biber 80 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 76,
+      "maxPrice": 76,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 76
+        }
+      ]
+    },
+    {
+      "productId": "1RBX",
+      "name": "Knorr Pul Biber 65 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 83.9,
+      "maxPrice": 83.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 83.9
+        }
+      ]
+    },
+    {
+      "productId": "1PB8",
+      "name": "Bağdat İsot Biber 80 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 84.95,
+      "maxPrice": 88.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 84.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 88.5
+        }
+      ]
+    },
+    {
+      "productId": "0J5U",
+      "name": "Pul Kırmızı Biber 100 Gr",
+      "brand": "Markasız",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZHO",
+      "name": "Bağdat Ekstra Acı Pul Biber 80 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 89.95,
+      "maxPrice": 90.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 90.9
+        }
+      ]
+    },
+    {
+      "productId": "1PW0",
+      "name": "Bağdat Pul Biber 40 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZO6",
+      "name": "Anadolu Mutfağı Kırmızı Pul Biber 250 Gr",
+      "brand": "Anadolu Mutfağı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "01RK",
+      "name": "Edalı Acı Pul Biber 250 Gr",
+      "brand": "Edalı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 109.5,
+      "maxPrice": 109.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 109.5
+        }
+      ]
+    },
+    {
+      "productId": "1ADD",
+      "name": "Dünyahayat Pul Kırmızı Biber 100 Gr",
+      "brand": "Dünyahayat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 138.95,
+      "maxPrice": 138.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 138.95
+        }
+      ]
+    },
+    {
+      "productId": "1TPJ",
+      "name": "Bağdat Pul Biber 210 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 149.5,
+      "maxPrice": 179.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 149.5
+        },
+        {
+          "market": "Migros",
+          "price": 179.9
+        }
+      ]
+    },
+    {
+      "productId": "16W3",
+      "name": "Deva Pul Biber 200 Gr",
+      "brand": "Deva",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z4V",
+      "name": "Knorr Ekonomik Pul Biber 200 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 187.5,
+      "maxPrice": 187.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 187.5
+        }
+      ]
+    },
+    {
+      "productId": "10TH",
+      "name": "Bağdat Pul Biber Ekonomik 210 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 187.5,
+      "maxPrice": 187.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 187.5
+        }
+      ]
+    },
+    {
+      "productId": "0CUS",
+      "name": "Müsan Kahramanmaraş Acı Kırmızı Pul Biber 200 Gr",
+      "brand": "Müsan",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "057A",
+      "name": "Pul Biber 1 Kg",
+      "brand": "Markasız",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 499.9,
+      "maxPrice": 499.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 499.9
+        }
+      ]
+    },
+    {
+      "productId": "17YU",
+      "name": "Deva İsot Biber 65 Gr",
+      "brand": "Deva",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    }
+  ]
+}

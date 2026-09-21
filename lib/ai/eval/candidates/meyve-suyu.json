@@ -1,0 +1,1126 @@
+{
+  "term": "meyve suyu",
+  "category": "İçecek",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:04:01.542Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "20VB",
+      "name": "Tamek Meyvelim Vişne Meyveli İçecek 200 Ml",
+      "brand": "Tamek",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 16.5,
+      "maxPrice": 16.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 16.5
+        }
+      ]
+    },
+    {
+      "productId": "1O1H",
+      "name": "Juss Fesleğen Tohumlu Aromalı İçecek 250 Ml",
+      "brand": "Juss",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "0X9N",
+      "name": "Crown Portakal Aromalı İçecek 330 Ml",
+      "brand": "Crown",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 24,
+      "maxPrice": 24,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 24
+        }
+      ]
+    },
+    {
+      "productId": "029R",
+      "name": "Will/Jusy Ananaslı Meyveli İçecek 1 Lt",
+      "brand": "Will/Jusy",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 50,
+      "maxPrice": 50,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 50
+        }
+      ]
+    },
+    {
+      "productId": "1A9N",
+      "name": "Lavi +2 Meyveli Naneli İçecek 1 Lt",
+      "brand": "Lavi",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 52,
+      "maxPrice": 52,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52
+        }
+      ]
+    },
+    {
+      "productId": "05PU",
+      "name": "Uludağ Meyvelim Portakallı Meyveli İçecek 1 Lt",
+      "brand": "Uludağ",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 60,
+      "maxPrice": 60,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "productId": "1C2G",
+      "name": "Cappy Bubble Ananas & Mango Aromalı İçecek 330 Ml",
+      "brand": "Cappy",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 60,
+      "maxPrice": 60,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "productId": "0WBN",
+      "name": "Söğütlüçeşme Limon C Vitaminli 6x200 Ml",
+      "brand": "Söğütlüçeşme",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "06N3",
+      "name": "Oui Voila Yellow Mix 414 Ml",
+      "brand": "Oui Voila",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "027I",
+      "name": "Oui Voila Color Mix 414 Ml",
+      "brand": "Oui Voila",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "1PCZ",
+      "name": "Fuse Tea Mango Ve Ananas Aromalı İçecek 1.5 Lt",
+      "brand": "Fusetea",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 67.9,
+      "maxPrice": 81,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 67.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 81
+        }
+      ]
+    },
+    {
+      "productId": "0BG7",
+      "name": "Tamek Kahvaltım 1 Lt",
+      "brand": "Tamek",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "1S2D",
+      "name": "Fuse Tea Egzotik Ejder Meyvesi Çarkıfelek Meyvesi Aromalı İçecek 1 Lt",
+      "brand": "Fuse Tea",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "0UZC",
+      "name": "Hipp Organik Karışık Meyve Suyu 200 Ml",
+      "brand": "Hipp",
+      "category": "Bebek Mamaları",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "1FO8",
+      "name": "Dimes Orman Meyveli İçecek 1 Lt",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 80.9,
+      "maxPrice": 80.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 80.9
+        }
+      ]
+    },
+    {
+      "productId": "0NOI",
+      "name": "Lavi Berry Mix Meyveli İçecek 1 Lt",
+      "brand": "Lavi",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1UUW",
+      "name": "Dimes Portakal İçeceği 1 Lt",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 90.9,
+      "maxPrice": 90.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 90.9
+        }
+      ]
+    },
+    {
+      "productId": "0EIS",
+      "name": "Tazeyim Detox Orman Meyveleri Suyu 150 Ml",
+      "brand": "Tazeyim",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 98.9,
+      "maxPrice": 98.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 98.9
+        }
+      ]
+    },
+    {
+      "productId": "0ORV",
+      "name": "Dimes %100 Tropik Meyveler Suyu 1 Lt",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "0VCK",
+      "name": "Mlife Organik Elma Suyu 330 Ml",
+      "brand": "Mlife",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 108.5,
+      "maxPrice": 108.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 108.5
+        }
+      ]
+    },
+    {
+      "productId": "0ELN",
+      "name": "Okf Coco Drink 500 Ml",
+      "brand": "Okf",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 170.9,
+      "maxPrice": 170.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 170.9
+        }
+      ]
+    },
+    {
+      "productId": "1FSE",
+      "name": "Naren %100 Sıkma Kırmızı Meyveler Suyu 720 Ml",
+      "brand": "Naren",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 187,
+      "maxPrice": 187,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 187
+        }
+      ]
+    },
+    {
+      "productId": "0R8V",
+      "name": "Froods On The Beach Mocktail 330 Ml",
+      "brand": "Froods",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 189.9,
+      "maxPrice": 189.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 189.9
+        }
+      ]
+    },
+    {
+      "productId": "0WOZ",
+      "name": "Froods Vai Vai Mocktail 330 Ml",
+      "brand": "Froods",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 196.9,
+      "maxPrice": 196.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 196.9
+        }
+      ]
+    },
+    {
+      "productId": "1024",
+      "name": "Söğütlüçeşme Karpuz & Çilek 200 Ml",
+      "brand": "Söğütlüçeşme",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 14,
+      "maxPrice": 14,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "productId": "1Z8Z",
+      "name": "Sizzle-Pop Summer Champ Şeftali Elma Ananas 200 Ml",
+      "brand": "Sizzle-Pop",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 15.9,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 15.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "2CRC",
+      "name": "Zen Fesleğen Aromalı İçecek Basil 250 Ml",
+      "brand": "Zen",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 44,
+      "maxPrice": 44,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 44
+        }
+      ]
+    },
+    {
+      "productId": "0Y78",
+      "name": "Meysu Karışık Meyveli İçecek 1 Lt",
+      "brand": "Meysu",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 50,
+      "maxPrice": 50,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 50
+        }
+      ]
+    },
+    {
+      "productId": "0LS2",
+      "name": "Uludağ Meyvelim Mandalina 1 Lt",
+      "brand": "Uludağ",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "1RN8",
+      "name": "Uludağ Meyvelim Gazsız Ananaslı İçecek 1 Lt",
+      "brand": "Uludağ",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "2B3G",
+      "name": "Uludağ Ananas Meyveli İçecek 1 Lt",
+      "brand": "Uludağ",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "0SI5",
+      "name": "Cappy Vişneli İçecek 330 Ml",
+      "brand": "Cappy",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 55.95,
+      "maxPrice": 55.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 55.95
+        }
+      ]
+    },
+    {
+      "productId": "0080",
+      "name": "Cappy Atom 330 Ml",
+      "brand": "Cappy",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 55.95,
+      "maxPrice": 55.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 55.95
+        }
+      ]
+    },
+    {
+      "productId": "0RYR",
+      "name": "Pin Drinks Portakal Mango 250 Ml",
+      "brand": "Pin Drinks",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 59.9,
+      "maxPrice": 59.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "productId": "1C8T",
+      "name": "Cappy Bubble Ejder Ve Çilek Aromalı İçecek 330 Ml",
+      "brand": "Cappy",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 60,
+      "maxPrice": 60,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "productId": "10KU",
+      "name": "Söğütlüçeşme Karpuz & Çilek 6x200 Ml",
+      "brand": "Söğütlüçeşme",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "20WI",
+      "name": "Cappy Ekşi Elmalı İçecek 1 Lt",
+      "brand": "Cappy",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 65,
+      "maxPrice": 80,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65
+        },
+        {
+          "market": "Migros",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "productId": "1FNS",
+      "name": "Dimes Tropik Meyveli İçecek 1 Lt",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 80.9,
+      "maxPrice": 80.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 80.9
+        }
+      ]
+    },
+    {
+      "productId": "0M18",
+      "name": "Elite Detox Super Hero  200 Ml",
+      "brand": "Elite Detox",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "0Y1E",
+      "name": "Lavi Berry Ahududulu Meyveli İçecek 1 Lt",
+      "brand": "Lavi",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "0PTI",
+      "name": "Elite Detox Defence 200 Ml",
+      "brand": "Elite Detox",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 91.9,
+      "maxPrice": 91.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 91.9
+        }
+      ]
+    },
+    {
+      "productId": "0Q1J",
+      "name": "Mlife Organik Nar Suyu 330 Ml",
+      "brand": "Mlife",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 108.5,
+      "maxPrice": 108.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 108.5
+        }
+      ]
+    },
+    {
+      "productId": "0WW1",
+      "name": "Mlife Organik Vişne Suyu 330 Ml",
+      "brand": "Mlife",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 108.5,
+      "maxPrice": 108.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 108.5
+        }
+      ]
+    },
+    {
+      "productId": "09RW",
+      "name": "Foco Mangolu İçecek 350 Ml",
+      "brand": "Foco",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 119.5,
+      "maxPrice": 119.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.5
+        }
+      ]
+    },
+    {
+      "productId": "0ORW",
+      "name": "Froods Moscow Mule Mocktail 330 Ml",
+      "brand": "Froods",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 196.9,
+      "maxPrice": 196.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 196.9
+        }
+      ]
+    },
+    {
+      "productId": "3WYY",
+      "name": "Owen Blackley Karamel & Meşe Aromalı İçecek 700 Ml",
+      "brand": "Owen Blackley",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0EJE",
+      "name": "Pfanner Morning Boost Karışık Meyveli İçecek 2 Lt",
+      "brand": "Pfanner",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 301.95,
+      "maxPrice": 301.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 301.95
+        }
+      ]
+    },
+    {
+      "productId": "16FM",
+      "name": "Wefood Organik Elma Suyu Konsantresi 340 Ml",
+      "brand": "Wefood",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 306.9,
+      "maxPrice": 306.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 306.9
+        }
+      ]
+    },
+    {
+      "productId": "29UW",
+      "name": "Meysu Karışık Meyveli İçecek 200 Ml",
+      "brand": "Meysu",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 12.5,
+      "maxPrice": 12.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 12.5
+        }
+      ]
+    },
+    {
+      "productId": "1YC4",
+      "name": "Dimes Ananas Aromalı İçecek 200 Ml",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "1UZJ",
+      "name": "Sizzle-Pop Dancing Friends Ananas, Mango & Yaban Mersini 200 Ml",
+      "brand": "Sizzle-Pop",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "1Y8E",
+      "name": "Cappy Vişneli İçecek 200 Ml",
+      "brand": "Cappy",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 20,
+      "maxPrice": 20.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 20
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 20.5
+        }
+      ]
+    },
+    {
+      "productId": "1NOQ",
+      "name": "Dimes Cool Şekersiz Meyveli İçecek Böğürtlen 310 Ml",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 30,
+      "maxPrice": 30,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 30
+        }
+      ]
+    },
+    {
+      "productId": "006V",
+      "name": "Uludağ Meyvelim Nar Meyveli İçecek 1 Lt",
+      "brand": "Uludağ",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 45,
+      "maxPrice": 45,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "productId": "20UP",
+      "name": "Dimes Ananaslı İçecek 1 Lt",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 55,
+      "maxPrice": 80,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "productId": "20JD",
+      "name": "Dimes Ekşi Elmalı İçecek 1 Lt",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 55,
+      "maxPrice": 80.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 80.9
+        }
+      ]
+    },
+    {
+      "productId": "1QOF",
+      "name": "Dimes Karpuz ve Çilekli İçecek 1 Lt",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "1Z7I",
+      "name": "Dimes 7/24 Enerji Karışık Meyveli İçecek 1 Lt",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "099L",
+      "name": "Oui Voila Red Mix 414 Ml",
+      "brand": "Oui Voila",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "10A3",
+      "name": "Tamek Meyvelim Vişneli İçecek 1 Lt",
+      "brand": "Tamek",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 65.9,
+      "maxPrice": 65.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.9
+        }
+      ]
+    },
+    {
+      "productId": "1S8F",
+      "name": "Fuse Tea Karpuz Aromalı İçecek 1.5 Lt",
+      "brand": "Fuse Tea",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 67.9,
+      "maxPrice": 67.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 67.9
+        }
+      ]
+    },
+    {
+      "productId": "1OFW",
+      "name": "Fuse Tea Kavun Ve Çilek Aromalı İçecek 1 Lt",
+      "brand": "Fusetea",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 70,
+      "maxPrice": 70.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 70
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 70.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZGI",
+      "name": "Cappy Vişne İçeceği 6x200 Ml",
+      "brand": "Cappy",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "0W5L",
+      "name": "Elite Detox Skinny 200 Ml",
+      "brand": "Elite Detox",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "0Q1G",
+      "name": "Lavi Berry Kızılcıklı Meyveli İçecek 1 Lt",
+      "brand": "Lavi",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "0KQE",
+      "name": "Lavi Berry Böğürtlenli Meyveli İçecek 1 Lt",
+      "brand": "Lavi",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1PF1",
+      "name": "Exotic Portakal Havuç Suyu 300 Ml",
+      "brand": "Exotic",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 96.05,
+      "maxPrice": 96.05,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 96.05
+        }
+      ]
+    },
+    {
+      "productId": "0ODI",
+      "name": "Mlife Organik İncir Elma Suyu 330 Ml",
+      "brand": "Mlife",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 108.5,
+      "maxPrice": 108.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 108.5
+        }
+      ]
+    },
+    {
+      "productId": "1JM4",
+      "name": "Exotic Nar Suyu 300 Ml",
+      "brand": "Exotic",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 165,
+      "maxPrice": 165,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 165
+        }
+      ]
+    },
+    {
+      "productId": "1RRB",
+      "name": "Exotic Greyfurt Suyu 750 Ml",
+      "brand": "Exotic",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 245,
+      "maxPrice": 245,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 245
+        }
+      ]
+    },
+    {
+      "productId": "0Z62",
+      "name": "Pfanner Bce Orman Meyveli İçecek 2 Lt",
+      "brand": "Pfanner",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 301.95,
+      "maxPrice": 301.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 301.95
+        }
+      ]
+    },
+    {
+      "productId": "0UXE",
+      "name": "Pfanner Vitamin & Magnezyum Katkılı Karışık İçecek 2 Lt",
+      "brand": "Pfanner",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 301.95,
+      "maxPrice": 301.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 301.95
+        }
+      ]
+    }
+  ]
+}

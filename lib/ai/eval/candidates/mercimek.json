@@ -1,0 +1,1002 @@
+{
+  "term": "mercimek",
+  "category": "Bakliyat & kuruyemiş",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:54:56.445Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0YOC",
+      "name": "Anadolu Mutfağı Kırmızı Mercimek 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "052U",
+      "name": "Saban Kırmızı Mercimek 1 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "03W7",
+      "name": "Yurda Kırmızı Mercimek 1 Kg",
+      "brand": "Yurda",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "011I",
+      "name": "Saban Yeşil Mercimek 1 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 54.5,
+      "maxPrice": 54.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 54.5
+        }
+      ]
+    },
+    {
+      "productId": "0O6N",
+      "name": "Migros Yerli Yeşil Mercimek 1 Kg",
+      "brand": "Migros",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 66.95,
+      "maxPrice": 66.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.95
+        }
+      ]
+    },
+    {
+      "productId": "10HW",
+      "name": "Anadolu Mutfağı Yeşil Mercimek 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 67.5,
+      "maxPrice": 67.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 67.5
+        }
+      ]
+    },
+    {
+      "productId": "0J7S",
+      "name": "Carrefour Yeşil Mercimek 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 67.5,
+      "maxPrice": 67.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 67.5
+        }
+      ]
+    },
+    {
+      "productId": "016K",
+      "name": "Rençber Yeşil Mercimek 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 67.5,
+      "maxPrice": 67.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 67.5
+        }
+      ]
+    },
+    {
+      "productId": "1OSH",
+      "name": "Tat Yeşil Mercimek 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 68.95,
+      "maxPrice": 68.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 68.95
+        }
+      ]
+    },
+    {
+      "productId": "12QB",
+      "name": "Migros Yerli Kırmızı Mercimek 1 Kg",
+      "brand": "Migros",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1TUZ",
+      "name": "Hasata Mardin Kırmızı Mercimek 1 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        },
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0RDI",
+      "name": "Yayla Yeşil Mercimek 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 107.95,
+      "maxPrice": 107.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 107.95
+        }
+      ]
+    },
+    {
+      "productId": "1IBI",
+      "name": "Yayla Kırmızı Mercimek 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "13SR",
+      "name": "Saban Kırmızı Mercimek 2.5 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 110,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "0N9C",
+      "name": "Yayla Sarı Mercimek 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 120.95,
+      "maxPrice": 120.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 120.95
+        }
+      ]
+    },
+    {
+      "productId": "0U0T",
+      "name": "Reis Yeşil Mercimek 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 129.95,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 129.95
+        },
+        {
+          "market": "Migros",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "0FZK",
+      "name": "Duru Yeşil Mercimek 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 144.95,
+      "maxPrice": 144.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 144.95
+        }
+      ]
+    },
+    {
+      "productId": "20E4",
+      "name": "Tat Kırmızı Mercimek 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 151.95,
+      "maxPrice": 151.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 151.95
+        }
+      ]
+    },
+    {
+      "productId": "1PL1",
+      "name": "Doyum Organik Yeşil Mercimek 1 Kg",
+      "brand": "Doyum",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 167.97,
+      "maxPrice": 240.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 167.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 240.9
+        }
+      ]
+    },
+    {
+      "productId": "0MIW",
+      "name": "Yayla Kırmızı Mercimek 2 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 174.95,
+      "maxPrice": 174.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 174.95
+        }
+      ]
+    },
+    {
+      "productId": "1P8S",
+      "name": "Doyum Organik Kırmızı Mercimek 1 Kg",
+      "brand": "Doyum",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 178.47,
+      "maxPrice": 251.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 178.47
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 251.5
+        }
+      ]
+    },
+    {
+      "productId": "1T24",
+      "name": "Reis Kırmızı Mercimek 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 194.95,
+      "maxPrice": 194.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 194.95
+        },
+        {
+          "market": "Migros",
+          "price": 194.95
+        }
+      ]
+    },
+    {
+      "productId": "21TO",
+      "name": "Reis Sarı Mercimek 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 212,
+      "maxPrice": 212,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 212
+        }
+      ]
+    },
+    {
+      "productId": "0DER",
+      "name": "Sade Organik Yeşil Mercimek 1 Kg",
+      "brand": "Sade Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 266.5,
+      "maxPrice": 266.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 266.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZQ7",
+      "name": "Piyale Mercimek Çorbası 72 Gr",
+      "brand": "Piyale",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 32.9,
+      "maxPrice": 32.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 32.9
+        }
+      ]
+    },
+    {
+      "productId": "005Z",
+      "name": "Knorr Mercimek Çorbası 68 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "1XY4",
+      "name": "Knorr Mercimek Çorbası 76 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "0343",
+      "name": "Carrefour Kırmızı Mercimek 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "1T6F",
+      "name": "Yayla Mercimek Çorbası 250 Gr",
+      "brand": "Yayla",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 53.95,
+      "maxPrice": 53.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.95
+        }
+      ]
+    },
+    {
+      "productId": "1GKL",
+      "name": "Yummate Ranch Aromalı Mercimek Cipsi 50 Gr",
+      "brand": "Yummate",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 74.9,
+      "maxPrice": 74.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.9
+        }
+      ]
+    },
+    {
+      "productId": "03PU",
+      "name": "Carrefour Yerli Kırmızı Mercimek 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 74.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "01QL",
+      "name": "Saban Yerli Kırmızı Mercimek 1 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 89.5,
+      "maxPrice": 89.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 89.5
+        }
+      ]
+    },
+    {
+      "productId": "09M6",
+      "name": "Rençber Yerli Kırmızı Mercimek 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 89.5,
+      "maxPrice": 89.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 89.5
+        }
+      ]
+    },
+    {
+      "productId": "1UXA",
+      "name": "Anadolu Lezzetleri Kayseri Yeşil Mercimek 1 Kg",
+      "brand": "Anadolu Lezzetleri",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1BWF",
+      "name": "Anadolu Lezzetleri Diyarbakır Kırmızı Mercimek 1 Kg",
+      "brand": "Anadolu Lezzetleri",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "1F0T",
+      "name": "Sade Organik Kırmızı İç Mercimek 500 Gr",
+      "brand": "Sade Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 111,
+      "maxPrice": 111,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 111
+        }
+      ]
+    },
+    {
+      "productId": "1BO2",
+      "name": "Potamya Sarı Mercimek Penne 240 Gr",
+      "brand": "Potamya",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 123.5,
+      "maxPrice": 123.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 123.5
+        }
+      ]
+    },
+    {
+      "productId": "138U",
+      "name": "Carrefour Bio Organik Yeşil Mercimek 1 Kg",
+      "brand": "Carrefour Bio",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "017X",
+      "name": "Carrefour Bio Organik Kırmızı Mercimek 1 Kg",
+      "brand": "Carrefour Bio",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "0DH9",
+      "name": "The Good Wild Çıtır Kırmızı Mercimek 150 Gr",
+      "brand": "The Good Wild",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 152.95,
+      "maxPrice": 152.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 152.95
+        }
+      ]
+    },
+    {
+      "productId": "1NSK",
+      "name": "Hasata Yozgat Sultani Yeşil Mercimek 1 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 169.95,
+      "maxPrice": 169.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169.95
+        }
+      ]
+    },
+    {
+      "productId": "0QMN",
+      "name": "Doyum Organik Sarı Mercimek 1 Kg",
+      "brand": "Doyum Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 172.87,
+      "maxPrice": 172.87,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 172.87
+        }
+      ]
+    },
+    {
+      "productId": "14HR",
+      "name": "Saban Yerli Kırmızı Mercimek 2.5 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "1G38",
+      "name": "The Good Wild Filizlendirilmiş Yeşil Mercimek 175 Gr",
+      "brand": "The Good Wild",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 197.95,
+      "maxPrice": 197.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 197.95
+        }
+      ]
+    },
+    {
+      "productId": "0163",
+      "name": "Sade Organik Kırmızı Mercimek 1 Kg",
+      "brand": "Sade Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 222,
+      "maxPrice": 222,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 222
+        }
+      ]
+    },
+    {
+      "productId": "2LVF",
+      "name": "City Farm Organik Kırmızı Mercimek 1 Kg",
+      "brand": "City Farm",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 230.9,
+      "maxPrice": 230.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 230.9
+        }
+      ]
+    },
+    {
+      "productId": "0UUJ",
+      "name": "City Farm Organik Yeşil Mercimek 1 Kg",
+      "brand": "City Farm",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 258.9,
+      "maxPrice": 258.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 258.9
+        }
+      ]
+    },
+    {
+      "productId": "0CB7",
+      "name": "Organik Gurme Organik Kırmızı Mercimek 1 Kg",
+      "brand": "Organik Gurme",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 270,
+      "maxPrice": 270,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 270
+        }
+      ]
+    },
+    {
+      "productId": "1CJ3",
+      "name": "Nutruit Zeytinyağlı Karabiberli Kavrulmuş Mercimek 33 Gr",
+      "brand": "Nutruit",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 19.9,
+      "maxPrice": 19.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.9
+        }
+      ]
+    },
+    {
+      "productId": "1DMC",
+      "name": "Nutruit Zeytinyağlı Barbekü Soslu Kavrulmuş Mercimek 33 Gr",
+      "brand": "Nutruit",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 19.9,
+      "maxPrice": 19.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.9
+        }
+      ]
+    },
+    {
+      "productId": "1DFL",
+      "name": "Nutruit Zeytinyağlı Sriracha Acı Soslu Kavrulmuş Mercimek 33 Gr",
+      "brand": "Nutruit",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 19.9,
+      "maxPrice": 19.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.9
+        }
+      ]
+    },
+    {
+      "productId": "1PVA",
+      "name": "Knorr Çabuk Mercimek Çorbası 22 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 19.95,
+      "maxPrice": 19.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 19.95
+        }
+      ]
+    },
+    {
+      "productId": "1IPO",
+      "name": "Knorr Çabuk Çorba Kıtırlı Mercimek 22 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 2,
+      "minPrice": 20.95,
+      "maxPrice": 21.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 20.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 21.25
+        }
+      ]
+    },
+    {
+      "productId": "09RG",
+      "name": "Ferrero Kremalı Sebze Mercimek Çorbası 65 Gr",
+      "brand": "Ferrero",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 21.75,
+      "maxPrice": 21.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 21.75
+        }
+      ]
+    },
+    {
+      "productId": "1CEL",
+      "name": "Bizim Mutfak Mercimek Çorbası 54 Gr",
+      "brand": "Bizim Mutfak",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 45.75,
+      "maxPrice": 45.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 45.75
+        }
+      ]
+    },
+    {
+      "productId": "0LUB",
+      "name": "Vegeats Tuzlu Ve Sirke Aromalı Mercimek Cipsi 50 Gr",
+      "brand": "Vegeats",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "1GKW",
+      "name": "Yummate Elma & Tarçınlı Mercimek Cipsi 50 Gr",
+      "brand": "Yummate",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 74.9,
+      "maxPrice": 74.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.9
+        }
+      ]
+    },
+    {
+      "productId": "1GKJ",
+      "name": "Yummate Chili Lime Aromalı Mercimek Cipsi 50 Gr",
+      "brand": "Yummate",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 74.9,
+      "maxPrice": 74.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.9
+        }
+      ]
+    },
+    {
+      "productId": "1GYP",
+      "name": "The Good Wild Acılı Mercimek Kraker 55 Gr",
+      "brand": "The Good Wild",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 94.9,
+      "maxPrice": 94.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.9
+        }
+      ]
+    },
+    {
+      "productId": "20Z3",
+      "name": "Potamya Sarı Mercimek Fusilli Makarna 240 Gr",
+      "brand": "Potamya",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 119.95,
+      "maxPrice": 123.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 123.5
+        }
+      ]
+    },
+    {
+      "productId": "1QHX",
+      "name": "Reis Royal Beluga Mercimeği 500 Gr",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 184.9,
+      "maxPrice": 184.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 184.9
+        }
+      ]
+    },
+    {
+      "productId": "1XOL",
+      "name": "Reis Glutensiz Kırmızı Mercimek Unu 500 Gr",
+      "brand": "Reis",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 194.9,
+      "maxPrice": 194.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 194.9
+        }
+      ]
+    },
+    {
+      "productId": "0GXW",
+      "name": "Lestello Glutensiz Mercimek Patlağı 135 Gr",
+      "brand": "Lestello",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 252.5,
+      "maxPrice": 252.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 252.5
+        }
+      ]
+    },
+    {
+      "productId": "0Y3N",
+      "name": "Bonatelli Organik Yeşil Mercimek Çubuk Makarna 400 Gr",
+      "brand": "Bonatelli",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 259.95,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    }
+  ]
+}

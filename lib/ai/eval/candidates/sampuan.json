@@ -1,0 +1,1146 @@
+{
+  "term": "şampuan",
+  "category": "Temizlik & kağıt",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:08:21.703Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1H9B",
+      "name": "İpek Dökülen Saçlar Şampuan 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1PEG",
+      "name": "İpek Yağ Hazinesi Şampuan 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 69,
+      "maxPrice": 69,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69
+        }
+      ]
+    },
+    {
+      "productId": "00FB",
+      "name": "A Plus Premium Bakım Şampuan 600 Ml",
+      "brand": "A Plus",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 97.5,
+      "maxPrice": 97.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 97.5
+        }
+      ]
+    },
+    {
+      "productId": "1Y7J",
+      "name": "Blendax Isırgan Otlu Şampuan 500 Ml",
+      "brand": "Blendax",
+      "category": "Saç Bakım",
+      "marketCount": 3,
+      "minPrice": 99,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99
+        },
+        {
+          "market": "Migros",
+          "price": 174.95
+        },
+        {
+          "market": "Şok",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "1YTT",
+      "name": "Gliss Ultimate Repair Şampuan 400 Ml",
+      "brand": "Gliss",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "06AZ",
+      "name": "İpek Şampuan 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1WJS",
+      "name": "Pantene Kepek Karşıtı Şampuan 400 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 3,
+      "minPrice": 111,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 111
+        },
+        {
+          "market": "Şok",
+          "price": 149
+        },
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1WLN",
+      "name": "Dp Şampuan 425 Ml",
+      "brand": "Dp",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "1J6F",
+      "name": "Restorex Şampuan 500 Ml",
+      "brand": "Restorex",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "0YEX",
+      "name": "Bioblas Şampuan 360 Ml",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1TXW",
+      "name": "Elidor Onarıcı Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 131,
+      "maxPrice": 131,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 131
+        }
+      ]
+    },
+    {
+      "productId": "1L60",
+      "name": "Elidor Şampuan Çeşitleri 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1NZ2",
+      "name": "Elidor Superblend Güçlü Ve Parlak Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1O4A",
+      "name": "Clear Şampuan 350 Ml",
+      "brand": "Clear",
+      "category": "Saç Bakım",
+      "marketCount": 2,
+      "minPrice": 159,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 159
+        },
+        {
+          "market": "hakmar",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0WY3",
+      "name": "Blendax Aloe Vera Özlü Şampuan 500 Ml",
+      "brand": "Blendax",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 174.95,
+      "maxPrice": 174.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 174.95
+        }
+      ]
+    },
+    {
+      "productId": "1NAZ",
+      "name": "Blendax Şampuan 500 Ml",
+      "brand": "Blendax",
+      "category": "Saç Bakım",
+      "marketCount": 2,
+      "minPrice": 175,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 175
+        },
+        {
+          "market": "hakmar",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "1C15",
+      "name": "Pantene Şampuan 400 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "092S",
+      "name": "Eyüp Sabri Tuncer Zeytinyağlı Şampuan 700 Ml",
+      "brand": "Eyüp Sabri Tuncer",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "0VJF",
+      "name": "Gliss Aqua Revive Şampuan 400 Ml",
+      "brand": "Gliss",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "2BLL",
+      "name": "Elidor Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "1M73",
+      "name": "Clear Şampuan Çeşitleri 350 Ml",
+      "brand": "Clear",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "Tarım Kredi",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "1ZI0",
+      "name": "Elseve Hydra Şampuan 300 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "1TB0",
+      "name": "Elseve Hydra Hyaluronic Pure Şampuan 300 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "1QDS",
+      "name": "Pantene Güç Ve Parlaklık Şampuan 625 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 309.95,
+      "maxPrice": 309.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 309.95
+        }
+      ]
+    },
+    {
+      "productId": "1TZU",
+      "name": "İpek Normal Saçlar İçin Şampuan 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 3,
+      "minPrice": 59.5,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 59.5
+        },
+        {
+          "market": "Şok",
+          "price": 69
+        },
+        {
+          "market": "Migros",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "1PCK",
+      "name": "Hobby Kepeğe Karşı Zeytinyağlı Şampuan 500 Ml",
+      "brand": "Hobby",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 69,
+      "maxPrice": 69,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69
+        }
+      ]
+    },
+    {
+      "productId": "1TYR",
+      "name": "Blendax Yasemin Şampuan 500 Ml",
+      "brand": "Blendax",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "21YE",
+      "name": "Elseve Arginine Komple Direnç Şampuan 360 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 100,
+      "maxPrice": 100,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 100
+        }
+      ]
+    },
+    {
+      "productId": "1UFB",
+      "name": "Pantene Onarım Ve Koruma Şampuan 400 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 3,
+      "minPrice": 111,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 111
+        },
+        {
+          "market": "Şok",
+          "price": 149
+        },
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "2163",
+      "name": "Head & Shoulders Klasik Şampuan 330 Ml",
+      "brand": "Head & Shoulders",
+      "category": "Saç Bakım",
+      "marketCount": 2,
+      "minPrice": 111,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 111
+        },
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "0K5F",
+      "name": "Restorex Saç Dökülmesine Karşı Şampuan 500 Ml",
+      "brand": "Restorex",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "1PKU",
+      "name": "İpek Men Dökülme Karşıtı Şampuan 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "1OFP",
+      "name": "Pantene Şampuan Çeşitleri 400 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1ODU",
+      "name": "Head & Shoulders Şampuan 330 Ml",
+      "brand": "Head & Shoulders",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1YJF",
+      "name": "L'Oréal Paris Elseve Şampuan 300 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 164.95,
+      "maxPrice": 164.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.95
+        }
+      ]
+    },
+    {
+      "productId": "1JYZ",
+      "name": "Old Spice Captain Duş Jeli Ve Şampuan 400 Ml",
+      "brand": "Old Spice",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 167.45,
+      "maxPrice": 167.45,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 167.45
+        }
+      ]
+    },
+    {
+      "productId": "2AFN",
+      "name": "Head&Shoulders Şampuan 330 Ml",
+      "brand": "Head & Shoulders",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "2CPV",
+      "name": "Elseve Şampuan Çeşitleri 300 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "184H",
+      "name": "Gliss Split Hair Miracle Şampuan 400 Ml",
+      "brand": "Gliss",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "0OTE",
+      "name": "Bioblas Sarımsak & Keratin Şampuan 1 Lt",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 229,
+      "maxPrice": 229,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 229
+        }
+      ]
+    },
+    {
+      "productId": "1TDW",
+      "name": "Clear Men Yoğun Arındırıcı Kömür İle Şampuan 350 Ml",
+      "brand": "Clear Men",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "0TZ7",
+      "name": "Urban Care Argan Oil Keratin Şampuan 350 Ml",
+      "brand": "Urban Care",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "3X09",
+      "name": "Elseve Glycolic Gloss Şampuan 300 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 305,
+      "maxPrice": 305,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 305
+        }
+      ]
+    },
+    {
+      "productId": "0SLN",
+      "name": "Tresan Yağlı Saçlar İçin Isırgan Otu Şampuan 300 Ml",
+      "brand": "Tresan",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 319,
+      "maxPrice": 319,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 319
+        }
+      ]
+    },
+    {
+      "productId": "1PE1",
+      "name": "Elidor Güçlü Ve Parlak Şampuan 650 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "0UVW",
+      "name": "Urban Care Expert Biotin Caffeine Şampuan 350 Ml",
+      "brand": "Urban Care",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 449.95,
+      "maxPrice": 449.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 449.95
+        }
+      ]
+    },
+    {
+      "productId": "1E6H",
+      "name": "Ogx Rosemary Mint Arındırıcı Şampuan 385 Ml",
+      "brand": "Ogx",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599.95
+        }
+      ]
+    },
+    {
+      "productId": "0UMB",
+      "name": "Ogx Besleyici Coconut Milk Şampuan 385 Ml",
+      "brand": "Ogx",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599.95
+        }
+      ]
+    },
+    {
+      "productId": "0YHL",
+      "name": "Hobby Şampuan Normal Saçlar 500 Ml",
+      "brand": "Hobby",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZWM",
+      "name": "Hobby Kepeğe Karşı Şampuan 500 Ml",
+      "brand": "Hobby",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZZF",
+      "name": "İpek Yıpranmış Saçlar Şampuan 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1ON9",
+      "name": "Blendax Kepeğe Karşı Şampuan 500 Ml",
+      "brand": "Blendax",
+      "category": "Saç Bakım",
+      "marketCount": 2,
+      "minPrice": 99,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99
+        },
+        {
+          "market": "Şok",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "1WOG",
+      "name": "Gliss Oil Nutritive Şampuan 400 Ml",
+      "brand": "Gliss",
+      "category": "Saç Bakım",
+      "marketCount": 2,
+      "minPrice": 109,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        },
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "1KMX",
+      "name": "Head & Shoulders Mentol Ferahlığı Şampuan 330 Ml",
+      "brand": "Head & Shoulders",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 111,
+      "maxPrice": 111,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 111
+        }
+      ]
+    },
+    {
+      "productId": "1PII",
+      "name": "Elidor Kepeğe Karşı Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 131,
+      "maxPrice": 131,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 131
+        }
+      ]
+    },
+    {
+      "productId": "1OUO",
+      "name": "Elidor Dökülme Karşıtı Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 131,
+      "maxPrice": 131,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 131
+        }
+      ]
+    },
+    {
+      "productId": "10R5",
+      "name": "Elidor Güç & Parlaklık Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 131,
+      "maxPrice": 131,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 131
+        }
+      ]
+    },
+    {
+      "productId": "1PDY",
+      "name": "İpek Men Tüm Saçlar İçin Şampuan 480 Ml",
+      "brand": "İpek",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "1HPS",
+      "name": "Clear Cool Sport Menthol Şampuan 350 Ml",
+      "brand": "Clear",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1NDK",
+      "name": "Elidor Güçlü ve Parlak Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1RX9",
+      "name": "Elidor Hindistan Cevizi Yağı Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1YMO",
+      "name": "Pantene Kesintisiz Nem Takviyesi Şampuan 400 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "0OZ5",
+      "name": "Gliss Supreme Length Şampuan 400 Ml",
+      "brand": "Gliss",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "1TJY",
+      "name": "Pantene Onarıcı Ve Koruyucu 3'ü 1 Arada Şampuan 400 Ml",
+      "brand": "Pantene",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "0KFJ",
+      "name": "Gliss Serum Deep Repair Şampuan 400 Ml",
+      "brand": "Gliss",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "17M0",
+      "name": "Bioblas Kolajen Keratin Şampuan 360 Ml",
+      "brand": "Bioblas",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 209.95,
+      "maxPrice": 209.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 209.95
+        }
+      ]
+    },
+    {
+      "productId": "1TAZ",
+      "name": "Clear Men Maksimum Ferahlık Limon Özlü Şampuan 350 Ml",
+      "brand": "Clear",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "1S8W",
+      "name": "Elidor Ultra Işıltı 100 Şampuan 400 Ml",
+      "brand": "Elidor",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 274.95,
+      "maxPrice": 274.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 274.95
+        }
+      ]
+    },
+    {
+      "productId": "1O56",
+      "name": "Urban Care It's So High Kuru Şampuan 200 Ml",
+      "brand": "Urban Care",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 359.95,
+      "maxPrice": 359.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 359.95
+        }
+      ]
+    },
+    {
+      "productId": "1WRI",
+      "name": "Elseve Turunculaşma Karşıtı Mor Şampuan 200 Ml",
+      "brand": "Elseve",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 499.95,
+      "maxPrice": 499.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 499.95
+        }
+      ]
+    },
+    {
+      "productId": "0PI9",
+      "name": "Ogx Biotin & Collagen Şampuan 385 Ml",
+      "brand": "Ogx",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599.95
+        }
+      ]
+    },
+    {
+      "productId": "0MIC",
+      "name": "Ogx Düzleştirici Brazilian Keratin Smooth Şampuan 385 Ml",
+      "brand": "Ogx",
+      "category": "Saç Bakım",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599.95
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1138 @@
+{
+  "term": "zeytinyağı",
+  "category": "Yağ & sos",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:57:00.990Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0VO0",
+      "name": "Orkide Riviera Zeytinyağı 1 Lt",
+      "brand": "Orkide",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "1IB0",
+      "name": "Komili Riviera Zeytinyağı 500 Ml",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 204.9,
+      "maxPrice": 204.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 204.9
+        }
+      ]
+    },
+    {
+      "productId": "0YR4",
+      "name": "Yudum Egemden Riviera Zeytinyağı 1 Lt",
+      "brand": "Yudum",
+      "category": "Sıvı Yağlar",
+      "marketCount": 3,
+      "minPrice": 209,
+      "maxPrice": 422.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 209
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 422.95
+        },
+        {
+          "market": "Migros",
+          "price": 422.95
+        }
+      ]
+    },
+    {
+      "productId": "1FYV",
+      "name": "Aivalos Cızart Riviera Zeytinyağı 750 Ml",
+      "brand": "Aivalos",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 262.46,
+      "maxPrice": 262.46,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 262.46
+        }
+      ]
+    },
+    {
+      "productId": "0ZAC",
+      "name": "Lio Riviera Zeytinyağı 1 Lt",
+      "brand": "Lio",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "23G6",
+      "name": "Komili Lezzetli Yumuşak Sızma Zeytinyağı 1 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "033E",
+      "name": "Komili Natürel Sızma Zeytinyağı 1 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 359,
+      "maxPrice": 359,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 359
+        }
+      ]
+    },
+    {
+      "productId": "1EV7",
+      "name": "Kristal Ayvalık Sızma Zeytinyağı 500 Ml",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 398,
+      "maxPrice": 398,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 398
+        }
+      ]
+    },
+    {
+      "productId": "1Y3O",
+      "name": "Komili Riviera Zeytinyağı 1 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 409.95,
+      "maxPrice": 409.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 409.95
+        }
+      ]
+    },
+    {
+      "productId": "1MJO",
+      "name": "Kristal Organik Sızma Zeytinyağı 500 Ml",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 431.25,
+      "maxPrice": 431.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 431.25
+        }
+      ]
+    },
+    {
+      "productId": "1IVO",
+      "name": "Kristal Sızma Zeytinyağı Lezzet 1 Lt",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 499.95,
+      "maxPrice": 499.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 499.95
+        }
+      ]
+    },
+    {
+      "productId": "0IE3",
+      "name": "Lio Riviera Zeytinyağı 2 Lt",
+      "brand": "Lio",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 510,
+      "maxPrice": 510,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 510
+        }
+      ]
+    },
+    {
+      "productId": "0MDB",
+      "name": "Komili Sızma Meyvemsi Zeytinyağı 1 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 529.95,
+      "maxPrice": 529.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 529.95
+        }
+      ]
+    },
+    {
+      "productId": "217Y",
+      "name": "Tariş Naturel Sızma Zeytinyağı 1 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 569.95,
+      "maxPrice": 569.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 569.95
+        }
+      ]
+    },
+    {
+      "productId": "1L3Q",
+      "name": "Komili Riviera Zeytinyağı 2 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 767.95,
+      "maxPrice": 767.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 767.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZC5",
+      "name": "Yudum Egemden Riviera Zeytinyağı 2 Lt",
+      "brand": "Yudum",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 789.95,
+      "maxPrice": 797.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 789.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 797.9
+        }
+      ]
+    },
+    {
+      "productId": "1WPC",
+      "name": "Tariş Naturel Sızma Zeytinyağı 2 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 824.96,
+      "maxPrice": 824.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 824.96
+        }
+      ]
+    },
+    {
+      "productId": "1T5W",
+      "name": "Tariş Riviera Zeytinyağı 2 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 869.95,
+      "maxPrice": 869.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 869.95
+        }
+      ]
+    },
+    {
+      "productId": "215R",
+      "name": "Yudum Egemden Riviera Zeytinyağı 5 Lt",
+      "brand": "Yudum",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 949,
+      "maxPrice": 999.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 949
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 999.95
+        }
+      ]
+    },
+    {
+      "productId": "1I82",
+      "name": "Kristal Sızma Zeytinyağı 2 Lt",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 959.5,
+      "maxPrice": 959.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 959.5
+        }
+      ]
+    },
+    {
+      "productId": "0O0U",
+      "name": "Komili Sızma Meyvemsi Zeytinyağı 2 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 1014,
+      "maxPrice": 1014,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 1014
+        }
+      ]
+    },
+    {
+      "productId": "0902",
+      "name": "Verde Sızma Zeytinyağı 5 Lt",
+      "brand": "Verde",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 1250,
+      "maxPrice": 1250,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1250
+        }
+      ]
+    },
+    {
+      "productId": "3WUQ",
+      "name": "Kristal Natural Sızma Zeytinyağı 4 Lt",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 1299,
+      "maxPrice": 1299,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 1299
+        }
+      ]
+    },
+    {
+      "productId": "1E1W",
+      "name": "Verde Riviera Zeytinyağı 5 Lt",
+      "brand": "Verde",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 1359.95,
+      "maxPrice": 1359.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1359.95
+        }
+      ]
+    },
+    {
+      "productId": "2003",
+      "name": "Yudum Egemden Sprey Riviera Zeytinyağı 250 Ml",
+      "brand": "Yudum",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 219.95,
+      "maxPrice": 222,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 222
+        }
+      ]
+    },
+    {
+      "productId": "14BK",
+      "name": "Orkide Sızma Zeytinyağı 1 Lt",
+      "brand": "Orkide",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "1490",
+      "name": "Yudum Egemden Sızma Zeytinyağı 1 Lt",
+      "brand": "Yudum",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 259,
+      "maxPrice": 259,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 259
+        }
+      ]
+    },
+    {
+      "productId": "099G",
+      "name": "Ege Masalı Yadigar Zeytinyağı 500 Ml",
+      "brand": "Ege Masalı",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 259.9,
+      "maxPrice": 259.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 259.9
+        }
+      ]
+    },
+    {
+      "productId": "0FA2",
+      "name": "Komili Meyvemsi Sızma Zeytinyağı 500 Ml",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 267.5,
+      "maxPrice": 267.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 267.5
+        }
+      ]
+    },
+    {
+      "productId": "1R3A",
+      "name": "Komili Riviera Yemeklik Zeytinyağı 1 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 279,
+      "maxPrice": 409.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 279
+        },
+        {
+          "market": "Migros",
+          "price": 409.95
+        }
+      ]
+    },
+    {
+      "productId": "0BQ4",
+      "name": "Zeytin İskelesi Organik Sızma Zeytinyağı 500 Ml",
+      "brand": "Zeytin İskelesi",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 279.92,
+      "maxPrice": 279.92,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 279.92
+        }
+      ]
+    },
+    {
+      "productId": "0VKW",
+      "name": "Lio Sızma Zeytinyağı 1 Lt",
+      "brand": "Lio",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 310,
+      "maxPrice": 310,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 310
+        }
+      ]
+    },
+    {
+      "productId": "1RAJ",
+      "name": "Kristal Naturel Sızma Zeytinyağı Dolgun Güçlü 1 Lt",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "2CED",
+      "name": "Kristal Naturel Sızma Zeytinyağı 1 Lt",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 359,
+      "maxPrice": 359,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 359
+        }
+      ]
+    },
+    {
+      "productId": "2A8X",
+      "name": "Komili Yumuşak Sızma Zeytinyağı 1 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 359,
+      "maxPrice": 359,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 359
+        }
+      ]
+    },
+    {
+      "productId": "0O3M",
+      "name": "Kristal Riviera Zeytinyağı 1 Lt",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 409.95,
+      "maxPrice": 426.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 409.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 426.5
+        }
+      ]
+    },
+    {
+      "productId": "1QK0",
+      "name": "Tariş Riviera Zeytinyağı 1 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 479.95,
+      "maxPrice": 479.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 479.95
+        }
+      ]
+    },
+    {
+      "productId": "0KJX",
+      "name": "Tariş Kuzey Ege Sızma Zeytinyağı 750 Ml",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 485,
+      "maxPrice": 485,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 485
+        }
+      ]
+    },
+    {
+      "productId": "1853",
+      "name": "Güvenasa Naturel Sızma Zeytinyağı 1 Lt",
+      "brand": "Güvenasa",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 499.95,
+      "maxPrice": 499.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 499.95
+        }
+      ]
+    },
+    {
+      "productId": "0MCG",
+      "name": "Migros Riviera Zeytinyağı 2 Lt",
+      "brand": "Migros",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 509.5,
+      "maxPrice": 509.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 509.5
+        }
+      ]
+    },
+    {
+      "productId": "12N3",
+      "name": "Sırım Riviera Zeytinyağı 2 Lt",
+      "brand": "Sırım",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 510,
+      "maxPrice": 510,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 510
+        }
+      ]
+    },
+    {
+      "productId": "164O",
+      "name": "Olivya Gökovacık Zeytinyağı 500 Ml",
+      "brand": "Olivya",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 599,
+      "maxPrice": 599,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 599
+        }
+      ]
+    },
+    {
+      "productId": "011R",
+      "name": "Tariş Erkence Sızma Zeytinyağı 500 Ml",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 616.5,
+      "maxPrice": 616.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 616.5
+        }
+      ]
+    },
+    {
+      "productId": "01AX",
+      "name": "Monini Porcini Mantarlı Zeytinyağı 250 Ml",
+      "brand": "Monini",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 628,
+      "maxPrice": 628,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 628
+        }
+      ]
+    },
+    {
+      "productId": "1K9O",
+      "name": "Tariş Kuzey Ege Sızma Zeytinyağı 1 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 639.95,
+      "maxPrice": 639.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 639.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 639.95
+        }
+      ]
+    },
+    {
+      "productId": "06ZY",
+      "name": "Monini Sarımsaklı Ve Acı Biberli Zeytinyağı 250 Ml",
+      "brand": "Monini",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 667.9,
+      "maxPrice": 667.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 667.9
+        }
+      ]
+    },
+    {
+      "productId": "0XQQ",
+      "name": "Kristal Riviera Zeytinyağı 2 Lt",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 759.95,
+      "maxPrice": 759.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 759.95
+        }
+      ]
+    },
+    {
+      "productId": "3X4F",
+      "name": "Migros Naturel Sızma Zeytinyağı 5 Lt",
+      "brand": "Migros",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 1299,
+      "maxPrice": 1299,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1299
+        }
+      ]
+    },
+    {
+      "productId": "18L6",
+      "name": "Carrefour Selection Naturel Sızma Zeytinyağı 500 Ml",
+      "brand": "Carrefour Selection",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 209.9,
+      "maxPrice": 209.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 209.9
+        }
+      ]
+    },
+    {
+      "productId": "1G0B",
+      "name": "Aivalos Sızart Sızma Zeytinyağı 500 Ml",
+      "brand": "Aivalos Sızart",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 224.96,
+      "maxPrice": 224.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 224.96
+        }
+      ]
+    },
+    {
+      "productId": "01Y1",
+      "name": "Zeytin İskelesi Naturel Sızma Zeytinyağı 500 Ml",
+      "brand": "Zeytin İskelesi",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 239.92,
+      "maxPrice": 239.92,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 239.92
+        }
+      ]
+    },
+    {
+      "productId": "1DD2",
+      "name": "Güven Asa Naturel Sızma Zeytinyağı 1 Lt",
+      "brand": "Güven Asa",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0AXW",
+      "name": "Kristal Soğuk Sıkım Zeytinyağı 500 Ml",
+      "brand": "Kristal",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0M2S",
+      "name": "Yudum Egemden Yumuşak Sızma Zeytinyağı 500 Ml",
+      "brand": "Yudum",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 277.9,
+      "maxPrice": 277.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 277.9
+        }
+      ]
+    },
+    {
+      "productId": "1RDR",
+      "name": "Yudum Egemden Sızma Zeytinyağı Yumuşak Lezzet 1 Lt",
+      "brand": "Yudum Egemden",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 278.5,
+      "maxPrice": 278.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 278.5
+        }
+      ]
+    },
+    {
+      "productId": "1F83",
+      "name": "Carrefour Bio Organik Naturel Sızma Zeytinyağı 500 Ml",
+      "brand": "Carrefour Bio",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 295,
+      "maxPrice": 295,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 295
+        }
+      ]
+    },
+    {
+      "productId": "0UQ5",
+      "name": "Asiltane Soğuk Sıkım Naturel Sızma Zeytinyağı 500 Ml",
+      "brand": "Asiltane",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 299.96,
+      "maxPrice": 299.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.96
+        }
+      ]
+    },
+    {
+      "productId": "0S7R",
+      "name": "Migros Naturel Sızma Zeytinyağı 1 Lt",
+      "brand": "Migros",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 309.5,
+      "maxPrice": 309.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 309.5
+        }
+      ]
+    },
+    {
+      "productId": "06PV",
+      "name": "Sırım Natürel Sızma Zeytinyağı 1 Lt",
+      "brand": "Sırım",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 310,
+      "maxPrice": 310,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 310
+        }
+      ]
+    },
+    {
+      "productId": "1SN2",
+      "name": "Tariş Sprey Naturel Sızma Zeytinyağı 250 Ml",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 369.95,
+      "maxPrice": 369.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 369.95
+        }
+      ]
+    },
+    {
+      "productId": "18B7",
+      "name": "Carrefour Selection Naturel Sızma Zeytinyağı 1 Lt",
+      "brand": "Carrefour Selection",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 398.5,
+      "maxPrice": 398.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 398.5
+        }
+      ]
+    },
+    {
+      "productId": "1B8W",
+      "name": "Olivepia Altınözü Naturel Sızma Zeytinyağı 1 Lt",
+      "brand": "Olivepia",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 429.95,
+      "maxPrice": 429.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 429.95
+        }
+      ]
+    },
+    {
+      "productId": "03A2",
+      "name": "Zeytin İskelesi Sızma Zeytinyağı 1 Lt",
+      "brand": "Zeytin İskelesi",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 439.92,
+      "maxPrice": 439.92,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 439.92
+        }
+      ]
+    },
+    {
+      "productId": "1ARU",
+      "name": "Olimilas Mature Soğuk Sıkım Zeytinyağı 500 Ml",
+      "brand": "Olimilas",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 449.96,
+      "maxPrice": 449.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 449.96
+        }
+      ]
+    },
+    {
+      "productId": "1UGN",
+      "name": "Tariş Organik Naturel Sızma Zeytinyağı 500 Ml",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 464.96,
+      "maxPrice": 619.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 464.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 619.95
+        }
+      ]
+    },
+    {
+      "productId": "1GDW",
+      "name": "Aivalos Century Sızma Zeytinyağı 750 Ml",
+      "brand": "Aivalos",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 509.96,
+      "maxPrice": 509.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 509.96
+        }
+      ]
+    },
+    {
+      "productId": "2001",
+      "name": "Yudum Egemden Sızma Zeytinyağı Yumuşak Lezzet 2 Lt",
+      "brand": "Yudum",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 556.5,
+      "maxPrice": 959.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 556.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 959.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q4A",
+      "name": "Tariş Güney Ege Sızma Zeytinyağı 1 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 2,
+      "minPrice": 579.95,
+      "maxPrice": 579.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 579.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 579.95
+        }
+      ]
+    },
+    {
+      "productId": "1NZL",
+      "name": "Komili Riviera Yemeklik Zeytinyağı 2 Lt",
+      "brand": "Komili",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 767.95,
+      "maxPrice": 767.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 767.95
+        }
+      ]
+    },
+    {
+      "productId": "0GS9",
+      "name": "Zeytin İskelesi Sızma Zeytinyağı 2 Lt",
+      "brand": "Zeytin İskelesi",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 799.92,
+      "maxPrice": 799.92,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 799.92
+        }
+      ]
+    },
+    {
+      "productId": "0WRC",
+      "name": "Tariş Güney Ege Sızma Zeytinyağı 2 Lt",
+      "brand": "Tariş",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 839.96,
+      "maxPrice": 839.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 839.96
+        }
+      ]
+    },
+    {
+      "productId": "1ZL9",
+      "name": "Yudum Egemden Sızma Zeytinyağı Yoğun Lezzet 2 Lt",
+      "brand": "Yudum Egemden",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 979.9,
+      "maxPrice": 979.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 979.9
+        }
+      ]
+    }
+  ]
+}

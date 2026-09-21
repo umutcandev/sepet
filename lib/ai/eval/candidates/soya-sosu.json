@@ -1,0 +1,394 @@
+{
+  "term": "soya sosu",
+  "category": "Dünya mutfağı",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:04:41.516Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1D7B",
+      "name": "Chefline Soya Sosu 150 Ml",
+      "brand": "Chefline",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 65.25,
+      "maxPrice": 65.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.25
+        }
+      ]
+    },
+    {
+      "productId": "1D0O",
+      "name": "Chefline Glutensiz Soya Sosu 150 Ml",
+      "brand": "Chefline",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 66.5,
+      "maxPrice": 66.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 66.5
+        }
+      ]
+    },
+    {
+      "productId": "1DHL",
+      "name": "Şef Franzi Soya Sosu 250 Ml",
+      "brand": "Şef Franzi",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "1DJO",
+      "name": "Migros Soya Sosu 250 Ml",
+      "brand": "Migros",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 75.95,
+      "maxPrice": 75.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 75.95
+        }
+      ]
+    },
+    {
+      "productId": "1D0V",
+      "name": "Carrefour Soya Sosu 250 Ml",
+      "brand": "Carrefour",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 75.95,
+      "maxPrice": 75.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 75.95
+        }
+      ]
+    },
+    {
+      "productId": "1D6N",
+      "name": "Kemal Kükrer Soya Sosu 250 Ml",
+      "brand": "Kemal Kükrer",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 133.2,
+      "maxPrice": 133.2,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 133.2
+        }
+      ]
+    },
+    {
+      "productId": "1DTC",
+      "name": "Signature Koyu Soya Sosu 150 Ml",
+      "brand": "Signature",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 147.75,
+      "maxPrice": 147.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 147.75
+        }
+      ]
+    },
+    {
+      "productId": "20I9",
+      "name": "Kühne Soya Sosu 250 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 167.97,
+      "maxPrice": 167.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 167.97
+        }
+      ]
+    },
+    {
+      "productId": "1PO9",
+      "name": "Kühne Acı Soya Sosu 250 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 167.97,
+      "maxPrice": 239.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 167.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 239.95
+        }
+      ]
+    },
+    {
+      "productId": "1CY8",
+      "name": "Amoy Tuzu Azaltılmış Soya Sosu 150 Ml",
+      "brand": "Amoy",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 169.5,
+      "maxPrice": 169.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.5
+        }
+      ]
+    },
+    {
+      "productId": "20QG",
+      "name": "Amoy Soya Sosu 150 Ml",
+      "brand": "Amoy",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 171.95,
+      "maxPrice": 171.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 171.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 171.95
+        }
+      ]
+    },
+    {
+      "productId": "211C",
+      "name": "Fersan Soya Sosu 250 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 176.21,
+      "maxPrice": 176.21,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 176.21
+        }
+      ]
+    },
+    {
+      "productId": "1D32",
+      "name": "Amoy Light Soya Sos 150 Ml",
+      "brand": "Amoy",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 186,
+      "maxPrice": 186,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 186
+        }
+      ]
+    },
+    {
+      "productId": "1DH8",
+      "name": "Heinz Soya Sosu 150 Ml",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 221.95,
+      "maxPrice": 221.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 221.95
+        }
+      ]
+    },
+    {
+      "productId": "1QV1",
+      "name": "Kühne Sodyumu Azaltılmış Soya Sosu 250 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 237.95,
+      "maxPrice": 239.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 237.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 239.95
+        }
+      ]
+    },
+    {
+      "productId": "1D6L",
+      "name": "Kühne Soya Sosu 250 Gr",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 239.95,
+      "maxPrice": 239.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 239.95
+        }
+      ]
+    },
+    {
+      "productId": "1DJJ",
+      "name": "Aiko Tuzu Azaltılmış Soya Sosu 250 Ml",
+      "brand": "Aiko",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 239.95,
+      "maxPrice": 239.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 239.95
+        }
+      ]
+    },
+    {
+      "productId": "1D5L",
+      "name": "Amoy Az Tuzlu Soya Sosu 750 Ml",
+      "brand": "Amoy",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 295.9,
+      "maxPrice": 295.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 295.9
+        }
+      ]
+    },
+    {
+      "productId": "1DE4",
+      "name": "Amoy Soya Sosu 750 Ml",
+      "brand": "Amoy",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 315.95,
+      "maxPrice": 315.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 315.95
+        }
+      ]
+    },
+    {
+      "productId": "1D0B",
+      "name": "Amoy Soya Sosu 750 Gr",
+      "brand": "Amoy",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 315.95,
+      "maxPrice": 315.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 315.95
+        }
+      ]
+    },
+    {
+      "productId": "1X21",
+      "name": "Kikkoman Tuzu Azaltılmış Soya Sosu 150 Ml",
+      "brand": "Kikkoman",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 464.5,
+      "maxPrice": 499.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 464.5
+        },
+        {
+          "market": "Migros",
+          "price": 499.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZE2",
+      "name": "Kikkoman Organik Soya Sosu 150 Ml",
+      "brand": "Kikkoman",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 474.5,
+      "maxPrice": 489.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 474.5
+        },
+        {
+          "market": "Migros",
+          "price": 489.95
+        }
+      ]
+    },
+    {
+      "productId": "1DIE",
+      "name": "Kikkoman Soya Sosu 150 Ml",
+      "brand": "Kikkoman",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 479.9,
+      "maxPrice": 479.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 479.9
+        }
+      ]
+    },
+    {
+      "productId": "1D2M",
+      "name": "Kikkoman Az Tuzlu Soya Sosu 250 Gr",
+      "brand": "Kikkoman",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 480.9,
+      "maxPrice": 480.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 480.9
+        }
+      ]
+    }
+  ]
+}

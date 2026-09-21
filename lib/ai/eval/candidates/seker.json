@@ -1,0 +1,1126 @@
+{
+  "term": "şeker",
+  "category": "Tatlandırıcı & baharat",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:59:19.042Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "06R0",
+      "name": "Carrefour Küp Şeker 750 Gr",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "1SU8",
+      "name": "Bor Şeker Toz Şeker 1 Kg",
+      "brand": "Borşeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "03XV",
+      "name": "Albeyaz Toz Şeker 1 Kg",
+      "brand": "Albeyaz",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "07CD",
+      "name": "Safi Beyaz Toz Şeker 1 Kg",
+      "brand": "Safi Beyaz",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "0R80",
+      "name": "Irmak Küp Şeker 750 Gr",
+      "brand": "Irmak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 57.95,
+      "maxPrice": 57.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.95
+        }
+      ]
+    },
+    {
+      "productId": "21MZ",
+      "name": "Balküpü Küp Şeker 1 Kg",
+      "brand": "Balküpü",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 3,
+      "minPrice": 59.5,
+      "maxPrice": 69,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 59.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 64.5
+        },
+        {
+          "market": "hakmar",
+          "price": 69
+        }
+      ]
+    },
+    {
+      "productId": "1NSF",
+      "name": "Nar Toz Şeker 1 Kg",
+      "brand": "Nar",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "0ICB",
+      "name": "Carrefour Küp Şeker 1 Kg",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "1SQS",
+      "name": "Irmak Küp Şeker 1 Kg",
+      "brand": "Irmak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 64.95,
+      "maxPrice": 64.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 64.95
+        }
+      ]
+    },
+    {
+      "productId": "0HE8",
+      "name": "Carrefour Kahverengi Toz Şeker 500 Gr",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0KAB",
+      "name": "Kayseri Şeker Kahverengi Şeker 500 Gr",
+      "brand": "Kayseri Şeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0VX5",
+      "name": "Kayseri Şeker Kahverengi Küp Şeker 500 Gr",
+      "brand": "Kayseri Şeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZAV",
+      "name": "Altınküp Esmer Küp Şeker 500 Gr",
+      "brand": "Altınküp",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "0QM6",
+      "name": "Irmak Kahverengi Toz Şeker 500 Gr",
+      "brand": "Irmak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 94.95,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZQ4",
+      "name": "Altınküp Toz Şeker 2 Kg",
+      "brand": "Altınküp",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "12DI",
+      "name": "Balküpü Toz Şeker 3 Kg",
+      "brand": "Balküpü",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 2,
+      "minPrice": 159.5,
+      "maxPrice": 165,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 159.5
+        },
+        {
+          "market": "A101",
+          "price": 165
+        }
+      ]
+    },
+    {
+      "productId": "10PN",
+      "name": "Doğuş Toz Şeker 3 Kg",
+      "brand": "Doğuş",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 165,
+      "maxPrice": 165,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 165
+        }
+      ]
+    },
+    {
+      "productId": "1PK8",
+      "name": "Türkşeker Toz Şeker 5 Kg",
+      "brand": "Türkşeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "02EE",
+      "name": "Şafak Toz Şeker 5 Kg",
+      "brand": "Şafak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "2AWS",
+      "name": "Türk Şeker Toz Şeker 5 Kg",
+      "brand": "Türk Şeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "0WFK",
+      "name": "Kayseri Şeker Toz Şeker 5 Kg",
+      "brand": "Kayseri Şeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "21HD",
+      "name": "Balküpü Toz Şeker 5 Kg",
+      "brand": "Balküpü",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 229.95,
+      "maxPrice": 229.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 229.95
+        }
+      ]
+    },
+    {
+      "productId": "1PCF",
+      "name": "Irmak Toz Şeker 5 Kg",
+      "brand": "Irmak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "1NX5",
+      "name": "Bor Şeker Toz Şeker 5 Kg",
+      "brand": "Bor Şeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "04GE",
+      "name": "Toz Şeker 1 Kg",
+      "brand": "Markasız",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "087E",
+      "name": "Carrefour Toz Şeker 1 Kg",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 52.95,
+      "maxPrice": 52.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 52.95
+        }
+      ]
+    },
+    {
+      "productId": "21EL",
+      "name": "Balküpü Toz Şeker 1 Kg",
+      "brand": "Balküpü",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 2,
+      "minPrice": 56.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 56.5
+        },
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "0V6D",
+      "name": "Irmak Toz Şeker 1 Kg",
+      "brand": "Irmak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 61.95,
+      "maxPrice": 61.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 61.95
+        }
+      ]
+    },
+    {
+      "productId": "0052",
+      "name": "Nar Küp Şeker 1 Kg",
+      "brand": "Nar",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 61.95,
+      "maxPrice": 61.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 61.95
+        }
+      ]
+    },
+    {
+      "productId": "10J3",
+      "name": "Altınküp Küp Şeker 1 Kg",
+      "brand": "Altınküp",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "07IU",
+      "name": "Şafak Küp Şeker 1 Kg",
+      "brand": "Şafak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "03BK",
+      "name": "Pekşeker Küp Şeker 1 Kg",
+      "brand": "Pekşeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "0ICJ",
+      "name": "Balküpü Elite Küp Şeker 750 Gr",
+      "brand": "Balküpü",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 68.5,
+      "maxPrice": 68.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 68.5
+        }
+      ]
+    },
+    {
+      "productId": "20TU",
+      "name": "Migros Esmer Küp Şeker 500 Gr",
+      "brand": "Migros",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "20BP",
+      "name": "Migros Esmer Toz Şeker 500 Gr",
+      "brand": "Migros",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "00GW",
+      "name": "Şafak Toz Şeker 2 Kg",
+      "brand": "Şafak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 94.5,
+      "maxPrice": 94.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 94.5
+        }
+      ]
+    },
+    {
+      "productId": "06MY",
+      "name": "Akşeker Toz Şeker 2 Kg",
+      "brand": "Akşeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "12UT",
+      "name": "Carrefour Toz Şeker 2 Kg",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "1WA9",
+      "name": "Türkşeker Toz Şeker 3 Kg",
+      "brand": "Türkşeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 124.5,
+      "maxPrice": 124.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 124.5
+        }
+      ]
+    },
+    {
+      "productId": "0W1J",
+      "name": "Takita Kahverengi Toz Şeker 500 Gr",
+      "brand": "Takita",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 139.95,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "09MO",
+      "name": "Carrefour Toz Şeker 3 Kg",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1PXH",
+      "name": "Irmak Toz Şeker 3 Kg",
+      "brand": "Irmak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 167.95,
+      "maxPrice": 167.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 167.95
+        }
+      ]
+    },
+    {
+      "productId": "0P2B",
+      "name": "Altınküp Toz Şeker 5 Kg",
+      "brand": "Altınküp",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "1SXQ",
+      "name": "Türkşeker Kristal Toz Şeker 5 Kg",
+      "brand": "Türkşeker",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "0JV6",
+      "name": "Carrefour Toz Şeker 5 Kg",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "0SZG",
+      "name": "Torku Toz Şeker 5 Kg",
+      "brand": "Torku",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "1BQC",
+      "name": "Nar Toz Şeker 5 Kg",
+      "brand": "Nar",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "0Y74",
+      "name": "Kent Dökme Şeker 1 Kg",
+      "brand": "Kent",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 275,
+      "maxPrice": 275,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 275
+        }
+      ]
+    },
+    {
+      "productId": "1A7S",
+      "name": "Polonya Meyve Aromalı Şeker 23 Gr",
+      "brand": "Polonya",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 7.5,
+      "maxPrice": 7.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 7.5
+        }
+      ]
+    },
+    {
+      "productId": "2AUV",
+      "name": "Haribo Mega Roulette Yumuşak Şeker 45 Gr",
+      "brand": "Haribo",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 22.5,
+      "maxPrice": 22.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 22.5
+        }
+      ]
+    },
+    {
+      "productId": "10XR",
+      "name": "Pıt Pıt Solucan Yumuşak Şeker 160 Gr",
+      "brand": "Pıt Pıt",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "1URS",
+      "name": "Mentos Draje Şeker Meyveli 38 Gr",
+      "brand": "Mentos",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 3,
+      "minPrice": 25,
+      "maxPrice": 26.45,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 25
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 26.25
+        },
+        {
+          "market": "Migros",
+          "price": 26.45
+        }
+      ]
+    },
+    {
+      "productId": "01ID",
+      "name": "Olips Mentol Bonbon Şeker 28 Gr",
+      "brand": "Olips",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 27,
+      "maxPrice": 27,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 27
+        }
+      ]
+    },
+    {
+      "productId": "0F28",
+      "name": "Carrefour Sargılı Küp Şeker 500 Gr",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 44.95,
+      "maxPrice": 44.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 44.95
+        }
+      ]
+    },
+    {
+      "productId": "20UX",
+      "name": "Migros Tek Sargılı Küp Şeker 500 Gr",
+      "brand": "Migros",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 44.95,
+      "maxPrice": 44.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 44.95
+        }
+      ]
+    },
+    {
+      "productId": "1YO9",
+      "name": "Cosby Ahşap Oyuncaklı Şeker 9 Gr",
+      "brand": "Cosby",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 49,
+      "maxPrice": 49,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 49
+        }
+      ]
+    },
+    {
+      "productId": "04QR",
+      "name": "Haribo Sour Worms Yumuşak Şeker 70 Gr",
+      "brand": "Haribo",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 51.45,
+      "maxPrice": 51.45,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 51.45
+        }
+      ]
+    },
+    {
+      "productId": "17W6",
+      "name": "Gül Aras Toz Şeker 1 Kg",
+      "brand": "Gül Aras",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "1YVZ",
+      "name": "Haribo Ekşi Mix Yumuşak Şeker 115 Gr",
+      "brand": "Haribo",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 2,
+      "minPrice": 54.5,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 54.5
+        },
+        {
+          "market": "Şok",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "06A5",
+      "name": "Bebeto Yumuşak Şeker Sakız 280 Gr",
+      "brand": "Bebeto",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 2,
+      "minPrice": 55,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 55
+        },
+        {
+          "market": "hakmar",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0XQK",
+      "name": "Irmak Tekli Sargılı Küp Şeker 500 Gr",
+      "brand": "Irmak",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 57.95,
+      "maxPrice": 57.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.95
+        }
+      ]
+    },
+    {
+      "productId": "0KS6",
+      "name": "Altınküp Tek Sargılı Küp Şeker 750 Gr",
+      "brand": "Altınküp",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 64.9,
+      "maxPrice": 64.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 64.9
+        }
+      ]
+    },
+    {
+      "productId": "0C5G",
+      "name": "Carrefour Kahverengi Küp Şeker 500 Gr",
+      "brand": "Carrefour",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "140B",
+      "name": "Bebeto Party Mix Yumuşak Şeker 400 Gr",
+      "brand": "Bebeto",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "03WZ",
+      "name": "Haribo Yumuşak Şeker Fruitbons 400 Gr",
+      "brand": "Haribo",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "264U",
+      "name": "Ülker Lokumcuk Şeker 350 Gr",
+      "brand": "Ülker",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "1YZW",
+      "name": "Kent Assortment Şeker 375 Gr",
+      "brand": "Kent",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "1ZHG",
+      "name": "Haribo Ayıcık Yumuşak Şeker 200 Gr",
+      "brand": "Haribo",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 117.45,
+      "maxPrice": 117.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 117.45
+        }
+      ]
+    },
+    {
+      "productId": "3WZF",
+      "name": "Pez Şeker Adam 25.5 Gr",
+      "brand": "Pez",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 175,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "1ILH",
+      "name": "Tatküpü Kristal Toz Şeker 5 Kg",
+      "brand": "Tatküpü",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 229.95,
+      "maxPrice": 229.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 229.95
+        }
+      ]
+    },
+    {
+      "productId": "0YLH",
+      "name": "Altınküp Stick Toz Şeker 500'lü 500x4 Gr",
+      "brand": "Altınküp",
+      "category": "Şeker ve Tatlandırıcılar",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "20M0",
+      "name": "Cavendish & Harvey Elma Dolgulu Frenk Üzümlü Şeker 175 Gr",
+      "brand": "Cavendish & Harvey",
+      "category": "Sakız ve Şekerleme",
+      "marketCount": 1,
+      "minPrice": 261.5,
+      "maxPrice": 261.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 261.5
+        }
+      ]
+    }
+  ]
+}

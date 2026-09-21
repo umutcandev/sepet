@@ -1,0 +1,1146 @@
+{
+  "term": "patates",
+  "category": "Taze sebze",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:52:54.175Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "2JOS",
+      "name": "Ruffles Originals Sade Patates Cipsi 50 Gr",
+      "brand": "Ruffles",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 35,
+      "maxPrice": 35,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 35
+        }
+      ]
+    },
+    {
+      "productId": "1Q4H",
+      "name": "Lay's Klasik Medium Patates Cipsi 50 Gr",
+      "brand": "Lay's",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 35,
+      "maxPrice": 35,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 35
+        }
+      ]
+    },
+    {
+      "productId": "0W3A",
+      "name": "Kızartmalık Patates 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 39,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "13NG",
+      "name": "Patito Ranch Grill Aromalı Patates Cipsi 135 Gr",
+      "brand": "Patito",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 39,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "1GNI",
+      "name": "Patito Sade Ketçap Patates Cipsi 150 Gr",
+      "brand": "Patito",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 45,
+      "maxPrice": 45,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "productId": "1FWY",
+      "name": "Patito Tırtıklı Sade Acı Patates Cipsi 150 Gr",
+      "brand": "Patito",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 45,
+      "maxPrice": 45,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "productId": "0EG8",
+      "name": "Carrefour Acı Baharat Çeşnili Patates Cipsi 135 Gr",
+      "brand": "Carrefour",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 45,
+      "maxPrice": 45,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "productId": "0BCZ",
+      "name": "Toledo Tırtıklı Patates Cipsi 150 Gr",
+      "brand": "Toledo",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 45,
+      "maxPrice": 45,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "productId": "03S9",
+      "name": "Amigo Acı Baharat Çeşnili Patates Cipsi 135 Gr",
+      "brand": "Amigo",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 46.5,
+      "maxPrice": 46.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 46.5
+        }
+      ]
+    },
+    {
+      "productId": "1C4H",
+      "name": "Patito Peynir Soğanlı Patates Cipsi 200 Gr",
+      "brand": "Patito",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 50,
+      "maxPrice": 50,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 50
+        }
+      ]
+    },
+    {
+      "productId": "26CD",
+      "name": "Ruffles Değiş Tokuş Baharatlı Patates Cipsi 160 Gr",
+      "brand": "Ruffles",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 54.5,
+      "maxPrice": 54.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 54.5
+        }
+      ]
+    },
+    {
+      "productId": "2B98",
+      "name": "Pattes Mevsim Yeşillikleri Ve Ketçaplı Patates Cipsi 100 Gr",
+      "brand": "Pattes",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1J0K",
+      "name": "Ruffles Orijinal Peynirli Soğan Ketçap Patates Cipsi 125 Gr",
+      "brand": "Ruffles",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "2CPS",
+      "name": "Ruffles Peynir & Soğan Patates Cipsi 125 Gr",
+      "brand": "Ruffles",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "2CPL",
+      "name": "Ruffles Originals Sade Patates Cipsi 125 Gr",
+      "brand": "Ruffles",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "1DFQ",
+      "name": "Amigo Barbekü Sos Çeşnili Patates Cipsi 200 Gr",
+      "brand": "Amigo",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1AG8",
+      "name": "Patito Pesto Barbekü Aromalı Patates Cipsi 200 Gr",
+      "brand": "Patito",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0CLG",
+      "name": "Patates File 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "1THP",
+      "name": "Cipso Tırtıklı Ketçap Aromalı Patates Cipsi 160 Gr",
+      "brand": "Cipso",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 84.5,
+      "maxPrice": 84.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 84.5
+        }
+      ]
+    },
+    {
+      "productId": "1IYP",
+      "name": "Master Potato Original Patates Cipsi 160 Gr",
+      "brand": "Master Potato",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "1CKU",
+      "name": "Lorenz Paprika Aromalı Patates Cipsi 100 Gr",
+      "brand": "Lorenz",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 132.9,
+      "maxPrice": 132.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 132.9
+        }
+      ]
+    },
+    {
+      "productId": "1CL6",
+      "name": "Lorenz Chipsletten Sea Salt Patates Cipsi 100 Gr",
+      "brand": "Lorenz",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 132.9,
+      "maxPrice": 132.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 132.9
+        }
+      ]
+    },
+    {
+      "productId": "2JMQ",
+      "name": "Argente Kinoalı Patates Cipsi 150 Gr",
+      "brand": "Argente",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 329.9,
+      "maxPrice": 329.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 329.9
+        }
+      ]
+    },
+    {
+      "productId": "2018",
+      "name": "Schar Curvies Original Glutensiz Patates Cipsi 170 Gr",
+      "brand": "Schar",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 441.5,
+      "maxPrice": 441.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 441.5
+        }
+      ]
+    },
+    {
+      "productId": "1NCL",
+      "name": "Patates 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 4,
+      "minPrice": 29,
+      "maxPrice": 34.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 29
+        },
+        {
+          "market": "BİM",
+          "price": 29
+        },
+        {
+          "market": "A101",
+          "price": 29.9
+        },
+        {
+          "market": "hakmar",
+          "price": 34.95
+        }
+      ]
+    },
+    {
+      "productId": "06O4",
+      "name": "Patates Taze 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 29.9,
+      "maxPrice": 29.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "productId": "1JAM",
+      "name": "Taze Mini Patates 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 34.9,
+      "maxPrice": 34.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 34.9
+        }
+      ]
+    },
+    {
+      "productId": "1LK2",
+      "name": "Kızartmalık Patates 1 Adet",
+      "brand": "Kızartmalık",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 39.9,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "2CQZ",
+      "name": "Toledo Ketçaplı Patates Cipsi 135 Gr",
+      "brand": "Toledo",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 45,
+      "maxPrice": 45,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 45
+        }
+      ]
+    },
+    {
+      "productId": "0RBV",
+      "name": "Amigo Düz Sade Patates Cipsi 150 Gr",
+      "brand": "Amigo",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 46.5,
+      "maxPrice": 46.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 46.5
+        }
+      ]
+    },
+    {
+      "productId": "1R26",
+      "name": "Cipso Tırtıklı Deniz Tuzlu Sade Patates Cipsi 125 Gr",
+      "brand": "Cipso",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 63.9,
+      "maxPrice": 63.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 63.9
+        }
+      ]
+    },
+    {
+      "productId": "1Z0K",
+      "name": "Cipso Yoğurt & Mevsim Yeşillikli Aromalı Patates Cipsi 125 Gr",
+      "brand": "Cipso",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64,
+      "maxPrice": 64,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 64
+        }
+      ]
+    },
+    {
+      "productId": "1LSC",
+      "name": "Lay's Baharatlı ve Süzme Peynirli Patates Cipsi 125 Gr",
+      "brand": "Lay's",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "2CPM",
+      "name": "Lays Klasik Patates Cipsi 125 Gr",
+      "brand": "Lays",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "21LO",
+      "name": "Ruffles Ketçaplı Patates Cipsi 125 Gr",
+      "brand": "Ruffles",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "2CPT",
+      "name": "Lays Baharatlı Patates Cipsi 125 Gr",
+      "brand": "Lays",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "2CPQ",
+      "name": "Lays Yoğurt & Mevsim Yeşillikli Patates Cipsi 125 Gr",
+      "brand": "Lays",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "1DN7",
+      "name": "Amigo Pesto Sos Çeşnili Patates Cipsi 200 Gr",
+      "brand": "Amigo",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1K46",
+      "name": "Cipso Tube Patates Cipsi Sade 160 Gr",
+      "brand": "Cipso",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 79,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 79
+        },
+        {
+          "market": "Şok",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "1GHN",
+      "name": "Pomsticks Tuzlu Patates Cipsi 85 Gr",
+      "brand": "Pomsticks",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1GL5",
+      "name": "Lorenz Pomsticks Paprika Patates Cipsi 85 Gr",
+      "brand": "Lorenz",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "2B4A",
+      "name": "Master Potato Patates Cipsi 160 Gr",
+      "brand": "Master Potato",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 119.5,
+      "maxPrice": 119.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 119.5
+        }
+      ]
+    },
+    {
+      "productId": "1LMP",
+      "name": "Master Potato Barbekü Çeşnili Patates Cipsi 160 Gr",
+      "brand": "Master Potato",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1VJI",
+      "name": "Master Potato Sebzeli Patates Cipsi 160 Gr",
+      "brand": "Master Potato",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1CLM",
+      "name": "Lorenz Acı Baharat Aromalı Patates Cipsi 100 Gr",
+      "brand": "Lorenz",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 132.9,
+      "maxPrice": 132.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 132.9
+        }
+      ]
+    },
+    {
+      "productId": "0IHV",
+      "name": "Rubio Wasabili Patates Cipsi 125 Gr",
+      "brand": "Rubio",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 322,
+      "maxPrice": 322,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 322
+        }
+      ]
+    },
+    {
+      "productId": "18TC",
+      "name": "Rubio Siyah Trüf Mantarı Aromalı Patates Cipsi 125 Gr",
+      "brand": "Rubio",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 342.5,
+      "maxPrice": 342.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 342.5
+        }
+      ]
+    },
+    {
+      "productId": "2JN2",
+      "name": "Tyrrells Deniz Tuzlu Patates Cipsi 150 Gr",
+      "brand": "Tyrrells",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 350,
+      "maxPrice": 350,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 350
+        }
+      ]
+    },
+    {
+      "productId": "0RG1",
+      "name": "Haşlamalık Patates 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 29.9,
+      "maxPrice": 29.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 29.9
+        }
+      ]
+    },
+    {
+      "productId": "13ZZ",
+      "name": "Patito Dereotu Turşu Aromalı Patates Cipsi 135 Gr",
+      "brand": "Patito",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 39,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "20D8",
+      "name": "Knorr Patates Püresi 60 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 50.21,
+      "maxPrice": 68.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 50.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 68.95
+        }
+      ]
+    },
+    {
+      "productId": "182Q",
+      "name": "Deva Cajun Patates Çeşnisi 60 Gr",
+      "brand": "Deva",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 57.95,
+      "maxPrice": 57.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.95
+        }
+      ]
+    },
+    {
+      "productId": "1STQ",
+      "name": "Cipso Tırtıklı Original Deniz Tuzlu Patates Cipsi 160 Gr",
+      "brand": "Cipso",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 59.9,
+      "maxPrice": 59.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "productId": "2CPJ",
+      "name": "Lays Fırından Yoğurt & Mevsim Yeşillikleri Patates Cipsi 110 Gr",
+      "brand": "Lays",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "10HA",
+      "name": "İnci Patates 1 Kg",
+      "brand": "İnci",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "02B7",
+      "name": "Mutfağım Dondurulmuş Patates 1 Kg",
+      "brand": "Mutfağım",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "3X02",
+      "name": "İnci İnce Çıtır Patates 1 Kg",
+      "brand": "İnci",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "196I",
+      "name": "İthal Tatlı Patates 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 2,
+      "minPrice": 99.9,
+      "maxPrice": 109.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 109.9
+        }
+      ]
+    },
+    {
+      "productId": "1AHY",
+      "name": "Torpat Parmak Patates 1 Kg",
+      "brand": "Torpat",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1AZC",
+      "name": "Torpat Elma Dilim Patates 1 Kg",
+      "brand": "Torpat",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1H5E",
+      "name": "Bağdat Cam Cajun Patates Çeşnisi 55 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZUH",
+      "name": "Tukaş Dondurulmuş Parmak Patates 1 Kg",
+      "brand": "Tukaş",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "1CLG",
+      "name": "Lorenz Ekşi Krema Aromalı Patates Cipsi 100 Gr",
+      "brand": "Lorenz",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 132.9,
+      "maxPrice": 132.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 132.9
+        }
+      ]
+    },
+    {
+      "productId": "262Z",
+      "name": "Superfresh Dondurulmuş Patates 1 Kg",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 159.5,
+      "maxPrice": 159.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 159.5
+        }
+      ]
+    },
+    {
+      "productId": "20K7",
+      "name": "Superfresh Jumbo Patates 1 Kg",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 179.95,
+      "maxPrice": 264.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 179.95
+        },
+        {
+          "market": "Migros",
+          "price": 264.95
+        }
+      ]
+    },
+    {
+      "productId": "1UCN",
+      "name": "Pek Jumbo Patates 1 Kg",
+      "brand": "Pek Food",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 201.9,
+      "maxPrice": 201.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 201.9
+        }
+      ]
+    },
+    {
+      "productId": "1P5B",
+      "name": "Superfresh Patates 1 Kg",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 254.95,
+      "maxPrice": 254.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 254.95
+        },
+        {
+          "market": "Migros",
+          "price": 254.95
+        }
+      ]
+    },
+    {
+      "productId": "1TH7",
+      "name": "SuperFresh Çıtır Patates 1 Kg",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 264.95,
+      "maxPrice": 264.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 264.95
+        },
+        {
+          "market": "Migros",
+          "price": 264.95
+        }
+      ]
+    },
+    {
+      "productId": "216N",
+      "name": "Feast Parmak Patates 1 Kg",
+      "brand": "Feast",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 289.95,
+      "maxPrice": 289.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 289.95
+        },
+        {
+          "market": "Migros",
+          "price": 289.95
+        }
+      ]
+    },
+    {
+      "productId": "1UAF",
+      "name": "Feast İnce Çubuk Patates 1 Kg",
+      "brand": "Feast",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y1F",
+      "name": "Feast Crinky Patates 1 Kg",
+      "brand": "Feast",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "204T",
+      "name": "Superfresh Patates 2.5 Kg",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 339.95,
+      "maxPrice": 339.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 339.95
+        }
+      ]
+    }
+  ]
+}

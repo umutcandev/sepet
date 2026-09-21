@@ -1,6 +1,12 @@
 import * as React from "react"
 import Link from "next/link"
 
+import {
+  MONTHLY_PRICE,
+  YEARLY_PRICE,
+} from "@/components/subscription/plan-cards"
+import { limitText, planLimit } from "@/lib/usage/limits"
+
 export const LEGAL_LAST_UPDATED = "26 Temmuz 2026"
 // Ödeme sözleşmeleri (Mesafeli Satış + İptal & İade) Polar entegrasyonuyla
 // birlikte yayınlandı; Gizlilik/Kullanım metinlerinden ayrı bir tarih taşırlar.
@@ -219,7 +225,7 @@ export function PrivacyContent() {
 }
 
 // Mesafeli Satış Sözleşmesi. Metin, koddaki gerçek davranışla doğrulanabilir:
-// fiyatlar subscription-panel'den (₺99/ay, ₺990/yıl, TRY), Pro avantajları
+// fiyatlar plan-cards'tan (MONTHLY_PRICE/YEARLY_PRICE), Pro avantajları
 // lib/usage/limits.ts PLAN_LIMITS'ten, ödeme/aktivasyon app/api/checkout +
 // webhooks/polar'dan, faturalandırma/vergi ise Polar'ın Kayıtlı Satıcı
 // (Merchant of Record) rolünden gelir. Kart bilgileri Sepet'e hiç ulaşmaz;
@@ -242,20 +248,25 @@ export function DistanceSalesContent() {
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">2. Sözleşmenin Konusu</h2>
         <p>
-          Sözleşmenin konusu, Sepet Pro aboneliğinin elektronik ortamda
-          satışı ve ifasıdır. Pro planı; aylık 500 asistan mesajı, aylık 250
-          görsel analizi ile sınırsız sepet ve fiş kaydı sunar. Pro planında
-          aylık sayaçlar, aboneliğin her ay yenilendiği gün (UTC) otomatik
-          olarak sıfırlanır; yıllık abonelikte de bu sıfırlama, aboneliğin
-          başladığı gün baz alınarak her ay tekrarlanır. Ücretsiz plan ise
-          aylık 50 asistan mesajı, 10 görsel analizi ve 20’şer sepet/fiş kaydı
+          Sözleşmenin konusu, Sepet Pro aboneliğinin elektronik ortamda satışı
+          ve ifasıdır. Pro planı; aylık{" "}
+          {limitText(planLimit("pro", "textMessages"))} asistan mesajı, aylık{" "}
+          {limitText(planLimit("pro", "imageAnalyses"))} görsel analizi ile{" "}
+          {limitText(planLimit("pro", "savedBaskets"))} sepet ve fiş kaydı
+          sunar. Pro planında aylık sayaçlar, aboneliğin her ay yenilendiği gün
+          (UTC) otomatik olarak sıfırlanır; yıllık abonelikte de bu sıfırlama,
+          aboneliğin başladığı gün baz alınarak her ay tekrarlanır. Ücretsiz
+          plan ise aylık {limitText(planLimit("free", "textMessages"))} asistan
+          mesajı, {limitText(planLimit("free", "imageAnalyses"))} görsel analizi
+          ve {limitText(planLimit("free", "savedBaskets"))}’şer sepet/fiş kaydı
           ile sınırlıdır ve sayaçları her ayın ilk günü (UTC) sıfırlanır.
         </p>
       </section>
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">3. Ücret ve Süre</h2>
         <p>
-          Pro aboneliği aylık ₺99 veya yıllık ₺990 (Türk Lirası) olarak sunulur.
+          Pro aboneliği aylık ₺{MONTHLY_PRICE} veya yıllık ₺{YEARLY_PRICE} (Türk
+          Lirası) olarak sunulur.
           Geçerli vergiler konumuna göre Polar tarafından ödeme sayfasında
           hesaplanır ve ödeyeceğin nihai tutar orada gösterilir. Abonelik,
           seçilen faturalandırma döneminin (ay veya yıl) sonunda aynı ücretle

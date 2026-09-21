@@ -1,0 +1,830 @@
+{
+  "term": "bulaşık deterjanı",
+  "category": "Temizlik & kağıt",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:07:05.311Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0YN0",
+      "name": "Mintax Sıvı Bulaşık Deterjanı Limonlu 750 Ml",
+      "brand": "Mintax",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "035S",
+      "name": "Desto Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Desto",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "0LFT",
+      "name": "Migros Losyon Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Migros",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 66.95,
+      "maxPrice": 66.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.95
+        }
+      ]
+    },
+    {
+      "productId": "0SQY",
+      "name": "Mintax Losyon Bulaşık Deterjanı 1.35 Lt",
+      "brand": "Mintax",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "1QF1",
+      "name": "Turmepa Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Turmepa",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 83,
+      "maxPrice": 83,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 83
+        }
+      ]
+    },
+    {
+      "productId": "0WBJ",
+      "name": "Fairy Bulaşık Deterjanı 650 Ml",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 84.9,
+      "maxPrice": 84.9,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 84.9
+        }
+      ]
+    },
+    {
+      "productId": "1IOQ",
+      "name": "Fairy Sıvı Bulaşık Deterjanı 650 Ml",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 85,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 85
+        },
+        {
+          "market": "hakmar",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "1SL5",
+      "name": "Fairy Elma Sıvı Bulaşık Deterjanı 650 Ml",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 101.95,
+      "maxPrice": 101.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 101.95
+        }
+      ]
+    },
+    {
+      "productId": "1YEN",
+      "name": "Bingo Mandalina Elde Bulaşık Deterjanı 650 Ml",
+      "brand": "Bingo",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 104.95,
+      "maxPrice": 104.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 104.95
+        }
+      ]
+    },
+    {
+      "productId": "11F3",
+      "name": "Miss Limon Sıvı Bulaşık Deterjanı 4 Kg",
+      "brand": "Miss",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "016N",
+      "name": "Senfoni Sıvı Bulaşık Deterjanı 4 Lt",
+      "brand": "Senfoni",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "0N3A",
+      "name": "Mintax Bulaşık Deterjanı 4 Kg",
+      "brand": "Mintax",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 170,
+      "maxPrice": 170,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 170
+        }
+      ]
+    },
+    {
+      "productId": "1SP1",
+      "name": "Frosch Aloe Veralı Bulaşık Deterjanı 750 Ml",
+      "brand": "Frosch",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 172.95,
+      "maxPrice": 172.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 172.95
+        }
+      ]
+    },
+    {
+      "productId": "1R1O",
+      "name": "Frosch Yeşil Limonlu Bulaşık Deterjanı 750 Ml",
+      "brand": "Frosch",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 172.95,
+      "maxPrice": 195.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 172.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 195.9
+        }
+      ]
+    },
+    {
+      "productId": "05VB",
+      "name": "Frosch Limonlu Balsam Bulaşık Deterjanı 750 Ml",
+      "brand": "Frosch",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 195.9,
+      "maxPrice": 195.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 195.9
+        }
+      ]
+    },
+    {
+      "productId": "0FAW",
+      "name": "U Green Clean Bulaşık Deterjanı 730 Ml",
+      "brand": "U Green Clean",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 216.5,
+      "maxPrice": 216.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 216.5
+        }
+      ]
+    },
+    {
+      "productId": "0POB",
+      "name": "Pril Limon Elde Yıkama Bulaşık Deterjanı 3.868 Lt",
+      "brand": "Pril",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y2R",
+      "name": "Bingo Limonlu Elde Bulaşık Deterjanı 1.5 Lt",
+      "brand": "Bingo",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 229.95,
+      "maxPrice": 229.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 229.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZVK",
+      "name": "Bingo Sensitive Bulaşık Deterjanı 1.5 Lt",
+      "brand": "Bingo",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 229.95,
+      "maxPrice": 236.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 229.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 236.9
+        }
+      ]
+    },
+    {
+      "productId": "1MIN",
+      "name": "Bingo Elde Bulaşık Deterjanı Mandalina 1.5 Lt",
+      "brand": "Bingo",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 236.9,
+      "maxPrice": 236.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 236.9
+        }
+      ]
+    },
+    {
+      "productId": "1N7X",
+      "name": "Pril Sıvı Bulaşık Deterjanı 5 Kg",
+      "brand": "Pril",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 239
+        }
+      ]
+    },
+    {
+      "productId": "0ZEX",
+      "name": "Fairy Bulaşık Deterjanı 2.6 Lt",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 279.9,
+      "maxPrice": 279.9,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 279.9
+        }
+      ]
+    },
+    {
+      "productId": "1H0V",
+      "name": "Bingo Bulaşık Deterjanı 3.884 Lt",
+      "brand": "Bingo",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 289.95,
+      "maxPrice": 289.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 289.95
+        }
+      ]
+    },
+    {
+      "productId": "2A3B",
+      "name": "Pril Limonlu Sıvı Bulaşık Deterjanı 4 Kg",
+      "brand": "Pril",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "10JS",
+      "name": "Mintax Sıvı Bulaşık Deterjanı Losyon 750 Ml",
+      "brand": "Mintax",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 59.9,
+      "maxPrice": 59.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "productId": "02A1",
+      "name": "Sır New Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Sır",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "0RG2",
+      "name": "Migros Limon Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Migros",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 66.95,
+      "maxPrice": 66.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.95
+        }
+      ]
+    },
+    {
+      "productId": "0Y8A",
+      "name": "Migros Elma Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Migros",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 66.95,
+      "maxPrice": 66.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.95
+        }
+      ]
+    },
+    {
+      "productId": "2244",
+      "name": "Pril Sirkeli Sıvı Bulaşık Deterjanı 1.1 Lt",
+      "brand": "Pril",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 75,
+      "maxPrice": 177,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 177
+        }
+      ]
+    },
+    {
+      "productId": "0YFC",
+      "name": "Mintax Ultra Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Mintax",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 78.5,
+      "maxPrice": 78.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 78.5
+        }
+      ]
+    },
+    {
+      "productId": "1KTZ",
+      "name": "Fairy Limon Bulaşık Deterjanı 650 Ml",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "20FM",
+      "name": "Bingo Sensitive Elde Bulaşık Deterjanı 650 Ml",
+      "brand": "Bingo",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 104.95,
+      "maxPrice": 104.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 104.95
+        }
+      ]
+    },
+    {
+      "productId": "1X7F",
+      "name": "Bingo Limonlu Elde Bulaşık Deterjanı 650 Ml",
+      "brand": "Bingo",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 104.95,
+      "maxPrice": 104.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 104.95
+        }
+      ]
+    },
+    {
+      "productId": "147Z",
+      "name": "Peros Limonlu Sıvı Bulaşık Deterjanı 4 Lt",
+      "brand": "Peros",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "0HPT",
+      "name": "Carrefour Eco Planet Limon Bitkisel Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Carrefour Eco Planet",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 119.9,
+      "maxPrice": 119.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.9
+        }
+      ]
+    },
+    {
+      "productId": "1T6T",
+      "name": "Fairy Sıvı Bulaşık Deterjanı Limon 650 Ml",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "0UOV",
+      "name": "Fairy Elma Bulaşık Deterjanı 650 Ml",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 122.95,
+      "maxPrice": 122.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 122.95
+        }
+      ]
+    },
+    {
+      "productId": "2ADJ",
+      "name": "Peros Limonlu Sıvı Bulaşık Deterjanı 4 Kg",
+      "brand": "Peros",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "0NMW",
+      "name": "Migros Limon Kokulu Sıvı Bulaşık Deterjanı 4 Lt",
+      "brand": "Migros",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159.95,
+      "maxPrice": 159.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        }
+      ]
+    },
+    {
+      "productId": "0F2D",
+      "name": "U Green Clean Sensitive Elde Bulaşık Deterjanı 500 Ml",
+      "brand": "U Green Clean",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 163.75,
+      "maxPrice": 163.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 163.75
+        }
+      ]
+    },
+    {
+      "productId": "0T9O",
+      "name": "Frosch Badem Özlü Bulaşık Deterjanı 750 Ml",
+      "brand": "Frosch",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 172.95,
+      "maxPrice": 172.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 172.95
+        }
+      ]
+    },
+    {
+      "productId": "1T8X",
+      "name": "Mr. Oxy Maxima Sıvı Bulaşık Deterjanı Limon 4 Lt",
+      "brand": "Mr. Oxy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "1UGB",
+      "name": "Fairy Soğuk Suda Etkili Sıvı Bulaşık Deterjanı 1.5 Lt",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 182.95,
+      "maxPrice": 182.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 182.95
+        }
+      ]
+    },
+    {
+      "productId": "03DM",
+      "name": "Sır Bio Bulaşık Deterjanı Pompalı 1 Lt",
+      "brand": "Sır",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 196,
+      "maxPrice": 196,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 196
+        }
+      ]
+    },
+    {
+      "productId": "1K71",
+      "name": "Pril Limon Sıvı Bulaşık Deterjanı 2.418 Lt",
+      "brand": "Pril",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 296.95,
+      "maxPrice": 296.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 296.95
+        }
+      ]
+    },
+    {
+      "productId": "21E3",
+      "name": "Pril Bulaşık Deterjanı 4 Kg",
+      "brand": "Pril",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 299.5,
+      "maxPrice": 299.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 299.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZKI",
+      "name": "Fairy Limon Kokulu Elde Yıkama Bulaşık Deterjanı 2.6 Lt",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 299.95,
+      "maxPrice": 411.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 411.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZZO",
+      "name": "Pril Limon Sıvı Bulaşık Deterjanı 4 Kg",
+      "brand": "Pril",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "1SD2",
+      "name": "Pril Aloe Vera Losyon Bulaşık Deterjanı 750 Ml",
+      "brand": "Pril",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "0HEB",
+      "name": "Carrefour Eco Planet Aloe Vera Bitkisel Sıvı Bulaşık Deterjanı 750 Ml",
+      "brand": "Carrefour Eco Planet",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 119.9,
+      "maxPrice": 119.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.9
+        }
+      ]
+    },
+    {
+      "productId": "1T5F",
+      "name": "Mr. Oxy Maxima Yaban Mersini Sıvı Bulaşık Deterjanı 4 Lt",
+      "brand": "Mr. Oxy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "1ZCS",
+      "name": "Fairy Temiz Ve Ferah Elma Kokulu Elde Yıkama Bulaşık Deterjanı 1.5 Lt",
+      "brand": "Fairy",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 182.95,
+      "maxPrice": 260.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 182.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 260.9
+        }
+      ]
+    }
+  ]
+}

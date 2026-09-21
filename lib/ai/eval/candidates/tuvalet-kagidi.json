@@ -1,0 +1,731 @@
+{
+  "term": "tuvalet kağıdı",
+  "category": "Temizlik & kağıt",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:08:10.895Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "07K9",
+      "name": "Blume Nature 2 Katlı Tuvalet Kağıdı 8 Adet",
+      "brand": "Blume Nature",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 35,
+      "maxPrice": 35,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 35
+        }
+      ]
+    },
+    {
+      "productId": "1CQA",
+      "name": "Confort Geri Dönüşüm Tuvalet Kağıdı 16 Adet",
+      "brand": "Confort",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "1FX8",
+      "name": "Confort Tuvalet Kağıdı 16 Adet",
+      "brand": "Confort",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 123,
+      "maxPrice": 123,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 123
+        }
+      ]
+    },
+    {
+      "productId": "0458",
+      "name": "Blume Çift Katlı Tuvalet Kağıdı 16 Adet",
+      "brand": "Blume",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 123,
+      "maxPrice": 123,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 123
+        }
+      ]
+    },
+    {
+      "productId": "0J6D",
+      "name": "Viva Tuvalet Kağıdı 16 Adet",
+      "brand": "Viva",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 123.95,
+      "maxPrice": 123.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 123.95
+        }
+      ]
+    },
+    {
+      "productId": "1WJO",
+      "name": "Carrefour Çift Katlı Tuvalet Kağıdı 16 Adet",
+      "brand": "Carrefour",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 123.95,
+      "maxPrice": 123.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 123.95
+        }
+      ]
+    },
+    {
+      "productId": "1PDS",
+      "name": "Familia Plus Natural Tuvalet Kağıdı 16 Adet",
+      "brand": "Familia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 2,
+      "minPrice": 139.95,
+      "maxPrice": 279.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139.95
+        },
+        {
+          "market": "Migros",
+          "price": 279.95
+        }
+      ]
+    },
+    {
+      "productId": "00HH",
+      "name": "Queen Parfümlü 3 Katlı Tuvalet Kağıdı 12 Adet",
+      "brand": "Queen",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 143,
+      "maxPrice": 143,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 143
+        }
+      ]
+    },
+    {
+      "productId": "0NEZ",
+      "name": "Papia Biocare Tuvalet Kağıdı 16 Adet",
+      "brand": "Papia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 159.95,
+      "maxPrice": 159.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        }
+      ]
+    },
+    {
+      "productId": "0MOH",
+      "name": "Mare Ekstra Tuvalet Kağıdı 16 Adet",
+      "brand": "Mare",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 179.95,
+      "maxPrice": 179.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.95
+        }
+      ]
+    },
+    {
+      "productId": "2B28",
+      "name": "Selpak 3 Katlı Tuvalet Kağıdı 16 Adet",
+      "brand": "Selpak",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "1PMN",
+      "name": "Selpak Tuvalet Kağıdı 16 Adet",
+      "brand": "Selpak",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "1UOH",
+      "name": "Carrefour Eco Planet Tuvalet Kağıdı 32'li",
+      "brand": "Carrefour Eco Planet",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 245.9,
+      "maxPrice": 245.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 245.9
+        }
+      ]
+    },
+    {
+      "productId": "1WE3",
+      "name": "Carrefour Çift Katlı Tuvalet Kağıdı 32 Adet",
+      "brand": "Carrefour",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 256.95,
+      "maxPrice": 256.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 256.95
+        }
+      ]
+    },
+    {
+      "productId": "0O96",
+      "name": "Süper Maylo Bambu Katkılı Tuvalet Kağıdı 40 Adet",
+      "brand": "Maylo",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 265,
+      "maxPrice": 265,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 265
+        }
+      ]
+    },
+    {
+      "productId": "0UBB",
+      "name": "Selpak Deluxe Tuvalet Kağıdı 24 Adet",
+      "brand": "Selpak",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 279.95,
+      "maxPrice": 279.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 279.95
+        }
+      ]
+    },
+    {
+      "productId": "1IAM",
+      "name": "Solo Bambu Tuvalet Kağıdı 40 Adet",
+      "brand": "Solo",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "1ADR",
+      "name": "Sofia Tuvalet Kağıdı 16 Adet",
+      "brand": "Sofia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 319.95,
+      "maxPrice": 319.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 319.95
+        }
+      ]
+    },
+    {
+      "productId": "21JG",
+      "name": "Familia Natural Tuvalet Kağıdı 48 Adet",
+      "brand": "Familia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 329,
+      "maxPrice": 329,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 329
+        }
+      ]
+    },
+    {
+      "productId": "0O5P",
+      "name": "Selpak Deluxe Pamuk Katkılı Tuvalet Kağıdı 32 Adet",
+      "brand": "Selpak",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 349.95,
+      "maxPrice": 349.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.95
+        }
+      ]
+    },
+    {
+      "productId": "1WZZ",
+      "name": "Papia Tuvalet Kağıdı 16 Adet",
+      "brand": "Papia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 426,
+      "maxPrice": 426,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 426
+        }
+      ]
+    },
+    {
+      "productId": "1WUP",
+      "name": "Selpak Tuvalet Kağıdı 24 Adet",
+      "brand": "Selpak",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 488.5,
+      "maxPrice": 488.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 488.5
+        }
+      ]
+    },
+    {
+      "productId": "0OT0",
+      "name": "Papia Tuvalet Kağıdı 32 Adet",
+      "brand": "Papia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599.95
+        }
+      ]
+    },
+    {
+      "productId": "1XJZ",
+      "name": "Papia Tuvalet Kağıdı 4 Katlı 32 Adet",
+      "brand": "Papia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 717.5,
+      "maxPrice": 717.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 717.5
+        }
+      ]
+    },
+    {
+      "productId": "0T6T",
+      "name": "Minies Islak Tuvalet Kağıdı 60 Adet",
+      "brand": "Minies",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 54.95,
+      "maxPrice": 54.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 54.95
+        }
+      ]
+    },
+    {
+      "productId": "07S4",
+      "name": "Yeşil Beyaz Eko Çift Katlı Tuvalet Kağıdı 8 Adet",
+      "brand": "Yeşil Beyaz",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "1476",
+      "name": "Wells 2 Katlı Tuvalet Kağıdı 12 Adet",
+      "brand": "Wells",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 69,
+      "maxPrice": 69,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 69
+        }
+      ]
+    },
+    {
+      "productId": "0RTC",
+      "name": "Ecco Yeşil Dünya Tuvalet Kağıdı 12 Adet",
+      "brand": "Ecco",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "089G",
+      "name": "Selis Çift Katlı Tuvalet Kağıdı 16'lı 16 Adet",
+      "brand": "Selis",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 123,
+      "maxPrice": 123,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 123
+        }
+      ]
+    },
+    {
+      "productId": "0008",
+      "name": "Queen 3 Katlı Tuvalet Kağıdı 12 Adet",
+      "brand": "Queen",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "135M",
+      "name": "Selis 3 Katlı Tuvalet Kağıdı 12'li Adet",
+      "brand": "Selis",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "0SOX",
+      "name": "Viva Selection 3 Katlı Tuvalet Kağıdı 12 Adet",
+      "brand": "Viva Selection",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 125.95,
+      "maxPrice": 125.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125.95
+        }
+      ]
+    },
+    {
+      "productId": "07Q1",
+      "name": "Selis Parfümlü 3 Katlı Tuvalet Kağıdı 12'li 12 Adet",
+      "brand": "Selis",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 143,
+      "maxPrice": 143,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 143
+        }
+      ]
+    },
+    {
+      "productId": "35G5",
+      "name": "Carrefour 3 Katlı Pudralı Tuvalet Kağıdı 12 Adet",
+      "brand": "Carrefour",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 143.95,
+      "maxPrice": 143.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 143.95
+        }
+      ]
+    },
+    {
+      "productId": "0BKC",
+      "name": "Beyaz Güvercin Tuvalet Kağıdı 16 Adet",
+      "brand": "Beyaz Güvercin",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 166,
+      "maxPrice": 166,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 166
+        }
+      ]
+    },
+    {
+      "productId": "09QT",
+      "name": "Yeşil Beyaz Eko Çift Katlı Tuvalet Kağıdı 24 Adet",
+      "brand": "Yeşil Beyaz",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "1GF3",
+      "name": "Selpak Kaşmir Katkılı Tuvalet Kağıdı 16 Adet",
+      "brand": "Selpak",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 2,
+      "minPrice": 199.95,
+      "maxPrice": 394.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 394.9
+        }
+      ]
+    },
+    {
+      "productId": "20KZ",
+      "name": "Solo Bambu Tuvalet Kağıdı 2 Katlı 32 Adet",
+      "brand": "Solo",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q7V",
+      "name": "Papia Biocare Tuvalet Kağıdı 12 Adet",
+      "brand": "Papia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 2,
+      "minPrice": 245,
+      "maxPrice": 323,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 245
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 323
+        }
+      ]
+    },
+    {
+      "productId": "1NOO",
+      "name": "Solo Tuvalet Kağıdı 2 Katlı Bambu 16 Adet",
+      "brand": "Solo",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 246.95,
+      "maxPrice": 246.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 246.95
+        }
+      ]
+    },
+    {
+      "productId": "196W",
+      "name": "Blume Eko 2 Katlı Tuvalet Kağıdı 40 Adet",
+      "brand": "Blume",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0WKA",
+      "name": "Familia Plus Natural Tuvalet Kağıdı 32 Adet",
+      "brand": "Familia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 259.95,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    },
+    {
+      "productId": "14BN",
+      "name": "Queen Bambu 3 Katlı Tuvalet Kağıdı 40 Adet",
+      "brand": "Queen Bambu",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 289,
+      "maxPrice": 289,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 289
+        }
+      ]
+    },
+    {
+      "productId": "1EOS",
+      "name": "Mare Tuvalet Kağıdı 32 Adet",
+      "brand": "Mare",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 329.95,
+      "maxPrice": 329.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 329.95
+        }
+      ]
+    },
+    {
+      "productId": "1SL9",
+      "name": "Papia 4 Katlı Platinum Tuvalet Kağıdı 16 Adet",
+      "brand": "Papia",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 339.95,
+      "maxPrice": 339.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 339.95
+        }
+      ]
+    },
+    {
+      "productId": "1WO9",
+      "name": "Solo Bambu Tuvalet Kağıdı 48 Adet",
+      "brand": "Solo",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "1DQ6",
+      "name": "Selpak Pamuk Katkılı Tuvalet Kağıdı 32 Adet",
+      "brand": "Selpak",
+      "category": "Tuvalet Kağıtları",
+      "marketCount": 1,
+      "minPrice": 623.9,
+      "maxPrice": 623.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 623.9
+        }
+      ]
+    }
+  ]
+}

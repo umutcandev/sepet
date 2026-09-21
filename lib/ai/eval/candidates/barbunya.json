@@ -1,0 +1,360 @@
+{
+  "term": "barbunya",
+  "category": "Bakliyat & kuruyemiş",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:55:36.625Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0V9K",
+      "name": "Bizim Vatan Barbunya Pilaki 400 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 40,
+      "maxPrice": 40,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 40
+        }
+      ]
+    },
+    {
+      "productId": "02Z1",
+      "name": "Yurdum Barbunya Pilaki 400 Gr",
+      "brand": "Yurdum",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 40,
+      "maxPrice": 40,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 40
+        }
+      ]
+    },
+    {
+      "productId": "0ZJF",
+      "name": "Bizim Vatan Haşlanmış Barbunya 800 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 40.5,
+      "maxPrice": 40.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 40.5
+        }
+      ]
+    },
+    {
+      "productId": "03XK",
+      "name": "Tamek Barbunya Pilaki 190 Gr",
+      "brand": "Tamek",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 50.45,
+      "maxPrice": 50.45,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 50.45
+        }
+      ]
+    },
+    {
+      "productId": "28T1",
+      "name": "Tat Hazır Yemek Barbunya Pilaki 200 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 56,
+      "maxPrice": 56,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 56
+        }
+      ]
+    },
+    {
+      "productId": "0ZAF",
+      "name": "Yurt Hazır Yemek Barbunya Pilaki 400 Gr",
+      "brand": "Yurt",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "0MF7",
+      "name": "Burcu Barbunya Pilaki 400 Gr",
+      "brand": "Burcu",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "07EP",
+      "name": "Duru Pratik Barbunya Pilaki 3.2 Kg",
+      "brand": "Duru",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 75.9,
+      "maxPrice": 75.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 75.9
+        }
+      ]
+    },
+    {
+      "productId": "0GOY",
+      "name": "Barbunya 1 Kg",
+      "brand": "Markasız",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 79.95,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.95
+        },
+        {
+          "market": "Şok",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "1Q9Z",
+      "name": "Tamek Barbunya Pilaki 400 Gr",
+      "brand": "Tamek",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 80.75,
+      "maxPrice": 80.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 80.75
+        }
+      ]
+    },
+    {
+      "productId": "1LQ5",
+      "name": "Yurt Barbunya Pilaki 400 Gr",
+      "brand": "Yurt",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 84.95,
+      "maxPrice": 84.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 84.95
+        }
+      ]
+    },
+    {
+      "productId": "1NTS",
+      "name": "Yayla Hazır Yemek Barbunya Pilaki 400 Gr",
+      "brand": "Yayla",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 86.95,
+      "maxPrice": 86.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 86.95
+        }
+      ]
+    },
+    {
+      "productId": "0MNC",
+      "name": "Tukaş Barbunya Pilaki 400 Gr",
+      "brand": "Tukaş",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZFH",
+      "name": "Tat Barbunya Pilaki 400 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 89.95,
+      "maxPrice": 90.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 90.9
+        }
+      ]
+    },
+    {
+      "productId": "0BYY",
+      "name": "Tat Haşlanmış Barbunya 800 Gr",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 91,
+      "maxPrice": 91,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 91
+        }
+      ]
+    },
+    {
+      "productId": "0T7Z",
+      "name": "Anadolu Mutfağı Barbunya 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "1R70",
+      "name": "Tamek Haşlanmış Barbunya 800 Gr",
+      "brand": "Tamek",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        },
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "07KA",
+      "name": "Rençber Barbunya 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "1SFJ",
+      "name": "Superfresh Barbunya Fasulye 450 Gr",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 177.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 177.95
+        },
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "06X6",
+      "name": "Duru Barbunya 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 210,
+      "maxPrice": 210,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 210
+        }
+      ]
+    },
+    {
+      "productId": "1OF3",
+      "name": "Reis Royal Barbunya 500 Gr",
+      "brand": "Reis Royal",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 227.25,
+      "maxPrice": 227.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 227.25
+        }
+      ]
+    },
+    {
+      "productId": "0NTI",
+      "name": "Reis Barbunya 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 259.95,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    }
+  ]
+}

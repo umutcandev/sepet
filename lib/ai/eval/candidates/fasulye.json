@@ -1,0 +1,1130 @@
+{
+  "term": "fasulye",
+  "category": "Bakliyat & kuruyemiş",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:55:21.334Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1KCN",
+      "name": "Duru Haşlanmış Fasulye 400 Gr",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "1YA7",
+      "name": "Yurt Kuru Fasulye 400 Gr",
+      "brand": "Yurt",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 55.46,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55.46
+        },
+        {
+          "market": "A101",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "1JPD",
+      "name": "Yayla Gurme Maş Fasulye 500 Gr",
+      "brand": "Yayla Gurme",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 55.97,
+      "maxPrice": 55.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55.97
+        }
+      ]
+    },
+    {
+      "productId": "0YKZ",
+      "name": "Yöremce Dermason Fasulye 1 Kg",
+      "brand": "Yöremce",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 77.5,
+      "maxPrice": 77.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 77.5
+        }
+      ]
+    },
+    {
+      "productId": "034U",
+      "name": "Saban Kuru Fasulye 1 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 77.5,
+      "maxPrice": 77.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 77.5
+        }
+      ]
+    },
+    {
+      "productId": "003P",
+      "name": "Rençber Sıra Fasulye 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 77.5,
+      "maxPrice": 77.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 77.5
+        }
+      ]
+    },
+    {
+      "productId": "0FUQ",
+      "name": "Migros Dermason Kuru Fasulye 1 Kg",
+      "brand": "Migros",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 77.95,
+      "maxPrice": 77.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 77.95
+        }
+      ]
+    },
+    {
+      "productId": "0Y3C",
+      "name": "Migros İri Dermason Fasulye 1 Kg",
+      "brand": "Migros",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 82.95,
+      "maxPrice": 82.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 82.95
+        }
+      ]
+    },
+    {
+      "productId": "0A83",
+      "name": "Rençber Dermason Fasulye 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 89,
+      "maxPrice": 89,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 89
+        }
+      ]
+    },
+    {
+      "productId": "1X4T",
+      "name": "Hasata Maş Fasulye 500 Gr",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 93.5,
+      "maxPrice": 93.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 93.5
+        }
+      ]
+    },
+    {
+      "productId": "1MWL",
+      "name": "Reis Royal Kırmızı Fasulye 500 Gr",
+      "brand": "Reis Royal",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 128.92,
+      "maxPrice": 146.97,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 128.92
+        },
+        {
+          "market": "Migros",
+          "price": 146.97
+        }
+      ]
+    },
+    {
+      "productId": "1YA3",
+      "name": "Hasata Şeker Fasulye 500 Gr",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "2CZ0",
+      "name": "Reis Kuru Fasulye 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 139.95,
+      "maxPrice": 193.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 193.9
+        }
+      ]
+    },
+    {
+      "productId": "01LH",
+      "name": "Duru Dermason Fasulye 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 144.5,
+      "maxPrice": 144.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 144.5
+        }
+      ]
+    },
+    {
+      "productId": "07FQ",
+      "name": "Carrefour Bio Organik Dermason Fasulye 1 Kg",
+      "brand": "Carrefour Bio",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1TE3",
+      "name": "Tat Dermason Fasulye 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 156.95,
+      "maxPrice": 156.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 156.95
+        }
+      ]
+    },
+    {
+      "productId": "1O3S",
+      "name": "Reis Dermason Fasulye 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 169.95,
+      "maxPrice": 217.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.95
+        },
+        {
+          "market": "Migros",
+          "price": 217.95
+        }
+      ]
+    },
+    {
+      "productId": "1PXF",
+      "name": "Reis Royal Siyah Fasulye 500 Gr",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 199.9,
+      "maxPrice": 199.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199.9
+        }
+      ]
+    },
+    {
+      "productId": "1IBF",
+      "name": "Doyum Organik Fasulye 1 Kg",
+      "brand": "Doyum",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 240.9,
+      "maxPrice": 240.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 240.9
+        }
+      ]
+    },
+    {
+      "productId": "0JIR",
+      "name": "Sade Organik Kuru Fasulye 1 Kg",
+      "brand": "Sade Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 256.5,
+      "maxPrice": 256.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 256.5
+        }
+      ]
+    },
+    {
+      "productId": "1JSA",
+      "name": "City Farm Organik Kuru Fasulye 1 Kg",
+      "brand": "City Farm",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 264.5,
+      "maxPrice": 264.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 264.5
+        }
+      ]
+    },
+    {
+      "productId": "0D3U",
+      "name": "Organik Gurme Organik Kuru Fasulye 1 Kg",
+      "brand": "Organik Gurme",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 279.9,
+      "maxPrice": 279.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 279.9
+        }
+      ]
+    },
+    {
+      "productId": "1S4D",
+      "name": "Reis Royal Battal Fasulye 500 Gr",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 293,
+      "maxPrice": 293,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 293
+        }
+      ]
+    },
+    {
+      "productId": "1Q6T",
+      "name": "Reis Royal Şeker Fasulye 500 Gr",
+      "brand": "Reis Royal",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 331.25,
+      "maxPrice": 331.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 331.25
+        }
+      ]
+    },
+    {
+      "productId": "1CGI",
+      "name": "Yurdum Konserve Haşlanmış Nohut Fasulye 830 Gr",
+      "brand": "Yurdum",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZL1",
+      "name": "Bizim Vatan Haşlanmış Kuru Fasulye 800 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 40.5,
+      "maxPrice": 40.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 40.5
+        }
+      ]
+    },
+    {
+      "productId": "0UPX",
+      "name": "Burcu Fasulye Pilaki 400 Gr",
+      "brand": "Burcu",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y1N",
+      "name": "Tamek Fasulye Pilaki 400 Gr",
+      "brand": "Tamek",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 60.56,
+      "maxPrice": 60.56,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 60.56
+        }
+      ]
+    },
+    {
+      "productId": "1JMI",
+      "name": "Duru Haşlanmış Kırmızı Fasulye 400 Gr",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 66.95,
+      "maxPrice": 66.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 66.95
+        }
+      ]
+    },
+    {
+      "productId": "3WDB",
+      "name": "Ayşekadın Fasulye 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0VYU",
+      "name": "Tukaş Haşlanmış Fasulye 800 Gr",
+      "brand": "Tukaş",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 74.96,
+      "maxPrice": 74.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.96
+        }
+      ]
+    },
+    {
+      "productId": "0WV5",
+      "name": "Anadolu Mutfağı Kuru Fasulye 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 77.5,
+      "maxPrice": 77.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 77.5
+        }
+      ]
+    },
+    {
+      "productId": "0J59",
+      "name": "Carrefour Dermason Kuru Fasulye 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 77.95,
+      "maxPrice": 77.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 77.95
+        }
+      ]
+    },
+    {
+      "productId": "0SKI",
+      "name": "Tat Fasulye Pilaki 400 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 82.9,
+      "maxPrice": 82.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 82.9
+        }
+      ]
+    },
+    {
+      "productId": "01C4",
+      "name": "Carrefour İri Dermason Kuru Fasulye 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 82.95,
+      "maxPrice": 82.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 82.95
+        }
+      ]
+    },
+    {
+      "productId": "1SHE",
+      "name": "Tamek Haşlanmış Fasulye 800 Gr",
+      "brand": "Tamek",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 87.95,
+      "maxPrice": 88.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 87.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 88.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZTC",
+      "name": "Taze Fasulye Paket 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1FJP",
+      "name": "Tat Haşlanmış Fasulye 800 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 91,
+      "maxPrice": 91,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 91
+        }
+      ]
+    },
+    {
+      "productId": "08IT",
+      "name": "Fasulye Taze 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "1Y5L",
+      "name": "Tat Zeytinyağlı Fasulye 380 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        },
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0SOZ",
+      "name": "Ayşe Kadın Fasulye 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "0MIP",
+      "name": "Yayla Dermason Fasulye 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "0FTK",
+      "name": "Duru Kuru Fasulye 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 137.25,
+      "maxPrice": 137.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 137.25
+        }
+      ]
+    },
+    {
+      "productId": "1R19",
+      "name": "Tat Taze Fasulye 810 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 141.5,
+      "maxPrice": 141.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 141.5
+        }
+      ]
+    },
+    {
+      "productId": "1NJ5",
+      "name": "Reis Royal Maş Fasulye 500 Gr",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 157.5,
+      "maxPrice": 157.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 157.5
+        }
+      ]
+    },
+    {
+      "productId": "0WQ8",
+      "name": "Çalı Fasulye 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 185,
+      "maxPrice": 185,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 185
+        }
+      ]
+    },
+    {
+      "productId": "071K",
+      "name": "Reis Horoz Fasulye 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 207.9,
+      "maxPrice": 207.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 207.9
+        }
+      ]
+    },
+    {
+      "productId": "1B1G",
+      "name": "Anadolu Lezzetleri İspir Kuru Fasulye 500 Gr",
+      "brand": "Anadolu Lezzetleri",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "0J36",
+      "name": "Yayla Haşlanmış Meksika Fasulyesi & Maş Fasulyesi & Börülce 150 Gr",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 27,
+      "maxPrice": 27,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 27
+        }
+      ]
+    },
+    {
+      "productId": "12AO",
+      "name": "Tat Superfoods Maş Fasulyesi 500 Gr",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "047J",
+      "name": "Tamek Fasulye Pilaki 190 Gr",
+      "brand": "Tamek",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 51.9,
+      "maxPrice": 51.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 51.9
+        }
+      ]
+    },
+    {
+      "productId": "2AL5",
+      "name": "Yurt Hazır Kuru Fasulye Yemeği 400 Gr",
+      "brand": "Yurt",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "0GXK",
+      "name": "Yayla Haşlanmış Maş Fasulyesi 400 Gr",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 66.95,
+      "maxPrice": 66.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.95
+        }
+      ]
+    },
+    {
+      "productId": "1I9G",
+      "name": "Tukaş Fasulye Pilaki 400 Gr",
+      "brand": "Tukaş",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 72.95,
+      "maxPrice": 72.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 72.95
+        }
+      ]
+    },
+    {
+      "productId": "1NHM",
+      "name": "Yayla Haşlanmış Suyu Süzülmüş Meksika Fasulyesi 150 Gr",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 74.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "2CJ8",
+      "name": "Superfresh Dondurulmuş Fasulye 450 Gr",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "1VB6",
+      "name": "Yayla Haşlanmış Meksika Fasulyesi 400 Gr",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 84.95,
+      "maxPrice": 84.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 84.95
+        }
+      ]
+    },
+    {
+      "productId": "1WWS",
+      "name": "Tada Etli Kuru Fasulye 250 Gr",
+      "brand": "Tada",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 88.77,
+      "maxPrice": 92.34,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 88.77
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 92.34
+        }
+      ]
+    },
+    {
+      "productId": "1Q3F",
+      "name": "Tamek Haşlanmış Meksika Fasulyesi 410 Gr",
+      "brand": "Tamek",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 88.9,
+      "maxPrice": 88.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 88.9
+        }
+      ]
+    },
+    {
+      "productId": "216G",
+      "name": "Yayla Haşlanmış Fasulye 700 Gr",
+      "brand": "Yayla",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 88.95,
+      "maxPrice": 88.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 88.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZPP",
+      "name": "Tada Vegan Zeytinyağlı Taze Fasulye 250 Gr",
+      "brand": "Tada",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 89.97,
+      "maxPrice": 89.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.97
+        }
+      ]
+    },
+    {
+      "productId": "1ZFG",
+      "name": "De&co Fasulye Filizi 400 Gr",
+      "brand": "De&co",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 104.95,
+      "maxPrice": 104.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.95
+        }
+      ]
+    },
+    {
+      "productId": "1S1E",
+      "name": "Tat Meksika Fasulyesi 410 Gr",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "17LV",
+      "name": "Larina Meksika Fasulyesi 400 Gr",
+      "brand": "Larina",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 116.25,
+      "maxPrice": 116.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 116.25
+        }
+      ]
+    },
+    {
+      "productId": "0XY2",
+      "name": "Tat Fasulye Cam 670 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 131.25,
+      "maxPrice": 131.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 131.25
+        }
+      ]
+    },
+    {
+      "productId": "20DG",
+      "name": "Feast Taze Fasulye 450 Gr",
+      "brand": "Feast",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 139.95,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "1L9G",
+      "name": "Superfresh Taze Fasulye 450 Gr",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 141.5,
+      "maxPrice": 141.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 141.5
+        }
+      ]
+    },
+    {
+      "productId": "1TKW",
+      "name": "Yayla Etli Kuru Fasulye 250 Gr",
+      "brand": "Yayla",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 152.95,
+      "maxPrice": 152.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 152.95
+        }
+      ]
+    },
+    {
+      "productId": "1SFJ",
+      "name": "Superfresh Barbunya Fasulye 450 Gr",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 177.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 177.95
+        },
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "0K2C",
+      "name": "Annemin Mutfağı Pastırmalı Kuru Fasulye 200 Gr",
+      "brand": "Annemin Mutfağı",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 207.9,
+      "maxPrice": 207.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 207.9
+        }
+      ]
+    },
+    {
+      "productId": "1D91",
+      "name": "Lee Kum Kee Siyah Fasulye Sos 226 Gr",
+      "brand": "Lee Kum Kee",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 222,
+      "maxPrice": 222,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 222
+        }
+      ]
+    },
+    {
+      "productId": "0QYN",
+      "name": "Sera Fasulye Turşusu 700 Gr",
+      "brand": "Sera",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 254.95,
+      "maxPrice": 254.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 254.95
+        }
+      ]
+    }
+  ]
+}

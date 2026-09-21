@@ -1,0 +1,1134 @@
+{
+  "term": "badem",
+  "category": "Bakliyat & kuruyemiş",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:56:15.327Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0AKW",
+      "name": "Mis Gold Badem 100 Ml",
+      "brand": "Mis",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 60,
+      "maxPrice": 60,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "productId": "05KH",
+      "name": "Nestor Touch Badem Dondurma 100 Ml",
+      "brand": "Nestor",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 60,
+      "maxPrice": 60,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "productId": "17R0",
+      "name": "Nestor Touch Beyaz Badem Dondurma 100 Ml",
+      "brand": "Nestor",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 60,
+      "maxPrice": 60,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "productId": "0VP1",
+      "name": "Migros Stick Badem 100 Ml",
+      "brand": "Migros",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1K8Z",
+      "name": "Magnum Badem Dondurma 100 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 2,
+      "minPrice": 90,
+      "maxPrice": 90,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 90
+        },
+        {
+          "market": "Şok",
+          "price": 90
+        }
+      ]
+    },
+    {
+      "productId": "1LN4",
+      "name": "Algida Bravo Badem 100 Ml",
+      "brand": "Golf",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 90,
+      "maxPrice": 90,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 90
+        }
+      ]
+    },
+    {
+      "productId": "09ZZ",
+      "name": "Yummies Bal Badem Dondurma 350 Ml",
+      "brand": "Yummies",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 94.98,
+      "maxPrice": 94.98,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.98
+        }
+      ]
+    },
+    {
+      "productId": "01PT",
+      "name": "Buono Badem Keyfi Badem Draje 150 Gr",
+      "brand": "Buono",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "0OXD",
+      "name": "Amigo Badem İçi 150 Gr",
+      "brand": "Amigo",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "0S5L",
+      "name": "Mis Gold Antep Fıstığı Badem Trio 360 Ml",
+      "brand": "Mis",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 215,
+      "maxPrice": 215,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 215
+        }
+      ]
+    },
+    {
+      "productId": "17R9",
+      "name": "Nestor Touch Mini Dondurma Fıstık Badem Karamel 360 Ml",
+      "brand": "Nestor",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 215,
+      "maxPrice": 215,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 215
+        }
+      ]
+    },
+    {
+      "productId": "20O3",
+      "name": "Magnum Mini Cookie Badem 338 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 2,
+      "minPrice": 269,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "1ZKG",
+      "name": "Magnum Mini Badem 330 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 2,
+      "minPrice": 269,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "20FK",
+      "name": "Magnum Mini Klasik Badem Beyaz 330 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 2,
+      "minPrice": 269,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "1NAF",
+      "name": "Magnum Mini Cookie Badem Dondurma 338 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "1PNM",
+      "name": "Magnum Mini Cookie & Badem 345 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "1NVC",
+      "name": "Magnum Mini Badem 6'lı 345 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "1OW4",
+      "name": "Golf Bravo Junior Gold Badem 360 Ml",
+      "brand": "Golf Bravo",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "2A67",
+      "name": "Algida Magnum Mini Badem Dondurma 345 Ml",
+      "brand": "Algida",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "0S9A",
+      "name": "Bauvian Hindistan Cevizli Badem Dondurma 473 Ml",
+      "brand": "Bauvian",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 345,
+      "maxPrice": 345,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 345
+        }
+      ]
+    },
+    {
+      "productId": "0VNE",
+      "name": "Noi Badem Unu 250 Gr",
+      "brand": "Noi",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 349.95,
+      "maxPrice": 349.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.95
+        }
+      ]
+    },
+    {
+      "productId": "1RPC",
+      "name": "Magnum Pint Badem 440 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 400,
+      "maxPrice": 400,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 400
+        }
+      ]
+    },
+    {
+      "productId": "1TCN",
+      "name": "Wefood Badem Unu 250 Gr",
+      "brand": "Wefood",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 479.9,
+      "maxPrice": 479.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 479.9
+        }
+      ]
+    },
+    {
+      "productId": "0GJD",
+      "name": "Badem Çiğ İç 1 Kg",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 599.95
+        }
+      ]
+    },
+    {
+      "productId": "0BI6",
+      "name": "Carrefour Çiğ Badem 90 Gr",
+      "brand": "Carrefour",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 65.95,
+      "maxPrice": 65.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q3M",
+      "name": "Golf Bravo Belçika Çikolatalı Badem 100 Ml",
+      "brand": "Golf Bravo",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 90,
+      "maxPrice": 90,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 90
+        }
+      ]
+    },
+    {
+      "productId": "0HLY",
+      "name": "Tadım Çiğ Badem 90 Gr",
+      "brand": "Tadım",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 106,
+      "maxPrice": 106,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 106
+        }
+      ]
+    },
+    {
+      "productId": "04Z7",
+      "name": "Çerezim Badem İçi 150 Gr",
+      "brand": "Çerezim",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "00RE",
+      "name": "Carrefour Çiğ Badem 150 Gr",
+      "brand": "Carrefour",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109.9,
+      "maxPrice": 109.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.9
+        }
+      ]
+    },
+    {
+      "productId": "0IN3",
+      "name": "Carrefour Badem İçi 150 Gr",
+      "brand": "Carrefour",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109.9,
+      "maxPrice": 109.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.9
+        }
+      ]
+    },
+    {
+      "productId": "0E1D",
+      "name": "Zentis Badem Ezmesi 100 Gr",
+      "brand": "Zentis",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 120.25,
+      "maxPrice": 120.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 120.25
+        }
+      ]
+    },
+    {
+      "productId": "0QRD",
+      "name": "Emsal Dilimlenmiş Badem 100 Gr",
+      "brand": "Emsal",
+      "category": "Pasta Malzemeleri",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "0T3B",
+      "name": "Fomilk Şekersiz Badem Sütü 1 Lt",
+      "brand": "Fomilk",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 175,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "0VIF",
+      "name": "Fomilk Badem Sütü 1 Lt",
+      "brand": "Fomilk",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 178.95,
+      "maxPrice": 178.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 178.95
+        }
+      ]
+    },
+    {
+      "productId": "0V0C",
+      "name": "Tadım Çiğ Badem 180 Gr",
+      "brand": "Tadım",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 2,
+      "minPrice": 212,
+      "maxPrice": 255,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 212
+        },
+        {
+          "market": "Migros",
+          "price": 255
+        }
+      ]
+    },
+    {
+      "productId": "0NIC",
+      "name": "Mis Gold Badem Junior 6 Adet 360 Ml",
+      "brand": "Mis",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 215,
+      "maxPrice": 215,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 215
+        }
+      ]
+    },
+    {
+      "productId": "17RV",
+      "name": "Nestor Touch Mini Dondurma Beyaz Klasik Badem 360 Ml",
+      "brand": "Nestor",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 215,
+      "maxPrice": 215,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 215
+        }
+      ]
+    },
+    {
+      "productId": "1Z5O",
+      "name": "Tadım Badem İçi 180 Gr",
+      "brand": "Tadım",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 2,
+      "minPrice": 220,
+      "maxPrice": 228.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 220
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 228.9
+        }
+      ]
+    },
+    {
+      "productId": "0FQ9",
+      "name": "Migros Stick Klasik & Badem Dondurma 6 Adet",
+      "brand": "Migros",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 225,
+      "maxPrice": 225,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 225
+        }
+      ]
+    },
+    {
+      "productId": "1NKN",
+      "name": "Magnum Mini Dondurma Klasik Badem Beyaz 330 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "0JWJ",
+      "name": "Kavrulmuş İç Badem 300 Gr",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 299.9,
+      "maxPrice": 299.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.9
+        }
+      ]
+    },
+    {
+      "productId": "096V",
+      "name": "Çiğ Badem İçi 300 Gr",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 319.9,
+      "maxPrice": 319.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 319.9
+        }
+      ]
+    },
+    {
+      "productId": "1597",
+      "name": "Algida Magnum Mini Cookie Badem Dondurma 6x56.3 Ml",
+      "brand": "Algida",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "1KH0",
+      "name": "Magnum Mini Double Badem Karadut Böğürtlen 7 Adet 392 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "2A2L",
+      "name": "Algida Magnum Mini Classic Badem Beyaz Dondurma 345 Ml",
+      "brand": "Algida",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "0SCN",
+      "name": "Algida Magnum Pint Badem 440 Ml",
+      "brand": "Algida",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 400,
+      "maxPrice": 400,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 400
+        }
+      ]
+    },
+    {
+      "productId": "207J",
+      "name": "Kechy Gurme Badem Mini Stick Dondurma 360 Ml",
+      "brand": "Kechy",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 450,
+      "maxPrice": 450,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 450
+        }
+      ]
+    },
+    {
+      "productId": "1V4F",
+      "name": "Badem İçi Kavrulmuş 1 Kg",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 599.95,
+      "maxPrice": 599.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 599.95
+        }
+      ]
+    },
+    {
+      "productId": "1OZM",
+      "name": "Fropie Badem Kakao Probiyotik Bar 35 Gr",
+      "brand": "Fropie",
+      "category": "Kahvaltılık Gevrek Bar ve Granola",
+      "marketCount": 1,
+      "minPrice": 37.45,
+      "maxPrice": 37.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.45
+        }
+      ]
+    },
+    {
+      "productId": "20ZU",
+      "name": "Uno Tam Cookie Kayısı Hurma Badem 50 Gr",
+      "brand": "Uno",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 2,
+      "minPrice": 39.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "1U7S",
+      "name": "Ülker Mısırlı Badem Kraker 135 Gr",
+      "brand": "Ülker",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 39.75,
+      "maxPrice": 39.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 39.75
+        }
+      ]
+    },
+    {
+      "productId": "09VJ",
+      "name": "Carrefour Badem İçi 90 Gr",
+      "brand": "Carrefour",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 65.95,
+      "maxPrice": 65.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.95
+        }
+      ]
+    },
+    {
+      "productId": "0QAE",
+      "name": "Delly Şekersiz Çikolata Kaplı Badem 40 Gr",
+      "brand": "Delly",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 78.95,
+      "maxPrice": 78.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 78.95
+        }
+      ]
+    },
+    {
+      "productId": "0U62",
+      "name": "Amigo Dalından Çiğ Badem 150 Gr",
+      "brand": "Amigo",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "0Q4X",
+      "name": "Migros Çiğ İç Badem 150 Gr",
+      "brand": "Migros",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 109.9,
+      "maxPrice": 109.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.9
+        }
+      ]
+    },
+    {
+      "productId": "1XDB",
+      "name": "Kahve Dünyası Tambol Badem Krokan Dolgulu Sütlü Çikolata 100 Gr",
+      "brand": "Kahve Dünyası",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 110.5,
+      "maxPrice": 110.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 110.5
+        }
+      ]
+    },
+    {
+      "productId": "1O9S",
+      "name": "Fropie Badem & Vanilya Probiyotik Granola 200 Gr",
+      "brand": "Fropie",
+      "category": "Kahvaltılık Gevrek Bar ve Granola",
+      "marketCount": 2,
+      "minPrice": 119.95,
+      "maxPrice": 169.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 169.75
+        }
+      ]
+    },
+    {
+      "productId": "1T9T",
+      "name": "Kechy Gurme Dondurma Badem Art Stick 100 Ml",
+      "brand": "Kechy Gurme",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1RK4",
+      "name": "Palmolive Soft Essence Badem Duş Jeli 500 Ml",
+      "brand": "Palmolive",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "0UD0",
+      "name": "By İzzet Kavrulmuş Badem 150 Gr",
+      "brand": "By İzzet",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 154.9,
+      "maxPrice": 154.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 154.9
+        }
+      ]
+    },
+    {
+      "productId": "0268",
+      "name": "Monn Bio Zencefil Badem Tarçınlı Bisküvi 60 Gr",
+      "brand": "Monn Bio",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 155.9,
+      "maxPrice": 155.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 155.9
+        }
+      ]
+    },
+    {
+      "productId": "0S1B",
+      "name": "Kellogg's Nas Granola Hurma Badem 250 Gr",
+      "brand": "Kellogg's",
+      "category": "Kahvaltılık Gevrek Bar ve Granola",
+      "marketCount": 1,
+      "minPrice": 159.95,
+      "maxPrice": 159.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        }
+      ]
+    },
+    {
+      "productId": "1JB0",
+      "name": "Master Farm Çiğ İç Tatlı Badem 160 Gr",
+      "brand": "Master Farm",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 176.9,
+      "maxPrice": 176.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 176.9
+        }
+      ]
+    },
+    {
+      "productId": "212M",
+      "name": "Peyman Bahçeden Çiğ Badem 140 Gr",
+      "brand": "Peyman Bahçeden",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 176.9,
+      "maxPrice": 176.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 176.9
+        }
+      ]
+    },
+    {
+      "productId": "1GTI",
+      "name": "Koska Light Badem Ezmesi 100 Gr",
+      "brand": "Koska",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 197.95,
+      "maxPrice": 197.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 197.95
+        }
+      ]
+    },
+    {
+      "productId": "1TEH",
+      "name": "Alpro Yulaf & Badem İçeceği 1 Lt",
+      "brand": "Alpro",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 225,
+      "maxPrice": 233.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 225
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 233.9
+        }
+      ]
+    },
+    {
+      "productId": "1QDC",
+      "name": "Alpro Vanilya Badem İçeceği 1 Lt",
+      "brand": "Alpro",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 250,
+      "maxPrice": 259.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 250
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 259.9
+        }
+      ]
+    },
+    {
+      "productId": "0B02",
+      "name": "Koska Badem Aromalı Helva 1 Kg",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 266.5,
+      "maxPrice": 266.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 266.5
+        }
+      ]
+    },
+    {
+      "productId": "1OJN",
+      "name": "Carte D'or Classics Badem Karamel Vanilya 850 Ml",
+      "brand": "Carte D'or",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 275,
+      "maxPrice": 275,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 275
+        }
+      ]
+    },
+    {
+      "productId": "1LQV",
+      "name": "Carte D'or Bal Badem Vanilya Karamel 850 Ml",
+      "brand": "Carte D'or",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 275,
+      "maxPrice": 275,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 275
+        }
+      ]
+    },
+    {
+      "productId": "1RWM",
+      "name": "Fropie Elma Badem Granola 360 Gr",
+      "brand": "Fropie",
+      "category": "Kahvaltılık Gevrek Bar ve Granola",
+      "marketCount": 1,
+      "minPrice": 302.9,
+      "maxPrice": 302.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 302.9
+        }
+      ]
+    },
+    {
+      "productId": "1JT6",
+      "name": "Magnum Mini Classic Badem Beyaz Dondurma 345 Ml",
+      "brand": "Magnum",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 325
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1110 @@
+{
+  "term": "zeytin",
+  "category": "Yağ & sos",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:57:14.431Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0272",
+      "name": "İnci Siyah Zeytin 321-380 Kalibre 250 Gr",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "017J",
+      "name": "İnci Baharat Çeşnisiz Yeşil Zeytin 250 Gr",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 56.5,
+      "maxPrice": 56.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 56.5
+        }
+      ]
+    },
+    {
+      "productId": "03VX",
+      "name": "İnci 2XS Siyah Zeytin 351-380 Kalibre 500 Gr",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 77,
+      "maxPrice": 77,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 77
+        }
+      ]
+    },
+    {
+      "productId": "11ML",
+      "name": "Zeo S Çizik Yeşil Zeytin 400 Gr",
+      "brand": "Zeo",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 80,
+      "maxPrice": 80,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "productId": "037E",
+      "name": "Haktat Biberli Yeşil Zeytin 400 Gr",
+      "brand": "Haktat",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 89.5,
+      "maxPrice": 89.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 89.5
+        }
+      ]
+    },
+    {
+      "productId": "0LPP",
+      "name": "Lio Kırma Yeşil Zeytin 141-160 400 Gr",
+      "brand": "Lio",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 92.5,
+      "maxPrice": 92.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 92.5
+        }
+      ]
+    },
+    {
+      "productId": "0TH3",
+      "name": "Fora Dilimli Yeşil Zeytin 160 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1ZTW",
+      "name": "Cem Kırma Yeşil Zeytin 400 Gr",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 2,
+      "minPrice": 140,
+      "maxPrice": 140,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 140
+        },
+        {
+          "market": "Migros",
+          "price": 140
+        }
+      ]
+    },
+    {
+      "productId": "1Z5B",
+      "name": "Fora Izgara Yeşil Zeytin 230 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "0VBK",
+      "name": "Lio Siyah Zeytin Kuru Sele (351-380) 500 Gr",
+      "brand": "Lio",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "03X0",
+      "name": "İnci Siyah Zeytin 291-350 Kalibre 1 Kg",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1S3V",
+      "name": "Marmarabirlik Sade Zeytin Ezmesi 340 Gr",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "0AHC",
+      "name": "Zeytin & Zeytin Siyah Zeytin 201-230 Kalibre 600 Gr",
+      "brand": "Zeytin & Zeytin",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "161F",
+      "name": "İnci Siyah Zeytin Cam 1 Kg",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 185,
+      "maxPrice": 185,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 185
+        }
+      ]
+    },
+    {
+      "productId": "1ZH7",
+      "name": "Marmarabirlik Mega Zeytin 500 Gr",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 2,
+      "minPrice": 343,
+      "maxPrice": 347.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 343
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 347.9
+        }
+      ]
+    },
+    {
+      "productId": "0R2A",
+      "name": "Zertum Organik Yeşil Zeytin Salatası 290 Gr",
+      "brand": "Zertum",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 345,
+      "maxPrice": 345,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 345
+        }
+      ]
+    },
+    {
+      "productId": "0EW5",
+      "name": "Fora Fit Zeytin 181-230 1 Kg",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 415,
+      "maxPrice": 415,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 415
+        }
+      ]
+    },
+    {
+      "productId": "02O3",
+      "name": "Marmarabirlik Trilye Zeytin 291-320 1 Kg",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 439,
+      "maxPrice": 439,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 439
+        }
+      ]
+    },
+    {
+      "productId": "0OSV",
+      "name": "Marmarabirlik Siyah Zeytin 231-260 1 Kg",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 449,
+      "maxPrice": 449,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 449
+        }
+      ]
+    },
+    {
+      "productId": "0A4C",
+      "name": "Fora Edremit Zeytin 231-260 1 Kg",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 450,
+      "maxPrice": 450,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 450
+        }
+      ]
+    },
+    {
+      "productId": "05AV",
+      "name": "Fora Seçme Zeytin 231-260 1 Kg",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 490,
+      "maxPrice": 490,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 490
+        }
+      ]
+    },
+    {
+      "productId": "0GLJ",
+      "name": "Fora Domates Zeytin 111-140 1 Kg",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 490,
+      "maxPrice": 490,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 490
+        }
+      ]
+    },
+    {
+      "productId": "0T97",
+      "name": "Cem Siyah Zeytin 201-230 Adet 1 Kg",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 545,
+      "maxPrice": 545,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 545
+        }
+      ]
+    },
+    {
+      "productId": "00DA",
+      "name": "Fora Sele Zeytin 321-350 1 Kg",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 575,
+      "maxPrice": 575,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 575
+        }
+      ]
+    },
+    {
+      "productId": "1XHO",
+      "name": "Cem Doğal Çizik Yeşil Zeytin 291-320 200 Gr",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 2,
+      "minPrice": 29,
+      "maxPrice": 53.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 29
+        },
+        {
+          "market": "Migros",
+          "price": 53.9
+        }
+      ]
+    },
+    {
+      "productId": "0N4G",
+      "name": "Nutruit Olipop Portakal Kabuğu Dolgulu Yeşil Zeytin 30 Gr",
+      "brand": "Nutruit",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 39.9,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "00XH",
+      "name": "İnci Izgara Yeşil Zeytin 261-320 Kalibre 200 Gr",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 56.5,
+      "maxPrice": 56.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 56.5
+        }
+      ]
+    },
+    {
+      "productId": "0GO7",
+      "name": "Carrefour Doğal Salamura Yağlı Siyah Zeytin XS-2XS 250 Gr",
+      "brand": "Carrefour",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 59.9,
+      "maxPrice": 59.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "productId": "04KD",
+      "name": "İnci Kırmızı Biber Dolgulu Yeşil Zeytin 400 Gr",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 94.5,
+      "maxPrice": 94.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 94.5
+        }
+      ]
+    },
+    {
+      "productId": "0W30",
+      "name": "Gürağaç Doğal Siyah Zeytin 500 Gr",
+      "brand": "Gürağaç",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 110,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "1N5E",
+      "name": "Fora Siyah Zeytin Dilimli 160 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "0GO4",
+      "name": "Carrefour Doğal Salamura Yağlı Siyah Zeytin M-L 500 Gr",
+      "brand": "Carrefour",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "0MNR",
+      "name": "Cem Dilimli Siyah Zeytin 300 Gr",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 144.5,
+      "maxPrice": 144.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 144.5
+        }
+      ]
+    },
+    {
+      "productId": "1H6D",
+      "name": "Sosero Ege Zeytin Salatası 290 Gr",
+      "brand": "Sosero",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 157.5,
+      "maxPrice": 157.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 157.5
+        }
+      ]
+    },
+    {
+      "productId": "1NFU",
+      "name": "Marmarabirlik Extra Zeytin 500 Gr",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "0EW7",
+      "name": "Marmarabirlik Doğal Siyah Zeytin Gurme XS 321-350 400 Gr",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 205,
+      "maxPrice": 205,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 205
+        }
+      ]
+    },
+    {
+      "productId": "1NOW",
+      "name": "Fora Kırma Yeşil Zeytin 400 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 205,
+      "maxPrice": 205,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 205
+        }
+      ]
+    },
+    {
+      "productId": "1QWS",
+      "name": "Cem Çizik Yeşil Zeytin S-Xs 1 Kg",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "0SIS",
+      "name": "Komili Çekirdeksiz Izgara Yeşil Sele Zeytin 17 Adet",
+      "brand": "Komili",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 222,
+      "maxPrice": 222,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 222
+        }
+      ]
+    },
+    {
+      "productId": "1REE",
+      "name": "Cem Doğal Yağlı Siyah Sele Zeytin 291-350 800 Gr",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 230,
+      "maxPrice": 230,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 230
+        }
+      ]
+    },
+    {
+      "productId": "1DYE",
+      "name": "Bağcı Doğal Salamura Yağlı Siyah Zeytin 231-260 Kalibre 400 Gr",
+      "brand": "Bağcı",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 279,
+      "maxPrice": 279,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 279
+        }
+      ]
+    },
+    {
+      "productId": "0VFW",
+      "name": "Lio Salamura Siyah Zeytin 381-460 2 Kg",
+      "brand": "Lio",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0JVW",
+      "name": "Cem Çizik Zeytin 201-230 Kalibre 1 Kg",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "12RE",
+      "name": "Taneli Hatay Halhali Zeytin 520 Gr",
+      "brand": "Taneli",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "1HVT",
+      "name": "Marmarabirlik Siyah Zeytin 1 Kg",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 449.95,
+      "maxPrice": 449.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 449.95
+        }
+      ]
+    },
+    {
+      "productId": "074L",
+      "name": "Seleköy Doğal Salamura Zeytin 181-230 Kalibre 1 Kg",
+      "brand": "Seleköy",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 480,
+      "maxPrice": 480,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 480
+        }
+      ]
+    },
+    {
+      "productId": "1SFI",
+      "name": "Marmarabirlik Gold XL Siyah Zeytin 800 Gr",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 539,
+      "maxPrice": 539,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 539
+        }
+      ]
+    },
+    {
+      "productId": "0A12",
+      "name": "Marmarabirlik Premium 2XL 181-200 Kalibre Siyah Zeytin 1 Kg",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 729,
+      "maxPrice": 729,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 729
+        }
+      ]
+    },
+    {
+      "productId": "1XZH",
+      "name": "Cem Yağlı Sele Zeytin 351-380 200 Gr",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 2,
+      "minPrice": 53.9,
+      "maxPrice": 53.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 53.9
+        }
+      ]
+    },
+    {
+      "productId": "0PX0",
+      "name": "Bağcı Siyah Zeytin 351-410 200 Gr",
+      "brand": "Bağcı",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 61.5,
+      "maxPrice": 61.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 61.5
+        }
+      ]
+    },
+    {
+      "productId": "05LM",
+      "name": "İnci Yeşil Kokteyl Kırma Zeytin 400 Gr",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 89.5,
+      "maxPrice": 89.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 89.5
+        }
+      ]
+    },
+    {
+      "productId": "047I",
+      "name": "Haktat Yeşil Kırma Zeytin 400 Gr",
+      "brand": "Haktat",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 89.5,
+      "maxPrice": 89.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 89.5
+        }
+      ]
+    },
+    {
+      "productId": "0DZW",
+      "name": "Carrefour Çizik Yeşil Zeytin L 400 Gr",
+      "brand": "Carrefour",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 94.9,
+      "maxPrice": 94.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 94.9
+        }
+      ]
+    },
+    {
+      "productId": "0DN0",
+      "name": "Carrefour Kırma Yeşil Zeytin 4XL 400 Gr",
+      "brand": "Carrefour",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 94.9,
+      "maxPrice": 94.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 94.9
+        }
+      ]
+    },
+    {
+      "productId": "1PIL",
+      "name": "Fora Sade Siyah Zeytin Ezmesi 175 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "00GF",
+      "name": "İnci Siyah Zeytin 231-290 Kalibre 500 Gr",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 115,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "19JY",
+      "name": "Güragaç Doğal Salamura Yağlı Siyah Zeytin 500 Gr",
+      "brand": "Güragaç",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 115,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "0Q17",
+      "name": "Lio Salamura Siyah Zeytin 201-260 500 Gr",
+      "brand": "Lio",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 145,
+      "maxPrice": 145,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 145
+        }
+      ]
+    },
+    {
+      "productId": "07S6",
+      "name": "Carrefour Kuru Sele Siyah Zeytin 350 Gr",
+      "brand": "Carrefour",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 149.9,
+      "maxPrice": 149.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.9
+        }
+      ]
+    },
+    {
+      "productId": "1T5B",
+      "name": "Fora Yeşil Çizik Zeytin 261-290 400 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 175,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "1M7K",
+      "name": "Marmarabirlik 3xs 381-410 Kuru Sele Siyah Zeytin 400 Gr",
+      "brand": "Marmarabirlik",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 196.9,
+      "maxPrice": 196.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 196.9
+        }
+      ]
+    },
+    {
+      "productId": "1OAS",
+      "name": "Fora Domat Kokteyl Zeytin 400 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 210,
+      "maxPrice": 210,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 210
+        }
+      ]
+    },
+    {
+      "productId": "0E3T",
+      "name": "Fora Kuru Sele Siyah Zeytin 350 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 215,
+      "maxPrice": 215,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 215
+        }
+      ]
+    },
+    {
+      "productId": "0G59",
+      "name": "Gürağaç Doğal Salamura Yağlı Siyah Zeytin 1 Kg",
+      "brand": "Gürağaç",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 225.95,
+      "maxPrice": 225.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 225.95
+        }
+      ]
+    },
+    {
+      "productId": "1OTX",
+      "name": "Fora Fit Zeytin 141-180 Kalibre 430 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 228,
+      "maxPrice": 228,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 228
+        }
+      ]
+    },
+    {
+      "productId": "0HE6",
+      "name": "Bağcı Doğal Salamura Siyah Zeytin 700 Gr",
+      "brand": "Bağcı",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 239
+        }
+      ]
+    },
+    {
+      "productId": "14AO",
+      "name": "İnci Siyah Zeytin 381-460 Kalibre 2 Kg",
+      "brand": "İnci",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0NH0",
+      "name": "Fora Yeşil Çizik Zeytin 291-350 1 Kg",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 295,
+      "maxPrice": 295,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 295
+        }
+      ]
+    },
+    {
+      "productId": "1NED",
+      "name": "Fora Doğal Siyah Zeytin Yağlı Salamura 500 Gr",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "0FIN",
+      "name": "Fora Yağlı Zeytin 260-290 1 Kg",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 374.95,
+      "maxPrice": 374.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 374.95
+        }
+      ]
+    },
+    {
+      "productId": "0URW",
+      "name": "Cem Siyah Zeytin 261-290 Kalibre 1 Kg",
+      "brand": "Cem",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 380,
+      "maxPrice": 380,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 380
+        }
+      ]
+    },
+    {
+      "productId": "0AC6",
+      "name": "Fora Edremit Zeytin 351-380 1 Kg",
+      "brand": "Fora",
+      "category": "Zeytin",
+      "marketCount": 1,
+      "minPrice": 399,
+      "maxPrice": 399,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 399
+        }
+      ]
+    }
+  ]
+}

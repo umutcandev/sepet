@@ -1,0 +1,1178 @@
+{
+  "term": "krema",
+  "category": "Süt ürünleri",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:41:22.172Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "149F",
+      "name": "Dost %20 Yağlı Bitkisel Krema 200 Ml",
+      "brand": "Dost",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 15.5,
+      "maxPrice": 15.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15.5
+        }
+      ]
+    },
+    {
+      "productId": "21ZQ",
+      "name": "Sana Bitkisel Yağlı Krema 200 Ml",
+      "brand": "Sana",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "2CLE",
+      "name": "Nutbari Kakaolu Krema + Grissini 52 Gr",
+      "brand": "Nutbari",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 20,
+      "maxPrice": 20,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 20
+        }
+      ]
+    },
+    {
+      "productId": "0Y7E",
+      "name": "Mis Bitkisel Yağlı Krema %20 Yağlı 200 Ml",
+      "brand": "Mis",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 21.9,
+      "maxPrice": 21.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 21.9
+        }
+      ]
+    },
+    {
+      "productId": "1VKH",
+      "name": "Danone Bitkisel Krema 500 Ml",
+      "brand": "Danone",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "1R4W",
+      "name": "Danone Bitkisel Krema 200 Ml",
+      "brand": "Danone",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 32.5,
+      "maxPrice": 34.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 32.5
+        },
+        {
+          "market": "Migros",
+          "price": 34.5
+        }
+      ]
+    },
+    {
+      "productId": "219Y",
+      "name": "Danone Bitkisel Yağlı Krema 200 Ml",
+      "brand": "Danone",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 34.9,
+      "maxPrice": 34.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.9
+        }
+      ]
+    },
+    {
+      "productId": "1QT3",
+      "name": "Sana Bitkisel Krema 200 Ml",
+      "brand": "Sana",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 39.5,
+      "maxPrice": 39.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.5
+        }
+      ]
+    },
+    {
+      "productId": "1OPU",
+      "name": "Tikveşli %18 Yağlı Krema 200 Ml",
+      "brand": "Tikveşli",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 47.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 47.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "2650",
+      "name": "İçim %18 Yağlı Krema 200 Ml",
+      "brand": "İçim",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "0F9H",
+      "name": "Mis Uht Krema %18 Yağlı 200 Ml",
+      "brand": "Mis",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 53,
+      "maxPrice": 53,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 53
+        }
+      ]
+    },
+    {
+      "productId": "01RL",
+      "name": "Dost %18 Yağlı Krema 200 Ml",
+      "brand": "Dost",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 53,
+      "maxPrice": 53,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 53
+        }
+      ]
+    },
+    {
+      "productId": "0FHZ",
+      "name": "Carrefour Krema %18 Yağlı 200 Ml",
+      "brand": "Carrefour",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 53.5,
+      "maxPrice": 53.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 53.5
+        }
+      ]
+    },
+    {
+      "productId": "209M",
+      "name": "Sütaş Yemeklik Krema 200 Ml",
+      "brand": "Sütaş",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 54.5,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 54.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "1QVH",
+      "name": "İçim Şef %18 Yağlı Krema 200 Ml",
+      "brand": "İçim",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 59.9,
+      "maxPrice": 65.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 65.9
+        }
+      ]
+    },
+    {
+      "productId": "0TFV",
+      "name": "Sek %18 Yağlı Krema 200 Ml",
+      "brand": "Sek",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 66.5,
+      "maxPrice": 66.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.5
+        }
+      ]
+    },
+    {
+      "productId": "05RH",
+      "name": "Dost Krema 200 Ml",
+      "brand": "Dost",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 69.5,
+      "maxPrice": 69.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 69.5
+        }
+      ]
+    },
+    {
+      "productId": "1T0H",
+      "name": "İçim Şef %35 Yağlı Krema 200 Ml",
+      "brand": "İçim",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 69.95,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.95
+        },
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZO1",
+      "name": "President %35 Yağlı Krema 200 Ml",
+      "brand": "President",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 89.9,
+      "maxPrice": 96.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 96.9
+        }
+      ]
+    },
+    {
+      "productId": "08UB",
+      "name": "Yörüksüt Smetana Ekşi Krema 180 Gr",
+      "brand": "Yörüksüt",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 92.95,
+      "maxPrice": 92.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 92.95
+        }
+      ]
+    },
+    {
+      "productId": "0RF7",
+      "name": "Sek Krema 200 Ml",
+      "brand": "Sek",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 96.95,
+      "maxPrice": 96.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 96.95
+        }
+      ]
+    },
+    {
+      "productId": "1R2Q",
+      "name": "Tikveşli Krema 200 Ml",
+      "brand": "Tikveşli",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 97.5,
+      "maxPrice": 98.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 97.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 98.5
+        }
+      ]
+    },
+    {
+      "productId": "1NKE",
+      "name": "Sütaş Krema %30 Yağlı 200 Ml",
+      "brand": "Sütaş",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 102.9,
+      "maxPrice": 102.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 102.9
+        }
+      ]
+    },
+    {
+      "productId": "0E3C",
+      "name": "President Ekşi Krema 285 Gr",
+      "brand": "President",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 129.5,
+      "maxPrice": 129.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 129.5
+        }
+      ]
+    },
+    {
+      "productId": "110S",
+      "name": "Xroll Krema Dolgulu Cornet Gofret 25 Gr",
+      "brand": "Xroll",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 10,
+      "maxPrice": 10,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 10
+        }
+      ]
+    },
+    {
+      "productId": "2098",
+      "name": "Ozmo Cornet Sütlü Krema Dolgulu Kakaolu Gofret 25 Gr",
+      "brand": "Şölen",
+      "category": "Gofret",
+      "marketCount": 2,
+      "minPrice": 12.9,
+      "maxPrice": 18.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 12.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 18.25
+        }
+      ]
+    },
+    {
+      "productId": "1GMH",
+      "name": "Eti Crax Thins Taze Biber Ekşi Krema 12x70 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 31.25,
+      "maxPrice": 31.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 31.25
+        }
+      ]
+    },
+    {
+      "productId": "1Z40",
+      "name": "İçim Şef Pestolu Krema 200 Ml",
+      "brand": "İçim",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 3,
+      "minPrice": 42.5,
+      "maxPrice": 66.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 42.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 65.9
+        },
+        {
+          "market": "Migros",
+          "price": 66.5
+        }
+      ]
+    },
+    {
+      "productId": "0GKW",
+      "name": "Maretti Ekşi Krema Soğanlı Bruschette 70 Gr",
+      "brand": "Maretti",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 43.6,
+      "maxPrice": 43.6,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 43.6
+        }
+      ]
+    },
+    {
+      "productId": "203C",
+      "name": "Eti Hoşbeş Hindistan Cevizli Krema Kakaolu Gofret 142 Gr",
+      "brand": "Eti",
+      "category": "Gofret",
+      "marketCount": 2,
+      "minPrice": 48,
+      "maxPrice": 49.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 48
+        },
+        {
+          "market": "Migros",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "productId": "2AML",
+      "name": "İçim %18 Yağlı Süt Krema 200 Gr",
+      "brand": "İçim",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z2O",
+      "name": "Züber Noutos Ekşi Krema ve Soğan 55 Gr",
+      "brand": "Züber",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 58.95,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 58.95
+        },
+        {
+          "market": "Migros",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "0YTG",
+      "name": "Mis UHT Krema %35 Yağlı 200 Ml",
+      "brand": "Mis",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 69.5,
+      "maxPrice": 69.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.5
+        }
+      ]
+    },
+    {
+      "productId": "1B0M",
+      "name": "Viscuit Kakaolu Fındık Krema Dolgulu Bisküvi 120 Gr",
+      "brand": "Viscuit",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "146G",
+      "name": "Wafermaster Crepe Fındık Krema Gofret 216 Gr",
+      "brand": "Wafermaster",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "1KF5",
+      "name": "Ülker Hobby Kakaolu Krema 350 Gr",
+      "brand": "Ülker",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "0VZ1",
+      "name": "President Ekşi Krema Sour Cream Smetana 285 Gr",
+      "brand": "President",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 127.5,
+      "maxPrice": 127.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 127.5
+        }
+      ]
+    },
+    {
+      "productId": "1CLG",
+      "name": "Lorenz Ekşi Krema Aromalı Patates Cipsi 100 Gr",
+      "brand": "Lorenz",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 132.9,
+      "maxPrice": 132.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 132.9
+        }
+      ]
+    },
+    {
+      "productId": "2655",
+      "name": "Sarelle Duo Fındıklı Sütlü Krema 350 Gr",
+      "brand": "Sarelle",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 145,
+      "maxPrice": 145,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 145
+        }
+      ]
+    },
+    {
+      "productId": "03Q5",
+      "name": "Full 45 Fındık Ezmeli Krema Dolgulu Kurabiye 125 Gr",
+      "brand": "Full 45",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 180.9,
+      "maxPrice": 180.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 180.9
+        }
+      ]
+    },
+    {
+      "productId": "033T",
+      "name": "Peripella Fındık Krokantlı Krema 500 Gr",
+      "brand": "Peripella",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 185,
+      "maxPrice": 185,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 185
+        }
+      ]
+    },
+    {
+      "productId": "3WRE",
+      "name": "Ülker Fındık Rüyası Kakaolu Krema Cam Şişe 350 Gr",
+      "brand": "Ülker",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 186.9,
+      "maxPrice": 186.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 186.9
+        }
+      ]
+    },
+    {
+      "productId": "1XBR",
+      "name": "Only Krema Dolgulu Sütlü Çikolata Minik Ayıcık 80 Gr",
+      "brand": "Only",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 191,
+      "maxPrice": 191,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 191
+        }
+      ]
+    },
+    {
+      "productId": "0FYY",
+      "name": "Vitala Sprey Krema 250 Gr",
+      "brand": "Vitala",
+      "category": "Pasta Malzemeleri",
+      "marketCount": 1,
+      "minPrice": 201.9,
+      "maxPrice": 201.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 201.9
+        }
+      ]
+    },
+    {
+      "productId": "0TFW",
+      "name": "Rus Fırın Ekşi Krema Smetana Sour Cream 300 Gr",
+      "brand": "Rus Fırın",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 205,
+      "maxPrice": 205,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 205
+        }
+      ]
+    },
+    {
+      "productId": "20P3",
+      "name": "Schlagfix Çikolatalı Sprey Krema 200 Ml",
+      "brand": "Schlagfix",
+      "category": "Pasta Malzemeleri",
+      "marketCount": 1,
+      "minPrice": 257,
+      "maxPrice": 257,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 257
+        }
+      ]
+    },
+    {
+      "productId": "3WRF",
+      "name": "Ülker Fındık Rüyası Kakaolu Krema Cam Şişe 625 Gr",
+      "brand": "Ülker",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 297.9,
+      "maxPrice": 297.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 297.9
+        }
+      ]
+    },
+    {
+      "productId": "1GSA",
+      "name": "Massimo Fıstıklı Krema Dolgulu Kruvasan 225 Gr",
+      "brand": "Massimo",
+      "category": "Kek",
+      "marketCount": 1,
+      "minPrice": 314.95,
+      "maxPrice": 314.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 314.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y2M",
+      "name": "Çokokrem Kakaolu Fındık Kreması 20 Gr",
+      "brand": "Çokokrem",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 6,
+      "maxPrice": 6,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 6
+        }
+      ]
+    },
+    {
+      "productId": "1O9V",
+      "name": "Dippo Fındık Krema Dolgulu Draje Oyuncaklı Gofret 25 Gr",
+      "brand": "Dippo",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 18.95,
+      "maxPrice": 18.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 18.95
+        }
+      ]
+    },
+    {
+      "productId": "1OIY",
+      "name": "Ozmo Cool Bol Sütlü Ballı Krema Dolgulu Çikolata Kaplamalı Kek 30 Gr",
+      "brand": "Ozmo",
+      "category": "Kek",
+      "marketCount": 1,
+      "minPrice": 18.95,
+      "maxPrice": 18.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 18.95
+        }
+      ]
+    },
+    {
+      "productId": "1YN5",
+      "name": "Eti Browni Intense Gold Beyaz Çikolata Krema Dolgulu Kek 48 Gr",
+      "brand": "Eti",
+      "category": "Kek",
+      "marketCount": 4,
+      "minPrice": 19.95,
+      "maxPrice": 26,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 19.95
+        },
+        {
+          "market": "BİM",
+          "price": 24.5
+        },
+        {
+          "market": "Migros",
+          "price": 24.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 26
+        }
+      ]
+    },
+    {
+      "productId": "1Z3Q",
+      "name": "Biscolata Mood Çikolata Krema Dolgulu Bisküvi 40 Gr",
+      "brand": "Biscolata",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 25.5,
+      "maxPrice": 25.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 25.5
+        }
+      ]
+    },
+    {
+      "productId": "0MWB",
+      "name": "Ozmo Hoppo Çikolata Krema Dolgulu Bisküvi 40 Gr",
+      "brand": "Ozmo",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 2,
+      "minPrice": 26.5,
+      "maxPrice": 26.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 26.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 26.5
+        }
+      ]
+    },
+    {
+      "productId": "21MP",
+      "name": "Ülker Çokokrem Tüp Kakaolu Fındık Kreması 40 Gr",
+      "brand": "Ülker",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 4,
+      "minPrice": 28,
+      "maxPrice": 31.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 28
+        },
+        {
+          "market": "BİM",
+          "price": 28
+        },
+        {
+          "market": "Migros",
+          "price": 29.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 31.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZDL",
+      "name": "Eti Crax Thins Tatlı Biber & Ekşi Krema 70 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 30,
+      "maxPrice": 30,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30
+        }
+      ]
+    },
+    {
+      "productId": "1U70",
+      "name": "Eti Crax Thins Tatlı Biber Ekşi Krema 110 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 40.5,
+      "maxPrice": 40.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 40.5
+        }
+      ]
+    },
+    {
+      "productId": "04S8",
+      "name": "Intenso Kahve Kreması 200 Gr",
+      "brand": "Intenso",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "0GTP",
+      "name": "Tadım Fıstıxx Ekşi Krema&Soğan 140 Gr",
+      "brand": "Tadım",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 48.5,
+      "maxPrice": 48.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 48.5
+        }
+      ]
+    },
+    {
+      "productId": "02YX",
+      "name": "La Lorraine Çilek Krema Kaplamalı Donut 56 Gr",
+      "brand": "La Lorraine",
+      "category": "Kek",
+      "marketCount": 1,
+      "minPrice": 54.95,
+      "maxPrice": 54.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 54.95
+        }
+      ]
+    },
+    {
+      "productId": "3WP2",
+      "name": "Protein Ocean Kurabiye Krema Aromalı Protein Bar 50 Gr",
+      "brand": "Protein Ocean",
+      "category": "Gıda Takviyeleri",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "1UUM",
+      "name": "Torku Portakal Çikolata Krema Kakaolu Gofret 142 Gr",
+      "brand": "Torku",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "0L2H",
+      "name": "Sek Laktozsuz Kahve Kreması 10x15 Ml",
+      "brand": "Sek",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 90,
+      "maxPrice": 93.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 90
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 93.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZNK",
+      "name": "Karmen Kakaolu Fındık Kreması 400 Gr",
+      "brand": "Karmen",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "0QUN",
+      "name": "Seyidoğlu Bool Fındık Kreması 900 Gr",
+      "brand": "Seyidoğlu",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "2A3O",
+      "name": "Nescafé Coffee Mate Kahve Kreması 200 Gr",
+      "brand": "Nescafé",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 139.5,
+      "maxPrice": 139.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 139.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZFB",
+      "name": "Ülker Fındık Rüyası Kakaolu Fındık Kreması Cam Kavanoz 350 Gr",
+      "brand": "Ülker",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 180,
+      "maxPrice": 180,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 180
+        }
+      ]
+    },
+    {
+      "productId": "049I",
+      "name": "Full 45 Yerfıstığı Ezmeli Krema Dolgulu Kurabiye 125 Gr",
+      "brand": "Full 45",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 180.9,
+      "maxPrice": 180.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 180.9
+        }
+      ]
+    },
+    {
+      "productId": "29WG",
+      "name": "Nutella Fındık Kreması 400 Gr",
+      "brand": "Nutella",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 189,
+      "maxPrice": 189,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 189
+        }
+      ]
+    },
+    {
+      "productId": "09Q9",
+      "name": "Sarelle Kakaolu Fındık Kreması 700 Gr",
+      "brand": "Sarelle",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 228,
+      "maxPrice": 345,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 228
+        },
+        {
+          "market": "hakmar",
+          "price": 345
+        }
+      ]
+    },
+    {
+      "productId": "0U4F",
+      "name": "Nutella Kakaolu Fındık Kreması 630 Gr",
+      "brand": "Nutella",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 265,
+      "maxPrice": 265,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 265
+        }
+      ]
+    },
+    {
+      "productId": "1G0M",
+      "name": "Antebella Bomba Fıstık Ezmesi Kakaolu Fındık Kreması 320 Gr",
+      "brand": "Antebella",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 495.95,
+      "maxPrice": 495.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 495.95
+        }
+      ]
+    }
+  ]
+}

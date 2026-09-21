@@ -1,0 +1,104 @@
+{
+  "term": "hummus",
+  "category": "Dünya mutfağı",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:06:28.447Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0SCU",
+      "name": "Mezzet Humus 200 Gr",
+      "brand": "Mezzet",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "1GYW",
+      "name": "The Good Wild Humus Kraker 55 Gr",
+      "brand": "The Good Wild",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 94.9,
+      "maxPrice": 94.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.9
+        }
+      ]
+    },
+    {
+      "productId": "1LR7",
+      "name": "Mr. No Köz Biberli Kıtır Ekmekli Humus 130 Gr",
+      "brand": "Mr. No",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "1AXO",
+      "name": "Yeşil Şef Klasik Humus 200 Gr",
+      "brand": "Yeşil Şef",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 145,
+      "maxPrice": 145,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 145
+        }
+      ]
+    },
+    {
+      "productId": "1GW0",
+      "name": "Yeşil Şef Falafelli Humus 200 Gr",
+      "brand": "Yeşil Şef",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 154.9,
+      "maxPrice": 154.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 154.9
+        }
+      ]
+    },
+    {
+      "productId": "1GWK",
+      "name": "Yeşil Şef Köz Biberli Humus 200 Gr",
+      "brand": "Yeşil Şef",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 154.9,
+      "maxPrice": 154.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 154.9
+        }
+      ]
+    }
+  ]
+}

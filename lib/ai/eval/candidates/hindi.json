@@ -1,0 +1,1186 @@
+{
+  "term": "hindi",
+  "category": "Et & protein",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:48:08.771Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0ENU",
+      "name": "Carrefour Hindi Salam 50 Gr",
+      "brand": "Carrefour",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 21.95,
+      "maxPrice": 21.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 21.95
+        }
+      ]
+    },
+    {
+      "productId": "0Z6C",
+      "name": "Pınar Keyifle Hindi Fıstıklı Salam 50 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "0BHW",
+      "name": "Carrefour Hindi Füme 50 Gr",
+      "brand": "Carrefour",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 27.95,
+      "maxPrice": 27.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        }
+      ]
+    },
+    {
+      "productId": "19F6",
+      "name": "Hindi Füme Et 60 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "19A6",
+      "name": "Dilimli Hindi Salam 75 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "1KSY",
+      "name": "Namet Hindi Füme 60 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 33.75,
+      "maxPrice": 34.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 33.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 34.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z6F",
+      "name": "Pınar Aç Bitir Hindi Salam 75 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 34.95,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.95
+        },
+        {
+          "market": "Migros",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "1DG3",
+      "name": "Hindi Sosis 130 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 39,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "2ADO",
+      "name": "Pınar Hindi Salam Büyük Dilimli 60 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "0URV",
+      "name": "Migros Hindi Füme 90 Gr",
+      "brand": "Migros",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 49.9,
+      "maxPrice": 49.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "productId": "1D1O",
+      "name": "Maret Hindi Sosis 140 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 84.9,
+      "maxPrice": 84.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 84.9
+        }
+      ]
+    },
+    {
+      "productId": "0KQV",
+      "name": "Polonez Hindi Salam 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1NHN",
+      "name": "Hindice 4 Tahıllı Hindi 160 Gr",
+      "brand": "Hindice",
+      "category": "Beyaz Et",
+      "marketCount": 2,
+      "minPrice": 111.3,
+      "maxPrice": 152.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 111.3
+        },
+        {
+          "market": "Migros",
+          "price": 152.95
+        }
+      ]
+    },
+    {
+      "productId": "1M5B",
+      "name": "Bahar Hindi Pişmiş Fileto 120 Gr",
+      "brand": "Bahar",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 125.25,
+      "maxPrice": 125.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 125.25
+        }
+      ]
+    },
+    {
+      "productId": "20K5",
+      "name": "Namet Hindi Füme 200 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 132,
+      "maxPrice": 133.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 132
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 133.5
+        }
+      ]
+    },
+    {
+      "productId": "0OGF",
+      "name": "Ant Bahar Fit Hindi Fileto Konservesi 165 Gr",
+      "brand": "Ant Bahar",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1TM4",
+      "name": "Ant Bahar Glütensiz Tahıllı Tohumlu Hindi Konservesi 185 Gr",
+      "brand": "Bahar",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1QVA",
+      "name": "Hindice Hindi Fileto 140 Gr",
+      "brand": "Hindice",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 152.95,
+      "maxPrice": 152.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 152.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZQD",
+      "name": "Bolca Hindi Külbastı 500 Gr",
+      "brand": "Bolca",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 169.95,
+      "maxPrice": 169.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169.95
+        }
+      ]
+    },
+    {
+      "productId": "0Q1P",
+      "name": "Hindice Suda Hindi Fileto 140 Gr",
+      "brand": "Hindice",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 182.9,
+      "maxPrice": 182.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 182.9
+        }
+      ]
+    },
+    {
+      "productId": "1DKO",
+      "name": "Bolca Hindi Meksika Soslu Sote But 500 Gr",
+      "brand": "Bolca Hindi",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 209.95,
+      "maxPrice": 209.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 209.95
+        }
+      ]
+    },
+    {
+      "productId": "0JOR",
+      "name": "Bolca Hindi Çorbalık Boyun 1 Kg",
+      "brand": "Bolca",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 238.9,
+      "maxPrice": 238.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 238.9
+        }
+      ]
+    },
+    {
+      "productId": "0T6G",
+      "name": "Bolca Hindi Sote But 750 Gr",
+      "brand": "Bolca",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "0XES",
+      "name": "Bolca Hindi Sote Göğüs 750 Gr",
+      "brand": "Bolca",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 369.95,
+      "maxPrice": 369.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 369.95
+        }
+      ]
+    },
+    {
+      "productId": "147C",
+      "name": "Açık Büfe Hindi Salam 50 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 14.5,
+      "maxPrice": 14.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 14.5
+        }
+      ]
+    },
+    {
+      "productId": "1YL3",
+      "name": "Namet Hindi Fıstıklı Salam 7/24 50 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 3,
+      "minPrice": 27.5,
+      "maxPrice": 33.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 27.5
+        },
+        {
+          "market": "Migros",
+          "price": 32.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.5
+        }
+      ]
+    },
+    {
+      "productId": "0RF0",
+      "name": "Pınar Keyifle Hindi Salam 75 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "1O3J",
+      "name": "Pınar Keyifle Hindi Füme 60 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "10LI",
+      "name": "Namet Fıstıklı Hindi Salam 2x50 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "1OE8",
+      "name": "Polonez Hindi Jambon 50 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 39.9,
+      "maxPrice": 43.88,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 39.9
+        },
+        {
+          "market": "Migros",
+          "price": 43.88
+        }
+      ]
+    },
+    {
+      "productId": "0DPU",
+      "name": "Polonez Hindi Jambon 2x50 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 46.5,
+      "maxPrice": 46.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 46.5
+        }
+      ]
+    },
+    {
+      "productId": "20US",
+      "name": "Maret Hindi Füme 110 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 3,
+      "minPrice": 49,
+      "maxPrice": 111,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 49
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 99.9
+        },
+        {
+          "market": "Migros",
+          "price": 111
+        }
+      ]
+    },
+    {
+      "productId": "1NYR",
+      "name": "Polonez Hindi Füme Eti 50 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 49.88,
+      "maxPrice": 49.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.88
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "productId": "1QFZ",
+      "name": "Maret Pratik Hindi Salam 60 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 55.75,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "1TQ1",
+      "name": "Polonez Hindi Fıstıklı Salam 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 69.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.9
+        },
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1DCT",
+      "name": "Pınar Hindi Sosis 430 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "0ZCP",
+      "name": "Pınar Keyifle Hindi Salam 500 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        },
+        {
+          "market": "hakmar",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "1KHS",
+      "name": "Bahar Hindi Pişmiş Tandır 120 Gr",
+      "brand": "Bahar",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 132.25,
+      "maxPrice": 132.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 132.25
+        }
+      ]
+    },
+    {
+      "productId": "1U5R",
+      "name": "Pınar Gurme Hindi Füme 150 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 149,
+      "maxPrice": 153.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 153.5
+        }
+      ]
+    },
+    {
+      "productId": "20BC",
+      "name": "Pınar Hindi Uzun Sosis 430 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 149.95,
+      "maxPrice": 235,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.95
+        },
+        {
+          "market": "Migros",
+          "price": 235
+        }
+      ]
+    },
+    {
+      "productId": "1R2K",
+      "name": "Ant Bahar Enginarlı Hindi Konservesi 165 Gr",
+      "brand": "Bahar",
+      "category": "Beyaz Et",
+      "marketCount": 2,
+      "minPrice": 149.95,
+      "maxPrice": 155.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 155.9
+        }
+      ]
+    },
+    {
+      "productId": "0UO4",
+      "name": "Ant Bahar Tahıllı Tohumlu Hindi Konservesi 185 Gr",
+      "brand": "Ant Bahar",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y2N",
+      "name": "Polonez Hindi Füme 2x110 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 161.5,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 161.5
+        },
+        {
+          "market": "Migros",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "0OGT",
+      "name": "Pınar Hindi Doyum Sucuk 225 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 165,
+      "maxPrice": 165,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 165
+        }
+      ]
+    },
+    {
+      "productId": "1NE6",
+      "name": "Ant Bahar Hindi Fileto Konservesi 240 Gr",
+      "brand": "Bahar",
+      "category": "Beyaz Et",
+      "marketCount": 2,
+      "minPrice": 239.95,
+      "maxPrice": 249.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 239.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 249.5
+        }
+      ]
+    },
+    {
+      "productId": "1N33",
+      "name": "Aytaç Hindi Salam 500 Gr",
+      "brand": "Aytaç",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 255.5,
+      "maxPrice": 255.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 255.5
+        }
+      ]
+    },
+    {
+      "productId": "1SM7",
+      "name": "Ant Bahar Hindi Tandır Konservesi 2x120 Gr",
+      "brand": "Bahar",
+      "category": "Beyaz Et",
+      "marketCount": 2,
+      "minPrice": 259.95,
+      "maxPrice": 270,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 270
+        }
+      ]
+    },
+    {
+      "productId": "0T6F",
+      "name": "Bolca Tabaklı Dilimli Hindi Göğüs 750 Gr",
+      "brand": "Bolca",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 369.95,
+      "maxPrice": 369.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 369.95
+        }
+      ]
+    },
+    {
+      "productId": "2AIO",
+      "name": "Namet Fıstıklı Dilimli Hindi Salam 50 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "1BSC",
+      "name": "Pınar Lezzet Keyfi Hindi Salam 75 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 25.5,
+      "maxPrice": 25.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 25.5
+        }
+      ]
+    },
+    {
+      "productId": "011G",
+      "name": "Sultan Dilimli Hindi Salam 50 Gr",
+      "brand": "Sultan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 29.52,
+      "maxPrice": 29.52,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 29.52
+        }
+      ]
+    },
+    {
+      "productId": "2B68",
+      "name": "Namet Dilimli Hindi Füme Salam 60 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 29.75,
+      "maxPrice": 29.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 29.75
+        }
+      ]
+    },
+    {
+      "productId": "2A6T",
+      "name": "Maret Dilimli Pratik Hindi Salam 60 Gr",
+      "brand": "Maret",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 29.75,
+      "maxPrice": 29.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 29.75
+        }
+      ]
+    },
+    {
+      "productId": "2AKD",
+      "name": "Danet Dilimli Hindi Füme Salam 60 Gr",
+      "brand": "Danet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "0MAW",
+      "name": "Migros Tam Yetti Hindi Parça Etli Salam 60 Gr",
+      "brand": "Migros",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 33.5,
+      "maxPrice": 33.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 33.5
+        }
+      ]
+    },
+    {
+      "productId": "1PFD",
+      "name": "Pınar Aç Bitir Fıstıklı Hindi Salam 50 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 45.75,
+      "maxPrice": 46.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 45.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 46.5
+        }
+      ]
+    },
+    {
+      "productId": "1LJX",
+      "name": "Aytaç Gurme Dilimli Hindi Füme 60 Gr",
+      "brand": "Aytaç Gurme",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 49.9,
+      "maxPrice": 49.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "productId": "06P2",
+      "name": "Beşler Bi Lokma Hindi Füme 55 Gr",
+      "brand": "Beşler",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "0SIR",
+      "name": "Polonez Hindi Parça Etli Salam 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "208Z",
+      "name": "Pınar Gurme Hindi Füme Karabiberli 110 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 105,
+      "maxPrice": 108,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 105
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 108
+        }
+      ]
+    },
+    {
+      "productId": "1GMX",
+      "name": "Hindi Baton Salam 500 Gr",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "1OYC",
+      "name": "Pınar Füme Hindi But Etli Gurme 110 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "1S8O",
+      "name": "Polonez Zeytinyağlı Kekikli Hindi Füme 150 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 129,
+      "maxPrice": 164.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 164.75
+        }
+      ]
+    },
+    {
+      "productId": "1UKC",
+      "name": "Pınar Füme Hindi But Gurme 110 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 132.9,
+      "maxPrice": 132.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 132.9
+        }
+      ]
+    },
+    {
+      "productId": "1DM6",
+      "name": "Pınar Füme Hindi Cheddarlı Jumbo Sosis 265 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "0SFR",
+      "name": "Bolca Bütün Fileto Hindi Göğüs 750 Gr",
+      "brand": "Bolca",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 269.95,
+      "maxPrice": 269.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269.95
+        }
+      ]
+    },
+    {
+      "productId": "1ORX",
+      "name": "Pınar Doyum Büfe Hindi Salam 700 Gr",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 290,
+      "maxPrice": 290,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 290
+        }
+      ]
+    },
+    {
+      "productId": "20UA",
+      "name": "Yaylatürk Hindi Göğüs Füme 120 Gr",
+      "brand": "Yaylatürk",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 291.5,
+      "maxPrice": 291.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 291.5
+        }
+      ]
+    },
+    {
+      "productId": "0XSQ",
+      "name": "Yaylatürk Karabiberli Hindi But Füme Jambon 120 Gr",
+      "brand": "Yaylatürk",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 293,
+      "maxPrice": 293,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 293
+        }
+      ]
+    },
+    {
+      "productId": "0PHI",
+      "name": "Pınar Fıstıklı Uzun Hindi Salam 1 Kg",
+      "brand": "Pınar",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 679,
+      "maxPrice": 679,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 679
+        }
+      ]
+    },
+    {
+      "productId": "0I1V",
+      "name": "Yaylatürk Hindi Göğüs Füme 1 Kg",
+      "brand": "Yaylatürk",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 1935,
+      "maxPrice": 2199.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1935
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 2199.9
+        }
+      ]
+    },
+    {
+      "productId": "0ULR",
+      "name": "Yayla Türk Hindi But Füme 1 Kg",
+      "brand": "Yayla",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2099,
+      "maxPrice": 2099,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 2099
+        }
+      ]
+    }
+  ]
+}

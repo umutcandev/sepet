@@ -52,3 +52,8 @@ skills-lock.json
 # ile aynı sözleşme). Kapatmak için next.config'e `agentRules: false`.
 /AGENTS.md
 /CLAUDE.md
+
+# Eval
+lib/ai/eval/.run-checkpoint.json
+lib/ai/eval/last-run.json
+lib/ai/eval/taxonomy-appendix.md

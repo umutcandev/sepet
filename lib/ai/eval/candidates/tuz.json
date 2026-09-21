@@ -1,0 +1,1142 @@
+{
+  "term": "tuz",
+  "category": "Tatlandırıcı & baharat",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:59:37.912Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0UZB",
+      "name": "Anadolu Mutfağı Tuz 750 Gr",
+      "brand": "Anadolu Mutfağı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 12,
+      "maxPrice": 12,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 12
+        }
+      ]
+    },
+    {
+      "productId": "00O6",
+      "name": "Sofra İyotlu Tuz 750 Gr",
+      "brand": "Sofra",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 12,
+      "maxPrice": 12,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 12
+        }
+      ]
+    },
+    {
+      "productId": "1XUF",
+      "name": "Salina İyotlu Tuz 1.5 Kg",
+      "brand": "Salina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 12,
+      "maxPrice": 12,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 12
+        }
+      ]
+    },
+    {
+      "productId": "008E",
+      "name": "Tuzum İyotlu Tuz 750 Gr",
+      "brand": "Tuzum",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 12,
+      "maxPrice": 12,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 12
+        }
+      ]
+    },
+    {
+      "productId": "0LEH",
+      "name": "Salina İri Salamura Tuzu 1.5 Kg",
+      "brand": "Salina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 24.95,
+      "maxPrice": 24.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.95
+        }
+      ]
+    },
+    {
+      "productId": "09IC",
+      "name": "Pak Tuz İyotlu Tuz 1.5 Kg",
+      "brand": "Pak Tuz",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 28.5,
+      "maxPrice": 28.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 28.5
+        }
+      ]
+    },
+    {
+      "productId": "1VU0",
+      "name": "Billur Tuz İyotlu Piknik Tuzu 125 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 30.95,
+      "maxPrice": 31.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 31.25
+        }
+      ]
+    },
+    {
+      "productId": "0AZD",
+      "name": "Pak Tuz İri Salamura Tuz 3 Kg",
+      "brand": "Pak Tuz",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 34.5,
+      "maxPrice": 34.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 34.5
+        }
+      ]
+    },
+    {
+      "productId": "1PLP",
+      "name": "Billur Tuz İyotlu 750 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 37.5,
+      "maxPrice": 38.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 37.5
+        },
+        {
+          "market": "Migros",
+          "price": 38.5
+        }
+      ]
+    },
+    {
+      "productId": "20LX",
+      "name": "Billur Tuz İyotsuz Sofra Tuzu 250 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 44.95,
+      "maxPrice": 45.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 44.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 45.5
+        }
+      ]
+    },
+    {
+      "productId": "1OR3",
+      "name": "Billur Tuz İyotlu Sofra Tuzu 500 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 3,
+      "minPrice": 54.5,
+      "maxPrice": 58.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 54.5
+        },
+        {
+          "market": "Migros",
+          "price": 55.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 58.5
+        }
+      ]
+    },
+    {
+      "productId": "29X3",
+      "name": "Billur Tuz 1.5 Kg",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 67.5,
+      "maxPrice": 67.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 67.5
+        }
+      ]
+    },
+    {
+      "productId": "1NQL",
+      "name": "Billur Tuz Rafine İyotlu Sofra Tuzu 1.5 Kg",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 74.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "1NQK",
+      "name": "Billur Tuz Demir Mineralli İyotlu Tuz 500 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "1LCC",
+      "name": "Billur Tuz Değirmen Sofrada Öğütme Deniz Tuzu 200 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 97.9,
+      "maxPrice": 97.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 97.9
+        }
+      ]
+    },
+    {
+      "productId": "1WIC",
+      "name": "Finish Tuz 1.5 Kg",
+      "brand": "Finish",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 3,
+      "minPrice": 99.9,
+      "maxPrice": 181.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.9
+        },
+        {
+          "market": "Şok",
+          "price": 180
+        },
+        {
+          "market": "Migros",
+          "price": 181.95
+        }
+      ]
+    },
+    {
+      "productId": "0R9P",
+      "name": "Jet Süper Kokusuz Tuz Ruhu 700 Ml",
+      "brand": "Jet",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1OP2",
+      "name": "Billur Tuz Sofrada Öğütme Himalaya Tuzu 200 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 107.9,
+      "maxPrice": 107.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 107.9
+        }
+      ]
+    },
+    {
+      "productId": "1OSQ",
+      "name": "Bağdat Kaya Tuzu Değirmen Kapak 115 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "0EM1",
+      "name": "Tuzot Sade Tuz Baharat Karışımı 200 Gr",
+      "brand": "Tuzot",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 123.9,
+      "maxPrice": 123.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 123.9
+        }
+      ]
+    },
+    {
+      "productId": "1WT9",
+      "name": "Bisalt Himalaya Kaya İyotlu Tuz 400 Gr",
+      "brand": "Bisalt",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 134,
+      "maxPrice": 134,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 134
+        }
+      ]
+    },
+    {
+      "productId": "1Y28",
+      "name": "Billur Sodyumu Azaltılmış Tuz 500 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 139.95,
+      "maxPrice": 146.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 146.5
+        }
+      ]
+    },
+    {
+      "productId": "1R6Q",
+      "name": "Billur Tuz İyotlu 3 Kg",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 151.5,
+      "maxPrice": 151.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 151.5
+        }
+      ]
+    },
+    {
+      "productId": "0A3P",
+      "name": "Efsina Refika'dan Violey Yaprak Tuz 140 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 447,
+      "maxPrice": 447,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 447
+        }
+      ]
+    },
+    {
+      "productId": "08DR",
+      "name": "Carrefour İyotlu Sofra Tuzu 750 Gr",
+      "brand": "Carrefour",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 12.5,
+      "maxPrice": 12.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 12.5
+        }
+      ]
+    },
+    {
+      "productId": "0XX9",
+      "name": "Salina İyotlu Sofra Tuzu 750 Gr",
+      "brand": "Salina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 29.95,
+      "maxPrice": 29.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 29.95
+        }
+      ]
+    },
+    {
+      "productId": "0GYZ",
+      "name": "Bisalt Himalaya Kaya Tuzu İnce 250 Gr",
+      "brand": "Bisalt",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 31,
+      "maxPrice": 31,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 31
+        }
+      ]
+    },
+    {
+      "productId": "0KHN",
+      "name": "Anadolu Mutfağı İri Salamura Tuzu 3 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 39.9,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "0A55",
+      "name": "Efsina İyotlu Deniz Tuzu Poşet 750 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 59.9,
+      "maxPrice": 59.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "productId": "0KEV",
+      "name": "Salina Himalaya Sofra Tuzu 400 Gr",
+      "brand": "Salina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "1Q8B",
+      "name": "Billur Sofrada Öğütme Deniz Tuzu 500 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 74.95,
+      "maxPrice": 82.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 82.5
+        }
+      ]
+    },
+    {
+      "productId": "0K6C",
+      "name": "Billur İyotlu Sofra Tuzu 1.5 Kg",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 75.9,
+      "maxPrice": 75.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 75.9
+        }
+      ]
+    },
+    {
+      "productId": "058M",
+      "name": "Carrefour Selection Deniz Tuzu 105 Gr",
+      "brand": "Carrefour Selection",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 82.5,
+      "maxPrice": 82.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 82.5
+        }
+      ]
+    },
+    {
+      "productId": "1OX5",
+      "name": "Ta-Ze Sofrada Öğütme Tuzu 500 Gr",
+      "brand": "Ta-Ze",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 82.5,
+      "maxPrice": 82.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 82.5
+        }
+      ]
+    },
+    {
+      "productId": "0OLH",
+      "name": "Mlife Himalaya Bölgesi İyotlu Sofra Tuzu 400 Gr",
+      "brand": "Mlife",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1H62",
+      "name": "Deva Kaya Tuzu Değirmen Kapak 115 Gr",
+      "brand": "Deva",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1ROX",
+      "name": "Mayi Sofrada Öğütme Doğal Kaynak Tuzu 500 Gr",
+      "brand": "Mayi",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 114.07,
+      "maxPrice": 114.07,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 114.07
+        }
+      ]
+    },
+    {
+      "productId": "1NXQ",
+      "name": "Billur Sofrada Öğütme Himalaya Tuzu 500 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 114.95,
+      "maxPrice": 122.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 114.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 122.5
+        }
+      ]
+    },
+    {
+      "productId": "1Q72",
+      "name": "Mayi İyotlu İnce Öğütülmüş Doğal Kaynak Tuzu 600 Gr",
+      "brand": "Mayi",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 134.37,
+      "maxPrice": 134.37,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 134.37
+        }
+      ]
+    },
+    {
+      "productId": "1K2W",
+      "name": "Bağdat Sarımsaklı Himalaya Tuzu Değirmen 110 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 135.5,
+      "maxPrice": 135.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 135.5
+        }
+      ]
+    },
+    {
+      "productId": "0GA4",
+      "name": "Bisalt Himalaya Kaya Tuzu İyotlu 500 Gr",
+      "brand": "Bisalt",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 138,
+      "maxPrice": 138,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 138
+        }
+      ]
+    },
+    {
+      "productId": "1RIX",
+      "name": "Mayi Sofrada Öğütme Doğal Kaynak Tuzu 110 Gr",
+      "brand": "Mayi",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 160.97,
+      "maxPrice": 160.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 160.97
+        }
+      ]
+    },
+    {
+      "productId": "1SJ2",
+      "name": "Efsina Sofrada Öğütme Kaya Tuzu 500 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 171.47,
+      "maxPrice": 171.47,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 171.47
+        }
+      ]
+    },
+    {
+      "productId": "26RV",
+      "name": "City Farm Değirmen Deniz Tuzu 350 Gr",
+      "brand": "City Farm",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 212,
+      "maxPrice": 212,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 212
+        }
+      ]
+    },
+    {
+      "productId": "1T7E",
+      "name": "Efsina İyotlu İnce Himalaya Tuzu 250 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 226.95,
+      "maxPrice": 258.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 226.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 258.9
+        }
+      ]
+    },
+    {
+      "productId": "0Y0F",
+      "name": "Purelife Himalaya Tuzu Pembe İyotlu İnce 500 Gr",
+      "brand": "Purelife",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 259.95,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    },
+    {
+      "productId": "1WLJ",
+      "name": "Maldon Sofrada Öğütme Tuzu 250 Gr",
+      "brand": "Maldon",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 442.95,
+      "maxPrice": 442.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 442.95
+        }
+      ]
+    },
+    {
+      "productId": "21RG",
+      "name": "Maldon Himalaya Pembe Tuzu 250 Gr",
+      "brand": "Maldon",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 454.95,
+      "maxPrice": 454.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 454.95
+        }
+      ]
+    },
+    {
+      "productId": "0UHH",
+      "name": "Migros İyotlu Sofra Tuzu 750 Gr",
+      "brand": "Migros",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 12.5,
+      "maxPrice": 12.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 12.5
+        }
+      ]
+    },
+    {
+      "productId": "1571",
+      "name": "Sofra Rafine Kaya Tuzu 1.5 Kg",
+      "brand": "Sofra",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 13,
+      "maxPrice": 13,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 13
+        }
+      ]
+    },
+    {
+      "productId": "1FNG",
+      "name": "Billur İyotlu Sofra Tuzu 750 Gr",
+      "brand": "Billur",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 39.25,
+      "maxPrice": 39.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 39.25
+        }
+      ]
+    },
+    {
+      "productId": "0QJE",
+      "name": "Salina İyotlu Sofra Tuzu 250 Gr",
+      "brand": "Salina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "0RL4",
+      "name": "Mintax Bulaşık Makinesi Tuzu 1.5 Kg",
+      "brand": "Mintax",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 42,
+      "maxPrice": 42,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 42
+        }
+      ]
+    },
+    {
+      "productId": "0BVE",
+      "name": "City Farm İnce Deniz Tuzu 500 Gr",
+      "brand": "City Farm",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "0NO7",
+      "name": "Salina İyotlu Sofra Tuzu 1.5 Kg",
+      "brand": "Salina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 57.95,
+      "maxPrice": 57.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.95
+        }
+      ]
+    },
+    {
+      "productId": "088Q",
+      "name": "Carrefour Selection Himalaya Tuzu 120 Gr",
+      "brand": "Carrefour Selection",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 82.5,
+      "maxPrice": 82.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 82.5
+        }
+      ]
+    },
+    {
+      "productId": "1IJW",
+      "name": "Bisalt Çankırı Kaya Tuzu İnce 250 Gr",
+      "brand": "Bisalt",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 82.9,
+      "maxPrice": 82.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 82.9
+        }
+      ]
+    },
+    {
+      "productId": "20I0",
+      "name": "Bağdat Himalaya Tuzu Değirmen 110 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "1QDL",
+      "name": "Bingo Bulaşık Makinesi Tuzu 1.5 Kg",
+      "brand": "Bingo",
+      "category": "Bulaşık Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 129.95,
+      "maxPrice": 166,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 166
+        }
+      ]
+    },
+    {
+      "productId": "0FVP",
+      "name": "Bisalt Çankırı İri Kaya Tuzu 500 Gr",
+      "brand": "Bisalt",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 138,
+      "maxPrice": 138,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 138
+        }
+      ]
+    },
+    {
+      "productId": "06GH",
+      "name": "Bisalt Himalaya İri Kaya Tuzu 500 Gr",
+      "brand": "Bisalt",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 138,
+      "maxPrice": 138,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 138
+        }
+      ]
+    },
+    {
+      "productId": "0T8B",
+      "name": "Efsina Deniz Tuzu Granül Sofrada Öğütme 110 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 150.47,
+      "maxPrice": 150.47,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 150.47
+        }
+      ]
+    },
+    {
+      "productId": "2132",
+      "name": "Efsina Kaya Tuzu 600 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 153.97,
+      "maxPrice": 153.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 153.97
+        }
+      ]
+    },
+    {
+      "productId": "1TV2",
+      "name": "Efsina Kaya Tuzu Değirmen 110 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 172.87,
+      "maxPrice": 172.87,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 172.87
+        }
+      ]
+    },
+    {
+      "productId": "0SJZ",
+      "name": "Efsina Folik Asitli Deniz Tuzu 600 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 244.95,
+      "maxPrice": 244.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 244.95
+        }
+      ]
+    },
+    {
+      "productId": "0XCB",
+      "name": "Purelife Himalaya Tuzu Pembe Sofrada Öğütme 500 Gr",
+      "brand": "Purelife",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 259.95,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    },
+    {
+      "productId": "0VXO",
+      "name": "Purelife Himalaya Tuzu Beyaz İyotlu İnce 500 Gr",
+      "brand": "Purelife",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 259.95,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    },
+    {
+      "productId": "0N4T",
+      "name": "Purelife Himalaya Tuzu Beyaz Sofrada Öğütme 500 Gr",
+      "brand": "Purelife",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 259.95,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    },
+    {
+      "productId": "1PPL",
+      "name": "Efsina Refika'dan Finishing Salt Flakes Barbecue 140 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 447,
+      "maxPrice": 447,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 447
+        }
+      ]
+    },
+    {
+      "productId": "1KZU",
+      "name": "Efsina Refika'dan Finishing Salt Flakes Herbs & Garlic 140 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 447,
+      "maxPrice": 447,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 447
+        }
+      ]
+    },
+    {
+      "productId": "1T3R",
+      "name": "Efsina Refika'dan Finishing Salt Flakes Original 140 Gr",
+      "brand": "Efsina",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 447,
+      "maxPrice": 447,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 447
+        }
+      ]
+    },
+    {
+      "productId": "21SE",
+      "name": "Maldon Kalahari Çöl Tuzu 250 Gr",
+      "brand": "Maldon",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 454.95,
+      "maxPrice": 454.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 454.95
+        }
+      ]
+    }
+  ]
+}
