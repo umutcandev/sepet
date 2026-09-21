@@ -1,0 +1,187 @@
+---
+title: Ürün Eşleştirme Kurallarını Tahminle Değil Ölçerek Değiştirmek
+description: 84 temel gıda için 82 vakalık bir golden set kurduk. İlk yazdığımız yeni kural ölçümde kötüleşti ve geri aldık. Asıl sürpriz, ölçümün modelden önce kendi etiketlerimizdeki hatayı bulması oldu.
+publishedAt: 2026-09-21T10:00:00+03:00
+authors:
+  - umutcan
+category: teknik
+featured: true
+tags:
+  - llm
+  - değerlendirme
+  - mühendislik günlüğü
+---
+
+Kullanıcı "yoğurt" yazdığında hangi ürünlerin sepete girmesi gerektiğine bir dil
+modeli karar veriyor. Bu kararı yönlendiren şey, prompt içindeki kurallar. Uzun
+süre o kuralları şöyle değiştirdik. Bir sorun fark ediyor, kurala bir madde
+ekliyor, birkaç örneğe elle bakıyor, iyi görünüyorsa bırakıyorduk.
+
+Bunun adı mühendislik değil. Elle baktığın birkaç örnek her zaman son
+değiştirdiğin şeyi doğrular, çünkü onları seçerken zaten ona bakıyorsundur.
+Değişikliğin geri kalan her şeye ne yaptığını bilmiyorsun. Bu yazı, o körlüğü
+kapatmak için kurduğumuz ölçüm setini ve setin bize öğrettiği ilk dersi
+anlatıyor. Ders beklediğimiz yerden gelmedi.
+
+## Golden set nasıl kuruldu
+
+[84 temel gıda](https://github.com/umutcandev/sepet/blob/master/lib/ai/eval/terms.ts)
+belirledik. Yoğurt, süt, nohut, tavuk, deterjan, peçete gibi gerçek sepetlerde
+en sık geçen terimler. Her biri için canlı arama sonuçlarını bir kez çekip
+[dondurduk](https://github.com/umutcandev/sepet/tree/master/lib/ai/eval/candidates).
+Ortalama 70 aday ürün, tek bir tarih ve tek bir konum. Fiyatlar her gün değişir
+ama ürün kimlikleri değişmez, dolayısıyla set aylarca geçerli kalır.
+
+Sonra her gıdanın aday havuzunu ürün türlerine kümeledik. Maden suyu havuzu
+şöyle bölündü.
+
+| Grup | Ürün türü | Aday sayısı |
+| --- | --- | --- |
+| A | Aromalı / meyveli maden suyu | 39 |
+| B | Sade maden suyu | 16 |
+| C | Çoklu paket / koli | 14 |
+| D | Premium / signature | 3 |
+
+Harfler bir kez donduruldu ve tek bir soru soruldu. Kullanıcı bu terimi sade
+haliyle yazdığında hangi gruplar sepete girmeli? 72 ürün adı okumak yerine dört satır okuyup "B" yazıyor
+ve geçiyorsun. 84 gıdanın tamamı
+[bu şekilde cevaplandı](https://github.com/umutcandev/sepet/blob/master/lib/ai/eval/taxonomy-sheet.md).
+İki terimde karar verilemedi ve atlandı, geriye 82 vaka kaldı.
+
+Cevaplar tek tek ürün assertion'larına çevrildi. Sonuçta 2225 "bu kabul
+edilmeli" ve 2043 "bu reddedilmeli" assertion'ı oluştu. Bir vaka ancak kendisine
+ait assertion'ların tamamı aynı anda tutarsa geçiyor. Üretilen set
+[match-golden.json](https://github.com/umutcandev/sepet/blob/master/lib/ai/eval/cases/match-golden.json)
+içinde, adaylar gömülü olduğu için kendi kendine yetiyor.
+
+## İki ölçüt, çok farklı iki hikâye
+
+Bu ayrımı baştan netleştirmek gerekiyor, çünkü tek bir rakama bakmak yanıltır.
+
+Ürün düzeyinde ölçtüğümüzde daha güçlü bir modele geçiş, yanlış kabul edilen
+ürün sayısını 587'den 114'e indirdi. Yüzde 81'lik bir azalma. Kullanıcı
+açısından anlamlı olan rakam budur, çünkü kullanıcı sepetine yanlış giren ürünü
+görür.
+
+Vaka düzeyinde aynı koşu 82 vakanın 28'ini geçiyor. Bu rakam ilk bakışta kötü
+görünür ama ölçtüğü şey farklı. Bir vakanın geçmesi için o gıdaya ait elli
+civarı assertion'ın hepsinin birden tutması gerekiyor. Tek bir üründe hata, vakayı
+düşürür. Bunu bilerek böyle kurduk, çünkü gevşek bir çıta ilerlemeyi ölçemez.
+
+Yani 28/82 bir başarısızlık raporu değil, kendimize koyduğumuz sert iç çıta.
+Kullanıcıya yansıyan iyileşmeyi ürün düzeyi rakam anlatıyor.
+
+Rakam seçmediğimizi göstermek için aynı geçişin olumsuz tarafını da yazayım.
+Fazla ödeme yapılan vaka sayısı 10'dan 18'e çıktı. Model seçiciliği artınca
+bazen doğru ama daha pahalı ürünü tercih ediyor. Bu hâlâ açık bir sorun.
+
+## Kendi kendini kandırmayı engellemek
+
+Golden set'lerin en sinsi hatası, aynı örnekler üzerinde hem ayar yapıp hem
+ölçmektir. O zaman skor yükselir ama model bir şey öğrenmiş olmaz, sen cevapları
+prompt'a taşımış olursun.
+
+Bunu önlemek için 84 gıdayı train ve holdout diye ikiye böldük. Train tarafının
+kararları prompt'a politika satırı olarak enjekte ediliyor. Holdout tarafının
+kararları ise prompt'a asla girmiyor. Holdout yalnızca genel kuralların ne kadar
+genellediğini ölçüyor.
+
+Burada önemli bir tasarım tercihi var. "Holdout politikalarını enjekte etmeyi
+unutmayalım" demek yetmez, çünkü unutulur. Bunun yerine holdout terimlerinin
+politikaları production dosyasına hiç yazılmıyor. Enjekte edilememelerinin
+sebebi dikkat değil, dosyada bulunmamaları. Üstüne de
+[bir test](https://github.com/umutcandev/sepet/blob/master/lib/ai/match-policy.test.ts)
+koyduk.
+
+```ts
+// Production politika dosyasında holdout'tan tek bir terim bile olmamalı.
+// Olursa holdout anlamını yitirir ve skor sahte şekilde yükselir.
+for (const term of holdoutTerms) {
+  assert.equal(policyFor(term), null)
+}
+```
+
+Hatırlamaya bağlı her adım eninde sonunda atlanır. Yapısal garanti atlanamaz.
+
+## Maden suyunda yanlış çıkan hipotez
+
+Golden set kurulduktan sonra en dirençli vaka maden suyu oldu. Holdout
+tarafında, yani onun için prompt'ta özel bir politika yok.
+
+Hipotezimiz hazırdı. Aromalı maden suyu sızıyor olmalıydı. Raflarda limonlu,
+mandalinalı, tuzlu erikli maden suyu sadeden kat kat fazla yer kaplar, model de
+çoğunluğa kapılıyordur.
+
+Ölçtük ve hipotez yanlış çıktı. Model aroma tarafında hatasızdı. Sırma
+Mandalinalı, Kızılay Limonlu, Avşar Tuzlu Erik gibi adayların hepsini doğru
+reddediyordu. Tek bir kaçırma bile yoktu.
+
+Sızan ürünlere tek tek bakınca gerçek sebep ortaya çıktı. Hepsi sade maden
+suyuydu. Sorun tatta değil, ambalajdaydı.
+
+| Sızan ürün | Gerçek sebep |
+| --- | --- |
+| Kızılay Sade Maden Suyu 6x200 Ml | Çoklu paket |
+| Kızılay Afyon Doğal Maden Suyu 6x200 Ml | Çoklu paket |
+| Avoya Signature Sade Maden Suyu 4x250 Ml | Çoklu paket |
+| Uludağ Premium Maden Suyu 250 Ml | Premium hattı |
+
+[Kuralımızda](https://github.com/umutcandev/sepet/blob/master/lib/ai/prompts.ts)
+koli maddesi zaten vardı ama içinde şöyle bir kaçış cümlesi geçiyordu. Doğal
+olarak çoklu satılan
+baz gıdalar koli sayılmaz, kabul et. Yumurtanın onlusu, peçetenin otuz ikilisi
+için doğru bir istisna. Model bu cümleyi okuyup altılı maden suyunu da standart
+raf formu saydı. Haksız da değil, Türkiye'de gerçekten öyle satılıyor.
+
+Yani kural yanlış yazılmamıştı. Sınırı yanlış yerdeydi.
+
+## Kuralı düzelttik, sonuç kötüleşti
+
+Ayırt edici bir ölçüt önerdik. Ad "6x200 Ml" gibi adet çarpı hacim taşıyorsa,
+tek birim rafta ayrıca satılıyor demektir, dolayısıyla çoklu paket ek bir
+üründür ve tek adet isteyen kullanıcı için reddedilmelidir. Buna karşılık
+"10'lu yumurta" veya "100'lü çay poşeti" böyle bir yazım taşımaz, çünkü tek
+birimi ayrıca satılmıyor. Temiz ve sınanabilir bir ayrım.
+
+Kuralı ekleyip etkilenen on bir vakada
+[ölçtük](https://github.com/umutcandev/sepet/blob/master/scripts/eval-match.ts).
+
+| Ölçüt | Önce | Sonra |
+| --- | --- | --- |
+| Geçen vaka | 5/11 | 3/11 |
+| Yanlış kabul edilen ürün | 3 | 0 |
+| Kaçırılan ürün | 35 | 38 |
+
+Hedeflediğimiz şey gerçekleşti, yanlış kabuller sıfırlandı. Ama kural fazla
+geniş süpürdü ve başka yerlerde doğru ürünleri elemeye başladı. Geçen vaka
+sayısı düştü, kaçırma arttı. Net etki olumsuzdu.
+
+Kuralı geri aldık. Baseline zaten elimizdeydi, dolayısıyla geri alma bir kayıp
+değil bir karardı. Ölçüm olmasaydı bu kuralı yazar, birkaç maden suyu örneğine
+bakar, düzeldi der ve yayınlardık.
+
+## Asıl ders, ölçümün bizi yakalaması oldu
+
+Geri aldıktan sonra kuralın neden geniş süpürdüğünü araştırdık ve yazının en
+değerli bulgusu oradan çıktı.
+
+Kural en çok noodle vakasını bozuyordu, çünkü o vakanın doğru cevabında beşli
+noodle paketleri kabul edilmiş görünüyordu. Bunun neden böyle olduğuna baktık.
+
+84 gıdanın yalnızca sekizinde ayrı bir çoklu paket grubu oluşmuştu. Kalan yetmiş
+altısında koliler sessizce tür gruplarının içine dağılmış, ayrı bir soru olarak
+hiç sorulmamıştı. Sorulan sekiz karardan yedisinde koli reddedilmişti. Tek
+istisna noodle'dı ve oradaki cevap toptan "hepsi" idi, yani bilinçli bir koli
+kararı değil, geniş bir onayın yan etkisi.
+
+Başka deyişle kuralın çarpıştığı şey tutarlı bir ürün politikası değil, kendi
+etiketlememizdeki bir tutarsızlıktı. Ölçüm, modelin hatasını değil bizim
+hatamızı buldu.
+
+Bu, bir golden set'ten bekleyeceğin en iyi şeydir. Skor üretmesi zaten beklenen
+davranış. Asıl kıymeti, doğru sandığın referansın nerede çürük olduğunu
+göstermesinde.
+
+Ölçüm kurmanın maliyeti birkaç günlük iş oldu. Karşılığında artık "bu değişiklik
+iyi mi" sorusunun cevabı bir kanaat değil, bir sayı farkı. Ve bazen o sayı,
+değişikliği geri almanı söylüyor.

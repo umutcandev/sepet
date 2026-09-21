@@ -8,6 +8,7 @@ import {
   RiExternalLinkLine,
   RiFileCopyLine,
   RiFileTextLine,
+  RiGeminiFill,
   RiLinkedinFill,
   RiLinksLine,
   RiOpenaiFill,
@@ -77,12 +78,16 @@ export function getShareTargets(url: string, title: string): ShareTarget[] {
 }
 
 // Asistanlara makaleyi okutan derin bağlantılar. Temiz metni okuyabilmeleri için
-// sayfa yerine Markdown URL'ini veriyoruz.
+// sayfa yerine Markdown URL'ini veriyoruz. Gemini'nin kendi deep-link'i prompt
+// almadığı için Google'ın AI Modu kullanılıyor: `udm=50` sonucu normal arama
+// yerine AI Modu'na yönlendiren anahtar, `aep=1` ise giriş noktası işareti.
 export function getAssistantUrls(title: string, markdownUrl: string) {
   const prompt = `"${title}" başlıklı bu makaleyi oku, ardından hakkında sorularımı yanıtla:\n${markdownUrl}`
+  const q = encodeURIComponent(prompt)
   return {
-    chatGptUrl: `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`,
-    claudeUrl: `https://claude.ai/new?q=${encodeURIComponent(prompt)}`,
+    chatGptUrl: `https://chatgpt.com/?q=${q}`,
+    claudeUrl: `https://claude.ai/new?q=${q}`,
+    geminiUrl: `https://www.google.com/search?udm=50&aep=1&q=${q}`,
   }
 }
 
@@ -228,7 +233,7 @@ export function CopyArticleMenuItems({
     )
   }
 
-  const { chatGptUrl, claudeUrl } = getAssistantUrls(title, markdownUrl)
+  const { chatGptUrl, claudeUrl, geminiUrl } = getAssistantUrls(title, markdownUrl)
 
   return (
     <>
@@ -265,6 +270,16 @@ export function CopyArticleMenuItems({
           <ActionItemContent
             icon={RiClaudeFill}
             title="Claude'da aç"
+            description="Makale hakkında soru sor"
+            external
+          />
+        </a>
+      </DropdownMenuItem>
+      <DropdownMenuItem className="items-start gap-2 py-1.5" asChild>
+        <a href={geminiUrl} target="_blank" rel="noopener noreferrer">
+          <ActionItemContent
+            icon={RiGeminiFill}
+            title="Gemini'de aç"
             description="Makale hakkında soru sor"
             external
           />

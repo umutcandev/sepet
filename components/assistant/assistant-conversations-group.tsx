@@ -66,7 +66,6 @@ function AwaitingIcon({ className }: { className?: string }) {
       strokeLinejoin="round"
       className={className}
       aria-hidden="true"
-      opacity="0.5"
     >
       <circle
         cx="8"
@@ -82,8 +81,7 @@ function AwaitingIcon({ className }: { className?: string }) {
 }
 
 // "Tamamlandı" — karşılaştırma/optimizasyon çalışmış, terminal sonuca ulaşmış
-// sohbet. Sabit #666666 yerine currentColor + opacity ile temaya/aktif duruma
-// uyum sağlar (AwaitingIcon ile aynı görsel ağırlık).
+// sohbet. currentColor: mürekkebi ConversationStateIcon veriyor.
 function CompletedIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -94,7 +92,6 @@ function CompletedIcon({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-hidden="true"
-      opacity="0.5"
     >
       <path
         fillRule="evenodd"
@@ -140,7 +137,12 @@ function ConversationStateIcon({
   return (
     <Tooltip delayDuration={200}>
       <TooltipTrigger asChild>
-        <span className="flex shrink-0 items-center justify-center">
+        {/* Eskiden currentColor'ın (sidebar metni) %50'siydi: doğru ağırlıkta
+            ama kahverengi metin krem zeminle karışınca kroma düşüyor, ikon nötr
+            griye iniyordu (#9C8C7F). Mürekkep artık `--muted-foreground`, yani
+            paletin kendi sıcak tonu; /70 aynı solukluğu sıcaklığı kaybetmeden
+            veriyor. */}
+        <span className="flex shrink-0 items-center justify-center text-muted-foreground/70">
           {icon}
         </span>
       </TooltipTrigger>
