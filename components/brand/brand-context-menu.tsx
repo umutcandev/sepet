@@ -101,6 +101,10 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   // Menü açılırken doldurulur; tıklama anında ağa gidilmez (aşağıya bkz).
   const cache = React.useRef<Record<string, string>>({})
+  // Tetikleyici bir bağlantı (ana sayfa). Dokunmatikte basılı tutma menüyü
+  // açar ama parmak kalkınca click de gelir — menü açılmışsa o tıklamayı yut,
+  // yoksa kullanıcı menüyü görmeden ana sayfaya düşer.
+  const armed = React.useRef(false)
 
   React.useEffect(() => {
     return () => {
@@ -149,11 +153,24 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
   return (
     <ContextMenu
       onOpenChange={(open) => {
+        armed.current = open
         if (open) prefetch()
         else setCopied(null)
       }}
     >
-      <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
+      <ContextMenuTrigger
+        asChild
+        // Capture: React'te aynı düğümün yakalama aşaması balon aşamasından
+        // önce çalışır, yani Link'in kendi onClick'i hiç görmez.
+        onClickCapture={(event) => {
+          if (!armed.current) return
+          armed.current = false
+          event.preventDefault()
+          event.stopPropagation()
+        }}
+      >
+        {children}
+      </ContextMenuTrigger>
 
       {/* collisionPadding: menü imlecin/parmağın konumuna çıpalanır. Logolar
           başlığın en solunda ve en üstünde duruyor, yani çıpa hep bir kenara

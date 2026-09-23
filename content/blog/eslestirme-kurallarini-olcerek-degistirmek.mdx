@@ -1,6 +1,6 @@
 ---
 title: Ürün Eşleştirme Kurallarını Tahminle Değil Ölçerek Değiştirmek
-description: 84 temel gıda için 82 vakalık bir golden set kurduk. İlk yazdığımız yeni kural ölçümde kötüleşti ve geri aldık. Asıl sürpriz, ölçümün modelden önce kendi etiketlerimizdeki hatayı bulması oldu.
+description: 84 market kalemi için 82 vakalık bir golden set kurduk. Yeni kural hiçbir kazanç gösteremedi, geri aldık. Asıl sürpriz, ölçümün modelden önce kendi etiketlerimizdeki hatayı bulması oldu.
 publishedAt: 2026-09-21T10:00:00+03:00
 authors:
   - umutcan
@@ -25,14 +25,17 @@ anlatıyor. Ders beklediğimiz yerden gelmedi.
 
 ## Golden set nasıl kuruldu
 
-[84 temel gıda](https://github.com/umutcandev/sepet/blob/master/lib/ai/eval/terms.ts)
-belirledik. Yoğurt, süt, nohut, tavuk, deterjan, peçete gibi gerçek sepetlerde
-en sık geçen terimler. Her biri için canlı arama sonuçlarını bir kez çekip
+[84 temel market kalemi](https://github.com/umutcandev/sepet/blob/master/lib/ai/eval/terms.ts)
+belirledik. Yoğurt, süt, nohut, tavuk gibi gıdalar ve deterjan, peçete gibi
+gerçek sepetlerde en sık geçen gıda dışı kalemler. Her biri için canlı arama
+sonuçlarını bir kez çekip
 [dondurduk](https://github.com/umutcandev/sepet/tree/master/lib/ai/eval/candidates).
-Ortalama 70 aday ürün, tek bir tarih ve tek bir konum. Fiyatlar her gün değişir
-ama ürün kimlikleri değişmez, dolayısıyla set aylarca geçerli kalır.
+Kalem başına ortalama 52 aday ürün, tek bir tarih ve tek bir konum. Fiyatlar her
+gün değişir ama ürün kimlikleri değişmez, dolayısıyla set aylarca geçerli kalır.
+Karar verilemeyip atlanan iki kalem toplam 9 aday taşıyordu, yani setin
+büyüklüğünü etkilemiyorlar; geriye kalan 82 vakada vaka başına 54 aday var.
 
-Sonra her gıdanın aday havuzunu ürün türlerine kümeledik. Maden suyu havuzu
+Sonra her kalemin aday havuzunu ürün türlerine kümeledik. Maden suyu havuzu
 şöyle bölündü.
 
 | Grup | Ürün türü | Aday sayısı |
@@ -43,14 +46,17 @@ Sonra her gıdanın aday havuzunu ürün türlerine kümeledik. Maden suyu havuz
 | D | Premium / signature | 3 |
 
 Harfler bir kez donduruldu ve tek bir soru soruldu. Kullanıcı bu terimi sade
-haliyle yazdığında hangi gruplar sepete girmeli? 72 ürün adı okumak yerine dört satır okuyup "B" yazıyor
-ve geçiyorsun. 84 gıdanın tamamı
-[bu şekilde cevaplandı](https://github.com/umutcandev/sepet/blob/master/lib/ai/eval/taxonomy-sheet.md).
-İki terimde karar verilemedi ve atlandı, geriye 82 vaka kaldı.
+haliyle yazdığında hangi gruplar sepete girmeli? 72 ürün adı okumak yerine dört
+satır okuyup "B" yazıp geçiyorsun. 84 kalemin hepsi
+[tek tek elden geçti](https://github.com/umutcandev/sepet/blob/master/lib/ai/eval/taxonomy-sheet.md);
+ikisinde karar verilemedi ve atlandı, geriye 82 vaka kaldı.
 
 Cevaplar tek tek ürün assertion'larına çevrildi. Sonuçta 2225 "bu kabul
-edilmeli" ve 2043 "bu reddedilmeli" assertion'ı oluştu. Bir vaka ancak kendisine
-ait assertion'ların tamamı aynı anda tutarsa geçiyor. Üretilen set
+edilmeli" ve 2043 "bu reddedilmeli" assertion'ı oluştu. Toplam 4393 adayın
+4268'i bir assertion'a bağlandı; kalan 125'i (%3) hiçbir gruba temiz
+oturmadığı için ölçüme hiç girmiyor, yani ne lehte ne aleyhte sayılıyor. Bir
+vaka ancak kendisine ait assertion'ların tamamı aynı anda tutarsa geçiyor.
+Üretilen set
 [match-golden.json](https://github.com/umutcandev/sepet/blob/master/lib/ai/eval/cases/match-golden.json)
 içinde, adaylar gömülü olduğu için kendi kendine yetiyor.
 
@@ -58,22 +64,59 @@ içinde, adaylar gömülü olduğu için kendi kendine yetiyor.
 
 Bu ayrımı baştan netleştirmek gerekiyor, çünkü tek bir rakama bakmak yanıltır.
 
-Ürün düzeyinde ölçtüğümüzde daha güçlü bir modele geçiş, yanlış kabul edilen
-ürün sayısını 587'den 114'e indirdi. Yüzde 81'lik bir azalma. Kullanıcı
-açısından anlamlı olan rakam budur, çünkü kullanıcı sepetine yanlış giren ürünü
-görür.
+Ürün düzeyinde iki ayrı hata türü var ve ikisini birden sabitlemek gerekiyor,
+çünkü tek birine bakmak her değişikliği iyi gösterebilir.
+
+| Hata türü | Ne demek | Kullanıcı ne yaşar |
+| --- | --- | --- |
+| Yanlış kabul | Girmemesi gereken ürün sepete girdi | Görür, yanlış şeyi alır, güveni sarsılır |
+| Kaçırma | Girmesi gereken ürün elendi | Görmez, ama aday havuzu daralır ve optimizasyon daha pahalı seçeneğe düşebilir |
+
+Bu ikisinin maliyeti eşit değil, ama kaç katı olduğunu bilmiyoruz. Yanlış kabul
+görünür ve güven kırar. Kaçırma sessizdir ve para kaybettirir. Elimizde bir
+dönüşüm oranı yok, dolayısıyla ikisini tek bir puana toplamıyoruz; ayrı ayrı
+raporluyoruz ve bir değişiklik ancak birini bozmadan diğerini iyileştirdiğinde
+net kazanç sayılıyor.
+
+Bu ölçütle bakınca daha güçlü bir modele geçiş yanlış kabul edilen ürün sayısını
+587'den 114'e indirdi, yüzde 81'lik bir azalma. O koşunun kaçırma sayısını ise
+kaydetmemişiz, yani az önce koyduğumuz kuralı kendi en iddialı rakamımızda
+uygulayamıyoruz.
+
+Elimizde dolaylı bir işaret var ama. Aynı geçişte fazla ödeme yapılan vaka
+sayısı 10'dan 18'e çıktı. Tablodaki tanıma göre kaçırmanın sonucu tam olarak
+budur: doğru ürün elenince aday havuzu daralır ve optimizasyon daha pahalı
+seçeneğe düşer. Yani fazla ödemedeki artış, eksik olan kaçırma rakamının gölgesi
+gibi okunabilir. Model seçiciliği kazanırken bir miktar doğru ürünü de elemiş
+olmalı. Bu bir ölçüm değil, çıkarım; ama hiç yoktan iyi ve yönü belli.
 
 Vaka düzeyinde aynı koşu 82 vakanın 28'ini geçiyor. Bu rakam ilk bakışta kötü
-görünür ama ölçtüğü şey farklı. Bir vakanın geçmesi için o gıdaya ait elli
-civarı assertion'ın hepsinin birden tutması gerekiyor. Tek bir üründe hata, vakayı
-düşürür. Bunu bilerek böyle kurduk, çünkü gevşek bir çıta ilerlemeyi ölçemez.
+görünür ama ölçtüğü şey farklı. Bir vakanın geçmesi için o kaleme ait elli
+civarı assertion'ın hepsinin birden tutması gerekiyor. Tek bir üründe hata,
+vakayı düşürür. Bunu bilerek böyle kurduk, çünkü gevşek bir çıta ilerlemeyi
+ölçemez.
 
-Yani 28/82 bir başarısızlık raporu değil, kendimize koyduğumuz sert iç çıta.
-Kullanıcıya yansıyan iyileşmeyi ürün düzeyi rakam anlatıyor.
+O 28/82 de tek başına yanıltıcı, çünkü iki farklı popülasyonu topluyor.
 
-Rakam seçmediğimizi göstermek için aynı geçişin olumsuz tarafını da yazayım.
-Fazla ödeme yapılan vaka sayısı 10'dan 18'e çıktı. Model seçiciliği artınca
-bazen doğru ama daha pahalı ürünü tercih ediyor. Bu hâlâ açık bir sorun.
+| Bölüm | Skor | Oran | Politikası prompt'a giriyor mu |
+| --- | --- | --- | --- |
+| Train | 23/60 | %38 | Evet |
+| Holdout | 5/22 | %23 | Hayır |
+| Toplam | 28/82 | %34 | Karışık |
+
+Buradan "sızıntı kanıtlandı" sonucu çıkarmak cazip ama yanlış olur. 22 vakalık
+bir örneklemde yüzde 23'ün Wilson güven aralığı yaklaşık yüzde 10 ile 43
+arasında. Doğru sınama iki oranı doğrudan karşılaştırmaktır ve orada da p değeri
+0,2 ile 0,3 arasında çıkıyor, yani fark tesadüfle rahatça açıklanabilir.
+Sıralamanın büsbütün dönmesi için dört holdout vakasının daha geçmesi yeterdi.
+Doğru cümle şu: fark sızıntıyla uyumlu, ama bu örneklem sızıntıyı gösteremez.
+
+Dahası, cevabı prompt'a enjekte edilmiş train tarafının bile yalnızca yüzde 38
+tutturması kendi başına tuhaf. İki açıklama var ve hangisi olduğunu bilmiyoruz.
+Ya politika enjeksiyonu sandığımız kadar işe yaramıyor, ya da vaka çıtası o
+kadar sert ki elli assertion'dan biri her iki tarafta da kolayca düşüyor ve
+bölümler arası farkı bastırıyor. İkincisi doğruysa vaka skoru zaten sızıntıyı
+ölçmek için fazla kaba bir alet demektir.
 
 ## Kendi kendini kandırmayı engellemek
 
@@ -81,7 +124,7 @@ Golden set'lerin en sinsi hatası, aynı örnekler üzerinde hem ayar yapıp hem
 ölçmektir. O zaman skor yükselir ama model bir şey öğrenmiş olmaz, sen cevapları
 prompt'a taşımış olursun.
 
-Bunu önlemek için 84 gıdayı train ve holdout diye ikiye böldük. Train tarafının
+Bunu önlemek için 84 kalemi train ve holdout diye ikiye böldük. Train tarafının
 kararları prompt'a politika satırı olarak enjekte ediliyor. Holdout tarafının
 kararları ise prompt'a asla girmiyor. Holdout yalnızca genel kuralların ne kadar
 genellediğini ölçüyor.
@@ -114,10 +157,11 @@ mandalinalı, tuzlu erikli maden suyu sadeden kat kat fazla yer kaplar, model de
 
 Ölçtük ve hipotez yanlış çıktı. Model aroma tarafında hatasızdı. Sırma
 Mandalinalı, Kızılay Limonlu, Avşar Tuzlu Erik gibi adayların hepsini doğru
-reddediyordu. Tek bir kaçırma bile yoktu.
+reddediyordu. Aromalı taraftan tek bir sızma bile yoktu.
 
 Sızan ürünlere tek tek bakınca gerçek sebep ortaya çıktı. Hepsi sade maden
-suyuydu. Sorun tatta değil, ambalajdaydı.
+suyuydu, yani tatla hiç ilgisi yoktu. Aşağıdaki dört ürün, maden suyunu tek
+başına beş kez koşturunca biriken yedi sızıntının bir kesiti.
 
 | Sızan ürün | Gerçek sebep |
 | --- | --- |
@@ -126,22 +170,28 @@ suyuydu. Sorun tatta değil, ambalajdaydı.
 | Avoya Signature Sade Maden Suyu 4x250 Ml | Çoklu paket |
 | Uludağ Premium Maden Suyu 250 Ml | Premium hattı |
 
-[Kuralımızda](https://github.com/umutcandev/sepet/blob/master/lib/ai/prompts.ts)
+Yani tek bir sebep değil, iki ayrı sebep var. İlk üçü ambalaj, sonuncusu ise
+tamamen başka bir şey: tekli şişe, ama pahalı bir alt marka. Sheet'te premium
+grubu da reddedilmişti ve bunu karşılayan hiçbir kural yok.
+
+Ambalaj tarafına gelince,
+[kuralımızda](https://github.com/umutcandev/sepet/blob/master/lib/ai/prompts.ts)
 koli maddesi zaten vardı ama içinde şöyle bir kaçış cümlesi geçiyordu. Doğal
-olarak çoklu satılan
-baz gıdalar koli sayılmaz, kabul et. Yumurtanın onlusu, peçetenin otuz ikilisi
-için doğru bir istisna. Model bu cümleyi okuyup altılı maden suyunu da standart
-raf formu saydı. Haksız da değil, Türkiye'de gerçekten öyle satılıyor.
+olarak çoklu satılan baz gıdalar koli sayılmaz, kabul et. Yumurtanın onlusu,
+peçetenin otuz ikilisi için doğru bir istisna. Model bu cümleyi okuyup altılı ve
+dörtlü maden suyunu da standart raf formu saydı. Haksız da değil, Türkiye'de
+gerçekten öyle satılıyor.
 
 Yani kural yanlış yazılmamıştı. Sınırı yanlış yerdeydi.
 
-## Kuralı düzelttik, sonuç kötüleşti
+## Kuralı düzelttik, hiçbir şey kazanmadık
 
 Ayırt edici bir ölçüt önerdik. Ad "6x200 Ml" gibi adet çarpı hacim taşıyorsa,
 tek birim rafta ayrıca satılıyor demektir, dolayısıyla çoklu paket ek bir
 üründür ve tek adet isteyen kullanıcı için reddedilmelidir. Buna karşılık
 "10'lu yumurta" veya "100'lü çay poşeti" böyle bir yazım taşımaz, çünkü tek
-birimi ayrıca satılmıyor. Temiz ve sınanabilir bir ayrım.
+birimi ayrıca satılmıyor. Temiz ve sınanabilir bir ayrım. Premium tarafına
+dokunmuyor, onu bilerek kapsam dışı bıraktık.
 
 Kuralı ekleyip etkilenen on bir vakada
 [ölçtük](https://github.com/umutcandev/sepet/blob/master/scripts/eval-match.ts).
@@ -149,26 +199,43 @@ Kuralı ekleyip etkilenen on bir vakada
 | Ölçüt | Önce | Sonra |
 | --- | --- | --- |
 | Geçen vaka | 5/11 | 3/11 |
-| Yanlış kabul edilen ürün | 3 | 0 |
+| Yanlış kabul edilen ürün | 4 | 1 |
 | Kaçırılan ürün | 35 | 38 |
 
-Hedeflediğimiz şey gerçekleşti, yanlış kabuller sıfırlandı. Ama kural fazla
-geniş süpürdü ve başka yerlerde doğru ürünleri elemeye başladı. Geçen vaka
-sayısı düştü, kaçırma arttı. Net etki olumsuzdu.
+Bu tablo, maden suyu teşhisindeki yedi sızıntıyla karıştırılmamalı. O yedi rakam
+maden suyunu yalnız başına beş kez koşturmanın birleşimi; buradaki sayılar on bir
+vakanın tek seferlik toplamı. İki ölçüm farklı koşullarda alındı, doğrudan
+kıyaslanamazlar.
 
-Kuralı geri aldık. Baseline zaten elimizdeydi, dolayısıyla geri alma bir kayıp
-değil bir karardı. Ölçüm olmasaydı bu kuralı yazar, birkaç maden suyu örneğine
-bakar, düzeldi der ve yayınlardık.
+Ve işin can alıcı yeri burada. O tek koşuda maden suyu vakası geçti. Yani kuralın
+yazılma sebebi olan vaka, kararı verdiğimiz ölçümde zaten hatasızdı; kuralın
+faydasını gösterebilecek durumda değildi. Tablodaki dört yanlış kabulün hiçbiri
+maden suyundan gelmiyor. Kazancı ölçmek için kurduğumuz deney, kazancın
+görüneceği yeri kapsamıyordu.
+
+Yukarıda sabitlediğimiz ölçütle okuyalım. Kural üç yanlış kabulü temizledi, yani
+görünür ve güven kıran hatayı azalttı. Tam karşılığında üç doğru ürünü eledi,
+yani sessiz ve para kaybettiren hatayı artırdı. Yanlış kabul kaçırmadan daha
+maliyetliyse bu küçük bir kazançtır; ikisi eşitse başa baştır. Elimizde o
+dönüşüm oranı olmadığı için hangisi olduğunu söyleyemiyoruz.
+
+Söyleyebildiğimiz tek şey, hiçbir ölçütün açık ara iyileşme göstermediği. Geçen
+vaka sayısı geriledi ama o zaten en kaba alet. Ürün düzeyinde ise takas var,
+kazanç yok.
+
+Sonuç bu yüzden "kural kötüydü" değil, "kuralın iyi olduğunu gösteremedik".
+Gösterilmiş kazanç yoksa prompt'a kural eklenmez; varsayılan, değiştirmemektir.
+Bu gerekçeyle geri aldık, baseline zaten elimizdeydi.
 
 ## Asıl ders, ölçümün bizi yakalaması oldu
 
-Geri aldıktan sonra kuralın neden geniş süpürdüğünü araştırdık ve yazının en
-değerli bulgusu oradan çıktı.
+Geri aldıktan sonra kuralın neden böyle bir takas yarattığını araştırdık ve
+yazının en değerli bulgusu oradan çıktı.
 
 Kural en çok noodle vakasını bozuyordu, çünkü o vakanın doğru cevabında beşli
 noodle paketleri kabul edilmiş görünüyordu. Bunun neden böyle olduğuna baktık.
 
-84 gıdanın yalnızca sekizinde ayrı bir çoklu paket grubu oluşmuştu. Kalan yetmiş
+84 kalemin yalnızca sekizinde ayrı bir çoklu paket grubu oluşmuştu. Kalan yetmiş
 altısında koliler sessizce tür gruplarının içine dağılmış, ayrı bir soru olarak
 hiç sorulmamıştı. Sorulan sekiz karardan yedisinde koli reddedilmişti. Tek
 istisna noodle'dı ve oradaki cevap toptan "hepsi" idi, yani bilinçli bir koli
@@ -178,10 +245,47 @@ Başka deyişle kuralın çarpıştığı şey tutarlı bir ürün politikası d
 etiketlememizdeki bir tutarsızlıktı. Ölçüm, modelin hatasını değil bizim
 hatamızı buldu.
 
-Bu, bir golden set'ten bekleyeceğin en iyi şeydir. Skor üretmesi zaten beklenen
-davranış. Asıl kıymeti, doğru sandığın referansın nerede çürük olduğunu
+Doğru sıra şu: önce o yetmiş altı kalemde koli sorusunu ayrıca sor, noodle
+cevabını netleştir, sonra kuralı tekrar ölç. Referans düzelmeden kural yazmak,
+yanlış hedefe nişan almaktır.
+
+Bu, bir golden set'ten bekleyeceğimiz en iyi şey. Skor üretmesi zaten beklenen
+davranış. Asıl kıymeti, doğru sandığımız referansın nerede çürük olduğunu
 göstermesinde.
 
+## Bilinen sınırlar
+
+Buraya kadar anlattığımız işin dört zayıf yeri var. Dördü de sonucu tersine
+çevirmiyor ama okurken bilinmesi gerekiyor.
+
+**Karar ölçümü tek koşuydu.** Teşhisi beş koşuyla yapıp kararı tek koşuyla
+verdik, sıralama ters. Varyansın gerçek olduğunu, aynı vakanın koşudan koşuya
+geçip kaldığını zaten biliyorduk. Üç birimlik bir farkı tek koşuyla gürültüden
+ayıramayız.
+
+**Model geçişinin kaçırma rakamı elimizde yok.** 587'den 114'e düşen yanlış
+kabulü kaydetmişiz, aynı koşunun kaçırma sayısını kaydetmemişiz. Fazla ödeme
+artışı dolaylı bir işaret veriyor ama ölçümün yerini tutmuyor.
+
+**Holdout'u ayar için kullandık.** Maden suyu holdout tarafında, ama kuralı tam
+olarak onun hatalarına bakarak yazdık. Yapısal testimiz bunu engellemiyor; o
+test politikaların dosyaya sızmasını durduruyor, insanın holdout çıktısına bakıp
+genel kural yazmasını değil. Korumanın kapsadığı şey dosya, kapsamadığı şey
+dikkat.
+
+Kuralı geri almak bunu ancak yarısından temizliyor. Prompt dosyası tertemiz,
+evet; ama maden suyunun hangi ürünlerde ve neden battığını artık biliyoruz ve bu
+bilgi silinmiyor. Bundan sonra yazacağımız her genel kural, farkında olalım ya da
+olmayalım, onu taşıyacak. Dürüst tanım şu: maden suyu artık yarı yanmış bir
+holdout kalemi. Bakir bir genelleme ölçüsü istiyorsak hiç dokunmadığımız
+kalemlere bakmamız gerekiyor.
+
+**Geri alma kararı, sonradan çürüdüğünü öğrendiğimiz etiketlere dayanıyor.**
+Yani "ölçüm geri al dedi" cümlesi göründüğü kadar sağlam değil; etiketler
+düzeltilip yeniden ölçülmedi. Karar yine de savunulabilir, çünkü gerekçe "kural
+zararlı" değil "kazanç gösterilemedi" idi ve bozuk referansla kazanç göstermek
+zaten mümkün değil. Ama bu bir kanıt değil, temkinli bir varsayılan.
+
 Ölçüm kurmanın maliyeti birkaç günlük iş oldu. Karşılığında artık "bu değişiklik
-iyi mi" sorusunun cevabı bir kanaat değil, bir sayı farkı. Ve bazen o sayı,
-değişikliği geri almanı söylüyor.
+iyi mi" sorusunun cevabı bir kanaat değil, bir sayı farkı. Ve bazen o sayı
+kazandığımızı değil, hiçbir şey kanıtlayamadığımızı söylüyor.

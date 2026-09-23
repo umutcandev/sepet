@@ -79,11 +79,14 @@ const CELL = "px-2 py-2 sm:px-4"
 // Plan sütunlarının solundaki dikey ayraç — satır ayraçlarıyla aynı ton.
 // border-separate kullanıldığı için her hücreye ayrı ayrı verilir.
 const COL_DIVIDER = "border-l border-border"
-// Satın alma düğmeleri: sütunu tam doldurur, mobilde dar sütuna sığsın diye bir
-// punto küçülüp yatay paddingi kısar. TEK SATIRDA kalırlar (Button base'indeki
-// `whitespace-nowrap`); onlara yer açan şey düğmenin kendi ayarı değil, mobil
-// sütun payları — Pro %48, Ücretsiz %24 (bkz. colgroup).
+// Satın alma düğmeleri: sütunu tam doldurur, mobilde bir punto küçülür. Tek
+// satırda kalırlar (Button base'indeki `whitespace-nowrap`) — bu yüzden içlerine
+// fiyat KOYULMAZ, o başlıktaki plan hücresinde durur.
 const ACTION_BUTTON = "w-full gap-1 px-1.5 text-xs sm:px-2.5 sm:text-[0.8rem]"
+// Pro başlığındaki fiyat — değer hücreleriyle aynı mono ritim. Rozete yapışık
+// durur ki ad + fiyat tek bir blok gibi okunsun.
+const HEADER_PRICE =
+  "relative mt-0.5 block font-mono text-xs tabular-nums text-foreground"
 
 export function HomePricingSection() {
   const [interval, setInterval] = React.useState<Interval>("month")
@@ -136,18 +139,10 @@ export function HomePricingSection() {
                   tablo dar ekranda kabından taşıp sağdan kırpılıyordu. Sabit
                   düzende yüzdeler bağlayıcı olur, içerik hücrenin içinde sarar. */}
               <table className="w-full table-fixed border-separate border-spacing-0 text-xs sm:text-sm">
-                {/* Mobilde pay dağılımı içeriğin gerçek ihtiyacına göre, eşit
-                    değil. Pro yarıyı alır: düğmesi "Pro'ya geç" + fiyat taşıyor,
-                    sarmaması gerekiyor ve fiyat dört haneye çıkabiliyor (₺2.490).
-                    Ücretsiz %24 ile yetinir — içinde yalnız kısa sayılar,
-                    "Başla" ve rozet var. Farkı özellik etiketleri karşılar;
-                    sarmaya müsait tek öğe onlar. sm'de de Pro fazladan pay
-                    korur: lg'de tablo iki kolonlu ızgaraya girip daralıyor ve
-                    %26 dört haneli fiyata yetmiyordu. */}
                 <colgroup>
-                  <col className="w-[28%] sm:w-[40%]" />
-                  <col className="w-[24%] sm:w-[26%]" />
-                  <col className="w-[48%] sm:w-[34%]" />
+                  <col className="w-[44%]" />
+                  <col className="w-[26%] sm:w-[28%]" />
+                  <col className="w-[30%] sm:w-[28%]" />
                 </colgroup>
 
                 <thead>
@@ -172,7 +167,9 @@ export function HomePricingSection() {
                         </div>
                       </div>
                     </th>
-                    {/* Ücretsiz: yalnızca ad — fiyatı zaten sıfır. */}
+                    {/* Ücretsiz: yalnızca ad — fiyatı zaten sıfır. Rozet dikeyde
+                        ortalanır (varsayılan hizalama); satır yüksekliğini
+                        Pro'nun iki satırlık başlığı belirler. */}
                     <th
                       scope="col"
                       className={cn(
@@ -193,8 +190,8 @@ export function HomePricingSection() {
                       </Badge>
                     </th>
                     {/* Pro: primary rozet, arkasında `pro-sheen` (sıcak yıkama +
-                      köşegen tarama). Fiyat rozetin yanında değil alttaki satın
-                      alma düğmesinde — rozet yalnız planın adını taşır. */}
+                      köşegen tarama). Fiyat rozetin altında: düğmedeyken sütunu
+                      dört haneli tutara (2.490₺) göre genişletiyordu. */}
                     <th
                       scope="col"
                       className={cn(
@@ -206,11 +203,20 @@ export function HomePricingSection() {
                         aria-hidden
                         className="pointer-events-none absolute inset-0 pro-sheen"
                       />
-                      {/* Rozet h-5; komşu başlıklar text-base (24px satır kutusu).
-                          `my-0.5` ikisini eşitler, satır yüksekliği oynamaz. */}
-                      <Badge variant="default" className="relative my-0.5">
+                      <Badge variant="default" className="relative">
                         Pro
                       </Badge>
+                      <span className={HEADER_PRICE}>
+                        <AnimatedAmount
+                          value={
+                            interval === "month" ? MONTHLY_PRICE : YEARLY_PRICE
+                          }
+                          className="font-medium"
+                        />
+                        <span className="ml-0.5 font-sans text-[0.9em] text-muted-foreground">
+                          {interval === "month" ? "/ay" : "/yıl"}
+                        </span>
+                      </span>
                     </th>
                   </tr>
                 </thead>
@@ -284,9 +290,6 @@ export function HomePricingSection() {
                         "border-t border-border bg-muted/30"
                       )}
                     >
-                      {/* Fiyat artık burada: aralık anahtarı değişince NumberFlow
-                          249 ↔ 2.490 arası döner, yani anahtar ile düğme
-                          arasındaki bağ görünür kalır. */}
                       <Button
                         asChild
                         size="sm"
@@ -297,14 +300,6 @@ export function HomePricingSection() {
                           onClick={requireAuth(() => undefined)}
                         >
                           Pro&apos;ya geç
-                          <AnimatedAmount
-                            value={
-                              interval === "month"
-                                ? MONTHLY_PRICE
-                                : YEARLY_PRICE
-                            }
-                            className="font-mono tracking-tight opacity-80"
-                          />
                         </a>
                       </Button>
                     </td>

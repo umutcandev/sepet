@@ -342,11 +342,9 @@ export function AppShell({ blogPosts, children }: Props) {
           >
             <div className="flex shrink-0 items-center gap-2 px-4">
               <SidebarToggleButton />
-              {/* Anahtarla ondan sonra geleni ayırır; anahtar mobile özel
-                  olduğu için ayraç da öyle. */}
               <Separator
                 orientation="vertical"
-                className="mr-2 data-vertical:h-4 data-vertical:self-auto md:hidden"
+                className="mr-2 bg-foreground/12 data-vertical:h-4 data-vertical:self-auto md:hidden"
               />
               {isAssistantRoute ? (
                 <NewConversationButton />
@@ -361,8 +359,15 @@ export function AppShell({ blogPosts, children }: Props) {
                 // üstüne zaman tabanlı bir geçiş koymak logoyu zeminin gerisine
                 // düşürürdü. Tema değişiminin yumuşaklığı `--logo-swap`ı yaya
                 // bağlayan app-shell tarafında sağlanır.
+                //
+                // Ana sayfaya bağlı: mobilde kenar çubuğu kapalı bir `Sheet`,
+                // yani ekrandaki tek logo — ve tek "başa dön" kısayolu — bu.
                 <BrandContextMenu>
-                  <span className="relative inline-flex h-5 shrink-0 md:hidden">
+                  <Link
+                    href="/"
+                    aria-label="Sepet ana sayfası"
+                    className="relative inline-flex h-5 shrink-0 rounded-sm md:hidden focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+                  >
                     <Image
                       src="/brand/sepet-dark.svg"
                       alt="Sepet"
@@ -379,7 +384,7 @@ export function AppShell({ blogPosts, children }: Props) {
                       height={178}
                       className="logo-on-dark absolute inset-0 h-5 w-auto"
                     />
-                  </span>
+                  </Link>
                 </BrandContextMenu>
               )}
             </div>

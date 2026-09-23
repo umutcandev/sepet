@@ -24,6 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { SidebarGroupLink } from "@/components/sidebar-group-link"
 import { getAuthors, type AuthorId } from "@/lib/blog/authors"
 import { cn } from "@/lib/utils"
 
@@ -120,7 +121,7 @@ export function BlogPostsGroup({ posts }: Props) {
     <>
     {/* Daraltılmış rayda gizli: satırların ikonu yazar avatarı, tek başına
         hangi yazı olduğunu söylemiyor (bkz. assistant-conversations-group). */}
-    <SidebarGroup className="shrink-0 group-data-[collapsible=icon]:hidden">
+    <SidebarGroup className="group/section shrink-0 group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel asChild>
         <button
           onClick={() => setCollapsed((p) => !p)}
@@ -137,6 +138,11 @@ export function BlogPostsGroup({ posts }: Props) {
           </span>
         </button>
       </SidebarGroupLabel>
+      <SidebarGroupLink
+        href="/blog"
+        label="Tüm blog gönderileri"
+        onNavigate={handleNavClick}
+      />
       <AnimatePresence initial={false}>
         {!collapsed && (
           <SidebarGroupContent>
