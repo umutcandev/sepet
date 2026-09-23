@@ -1,0 +1,1158 @@
+{
+  "term": "balık",
+  "category": "Et & protein",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:45:43.993Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0XRE",
+      "name": "Eti Balık Kraker 40 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 13,
+      "maxPrice": 13,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 13
+        }
+      ]
+    },
+    {
+      "productId": "1YHC",
+      "name": "Eti Balık Mini Mısırlı Kraker 70 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 5,
+      "minPrice": 15,
+      "maxPrice": 23.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15
+        },
+        {
+          "market": "Şok",
+          "price": 22.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 22.75
+        },
+        {
+          "market": "hakmar",
+          "price": 23
+        },
+        {
+          "market": "Migros",
+          "price": 23.5
+        }
+      ]
+    },
+    {
+      "productId": "1E9D",
+      "name": "Atıştır Balık Kraker 140 Gr",
+      "brand": "Atıştır",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 16.5,
+      "maxPrice": 16.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 16.5
+        }
+      ]
+    },
+    {
+      "productId": "1KSU",
+      "name": "Eti Ketçaplı Kırmızı Balık Kraker 65 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 18.5,
+      "maxPrice": 18.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 18.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZJ5",
+      "name": "Eti Balık Kraker 160 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 3,
+      "minPrice": 42.5,
+      "maxPrice": 43,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 42.5
+        },
+        {
+          "market": "A101",
+          "price": 43
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 43
+        }
+      ]
+    },
+    {
+      "productId": "1NG9",
+      "name": "Balık Dünyası Uskumru Fileto 500 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 129,
+      "maxPrice": 229,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 129
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 229
+        }
+      ]
+    },
+    {
+      "productId": "1RGY",
+      "name": "Dardanel Soğutulmuş Somon Füme Balık 40 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "1PS7",
+      "name": "Balık Dünyası Türk Somonu 440 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 165,
+      "maxPrice": 165,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 165
+        }
+      ]
+    },
+    {
+      "productId": "1CZ3",
+      "name": "Thai Balık Sosu 200 Ml",
+      "brand": "Thai",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 169.5,
+      "maxPrice": 169.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.5
+        }
+      ]
+    },
+    {
+      "productId": "1LWQ",
+      "name": "Balık Dünyası Dondurulmuş Hamsi 500 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "1YB0",
+      "name": "Balık Dünyası Dondurulmuş Kalamar Tava 115 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 209,
+      "maxPrice": 209,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 209
+        }
+      ]
+    },
+    {
+      "productId": "1RKL",
+      "name": "Gullon Mini Balık Kraker 350 Gr",
+      "brand": "Gullon",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 2,
+      "minPrice": 214.9,
+      "maxPrice": 228,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 214.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 228
+        }
+      ]
+    },
+    {
+      "productId": "20CI",
+      "name": "Balık Dünyası Fish Finger 250 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 229,
+      "maxPrice": 229,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 229
+        }
+      ]
+    },
+    {
+      "productId": "0E4P",
+      "name": "Balık Dünyası Yengeç Surimi 500 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "05IE",
+      "name": "Balık Dünyası Deniz Ürünleri Salatası 300 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0D8Q",
+      "name": "Balık Dünyası Karides Söğüş 300 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0VZK",
+      "name": "Balık Dünyası Temizlenmiş Levrek 600 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Taze Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 325,
+      "maxPrice": 325,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 325
+        }
+      ]
+    },
+    {
+      "productId": "02SK",
+      "name": "Red Tiger Balık Kalamar 300 Gr",
+      "brand": "Red Tiger",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 329,
+      "maxPrice": 329,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 329
+        }
+      ]
+    },
+    {
+      "productId": "08ED",
+      "name": "Balık Dünyası Güveç Jumbo Karides 190 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 339,
+      "maxPrice": 339,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 339
+        }
+      ]
+    },
+    {
+      "productId": "1OJV",
+      "name": "Pınar Çıtır Balık 400 Gr",
+      "brand": "Pınar",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 339.9,
+      "maxPrice": 339.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 339.9
+        }
+      ]
+    },
+    {
+      "productId": "20UB",
+      "name": "Balık Dünyası Halka Kalamar 500 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 379,
+      "maxPrice": 379,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 379
+        }
+      ]
+    },
+    {
+      "productId": "1GV6",
+      "name": "Dardanel Küçük Balık Serisi 485 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 410.21,
+      "maxPrice": 410.21,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 410.21
+        }
+      ]
+    },
+    {
+      "productId": "0FT1",
+      "name": "Balık Dünyası Jumbo Karides Şiş 320 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 480,
+      "maxPrice": 480,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 480
+        }
+      ]
+    },
+    {
+      "productId": "1IKC",
+      "name": "Balık Dünyası Halka Kalamar 1 Kg",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 699,
+      "maxPrice": 699,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 699
+        }
+      ]
+    },
+    {
+      "productId": "1DBO",
+      "name": "Atıştır Mısırlı Balık Kraker 70 Gr",
+      "brand": "Atıştır",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 14,
+      "maxPrice": 14,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "productId": "1SZ4",
+      "name": "Eti Balık Kraker Mini Mısırlı 40 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "1Z6T",
+      "name": "Eti Çıtır Balık Kraker 70 Gr",
+      "brand": "Eti",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 23.5,
+      "maxPrice": 23.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 23.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZDE",
+      "name": "Bizim Vatan Ton Balığı 2x160 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 121,
+      "maxPrice": 121,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 121
+        }
+      ]
+    },
+    {
+      "productId": "1SYF",
+      "name": "Red Tiger Yengeç Lezzeti Balık Eti Surimi Çubuk 125 Gr",
+      "brand": "Red Tiger",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "20PP",
+      "name": "Dardanel Zeytinyağlı Ton Balığı Poşet 80 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 141.71,
+      "maxPrice": 143.93,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 141.71
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 143.93
+        }
+      ]
+    },
+    {
+      "productId": "0XHQ",
+      "name": "Yurt Ayçiçek Yağlı Ton Balığı 2x160 Gr",
+      "brand": "Yurt",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 157.46,
+      "maxPrice": 157.46,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 157.46
+        }
+      ]
+    },
+    {
+      "productId": "21R3",
+      "name": "Balık Dünyası Hamsi Temizlenmiş 650 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Taze Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "218U",
+      "name": "Balık Dünyası Dondurulmuş Jumbo Karides Tava 150 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 209,
+      "maxPrice": 209,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 209
+        }
+      ]
+    },
+    {
+      "productId": "1Z87",
+      "name": "Balık Dünyası Dondurulmuş Midye Tava 150 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 209,
+      "maxPrice": 209,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 209
+        }
+      ]
+    },
+    {
+      "productId": "1QHC",
+      "name": "Dardanel Soğutulmuş Somon Füme Balık 80 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 215,
+      "maxPrice": 215,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 215
+        }
+      ]
+    },
+    {
+      "productId": "0UAC",
+      "name": "Balık Dünyası Norveç Somon Dilim 500 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Taze Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "1KDC",
+      "name": "Superfresh Light Ton Balığı 3x75 Gr",
+      "brand": "Superfresh",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 287.21,
+      "maxPrice": 287.21,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 287.21
+        }
+      ]
+    },
+    {
+      "productId": "1ZRQ",
+      "name": "Dardanel Zeytinyağlı Ton Balığı 2x140 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 299.95,
+      "maxPrice": 472.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299.95
+        },
+        {
+          "market": "Migros",
+          "price": 472.95
+        }
+      ]
+    },
+    {
+      "productId": "0S63",
+      "name": "Fide Acılı Ton Balığı 320 Gr",
+      "brand": "Fide",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 301.95,
+      "maxPrice": 301.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 301.95
+        }
+      ]
+    },
+    {
+      "productId": "1IAH",
+      "name": "Balık Dünyası Deluxe Karides 400 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 329,
+      "maxPrice": 329,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 329
+        }
+      ]
+    },
+    {
+      "productId": "211W",
+      "name": "Superfresh Zeytinyağlı Ton Balığı 2x140 Gr",
+      "brand": "Superfresh",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 329.96,
+      "maxPrice": 447,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 329.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 447
+        }
+      ]
+    },
+    {
+      "productId": "2082",
+      "name": "Balık Dünyası Dondurulmuş Jumbo Karides Cızlama 130 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "1ZG5",
+      "name": "Dardanel Ayçiçekyağlı Ton Balığı 2x140 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 429.95,
+      "maxPrice": 434,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 429.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 434
+        }
+      ]
+    },
+    {
+      "productId": "1ZAS",
+      "name": "Dardanel Füme Ton Balığı 2x140 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 429.95,
+      "maxPrice": 434,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 429.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 434
+        }
+      ]
+    },
+    {
+      "productId": "00KF",
+      "name": "Balık Dünyası Marine Ahtapot 300 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 489,
+      "maxPrice": 489,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 489
+        }
+      ]
+    },
+    {
+      "productId": "0MHB",
+      "name": "Balık Dünyası Et Karides 1 Kg",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 599,
+      "maxPrice": 599,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 599
+        }
+      ]
+    },
+    {
+      "productId": "0D8P",
+      "name": "Balık Dünyası Haşlanmış Ahtapot 300 Gr",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 759,
+      "maxPrice": 759,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 759
+        }
+      ]
+    },
+    {
+      "productId": "1CBN",
+      "name": "Balık Dünyası Dondurulmuş Halka Kalamar 1 Kg",
+      "brand": "Balık Dünyası",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 779.9,
+      "maxPrice": 779.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 779.9
+        }
+      ]
+    },
+    {
+      "productId": "0ASX",
+      "name": "Carrefour Ton Balığı 160 Gr",
+      "brand": "Carrefour",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "0CHX",
+      "name": "Carrefour Ton Balığı Konservesi 3x80 Gr",
+      "brand": "Carrefour",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "05WT",
+      "name": "Derya Ton Balığı 320 Gr",
+      "brand": "Derya",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 121,
+      "maxPrice": 121,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 121
+        }
+      ]
+    },
+    {
+      "productId": "0G0Y",
+      "name": "Carrefour Ton Balığı Konservesi 2x160 Gr",
+      "brand": "Carrefour",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 121.95,
+      "maxPrice": 121.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 121.95
+        }
+      ]
+    },
+    {
+      "productId": "0AYC",
+      "name": "Sasu Ton Balığı 3'lü 225 Gr",
+      "brand": "Sasu",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "06X4",
+      "name": "Superfresh Superton Ton Balığı 270 Gr",
+      "brand": "Superfresh",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "03P6",
+      "name": "Dardanel Ekonomik Ton Balığı 250 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "0ATY",
+      "name": "Sasu Acılı Ton Balığı 2x160 Gr",
+      "brand": "Sasu",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "0VLO",
+      "name": "Tada Klasik Ton Balığı 2x160 Gr",
+      "brand": "Tada",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 181.77,
+      "maxPrice": 181.77,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 181.77
+        }
+      ]
+    },
+    {
+      "productId": "0TLE",
+      "name": "Kalite Tonla Zeytinyağlı Ton Balığı 2x150 Gr",
+      "brand": "Kalite Tonla",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 269.95,
+      "maxPrice": 269.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269.95
+        }
+      ]
+    },
+    {
+      "productId": "1JE6",
+      "name": "Superfresh Ayçiçek Yağlı Ton Balığı 3x75 Gr",
+      "brand": "Superfresh",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 287.21,
+      "maxPrice": 287.21,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 287.21
+        }
+      ]
+    },
+    {
+      "productId": "20S1",
+      "name": "Superfresh Ayçiçek Yağlı Ton Balığı 280 Gr",
+      "brand": "Superfresh",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 305.96,
+      "maxPrice": 413.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 305.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 413.9
+        }
+      ]
+    },
+    {
+      "productId": "1KJ3",
+      "name": "Superfresh Zeytinyağlı Ton Balığı 3x75 Gr",
+      "brand": "Superfresh",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 314.96,
+      "maxPrice": 419.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 314.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 419.95
+        }
+      ]
+    },
+    {
+      "productId": "219D",
+      "name": "Fide Klasik Ton Balığı 3x80 Gr",
+      "brand": "Fide",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 317.95,
+      "maxPrice": 317.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 317.95
+        }
+      ]
+    },
+    {
+      "productId": "0FP6",
+      "name": "Fide Light Ton Balığı 3x80 Gr",
+      "brand": "Fide",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 317.95,
+      "maxPrice": 317.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 317.95
+        }
+      ]
+    },
+    {
+      "productId": "0PNS",
+      "name": "Fide Light Ton Balığı 2x160 Gr",
+      "brand": "Fide",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 334.95,
+      "maxPrice": 334.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 334.95
+        }
+      ]
+    },
+    {
+      "productId": "1PWA",
+      "name": "Fide Zeytinyağlı Ton Balığı 3x80 Gr",
+      "brand": "Fide",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 349.95,
+      "maxPrice": 349.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.95
+        }
+      ]
+    },
+    {
+      "productId": "0WGU",
+      "name": "Fide Zeytinyağlı Ton Balığı 2x160 Gr",
+      "brand": "Fide",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 369.95,
+      "maxPrice": 369.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 369.95
+        }
+      ]
+    },
+    {
+      "productId": "1T7L",
+      "name": "Superfresh Klasik Ton Balığı 3x75 Gr",
+      "brand": "Superfresh",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 382.95,
+      "maxPrice": 382.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 382.95
+        }
+      ]
+    },
+    {
+      "productId": "1SRH",
+      "name": "Dardanel Ayçiçekyağlı Ton Balığı 225 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 403.95,
+      "maxPrice": 403.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 403.95
+        }
+      ]
+    },
+    {
+      "productId": "1U5Z",
+      "name": "Dardanel Light Ton Balığı 2x140 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 424.95,
+      "maxPrice": 424.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 424.95
+        }
+      ]
+    },
+    {
+      "productId": "0TUO",
+      "name": "Pınar Ton Balığı 300 Gr",
+      "brand": "Pınar",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 429.95,
+      "maxPrice": 429.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 429.95
+        }
+      ]
+    },
+    {
+      "productId": "0XOC",
+      "name": "Pınar Ton Balığı Light 300 Gr",
+      "brand": "Pınar",
+      "category": "Deniz Ürünleri",
+      "marketCount": 1,
+      "minPrice": 429.95,
+      "maxPrice": 429.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 429.95
+        }
+      ]
+    },
+    {
+      "productId": "1TJE",
+      "name": "Dardanel Zeytinyağlı Ton Balığı 225 Gr",
+      "brand": "Dardanel",
+      "category": "Deniz Ürünleri",
+      "marketCount": 2,
+      "minPrice": 439.95,
+      "maxPrice": 439.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 439.95
+        },
+        {
+          "market": "Migros",
+          "price": 439.95
+        }
+      ]
+    }
+  ]
+}

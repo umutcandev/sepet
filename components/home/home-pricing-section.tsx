@@ -27,34 +27,66 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Squircle } from "@/components/ui/squircle"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
+import {
+  limitCell,
+  planLimit,
+  type Plan,
+  type UsageMetric,
+} from "@/lib/usage/limits"
 import { cn } from "@/lib/utils"
 
 // Karşılaştırma satırları. `true` = plana dahil (tik), UNLIMITED = sonsuzluk
-// ikonu, metin = değer/limit. Sayısal limitler lib/usage/limits.ts'teki
-// PLAN_LIMITS ile hizalıdır; orada değişirse buradaki vitrin metni de
-// güncellenmelidir.
+// ikonu, metin = değer/limit. Sayısal limitler PLAN_LIMITS'ten TÜRETİLİR;
+// buraya elle yazılmaz (yazılıyordu ve limit değişince vitrin bayatladı).
 const UNLIMITED = "unlimited"
 type Cell = true | typeof UNLIMITED | string
+
+/** Sayılar PLAN_LIMITS'ten gelir; `null` limit sonsuzluk ikonuna çevrilir. */
+const cell = (plan: Plan, metric: UsageMetric): Cell =>
+  planLimit(plan, metric) === null ? UNLIMITED : limitCell(plan, metric).replace(" / ", "/")
 
 const ROWS: { label: string; free: Cell; pro: Cell }[] = [
   { label: "Market fiyat karşılaştırması", free: true, pro: true },
   { label: "Barkod ile ürün arama", free: true, pro: true },
   { label: "Fiş analizi ve geçmişi", free: true, pro: true },
-  { label: "Asistan mesajları", free: "50/ay", pro: "500/ay" },
-  { label: "Görsel analizi", free: "10/ay", pro: "250/ay" },
-  { label: "Sepet kaydetme", free: "20", pro: UNLIMITED },
-  { label: "Fiş kaydetme", free: "20", pro: UNLIMITED },
+  {
+    label: "Asistan mesajları",
+    free: cell("free", "textMessages"),
+    pro: cell("pro", "textMessages"),
+  },
+  {
+    label: "Görsel analizi",
+    free: cell("free", "imageAnalyses"),
+    pro: cell("pro", "imageAnalyses"),
+  },
+  {
+    label: "Sepet kaydetme",
+    free: cell("free", "savedBaskets"),
+    pro: cell("pro", "savedBaskets"),
+  },
+  {
+    label: "Fiş kaydetme",
+    free: cell("free", "savedReceipts"),
+    pro: cell("pro", "savedReceipts"),
+  },
 ]
 
 // Hücre ritmi: kompakt dikey padding, mobilde dar yatay padding. Pro sütununa
 // ayrı bir zemin verilmez — vurgu yalnızca alttaki primary düğmededir.
-const CELL = "px-3 py-2 sm:px-4"
+// Mobilde dolgu kısılır: plan sütunları zaten dar ve satın alma düğmesi
+// oradan besleniyor. sm'den itibaren nefes payı geri gelir.
+const CELL = "px-2 py-2 sm:px-4"
 // Plan sütunlarının solundaki dikey ayraç — satır ayraçlarıyla aynı ton.
 // border-separate kullanıldığı için her hücreye ayrı ayrı verilir.
 const COL_DIVIDER = "border-l border-border"
-// Satın alma düğmeleri: sütunu tam doldurur, mobilde dar sütuna sığsın diye bir
-// punto küçülüp yatay paddingi kısar.
+// Satın alma düğmeleri: sütunu tam doldurur, mobilde bir punto küçülür. Tek
+// satırda kalırlar (Button base'indeki `whitespace-nowrap`) — bu yüzden içlerine
+// fiyat KOYULMAZ, o başlıktaki plan hücresinde durur.
 const ACTION_BUTTON = "w-full gap-1 px-1.5 text-xs sm:px-2.5 sm:text-[0.8rem]"
+// Pro başlığındaki fiyat — değer hücreleriyle aynı mono ritim. Rozete yapışık
+// durur ki ad + fiyat tek bir blok gibi okunsun.
+const HEADER_PRICE =
+  "relative mt-0.5 block font-mono text-xs tabular-nums text-foreground"
 
 export function HomePricingSection() {
   const [interval, setInterval] = React.useState<Interval>("month")
@@ -101,13 +133,16 @@ export function HomePricingSection() {
               effects
               className="overflow-hidden bg-card smooth-shadow-ring-sm"
             >
-              <table className="w-full border-separate border-spacing-0 text-xs sm:text-sm">
-                {/* Özellik sütunu geniş, plan sütunları eşit — satır etiketleri
-                mobilde iki satıra sarsa da sütunlar kaymaz. */}
+              {/* `table-fixed` ŞART: otomatik düzende tablo, en geniş hücrenin
+                  min-content'ine göre büyür ve alttaki colgroup yüzdelerini yok
+                  sayar. Satın alma düğmesi sarmayan bir metin taşıdığı için
+                  tablo dar ekranda kabından taşıp sağdan kırpılıyordu. Sabit
+                  düzende yüzdeler bağlayıcı olur, içerik hücrenin içinde sarar. */}
+              <table className="w-full table-fixed border-separate border-spacing-0 text-xs sm:text-sm">
                 <colgroup>
-                  <col className="w-[48%]" />
-                  <col className="w-[26%]" />
-                  <col className="w-[26%]" />
+                  <col className="w-[44%]" />
+                  <col className="w-[26%] sm:w-[28%]" />
+                  <col className="w-[30%] sm:w-[28%]" />
                 </colgroup>
 
                 <thead>
@@ -117,7 +152,7 @@ export function HomePricingSection() {
                       sm altında anahtar h2'nin yanına taşınır (yukarı bkz.). */}
                     <th
                       scope="col"
-                      className="bg-muted/30 px-3 py-2 text-left sm:px-4"
+                      className="bg-muted/30 px-2 py-2 text-left sm:px-4"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span className="cn-font-heading text-base font-semibold">
@@ -132,37 +167,56 @@ export function HomePricingSection() {
                         </div>
                       </div>
                     </th>
-                    {/* Ücretsiz: yalnızca ad — fiyatı zaten sıfır. */}
+                    {/* Ücretsiz: yalnızca ad — fiyatı zaten sıfır. Rozet dikeyde
+                        ortalanır (varsayılan hizalama); satır yüksekliğini
+                        Pro'nun iki satırlık başlığı belirler. */}
                     <th
                       scope="col"
                       className={cn(
                         COL_DIVIDER,
-                        "bg-muted/30 px-3 py-2 text-center sm:px-4"
+                        "bg-muted/30 px-2 py-2 text-center sm:px-4"
                       )}
                     >
-                      <span className="cn-font-heading text-base font-semibold">
+                      {/* Pro ile aynı rozet kalıbı, açık varyantta. İkisi de
+                          `surface-raised-chip` taşıdığı için aynı kotta durur;
+                          fark yalnızca dolgu tonunda, yani vurgu Pro'da kalır.
+                          Mobilde yatay dolgu kısılır: "Ücretsiz" uzun bir kelime
+                          ve bu sütun en dar olanı. */}
+                      <Badge
+                        variant="secondary"
+                        className="my-0.5 px-1.5 sm:px-2"
+                      >
                         Ücretsiz
-                      </span>
+                      </Badge>
                     </th>
                     {/* Pro: primary rozet, arkasında `pro-sheen` (sıcak yıkama +
-                      köşegen tarama). Fiyat rozetin yanında değil alttaki satın
-                      alma düğmesinde — rozet yalnız planın adını taşır. */}
+                      köşegen tarama). Fiyat rozetin altında: düğmedeyken sütunu
+                      dört haneli tutara (2.490₺) göre genişletiyordu. */}
                     <th
                       scope="col"
                       className={cn(
                         COL_DIVIDER,
-                        "relative bg-muted/30 px-3 py-2 text-center sm:px-4"
+                        "relative bg-muted/30 px-2 py-2 text-center sm:px-4"
                       )}
                     >
                       <span
                         aria-hidden
                         className="pointer-events-none absolute inset-0 pro-sheen"
                       />
-                      {/* Rozet h-5; komşu başlıklar text-base (24px satır kutusu).
-                          `my-0.5` ikisini eşitler, satır yüksekliği oynamaz. */}
-                      <Badge variant="default" className="relative my-0.5">
+                      <Badge variant="default" className="relative">
                         Pro
                       </Badge>
+                      <span className={HEADER_PRICE}>
+                        <AnimatedAmount
+                          value={
+                            interval === "month" ? MONTHLY_PRICE : YEARLY_PRICE
+                          }
+                          className="font-medium"
+                        />
+                        <span className="ml-0.5 font-sans text-[0.9em] text-muted-foreground">
+                          {interval === "month" ? "/ay" : "/yıl"}
+                        </span>
+                      </span>
                     </th>
                   </tr>
                 </thead>
@@ -174,7 +228,10 @@ export function HomePricingSection() {
                         scope="row"
                         className={cn(
                           CELL,
-                          "border-t border-border text-left font-normal text-foreground"
+                          // Sütun mobilde çok daraldığı için uzun Türkçe
+                          // kelimeler ("karşılaştırması") hücreye sığmıyor.
+                          // `break-words` taşma yerine kelime içinden böler.
+                          "border-t border-border text-left font-normal break-words text-foreground"
                         )}
                       >
                         {row.label}
@@ -219,7 +276,11 @@ export function HomePricingSection() {
                         size="sm"
                         className={ACTION_BUTTON}
                       >
-                        <Link href="/asistan">Hemen başla</Link>
+                        {/* Dar sütunda tek kelime; sm'den itibaren tam etiket. */}
+                        <Link href="/asistan">
+                          <span className="sm:hidden">Başla</span>
+                          <span className="hidden sm:inline">Hemen başla</span>
+                        </Link>
                       </Button>
                     </td>
                     <td
@@ -229,23 +290,16 @@ export function HomePricingSection() {
                         "border-t border-border bg-muted/30"
                       )}
                     >
-                      {/* Fiyat artık burada: aralık anahtarı değişince NumberFlow
-                          99 ↔ 990 arası döner, yani anahtar ile düğme arasındaki
-                          bağ görünür kalır. */}
-                      <Button asChild size="sm" className={ACTION_BUTTON}>
+                      <Button
+                        asChild
+                        size="sm"
+                        className={ACTION_BUTTON}
+                      >
                         <a
                           href={`/api/checkout?interval=${interval}`}
                           onClick={requireAuth(() => undefined)}
                         >
                           Pro&apos;ya geç
-                          <AnimatedAmount
-                            value={
-                              interval === "month"
-                                ? MONTHLY_PRICE
-                                : YEARLY_PRICE
-                            }
-                            className="font-mono tracking-tight opacity-80"
-                          />
                         </a>
                       </Button>
                     </td>

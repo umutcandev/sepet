@@ -1,0 +1,1163 @@
+{
+  "term": "bulgur",
+  "category": "Ekmek & unlu",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:43:50.436Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1LQE",
+      "name": "Doyum Bulgur Çeşitleri 1 Kg",
+      "brand": "Doyum",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "0W77",
+      "name": "Anadolu Mutfağı Pilavlık Bulgur 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34,
+      "maxPrice": 34,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 34
+        }
+      ]
+    },
+    {
+      "productId": "0YSI",
+      "name": "Anadolu Mutfağı Köftelik Bulgur 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34,
+      "maxPrice": 34,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 34
+        }
+      ]
+    },
+    {
+      "productId": "06Y3",
+      "name": "Saban Pilavlık Bulgur 1 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34,
+      "maxPrice": 34,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 34
+        }
+      ]
+    },
+    {
+      "productId": "0577",
+      "name": "Saban Köftelik Bulgur 1 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34,
+      "maxPrice": 34,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 34
+        }
+      ]
+    },
+    {
+      "productId": "08WG",
+      "name": "Rençber Pilavlık Bulgur 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34,
+      "maxPrice": 34,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 34
+        }
+      ]
+    },
+    {
+      "productId": "0T7R",
+      "name": "Yayla Esmer Çiğköftelik & Tam Tane Bulgur 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34.5,
+      "maxPrice": 34.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 34.5
+        }
+      ]
+    },
+    {
+      "productId": "049D",
+      "name": "Carrefour Köftelik Bulgur 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34.95,
+      "maxPrice": 34.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.95
+        }
+      ]
+    },
+    {
+      "productId": "132G",
+      "name": "Carrefour Pilavlık Bulgur 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34.95,
+      "maxPrice": 34.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.95
+        }
+      ]
+    },
+    {
+      "productId": "1PU8",
+      "name": "Duru Pilavlık Bulgur 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 4,
+      "minPrice": 44.5,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 44.5
+        },
+        {
+          "market": "Migros",
+          "price": 53.21
+        },
+        {
+          "market": "Şok",
+          "price": 69.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "08VO",
+      "name": "Rençber Lüks Pilavlık Bulgur 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "1ROP",
+      "name": "Filiz Mardin Pilavlık Bulgur 800 Gr",
+      "brand": "Filiz",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 44.95,
+      "maxPrice": 44.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 44.95
+        }
+      ]
+    },
+    {
+      "productId": "1X4Y",
+      "name": "Duru Başbaşı Bulgur 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 53.21,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZRK",
+      "name": "Duru Köftelik İnce Bulgur 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 53.21,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "1R35",
+      "name": "Torku Köftelik Bulgur 1 Kg",
+      "brand": "Torku",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 61.95,
+      "maxPrice": 61.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 61.95
+        }
+      ]
+    },
+    {
+      "productId": "14G7",
+      "name": "Saban Köftelik Bulgur 2.5 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "1YIH",
+      "name": "Dola Glutensiz Pilavlık Bulgur 400 Gr",
+      "brand": "Dola",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "1OOR",
+      "name": "Reis Köftelik Bulgur 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 84.95,
+      "maxPrice": 84.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 84.95
+        },
+        {
+          "market": "Migros",
+          "price": 84.95
+        }
+      ]
+    },
+    {
+      "productId": "0F2Q",
+      "name": "Carrefour Pilavlık Bulgur 2.5 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 85.95,
+      "maxPrice": 85.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 85.95
+        }
+      ]
+    },
+    {
+      "productId": "0DF8",
+      "name": "Reis Esmer Çiğköftelik Bulgur 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 87.5,
+      "maxPrice": 87.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 87.5
+        }
+      ]
+    },
+    {
+      "productId": "1N0Q",
+      "name": "City Farm Organik Pilavlık Bulgur 1 Kg",
+      "brand": "City Farm",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 139.5,
+      "maxPrice": 139.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139.5
+        }
+      ]
+    },
+    {
+      "productId": "010I",
+      "name": "Organik Gurme Organik Pilavlık Bulgur 1 Kg",
+      "brand": "Organik Gurme",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 145.5,
+      "maxPrice": 145.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 145.5
+        }
+      ]
+    },
+    {
+      "productId": "0VWW",
+      "name": "Reis Pilavlık Bulgur 2.5 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 186.9,
+      "maxPrice": 186.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 186.9
+        }
+      ]
+    },
+    {
+      "productId": "1R7T",
+      "name": "Reis Firik Bulgur 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 312.95,
+      "maxPrice": 312.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 312.95
+        }
+      ]
+    },
+    {
+      "productId": "1L7N",
+      "name": "Tat Bulgur Çeşitleri 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "04F6",
+      "name": "Rençber İnce Bulgur 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 34,
+      "maxPrice": 34,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 34
+        }
+      ]
+    },
+    {
+      "productId": "08I7",
+      "name": "Carrefour Esmer Köftelik Bulgur 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 35.5,
+      "maxPrice": 35.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 35.5
+        }
+      ]
+    },
+    {
+      "productId": "0SJJ",
+      "name": "Anadolu Mutfağı Esmer Köftelik Bulgur 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 35.9,
+      "maxPrice": 35.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 35.9
+        }
+      ]
+    },
+    {
+      "productId": "20E5",
+      "name": "Duru Esmer Çiğ Köftelik Bulgur 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 3,
+      "minPrice": 49.75,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 49.75
+        },
+        {
+          "market": "Migros",
+          "price": 53.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "01TZ",
+      "name": "Duru Pratik Nohutlu Bulgur Pilavı 200 Gr",
+      "brand": "Duru Pratik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "1J7E",
+      "name": "Duru Esmer Pilavlık Bulgur 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 53.21,
+      "maxPrice": 73.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 73.9
+        }
+      ]
+    },
+    {
+      "productId": "1YKV",
+      "name": "Duru Şehriyeli Pilavlık Bulgur 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 53.21,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "0A6G",
+      "name": "Duru Pratik Garnitürlü Bulgur Pilavı 200 Gr",
+      "brand": "Duru Pratik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 54,
+      "maxPrice": 54,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 54
+        }
+      ]
+    },
+    {
+      "productId": "1QWY",
+      "name": "Tat Köftelik Bulgur 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "1AX4",
+      "name": "Anadolu Lezzetleri Mardin Pilavlık Bulgur 1 Kg",
+      "brand": "Anadolu Lezzetleri",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "1I1K",
+      "name": "Torku Pilavlık Bulgur 1 Kg",
+      "brand": "Torku",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 61.95,
+      "maxPrice": 61.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 61.95
+        }
+      ]
+    },
+    {
+      "productId": "1SO8",
+      "name": "Yayla Pilavlık Bulgur 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 65.95,
+      "maxPrice": 65.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 65.95
+        }
+      ]
+    },
+    {
+      "productId": "0Q0L",
+      "name": "Yayla Köftelik Bulgur 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 65.95,
+      "maxPrice": 65.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 65.95
+        }
+      ]
+    },
+    {
+      "productId": "06HW",
+      "name": "Rençber Pilavlık Bulgur 2.5 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "1F0R",
+      "name": "Sade Organik Pilavlık Bulgur 500 Gr",
+      "brand": "Sade Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 83.9,
+      "maxPrice": 83.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 83.9
+        }
+      ]
+    },
+    {
+      "productId": "21TD",
+      "name": "Reis Pilavlık Bulgur 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 84.95,
+      "maxPrice": 84.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 84.95
+        },
+        {
+          "market": "Migros",
+          "price": 84.95
+        }
+      ]
+    },
+    {
+      "productId": "1SZV",
+      "name": "Reis Başakbaşı Bulgur 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 84.95,
+      "maxPrice": 84.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 84.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 84.95
+        }
+      ]
+    },
+    {
+      "productId": "08JA",
+      "name": "Reis Esmer Pilavlık Bulgur 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 87.5,
+      "maxPrice": 87.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 87.5
+        }
+      ]
+    },
+    {
+      "productId": "00W5",
+      "name": "Reis Şehriyeli Başakbaşı Bulgur 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 87.5,
+      "maxPrice": 87.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 87.5
+        }
+      ]
+    },
+    {
+      "productId": "0WCD",
+      "name": "Duru Pilavlık Bulgur 2 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 104.96,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "0EEV",
+      "name": "Yayla Gurme Siyez Bulgur 500 Gr",
+      "brand": "Yayla Gurme",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 150.47,
+      "maxPrice": 150.47,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 150.47
+        }
+      ]
+    },
+    {
+      "productId": "0EJ1",
+      "name": "Sade Organik Pilavlık Bulgur 1 Kg",
+      "brand": "Sade Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "1SS0",
+      "name": "Reis Siyez Bulgur 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 282.95,
+      "maxPrice": 294,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 282.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 294
+        }
+      ]
+    },
+    {
+      "productId": "00P3",
+      "name": "Carrefour Esmer Pilavlık Bulgur 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 35.5,
+      "maxPrice": 35.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 35.5
+        }
+      ]
+    },
+    {
+      "productId": "101Z",
+      "name": "Anadolu Mutfağı Esmer Pilavlık Bulgur 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 35.9,
+      "maxPrice": 35.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 35.9
+        }
+      ]
+    },
+    {
+      "productId": "0SBF",
+      "name": "Anadolu Mutfağı İri Pilavlık Bulgur 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 36.9,
+      "maxPrice": 36.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 36.9
+        }
+      ]
+    },
+    {
+      "productId": "1WQZ",
+      "name": "Duru Köftelik Bulgur 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 3,
+      "minPrice": 44.5,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 44.5
+        },
+        {
+          "market": "Migros",
+          "price": 53.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "1924",
+      "name": "Duru İçli Köftelik Bulgur 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "20Q1",
+      "name": "Filiz Mardin Köftelik İnce Bulgur 800 Gr",
+      "brand": "Filiz",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 44.95,
+      "maxPrice": 44.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 44.95
+        }
+      ]
+    },
+    {
+      "productId": "03C1",
+      "name": "Duru Pratik Mercimekli Bulgur Pilavı 200 Gr",
+      "brand": "Duru Pratik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "1SM8",
+      "name": "Tada Sebzeli Bulgur Pilavı 250 Gr",
+      "brand": "Tada",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 53.97,
+      "maxPrice": 56.1,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 56.1
+        }
+      ]
+    },
+    {
+      "productId": "1PHS",
+      "name": "Tat Pilavlık Bulgur 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "1S0X",
+      "name": "Yayla Tam Tane Pilavlık Bulgur 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 65.95,
+      "maxPrice": 65.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 65.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q4Y",
+      "name": "Yayla Yemek Hazır Nohutlu Bulgur Pilavı 250 Gr",
+      "brand": "Yayla",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 72.95,
+      "maxPrice": 72.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 72.95
+        }
+      ]
+    },
+    {
+      "productId": "1ULL",
+      "name": "Hasata Pilavlık Antep Bulguru 1 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 73.95,
+      "maxPrice": 75.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 73.95
+        },
+        {
+          "market": "Migros",
+          "price": 75.95
+        }
+      ]
+    },
+    {
+      "productId": "06RE",
+      "name": "Carrefour Bio Organik Pilavlık Bulgur 1 Kg",
+      "brand": "Carrefour Bio",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 74.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "1YSO",
+      "name": "Hasata Köftelik Antep Bulguru 1 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 75.95,
+      "maxPrice": 76.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 75.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 76.25
+        }
+      ]
+    },
+    {
+      "productId": "0E2H",
+      "name": "Yayla Yemek Hazır Kinoalı Bulgur Pilavı 250 Gr",
+      "brand": "Yayla",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "065E",
+      "name": "Reis İçli Köfte Bulguru 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 87.5,
+      "maxPrice": 87.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 87.5
+        }
+      ]
+    },
+    {
+      "productId": "0Y6G",
+      "name": "Doyum Organik Bulgur Pilavlık 1 Kg",
+      "brand": "Doyum",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 88.87,
+      "maxPrice": 128.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 88.87
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 128.25
+        }
+      ]
+    },
+    {
+      "productId": "0V96",
+      "name": "Anadolu Lezzetleri Amik Karakılçık Köftelik Bulgur 500 Gr",
+      "brand": "Anadolu Lezzetleri",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 104.95,
+      "maxPrice": 104.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.95
+        }
+      ]
+    },
+    {
+      "productId": "1OVY",
+      "name": "Tada Hindili Bulgur Pilavı 200 Gr",
+      "brand": "Tada",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 125.97,
+      "maxPrice": 131.1,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 131.1
+        }
+      ]
+    },
+    {
+      "productId": "07YG",
+      "name": "Duru Pratik Kavurmalı Bulgur Pilavı 250 Gr",
+      "brand": "Duru",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 141.5,
+      "maxPrice": 141.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 141.5
+        }
+      ]
+    },
+    {
+      "productId": "0JWG",
+      "name": "City Farm Organik Siyez Bulguru 1 Kg",
+      "brand": "City Farm",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 187,
+      "maxPrice": 187,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 187
+        }
+      ]
+    },
+    {
+      "productId": "0YNZ",
+      "name": "Gurmepack Tavuk Şiş & Bulgur Pilavı 380 Gr",
+      "brand": "Gurmepack",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "1O9O",
+      "name": "Ots Organik Siyez Bulguru 750 Gr",
+      "brand": "Ots Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 301.5,
+      "maxPrice": 301.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 301.5
+        }
+      ]
+    }
+  ]
+}

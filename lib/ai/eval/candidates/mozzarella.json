@@ -1,0 +1,210 @@
+{
+  "term": "mozzarella",
+  "category": "Dünya mutfağı",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:05:08.644Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0ZHO",
+      "name": "Mis Rende Mozzarella Peyniri 150 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "1QPP",
+      "name": "Bahçıvan Suda Top Mozzarella 125 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "1XZN",
+      "name": "Mr. No Gurme Mozzarella Jambon Sandviç 145 Gr",
+      "brand": "Mr. No",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1LUQ",
+      "name": "Bahçıvan Suda Mozzarella 125 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 158.5,
+      "maxPrice": 158.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 158.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZDG",
+      "name": "Bahçıvan Rende Mozzarella Peyniri 200 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 169.9,
+      "maxPrice": 262.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 262.5
+        }
+      ]
+    },
+    {
+      "productId": "1YHK",
+      "name": "President Rende Mozzarella Peyniri 200 Gr",
+      "brand": "President",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 174.9,
+      "maxPrice": 181.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 174.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 181.9
+        }
+      ]
+    },
+    {
+      "productId": "1M6W",
+      "name": "Mr. No Gurme Mozzarella Jambon Üçgen Sandviç 145 Gr",
+      "brand": "Mr. No",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 212,
+      "maxPrice": 212,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 212
+        }
+      ]
+    },
+    {
+      "productId": "1POC",
+      "name": "Superfresh Mozzarella Peyniri Çubukları 280 Gr",
+      "brand": "Superfresh",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 214.17,
+      "maxPrice": 214.17,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 214.17
+        }
+      ]
+    },
+    {
+      "productId": "20BF",
+      "name": "Dr. Oetker Guseppe Mozzarella Pizza 412 Gr",
+      "brand": "Dr. Oetker",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "20NJ",
+      "name": "Tada Gurme Sandviç Mozzarella Dana Jambonlu 160 Gr",
+      "brand": "Tada",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 250,
+      "maxPrice": 250,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 250
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 250
+        }
+      ]
+    },
+    {
+      "productId": "1ZE1",
+      "name": "President Mozzarella Peyniri 600 Gr",
+      "brand": "President",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 351.5,
+      "maxPrice": 358.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 351.5
+        },
+        {
+          "market": "Migros",
+          "price": 358.5
+        }
+      ]
+    },
+    {
+      "productId": "0T3P",
+      "name": "Dr. Oetker Ristorante Mini Mozzarella 4 Adet 560 Gr",
+      "brand": "Dr. Oetker",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 359.95,
+      "maxPrice": 359.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 359.95
+        }
+      ]
+    }
+  ]
+}

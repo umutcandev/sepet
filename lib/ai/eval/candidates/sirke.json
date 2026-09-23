@@ -1,0 +1,1158 @@
+{
+  "term": "sirke",
+  "category": "Yağ & sos",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:57:50.381Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "09V5",
+      "name": "Carrefour Beyaz Sirke 1 Lt",
+      "brand": "Carrefour",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZSU",
+      "name": "Bizim Vatan Beyaz Sirke 2 Lt",
+      "brand": "Bizim Vatan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "03PJ",
+      "name": "Efor Beyaz Sirke 2 Lt",
+      "brand": "Efor",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "0VKV",
+      "name": "Migros Beyaz Sirke 2 Lt",
+      "brand": "Migros",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "0901",
+      "name": "Carrefour Beyaz Sirke 2 Lt",
+      "brand": "Carrefour",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "1OD2",
+      "name": "Miss Arap Sabunu + Sirke Özlü Temizleyici 1 Lt",
+      "brand": "Miss",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "10MI",
+      "name": "Kilikya Beyaz Sirke 5 Lt",
+      "brand": "Kilikya",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1TD7",
+      "name": "Kühne Sirke Beyaz Karbonatlı 1 Lt",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 62.97,
+      "maxPrice": 91,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 62.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 91
+        }
+      ]
+    },
+    {
+      "productId": "12DX",
+      "name": "Kemal Kükrer Beyaz Sirke 2 Lt",
+      "brand": "Kemal Kükrer",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 71.94,
+      "maxPrice": 71.94,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 71.94
+        }
+      ]
+    },
+    {
+      "productId": "1WQD",
+      "name": "Kühne Beyaz Sirke 1 Lt",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 80.95,
+      "maxPrice": 83.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 80.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 83.5
+        }
+      ]
+    },
+    {
+      "productId": "1Q2R",
+      "name": "Kühne Beyaz Sirke 2 Lt",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 83.97,
+      "maxPrice": 121,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 83.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 121
+        }
+      ]
+    },
+    {
+      "productId": "20II",
+      "name": "Ferfresh Beyaz Sirke 1 Lt",
+      "brand": "Ferfresh",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 90.9,
+      "maxPrice": 90.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 90.9
+        }
+      ]
+    },
+    {
+      "productId": "0832",
+      "name": "Happylife Organik Sirke Cam 500 Ml",
+      "brand": "Happylife",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "1Z91",
+      "name": "Ferfresh Beyaz Sirke 2 Lt",
+      "brand": "Ferfresh",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 104.96,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "158Q",
+      "name": "Fersan Yaban Mersinli Balsamik Sirke 250 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 143.96,
+      "maxPrice": 143.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 143.96
+        }
+      ]
+    },
+    {
+      "productId": "20P2",
+      "name": "Fersan Detox Doğal Sirke Analı Üzüm Sirkesi 500 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 146.21,
+      "maxPrice": 218.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 146.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 218.5
+        }
+      ]
+    },
+    {
+      "productId": "1YCC",
+      "name": "Fersan Detox Doğal Sirke Analı Elma Sirkesi 500 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 146.21,
+      "maxPrice": 152.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 146.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 152.95
+        }
+      ]
+    },
+    {
+      "productId": "158H",
+      "name": "Fersan Balsamik Sirke Condimento Bianco 250 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 191.95,
+      "maxPrice": 191.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 191.95
+        }
+      ]
+    },
+    {
+      "productId": "1X98",
+      "name": "Fersan Balsamik Sirke 250 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 207.95,
+      "maxPrice": 233.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 207.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 233.9
+        }
+      ]
+    },
+    {
+      "productId": "1YID",
+      "name": "Kühne Balsamik Sirke 250 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 224.95,
+      "maxPrice": 224.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 224.95
+        }
+      ]
+    },
+    {
+      "productId": "203B",
+      "name": "Kühne Balsamik Sirke 500 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 232.37,
+      "maxPrice": 331.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 232.37
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 331.95
+        }
+      ]
+    },
+    {
+      "productId": "03VD",
+      "name": "Sade Organik Balzamik Sirke 500 Ml",
+      "brand": "Sade Organik",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 259.9,
+      "maxPrice": 259.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 259.9
+        }
+      ]
+    },
+    {
+      "productId": "0E54",
+      "name": "Frosch Sirke Özlü Çok Amaçlı Temizleyici 1 Lt",
+      "brand": "Frosch",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 284.95,
+      "maxPrice": 284.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 284.95
+        }
+      ]
+    },
+    {
+      "productId": "0RFS",
+      "name": "Rinso Beyaz Sirke Ve Çamaşır Sodası Beyaz Toz 6 Kg",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 405.95,
+      "maxPrice": 405.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 405.95
+        }
+      ]
+    },
+    {
+      "productId": "01QF",
+      "name": "Fıçı Elma Sirkesi 750 Ml",
+      "brand": "Fıçı",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "03IH",
+      "name": "Fıçı Üzüm Sirkesi 750 Ml",
+      "brand": "Fıçı",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "0WJL",
+      "name": "Bizim Vatan Elma Sirkesi 750 Ml",
+      "brand": "Bizim Vatan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 31,
+      "maxPrice": 31,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 31
+        }
+      ]
+    },
+    {
+      "productId": "080N",
+      "name": "Nevbağ Üzüm Sirkesi 750 Ml",
+      "brand": "Nevbağ",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 31,
+      "maxPrice": 31,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 31
+        }
+      ]
+    },
+    {
+      "productId": "0LUB",
+      "name": "Vegeats Tuzlu Ve Sirke Aromalı Mercimek Cipsi 50 Gr",
+      "brand": "Vegeats",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "030F",
+      "name": "Carrefour Üzüm Sirkesi 2 Lt",
+      "brand": "Carrefour",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 82.5,
+      "maxPrice": 82.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 82.5
+        }
+      ]
+    },
+    {
+      "productId": "0HKE",
+      "name": "Chefline Pirinç Sirkesi 150 Ml",
+      "brand": "Chefline",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 82.9,
+      "maxPrice": 82.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 82.9
+        }
+      ]
+    },
+    {
+      "productId": "00MD",
+      "name": "Kemal Kükrer Elma Sirkesi 500 Ml",
+      "brand": "Kemal Kükrer",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 91.74,
+      "maxPrice": 91.74,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 91.74
+        }
+      ]
+    },
+    {
+      "productId": "214Q",
+      "name": "Kühne Üzüm Sirkesi 500 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 92.37,
+      "maxPrice": 134,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.37
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 134
+        }
+      ]
+    },
+    {
+      "productId": "2054",
+      "name": "Kühne Elma Sirkesi 500 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 105.67,
+      "maxPrice": 151.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 105.67
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 151.5
+        }
+      ]
+    },
+    {
+      "productId": "1R79",
+      "name": "Kühne Alıç Sirkesi 500 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 111.97,
+      "maxPrice": 111.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 111.97
+        }
+      ]
+    },
+    {
+      "productId": "20TW",
+      "name": "Fersan Üzüm Sirkesi 1 Lt",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 121.46,
+      "maxPrice": 161.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 121.46
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 161.95
+        }
+      ]
+    },
+    {
+      "productId": "1VU4",
+      "name": "Fersan Elma Sirkesi 1 Lt",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 129.71,
+      "maxPrice": 172.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.71
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 172.95
+        }
+      ]
+    },
+    {
+      "productId": "1UD2",
+      "name": "Kühne Elma Sirkesi 1 Lt",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 147.68,
+      "maxPrice": 147.68,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 147.68
+        }
+      ]
+    },
+    {
+      "productId": "0CQ7",
+      "name": "Kemal Kükrer Üzüm Sirkesi 1 Lt",
+      "brand": "Kemal Kükrer",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 149.7,
+      "maxPrice": 149.7,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.7
+        }
+      ]
+    },
+    {
+      "productId": "0441",
+      "name": "Sade Organik Alıç Sirkesi 500 Gr",
+      "brand": "Sade",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 163,
+      "maxPrice": 163,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 163
+        }
+      ]
+    },
+    {
+      "productId": "1ZRN",
+      "name": "Kühne Üzüm Sirkesi 2 Lt",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 174.97,
+      "maxPrice": 174.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 174.97
+        }
+      ]
+    },
+    {
+      "productId": "1QCX",
+      "name": "Kühne Organik Elma Sirkesi 500 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 209.97,
+      "maxPrice": 296.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 209.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 296.9
+        }
+      ]
+    },
+    {
+      "productId": "0Y3X",
+      "name": "Fersan Organik Alıç Sirkesi 500 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 272.95,
+      "maxPrice": 272.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 272.95
+        }
+      ]
+    },
+    {
+      "productId": "0DHM",
+      "name": "Acetum Balsamik Sirkesi 500 Ml",
+      "brand": "Acetum",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 294.9,
+      "maxPrice": 294.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 294.9
+        }
+      ]
+    },
+    {
+      "productId": "1R6R",
+      "name": "Sarson's Malt Sirkesi 250 Ml",
+      "brand": "Sarson's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 302.9,
+      "maxPrice": 302.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 302.9
+        }
+      ]
+    },
+    {
+      "productId": "1QU7",
+      "name": "De Nigris Organic Elma Sirkesi 500 Ml",
+      "brand": "De Nigris",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 302.9,
+      "maxPrice": 302.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 302.9
+        }
+      ]
+    },
+    {
+      "productId": "20N5",
+      "name": "Amoy Pirinç Sirkesi 750 Ml",
+      "brand": "Amoy",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 382.9,
+      "maxPrice": 382.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 382.9
+        }
+      ]
+    },
+    {
+      "productId": "2121",
+      "name": "Rinso Beyaz Sirke & Çamaşır Sodası Toz Deterjan 10 Kg",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 429.95,
+      "maxPrice": 429.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 429.95
+        }
+      ]
+    },
+    {
+      "productId": "12V8",
+      "name": "Migros Üzüm Sirkesi 750 Ml",
+      "brand": "Migros",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "0DQO",
+      "name": "Migros Elma Sirkesi 750 Ml",
+      "brand": "Migros",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "0Z78",
+      "name": "Bizim Vatan Üzüm Sirkesi 750 Ml",
+      "brand": "Bizim Vatan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 31,
+      "maxPrice": 31,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 31
+        }
+      ]
+    },
+    {
+      "productId": "08D4",
+      "name": "Nevbağ Elma Sirkesi 750 Ml",
+      "brand": "Nevbağ",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 31,
+      "maxPrice": 31,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 31
+        }
+      ]
+    },
+    {
+      "productId": "0IKE",
+      "name": "Carrefour Elma Sirkesi 750 Ml",
+      "brand": "Carrefour",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 31.95,
+      "maxPrice": 31.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 31.95
+        }
+      ]
+    },
+    {
+      "productId": "013N",
+      "name": "Carrefour Üzüm Sirkesi 750 Ml",
+      "brand": "Carrefour",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 31.95,
+      "maxPrice": 31.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 31.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZBN",
+      "name": "Fersan Üzüm Sirkesi 500 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 82.46,
+      "maxPrice": 111,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 82.46
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 111
+        }
+      ]
+    },
+    {
+      "productId": "1Z9U",
+      "name": "Fersan Elma Sirkesi Pet 500 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 91.46,
+      "maxPrice": 121.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 91.46
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 121.95
+        }
+      ]
+    },
+    {
+      "productId": "045A",
+      "name": "Carrefour Bio Organik Alıç Sirkesi 500 Ml",
+      "brand": "Carrefour Bio",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 98.9,
+      "maxPrice": 98.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 98.9
+        }
+      ]
+    },
+    {
+      "productId": "1S3C",
+      "name": "Fersan Elma Sirkesi Şişe 500 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 114.71,
+      "maxPrice": 114.71,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 114.71
+        }
+      ]
+    },
+    {
+      "productId": "1PZH",
+      "name": "Kemal Kükrer Yudumluk Dört Hırsız Sirkesi 500 Ml",
+      "brand": "Yudumluk",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 117.3,
+      "maxPrice": 117.3,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 117.3
+        }
+      ]
+    },
+    {
+      "productId": "1YFF",
+      "name": "Tariş Üzüm Sirkesi 2 Lt",
+      "brand": "Tariş",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "1S5Z",
+      "name": "Kühne Filtresiz Elma Sirkesi 500 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 125.97,
+      "maxPrice": 125.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125.97
+        }
+      ]
+    },
+    {
+      "productId": "1TLT",
+      "name": "Fersan Üzüm Sirkesi 500 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 132.9,
+      "maxPrice": 132.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 132.9
+        }
+      ]
+    },
+    {
+      "productId": "0GM3",
+      "name": "Kemal Kükrer Elma Sirkesi 1 Lt",
+      "brand": "Kemal Kükrer",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 157.14,
+      "maxPrice": 157.14,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 157.14
+        }
+      ]
+    },
+    {
+      "productId": "0F7X",
+      "name": "Sade Organik Elma Sirkesi 500 Gr",
+      "brand": "Sade",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 158.5,
+      "maxPrice": 158.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 158.5
+        }
+      ]
+    },
+    {
+      "productId": "1P5T",
+      "name": "Fersan Detoks Bal Sirkesi 490 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 159.9,
+      "maxPrice": 159.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 159.9
+        }
+      ]
+    },
+    {
+      "productId": "0RKX",
+      "name": "Fersan Üzüm Sirkesi 2 Lt",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 182.21,
+      "maxPrice": 205.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 182.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 205.9
+        }
+      ]
+    },
+    {
+      "productId": "3WSY",
+      "name": "Carrefour Selection %100 Ananas Sirkesi 500 Ml",
+      "brand": "Carrefour",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "17LC",
+      "name": "De Nigris Pirinç Sirkesi 500 Ml",
+      "brand": "De Nigris",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 221,
+      "maxPrice": 221,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 221
+        }
+      ]
+    },
+    {
+      "productId": "1H66",
+      "name": "Organik Gurme Elma Sirkesi 500 Ml",
+      "brand": "Organik Gurme",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 254.9,
+      "maxPrice": 254.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 254.9
+        }
+      ]
+    },
+    {
+      "productId": "1TBI",
+      "name": "Wefood Ananas Sirkesi 500 Ml",
+      "brand": "Wefood",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 297.9,
+      "maxPrice": 297.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 297.9
+        }
+      ]
+    },
+    {
+      "productId": "1TJ2",
+      "name": "Wefood Detoks Sirkesi 250 Ml",
+      "brand": "Wefood",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 306.9,
+      "maxPrice": 306.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 306.9
+        }
+      ]
+    },
+    {
+      "productId": "1QWF",
+      "name": "Fersan Detoks Aronya Sirkesi 490 Ml",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 401.5,
+      "maxPrice": 401.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 401.5
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { LEGAL_SUPPORT_EMAIL } from "@/components/legal/legal-content"
+import { planLimit } from "@/lib/usage/limits"
 import { cn } from "@/lib/utils"
 
 // Her madde koddaki davranış ve Polar yapılandırmasıyla doğrulanabilir:
@@ -24,7 +25,7 @@ import { cn } from "@/lib/utils"
 export const FAQ_ITEMS: { q: string; a: React.ReactNode }[] = [
   {
     q: "Pro'ya geçince neler değişir?",
-    a: "Aylık asistan mesajların 50'den 500'e, görsel analizlerin 10'dan 250'ye çıkar. Sepet ve fiş kaydetme ise sınırsız olur.",
+    a: `Aylık asistan mesajların ${planLimit("free", "textMessages")}'den ${planLimit("pro", "textMessages")}'e, görsel analizlerin ${planLimit("free", "imageAnalyses")}'dan ${planLimit("pro", "imageAnalyses")}'ye çıkar. Sepet ve fiş kaydetme ise sınırsız olur.`,
   },
   {
     q: "Ödeme veya abonelikte sorun yaşarsam ne yapmalıyım?",

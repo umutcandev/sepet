@@ -532,7 +532,7 @@ const sidebarMenuButtonVariants = cva(
         outline:
           "rounded-lg border border-border bg-background bg-clip-padding transition-all surface-raised hover:bg-muted hover:text-foreground active:translate-y-px active:scale-[0.98] active:bg-muted active:text-foreground active:[--surface-ambient:transparent] dark:border-input dark:border-t-[color-mix(in_oklab,var(--foreground)_17%,transparent)] dark:bg-input/30 dark:[--surface-rim-top:transparent] dark:hover:bg-input/50 dark:active:bg-input/50 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:[&>span]:hidden",
         primary:
-          "rounded-lg border border-primary bg-primary bg-clip-padding text-primary-foreground transition-all surface-raised hover:bg-primary/85 hover:text-primary-foreground active:translate-y-px active:scale-[0.98] active:bg-primary/85 active:text-primary-foreground active:[--surface-ambient:transparent] group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:[&>span]:hidden",
+          "rounded-lg border border-primary bg-primary bg-clip-padding text-primary-foreground transition-all surface-raised hover:border-primary-hover hover:bg-primary-hover hover:text-primary-foreground active:translate-y-px active:scale-[0.98] active:border-primary-hover active:bg-primary-hover active:text-primary-foreground active:[--surface-ambient:transparent] group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:[&>span]:hidden",
       },
       size: {
         default: "h-8 text-sm",

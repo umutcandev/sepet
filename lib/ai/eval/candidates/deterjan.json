@@ -1,0 +1,1150 @@
+{
+  "term": "deterjan",
+  "category": "Temizlik & kağıt",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:06:55.808Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0WEE",
+      "name": "Migros Sıvı Deterjan Renkliler 1.5 Lt",
+      "brand": "Migros",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "29ZI",
+      "name": "Bingo Konsantre Toz Deterjan 1.5 Kg",
+      "brand": "Bingo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "15Z4",
+      "name": "Billmatik Beyazlar Toz Deterjan 5 Kg",
+      "brand": "Billmatik",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "006L",
+      "name": "Billmatik Toz Deterjan 5 Kg",
+      "brand": "Billmatik",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 203.5,
+      "maxPrice": 203.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 203.5
+        }
+      ]
+    },
+    {
+      "productId": "07KR",
+      "name": "Artmatik Toz Deterjan 5 Kg",
+      "brand": "Artmatik",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 227,
+      "maxPrice": 227,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 227
+        }
+      ]
+    },
+    {
+      "productId": "01PH",
+      "name": "Ariel Toz Deterjan 1.5 Kg",
+      "brand": "Ariel",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 235,
+      "maxPrice": 235,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 235
+        }
+      ]
+    },
+    {
+      "productId": "1NIG",
+      "name": "Omo Matik Toz Deterjan 1.5 Kg",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 235,
+      "maxPrice": 235,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 235
+        }
+      ]
+    },
+    {
+      "productId": "050A",
+      "name": "Qualt Sıvı Deterjan Siyah 3 Lt",
+      "brand": "Qualt",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 239
+        }
+      ]
+    },
+    {
+      "productId": "1KQE",
+      "name": "Perwoll Geliştirilmiş Renkli Sıvı Deterjan 2.97 Lt",
+      "brand": "Perwoll",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 285.32,
+      "maxPrice": 438.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 285.32
+        },
+        {
+          "market": "Migros",
+          "price": 438.95
+        }
+      ]
+    },
+    {
+      "productId": "1H4X",
+      "name": "Rinso Renkliler & Beyazlar Toz Deterjan 8 Kg",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 329,
+      "maxPrice": 329,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 329
+        }
+      ]
+    },
+    {
+      "productId": "1T37",
+      "name": "Uni Baby Sensitive Deterjan 1.5 Lt",
+      "brand": "Uni Baby",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 329.95,
+      "maxPrice": 329.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 329.95
+        }
+      ]
+    },
+    {
+      "productId": "07CU",
+      "name": "Peros Renkliler Toz Deterjan 8 Kg",
+      "brand": "Peros",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "00C2",
+      "name": "Peros Beyazlar Toz Deterjan 8 Kg",
+      "brand": "Peros",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "1PJO",
+      "name": "Persil Power Jel Color Sıvı Deterjan 1.69 Lt",
+      "brand": "Persil",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 371.95,
+      "maxPrice": 371.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 371.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 371.95
+        }
+      ]
+    },
+    {
+      "productId": "1KCV",
+      "name": "Peros Matik Toz Deterjan 10 Kg",
+      "brand": "Peros",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 389,
+      "maxPrice": 389,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 389
+        }
+      ]
+    },
+    {
+      "productId": "1GXB",
+      "name": "ABC Sık Yıkananlar Toz Deterjan 12 Kg",
+      "brand": "Abc",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 399,
+      "maxPrice": 399,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 399
+        }
+      ]
+    },
+    {
+      "productId": "0T44",
+      "name": "Abc Renkliler İçin Toz Deterjan 8 Kg",
+      "brand": "Abc",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 439,
+      "maxPrice": 439,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 439
+        }
+      ]
+    },
+    {
+      "productId": "19EN",
+      "name": "Bingo Toz Deterjan 4.5 Kg",
+      "brand": "Bingo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 449,
+      "maxPrice": 449,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 449
+        }
+      ]
+    },
+    {
+      "productId": "1ZPD",
+      "name": "Yumoş Renkliler Sıvı Deterjan 2.5 Lt",
+      "brand": "Yumoş",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 459.95,
+      "maxPrice": 464.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 459.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 464.5
+        }
+      ]
+    },
+    {
+      "productId": "1XF3",
+      "name": "Yumoş Tüm Renkler İçin Sıvı Deterjan 2.5 Lt",
+      "brand": "Yumoş",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 459.95,
+      "maxPrice": 464.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 459.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 464.5
+        }
+      ]
+    },
+    {
+      "productId": "06V2",
+      "name": "Omomatik Toz Deterjan 5 Kg",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 590,
+      "maxPrice": 590,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 590
+        }
+      ]
+    },
+    {
+      "productId": "04ZY",
+      "name": "Bingo Toz Deterjan 9 Kg",
+      "brand": "Bingo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 595,
+      "maxPrice": 595,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 595
+        }
+      ]
+    },
+    {
+      "productId": "29YI",
+      "name": "Omo Active Fresh Toz Deterjan 5.5 Kg",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 649,
+      "maxPrice": 649,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 649
+        }
+      ]
+    },
+    {
+      "productId": "1YKO",
+      "name": "Omo Cold Power Siyahlar İçin Sıvı Deterjan 2.5 Lt",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 659.95,
+      "maxPrice": 666.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 659.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 666.5
+        }
+      ]
+    },
+    {
+      "productId": "0V4Y",
+      "name": "Mintax Elde Yıkama Toz Deterjan 1 Kg",
+      "brand": "Mintax",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "1RJY",
+      "name": "Peros Renkliler İçin Toz Deterjan 1.5 Kg",
+      "brand": "Peros",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "1YSC",
+      "name": "Bingo Onaran Koruma Sıvı Deterjan 2 Lt",
+      "brand": "Bingo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 139.9,
+      "maxPrice": 309.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139.9
+        },
+        {
+          "market": "Migros",
+          "price": 309.95
+        }
+      ]
+    },
+    {
+      "productId": "0UFZ",
+      "name": "Bingo Beyaz Sabun Sıvı Deterjan 1.755 Lt",
+      "brand": "Bingo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "2CS8",
+      "name": "Alley Beyaz Renkli Toz Deterjan 9 Kg",
+      "brand": "Alley",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 225,
+      "maxPrice": 225,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 225
+        }
+      ]
+    },
+    {
+      "productId": "1Z9K",
+      "name": "Omo Cold Power Siyahlar Sıvı Deterjan 1.5 Lt",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 229.95,
+      "maxPrice": 480.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 229.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 480.95
+        }
+      ]
+    },
+    {
+      "productId": "2A16",
+      "name": "Omo Active Konsantre Toz Deterjan 1.5 Kg",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 235,
+      "maxPrice": 235,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 235
+        }
+      ]
+    },
+    {
+      "productId": "0GKX",
+      "name": "Qualt Sıvı Deterjan Hassas 3 Lt",
+      "brand": "Qualt",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 239
+        }
+      ]
+    },
+    {
+      "productId": "0C9R",
+      "name": "Tursil Sıvı Deterjan 2.145 Lt",
+      "brand": "Tursil",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 279.5,
+      "maxPrice": 279.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 279.5
+        }
+      ]
+    },
+    {
+      "productId": "1I6F",
+      "name": "Perwoll Geliştirilmiş Renkli Sıvı Deterjan 1.485 Lt",
+      "brand": "Perwoll",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 298.95,
+      "maxPrice": 298.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 298.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 298.95
+        }
+      ]
+    },
+    {
+      "productId": "015G",
+      "name": "Artmatik Renkli Toz Deterjan 8 Kg",
+      "brand": "Artmatik",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 305,
+      "maxPrice": 305,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 305
+        }
+      ]
+    },
+    {
+      "productId": "20HN",
+      "name": "Bingo Bakım Renkli Sıvı Deterjan 2 Lt",
+      "brand": "Bingo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 309.95,
+      "maxPrice": 313,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 309.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 313
+        }
+      ]
+    },
+    {
+      "productId": "1YNV",
+      "name": "Alo Beyazlar Ve Renkliler Toz Deterjan 8 Kg",
+      "brand": "Alo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 345,
+      "maxPrice": 345,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 345
+        }
+      ]
+    },
+    {
+      "productId": "02OA",
+      "name": "Ariel Beyazlar Toz Deterjan 4 Kg",
+      "brand": "Ariel",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "2AH7",
+      "name": "Peros Renkliler Toz Deterjan 7 Kg",
+      "brand": "Peros",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 392.5,
+      "maxPrice": 392.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 392.5
+        }
+      ]
+    },
+    {
+      "productId": "0N4V",
+      "name": "Ariel Dağ Esintisi Beyazlar Toz Deterjan 7 Kg",
+      "brand": "Ariel",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 399.95,
+      "maxPrice": 399.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 399.95
+        }
+      ]
+    },
+    {
+      "productId": "0WXQ",
+      "name": "Perwoll Çiçek Cazibesi Sıvı Deterjan 2.75 Lt",
+      "brand": "Perwoll",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 430.95,
+      "maxPrice": 430.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 430.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZMY",
+      "name": "Rinso Argan Sıvı Deterjan 2.5 Lt",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 444,
+      "maxPrice": 444,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 444
+        }
+      ]
+    },
+    {
+      "productId": "1RDG",
+      "name": "Bingo Mutlu Yuvam Toz Deterjan 10 Kg",
+      "brand": "Bingo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 449,
+      "maxPrice": 449,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 449
+        }
+      ]
+    },
+    {
+      "productId": "1XLX",
+      "name": "Yumoş Siyahlar İçin Sıvı Deterjan 2.5 Lt",
+      "brand": "Yumoş",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 459.95,
+      "maxPrice": 464.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 459.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 464.5
+        }
+      ]
+    },
+    {
+      "productId": "210U",
+      "name": "Persil Color Sıvı Deterjan 38 Yıkama 2.47 Lt",
+      "brand": "Persil",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 494.95,
+      "maxPrice": 494.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 494.95
+        }
+      ]
+    },
+    {
+      "productId": "1UOF",
+      "name": "Omo Liquid Biosensitive Sıvı Deterjan 1.5 Lt",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 545.95,
+      "maxPrice": 545.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 545.95
+        }
+      ]
+    },
+    {
+      "productId": "1A5X",
+      "name": "Ariel Dağ Esintisi Toz Deterjan 5 Kg",
+      "brand": "Ariel",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 589,
+      "maxPrice": 589,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 589
+        }
+      ]
+    },
+    {
+      "productId": "1YL1",
+      "name": "Ariel Parlak Renkler Toz Deterjan 5 Kg",
+      "brand": "Ariel",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 589,
+      "maxPrice": 589,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 589
+        }
+      ]
+    },
+    {
+      "productId": "15Z0",
+      "name": "Billmatik Renkliler Toz Deterjan 5 Kg",
+      "brand": "Billmatik",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 159,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "03MV",
+      "name": "Qualt Sıvı Deterjan Renkli 3 Lt",
+      "brand": "Qualt",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 239
+        }
+      ]
+    },
+    {
+      "productId": "1BPH",
+      "name": "Omo Express Beyaz Renkli Sıvı Deterjan 1.48 Lt",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0ZGN",
+      "name": "Perwoll Renkliler Sıvı Deterjan 2.7 Lt",
+      "brand": "Perwoll",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0NNZ",
+      "name": "Perwoll Siyahlar Sıvı Deterjan 2.7 Lt",
+      "brand": "Perwoll",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0QBN",
+      "name": "Omo Express Renkliler ve Siyahlar Sıvı Deterjan 1.48 Lt",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "2122",
+      "name": "Omo Active Oxy Beyazlar İçin Sıvı Deterjan 1.5 Lt",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 263.97,
+      "maxPrice": 439.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 263.97
+        },
+        {
+          "market": "Migros",
+          "price": 439.95
+        }
+      ]
+    },
+    {
+      "productId": "1SU3",
+      "name": "Perwoll Geliştirilmiş Siyah Sıvı Deterjan 27 Yıkama 1.485 Lt",
+      "brand": "Perwoll",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 298.95,
+      "maxPrice": 298.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 298.95
+        }
+      ]
+    },
+    {
+      "productId": "1II4",
+      "name": "Omo Express Fresh Beyaz & Renkli Sıvı Deterjan 1.48 Lt",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 299.95,
+      "maxPrice": 469,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        },
+        {
+          "market": "Şok",
+          "price": 469
+        }
+      ]
+    },
+    {
+      "productId": "201I",
+      "name": "Omo Express Fresh Hipoalerjenik Sıvı Deterjan 1.48 Lt",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "21DX",
+      "name": "Peros Renkli Toz Deterjan 7 Kg",
+      "brand": "Peros",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 305,
+      "maxPrice": 305,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 305
+        }
+      ]
+    },
+    {
+      "productId": "05P7",
+      "name": "Artmatik Beyazlar Toz Deterjan 8 Kg",
+      "brand": "Artmatik",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 305,
+      "maxPrice": 305,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 305
+        }
+      ]
+    },
+    {
+      "productId": "1UB3",
+      "name": "Persil Jel Deterjan Okyanus Ferahlığı 38 Yıkama 2.47 Lt",
+      "brand": "Persil",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 305.85,
+      "maxPrice": 305.85,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 305.85
+        }
+      ]
+    },
+    {
+      "productId": "1PH7",
+      "name": "Rinso Limon Ve Karbonat Toz Deterjan 10 Kg",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 309,
+      "maxPrice": 429.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 309
+        },
+        {
+          "market": "Migros",
+          "price": 429.95
+        }
+      ]
+    },
+    {
+      "productId": "1PKJ",
+      "name": "Ariel Dağ Esintisi Beyazlar İçin Toz Deterjan 7 Kg",
+      "brand": "Ariel",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "1Q3U",
+      "name": "Ariel Aquapudra Dağ Esintisi Renkliler İçin Toz Deterjan 7 Kg",
+      "brand": "Ariel",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 349,
+      "maxPrice": 399.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 399.95
+        }
+      ]
+    },
+    {
+      "productId": "2121",
+      "name": "Rinso Beyaz Sirke & Çamaşır Sodası Toz Deterjan 10 Kg",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 429.95,
+      "maxPrice": 429.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 429.95
+        }
+      ]
+    },
+    {
+      "productId": "0MUA",
+      "name": "Perwoll Siyah Çiçek Cazibesi Sıvı Deterjan 2.75 Lt",
+      "brand": "Perwoll",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 430.95,
+      "maxPrice": 430.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 430.95
+        }
+      ]
+    },
+    {
+      "productId": "1NC1",
+      "name": "Omo Active Toz Deterjan 9 Kg",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 439,
+      "maxPrice": 439,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 439
+        }
+      ]
+    },
+    {
+      "productId": "1ZDS",
+      "name": "Rinso Kömür Komple Bakım Sıvı Deterjan 2.5 Lt",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 444,
+      "maxPrice": 444,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 444
+        }
+      ]
+    },
+    {
+      "productId": "2CH7",
+      "name": "Omo Active Fresh Toz Deterjan 9 Kg",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 445,
+      "maxPrice": 445,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 445
+        }
+      ]
+    },
+    {
+      "productId": "0W4M",
+      "name": "Bingo Beyaz & Renkli Toz Deterjan 10 Kg",
+      "brand": "Bingo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 449,
+      "maxPrice": 449,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 449
+        }
+      ]
+    },
+    {
+      "productId": "0TPR",
+      "name": "Omo Active Fresh Renk Toz Deterjan 4.5 Kg",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 529,
+      "maxPrice": 529,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 529
+        }
+      ]
+    },
+    {
+      "productId": "1ZMD",
+      "name": "Omo Act Fresh Beyazlar Toz Deterjan 5.5 Kg",
+      "brand": "Omo",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 655.95,
+      "maxPrice": 655.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 655.95
+        }
+      ]
+    }
+  ]
+}

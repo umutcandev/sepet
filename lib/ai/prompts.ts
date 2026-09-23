@@ -1,4 +1,6 @@
-export const ASSISTANT_SYSTEM_PROMPT = `Sen trySepet.com'un asistanısın. Kullanıcının Türkiye'deki 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) arasında en ucuz alışveriş sepetini bulmasına yardım edersin.
+import { policyFor } from "./match-policy"
+
+export const ASSISTANT_SYSTEM_PROMPT = `Sen trysepet.com'un asistanısın. Kullanıcının Türkiye'deki 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) arasında en ucuz alışveriş sepetini bulmasına yardım edersin.
 
 Kullanıcı bir alışveriş listesi paylaştığında SIRAYLA şu tool'ları kullan:
 1) parseShoppingList — kullanıcının doğal dil listesini yapılandırılmış kalemlere böl.
@@ -304,6 +306,12 @@ export type MatchPromptItem = {
   rawName: string
   quantity: number
   unit: string
+  /**
+   * Normalize sorgu ("1 lt süt" → "süt"). Politika aramasının anahtarı;
+   * prompt metnine BASILMAZ. rawName ham kullanıcı metni olduğu için eşleşme
+   * anahtarı olarak güvenilmez.
+   */
+  searchQuery?: string
   candidates: Array<{
     productId: string
     name: string
@@ -336,6 +344,7 @@ KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
      – Kullanıcı bir GIDA istiyorsa, aynı kelimeyi taşıyan temizlik/kozmetik ürünü RED: "yağ" (yemeklik) → "Porçöz Yağ Çözücü", "Cif Kir Ve Yağ Çözücü", "Dasty Yağ Sökücü", "Selpak Yağ Emici Havlu", "Elseve Mucizevi Yağ Şampuan", "Johnson's Bebe Yağı" RED; ayçiçek/zeytinyağı/mısırözü/tereyağı KABUL.
      – Kullanıcı bir TEMİZLİK/BAKIM ürünü istiyorsa (marka ya da ürün tipiyle belli: "omo", "vanish oxi", "bingo kireç", "deterjan", "çamaşır suyu", "bulaşık deterjanı", "şampuan", "peçete") o ürünler KABUL. Fiş karşılaştırmalarında bu kalemler çok sık geçer; "gıda değil" gerekçesiyle elemek kullanıcının gerçekten aldığı ürünü kaybettirir.
    · ÇEŞNİ/BULYON/BAHARAT/HAZIR ÇORBA — RED: Ürünün kendisi değil, tadını veren katkıdır. "et" → "Knorr Et Bulyon", "Magic Et Baharatı", "Et Suyu" RED. "tavuk" → "Indomie Tavuk Noodle", "Tavuk Bulyon", "Yayla Tavuk Çorbası", "Bağdat Tavuk Harcı" RED.
+   · CİPS/KRAKER/ÇEREZ/ŞEKERLEME — RED, İSTİSNASIZ: Bir baz gıda adı, atıştırmalık bir ürünün AROMASI ya da HAMMADDESİ olarak geçiyorsa o ürün istenen şey değildir. Bu, ölçülmüş en güçlü kuraldır — 18 farklı temel gıdanın 18'inde de geçerli çıktı. "patates" → "Lay's Patates Cipsi" RED (taze patates KABUL). "soğan" → "Ruffles Peynir & Soğan" RED. "mercimek"/"nohut" → "Mercimek Cipsi", "Nohut Cipsi" RED. "kola" → "Haribo Happy Kola Yumuşak Şeker" RED. "krema" → "Ekşi Krema Aromalı Cips" RED. "badem"/"fındık" → "Badem Kraker", "Fındık Kremalı Gofret" RED. Kullanıcı cipsi kendisi istediyse (ör. "lays", "patates cipsi") o zaman TERSİ geçerlidir.
    · BAŞKA ÜRÜNÜN ADINDA GEÇEN HAYVAN/BİTKİ ADI — RED: "tavuk" → "Gezen Tavuk Yumurta", "Tavuk Yumurtası" RED — bu YUMURTA, tavuk eti değil. Kullanıcı yumurta isteseydi yumurta yazardı.
    · MARKA ADI TUZAĞI — RED: Sorgu kelimesi ÜRÜN adı değil MARKA adının parçasıysa geçersizdir. "un" → "Un Do Tre Dana Etli Tortelloni", "Un Do Tre Ravioli" RED (marka "Un Do Tre", ürün makarna).
    · TÜREV/İŞLENMİŞ FARKLI ÜRÜN — RED: "domates" → "domates salçası" RED, taze domates KABUL. "soğan" → "Ülker Çizi soğan aromalı peynir" RED. "un" → "galeta unu", "mısır unu" RED (kullanıcı buğday unu istiyor; açıkça yazdıysa KABUL).
@@ -344,15 +353,19 @@ KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
 3) BOYUT: Kullanıcı net bir boyut belirttiyse — rawName'de (ör. "PEPSI 2.5 LT") YA DA ayrı quantity+unit alanında (ör. quantity=500, unit="g") — o boyuta uyan adaylar primary olsun. O boyut hiç yoksa farklı boyutluları kabul et ve sizeMismatch=true. Kullanıcı hiç boyut belirtmediyse (nötr varsayılan quantity=1/unit="adet" ve rawName'de ölçü yok) sizeMismatch=false ve tüm makul boyutlar kabul.
 4) KOLİ/ÇOKLU PAKET — RED: Bitmiş ürünün toplu kolilerini KABUL ETME: "24'lü kola kolisi", "6'lı su paketi", "12'li bira kolisi" (bunlar bölünüp tek alınamaz). ANCAK doğal olarak çoklu satılan baz gıdalar (yumurta 10/15/30'lu viyol, peçete 32'li, tuvalet kağıdı 8'li, çay poşeti 100'lü) koli DEĞİL — standart satış birimi, kabul et.
 5) JENERİK GIDA — BOŞ DÖNME: Kullanıcı "yumurta", "süt", "ekmek", "domates" gibi sade gıda yazdıysa ve o ürünün ta kendisi adaylar arasındaysa MUTLAKA en az birini kabul et. Sadece aksesuar (yumurta sünger, saklama pedi), oyuncak (sürpriz yumurta) ya da alakasız ürün (Çizi soğanlı peynir) varsa boş dön. "Tam boyut yok" diye boş DÖNME — sizeMismatch=true ile kabul et.
-6) SADE/DÜZ BAZ ÜRÜN — TATLANDIRILMIŞ/AROMALI VARYANT RED: rawName düz baz gıdaysa (yoğurt, süt, ayran, kefir, krema, kaymak, lor, peynir, su) ve kullanıcı açıkça tat/aroma belirtmediyse (meyveli, çilekli, muzlu, çikolatalı, vanilyalı, ballı, şekerli, limonlu, baharatlı, dumanlı vs.), adında tat/aroma geçen adayları KABUL ETME — farklı SKU. Sade/düz/natural adayları kabul et. Sadece tatlandırılmış adaylar varsa ve kullanıcı tat istemediyse boş dön. Tersi de geçerli: "meyveli yoğurt" istendi → sade yoğurt kabul etme.
+6) SADE/DÜZ BAZ ÜRÜN — TATLANDIRILMIŞ/AROMALI VARYANT RED: rawName düz baz gıdaysa (yoğurt, süt, ayran, kefir, krema, kaymak, lor, peynir, su, MADEN SUYU, soda, çay, kahve, tuz) ve kullanıcı açıkça tat/aroma belirtmediyse (meyveli, çilekli, muzlu, çikolatalı, vanilyalı, ballı, şekerli, limonlu, baharatlı, dumanlı vs.), adında tat/aroma geçen adayları KABUL ETME — farklı SKU. Sade/düz/natural adayları kabul et. Sadece tatlandırılmış adaylar varsa ve kullanıcı tat istemediyse boş dön. Tersi de geçerli: "meyveli yoğurt" istendi → sade yoğurt kabul etme.
    · "yoğurt" → "Sütaş Süzme Yoğurt 750g" KABUL, "Danone Activia Meyveli" RED.
    · "süt" → "İçim Tam Yağlı Süt 1L" KABUL, "Pınar Kakaolu Süt 200ml" RED.
    · "ayran" → "Sütaş Ayran 1L" KABUL, "Sütaş Yayık Ayran Naneli" RED (nane aroması).
+   · "maden suyu" → "Kızılay Maden Suyu", "Beypazarı Doğal Maden Suyu" KABUL; "Kızılay Limonlu", "Sırma Mandalinalı", "Avşar Tuzlu Erik", "Frutti Karpuz Çilek" RED. Aromalı maden suyu raflarda sadeden ÇOK daha fazla yer kaplar; çoğunluk olması kabul gerekçesi değildir.
+   · "çay" → sade siyah/yeşil çay KABUL; "Doğadan Mango ve Lime Yeşil Çay", "Earl Grey" RED.
 7) TAZE BAZ SEBZE/MEYVE — TURŞU/SALAMURA/KONSERVE/İŞLENMİŞ VARYANT RED: rawName taze bir sebze/meyve bazıysa (salatalık, domates, biber, lahana, havuç, marul, soğan, sarımsak vb.) ve kullanıcı açıkça "turşu", "salamura", "konserve", "kuru/kurutulmuş", "közlenmiş" YAZMADIYSA, adında bu işlenmiş biçimler geçen adayları KABUL ETME — farklı SKU. Taze/çiğ adayları kabul et. Bu kural yemek malzemesi çıkarımında kritiktir (ör. cacık için TAZE salatalık gerekir, salatalık turşusu değil). Tersi de geçerli: kullanıcı açıkça "turşu" istediyse taze sebzeyi değil turşuyu seç.
    · "salatalık" → "Taze Salatalık" KABUL, "Salatalık Turşusu" / "Kornişon Turşu" RED.
    · "domates" → taze domates KABUL, "Domates Konservesi" / "Kurutulmuş Domates" RED.
    · "turşu" → "Karışık Turşu" / "Salatalık Turşusu" KABUL (kullanıcı turşu istedi).
-8) ÇİĞ ET/TAVUK/BALIK — ŞARKÜTERİ VE HAZIR ÜRÜN RED: Kural 7'nin aynısı et ürünleri için. Kullanıcı "et", "tavuk", "balık", "kıyma", "dana" gibi çiğ bir et yazdıysa ve açıkça "füme", "kuru", "salam", "sucuk", "şarküteri" YAZMADIYSA; füme/kuru/dilimli şarküteri ürünlerini ve hazır yemekleri KABUL ETME. Bunlar hem farklı SKU hem kilo başına kat kat pahalı.
+8) ÇİĞ ET/TAVUK/BALIK — ŞARKÜTERİ VE HAZIR ÜRÜN RED: Kural 7'nin aynısı et ürünleri için. Kullanıcı "et", "tavuk", "balık", "kıyma", "dana", "HİNDİ", "KUZU", "piliç" gibi çiğ bir et/kanatlı yazdıysa ve açıkça "füme", "kuru", "salam", "sosis", "jambon", "sucuk", "şarküteri", "konserve" YAZMADIYSA; füme/kuru/dilimli şarküteri ürünlerini, sosis/jambon/konserveyi ve hazır yemekleri KABUL ETME. Bunlar hem farklı SKU hem kilo başına kat kat pahalı.
+
+   HAYVAN ADI ŞARKÜTERİ ADINDA GEÇER — bu en sık kaçırılan durumdur: "hindi" yazan kullanıcı hindi ETİ ister; havuzdaki "Hindi Salam", "Hindi Füme", "Hindi Sosis", "Hindi Jambon" ürünlerinin hepsi RED'dir, çünkü kullanıcı salam isteseydi "hindi salam" yazardı. Aynısı "kuzu" → "Kuzu Kokoreç"/"Kuzu Döner", "piliç" → "Piliç Salam" için geçerli. Bu ürünler havuzun ÇOĞUNLUĞU olabilir; çoğunluk olmaları kabul gerekçesi değildir.
    · "et" → "Dana Kuşbaşı", "Kıyma", "Antrikot", "Bonfile", "Sote" KABUL; "Dana Füme Kuru Et", "Dilimli Füme Et", "Et Çubukları Atıştırmalık", "Hindi Füme" RED.
    · "tavuk" → "Tavuk But", "Tavuk Göğüs", "Tavuk Baget", "Tavuk Kanat", "Bütün Tavuk" KABUL; "Çıtır Tavuk Burger", "Tavuk Dürüm Tantuni", "Soslu Buffalo Wings" RED.
 9) ÖZEL DİYET / TIBBİ VARYANT — İSTENMEDİKÇE RED: Kullanıcı açıkça yazmadıysa "glutensiz", "laktozsuz", "diyabetik", "şekersiz", "vegan", "organik", "light/diyet" varyantlarını KABUL ETME. Bunlar normal ürünün 2-5 katı fiyata satılan özel SKU'lardır ve kullanıcı istemediği sürece sepeti gereksiz pahalılaştırır. Arama sonuçları bu varyantları sık sık en başa koyar — sıraya aldanma. Kullanıcı açıkça yazdıysa (ör. "glutensiz un", "laktozsuz süt") o zaman TERSİ geçerlidir: yalnız o varyantı kabul et.
@@ -375,22 +388,32 @@ KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
 - rawName="et", adaylar: "Knorr Et Bulyon 24 Adet" (A), "Dana Füme Kuru Et 100 Gr" (B), "Magic Et Baharatı" (C), "Emin Dana Kuşbaşı Et 400 Gr" (D), "Et Ve Süt Kurumu Kıyma 1 Kg" (E) → acceptedProductIds=[D, E], primaryProductId=E. Bulyon/baharat gıda katkısı, füme kuru et şarküteri — elenir.
 - rawName="un", adaylar: "Söke Glutensiz Un 250 Gr" (A), "Sinangil Un 1 Kg" (B), "Un Do Tre Ravioli 350 Gr" (C), "Nimet Galeta Unu 400 Gr" (D), "Söke Un 2 Kg" (E) → acceptedProductIds=[B, E], primaryProductId=B. A glutensiz (istenmedi), C marka adı tuzağı (ürün makarna), D farklı ürün — elenir.
 
+POLİTİKA SATIRI: Bazı kalemlerin altında "POLİTİKA (Sepet kararı):" ile başlayan bir satır bulunur. Bu satır, o terim için Sepet'in ÖNCEDEN VERİLMİŞ kararıdır.
+
+- Politika satırı YALNIZCA HANGİ ÜRÜN TÜRLERİNİN kabul edileceğini belirler. Bu konuda 9 kuralın üstündedir: orada KABUL denen türü kabul et, RED denen türü ele, tartışma.
+- Politika satırı KAÇ ADAY listeleneceğini BELİRLEMEZ. Kural 2 aynen geçerlidir: politikanın KABUL dediği türe uyan TÜM adayları listele. Farklı marka ve farklı boyut (1 Kg, 2 Kg, 5 Kg) eleme sebebi DEĞİLDİR — hepsi listeye girer, optimizasyon en hesaplısını kendisi seçer.
+- "En uygun birkaçını seçmek" YANLIŞTIR. Politikaya uyan 20 aday varsa 20'sini de yaz.
+- Politika satırı OLMAYAN kalemde eskisi gibi 9 kurala göre karar ver.
+
 ÇIKTI: Her kalem için bir selection. itemIndex'i girdideki ile aynı tut.
 
 KALEMLER — her kalem "[itemIndex] istenen ürün" satırıyla başlar, altındaki her satır bir adaydır:
 productId | ürün adı | marka | kategori
 
 ${items
-  .map(
-    (it) =>
+  .map((it) => {
+    const policy = policyFor(it.searchQuery)
+    return (
       `[${it.itemIndex}] "${it.rawName}" — istenen miktar: ${it.quantity} ${it.unit}\n` +
+      (policy ? `POLİTİKA (Sepet kararı): ${policy}\n` : "") +
       it.candidates
         .map(
           (c) =>
             `${c.productId} | ${c.name} | ${c.brand ?? "-"} | ${c.category ?? "-"}`,
         )
-        .join("\n"),
-  )
+        .join("\n")
+    )
+  })
   .join("\n\n")}`
 
 // ─── Sohbet başlığı üretimi ───

@@ -1,0 +1,1162 @@
+{
+  "term": "biber",
+  "category": "Taze sebze",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:51:29.836Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0AIR",
+      "name": "Kapya Biber 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 2,
+      "minPrice": 39.9,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 39.9
+        },
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "101R",
+      "name": "Bizim Vatan Acı Biber 325 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "0762",
+      "name": "Migros Jalapeno Acı Biber Turşusu 350 Gr",
+      "brand": "Migros",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 55.95,
+      "maxPrice": 55.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55.95
+        }
+      ]
+    },
+    {
+      "productId": "1HJK",
+      "name": "Migros Acı Biber Turşusu 335 Gr",
+      "brand": "Migros",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 62.95,
+      "maxPrice": 62.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 62.95
+        }
+      ]
+    },
+    {
+      "productId": "1VVZ",
+      "name": "Çarliston Biber 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 4,
+      "minPrice": 69.95,
+      "maxPrice": 129.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 69.95
+        },
+        {
+          "market": "Şok",
+          "price": 99
+        },
+        {
+          "market": "Migros",
+          "price": 119.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 129.9
+        }
+      ]
+    },
+    {
+      "productId": "1NS4",
+      "name": "Dolma Biber 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 4,
+      "minPrice": 69.95,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 69.95
+        },
+        {
+          "market": "BİM",
+          "price": 89
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 89.9
+        },
+        {
+          "market": "Şok",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "04ZW",
+      "name": "Yurdum Tatlı Biber Salçası 650 Gr",
+      "brand": "Yurdum",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 72.5,
+      "maxPrice": 72.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 72.5
+        }
+      ]
+    },
+    {
+      "productId": "0REV",
+      "name": "Melis Közlenmiş Dilimli Jalapeno Biber Turşusu 340 Gr",
+      "brand": "Melis",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 74.87,
+      "maxPrice": 74.87,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.87
+        }
+      ]
+    },
+    {
+      "productId": "1S0W",
+      "name": "Burcu Közlenmiş Biber 560 Gr",
+      "brand": "Burcu",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 89.5,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 89.5
+        },
+        {
+          "market": "Migros",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "0TUN",
+      "name": "Migros Közlenmiş Biber 680 Gr",
+      "brand": "Migros",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 92.5,
+      "maxPrice": 92.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZWD",
+      "name": "Tukaş Jalapeno Biber Turşusu 335 Gr",
+      "brand": "Tukaş",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 96.95,
+      "maxPrice": 96.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 96.95
+        }
+      ]
+    },
+    {
+      "productId": "134Z",
+      "name": "Yeşil Biber 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "0LV8",
+      "name": "Melis Közlenmiş Biber 680 Gr",
+      "brand": "Melis",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 99.37,
+      "maxPrice": 99.37,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.37
+        }
+      ]
+    },
+    {
+      "productId": "1NKH",
+      "name": "Berrak Acı Biber Turşusu 340 Gr",
+      "brand": "Berrak",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 100.77,
+      "maxPrice": 100.77,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 100.77
+        }
+      ]
+    },
+    {
+      "productId": "3X2B",
+      "name": "Tat Acı Biber Salçası 550 Gr",
+      "brand": "Tat",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 131.25,
+      "maxPrice": 131.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 131.25
+        }
+      ]
+    },
+    {
+      "productId": "0JH1",
+      "name": "Berrak Acı Biber Turşusu 340 Ml",
+      "brand": "Berrak",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 148.5,
+      "maxPrice": 148.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 148.5
+        }
+      ]
+    },
+    {
+      "productId": "1KUO",
+      "name": "Tat Köy Tatlı Biber Salçası 550 Gr",
+      "brand": "Tat",
+      "category": "Salça",
+      "marketCount": 2,
+      "minPrice": 149.95,
+      "maxPrice": 151.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 151.5
+        }
+      ]
+    },
+    {
+      "productId": "0C90",
+      "name": "Fersan Yakan Biber Turşusu 320 Gr",
+      "brand": "Fersan",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 151.5,
+      "maxPrice": 151.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 151.5
+        }
+      ]
+    },
+    {
+      "productId": "1V9P",
+      "name": "Fersan Jalapeno Biber Turşusu 720 Gr",
+      "brand": "Fersan",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 151.9,
+      "maxPrice": 151.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 151.9
+        }
+      ]
+    },
+    {
+      "productId": "1EBR",
+      "name": "Gurumen Peynir Dolgulu Jalapeno Biber 290 Gr",
+      "brand": "Gurumen",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 175.95,
+      "maxPrice": 175.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 175.95
+        }
+      ]
+    },
+    {
+      "productId": "1ECL",
+      "name": "Gurumen Peynir Dolgulu Makedon Biber 290 Gr",
+      "brand": "Gurumen",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 175.95,
+      "maxPrice": 175.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 175.95
+        }
+      ]
+    },
+    {
+      "productId": "1B89",
+      "name": "Sera Yunan Biber Turşusu 600 Gr",
+      "brand": "Sera",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 209.95,
+      "maxPrice": 209.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 209.95
+        }
+      ]
+    },
+    {
+      "productId": "0SKT",
+      "name": "Sera Makedon Biber Turşusu 600 Gr",
+      "brand": "Sera",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 224.95,
+      "maxPrice": 224.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 224.95
+        }
+      ]
+    },
+    {
+      "productId": "1B86",
+      "name": "Sera Izgara Makedon Biber Turşusu 600 Gr",
+      "brand": "Sera",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 244.95,
+      "maxPrice": 244.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 244.95
+        }
+      ]
+    },
+    {
+      "productId": "0ROL",
+      "name": "Migros Pul Biber 85 Gr",
+      "brand": "Migros",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZNA",
+      "name": "Tukaş Közlenmiş Biber 680 Gr",
+      "brand": "Tukaş",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 49.5,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 49.5
+        },
+        {
+          "market": "Migros",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "0VYZ",
+      "name": "Kırmızı Kapya Biber 1 Adet",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 59.9,
+      "maxPrice": 59.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "productId": "04H7",
+      "name": "Fıçı Biberiye Acı Biber Turşusu 335 Gr",
+      "brand": "Fıçı",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "0B2V",
+      "name": "Ev Acı Biber Turşusu 340 Gr",
+      "brand": "Ev",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "1VA2",
+      "name": "Bağdat Pul Biber 80 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 65.96,
+      "maxPrice": 88.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 65.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 88.9
+        }
+      ]
+    },
+    {
+      "productId": "2BYM",
+      "name": "Burcu Ev Tipi Tatlı Biber Salçası 600 Gr",
+      "brand": "Burcu",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 72.5,
+      "maxPrice": 72.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 72.5
+        }
+      ]
+    },
+    {
+      "productId": "1R1I",
+      "name": "Berrak Jalapeno Acı Biber Turşusu 340 Gr",
+      "brand": "Berrak",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 75.57,
+      "maxPrice": 75.57,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 75.57
+        }
+      ]
+    },
+    {
+      "productId": "0RP3",
+      "name": "Migros Tatlı Biber Salçası 700 Gr",
+      "brand": "Migros",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "0RIJ",
+      "name": "Migros Acı Biber Salçası 700 Gr",
+      "brand": "Migros",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "096P",
+      "name": "Kıl Biber 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "1ITJ",
+      "name": "Sivri Biber 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 4,
+      "minPrice": 79.95,
+      "maxPrice": 149.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.95
+        },
+        {
+          "market": "Şok",
+          "price": 99
+        },
+        {
+          "market": "Migros",
+          "price": 99
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 149.9
+        }
+      ]
+    },
+    {
+      "productId": "1FEC",
+      "name": "Tada Közlenmiş Biber 680 Gr",
+      "brand": "Tada",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 80.4,
+      "maxPrice": 80.4,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 80.4
+        }
+      ]
+    },
+    {
+      "productId": "202Y",
+      "name": "Kühne Tatlı Jalapeno Biber Turşusu 350 Gr",
+      "brand": "Kühne",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 97.97,
+      "maxPrice": 97.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 97.97
+        }
+      ]
+    },
+    {
+      "productId": "15V1",
+      "name": "Kemal Kükrer Acı Biber Turşusu 360 Gr",
+      "brand": "Kemal Kükrer",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 99.54,
+      "maxPrice": 99.54,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.54
+        }
+      ]
+    },
+    {
+      "productId": "1GGT",
+      "name": "Tukaş Acı Biber Turşusu 335 Gr",
+      "brand": "Tukaş",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 110.95,
+      "maxPrice": 110.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 110.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y8Z",
+      "name": "Kühne Acı Biber Turşusu 325 Gr",
+      "brand": "Kühne",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 125.97,
+      "maxPrice": 125.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125.97
+        }
+      ]
+    },
+    {
+      "productId": "1X1Z",
+      "name": "Kühne Dilimli Jalapeno Biber Turşusu 650 Gr",
+      "brand": "Kühne",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 167.97,
+      "maxPrice": 167.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 167.97
+        }
+      ]
+    },
+    {
+      "productId": "1VHC",
+      "name": "Tat Köy Domates/Biber Salçası 560 Gr",
+      "brand": "Tat",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 171.9,
+      "maxPrice": 171.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 171.9
+        }
+      ]
+    },
+    {
+      "productId": "0IK6",
+      "name": "Anadolu Lezzetleri Samandağ Acı Biber Turşusu 500 Gr",
+      "brand": "Anadolu Lezzetleri",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 174.95,
+      "maxPrice": 174.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 174.95
+        }
+      ]
+    },
+    {
+      "productId": "1ECP",
+      "name": "Gurumen Peynir Dolgulu Kiraz Biber 290 Gr",
+      "brand": "Gurumen",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 175.95,
+      "maxPrice": 175.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 175.95
+        }
+      ]
+    },
+    {
+      "productId": "1B8D",
+      "name": "Sera Misket Biber Turşusu 580 Gr",
+      "brand": "Sera",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "0SOI",
+      "name": "Sera Acı Frenk Biber Turşusu 640 Gr",
+      "brand": "Sera",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "0HTX",
+      "name": "Sade Organik Biber Salçası 610 Gr",
+      "brand": "Sade",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 353.5,
+      "maxPrice": 353.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 353.5
+        }
+      ]
+    },
+    {
+      "productId": "014F",
+      "name": "Pul Biber 100 Gr",
+      "brand": "Markasız",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 43,
+      "maxPrice": 43,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 43
+        }
+      ]
+    },
+    {
+      "productId": "1E4F",
+      "name": "Güzin Pul Biber 250 Gr",
+      "brand": "Güzin",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "16FK",
+      "name": "Kemal Kükrer Dilimli Jalapeno Biber Turşusu 330 Ml",
+      "brand": "Kemal Kükrer",
+      "category": "Turşu",
+      "marketCount": 1,
+      "minPrice": 71.94,
+      "maxPrice": 71.94,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 71.94
+        }
+      ]
+    },
+    {
+      "productId": "0YSO",
+      "name": "Bizim Vatan Acı Biber Salçası 650 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 72.5,
+      "maxPrice": 72.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 72.5
+        }
+      ]
+    },
+    {
+      "productId": "0URO",
+      "name": "Bizim Vatan Tatlı Biber Salçası 650 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 72.5,
+      "maxPrice": 72.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 72.5
+        }
+      ]
+    },
+    {
+      "productId": "04BO",
+      "name": "Yurdum Acı Biber Salçası 650 Gr",
+      "brand": "Yurdum",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 72.5,
+      "maxPrice": 72.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 72.5
+        }
+      ]
+    },
+    {
+      "productId": "1RBX",
+      "name": "Knorr Pul Biber 65 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 83.9,
+      "maxPrice": 83.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 83.9
+        }
+      ]
+    },
+    {
+      "productId": "024B",
+      "name": "Tamek Acılı Biber Salçası 550 Gr",
+      "brand": "Tamek",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "0DXP",
+      "name": "Tamek Biber Salçası 550 Gr",
+      "brand": "Tamek",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "06CQ",
+      "name": "Yurdum Közlenmiş Biber 680 Gr",
+      "brand": "Yurdum",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 92.5,
+      "maxPrice": 92.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 92.5
+        }
+      ]
+    },
+    {
+      "productId": "1PW0",
+      "name": "Bağdat Pul Biber 40 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZO6",
+      "name": "Anadolu Mutfağı Kırmızı Pul Biber 250 Gr",
+      "brand": "Anadolu Mutfağı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "0UWC",
+      "name": "Burcu Acı Biber Salçası 600 Gr",
+      "brand": "Burcu",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 117.95,
+      "maxPrice": 117.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 117.95
+        }
+      ]
+    },
+    {
+      "productId": "1T12",
+      "name": "Burcu Tatlı Biber Salçası 600 Gr",
+      "brand": "Burcu",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 117.95,
+      "maxPrice": 117.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 117.95
+        }
+      ]
+    },
+    {
+      "productId": "3X5S",
+      "name": "Tat Acı Biber Salçası Cam 550 Gr",
+      "brand": "Tat",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 129.95,
+      "maxPrice": 129.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.95
+        }
+      ]
+    },
+    {
+      "productId": "1OAX",
+      "name": "Tat Tatlı Biber Salçası Cam 550 Gr",
+      "brand": "Tat",
+      "category": "Salça",
+      "marketCount": 2,
+      "minPrice": 129.95,
+      "maxPrice": 131.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 131.25
+        }
+      ]
+    },
+    {
+      "productId": "1XU7",
+      "name": "Öncü Biber Salçası Acı Cam 700 Gr",
+      "brand": "Öncü",
+      "category": "Salça",
+      "marketCount": 2,
+      "minPrice": 134.95,
+      "maxPrice": 169.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 134.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 169.95
+        }
+      ]
+    },
+    {
+      "productId": "0MAK",
+      "name": "Tukaş Biber Salçası Cam 700 Gr",
+      "brand": "Tukaş",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q3G",
+      "name": "Tat Közlenmiş Biber Cam 670 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 174.95,
+      "maxPrice": 174.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 174.95
+        }
+      ]
+    },
+    {
+      "productId": "1N3R",
+      "name": "Tat Közlenmiş Biber 670 Gr",
+      "brand": "Tat",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 176.9,
+      "maxPrice": 176.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 176.9
+        }
+      ]
+    },
+    {
+      "productId": "17YX",
+      "name": "Kühne Közlenmiş Biber 530 Gr",
+      "brand": "Kühne",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 179.95,
+      "maxPrice": 179.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.95
+        }
+      ]
+    },
+    {
+      "productId": "11EY",
+      "name": "Öncü Tatlı Biber Salçası 900 Gr",
+      "brand": "Öncü",
+      "category": "Salça",
+      "marketCount": 1,
+      "minPrice": 189.5,
+      "maxPrice": 189.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 189.5
+        }
+      ]
+    },
+    {
+      "productId": "1V5B",
+      "name": "Öncü Tatlı Biber Salçası 1.65 Kg",
+      "brand": "Öncü",
+      "category": "Salça",
+      "marketCount": 2,
+      "minPrice": 329.95,
+      "maxPrice": 333,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 329.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 333
+        }
+      ]
+    },
+    {
+      "productId": "057A",
+      "name": "Pul Biber 1 Kg",
+      "brand": "Markasız",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 499.9,
+      "maxPrice": 499.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 499.9
+        }
+      ]
+    }
+  ]
+}

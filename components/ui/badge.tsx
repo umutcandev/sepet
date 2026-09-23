@@ -9,7 +9,8 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "surface-raised-chip bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        default:
+          "surface-raised-chip bg-primary text-primary-foreground [a]:hover:bg-primary-hover",
         secondary:
           "surface-raised-chip bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
         destructive:

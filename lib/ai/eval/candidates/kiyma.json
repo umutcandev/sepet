@@ -1,0 +1,224 @@
+{
+  "term": "kıyma",
+  "category": "Et & protein",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:45:16.887Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0MO4",
+      "name": "Uzman Kasap Dana Kıyma 400 Gr",
+      "brand": "Uzman Kasap",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 279,
+      "maxPrice": 279,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 279
+        }
+      ]
+    },
+    {
+      "productId": "12Y7",
+      "name": "Dana Kıyma 400 Gr",
+      "brand": "Kombinet",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 279,
+      "maxPrice": 279,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 279
+        }
+      ]
+    },
+    {
+      "productId": "002E",
+      "name": "Emin %20 Yağlı Dana Kıyma 400 Gr",
+      "brand": "Emin",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 279,
+      "maxPrice": 279,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 279
+        }
+      ]
+    },
+    {
+      "productId": "15PL",
+      "name": "Haket %20 Yağlı Dana Kıyma 300 Gr",
+      "brand": "Haket",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "18TW",
+      "name": "Bonfilet Dondurulmuş Dana Kuzu Kıyma 500 Gr",
+      "brand": "Bonfilet",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 319,
+      "maxPrice": 319,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 319
+        }
+      ]
+    },
+    {
+      "productId": "0RPW",
+      "name": "Uzman Kasap Dana Kuzu Kıyma 400 Gr",
+      "brand": "Uzman Kasap",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 320,
+      "maxPrice": 320,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 320
+        }
+      ]
+    },
+    {
+      "productId": "0MQU",
+      "name": "Lezzetlim Dana Kıyma 400 Gr",
+      "brand": "Lezzetlim",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 330,
+      "maxPrice": 330,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 330
+        }
+      ]
+    },
+    {
+      "productId": "0XP9",
+      "name": "Uzman Kasap Dana Kıyma %15 Yağlı 400 Gr",
+      "brand": "Uzman Kasap",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 375.95,
+      "maxPrice": 375.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 375.95
+        }
+      ]
+    },
+    {
+      "productId": "099I",
+      "name": "Uzman Kasap Dana Yağsız Kıyma 400 Gr",
+      "brand": "Uzman Kasap",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 409.95,
+      "maxPrice": 409.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 409.95
+        }
+      ]
+    },
+    {
+      "productId": "0666",
+      "name": "Haket %20 Yağlı Dana Kıyma 500 Gr",
+      "brand": "Haket",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 430,
+      "maxPrice": 430,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 430
+        }
+      ]
+    },
+    {
+      "productId": "0BD7",
+      "name": "Haket Yağlı Kuzu Dana Kıyma 500 Gr",
+      "brand": "Haket",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 430,
+      "maxPrice": 430,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 430
+        }
+      ]
+    },
+    {
+      "productId": "07A7",
+      "name": "Haket Yağsız Dana Kıyma 500 Gr",
+      "brand": "Haket",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 449,
+      "maxPrice": 449,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 449
+        }
+      ]
+    },
+    {
+      "productId": "147T",
+      "name": "Dondurulmuş Dana Kıyma 1 Kg",
+      "brand": "Markasız",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 645,
+      "maxPrice": 645,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 645
+        }
+      ]
+    },
+    {
+      "productId": "0GYU",
+      "name": "Dana Kıyma Map 1 Kg",
+      "brand": "Markasız",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 779.9,
+      "maxPrice": 779.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 779.9
+        }
+      ]
+    }
+  ]
+}

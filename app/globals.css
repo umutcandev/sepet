@@ -75,6 +75,7 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -99,6 +100,10 @@
   --popover-foreground: #3d2418;
   --primary: #6d4530;
   --primary-foreground: #fff8f0;
+  /* Dolgunun hover hâli. ALFA DEĞİL: `bg-primary/80` krem zeminin üstünde
+     rengi açıyordu (L 0.43 → 0.55) ve kromayı da düşürüp soluklaştırıyordu.
+     Karışım paletin koyu ucuyla, yani siyahla değil — ton korunur. */
+  --primary-hover: color-mix(in oklab, var(--primary) 70%, var(--foreground));
   --secondary: #f5e8da;
   --secondary-foreground: #3d2418;
   --muted: #f5e8da;
@@ -170,6 +175,9 @@
   --popover-foreground: #f5e8da;
   --primary: #d4a574;
   --primary-foreground: #1a130e;
+  /* Gecede koyu uç zeminin kendisi (--foreground burada açık ton). Değer eski
+     `/85`in ürettiği rengin aynısı, bu sefer saydamlık olmadan. */
+  --primary-hover: color-mix(in oklab, var(--primary) 88%, var(--background));
   --secondary: #2d2218;
   --secondary-foreground: #f5e8da;
   --muted: #2d2218;

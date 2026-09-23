@@ -1,0 +1,1206 @@
+{
+  "term": "ayran",
+  "category": "Süt ürünleri",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:40:52.309Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "06FT",
+      "name": "Dost Bardak Ayran 200 Ml",
+      "brand": "Dost",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 10,
+      "maxPrice": 10,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 10
+        }
+      ]
+    },
+    {
+      "productId": "06WA",
+      "name": "Göynük Tam Yağlı Ayran 200 Ml",
+      "brand": "Göynük",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 10,
+      "maxPrice": 10,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 10
+        }
+      ]
+    },
+    {
+      "productId": "2026",
+      "name": "Sütaş Ayran 200 Ml",
+      "brand": "Sütaş",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 15,
+      "maxPrice": 17.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 15
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 17.5
+        }
+      ]
+    },
+    {
+      "productId": "0I6T",
+      "name": "Torku Ayran 200 Ml",
+      "brand": "Torku",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 15.25,
+      "maxPrice": 15.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 15.25
+        }
+      ]
+    },
+    {
+      "productId": "1FRK",
+      "name": "Dost Naneli Ayran 300 Ml",
+      "brand": "Dost",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 17.5,
+      "maxPrice": 17.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 17.5
+        }
+      ]
+    },
+    {
+      "productId": "0DHE",
+      "name": "Yörüksüt Ayran 275 Ml",
+      "brand": "Yörüksüt",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 17.5,
+      "maxPrice": 17.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 17.5
+        }
+      ]
+    },
+    {
+      "productId": "1MNR",
+      "name": "Sek Naneli Ayran 300 Ml",
+      "brand": "Sek",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 18.5,
+      "maxPrice": 21.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 18.5
+        },
+        {
+          "market": "hakmar",
+          "price": 21.5
+        }
+      ]
+    },
+    {
+      "productId": "0RPG",
+      "name": "Sek Ayran 285 Ml",
+      "brand": "Sek",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 21.95,
+      "maxPrice": 21.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 21.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q7H",
+      "name": "Sütaş Ayran 300 Ml",
+      "brand": "Sütaş",
+      "category": "Ayran ve Kefir",
+      "marketCount": 3,
+      "minPrice": 22,
+      "maxPrice": 24.9,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 22
+        },
+        {
+          "market": "Migros",
+          "price": 22
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 24.9
+        }
+      ]
+    },
+    {
+      "productId": "1UJR",
+      "name": "Eker Tombul Ayran 195 Ml",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 23.5,
+      "maxPrice": 23.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 23.5
+        }
+      ]
+    },
+    {
+      "productId": "039F",
+      "name": "İçim Ayran 285 Ml",
+      "brand": "İçim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 24.5,
+      "maxPrice": 24.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 24.5
+        }
+      ]
+    },
+    {
+      "productId": "1K5Q",
+      "name": "Eker Bardak Ayran 300 Ml",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 28.5,
+      "maxPrice": 28.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 28.5
+        }
+      ]
+    },
+    {
+      "productId": "1QVI",
+      "name": "Eker Ayran 293 Ml",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 33.5,
+      "maxPrice": 33.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 33.5
+        }
+      ]
+    },
+    {
+      "productId": "17ZE",
+      "name": "Torku Ayran 1 Lt",
+      "brand": "Torku",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "1OC9",
+      "name": "Eker Ayran 1 Lt",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 54.95,
+      "maxPrice": 69.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 54.95
+        },
+        {
+          "market": "Migros",
+          "price": 69.5
+        }
+      ]
+    },
+    {
+      "productId": "0YZE",
+      "name": "Birşah Ayran 1.5 Lt",
+      "brand": "Birşah",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "1GJZ",
+      "name": "Binvezir Şişe Ayran 1.5 Lt",
+      "brand": "Binvezir",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "02GF",
+      "name": "Dost Şişe Ayran 1.5 Lt",
+      "brand": "Dost",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "1RJL",
+      "name": "Yörsan Susurluk Ayran 1 Lt",
+      "brand": "Yörsan",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 67.95,
+      "maxPrice": 67.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 67.95
+        }
+      ]
+    },
+    {
+      "productId": "1KGX",
+      "name": "Sütaş Ayran 1 Lt",
+      "brand": "Sütaş",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 70.5,
+      "maxPrice": 70.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 70.5
+        }
+      ]
+    },
+    {
+      "productId": "1P2K",
+      "name": "Eker Tombul Ayran 6x195 Ml",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 79,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "2AAC",
+      "name": "Sütaş Tam Yağlı Ayran 2 Lt",
+      "brand": "Sütaş",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "10K4",
+      "name": "Sütaş Ayran 2.5 Lt",
+      "brand": "Sütaş",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 109.5,
+      "maxPrice": 109.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 109.5
+        }
+      ]
+    },
+    {
+      "productId": "182K",
+      "name": "Torku Ayran 2 Lt",
+      "brand": "Torku",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 109.5,
+      "maxPrice": 113.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 113.9
+        }
+      ]
+    },
+    {
+      "productId": "21AW",
+      "name": "Sek Yarım Yağlı Ayran 200 Ml",
+      "brand": "Sek",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 9.5,
+      "maxPrice": 9.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 9.5
+        }
+      ]
+    },
+    {
+      "productId": "0LAG",
+      "name": "Mis Bardak Ayran Tam Yağlı 200 Ml",
+      "brand": "Mis",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 10,
+      "maxPrice": 10,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 10
+        }
+      ]
+    },
+    {
+      "productId": "0I3S",
+      "name": "Carrefour Tam Yağlı Ayran 200 Ml",
+      "brand": "Carrefour",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 10,
+      "maxPrice": 10,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 10
+        }
+      ]
+    },
+    {
+      "productId": "0NS1",
+      "name": "İçim Tam Yağlı Bardak Ayran 200 Ml",
+      "brand": "İçim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 11,
+      "maxPrice": 11,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 11
+        }
+      ]
+    },
+    {
+      "productId": "09GS",
+      "name": "Eker Tam Yağlı Ayran 150 Ml",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 11.5,
+      "maxPrice": 11.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 11.5
+        }
+      ]
+    },
+    {
+      "productId": "10CZ",
+      "name": "Mis Bardak Ayran Tam Yağlı 285 Ml",
+      "brand": "Mis",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 13.5,
+      "maxPrice": 13.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 13.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZEO",
+      "name": "İçim Bardak Ayran 200 Ml",
+      "brand": "İçim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 14.9,
+      "maxPrice": 16.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 16.5
+        }
+      ]
+    },
+    {
+      "productId": "1NC6",
+      "name": "Torku Tam Yağlı Ayran 200 Ml",
+      "brand": "Torku",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 15.25,
+      "maxPrice": 15.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 15.25
+        }
+      ]
+    },
+    {
+      "productId": "1XEI",
+      "name": "Sek Naneli Bardak Ayran 300 Ml",
+      "brand": "Sek",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 24.95,
+      "maxPrice": 24.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.95
+        }
+      ]
+    },
+    {
+      "productId": "0XOV",
+      "name": "Arslan Karamaya Ayran 245 Ml",
+      "brand": "Arslan",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 45.9,
+      "maxPrice": 45.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 45.9
+        }
+      ]
+    },
+    {
+      "productId": "0V7Q",
+      "name": "Özerhisar Cam Şişe Ayran 245 Ml",
+      "brand": "Özerhisar",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "0E2Y",
+      "name": "İçim Ayran 1 Lt",
+      "brand": "İçim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 58.9,
+      "maxPrice": 58.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 58.9
+        }
+      ]
+    },
+    {
+      "productId": "0QD3",
+      "name": "Mis Tam Yağlı Ayran 1.5 Lt",
+      "brand": "Mis",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "0CR8",
+      "name": "Carrefour Tam Yağlı Ayran 1.5 Lt",
+      "brand": "Carrefour",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "0T0I",
+      "name": "İçim Şişe Ayran 1.5 Lt",
+      "brand": "İçim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "1FZ5",
+      "name": "Yörsan %1.8 Yağlı Ayran 2 Lt",
+      "brand": "Yörsan",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 89,
+      "maxPrice": 89,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 89
+        }
+      ]
+    },
+    {
+      "productId": "0YAY",
+      "name": "İçim Tam Yağlı Ayran 2 Lt",
+      "brand": "İçim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 89.9,
+      "maxPrice": 115.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 115.9
+        }
+      ]
+    },
+    {
+      "productId": "1X2R",
+      "name": "Yörükoğlu %1.8 Yağlı Ayran 2 Lt",
+      "brand": "Yörükoğlu",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "1SBJ",
+      "name": "Eker Ayran 1.5 Lt",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 3,
+      "minPrice": 99.5,
+      "maxPrice": 105.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99.5
+        },
+        {
+          "market": "Migros",
+          "price": 103.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 105.9
+        }
+      ]
+    },
+    {
+      "productId": "1YSA",
+      "name": "Sütaş Pratik Şişe Ayran 2 Lt",
+      "brand": "Sütaş",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 105,
+      "maxPrice": 129.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 105
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 129.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZVI",
+      "name": "Altınkılıç Kara Maya Ekşi Ayran 1 Lt",
+      "brand": "Altınkılıç",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 109.5,
+      "maxPrice": 109.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.5
+        }
+      ]
+    },
+    {
+      "productId": "1QZ7",
+      "name": "Sek Ekşi Maya Ayran 1 Lt",
+      "brand": "Sek",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 129.95,
+      "maxPrice": 131.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 131.5
+        }
+      ]
+    },
+    {
+      "productId": "0PO0",
+      "name": "Arslan Karamaya Ayran 1 Lt",
+      "brand": "Arslan",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "0VVO",
+      "name": "Özerhisar Cam Şişe Ayran 1 Lt",
+      "brand": "Özerhisar",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 164.95,
+      "maxPrice": 164.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.95
+        }
+      ]
+    },
+    {
+      "productId": "0WMB",
+      "name": "Yörsan Susurluk Ayran %2.3 Yağlı 265 Ml",
+      "brand": "Yörsan",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 28.95,
+      "maxPrice": 28.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 28.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZZH",
+      "name": "Mis Probiyotikli Sade Kefir 200 Ml",
+      "brand": "Mis",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 33.5,
+      "maxPrice": 33.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 33.5
+        }
+      ]
+    },
+    {
+      "productId": "0NGS",
+      "name": "Özerhisar Ayranı 245 Ml",
+      "brand": "Özerhisar",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "1PGV",
+      "name": "Eker Ananaslı Kefir 200 Ml",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 41.5,
+      "maxPrice": 41.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 41.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 41.9
+        }
+      ]
+    },
+    {
+      "productId": "20V4",
+      "name": "Sek Probiyotik Sade Kefir 250 Ml",
+      "brand": "Sek",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 43.95,
+      "maxPrice": 45.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 43.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 45.9
+        }
+      ]
+    },
+    {
+      "productId": "1WH6",
+      "name": "Sek Probiyotik Ananaslı Kefir 250 Ml",
+      "brand": "Sek",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 43.95,
+      "maxPrice": 45.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 43.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 45.9
+        }
+      ]
+    },
+    {
+      "productId": "1UJN",
+      "name": "Sek Çilekli Probiyotik Kefir 250 Ml",
+      "brand": "Sek",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 43.95,
+      "maxPrice": 43.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 43.95
+        }
+      ]
+    },
+    {
+      "productId": "1FJJ",
+      "name": "Mis Ayran Tam Yağlı Ekşi Lezzet 1 Lt",
+      "brand": "Mis",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 45.9,
+      "maxPrice": 45.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 45.9
+        }
+      ]
+    },
+    {
+      "productId": "1RM4",
+      "name": "İçim Probiyotik Kara Mürver ve Yaban Mersinli İçecek 250 Ml",
+      "brand": "İçim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 49.95,
+      "maxPrice": 54.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.95
+        },
+        {
+          "market": "Migros",
+          "price": 54.5
+        }
+      ]
+    },
+    {
+      "productId": "1Y2I",
+      "name": "Altınkılıç Sade Kefir 250 Ml",
+      "brand": "Altınkılıç",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 49.95,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "20A9",
+      "name": "Altınkılıç Laktozsuz Kefir 250 Ml",
+      "brand": "Altınkılıç",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "1PDG",
+      "name": "Sütaş Pratik Şişe Ayran 1 Lt",
+      "brand": "Sütaş",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.5
+        },
+        {
+          "market": "Şok",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "05MK",
+      "name": "Göynük Tam Yağlı Ayran 1.5 Lt",
+      "brand": "Göynük",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "182H",
+      "name": "Pınar Kefir 1 Lt",
+      "brand": "Pınar",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZLM",
+      "name": "İçim Rahat Laktozsuz Kefir 1 Lt",
+      "brand": "İçim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 3,
+      "minPrice": 89,
+      "maxPrice": 109.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 89
+        },
+        {
+          "market": "Migros",
+          "price": 105
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 109.5
+        }
+      ]
+    },
+    {
+      "productId": "1AL4",
+      "name": "Ömer Matlı Süt Çiftliği Tam Yağlı Ekşi Maya Ayran 1 Lt",
+      "brand": "Ömer Matlı Süt Çiftliği",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "20YK",
+      "name": "Üstad Kara Maya Ayran Cam Şişe 1 Lt",
+      "brand": "Üstad",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1O7J",
+      "name": "Tire Süt Kooperatifi Cam Şişe Ayran 1 Lt",
+      "brand": "Tire Süt Kooperatifi",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0S98",
+      "name": "Kefirzadem Kefir 250 Ml",
+      "brand": "Kefirzadem",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 101.95,
+      "maxPrice": 101.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 101.95
+        }
+      ]
+    },
+    {
+      "productId": "1WGM",
+      "name": "Eker Sade Kefir 1 Lt",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 107.95,
+      "maxPrice": 108.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 107.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 108.5
+        }
+      ]
+    },
+    {
+      "productId": "1YLD",
+      "name": "Kefirim Çilekli Kefir 1 Lt",
+      "brand": "Kefirim",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "1WGR",
+      "name": "Altınkılıç Laktozsuz Kefir 1 Lt",
+      "brand": "Altınkılıç",
+      "category": "Ayran ve Kefir",
+      "marketCount": 4,
+      "minPrice": 109.5,
+      "maxPrice": 125.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 109.5
+        },
+        {
+          "market": "Şok",
+          "price": 125
+        },
+        {
+          "market": "A101",
+          "price": 125
+        },
+        {
+          "market": "Migros",
+          "price": 125.95
+        }
+      ]
+    },
+    {
+      "productId": "20EJ",
+      "name": "Altınkılıç Sade Kefir 1 Lt",
+      "brand": "Altınkılıç",
+      "category": "Ayran ve Kefir",
+      "marketCount": 4,
+      "minPrice": 115,
+      "maxPrice": 121.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 115
+        },
+        {
+          "market": "BİM",
+          "price": 115
+        },
+        {
+          "market": "hakmar",
+          "price": 115
+        },
+        {
+          "market": "Migros",
+          "price": 121.5
+        }
+      ]
+    },
+    {
+      "productId": "1Y6R",
+      "name": "Sütaş Kaf Orman Meyveli Kefir 1 Lt",
+      "brand": "Sütaş",
+      "category": "Ayran ve Kefir",
+      "marketCount": 1,
+      "minPrice": 116.5,
+      "maxPrice": 116.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 116.5
+        }
+      ]
+    }
+  ]
+}

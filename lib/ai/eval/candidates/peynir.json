@@ -1,0 +1,1162 @@
+{
+  "term": "peynir",
+  "category": "Süt ürünleri",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:38:58.178Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1EW8",
+      "name": "Aknaz Kekikli Zeytinli Taze Peynir 180 Gr",
+      "brand": "Aknaz",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 39.5,
+      "maxPrice": 39.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39.5
+        }
+      ]
+    },
+    {
+      "productId": "0LP1",
+      "name": "Migros Üçgen Peynir 120 Gr",
+      "brand": "Migros",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "1F9N",
+      "name": "Peysan Krem Peynir 300 Gr",
+      "brand": "Peysan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 72.5,
+      "maxPrice": 72.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 72.5
+        }
+      ]
+    },
+    {
+      "productId": "20CZ",
+      "name": "Torku Üçgen Peynir 100 Gr",
+      "brand": "Torku",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 74.9,
+      "maxPrice": 74.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.9
+        }
+      ]
+    },
+    {
+      "productId": "2CSA",
+      "name": "Cebeci Süzme Peynir 400 Gr",
+      "brand": "Cebeci",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "1SJM",
+      "name": "Pınar Süzme Peynir 250 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 117.9,
+      "maxPrice": 117.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 117.9
+        }
+      ]
+    },
+    {
+      "productId": "0512",
+      "name": "Kerem Çubuk Toptane Peynir 250 Gr",
+      "brand": "Kerem",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1Z85",
+      "name": "Milgo Laktozsuz Taze Sürülebilir Peynir 180 Gr",
+      "brand": "Milgo",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 129.9,
+      "maxPrice": 135.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 135.5
+        }
+      ]
+    },
+    {
+      "productId": "1L22",
+      "name": "Pınar Krem Peynir 300 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 143.9,
+      "maxPrice": 143.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 143.9
+        }
+      ]
+    },
+    {
+      "productId": "216I",
+      "name": "İçim Mini Top Peynir 180 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 147.9,
+      "maxPrice": 152.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 147.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 152.5
+        }
+      ]
+    },
+    {
+      "productId": "1SQ0",
+      "name": "Kiri Tam Yağlı Taze Peynir 300 Gr",
+      "brand": "Kiri",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 158.95,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 158.95
+        },
+        {
+          "market": "Migros",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "0D0Q",
+      "name": "İçim Beyaz Peynir 500 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 164.95,
+      "maxPrice": 164.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 164.95
+        }
+      ]
+    },
+    {
+      "productId": "087J",
+      "name": "Torku Beyaz Peynir 500 Gr",
+      "brand": "Torku",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 185,
+      "maxPrice": 185,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 185
+        }
+      ]
+    },
+    {
+      "productId": "1JM2",
+      "name": "Ekici Süzme Peynir 400 Gr",
+      "brand": "Ekici",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 199,
+      "maxPrice": 199,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199
+        }
+      ]
+    },
+    {
+      "productId": "0E2B",
+      "name": "Carrefour Otlu Beyaz Peynir 250 Gr",
+      "brand": "Carrefour",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 199.5,
+      "maxPrice": 199.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199.5
+        }
+      ]
+    },
+    {
+      "productId": "0CAL",
+      "name": "Mis Tam Yağlı Beyaz Peynir 750 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 205,
+      "maxPrice": 205,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 205
+        }
+      ]
+    },
+    {
+      "productId": "01OX",
+      "name": "Aknaz Beyaz Peynir Kutu 750 Gr",
+      "brand": "Aknaz",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 205,
+      "maxPrice": 205,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 205
+        }
+      ]
+    },
+    {
+      "productId": "1MMA",
+      "name": "Bahçıvan Süzme Peynir 750 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 224,
+      "maxPrice": 224,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 224
+        }
+      ]
+    },
+    {
+      "productId": "1TH0",
+      "name": "Muratbey Peynir Misto 200 Gr",
+      "brand": "Muratbey",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 228.5,
+      "maxPrice": 244.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 228.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 244.5
+        }
+      ]
+    },
+    {
+      "productId": "2AJ3",
+      "name": "Pınar Az Yağlı Süzme Peynir 1 Kg",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 275,
+      "maxPrice": 275,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 275
+        }
+      ]
+    },
+    {
+      "productId": "2AJE",
+      "name": "Muratbey Sürmeli Süzme Peynir 700 Gr",
+      "brand": "Muratbey",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 279,
+      "maxPrice": 279,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 279
+        }
+      ]
+    },
+    {
+      "productId": "1RRG",
+      "name": "Yörsan Tam Yağlı Taze Beyaz Peynir 750 Gr",
+      "brand": "Yörsan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 285.5,
+      "maxPrice": 285.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 285.5
+        }
+      ]
+    },
+    {
+      "productId": "00AR",
+      "name": "Gürova Olgunlaştırılmış Peynir 1 Kg",
+      "brand": "Gürova",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 449,
+      "maxPrice": 449,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 449
+        }
+      ]
+    },
+    {
+      "productId": "0XUN",
+      "name": "Tahsildaroğlu Klasik İnek Beyaz Peynir 1 Kg",
+      "brand": "Tahsildaroğlu",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 649.9,
+      "maxPrice": 649.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 649.9
+        }
+      ]
+    },
+    {
+      "productId": "0YKM",
+      "name": "Mis Taze Peynir 200 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "04SV",
+      "name": "Kerem Sürülebilir Taze Peynir 200 Gr",
+      "brand": "Kerem",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "0LLO",
+      "name": "Migros Tam Yağlı Taze Sürülebilir Peynir 200 Gr",
+      "brand": "Migros",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1NY5",
+      "name": "Sek Taze Peynir Zeytinli Kekikli 150 Gr",
+      "brand": "Sek",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 79.95,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 79.95
+        },
+        {
+          "market": "Migros",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "1Z07",
+      "name": "Kiri Kekikli Tam Yağlı Taze Peynir 150 Gr",
+      "brand": "Kiri",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 88,
+      "maxPrice": 89,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 88
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 89
+        }
+      ]
+    },
+    {
+      "productId": "1KV0",
+      "name": "İçim Süzme Peynir 250 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 89.9,
+      "maxPrice": 93.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 93.9
+        }
+      ]
+    },
+    {
+      "productId": "2ARC",
+      "name": "Teksüt Krem Peynir 270 Gr",
+      "brand": "Teksüt",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "1C2J",
+      "name": "Bahçıvan Serpme Beyaz Peynir 200 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZC6",
+      "name": "Mis Peynir Topları 250 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "0NGP",
+      "name": "İçim Krem Peynir 300 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 128.5,
+      "maxPrice": 131.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 128.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 131.5
+        }
+      ]
+    },
+    {
+      "productId": "2BCR",
+      "name": "Muratbey Tel Peynir 200 Gr",
+      "brand": "Muratbey",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "1868",
+      "name": "Bahçıvan Light Laktozsuz Dilimli Beyaz Peynir 420 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 189.9,
+      "maxPrice": 189.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 189.9
+        }
+      ]
+    },
+    {
+      "productId": "1IS2",
+      "name": "İçim Tam Yağlı Beyaz Peynir 500 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 197.95,
+      "maxPrice": 197.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 197.95
+        }
+      ]
+    },
+    {
+      "productId": "1WSO",
+      "name": "İçim Yumuşak Süzme Peynir 900 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 219,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 219
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "1RVR",
+      "name": "Cebel Çörekotlu Taze Peynir 400 Gr",
+      "brand": "Cebel",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 221.95,
+      "maxPrice": 221.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 221.95
+        }
+      ]
+    },
+    {
+      "productId": "0YZH",
+      "name": "Sütaş Beyaz Peynir 700 Gr",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "01RZ",
+      "name": "Aknaz Naturel Beyaz Peynir 600 Gr",
+      "brand": "Aknaz",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "0KZF",
+      "name": "Torku Beyaz Peynir 900 Gr",
+      "brand": "Torku",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 279.95,
+      "maxPrice": 279.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 279.95
+        }
+      ]
+    },
+    {
+      "productId": "2CRS",
+      "name": "İpekçiftliği Olgunlaştırılmış Peynir 600 Gr",
+      "brand": "Ipekçiftliği",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "12JJ",
+      "name": "Carrefour Olgunlaştırılmış Beyaz Peynir 600 Gr",
+      "brand": "Carrefour",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 299.9,
+      "maxPrice": 299.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299.9
+        }
+      ]
+    },
+    {
+      "productId": "1ITH",
+      "name": "Lokum Kıvamında Beyaz Peynir 1 Kg",
+      "brand": "Markasız",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 339,
+      "maxPrice": 339,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 339
+        }
+      ]
+    },
+    {
+      "productId": "2AU3",
+      "name": "Ünal Trakya Olgunlaştırılmış Peynir 600 Gr",
+      "brand": "Ünal",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 419,
+      "maxPrice": 419,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 419
+        }
+      ]
+    },
+    {
+      "productId": "01VC",
+      "name": "Ezine Olgunlaştırılmış Peynir 1 Kg",
+      "brand": "Ezine",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 499,
+      "maxPrice": 499,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 499
+        }
+      ]
+    },
+    {
+      "productId": "0DYE",
+      "name": "Antre Gourmet Ezine Beyaz Peynir 1 Kg",
+      "brand": "Antre Gourmet",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 1489,
+      "maxPrice": 1489,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 1489
+        }
+      ]
+    },
+    {
+      "productId": "1MZA",
+      "name": "Sütaş Üçgen Peynir 8'li 100 Gr",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 58.9,
+      "maxPrice": 58.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 58.9
+        }
+      ]
+    },
+    {
+      "productId": "1HEP",
+      "name": "Sütaş Krem Peynir 160 Gr",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 71.5,
+      "maxPrice": 71.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 71.5
+        }
+      ]
+    },
+    {
+      "productId": "1JTT",
+      "name": "Sütaş Süzme Peynir 250 Gr",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 3,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 95
+        },
+        {
+          "market": "Şok",
+          "price": 95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "0Z0N",
+      "name": "Mis Yarım Yağlı Süzme Beyaz Peynir 500 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "01VK",
+      "name": "Aktek Krem Peynir 500 Gr",
+      "brand": "Aktek",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 115,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "0QIY",
+      "name": "Mis Tam Yağlı Süzme Beyaz Peynir 500 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "0VCY",
+      "name": "Akpınar Taze Yağlı Tava Beyaz Peynir 450 Gr",
+      "brand": "Akpınar",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "1YB5",
+      "name": "Bahçıvan Tam Yağlı Süzme Peynir 2x250 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "1ZWQ",
+      "name": "Bahçıvan Süzme Peynir 500 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 144.9,
+      "maxPrice": 144.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 144.9
+        }
+      ]
+    },
+    {
+      "productId": "1X7N",
+      "name": "İçim Süzme Peynir 500 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 3,
+      "minPrice": 149,
+      "maxPrice": 172.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149
+        },
+        {
+          "market": "Şok",
+          "price": 165
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 172.95
+        }
+      ]
+    },
+    {
+      "productId": "1OJR",
+      "name": "Torku Süzme Peynir 450 Gr",
+      "brand": "Torku",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 168.75,
+      "maxPrice": 168.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 168.75
+        }
+      ]
+    },
+    {
+      "productId": "1X2Q",
+      "name": "Muratbey Topi Peynir 200 Gr",
+      "brand": "Muratbey",
+      "category": "Peynir",
+      "marketCount": 3,
+      "minPrice": 169,
+      "maxPrice": 237.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 169
+        },
+        {
+          "market": "Migros",
+          "price": 224.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 237.5
+        }
+      ]
+    },
+    {
+      "productId": "141G",
+      "name": "Aknaz Az Yağlı Beyaz Peynir 1 Kg",
+      "brand": "Aknaz",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "1KUX",
+      "name": "Sütaş Süzme Peynir 500 Gr",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 180.9,
+      "maxPrice": 180.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 180.9
+        }
+      ]
+    },
+    {
+      "productId": "1UAA",
+      "name": "Ekici Beyaz Peynir 500 Gr",
+      "brand": "Ekici",
+      "category": "Peynir",
+      "marketCount": 3,
+      "minPrice": 199,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 199
+        },
+        {
+          "market": "Migros",
+          "price": 205
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "0QA2",
+      "name": "Ahir Beyaz Peynir 1 Kg",
+      "brand": "Ahir",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 225,
+      "maxPrice": 225,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 225
+        }
+      ]
+    },
+    {
+      "productId": "3WIP",
+      "name": "Bozbeyi Klasik Dilim Beyaz Peynir 450 Gr",
+      "brand": "Bozbeyi",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 235,
+      "maxPrice": 235,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 235
+        }
+      ]
+    },
+    {
+      "productId": "03A3",
+      "name": "Peyser Olgunlaştırılmış Peynir 500 Gr",
+      "brand": "Peyser",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 235,
+      "maxPrice": 235,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 235
+        }
+      ]
+    },
+    {
+      "productId": "1SE4",
+      "name": "Bahçıvan Yarım Yağlı Laktozsuz Süzme Peynir 500 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 249.5,
+      "maxPrice": 249.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 249.5
+        }
+      ]
+    },
+    {
+      "productId": "2A5P",
+      "name": "Sütaş Süzme Peynir 1 Kg",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "1DC3",
+      "name": "Trakya Çiftliği Pesto Soslu Zeytinyağlı Taze Peynir 200 Gr",
+      "brand": "Trakya Çiftliği",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 329.9,
+      "maxPrice": 329.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 329.9
+        }
+      ]
+    },
+    {
+      "productId": "169T",
+      "name": "Sütaş Tam Yağlı Beyaz Peynir 1 Kg",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 345,
+      "maxPrice": 345,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 345
+        }
+      ]
+    },
+    {
+      "productId": "0203",
+      "name": "Primavera Peynir 4 Adet",
+      "brand": "Primavera",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 642.5,
+      "maxPrice": 642.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 642.5
+        }
+      ]
+    },
+    {
+      "productId": "0HDS",
+      "name": "Tahsildaroğlu Peynir 1 Kg",
+      "brand": "Tahsildaroğlu",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 939.9,
+      "maxPrice": 939.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 939.9
+        }
+      ]
+    }
+  ]
+}

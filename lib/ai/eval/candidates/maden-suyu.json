@@ -1,0 +1,1170 @@
+{
+  "term": "maden suyu",
+  "category": "İçecek",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T21:04:15.219Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1KI7",
+      "name": "Beypazarı Doğal Maden Suyu 200 Ml",
+      "brand": "Beypazarı",
+      "category": "Maden Suyu",
+      "marketCount": 4,
+      "minPrice": 12,
+      "maxPrice": 14,
+      "markets": [
+        {
+          "market": "Tarım Kredi",
+          "price": 12
+        },
+        {
+          "market": "Şok",
+          "price": 12
+        },
+        {
+          "market": "BİM",
+          "price": 12
+        },
+        {
+          "market": "Migros",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "productId": "25HA",
+      "name": "Maden Suyu 200 Ml",
+      "brand": "Markasız",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 12,
+      "maxPrice": 12,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 12
+        }
+      ]
+    },
+    {
+      "productId": "1WEU",
+      "name": "Kızılay Maden Suyu 200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 12,
+      "maxPrice": 14,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 12
+        },
+        {
+          "market": "Migros",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "productId": "0XZC",
+      "name": "Kızılay Limonlu Maden Suyu 200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "2AFW",
+      "name": "Avşar Mango Ananas Maden Suyu 200 Ml",
+      "brand": "Avşar",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 16,
+      "maxPrice": 16,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 16
+        }
+      ]
+    },
+    {
+      "productId": "1L0U",
+      "name": "Akmina Maden Suyu Pet 1 Lt",
+      "brand": "Akmina",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 34.95,
+      "maxPrice": 34.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.95
+        }
+      ]
+    },
+    {
+      "productId": "1LPP",
+      "name": "Akmina Maden Suyu 1 Lt",
+      "brand": "Akmina",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 41.5,
+      "maxPrice": 41.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 41.5
+        }
+      ]
+    },
+    {
+      "productId": "0CK5",
+      "name": "Sırma Limonlu Maden Suyu 1 Lt",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 43.95,
+      "maxPrice": 43.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 43.95
+        }
+      ]
+    },
+    {
+      "productId": "0X6U",
+      "name": "Uludağ Premium Maden Suyu 250 Ml",
+      "brand": "Uludağ",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 52.95,
+      "maxPrice": 52.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 52.95
+        }
+      ]
+    },
+    {
+      "productId": "1MJP",
+      "name": "Kızılay Doğal Maden Suyu 6x200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "02XX",
+      "name": "Karlıtepe Limon Aromalı Maden Suyu 1.2 Lt",
+      "brand": "Karlıtepe",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 62,
+      "maxPrice": 62,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 62
+        }
+      ]
+    },
+    {
+      "productId": "20JW",
+      "name": "Sırma Doğal Maden Suyu 6x200 Ml",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 62.5,
+      "maxPrice": 65.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 62.5
+        },
+        {
+          "market": "Migros",
+          "price": 65.9
+        }
+      ]
+    },
+    {
+      "productId": "1NBQ",
+      "name": "Beypazarı Doğal Maden Suyu 6x200 Ml",
+      "brand": "Beypazarı",
+      "category": "Maden Suyu",
+      "marketCount": 4,
+      "minPrice": 66,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 66
+        },
+        {
+          "market": "Migros",
+          "price": 66.7
+        },
+        {
+          "market": "hakmar",
+          "price": 69.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "1P7S",
+      "name": "Maden Suyu 6x250 Ml",
+      "brand": "Sarıkız",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 66,
+      "maxPrice": 87,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 66
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 87
+        }
+      ]
+    },
+    {
+      "productId": "1NFI",
+      "name": "Maden Suyu 6x200 Ml",
+      "brand": "Markasız",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 66,
+      "maxPrice": 66,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 66
+        }
+      ]
+    },
+    {
+      "productId": "1NME",
+      "name": "Kınık Maden Suyu 6x200 Ml",
+      "brand": "Kınık",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 66.7,
+      "maxPrice": 66.7,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.7
+        }
+      ]
+    },
+    {
+      "productId": "1KJQ",
+      "name": "Uludağ Doğal Maden Suyu 6x200 Ml",
+      "brand": "Uludağ",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 72.5,
+      "maxPrice": 73,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 72.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 73
+        }
+      ]
+    },
+    {
+      "productId": "1AQ9",
+      "name": "Sırma Tuzlu Erik Maden Suyu 1.2 Lt",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 74,
+      "maxPrice": 74,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74
+        }
+      ]
+    },
+    {
+      "productId": "1P29",
+      "name": "Saka Doğal Maden Suyu 6x200 Ml",
+      "brand": "Saka",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 78.25,
+      "maxPrice": 78.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 78.25
+        }
+      ]
+    },
+    {
+      "productId": "1IVV",
+      "name": "Kızılay Limonlu Maden Suyu 6x200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 3,
+      "minPrice": 79.95,
+      "maxPrice": 88.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.95
+        },
+        {
+          "market": "Şok",
+          "price": 88.7
+        },
+        {
+          "market": "BİM",
+          "price": 88.75
+        }
+      ]
+    },
+    {
+      "productId": "0M3W",
+      "name": "Damla Minera Sade Maden Suyu 1.2 Lt",
+      "brand": "Damla Minera",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 80.95,
+      "maxPrice": 80.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 80.95
+        }
+      ]
+    },
+    {
+      "productId": "1YLR",
+      "name": "Avoya Sade Maden Suyu 6x200 Ml",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 85,
+      "maxPrice": 86,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 85
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 86
+        }
+      ]
+    },
+    {
+      "productId": "0ZNV",
+      "name": "Uludağ Premium Maden Suyu 750 Ml",
+      "brand": "Uludağ",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 120.95,
+      "maxPrice": 122,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 120.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 122
+        }
+      ]
+    },
+    {
+      "productId": "0KG5",
+      "name": "Uludağ Premium Maden Suyu 6x250 Ml",
+      "brand": "Uludağ",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 296.5,
+      "maxPrice": 296.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 296.5
+        }
+      ]
+    },
+    {
+      "productId": "2CNJ",
+      "name": "Kızılay Erzincan Sade Maden Suyu 200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 11,
+      "maxPrice": 11,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 11
+        }
+      ]
+    },
+    {
+      "productId": "0T23",
+      "name": "Kızılcahamam Sade Maden Suyu 200 Ml",
+      "brand": "Kızılcahamam",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 11.5,
+      "maxPrice": 11.5,
+      "markets": [
+        {
+          "market": "Tarım Kredi",
+          "price": 11.5
+        }
+      ]
+    },
+    {
+      "productId": "1TJ7",
+      "name": "Sırma Maden Suyu 1 Lt",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 14,
+      "maxPrice": 14,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 14
+        }
+      ]
+    },
+    {
+      "productId": "0JSV",
+      "name": "Saka Doğal Maden Suyu 200 Ml",
+      "brand": "Saka",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 14.5,
+      "maxPrice": 14.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.5
+        }
+      ]
+    },
+    {
+      "productId": "0VY7",
+      "name": "Sırma Doğal Maden Suyu 200 Ml",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 14.5,
+      "maxPrice": 14.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.5
+        }
+      ]
+    },
+    {
+      "productId": "08VB",
+      "name": "Freşa Extra Elmalı Maden Suyu 200 Ml",
+      "brand": "Freşa",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "2AJT",
+      "name": "Avşar Düşes Armudu Maden Suyu 200 Ml",
+      "brand": "Avşar",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 16,
+      "maxPrice": 16,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 16
+        }
+      ]
+    },
+    {
+      "productId": "09S0",
+      "name": "Saka Limon Aromalı Maden Suyu 200 Ml",
+      "brand": "Saka",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 16.95,
+      "maxPrice": 16.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 16.95
+        }
+      ]
+    },
+    {
+      "productId": "1YPR",
+      "name": "Avşar Tuzlu Erik Maden Suyu 200 Ml",
+      "brand": "Avşar",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 19.9,
+      "maxPrice": 19.9,
+      "markets": [
+        {
+          "market": "Tarım Kredi",
+          "price": 19.9
+        }
+      ]
+    },
+    {
+      "productId": "06QC",
+      "name": "Freşa Premium Meyveli Maden Suyu 250 Ml",
+      "brand": "Freşa",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 22.5,
+      "maxPrice": 22.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 22.5
+        }
+      ]
+    },
+    {
+      "productId": "1TWN",
+      "name": "Frutti Extra Kavun Aromalı Maden Suyu 250 Ml",
+      "brand": "Frutti Extra",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 40.95,
+      "maxPrice": 40.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 40.95
+        }
+      ]
+    },
+    {
+      "productId": "0MWT",
+      "name": "Sırma Mandalinalı Maden Suyu 1 Lt",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 43.95,
+      "maxPrice": 43.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 43.95
+        }
+      ]
+    },
+    {
+      "productId": "1JZO",
+      "name": "Sırma Karadutlu Maden Suyu 1 Lt",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 43.95,
+      "maxPrice": 43.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 43.95
+        }
+      ]
+    },
+    {
+      "productId": "1RJA",
+      "name": "Damla Minera Maden Suyu 330 Ml",
+      "brand": "Damla Minera",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 45.95,
+      "maxPrice": 45.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 45.95
+        }
+      ]
+    },
+    {
+      "productId": "0SS5",
+      "name": "Akmina Mandalinalı Maden Suyu 1 Lt",
+      "brand": "Akmina",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 47,
+      "maxPrice": 47,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 47
+        }
+      ]
+    },
+    {
+      "productId": "0WDD",
+      "name": "Damla Minera Sade Maden Suyu 330 Ml",
+      "brand": "Damla",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 50.5,
+      "maxPrice": 50.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 50.5
+        }
+      ]
+    },
+    {
+      "productId": "1K49",
+      "name": "Kızılay Sade Maden Suyu 6x200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 54.5,
+      "maxPrice": 66,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 54.5
+        },
+        {
+          "market": "Şok",
+          "price": 66
+        }
+      ]
+    },
+    {
+      "productId": "09LC",
+      "name": "Carrefour Doğal Maden Suyu 1.2 Lt",
+      "brand": "Carrefour",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 59.9,
+      "maxPrice": 59.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.9
+        }
+      ]
+    },
+    {
+      "productId": "1P6A",
+      "name": "Kızılay Doğal Maden Suyu Erzincan 6x200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 66.7,
+      "maxPrice": 66.7,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.7
+        }
+      ]
+    },
+    {
+      "productId": "1CXL",
+      "name": "Avşar Tuzlu Erikli Maden Suyu 6x200 Ml",
+      "brand": "Avşar",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 67.5,
+      "maxPrice": 67.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 67.5
+        }
+      ]
+    },
+    {
+      "productId": "0A4I",
+      "name": "Kızılay Maden Suyu Mandalina Aromalı 6x200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "1BS5",
+      "name": "Avoya Signature Doğal Maden Suyu 750 Ml",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 110,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "1TKT",
+      "name": "Frutti Limon Aromalı Maden Suyu 1.2 Lt",
+      "brand": "Frutti",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 111.5,
+      "maxPrice": 111.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 111.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZS8",
+      "name": "Avoya Signature Sade Maden Suyu 4x250 Ml",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 191,
+      "maxPrice": 191,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 191
+        }
+      ]
+    },
+    {
+      "productId": "01UV",
+      "name": "Freşa C Plus Limonlu Maden Suyu 200 Ml",
+      "brand": "Freşa",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "0TXS",
+      "name": "Avşar Yeşil Elmalı Maden Suyu 200 Ml",
+      "brand": "Avşar",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 16,
+      "maxPrice": 16,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 16
+        }
+      ]
+    },
+    {
+      "productId": "0RLJ",
+      "name": "Damla Minera Limon Aromalı Maden Suyu 200 Ml",
+      "brand": "Damla Minera",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 18.5,
+      "maxPrice": 18.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 18.5
+        }
+      ]
+    },
+    {
+      "productId": "1BAG",
+      "name": "Avoya Meyveli Çilek & Gül Maden Suyu 200 Ml",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 18.5,
+      "maxPrice": 18.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 18.5
+        }
+      ]
+    },
+    {
+      "productId": "1IY7",
+      "name": "Sırma Doğal Maden Suyu 1 Lt",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 34.95,
+      "maxPrice": 43.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.95
+        },
+        {
+          "market": "Migros",
+          "price": 43.5
+        }
+      ]
+    },
+    {
+      "productId": "0PYX",
+      "name": "Avoya Blend Hibiskus Meyveli Maden Suyu 1 Adet",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 38.95,
+      "maxPrice": 38.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 38.95
+        }
+      ]
+    },
+    {
+      "productId": "1SE0",
+      "name": "Avoya Blend Vişne Limon Meyveli Maden Suyu 250 Ml",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 39.9,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "1QU4",
+      "name": "Avoya Blend Hibiskus Meyveli Maden Suyu 250 Ml",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 39.9,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "1LIS",
+      "name": "Frutti Extra Yeşil Limon Aromalı Maden Suyu 250 Ml",
+      "brand": "Frutti Extra",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 40.95,
+      "maxPrice": 40.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 40.95
+        }
+      ]
+    },
+    {
+      "productId": "0HBY",
+      "name": "Akmina Sade Maden Suyu 1 Lt",
+      "brand": "Akmina",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 42.5,
+      "maxPrice": 42.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 42.5
+        }
+      ]
+    },
+    {
+      "productId": "1SJE",
+      "name": "Kızılay Afyon Doğal Maden Suyu 6x200 Ml",
+      "brand": "Kızılay",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 66.7,
+      "maxPrice": 66.7,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 66.7
+        }
+      ]
+    },
+    {
+      "productId": "1BVX",
+      "name": "Avoya Blend İncir Aromalı Maden Suyu 1 Lt",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 72,
+      "maxPrice": 72,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 72
+        }
+      ]
+    },
+    {
+      "productId": "20XE",
+      "name": "Sırma C+ Mandalina Aromalı Maden Suyu 6x200 Ml",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 74,
+      "maxPrice": 75.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74
+        },
+        {
+          "market": "Migros",
+          "price": 75.9
+        }
+      ]
+    },
+    {
+      "productId": "1OJH",
+      "name": "Sırma C+ Elma Aromalı Maden Suyu 6x200 Ml",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 75.9,
+      "maxPrice": 75.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 75.9
+        }
+      ]
+    },
+    {
+      "productId": "1VSQ",
+      "name": "Sırma Cplus Vitaminli Maden Suyu 1.2 Lt",
+      "brand": "Sırma",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 88.75,
+      "maxPrice": 88.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 88.75
+        }
+      ]
+    },
+    {
+      "productId": "1RKT",
+      "name": "Avşar Mango Ananas Aromalı Maden Suyu 6x200 Ml",
+      "brand": "Avşar",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 88.75,
+      "maxPrice": 88.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 88.75
+        }
+      ]
+    },
+    {
+      "productId": "0SKC",
+      "name": "Kınık Limon C Plus Maden Suyu 6x200 Ml",
+      "brand": "Kınık",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 88.75,
+      "maxPrice": 88.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 88.75
+        }
+      ]
+    },
+    {
+      "productId": "1S4R",
+      "name": "Damla Minera Elma Aromalı Maden Suyu 6x200 Ml",
+      "brand": "Damla Minera",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 109,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "1TFI",
+      "name": "Damla Minera Limon Aromalı Maden Suyu 6x200 Ml",
+      "brand": "Damla Minera",
+      "category": "Maden Suyu",
+      "marketCount": 2,
+      "minPrice": 109,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "1OTB",
+      "name": "Damla Minera Karpuz-Çilek Maden Suyu 1.2 Lt",
+      "brand": "Damla Minera",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "1RE4",
+      "name": "Frutti Karpuz Çilek Aromalı Maden Suyu 6x200 Ml",
+      "brand": "Frutti",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 111.5,
+      "maxPrice": 111.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 111.5
+        }
+      ]
+    },
+    {
+      "productId": "1R3R",
+      "name": "Avoya Elma/Adaçayı Aromalı Maden Suyu 6x200 Ml",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 121.5,
+      "maxPrice": 121.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 121.5
+        }
+      ]
+    },
+    {
+      "productId": "1R4S",
+      "name": "Frutti C Max Vitaminli Maden Suyu 6x200 Ml",
+      "brand": "Frutti",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 128,
+      "maxPrice": 128,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 128
+        }
+      ]
+    },
+    {
+      "productId": "1IU0",
+      "name": "Avoya Meyveli Elma Ve Adaçayı Maden Suyu 6 Adet",
+      "brand": "Avoya",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 130,
+      "maxPrice": 130,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 130
+        }
+      ]
+    }
+  ]
+}

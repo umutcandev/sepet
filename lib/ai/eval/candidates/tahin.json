@@ -1,0 +1,1138 @@
+{
+  "term": "tahin",
+  "category": "Yağ & sos",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:58:36.500Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0GM9",
+      "name": "Carrefour Tahin 290 Gr",
+      "brand": "Carrefour",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "0W4S",
+      "name": "Seyidoğlu Tahin 300 Gr",
+      "brand": "Seyidoğlu",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 84.5,
+      "maxPrice": 84.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 84.5
+        }
+      ]
+    },
+    {
+      "productId": "0MG5",
+      "name": "Migros Tahin 600 Gr",
+      "brand": "Migros",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1YH6",
+      "name": "Koska Tahin 300 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 146.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 146.25
+        }
+      ]
+    },
+    {
+      "productId": "0G66",
+      "name": "Taşkale Tahin 600 Gr",
+      "brand": "Taşkale",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 100,
+      "maxPrice": 100,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 100
+        }
+      ]
+    },
+    {
+      "productId": "0P1Z",
+      "name": "Taşkale Çifte Kavrulmuş Tahin 600 Gr",
+      "brand": "Taşkale",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "07SX",
+      "name": "Carrefour Tahin 600 Gr",
+      "brand": "Carrefour",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 112.5,
+      "maxPrice": 112.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 112.5
+        }
+      ]
+    },
+    {
+      "productId": "05AG",
+      "name": "Serel Tahin 600 Gr",
+      "brand": "Serel",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 113,
+      "maxPrice": 113,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 113
+        }
+      ]
+    },
+    {
+      "productId": "00RC",
+      "name": "Şitoğlu Cam Tahin 600 Gr",
+      "brand": "Şitoğlu",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 113,
+      "maxPrice": 113,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 113
+        }
+      ]
+    },
+    {
+      "productId": "13DX",
+      "name": "İnci Tahin 1 Kg",
+      "brand": "İnci",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 117,
+      "maxPrice": 117,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 117
+        }
+      ]
+    },
+    {
+      "productId": "08NK",
+      "name": "Koska Kabuklu Susamdan Esmer Tahin 300 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 161.5,
+      "maxPrice": 161.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 161.5
+        }
+      ]
+    },
+    {
+      "productId": "05X9",
+      "name": "Serel Çifte Kavrulmuş Tahin 1 Kg",
+      "brand": "Serel",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "14E0",
+      "name": "Serel Kulplu Tahin 1 Kg",
+      "brand": "Serel",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "1Z39",
+      "name": "Koska Tahin 620 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 192,
+      "maxPrice": 277,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 192
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 277
+        }
+      ]
+    },
+    {
+      "productId": "1ZI7",
+      "name": "Wefood Organik Tahin 300 Gr",
+      "brand": "Wefood",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 214.7,
+      "maxPrice": 348.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 214.7
+        },
+        {
+          "market": "Migros",
+          "price": 348.95
+        }
+      ]
+    },
+    {
+      "productId": "0SXG",
+      "name": "Torku Tahin 600 Gr",
+      "brand": "Torku",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 226.5,
+      "maxPrice": 226.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 226.5
+        }
+      ]
+    },
+    {
+      "productId": "1OHD",
+      "name": "Koska Tahin 550 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 3,
+      "minPrice": 229,
+      "maxPrice": 244.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 229
+        },
+        {
+          "market": "Migros",
+          "price": 236.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 244.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z4Z",
+      "name": "Lutfiye Organik Tahin 230 Gr",
+      "brand": "Lutfiye",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 275,
+      "maxPrice": 275,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 275
+        }
+      ]
+    },
+    {
+      "productId": "1T8H",
+      "name": "Cityfarm Organik Tahin 350 Gr",
+      "brand": "Cityfarm",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 277.5,
+      "maxPrice": 277.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 277.5
+        }
+      ]
+    },
+    {
+      "productId": "1LDA",
+      "name": "City Farm Organik Sıkma Kapak Tahin 350 Gr",
+      "brand": "City Farm",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 311.9,
+      "maxPrice": 311.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 311.9
+        }
+      ]
+    },
+    {
+      "productId": "0I17",
+      "name": "Sade Organik Tahin 300 Gr",
+      "brand": "Sade",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 313,
+      "maxPrice": 313,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 313
+        }
+      ]
+    },
+    {
+      "productId": "0WGG",
+      "name": "City Farm Organik Tahin 350 Gr",
+      "brand": "City Farm",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 356.9,
+      "maxPrice": 356.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 356.9
+        }
+      ]
+    },
+    {
+      "productId": "0MG8",
+      "name": "Pol's Gurme Yerli Susam Tahin 500 Gr",
+      "brand": "Pol's Gurme",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 386.5,
+      "maxPrice": 386.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 386.5
+        }
+      ]
+    },
+    {
+      "productId": "0N6O",
+      "name": "Pol's Gurme Çifte Kavrulmuş Tahin 500 Gr",
+      "brand": "Pol's Gurme",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 386.5,
+      "maxPrice": 386.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 386.5
+        }
+      ]
+    },
+    {
+      "productId": "0LUN",
+      "name": "Koska Süper İkili Tahin Pekmez Karışımı 40 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 25.5,
+      "maxPrice": 25.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 25.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z5K",
+      "name": "Gülsan Sade Tahin Helvası 500 Gr",
+      "brand": "Gülsan",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 51.95,
+      "maxPrice": 51.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 51.95
+        }
+      ]
+    },
+    {
+      "productId": "0SFH",
+      "name": "Taşkale Tahin Helvası Kakaolu 500 Gr",
+      "brand": "Taşkale",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0Y43",
+      "name": "Taşkale Tahin Helvası Sade 500 Gr",
+      "brand": "Taşkale",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0WVR",
+      "name": "Migros Kakaolu Tahin Helvası 500 Gr",
+      "brand": "Migros",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0VL9",
+      "name": "Migros Sade Tahin Helvası 500 Gr",
+      "brand": "Migros",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0NRD",
+      "name": "Torku Sade Tahin Helvası 200 Gr",
+      "brand": "Torku",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 75.5,
+      "maxPrice": 75.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 75.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z3S",
+      "name": "Torku Sade Tahin Helva 500 Gr",
+      "brand": "Torku",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 146.95,
+      "maxPrice": 146.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 146.95
+        }
+      ]
+    },
+    {
+      "productId": "04MC",
+      "name": "Koska Organik Tahin Pekmez 120 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 154.9,
+      "maxPrice": 154.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 154.9
+        }
+      ]
+    },
+    {
+      "productId": "1SNG",
+      "name": "Koska Keçiboynuzlu Tahin Pekmez 350 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 161.45,
+      "maxPrice": 172,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 161.45
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 172
+        }
+      ]
+    },
+    {
+      "productId": "1LTP",
+      "name": "Koska Kakaolu Tahin Helvası 500 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "0V4T",
+      "name": "Seyidoğlu İkiz Tahin & Pekmez 740 Gr",
+      "brand": "Seyidoğlu",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "3WBG",
+      "name": "Lokman Üzüm Pekmezi 500 Gr + Tahin 400 Gr",
+      "brand": "Lokman",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 189,
+      "maxPrice": 189,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 189
+        }
+      ]
+    },
+    {
+      "productId": "219B",
+      "name": "Koska Tahin Pekmez Karışımı 350 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 194.95,
+      "maxPrice": 201.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 194.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 201.9
+        }
+      ]
+    },
+    {
+      "productId": "0GAC",
+      "name": "Koska Yer Fıstıklı Tahin Pekmez 320 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 201.5,
+      "maxPrice": 201.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 201.5
+        }
+      ]
+    },
+    {
+      "productId": "0BL3",
+      "name": "Migros Tahin 470 Gr + Pekmez 600 Gr",
+      "brand": "Migros",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 210.5,
+      "maxPrice": 210.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 210.5
+        }
+      ]
+    },
+    {
+      "productId": "0JW8",
+      "name": "Carrefour Tahin 1.07 Kg + Pekmez 1.07 Kg Set",
+      "brand": "Carrefour",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 210.5,
+      "maxPrice": 210.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 210.5
+        }
+      ]
+    },
+    {
+      "productId": "1GU7",
+      "name": "Servet Şekerleme Sade Tahin Helvası 200 Gr",
+      "brand": "Servet Şekerleme",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 234.9,
+      "maxPrice": 234.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 234.9
+        }
+      ]
+    },
+    {
+      "productId": "0IU8",
+      "name": "Gülsan Sade Tahin Helvası Dilimli 1 Kg",
+      "brand": "Gülsan",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 249.9,
+      "maxPrice": 249.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 249.9
+        }
+      ]
+    },
+    {
+      "productId": "1NO7",
+      "name": "Koska Fındık Püreli Tahin Pekmez Karışımı 320 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 257.5,
+      "maxPrice": 257.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 257.5
+        }
+      ]
+    },
+    {
+      "productId": "1SYA",
+      "name": "Koska Tahin Pekmez İkili Set 700 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 304.95,
+      "maxPrice": 348,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 304.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 348
+        }
+      ]
+    },
+    {
+      "productId": "028N",
+      "name": "Koska Organik Tahin Pekmez 350 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 359.9,
+      "maxPrice": 359.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 359.9
+        }
+      ]
+    },
+    {
+      "productId": "16RO",
+      "name": "Servet Şekerleme Sade Tahin Helvası 400 Gr",
+      "brand": "Servet Şekerleme",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 366.95,
+      "maxPrice": 366.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 366.95
+        }
+      ]
+    },
+    {
+      "productId": "16RR",
+      "name": "Servet Şekerleme Antep Fıstıklı Tahin Helvası 400 Gr",
+      "brand": "Servet Şekerleme",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 550.95,
+      "maxPrice": 550.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 550.95
+        }
+      ]
+    },
+    {
+      "productId": "1HYV",
+      "name": "Gesaş Kakaolu ve Sade Kürek Helva 300 Gr",
+      "brand": "Gesaş",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 52,
+      "maxPrice": 52,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52
+        }
+      ]
+    },
+    {
+      "productId": "207D",
+      "name": "Gülsan Kakaolu Tahin Helvası 500 Gr",
+      "brand": "Gülsan",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 61.75,
+      "maxPrice": 61.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 61.75
+        }
+      ]
+    },
+    {
+      "productId": "11C7",
+      "name": "Koska Tüp Süper İkili 3x40 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "1BD9",
+      "name": "Metin Cevizli Yaz Helvası 500 Gr",
+      "brand": "Metin",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 74.5,
+      "maxPrice": 74.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 74.5
+        }
+      ]
+    },
+    {
+      "productId": "215X",
+      "name": "Koska Sade Helva 200 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 88.45,
+      "maxPrice": 89.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 88.45
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 89.5
+        }
+      ]
+    },
+    {
+      "productId": "121A",
+      "name": "Torku Kakaolu Helva 500 Gr",
+      "brand": "Torku",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 136.5,
+      "maxPrice": 136.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 136.5
+        }
+      ]
+    },
+    {
+      "productId": "0XUB",
+      "name": "Migros Antep Fıstıklı Tahin Helvası 500 Gr",
+      "brand": "Migros",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "1SNE",
+      "name": "Torku Kakaolu Tahin Helva 500 Gr",
+      "brand": "Torku",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 146.95,
+      "maxPrice": 146.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 146.95
+        }
+      ]
+    },
+    {
+      "productId": "0S48",
+      "name": "Taşkale Tahin Helvası Antep Fıstıklı 500 Gr",
+      "brand": "Taşkale",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 150,
+      "maxPrice": 150,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 150
+        }
+      ]
+    },
+    {
+      "productId": "1GTL",
+      "name": "Servet Şekerleme Antep Fıstıklı Tahin Helvası 200 Gr",
+      "brand": "Servet Şekerleme",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "0Y6T",
+      "name": "City Farm Organik Keçiboynuzu Pekmezi 450 Gr",
+      "brand": "City Farm",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 205.9,
+      "maxPrice": 205.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 205.9
+        }
+      ]
+    },
+    {
+      "productId": "1HJF",
+      "name": "Pol's Gurme Serisi Yerli Susam Tahin Helvası 300 Gr",
+      "brand": "Pol's",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 209.95,
+      "maxPrice": 209.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 209.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z4Y",
+      "name": "Koska Fırında Helva 250 Gr",
+      "brand": "Koska",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 225.95,
+      "maxPrice": 228.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 225.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 228.5
+        }
+      ]
+    },
+    {
+      "productId": "20RB",
+      "name": "Lutfiye Organik Harnup Pekmezi 280 Gr",
+      "brand": "Lutfiye",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 230,
+      "maxPrice": 230,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 230
+        }
+      ]
+    },
+    {
+      "productId": "1FNZ",
+      "name": "Servet Keçiboynuzu Pekmezi 400 Gr",
+      "brand": "Servet",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 237.5,
+      "maxPrice": 237.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 237.5
+        }
+      ]
+    },
+    {
+      "productId": "0EG7",
+      "name": "Gülsan Kakaolu Tahin Helvası Dilimli 1 Kg",
+      "brand": "Gülsan",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 249.9,
+      "maxPrice": 249.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 249.9
+        }
+      ]
+    },
+    {
+      "productId": "3WYT",
+      "name": "Maksilla Sütlü Tahin Kreması 350 Gr",
+      "brand": "Maksilla",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 249.9,
+      "maxPrice": 249.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.9
+        }
+      ]
+    },
+    {
+      "productId": "3WYP",
+      "name": "Maksilla Kakaolu Tahin Kreması 350 Gr",
+      "brand": "Maksilla",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 249.9,
+      "maxPrice": 249.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.9
+        }
+      ]
+    },
+    {
+      "productId": "1TGR",
+      "name": "Koska Çikos Çikolata Tahin Karışım 240 Gr",
+      "brand": "Koska",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 282.9,
+      "maxPrice": 282.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 282.9
+        }
+      ]
+    },
+    {
+      "productId": "0P7D",
+      "name": "Pol's Gurme Antep Fıstıklı Tahin Helvası 300 Gr",
+      "brand": "Pol's Gurme",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 302.5,
+      "maxPrice": 302.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 302.5
+        }
+      ]
+    },
+    {
+      "productId": "1O5Y",
+      "name": "Torku Antep Fıstıklı Tahin Helva 500 Gr",
+      "brand": "Torku",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 321.5,
+      "maxPrice": 321.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 321.5
+        }
+      ]
+    },
+    {
+      "productId": "185O",
+      "name": "Servet Şekerleme Çifte Kavrulmuş Fethiye Tahini 300 Gr",
+      "brand": "Servet",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 1,
+      "minPrice": 339.95,
+      "maxPrice": 339.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 339.95
+        }
+      ]
+    },
+    {
+      "productId": "1SY3",
+      "name": "Servet Şekerleme Tek Kavrulmuş Fethiye Tahini 300 Gr",
+      "brand": "Servet",
+      "category": "Helva Tahin ve Pekmez",
+      "marketCount": 2,
+      "minPrice": 339.95,
+      "maxPrice": 543.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 339.95
+        },
+        {
+          "market": "Migros",
+          "price": 543.95
+        }
+      ]
+    },
+    {
+      "productId": "3WYQ",
+      "name": "Maksilla Aronyalı Tahin Kreması 250 Gr",
+      "brand": "Maksilla",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 349.9,
+      "maxPrice": 349.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.9
+        }
+      ]
+    }
+  ]
+}

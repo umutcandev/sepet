@@ -1,0 +1,304 @@
+{
+  "term": "karabiber",
+  "category": "Tatlandırıcı & baharat",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:01:29.746Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "039U",
+      "name": "Destan Karabiber 75 Gr",
+      "brand": "Destan",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "07FW",
+      "name": "Edalı Karabiber 75 Gr",
+      "brand": "Edalı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "0QA4",
+      "name": "Migros Karabiber 75 Gr",
+      "brand": "Migros",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 58.5,
+      "maxPrice": 58.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 58.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZFP",
+      "name": "Bağdat Karabiber 40 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 69.5,
+      "maxPrice": 69.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 69.5
+        }
+      ]
+    },
+    {
+      "productId": "05ZG",
+      "name": "Anadolu Mutfağı Karabiber 90 Gr",
+      "brand": "Anadolu Mutfağı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "1NDQ",
+      "name": "Knorr Karabiber 60 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 83.97,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 83.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "3WZK",
+      "name": "Anadolu Mutfağı Tane Karabiber 50 Gr",
+      "brand": "Anadolu Mutfağı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 89,
+      "maxPrice": 89,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 89
+        }
+      ]
+    },
+    {
+      "productId": "1YBR",
+      "name": "Bağdat Karabiber Öğütülmüş 65 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 89.96,
+      "maxPrice": 121.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 121.5
+        }
+      ]
+    },
+    {
+      "productId": "1AQ6",
+      "name": "Deva Karabiber 60 Gr",
+      "brand": "Deva",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 94.95,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "06BS",
+      "name": "Carrefour Selection Karabiber Tane 55 Gr",
+      "brand": "Carrefour Selection",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 119.5,
+      "maxPrice": 119.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.5
+        }
+      ]
+    },
+    {
+      "productId": "1RQ0",
+      "name": "Bağdat Tane Karabiber 60 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 119.95,
+      "maxPrice": 121.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 121.5
+        }
+      ]
+    },
+    {
+      "productId": "08GN",
+      "name": "Carrefour Selection Tane Karabiber 50 Gr",
+      "brand": "Carrefour Selection",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "0E4Q",
+      "name": "Carrefour Karabiber Toz 120 Gr",
+      "brand": "Carrefour",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1PVZ",
+      "name": "Bağdat Öğütülmüş Karabiber 55 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 144.95,
+      "maxPrice": 146.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 144.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 146.5
+        }
+      ]
+    },
+    {
+      "productId": "1H7J",
+      "name": "Deva Tane Karabiber Değirmen 50 Gr",
+      "brand": "Deva",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1VTX",
+      "name": "Bağdat Karabiber Tane Değirmen 50 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 179.95,
+      "maxPrice": 187.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 187.5
+        }
+      ]
+    },
+    {
+      "productId": "1ACZ",
+      "name": "Dünyahayat Karabiber Tane 115 Gr",
+      "brand": "Dünyahayat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 234.95,
+      "maxPrice": 234.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 234.95
+        }
+      ]
+    },
+    {
+      "productId": "1AD0",
+      "name": "Dünyahayat Karabiber Öğütülmüş 125 Gr",
+      "brand": "Dünyahayat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 252.95,
+      "maxPrice": 252.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 252.95
+        }
+      ]
+    }
+  ]
+}

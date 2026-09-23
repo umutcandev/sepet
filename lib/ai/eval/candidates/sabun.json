@@ -1,0 +1,1150 @@
+{
+  "term": "sabun",
+  "category": "Temizlik & kağıt",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T21:08:34.220Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "01PQ",
+      "name": "Saloon Sıvı Sabun 500 Ml",
+      "brand": "Saloon",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 34.5,
+      "maxPrice": 34.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 34.5
+        }
+      ]
+    },
+    {
+      "productId": "0O0R",
+      "name": "Ebru Sıvı Sabun Okyanus Rüzgarı 750 Ml",
+      "brand": "Ebru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 48,
+      "maxPrice": 48,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 48
+        }
+      ]
+    },
+    {
+      "productId": "06TI",
+      "name": "Işıl Sıvı Sabun 750 Ml",
+      "brand": "Işıl",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 48,
+      "maxPrice": 48,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 48
+        }
+      ]
+    },
+    {
+      "productId": "0N9T",
+      "name": "Ebru Sabun Leylak 375 Gr",
+      "brand": "Ebru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "1XEX",
+      "name": "Dalan Antik Zeytinyağlı Sabun 170 Gr",
+      "brand": "Dalan Antik",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 71.9,
+      "maxPrice": 71.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 71.9
+        }
+      ]
+    },
+    {
+      "productId": "1IBT",
+      "name": "Peros Amber & Gül Sıvı Sabun 400 Ml",
+      "brand": "Peros",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 74.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "07L2",
+      "name": "Işıl Sıvı Sabun 2.5 Lt",
+      "brand": "Işıl",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "0QL9",
+      "name": "Kırlangıç Zeytinyağlı Sabun 125 Gr",
+      "brand": "Kırlangıç",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 108.95,
+      "maxPrice": 108.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 108.95
+        }
+      ]
+    },
+    {
+      "productId": "0MOQ",
+      "name": "Ebru Klasik Kalıp Beyaz Sabun 4x200 Gr",
+      "brand": "Ebru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "0QHU",
+      "name": "Migros Klasik Katı Sabun 4x200 Gr",
+      "brand": "Migros",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 111.95,
+      "maxPrice": 111.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 111.95
+        }
+      ]
+    },
+    {
+      "productId": "1BE3",
+      "name": "Senfoni Sıvı Sabun 4 Lt",
+      "brand": "Senfoni",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "1CG8",
+      "name": "Like Me Kolajen Kabak Lifli Sabun 120 Gr",
+      "brand": "Like Me",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 125.95,
+      "maxPrice": 125.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125.95
+        }
+      ]
+    },
+    {
+      "productId": "2BMV",
+      "name": "Hacı Şakir Kalıp Sabun 600 Gr",
+      "brand": "Hacı Şakir",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1JYY",
+      "name": "Fax Klasik Saf Kalıp Sabun 4x150 Gr",
+      "brand": "Fax",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZAG",
+      "name": "Duru Sıvı Sabun Kiraz Çiçeği 500 Ml",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 151.5,
+      "maxPrice": 151.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 151.5
+        }
+      ]
+    },
+    {
+      "productId": "1YQL",
+      "name": "Hacı Şakir Doğal Kalıp Sabun 4x150 Gr",
+      "brand": "Hacı Şakir",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 159.95,
+      "maxPrice": 164.43,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 164.43
+        }
+      ]
+    },
+    {
+      "productId": "0FNZ",
+      "name": "Hacı Şakir Kalıp Sabun Leylak 4x150 Gr",
+      "brand": "Hacı Şakir",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 164.43,
+      "maxPrice": 164.43,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 164.43
+        }
+      ]
+    },
+    {
+      "productId": "1Y90",
+      "name": "Duru Saf Doğal Lavanta Kalıp Sabun 600 Gr",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 179.95,
+      "maxPrice": 237.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 237.5
+        }
+      ]
+    },
+    {
+      "productId": "200W",
+      "name": "Duru Gold Kiraz Çiçeği Sıvı Sabun 1.5 Lt",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 194.95,
+      "maxPrice": 194.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 194.95
+        }
+      ]
+    },
+    {
+      "productId": "1MLB",
+      "name": "Duru Duş Katı Sabun 600 Gr",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 195,
+      "maxPrice": 195,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 195
+        }
+      ]
+    },
+    {
+      "productId": "0MXV",
+      "name": "Duru Saf & Doğal Yeşil Zeytinyağlı Sabun 600 Gr",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 244.5,
+      "maxPrice": 244.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 244.5
+        }
+      ]
+    },
+    {
+      "productId": "1V49",
+      "name": "Duru Avokado Yağı Sıvı Sabun 1.5 Lt",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 353.5,
+      "maxPrice": 353.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 353.5
+        }
+      ]
+    },
+    {
+      "productId": "06QE",
+      "name": "Protex Sıvı Sabun Ultra 1.5 Lt",
+      "brand": "Protex",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 374.85,
+      "maxPrice": 374.85,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 374.85
+        }
+      ]
+    },
+    {
+      "productId": "0VIU",
+      "name": "Sebamed Clear Face Kompakt Sabun 100 Gr",
+      "brand": "Sebamed",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 399.95,
+      "maxPrice": 399.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 399.95
+        }
+      ]
+    },
+    {
+      "productId": "0XID",
+      "name": "Migros Hawaii Sıvı Sabun 750 Ml",
+      "brand": "Migros",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 50.95,
+      "maxPrice": 50.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 50.95
+        }
+      ]
+    },
+    {
+      "productId": "0D5Y",
+      "name": "Carrefour Hindistan Cevizi Sıvı Sabun 750 Ml",
+      "brand": "Carrefour",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 50.95,
+      "maxPrice": 50.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 50.95
+        }
+      ]
+    },
+    {
+      "productId": "0DEI",
+      "name": "Carrefour Lavantalı Sıvı Sabun 750 Ml",
+      "brand": "Carrefour",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 50.95,
+      "maxPrice": 50.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 50.95
+        }
+      ]
+    },
+    {
+      "productId": "0QVT",
+      "name": "Dove Exfoliating Cream Bar Sabun 90 Gr",
+      "brand": "Dove",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 54.95,
+      "maxPrice": 54.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 54.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZG8",
+      "name": "Dalan D'Olive Zeytinyağlı Besleyici Sıvı Sabun 400 Ml",
+      "brand": "Dalan",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 69.95,
+      "maxPrice": 98.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 98.95
+        }
+      ]
+    },
+    {
+      "productId": "12M8",
+      "name": "Les Actions Sıvı Sabun Kiraz Çiçekli 750 Ml",
+      "brand": "Les Actions",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 74.5,
+      "maxPrice": 74.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74.5
+        }
+      ]
+    },
+    {
+      "productId": "12MB",
+      "name": "Les Actions Sıvı Sabun Zeytinyağlı 750 Ml",
+      "brand": "Les Actions",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 74.5,
+      "maxPrice": 74.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74.5
+        }
+      ]
+    },
+    {
+      "productId": "04SS",
+      "name": "Dalan Sıvı Sabun Leylak 1.5 Lt",
+      "brand": "Dalan",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "1S9S",
+      "name": "Dalin Orman Meyveli Köpük Sabun 200 Ml",
+      "brand": "Dalin",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "2MR2",
+      "name": "Dalin Klasik Katı Sabun 225 Gr",
+      "brand": "Dalin",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "1WE4",
+      "name": "Dalan Botanica Frezya Sıvı Sabun 500 Ml",
+      "brand": "Dalan Botanica",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 119.5,
+      "maxPrice": 119.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.5
+        }
+      ]
+    },
+    {
+      "productId": "2MFD",
+      "name": "Dalin Mango Köpük Sabun 200 Ml",
+      "brand": "Dalin",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "1NWB",
+      "name": "Dalan Fresh & Minerals Deniz Tuzu Sabun 440 Gr",
+      "brand": "Dalan",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1KWR",
+      "name": "Activex Hassas Sıvı Sabun 500 Ml",
+      "brand": "Activex",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 149.95,
+      "maxPrice": 232.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 232.5
+        }
+      ]
+    },
+    {
+      "productId": "0XF5",
+      "name": "Pereja Cashmere Sıvı Sabun 500 Ml",
+      "brand": "Pereja",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1YVA",
+      "name": "Duru Sıvı Sabun Avokado 500 Ml",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 151.5,
+      "maxPrice": 151.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 151.5
+        }
+      ]
+    },
+    {
+      "productId": "1N5N",
+      "name": "Dalan Sıvı Sabun Zeytin Mucizesi 3 Lt",
+      "brand": "Dalan",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 170.9,
+      "maxPrice": 170.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 170.9
+        }
+      ]
+    },
+    {
+      "productId": "1UAL",
+      "name": "Duru Hydro Pure Sabun 4x135 Gr",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 3,
+      "minPrice": 174,
+      "maxPrice": 252.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 174
+        },
+        {
+          "market": "Migros",
+          "price": 199.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 252.5
+        }
+      ]
+    },
+    {
+      "productId": "1TEK",
+      "name": "Dove Nemlendirici Sıvı Sabun 450 Ml",
+      "brand": "Dove",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 179.95,
+      "maxPrice": 302.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 302.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZCR",
+      "name": "Duru Zeytinyağlı Sıvı Sabun 1.5 Lt",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 194.95,
+      "maxPrice": 353.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 194.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 353.5
+        }
+      ]
+    },
+    {
+      "productId": "1RMB",
+      "name": "Dalan Antik Pirina Kokulu Sabun 5x180 Gr",
+      "brand": "Dalan",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "0HAB",
+      "name": "Hacı Şakir Sıvı Sabun Lavanta 1.5 Lt",
+      "brand": "Hacı Şakir",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 279.65,
+      "maxPrice": 279.65,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 279.65
+        }
+      ]
+    },
+    {
+      "productId": "1VC6",
+      "name": "Balmy Kabak Lifli Sabun Amber Wood & White Musk 125 Gr",
+      "brand": "Balmy",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 334.95,
+      "maxPrice": 334.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 334.95
+        }
+      ]
+    },
+    {
+      "productId": "0C4H",
+      "name": "Activex Hassas Sıvı Sabun 1.5 Lt",
+      "brand": "Activex",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 474.9,
+      "maxPrice": 474.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 474.9
+        }
+      ]
+    },
+    {
+      "productId": "10FF",
+      "name": "Ebru Sıvı Sabun Hindistan Cevizi 750 Ml",
+      "brand": "Ebru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 48,
+      "maxPrice": 48,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 48
+        }
+      ]
+    },
+    {
+      "productId": "05US",
+      "name": "Carrefour Zeytin Çiçeği Sıvı Sabun 750 Ml",
+      "brand": "Carrefour",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 50.95,
+      "maxPrice": 50.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 50.95
+        }
+      ]
+    },
+    {
+      "productId": "0HA7",
+      "name": "Johnson's Sütlü Sabun 100 Gr",
+      "brand": "Johnson's",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 58.14,
+      "maxPrice": 58.14,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 58.14
+        }
+      ]
+    },
+    {
+      "productId": "1YX7",
+      "name": "Duru Sıvı Sabun 500 Ml",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 64,
+      "maxPrice": 151.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 64
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 151.5
+        }
+      ]
+    },
+    {
+      "productId": "0PAU",
+      "name": "Ebru Sabun Gül 375 Gr",
+      "brand": "Ebru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "0XIO",
+      "name": "Dalin Sabun Klasik 100 Gr",
+      "brand": "Dalin",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 76.5,
+      "maxPrice": 76.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 76.5
+        }
+      ]
+    },
+    {
+      "productId": "1TVT",
+      "name": "Dalin Mango Ve Portakal Kokulu Köpük Sabun 200 Ml",
+      "brand": "Dalin",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "03Z7",
+      "name": "Carrefour Hindistan Cevizi Sıvı Sabun 2.5 Lt",
+      "brand": "Carrefour",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "01D5",
+      "name": "Carrefour Zeytin Çiçeği Sıvı Sabun 2.5 Lt",
+      "brand": "Carrefour",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "0MU8",
+      "name": "Le Petit Marseillais Lavanta Yağı Sabun 300 Ml",
+      "brand": "Le Petit Marseillais",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "0S3A",
+      "name": "Palmolive Massage Sabun 150 Gr",
+      "brand": "Palmolive",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZMW",
+      "name": "Savon De Royal Kahve İnci Sıvı Sabun 500 Ml",
+      "brand": "Savon De Royal",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 146.5,
+      "maxPrice": 146.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 146.5
+        }
+      ]
+    },
+    {
+      "productId": "1S6A",
+      "name": "Activex Aktif Antibakteriyel Sıvı Sabun 500 Ml",
+      "brand": "Activex",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 149.95,
+      "maxPrice": 239.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 239.5
+        }
+      ]
+    },
+    {
+      "productId": "1O6O",
+      "name": "Le Petit Marseillais Şeftali Sıvı Sabun 500 Ml",
+      "brand": "Le Petit Marseillais",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 149.95,
+      "maxPrice": 211.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 211.9
+        }
+      ]
+    },
+    {
+      "productId": "1SEB",
+      "name": "Dalan Fresh & Minerals Aloe Vera Sabun 4x110 Gr",
+      "brand": "Dalan",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1YP5",
+      "name": "Hacı Şakir Gül Kalıp Sabun 4x150 Gr",
+      "brand": "Hacı Şakir",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 159.95,
+      "maxPrice": 164.43,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 164.43
+        }
+      ]
+    },
+    {
+      "productId": "0AM4",
+      "name": "Peros Sıvı Sabun Zeytinyağı & Bergamot 2.94 Lt",
+      "brand": "Peros",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "1KLX",
+      "name": "Eyüp Sabri Tuncer Doğal Zeytinyağlı Sıvı Sabun 750 Ml",
+      "brand": "Eyüp Sabri Tuncer",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 175,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "1PH3",
+      "name": "Duru Saf Ve Doğal Yeşil Zeytinyağlı Sabun 600 Gr",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 179.95,
+      "maxPrice": 179.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.95
+        }
+      ]
+    },
+    {
+      "productId": "0O5I",
+      "name": "Dove Lotus Çiçeği Ve Pirinç Özü Sıvı Sabun 450 Ml",
+      "brand": "Dove",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 179.95,
+      "maxPrice": 179.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.95
+        }
+      ]
+    },
+    {
+      "productId": "0CUK",
+      "name": "U Green Clean Köpük Sabun 450 Ml",
+      "brand": "U Green Clean",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 181.5,
+      "maxPrice": 181.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 181.5
+        }
+      ]
+    },
+    {
+      "productId": "1C60",
+      "name": "Duru Fresh Sens Ocean Breeze Sabun 750 Gr",
+      "brand": "Duru",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 194.95,
+      "maxPrice": 194.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 194.95
+        }
+      ]
+    },
+    {
+      "productId": "1N5T",
+      "name": "Dove Original Cream Bar Katı Sabun 4x90 Gr",
+      "brand": "Dove",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 2,
+      "minPrice": 199.95,
+      "maxPrice": 307.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 307.9
+        }
+      ]
+    },
+    {
+      "productId": "09UA",
+      "name": "U Green Clean Sıvı Sabun 2.75 Lt",
+      "brand": "U Green Clean",
+      "category": "Duş Banyo ve Sabun",
+      "marketCount": 1,
+      "minPrice": 218.99,
+      "maxPrice": 218.99,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 218.99
+        }
+      ]
+    }
+  ]
+}

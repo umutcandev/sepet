@@ -1,0 +1,104 @@
+{
+  "term": "parmesan",
+  "category": "Dünya mutfağı",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:05:25.297Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0E2V",
+      "name": "Trakya Çiftliği Vegan Parmesan Tadında 200 Gr",
+      "brand": "Trakya Çiftliği",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 149.9,
+      "maxPrice": 149.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.9
+        }
+      ]
+    },
+    {
+      "productId": "1QXR",
+      "name": "Grana Padano Toz Parmesan 100 Gr",
+      "brand": "Cibus",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 271.6,
+      "maxPrice": 271.6,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 271.6
+        }
+      ]
+    },
+    {
+      "productId": "0PZF",
+      "name": "Castelli Yarım Yağlı Taze Eritme Parmesan Peyniri 200 Gr",
+      "brand": "Castelli",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 289.9,
+      "maxPrice": 289.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 289.9
+        }
+      ]
+    },
+    {
+      "productId": "0B0I",
+      "name": "Cibus Grana Padano Parmesan Peynir 125 Gr",
+      "brand": "Cibus",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 442.4,
+      "maxPrice": 442.4,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 442.4
+        }
+      ]
+    },
+    {
+      "productId": "1T6J",
+      "name": "Primavera Parmesan Peyniri 200 Gr",
+      "brand": "Primavera",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 597.9,
+      "maxPrice": 597.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 597.9
+        }
+      ]
+    },
+    {
+      "productId": "1LZM",
+      "name": "Bahçıvan Grana Padano Parmesan 200 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 840.5,
+      "maxPrice": 840.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 840.5
+        }
+      ]
+    }
+  ]
+}

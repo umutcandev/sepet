@@ -63,6 +63,54 @@ function MdxImage({
   )
 }
 
+// Tablo ve kod bloğu aynı kabukta: düz `rounded-2xl` + tek piksellik
+// `border-border`, gölge yok. Squircle KULLANILMIYOR: `effects` kenarı SVG'ye
+// taşıyınca halka köşelerde inceliyor, kazancı ise bu yarıçapta çeyrek pikselin
+// altında (bkz. squircle.tsx'teki sapma notu). `border-separate` ayraçların
+// hücre hücre verilebilmesi için.
+function MdxTable({ className, ...props }: React.ComponentProps<"table">) {
+  return (
+    <div className="not-prose my-6 overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="overflow-x-auto">
+        <table
+          className={cn(
+            "w-full border-separate border-spacing-0 text-sm",
+            className,
+          )}
+          {...props}
+        />
+      </div>
+    </div>
+  )
+}
+
+function MdxTh({ className, ...props }: React.ComponentProps<"th">) {
+  return (
+    <th
+      className={cn(
+        "bg-muted/30 px-3 py-2.5 text-left font-medium text-foreground sm:px-4",
+        className,
+      )}
+      {...props}
+    />
+  )
+}
+
+// Ayraç yalnız `border-t`: başlığın altındaki çizgi ilk gövde satırından gelir,
+// çift çizgi doğmaz. Metin `foreground` — `muted-foreground` bu palette sıcak
+// bir ten rengi (#b89a78) ve veri hücresinde kirli okunuyordu.
+function MdxTd({ className, ...props }: React.ComponentProps<"td">) {
+  return (
+    <td
+      className={cn(
+        "border-t border-border px-3 py-2.5 text-foreground tabular-nums sm:px-4",
+        className,
+      )}
+      {...props}
+    />
+  )
+}
+
 /** Bilgi/uyarı kutusu — MDX'te `<Callout>...</Callout>` ile kullanılır. */
 function Callout({
   children,
@@ -218,7 +266,7 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
   return (
     <div
       data-slot="code-block"
-      className="not-prose overflow-hidden rounded-lg border border-border bg-(--code-surface)"
+      className="not-prose overflow-hidden rounded-2xl border border-border bg-(--code-surface)"
       style={{ "--code-gutter-digits": String(digits) } as React.CSSProperties}
     >
       <div className="flex items-center justify-between gap-2 border-b border-border bg-(--code-chrome) py-1.5 pr-1.5 pl-3">
@@ -275,6 +323,9 @@ const components = {
   img: MdxImage,
   figure: MdxFigure,
   pre: Pre,
+  table: MdxTable,
+  th: MdxTh,
+  td: MdxTd,
   Callout,
 } as unknown as MdxComponents
 

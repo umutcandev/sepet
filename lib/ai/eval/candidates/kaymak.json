@@ -1,0 +1,428 @@
+{
+  "term": "kaymak",
+  "category": "Süt ürünleri",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:41:42.976Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "01CK",
+      "name": "Kaymak Kornet Dondurma 120 Ml",
+      "brand": "Dudi",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "03LH",
+      "name": "Dudi Kornet Dondurma Çikolata Kaymak 120 Ml",
+      "brand": "Dudi",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZAL",
+      "name": "Mis Kornet Çilek Kaymak 120 Ml",
+      "brand": "Mis",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "037L",
+      "name": "Nestor Icon Kornet Çikolata Kaymak Dondurma 120 Ml",
+      "brand": "Nestor",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "18E6",
+      "name": "Nestor Icon Çilek Kaymak Kornet 120 Ml",
+      "brand": "Nestor",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "0WDS",
+      "name": "Migros Kornet Çikolata Kaymak Dondurma 120 Ml",
+      "brand": "Migros",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 20,
+      "maxPrice": 20,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 20
+        }
+      ]
+    },
+    {
+      "productId": "1O0L",
+      "name": "Algida Cornetto Classico Kaymak 125 Ml",
+      "brand": "Algida",
+      "category": "Dondurmalar",
+      "marketCount": 3,
+      "minPrice": 50,
+      "maxPrice": 50,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 50
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 50
+        },
+        {
+          "market": "BİM",
+          "price": 50
+        }
+      ]
+    },
+    {
+      "productId": "1T8N",
+      "name": "Cornetto Kaymak 125 Ml",
+      "brand": "Cornetto",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 50,
+      "maxPrice": 50,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 50
+        }
+      ]
+    },
+    {
+      "productId": "205G",
+      "name": "Eker Kaymak 100 Gr",
+      "brand": "Eker",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 3,
+      "minPrice": 79,
+      "maxPrice": 93.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 93.75
+        },
+        {
+          "market": "Migros",
+          "price": 93.75
+        }
+      ]
+    },
+    {
+      "productId": "13YB",
+      "name": "Kerem Ballı Kaymak 200 Gr",
+      "brand": "Kerem",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "214G",
+      "name": "Yörüksüt Rulo Kaymak 100 Gr",
+      "brand": "Yörüksüt",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 83.5,
+      "maxPrice": 83.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 83.5
+        }
+      ]
+    },
+    {
+      "productId": "1NCE",
+      "name": "Duranlar Rulo Kaymak 150 Gr",
+      "brand": "Duranlar",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 94.5,
+      "maxPrice": 94.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZSU",
+      "name": "Sakıpağa Rulo Kaymak 150 Gr",
+      "brand": "Sakıpağa",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 97.5,
+      "maxPrice": 97.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 97.5
+        }
+      ]
+    },
+    {
+      "productId": "1E38",
+      "name": "Mis Rulo Kaymak 150 Gr",
+      "brand": "Mis",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "0S8Z",
+      "name": "Mis Kaymak 200 Gr",
+      "brand": "Mis",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "06FK",
+      "name": "Kerem Kaymak 200 Gr",
+      "brand": "Kerem",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "00LZ",
+      "name": "Sek Rulo Kaymak 150 Gr",
+      "brand": "Sek",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "06DM",
+      "name": "Carrefour Rulo Kaymak 150 Gr",
+      "brand": "Carrefour",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 107.95,
+      "maxPrice": 107.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 107.95
+        }
+      ]
+    },
+    {
+      "productId": "169Y",
+      "name": "Fair Gold Maraş Kaymak Antep Dondurma 1 Lt",
+      "brand": "Fair Gold",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 120,
+      "maxPrice": 120,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 120
+        }
+      ]
+    },
+    {
+      "productId": "0RH0",
+      "name": "Mis Gold Kaymak Fıstık Yarım Yağlı 1 Lt",
+      "brand": "Mis",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "20H8",
+      "name": "Eker Kaymak 200 Gr",
+      "brand": "Eker",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 2,
+      "minPrice": 162.95,
+      "maxPrice": 162.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 162.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 162.95
+        }
+      ]
+    },
+    {
+      "productId": "0YB2",
+      "name": "Duranlar 5'li Rulo Kaymak 200 Gr",
+      "brand": "Duranlar",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 199.5,
+      "maxPrice": 199.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.5
+        }
+      ]
+    },
+    {
+      "productId": "0M6A",
+      "name": "Algida Maraşım Antep Kaymak 500 Ml",
+      "brand": "Algida",
+      "category": "Dondurmalar",
+      "marketCount": 1,
+      "minPrice": 225,
+      "maxPrice": 225,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 225
+        }
+      ]
+    },
+    {
+      "productId": "20V5",
+      "name": "Algida Usta Bol Kaymak Dondurma 500 Ml",
+      "brand": "Algida Usta",
+      "category": "Dondurmalar",
+      "marketCount": 2,
+      "minPrice": 225,
+      "maxPrice": 225,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 225
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 225
+        }
+      ]
+    },
+    {
+      "productId": "0628",
+      "name": "Duranlar Rulo Süt Kaymağı 150 Gr",
+      "brand": "Duranlar",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "0UOJ",
+      "name": "Sütaş Kaymak Gibi Kaymaksız Yoğurt 1.25 Kg",
+      "brand": "Sütaş",
+      "category": "Yoğurt",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    }
+  ]
+}

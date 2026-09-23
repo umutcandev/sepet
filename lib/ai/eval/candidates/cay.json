@@ -1,0 +1,1130 @@
+{
+  "term": "çay",
+  "category": "İçecek",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:03:12.955Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "12SG",
+      "name": "Deren Yumuşak İçimli Yeşil Çay 20 Adet",
+      "brand": "Deren",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "1LE2",
+      "name": "Doğadan Kiraz Saplı Form Çay 20 Adet",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 98,
+      "maxPrice": 98,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 98
+        }
+      ]
+    },
+    {
+      "productId": "1XCH",
+      "name": "Çaykur Çay Çiçeği 200 Gr",
+      "brand": "Çaykur",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 114.5,
+      "maxPrice": 114.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 114.5
+        }
+      ]
+    },
+    {
+      "productId": "0UJP",
+      "name": "Lipton Sade Yeşil Çay 30 Gr",
+      "brand": "Lipton",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 116,
+      "maxPrice": 116,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 116
+        }
+      ]
+    },
+    {
+      "productId": "21IK",
+      "name": "Herby Yeşil Çay Çilek & Lime 18 Adet",
+      "brand": "Herby",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 124.75,
+      "maxPrice": 124.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 124.75
+        }
+      ]
+    },
+    {
+      "productId": "0OIH",
+      "name": "Doğadan Sade Beyaz Çay 18 Adet",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "1YLP",
+      "name": "Doğadan Yeşil Çay Mango ve Lime 18 Adet",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "0DHU",
+      "name": "Doğadan Portakal Çiçekli Beyaz Çay 36 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "0SJN",
+      "name": "Doğadan Yeşil Çay 20 Adet",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "1HXI",
+      "name": "Doğadan Şeftali Ve Çarkıfelek Meyveli Yeşil Çay 20 Adet",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "01KL",
+      "name": "Berk Filiz Siyah Çay 500 Gr",
+      "brand": "Berk",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "1YFO",
+      "name": "Çaykur Çay Çiçeği 500 Gr",
+      "brand": "Çaykur",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 3,
+      "minPrice": 209,
+      "maxPrice": 237.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 209
+        },
+        {
+          "market": "Migros",
+          "price": 234.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 237.5
+        }
+      ]
+    },
+    {
+      "productId": "1YP2",
+      "name": "Çaykur Rize Turist Çay 500 Gr",
+      "brand": "Çaykur",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 2,
+      "minPrice": 234.95,
+      "maxPrice": 234.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 234.95
+        },
+        {
+          "market": "Migros",
+          "price": 234.95
+        }
+      ]
+    },
+    {
+      "productId": "0Q6W",
+      "name": "Deren Çay Harman 1 Kg",
+      "brand": "Deren",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 250,
+      "maxPrice": 250,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 250
+        }
+      ]
+    },
+    {
+      "productId": "06RO",
+      "name": "Herdem Rize Siyah Çay 1 Kg",
+      "brand": "Herdem",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 259,
+      "maxPrice": 259,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 259
+        }
+      ]
+    },
+    {
+      "productId": "0A82",
+      "name": "Deren Tiryaki Siyah Çay 1 Kg",
+      "brand": "Deren",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 265,
+      "maxPrice": 265,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 265
+        }
+      ]
+    },
+    {
+      "productId": "0655",
+      "name": "Berk Tiryakim Siyah Çay 1 Kg",
+      "brand": "Berk",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 265,
+      "maxPrice": 265,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 265
+        }
+      ]
+    },
+    {
+      "productId": "1SO9",
+      "name": "Ofçay Tiryaki Siyah Çay 1 Kg",
+      "brand": "Ofçay",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 2,
+      "minPrice": 265,
+      "maxPrice": 389.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 265
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 389.95
+        }
+      ]
+    },
+    {
+      "productId": "210G",
+      "name": "Doğuş Tiryaki Çay 1 Kg",
+      "brand": "Doğuş",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 319.95,
+      "maxPrice": 319.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 319.95
+        }
+      ]
+    },
+    {
+      "productId": "1X0H",
+      "name": "Doğadan Mango Aromalı Matcha Çay 25 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 338,
+      "maxPrice": 338,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 338
+        }
+      ]
+    },
+    {
+      "productId": "1UG7",
+      "name": "Doğadan Yumuşak İçimli Matcha Çay 25 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 338,
+      "maxPrice": 338,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 338
+        }
+      ]
+    },
+    {
+      "productId": "0VTT",
+      "name": "Efor Çamlıca Siyah Çay 1 Kg",
+      "brand": "Efor",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 369.95,
+      "maxPrice": 369.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 369.95
+        }
+      ]
+    },
+    {
+      "productId": "20OP",
+      "name": "Ofçay Tiryaki Dökme Çay 1 Kg",
+      "brand": "Ofçay",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 389.95,
+      "maxPrice": 389.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 389.95
+        }
+      ]
+    },
+    {
+      "productId": "092Q",
+      "name": "Efor Platinum Siyah Çay 1 Kg",
+      "brand": "Efor",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 399.9,
+      "maxPrice": 399.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 399.9
+        }
+      ]
+    },
+    {
+      "productId": "083P",
+      "name": "Herdem Demlik Poşet Siyah Çay 48x3.2 Gr",
+      "brand": "Herdem",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "1YB3",
+      "name": "Doğadan Form Çay Kiraz Saplı 20 Adet 36 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 82.5,
+      "maxPrice": 82.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 82.5
+        }
+      ]
+    },
+    {
+      "productId": "0MJ1",
+      "name": "Doğuş Demlik Poşet Siyah Çay 48 Adet",
+      "brand": "Doğuş",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 86,
+      "maxPrice": 86,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 86
+        }
+      ]
+    },
+    {
+      "productId": "1M0K",
+      "name": "Doğadan İri Yapraklı Dökme Yeşil Çay Ananaslı 50 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 89.96,
+      "maxPrice": 89.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.96
+        }
+      ]
+    },
+    {
+      "productId": "1L54",
+      "name": "Doğadan Probiyotikli Açai Ananaslı Yeşil Çay 14'lü 24 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 104.96,
+      "maxPrice": 104.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.96
+        }
+      ]
+    },
+    {
+      "productId": "29Z2",
+      "name": "Doğuş Demlik Siyah Çay 48'li 154 Gr",
+      "brand": "Doğuş",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1R8Z",
+      "name": "Doğadan Beyaz Çay Portakal Çiçeği 18 Adet 31 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 134.95,
+      "maxPrice": 134.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 134.95
+        }
+      ]
+    },
+    {
+      "productId": "0SCQ",
+      "name": "Deren Filiz Çay 500 Gr",
+      "brand": "Deren",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "0VGX",
+      "name": "Migros Filiz Siyah Çay 500 Gr",
+      "brand": "Migros",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 139.95,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z99",
+      "name": "Doğadan İri Yapraklı Dökme Yeşil Çay Bergamot 50 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 149.5,
+      "maxPrice": 149.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.5
+        }
+      ]
+    },
+    {
+      "productId": "0EGV",
+      "name": "Çaykur Yaprak Yeşil Çay 150 Gr",
+      "brand": "Çaykur",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 186.9,
+      "maxPrice": 186.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 186.9
+        }
+      ]
+    },
+    {
+      "productId": "0KCK",
+      "name": "Si&Ha Yeşil Çay 100 Gr",
+      "brand": "Si&ha",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 219.95,
+      "maxPrice": 219.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        }
+      ]
+    },
+    {
+      "productId": "0XGC",
+      "name": "Migros Harman Siyah Çay 1 Kg",
+      "brand": "Migros",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "2050",
+      "name": "Doğadan Antep Fıstığı Aromalı Matcha Yeşil Çay Tozu 25 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZRI",
+      "name": "Deren Çay Rize 1 Kg",
+      "brand": "Deren",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 259,
+      "maxPrice": 259,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 259
+        }
+      ]
+    },
+    {
+      "productId": "06P0",
+      "name": "Ofçay Hazine Filiz Demlik Poşet Çay 450 Gr",
+      "brand": "Ofçay",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 259,
+      "maxPrice": 259,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 259
+        }
+      ]
+    },
+    {
+      "productId": "05N0",
+      "name": "Berk Rize Siyah Çay 1 Kg",
+      "brand": "Berk",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 259,
+      "maxPrice": 259,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 259
+        }
+      ]
+    },
+    {
+      "productId": "0TQG",
+      "name": "Migros Rize Siyah Çay 1 Kg",
+      "brand": "Migros",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 259.95,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z7S",
+      "name": "Lipton Tiryaki Çay 1 Kg",
+      "brand": "Lipton",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "210F",
+      "name": "Doğuş Rize Çay 1 Kg",
+      "brand": "Doğuş",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 319.95,
+      "maxPrice": 319.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 319.95
+        }
+      ]
+    },
+    {
+      "productId": "1UKI",
+      "name": "Lipton Yellow Label Çay 1 Kg",
+      "brand": "Lipton",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 2,
+      "minPrice": 349.95,
+      "maxPrice": 399,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.95
+        },
+        {
+          "market": "A101",
+          "price": 399
+        }
+      ]
+    },
+    {
+      "productId": "1U8V",
+      "name": "Herby Premium Matcha Çilek Ve Vanilya Aromalı Çay 25 Gr",
+      "brand": "Herby",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 363.9,
+      "maxPrice": 363.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 363.9
+        }
+      ]
+    },
+    {
+      "productId": "1IPB",
+      "name": "Doğuş Çay Gurme 1 Kg",
+      "brand": "Doğuş",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 419.95,
+      "maxPrice": 419.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 419.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y2W",
+      "name": "Çaykur Kamelya Çay 1 Kg",
+      "brand": "Çaykur",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 439.95,
+      "maxPrice": 439.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 439.95
+        }
+      ]
+    },
+    {
+      "productId": "0W1F",
+      "name": "Migros Süzen Poşet Çay 25'li 50 Gr",
+      "brand": "Migros",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 42.95,
+      "maxPrice": 42.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 42.95
+        }
+      ]
+    },
+    {
+      "productId": "0M88",
+      "name": "Deren Earl Grey Fincan Poşet Çay 25 Adet",
+      "brand": "Deren",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 43,
+      "maxPrice": 43,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 43
+        }
+      ]
+    },
+    {
+      "productId": "0B5Y",
+      "name": "Herdem Tomurcuk Siyah Çay 100 Gr",
+      "brand": "Herdem",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "1K96",
+      "name": "Çaykur Bardak Poşet Çay 25'li 50 Gr",
+      "brand": "Çaykur",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 77.95,
+      "maxPrice": 77.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 77.95
+        }
+      ]
+    },
+    {
+      "productId": "1OQH",
+      "name": "Lipton Yeşil Çay Bardak Poşet 20'li 30 Gr",
+      "brand": "Lipton",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "1QUU",
+      "name": "Doğadan Mango & Lime Yeşil Çay 23 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 86.21,
+      "maxPrice": 86.21,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 86.21
+        }
+      ]
+    },
+    {
+      "productId": "1VFC",
+      "name": "Doğadan Yeşil Çay Açai-Ananaslı 20'li 34 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 110,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "1JZM",
+      "name": "Lipton Yumuşak İçim Yeşil Çay 20 Adet",
+      "brand": "Lipton",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 119.5,
+      "maxPrice": 119.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.5
+        }
+      ]
+    },
+    {
+      "productId": "0XD7",
+      "name": "Herby Yeşil Çay Şeftali & Vanilya 18 Adet",
+      "brand": "Herby",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 124.75,
+      "maxPrice": 124.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 124.75
+        }
+      ]
+    },
+    {
+      "productId": "05AY",
+      "name": "Herby Yeşil Çay Mango & Ananas 18 Adet",
+      "brand": "Herby",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 124.9,
+      "maxPrice": 124.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 124.9
+        }
+      ]
+    },
+    {
+      "productId": "3X23",
+      "name": "Doğadan Limonlu Yeşil Çay 20 Adet",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "0LDS",
+      "name": "Migros Bergamot Aromalı Siyah Çay 500 Gr",
+      "brand": "Migros",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 144.95,
+      "maxPrice": 144.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 144.95
+        }
+      ]
+    },
+    {
+      "productId": "0INC",
+      "name": "Ahmad Tea English Breakfast Bardak Poşet Çay 25 Adet",
+      "brand": "Ahmad Tea",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 155.9,
+      "maxPrice": 155.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 155.9
+        }
+      ]
+    },
+    {
+      "productId": "10O3",
+      "name": "Doğadan Probiyotikli Rooibos Vanilya Çay 24 Gr",
+      "brand": "Doğadan",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "1U81",
+      "name": "Çaykur Altınbaş Çay 500 Gr",
+      "brand": "Çaykur",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 3,
+      "minPrice": 215,
+      "maxPrice": 314.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 215
+        },
+        {
+          "market": "Şok",
+          "price": 270
+        },
+        {
+          "market": "Migros",
+          "price": 314.95
+        }
+      ]
+    },
+    {
+      "productId": "1WF0",
+      "name": "Çaykur Filiz Çay 500 Gr",
+      "brand": "Çaykur",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 2,
+      "minPrice": 225,
+      "maxPrice": 259.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 225
+        },
+        {
+          "market": "Migros",
+          "price": 259.95
+        }
+      ]
+    },
+    {
+      "productId": "0K0Y",
+      "name": "Tarım Kredi Deminde Tiryaki Siyah Çay 1 Kg",
+      "brand": "Tarım Kredi",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 229,
+      "maxPrice": 229,
+      "markets": [
+        {
+          "market": "Tarım Kredi",
+          "price": 229
+        }
+      ]
+    },
+    {
+      "productId": "02H6",
+      "name": "Herdem Harman Siyah Çay 1 Kg",
+      "brand": "Herdem",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 250,
+      "maxPrice": 250,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 250
+        }
+      ]
+    },
+    {
+      "productId": "0GPJ",
+      "name": "Beta Granül CTC Çay 50 Gr",
+      "brand": "Beta",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 306,
+      "maxPrice": 306,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 306
+        }
+      ]
+    },
+    {
+      "productId": "0FAP",
+      "name": "Beta Tea Yun Wu Yeşil Çay 50 Gr",
+      "brand": "Beta tea",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 306,
+      "maxPrice": 306,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 306
+        }
+      ]
+    },
+    {
+      "productId": "1L5J",
+      "name": "Efor Rize Siyah Çay 1 Kg",
+      "brand": "Efor",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 2,
+      "minPrice": 359.95,
+      "maxPrice": 359.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 359.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 359.95
+        }
+      ]
+    },
+    {
+      "productId": "0W41",
+      "name": "Ofçay Arhavi Çay 1 Kg",
+      "brand": "Ofçay",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 389.95,
+      "maxPrice": 389.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 389.95
+        }
+      ]
+    },
+    {
+      "productId": "2FMM",
+      "name": "Ofçay Hazine Dökme Çay 1 Kg",
+      "brand": "Ofçay",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 399.95,
+      "maxPrice": 399.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 399.95
+        }
+      ]
+    },
+    {
+      "productId": "02W4",
+      "name": "Beta Sencha Yeşil Çay 50 Gr",
+      "brand": "Beta",
+      "category": "Çay ve Bitki Çayları",
+      "marketCount": 1,
+      "minPrice": 453,
+      "maxPrice": 453,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 453
+        }
+      ]
+    }
+  ]
+}

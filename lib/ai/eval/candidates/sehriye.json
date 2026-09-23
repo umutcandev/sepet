@@ -1,0 +1,534 @@
+{
+  "term": "şehriye",
+  "category": "Ekmek & unlu",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:44:50.210Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "05LC",
+      "name": "Cardella Arpa Şehriye 500 Gr",
+      "brand": "Cardella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "01Q1",
+      "name": "Cardella Tel Şehriye 500 Gr",
+      "brand": "Cardella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 15,
+      "maxPrice": 15,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15
+        }
+      ]
+    },
+    {
+      "productId": "107G",
+      "name": "Piyale Arpa Şehriye 500 Gr",
+      "brand": "Piyale",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17,
+      "maxPrice": 17,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 17
+        }
+      ]
+    },
+    {
+      "productId": "0XHX",
+      "name": "Piyale Tel Şehriye 500 Gr",
+      "brand": "Piyale",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17,
+      "maxPrice": 17,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 17
+        }
+      ]
+    },
+    {
+      "productId": "0VH6",
+      "name": "Migros Arpa Şehriye 500 Gr",
+      "brand": "Migros",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17.95,
+      "maxPrice": 17.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 17.95
+        }
+      ]
+    },
+    {
+      "productId": "0F4O",
+      "name": "Carrefour Arpa Şehriye 500 Gr",
+      "brand": "Carrefour",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17.95,
+      "maxPrice": 17.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 17.95
+        }
+      ]
+    },
+    {
+      "productId": "201N",
+      "name": "Mutlu Arpa Şehriye 500 Gr",
+      "brand": "Mutlu",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 19.5,
+      "maxPrice": 33.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.95
+        }
+      ]
+    },
+    {
+      "productId": "0TLT",
+      "name": "Oba Arpa Şehriye Makarna 500 Gr",
+      "brand": "Oba",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "1K2A",
+      "name": "Filiz Tel Şehriye 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 27.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        }
+      ]
+    },
+    {
+      "productId": "1RU2",
+      "name": "Nuh'un Ankara Tel Şehriye 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1NLE",
+      "name": "Nuh'un Ankara Arpa Şehriye 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z1Y",
+      "name": "Filiz Arpa Şehriye 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 3,
+      "minPrice": 24.9,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        },
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z7A",
+      "name": "Filiz Yıldız Şehriye 500 Gr",
+      "brand": "Filiz",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 27.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.95
+        }
+      ]
+    },
+    {
+      "productId": "20OS",
+      "name": "Mutlu Tel Şehriye 500 Gr",
+      "brand": "Mutlu",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 33.95,
+      "maxPrice": 33.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 33.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 33.95
+        }
+      ]
+    },
+    {
+      "productId": "03NA",
+      "name": "Arbella Arpa Şehriye 500 Gr",
+      "brand": "Arbella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 34.25,
+      "maxPrice": 34.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.25
+        }
+      ]
+    },
+    {
+      "productId": "0ABY",
+      "name": "Arbella Tel Şehriye 500 Gr",
+      "brand": "Arbella",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 34.25,
+      "maxPrice": 34.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.25
+        }
+      ]
+    },
+    {
+      "productId": "1Z9B",
+      "name": "Pastavilla Arpa Şehriye 500 Gr",
+      "brand": "Pastavilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 35.21,
+      "maxPrice": 48.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 35.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 48.9
+        }
+      ]
+    },
+    {
+      "productId": "1YRZ",
+      "name": "Nuh'un Ankara Vitaminli Arpa Şehriye 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "2A1X",
+      "name": "Nuh'un Ankara Arpa Şehriye Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "20OR",
+      "name": "Pastavilla Tel Şehriye 500 Gr",
+      "brand": "Pastavilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 46.95,
+      "maxPrice": 48.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 46.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 48.9
+        }
+      ]
+    },
+    {
+      "productId": "20SD",
+      "name": "Pastavilla İri Arpa Şehriye 500 Gr",
+      "brand": "Pastavilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "1PSM",
+      "name": "Barilla Risoni Arpa Şehriye 500 Gr",
+      "brand": "Barilla",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 60.5,
+      "maxPrice": 60.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 60.5
+        }
+      ]
+    },
+    {
+      "productId": "1ADG",
+      "name": "Organik Gurme Arpa Şehriye 500 Gr",
+      "brand": "Organik Gurme",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 206.9,
+      "maxPrice": 206.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 206.9
+        }
+      ]
+    },
+    {
+      "productId": "0F3C",
+      "name": "Schär Glutensiz Tel Şehriye 250 Gr",
+      "brand": "Schär",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 240.9,
+      "maxPrice": 240.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 240.9
+        }
+      ]
+    },
+    {
+      "productId": "0MCH",
+      "name": "Migros Tel Şehriye 500 Gr",
+      "brand": "Migros",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17.95,
+      "maxPrice": 17.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 17.95
+        }
+      ]
+    },
+    {
+      "productId": "0B3Z",
+      "name": "Carrefour Tel Şehriye 500 Gr",
+      "brand": "Carrefour",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 17.95,
+      "maxPrice": 17.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 17.95
+        }
+      ]
+    },
+    {
+      "productId": "2A1Y",
+      "name": "Nuh'un Ankara Tel Şehriye Makarna 500 Gr",
+      "brand": "Nuh'un Ankara",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "1YJG",
+      "name": "Dola Glutensiz Arpa Şehriye 250 Gr",
+      "brand": "Dola",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "18RK",
+      "name": "City Farm Organik Tel Şehriye 500 Gr",
+      "brand": "City Farm",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 93,
+      "maxPrice": 93,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 93
+        }
+      ]
+    },
+    {
+      "productId": "0363",
+      "name": "Beypazarı Çorbalık Kesme Makarna 500 Gr",
+      "brand": "Beypazarı",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 172.9,
+      "maxPrice": 172.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 172.9
+        }
+      ]
+    },
+    {
+      "productId": "1ADI",
+      "name": "Organik Gurme Tel Şehriye 500 Gr",
+      "brand": "Organik Gurme",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 206.9,
+      "maxPrice": 206.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 206.9
+        }
+      ]
+    },
+    {
+      "productId": "027O",
+      "name": "Pirinç Şehriyesi 400 Gr",
+      "brand": "TAS BRAND",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 255.5,
+      "maxPrice": 255.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 255.5
+        }
+      ]
+    }
+  ]
+}

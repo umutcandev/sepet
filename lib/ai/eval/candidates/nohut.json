@@ -1,0 +1,812 @@
+{
+  "term": "nohut",
+  "category": "Bakliyat & kuruyemiş",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:55:10.158Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0MPQ",
+      "name": "Bizim Vatan Haşlanmış Nohut 800 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 40.5,
+      "maxPrice": 40.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 40.5
+        }
+      ]
+    },
+    {
+      "productId": "1LEF",
+      "name": "Duru Haşlanmış Nohut 400 Gr",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "04Q4",
+      "name": "Saban Nohut 1 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 54.5,
+      "maxPrice": 54.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 54.5
+        }
+      ]
+    },
+    {
+      "productId": "0RIL",
+      "name": "Yayla Haşlanmış Suyu Süzülmüş Nohut 150 Gr",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 54.95,
+      "maxPrice": 54.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 54.95
+        }
+      ]
+    },
+    {
+      "productId": "10KL",
+      "name": "Anadolu Mutfağı Nohut 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "0GTV",
+      "name": "Carrefour Nohut 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 62.95,
+      "maxPrice": 62.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 62.95
+        }
+      ]
+    },
+    {
+      "productId": "0BAA",
+      "name": "Rençber Nohut 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "008C",
+      "name": "Tukaş Haşlanmış Nohut 800 Gr",
+      "brand": "Tukaş",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 74.96,
+      "maxPrice": 74.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.96
+        }
+      ]
+    },
+    {
+      "productId": "1QVB",
+      "name": "Yayla Haşlanmış Nohut 700 Gr",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 86.5,
+      "maxPrice": 88.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 86.5
+        },
+        {
+          "market": "Migros",
+          "price": 88.95
+        }
+      ]
+    },
+    {
+      "productId": "1QJA",
+      "name": "Tamek Haşlanmış Nohut 800 Gr",
+      "brand": "Tamek",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 87.95,
+      "maxPrice": 87.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 87.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 87.95
+        }
+      ]
+    },
+    {
+      "productId": "09OO",
+      "name": "Carrefour Beyaz Nohut 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 92.9,
+      "maxPrice": 92.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 92.9
+        }
+      ]
+    },
+    {
+      "productId": "0T35",
+      "name": "Burcu Organik Haşlanmış Nohut 600 Gr",
+      "brand": "Burcu",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 94.95,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "0TDB",
+      "name": "Yöremce Beyaz Nohut 1 Kg",
+      "brand": "Yöremce",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "06D9",
+      "name": "Saban Beyaz Nohut 1 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "07ZT",
+      "name": "Rençber Beyaz Nohut 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1QSD",
+      "name": "Tat Koçbaşı Nohut 8.5 Mm 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 125.95,
+      "maxPrice": 125.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125.95
+        }
+      ]
+    },
+    {
+      "productId": "12W5",
+      "name": "Mlife Bio Organik Nohut 1 Kg",
+      "brand": "Mlife",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 127.46,
+      "maxPrice": 127.46,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 127.46
+        }
+      ]
+    },
+    {
+      "productId": "14LU",
+      "name": "Carrefour Bio Organik Nohut 1 Kg",
+      "brand": "Carrefour Bio",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 129.95,
+      "maxPrice": 129.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 129.95
+        }
+      ]
+    },
+    {
+      "productId": "13HY",
+      "name": "Saban Nohut 2.5 Kg",
+      "brand": "Saban",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 139,
+      "maxPrice": 139,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 139
+        }
+      ]
+    },
+    {
+      "productId": "0ONV",
+      "name": "Yayla Koçbaşı İri Boy Nohut 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 144.95,
+      "maxPrice": 144.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 144.95
+        }
+      ]
+    },
+    {
+      "productId": "1FOC",
+      "name": "Reis Nohut 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 159.95,
+      "maxPrice": 159.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 159.95
+        }
+      ]
+    },
+    {
+      "productId": "1TW0",
+      "name": "Reis Royal Beyaz Nohut 500 Gr",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 178.13,
+      "maxPrice": 178.13,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 178.13
+        }
+      ]
+    },
+    {
+      "productId": "1NAO",
+      "name": "Reis Koçbaşı Nohut 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 194.95,
+      "maxPrice": 194.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 194.95
+        }
+      ]
+    },
+    {
+      "productId": "010H",
+      "name": "Organik Gurme Organik Nohut 1 Kg",
+      "brand": "Organik Gurme",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 269.5,
+      "maxPrice": 269.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 269.5
+        }
+      ]
+    },
+    {
+      "productId": "18JH",
+      "name": "Sriracha Yoğurt Nane Glutensiz Nohut Cipsi 50 Gr",
+      "brand": "Markasız",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 28,
+      "maxPrice": 28,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 28
+        }
+      ]
+    },
+    {
+      "productId": "0H6R",
+      "name": "Carrefour Veggie Kajun Nohut Cipsi Çubuk 56 Gr",
+      "brand": "Carrefour",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 34.9,
+      "maxPrice": 34.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.9
+        }
+      ]
+    },
+    {
+      "productId": "086I",
+      "name": "Carrefour Veggie Chili Nohut Cipsi 56 Gr",
+      "brand": "Carrefour",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 34.9,
+      "maxPrice": 34.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.9
+        }
+      ]
+    },
+    {
+      "productId": "05PM",
+      "name": "Carrefour Kids Süt Mısır Ve Nohut Cipsi 560 Gr",
+      "brand": "Carrefour Kids",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 34.9,
+      "maxPrice": 34.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 34.9
+        }
+      ]
+    },
+    {
+      "productId": "1CGI",
+      "name": "Yurdum Konserve Haşlanmış Nohut Fasulye 830 Gr",
+      "brand": "Yurdum",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "2006",
+      "name": "Fropie Fırınlanmış Nohut Cipsi Mevsim Yeşillikleri 50 Gr",
+      "brand": "Fropie",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 39.9,
+      "maxPrice": 75.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 75.5
+        }
+      ]
+    },
+    {
+      "productId": "1GOU",
+      "name": "Fropie Fırınlanmış Nohut Cipsi Tütsülü Biber Çeşnili 50 Gr",
+      "brand": "Fropie",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 39.9,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "1NYJ",
+      "name": "Noutos Yoğurt Mevsim Yeşillikli Nohut Cipsi 55 Gr",
+      "brand": "Noutos",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "1Z82",
+      "name": "Züber Noutos Fırınlanmış Nohut Cipsi Chili 55 Gr",
+      "brand": "Züber",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 58.95,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 58.95
+        },
+        {
+          "market": "Migros",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "1YP3",
+      "name": "Züber Noutos Fırınlanmış Nohut Cips Kajun Baharatlı 55 Gr",
+      "brand": "Züber",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 58.95,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 58.95
+        },
+        {
+          "market": "Migros",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZFC",
+      "name": "Züber Noutos Fırınlanmış Nohut Cipsi Ege Baharatlı 55 Gr",
+      "brand": "Züber",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 58.95,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 58.95
+        },
+        {
+          "market": "Migros",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "1ROS",
+      "name": "Hero Goodies Pizza Karabuğday Nohut Cipsi 30 Gr",
+      "brand": "Hero Goodies",
+      "category": "Bebek Mamaları",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1P5M",
+      "name": "Hero Goodies Peynirli Karabuğday Nohut Cipsi 30 Gr",
+      "brand": "Hero Goodies",
+      "category": "Bebek Mamaları",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1DNS",
+      "name": "Fropie Nohut Cipsi Tütsülenmiş Biber Çeşnili 50 Ml",
+      "brand": "Fropie",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 75.5,
+      "maxPrice": 75.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 75.5
+        }
+      ]
+    },
+    {
+      "productId": "205S",
+      "name": "Tat Haşlanmış Nohut 800 Gr",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 91,
+      "maxPrice": 91,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 91
+        }
+      ]
+    },
+    {
+      "productId": "1WAZ",
+      "name": "Züber Noutos Kajun Baharatlı Nohut Cipsi 75 Gr",
+      "brand": "Züber",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 92.95,
+      "maxPrice": 93.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 93.9
+        }
+      ]
+    },
+    {
+      "productId": "20JP",
+      "name": "Züber Noutos Ege Baharatlı Nohut Cipsi 75 Gr",
+      "brand": "Züber",
+      "category": "Cips",
+      "marketCount": 2,
+      "minPrice": 92.95,
+      "maxPrice": 93.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 93.9
+        }
+      ]
+    },
+    {
+      "productId": "1RY3",
+      "name": "Tada Etli Nohut 250 Gr",
+      "brand": "Tada",
+      "category": "Konserve",
+      "marketCount": 2,
+      "minPrice": 92.97,
+      "maxPrice": 93.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 93.9
+        }
+      ]
+    },
+    {
+      "productId": "1T3J",
+      "name": "Hasata Kırşehir Koçbaşı Nohut 1 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 109.95,
+      "maxPrice": 166.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 166.5
+        }
+      ]
+    },
+    {
+      "productId": "0JNH",
+      "name": "Duru Koçbaşı Nohut 8 mm 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 126.25,
+      "maxPrice": 126.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 126.25
+        }
+      ]
+    },
+    {
+      "productId": "1R34",
+      "name": "Doyum Organik Nohut 1 Kg",
+      "brand": "Doyum",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 132.97,
+      "maxPrice": 191.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 132.97
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 191.9
+        }
+      ]
+    },
+    {
+      "productId": "1LKI",
+      "name": "City Farm Organik Nohut 1 Kg",
+      "brand": "City Farm",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 194.5,
+      "maxPrice": 194.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 194.5
+        }
+      ]
+    },
+    {
+      "productId": "00IA",
+      "name": "Sade Organik Nohut 1 Kg",
+      "brand": "Sade Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 217.9,
+      "maxPrice": 217.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 217.9
+        }
+      ]
+    },
+    {
+      "productId": "01PC",
+      "name": "Lestello Glutensiz Nohut Patlağı 135 Gr",
+      "brand": "Lestello",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 259.9,
+      "maxPrice": 259.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 259.9
+        }
+      ]
+    },
+    {
+      "productId": "1NQ7",
+      "name": "Hero Goodies Süt Mısırlı Karabuğday Nohut Cipsi 30 Gr",
+      "brand": "Hero Goodies",
+      "category": "Bebek Mamaları",
+      "marketCount": 2,
+      "minPrice": 64.95,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 64.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1VO8",
+      "name": "Reis Glutensiz Nohut Unu 500 Gr",
+      "brand": "Reis",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 167.9,
+      "maxPrice": 167.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 167.9
+        }
+      ]
+    }
+  ]
+}

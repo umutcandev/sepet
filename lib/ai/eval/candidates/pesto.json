@@ -1,0 +1,402 @@
+{
+  "term": "pesto",
+  "category": "Dünya mutfağı",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T21:06:39.782Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1Q9I",
+      "name": "Knorr Çabuk Makarna Pesto Fusilli 65 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 52.46,
+      "maxPrice": 70.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 52.46
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 70.9
+        }
+      ]
+    },
+    {
+      "productId": "1D77",
+      "name": "Pesto & Trüf Mantarı & Cheddar Kremalı Sos 190 Gr",
+      "brand": "Markasız",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 57,
+      "maxPrice": 57,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 57
+        }
+      ]
+    },
+    {
+      "productId": "1SMJ",
+      "name": "Knorr Pesto Makarna Sosu 50 Gr",
+      "brand": "Knorr",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 64.95,
+      "maxPrice": 64.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 64.95
+        }
+      ]
+    },
+    {
+      "productId": "1DN7",
+      "name": "Amigo Pesto Sos Çeşnili Patates Cipsi 200 Gr",
+      "brand": "Amigo",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1AG8",
+      "name": "Patito Pesto Barbekü Aromalı Patates Cipsi 200 Gr",
+      "brand": "Patito",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1DMT",
+      "name": "Master Crunch Pesto Soslu Çıtır Kaplamalı Kızarmış Fındık 140 Gr",
+      "brand": "Master Crunch",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "1D00",
+      "name": "Lezita Pesto Soslu Izgara Dilim Piliç Fileto 200 Gr",
+      "brand": "Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 74.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "1DD0",
+      "name": "Yayla Pesto Soslu Makarna 250 Gr",
+      "brand": "Yayla",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 76.95,
+      "maxPrice": 76.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 76.95
+        }
+      ]
+    },
+    {
+      "productId": "1PIJ",
+      "name": "İçim Pesto Soslu Labne 180 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 79.9,
+      "maxPrice": 83.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 83.5
+        }
+      ]
+    },
+    {
+      "productId": "1JDF",
+      "name": "Knorr Pesto Makarna Sosu 3.6 Kg",
+      "brand": "Knorr",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 83.5,
+      "maxPrice": 83.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 83.5
+        }
+      ]
+    },
+    {
+      "productId": "1DE2",
+      "name": "Piyale Makarna Sosu Pesto 190 Gr",
+      "brand": "Piyale",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 115,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "1T1F",
+      "name": "Tamek Lifli Pesto Sos 190 Gr",
+      "brand": "Tamek",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 141.25,
+      "maxPrice": 141.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 141.25
+        }
+      ]
+    },
+    {
+      "productId": "1RJF",
+      "name": "Pastavilla Pesto Makarna Sosu 190 Gr",
+      "brand": "Pastavilla",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 146.95,
+      "maxPrice": 146.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 146.95
+        }
+      ]
+    },
+    {
+      "productId": "1PYC",
+      "name": "Heinz Pesto Mayonez 225 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 159.95,
+      "maxPrice": 216,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 216
+        }
+      ]
+    },
+    {
+      "productId": "1NZJ",
+      "name": "Barilla Pesto Genovese Sos 190 Gr",
+      "brand": "Barilla",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 162.5,
+      "maxPrice": 182.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 162.5
+        },
+        {
+          "market": "Migros",
+          "price": 182.95
+        }
+      ]
+    },
+    {
+      "productId": "3WW8",
+      "name": "Tigullio Gran Pesto Genovese Sos 190 Gr",
+      "brand": "Tigullio",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 164.95,
+      "maxPrice": 164.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.95
+        }
+      ]
+    },
+    {
+      "productId": "1DLC",
+      "name": "Barilla Pesto Alla Genovese 190 Gr",
+      "brand": "Barilla",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 165.95,
+      "maxPrice": 165.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 165.95
+        }
+      ]
+    },
+    {
+      "productId": "20QY",
+      "name": "Barilla Pesto Rosso Makarna Sosu 200 Gr",
+      "brand": "Barilla",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 182.95,
+      "maxPrice": 182.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 182.95
+        },
+        {
+          "market": "Migros",
+          "price": 182.95
+        }
+      ]
+    },
+    {
+      "productId": "1T7U",
+      "name": "Barilla Cevizli Pesto Makarna Sosu 190 Gr",
+      "brand": "Barilla",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 182.95,
+      "maxPrice": 182.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 182.95
+        }
+      ]
+    },
+    {
+      "productId": "1DH0",
+      "name": "Barilla Pesto Alla Siciliana 190 Gr",
+      "brand": "Barilla",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 188.5,
+      "maxPrice": 188.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 188.5
+        }
+      ]
+    },
+    {
+      "productId": "1J5E",
+      "name": "Tada Gurme Izgara Tavuklu Pesto Soslu Sandviç 170 Gr",
+      "brand": "Tada Gurme",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 250,
+      "maxPrice": 250,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 250
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 250
+        }
+      ]
+    },
+    {
+      "productId": "1KW5",
+      "name": "Dardanel Kolay Pişir Karides Pesto Soslu Linguine 300 Gr",
+      "brand": "Dardanel",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 299,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299
+        },
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "1DC3",
+      "name": "Trakya Çiftliği Pesto Soslu Zeytinyağlı Taze Peynir 200 Gr",
+      "brand": "Trakya Çiftliği",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 329.9,
+      "maxPrice": 329.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 329.9
+        }
+      ]
+    },
+    {
+      "productId": "21RK",
+      "name": "Sacla Domates Ricotta ve Peynirli Pesto Sos 350 Gr",
+      "brand": "Sacla",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 444,
+      "maxPrice": 444,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 444
+        }
+      ]
+    }
+  ]
+}

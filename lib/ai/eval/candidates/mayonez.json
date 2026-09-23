@@ -1,0 +1,1202 @@
+{
+  "term": "mayonez",
+  "category": "Yağ & sos",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:58:00.745Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "145T",
+      "name": "Tukaş Mayonez 840 Gr",
+      "brand": "Tukaş",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "0YGK",
+      "name": "Bizim Vatan Mayonez 430 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "1D49",
+      "name": "Riksos Mayonez 650 Gr",
+      "brand": "Riksos",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 89.5,
+      "maxPrice": 89.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 89.5
+        }
+      ]
+    },
+    {
+      "productId": "0W36",
+      "name": "Hellmann's Acılı Mayonez 230 Gr",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 94.95,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "0L1G",
+      "name": "Heinz Mayonez 400 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 99.5,
+      "maxPrice": 190,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99.5
+        },
+        {
+          "market": "Şok",
+          "price": 190
+        }
+      ]
+    },
+    {
+      "productId": "1P9X",
+      "name": "Tat Lemon & Pepper Mayonez 210 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "06FI",
+      "name": "Tat Sarımsaklı Mayonez 260 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 129.95,
+      "maxPrice": 129.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 129.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZSW",
+      "name": "Tamek Mayonez 540 Gr",
+      "brand": "Tamek",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 146.5,
+      "maxPrice": 146.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 146.5
+        }
+      ]
+    },
+    {
+      "productId": "0415",
+      "name": "Bolbol Mayonez 840 Gr",
+      "brand": "Bolbol",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "2CR7",
+      "name": "Calvé Mayonez 540 Gr",
+      "brand": "Calvé",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "1OCH",
+      "name": "Tat Trüflü Mayonez 210 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 171.5,
+      "maxPrice": 171.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 171.5
+        }
+      ]
+    },
+    {
+      "productId": "003R",
+      "name": "Calve Mayonez 380 Gr",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 171.5,
+      "maxPrice": 171.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 171.5
+        }
+      ]
+    },
+    {
+      "productId": "1QJG",
+      "name": "Heinz Mayonez 330 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 189.95
+        },
+        {
+          "market": "Migros",
+          "price": 189.95
+        }
+      ]
+    },
+    {
+      "productId": "1KKV",
+      "name": "Tat Sriracha Mayonez 350 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 189.95
+        }
+      ]
+    },
+    {
+      "productId": "1QJH",
+      "name": "Calve Trüflü Mayonez 235 Gr",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 196.95,
+      "maxPrice": 196.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 196.95
+        },
+        {
+          "market": "Migros",
+          "price": 196.95
+        }
+      ]
+    },
+    {
+      "productId": "1SMH",
+      "name": "Calvé Sriracha Mayonez 240 Gr",
+      "brand": "Calvé",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 196.95,
+      "maxPrice": 196.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 196.95
+        },
+        {
+          "market": "Migros",
+          "price": 196.95
+        }
+      ]
+    },
+    {
+      "productId": "1SM6",
+      "name": "Heinz Sarımsaklı Mayonez 400 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 199.95,
+      "maxPrice": 279.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 279.95
+        }
+      ]
+    },
+    {
+      "productId": "1YQN",
+      "name": "Tat Yoğun Lezzet Mayonez 550 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZNZ",
+      "name": "Calve Mayonez 540 Gr",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 204.95,
+      "maxPrice": 204.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 204.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 204.95
+        }
+      ]
+    },
+    {
+      "productId": "1GSV",
+      "name": "Hellmann's Mayonez 530 Gr",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 219.95,
+      "maxPrice": 222.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 222.5
+        }
+      ]
+    },
+    {
+      "productId": "1NG0",
+      "name": "Heinz Trüflü Mayonez 220 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 236.95,
+      "maxPrice": 236.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 236.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 236.95
+        }
+      ]
+    },
+    {
+      "productId": "1RZE",
+      "name": "Heinz Mayonez 505 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 239.95,
+      "maxPrice": 239.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 239.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 239.95
+        }
+      ]
+    },
+    {
+      "productId": "1JO1",
+      "name": "Heinz Light Mayonez 420 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 242.95,
+      "maxPrice": 242.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 242.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 242.95
+        }
+      ]
+    },
+    {
+      "productId": "20YI",
+      "name": "Calve Cam Mayonez 500 Gr",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 290.95,
+      "maxPrice": 290.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 290.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 290.95
+        }
+      ]
+    },
+    {
+      "productId": "04WA",
+      "name": "Bolbol Sarımsaklı Mayonez Sos 300 Gr",
+      "brand": "Bolbol",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 58.5,
+      "maxPrice": 58.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 58.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZNO",
+      "name": "Tukaş Mayonez 335 Gr",
+      "brand": "Tukaş",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "0XAS",
+      "name": "Burcu Mayonez 460 Gr",
+      "brand": "Burcu",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 98.95,
+      "maxPrice": 98.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 98.95
+        }
+      ]
+    },
+    {
+      "productId": "1KOR",
+      "name": "Tat Yoğun Lezzet Mayonez 330 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 3,
+      "minPrice": 99.37,
+      "maxPrice": 159.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.37
+        },
+        {
+          "market": "Şok",
+          "price": 139
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 159.95
+        }
+      ]
+    },
+    {
+      "productId": "2AI5",
+      "name": "Burcu Ketçap Mayonez Seti 1.2 Kg",
+      "brand": "Burcu",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "074Y",
+      "name": "Bolbol %45 Yağlı Mayonez 870 Gr",
+      "brand": "Bolbol",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 117,
+      "maxPrice": 117,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 117
+        }
+      ]
+    },
+    {
+      "productId": "1QUC",
+      "name": "Tat Yoğun Lezzet Mayonez 205 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "0PE9",
+      "name": "Tat Sarımsaklı Mayonez 205 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 129.95,
+      "maxPrice": 129.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.95
+        }
+      ]
+    },
+    {
+      "productId": "0L17",
+      "name": "Bizim Vatan Mayonez 840 Gr",
+      "brand": "Bizim Vatan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1B31",
+      "name": "Heinz Chipotle Mayonez 225 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 159.95,
+      "maxPrice": 216,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 216
+        }
+      ]
+    },
+    {
+      "productId": "1PYC",
+      "name": "Heinz Pesto Mayonez 225 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 159.95,
+      "maxPrice": 216,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 216
+        }
+      ]
+    },
+    {
+      "productId": "1S2S",
+      "name": "Heinz Smoky Mayonez 225 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 159.95,
+      "maxPrice": 216,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 159.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 216
+        }
+      ]
+    },
+    {
+      "productId": "20YD",
+      "name": "Hellmann's Mayonez 385 Gr",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 189.95,
+      "maxPrice": 191.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 189.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 191.9
+        }
+      ]
+    },
+    {
+      "productId": "1Q16",
+      "name": "Calve Jalapeno & Cheddar Mayonez 240 Gr",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 192.95,
+      "maxPrice": 192.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 192.95
+        }
+      ]
+    },
+    {
+      "productId": "0NJT",
+      "name": "Hellmann's Sarımsaklı Mayonez 235 Gr",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 197.95,
+      "maxPrice": 197.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 197.95
+        }
+      ]
+    },
+    {
+      "productId": "0NZ7",
+      "name": "Calve Cheddar Jalapeno Mayonez 2.88 Kg",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 198.9,
+      "maxPrice": 198.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 198.9
+        }
+      ]
+    },
+    {
+      "productId": "1S3P",
+      "name": "Heinz Acılı Mayonez 405 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 199.95,
+      "maxPrice": 279.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 279.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q02",
+      "name": "Hellmann's Trüflü Mayonez 235 Gr",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 229.95,
+      "maxPrice": 233.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 229.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 233.5
+        }
+      ]
+    },
+    {
+      "productId": "0KBW",
+      "name": "Pınar Mayonez Cam 460 Gr",
+      "brand": "Pınar",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 269.95,
+      "maxPrice": 269.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269.95
+        }
+      ]
+    },
+    {
+      "productId": "0PAV",
+      "name": "Tat Mayonez Cam 500 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 279.95,
+      "maxPrice": 279.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 279.95
+        }
+      ]
+    },
+    {
+      "productId": "1XPL",
+      "name": "Hellmann's İkili Set Ketçap 460 Gr Ve Mayonez",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 287.9,
+      "maxPrice": 287.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 287.9
+        }
+      ]
+    },
+    {
+      "productId": "20DE",
+      "name": "Heinz Cam Mayonez 460 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "0BFN",
+      "name": "Crying Thaiger Sriracha Mayonez Acı Biber Sosu 200 Gr",
+      "brand": "Crying Thaiger",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 352.5,
+      "maxPrice": 352.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 352.5
+        }
+      ]
+    },
+    {
+      "productId": "1DFY",
+      "name": "Crying Thaiger Sriracha Mayonez Acı Biber Sos 200 Ml",
+      "brand": "Crying Thaiger",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 376.95,
+      "maxPrice": 376.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 376.95
+        }
+      ]
+    },
+    {
+      "productId": "3WPM",
+      "name": "Fıçı Limon Suyu 750 Ml",
+      "brand": "Fıçı",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 54.5,
+      "maxPrice": 54.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 54.5
+        }
+      ]
+    },
+    {
+      "productId": "20QU",
+      "name": "Calve Cheddar Sos 240 Gr",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 3,
+      "minPrice": 74,
+      "maxPrice": 126.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 74
+        },
+        {
+          "market": "Migros",
+          "price": 89.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 126.5
+        }
+      ]
+    },
+    {
+      "productId": "0DBR",
+      "name": "Carrefour Selection Sriracha Mayo 275 Gr",
+      "brand": "Carrefour Selection",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZAU",
+      "name": "Kühne Kırmızı Acı Biber Sosu 100 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 89.95,
+      "maxPrice": 96.6,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 96.6
+        }
+      ]
+    },
+    {
+      "productId": "214Q",
+      "name": "Kühne Üzüm Sirkesi 500 Ml",
+      "brand": "Kühne",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 92.37,
+      "maxPrice": 134,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.37
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 134
+        }
+      ]
+    },
+    {
+      "productId": "20YT",
+      "name": "Tat Barbekü Sos 250 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 100.9,
+      "maxPrice": 100.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 100.9
+        }
+      ]
+    },
+    {
+      "productId": "1QOR",
+      "name": "Tat Sıkı Dostlar Ketçap Mayonez Seti 1.21 Kg",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 104.97,
+      "maxPrice": 104.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.97
+        }
+      ]
+    },
+    {
+      "productId": "199Q",
+      "name": "Hellmann's Ketçap 460 Gr + Mayonez 385 Gr İkili Set",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 139.95,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "3WW9",
+      "name": "Tigullio Peperoni Noci Sos 185 Gr",
+      "brand": "Tigullio",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 164.95,
+      "maxPrice": 164.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.95
+        }
+      ]
+    },
+    {
+      "productId": "1R2J",
+      "name": "Heinz Ketçap 375 Gr + Mayonez 330 Gr İkili Set",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 169.95,
+      "maxPrice": 275.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.95
+        },
+        {
+          "market": "Migros",
+          "price": 275.95
+        }
+      ]
+    },
+    {
+      "productId": "13NU",
+      "name": "Tat Aile Paketi Ketçap 900 Gr + Az Yağlı Mayonez 780 Gr",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 196,
+      "maxPrice": 196,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 196
+        }
+      ]
+    },
+    {
+      "productId": "0ABM",
+      "name": "Hellmann's Chili Mayo 230 Gr",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 199.9,
+      "maxPrice": 199.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199.9
+        }
+      ]
+    },
+    {
+      "productId": "03IR",
+      "name": "Hellmann's Garlic Mayonnaise 235 Gr",
+      "brand": "Hellmann's",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 205.9,
+      "maxPrice": 205.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 205.9
+        }
+      ]
+    },
+    {
+      "productId": "1Z90",
+      "name": "Heinz Organik Ketçap 580 Gr",
+      "brand": "Heinz",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 214.95,
+      "maxPrice": 295.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 214.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 295.5
+        }
+      ]
+    },
+    {
+      "productId": "1ECB",
+      "name": "Tamek Ketçap & Mayonez 2'li Set 1.14 Kg",
+      "brand": "Tamek",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 228.9,
+      "maxPrice": 228.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 228.9
+        }
+      ]
+    },
+    {
+      "productId": "0OOV",
+      "name": "Pınar Ketçap Ve Mayonez %50 Daha Az Yağlı İkili Set 770 Gr",
+      "brand": "Pınar",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 239.95,
+      "maxPrice": 239.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 239.95
+        }
+      ]
+    },
+    {
+      "productId": "0QKF",
+      "name": "Calvé Ketçap/Mayonez Orta Set 810 Ml",
+      "brand": "Calvé",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 242.5,
+      "maxPrice": 242.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 242.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZP0",
+      "name": "Fersan %100 Nar Ekşisi 330 Gr",
+      "brand": "Fersan",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 2,
+      "minPrice": 254.96,
+      "maxPrice": 339.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 254.96
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 339.95
+        }
+      ]
+    },
+    {
+      "productId": "1MSO",
+      "name": "Tat Sıkı Dostlar Ketçap 1.21 Kg & Mayonez 1.21 Kg",
+      "brand": "Tat",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 282.9,
+      "maxPrice": 282.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 282.9
+        }
+      ]
+    },
+    {
+      "productId": "0QB6",
+      "name": "Calve Ketçap/Light Mayonez 1.15 Kg",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 292.9,
+      "maxPrice": 292.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 292.9
+        }
+      ]
+    },
+    {
+      "productId": "0JN2",
+      "name": "Remia Black Truffle Mayonnaise 220 Ml",
+      "brand": "Remia",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 302,
+      "maxPrice": 302,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 302
+        }
+      ]
+    },
+    {
+      "productId": "1QZ4",
+      "name": "Calve Ketçap 610 Gr + Mayonez 540 Gr İkili Set",
+      "brand": "Calve",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 309.95,
+      "maxPrice": 309.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 309.95
+        }
+      ]
+    },
+    {
+      "productId": "20N5",
+      "name": "Amoy Pirinç Sirkesi 750 Ml",
+      "brand": "Amoy",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 382.9,
+      "maxPrice": 382.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 382.9
+        }
+      ]
+    },
+    {
+      "productId": "16I6",
+      "name": "Thai World Sriracha Mayo 460 Gr",
+      "brand": "Thai World",
+      "category": "Ketçap Mayonez Sos ve Sirkeler",
+      "marketCount": 1,
+      "minPrice": 390.9,
+      "maxPrice": 390.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 390.9
+        }
+      ]
+    }
+  ]
+}

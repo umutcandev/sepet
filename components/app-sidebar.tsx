@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -19,8 +18,7 @@ import { NavGuest } from "@/components/nav-guest"
 import { NavGuestInfo } from "@/components/nav-guest-info"
 import { NavUser } from "@/components/nav-user"
 import { BrandContextMenu } from "@/components/brand/brand-context-menu"
-import { SepetMark } from "@/components/brand/sepet-mark"
-import { IconSwap } from "@/components/motion/icon-swap"
+import { SepetWordmark } from "@/components/brand/sepet-wordmark"
 import { Button } from "@/components/ui/button"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
 import { AssistantConversationsGroup } from "@/components/assistant/assistant-conversations-group"
@@ -48,6 +46,11 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { useShortcutModifier } from "@/hooks/use-shortcut-modifier"
+import {
+  WORDMARK_HEIGHT,
+  WORDMARK_MARK_WIDTH,
+  WORDMARK_WIDTH,
+} from "@/lib/brand/wordmark"
 
 type NavItem = {
   title: string
@@ -82,67 +85,85 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 }
 
 /**
- * Daraltılmış raydaki başlık: normalde Sepet işareti, üzerine gelince kenar
- * çubuğu anahtarı. Aynı yuvada iki ikon olduğu için takas `IconSwap` ile
- * yapılıyor — kod bloğundaki kopyalama onayıyla birebir aynı fizik.
+ * Başlıktaki marka yuvası: GÖRSEL katman sabit, ETKİLEŞİM katmanı duruma göre
+ * değişir (genişken ana sayfa bağlantısı, rayda kenar çubuğu anahtarı).
  *
- * Neden logonun YERİNE anahtar: daraltılmış rayda 32 pikselden başka yer yok ve
- * ikisi de aynı şeye bakıyor — "burası kenar çubuğu". Ayrı bir anahtar düğmesi
- * koymak rayı iki satır uzatırdı.
+ * Wordmark tek bir düğüm olarak hep DOM'da kalır ve yalnız "sepet" yazısı
+ * soluyor (bkz. SepetWordmark) — kapanışla açılış simetrik. Eskiden genişken
+ * <Image>, rayda <SepetMark> vardı ve takas anlıktı: açılış anında rayda
+ * anahtar ikonu durduğu için logo sıfırdan beliriyordu.
  *
- * Genişken hiç render edilmez (`hidden` → yalnız `collapsible=icon` altında
- * `flex`): orada wordmark ve üst bardaki anahtar zaten duruyor. Mobil sayfada
- * `Sheet` portala gittiği için `.group` atası yok, yani orada da gizli kalır.
+ * Kutunun genişliği CSS ile daralıyor: hem yazının gittiği yer kapansın hem de
+ * ilk boyamada (hidrasyondan önce) durum doğru olsun.
+ *
+ * Anahtar düğmesi `peer/rail`: üzerine gelince wordmark'ı ikonla çaprazlar.
+ * `h-12` iki durumda da korunur, böylece başlığın — ve altındaki her satırın —
+ * y konumu açılıp kapanırken oynamaz.
  */
-function SidebarBrandToggle() {
-  const { toggleSidebar } = useSidebar()
+function SidebarBrand() {
+  const { toggleSidebar, state, isMobile } = useSidebar()
   const modifier = useShortcutModifier()
-  // Hover VE focus: klavyeyle gelen kullanıcı da düğmenin ne yaptığını görür,
-  // yoksa odaktaki eleman hâlâ "logo" gibi durur.
-  const [active, setActive] = React.useState(false)
+  // Mobilde kenar çubuğu bir `Sheet`; masaüstü durumu oraya taşınmamalı.
+  const collapsed = !isMobile && state === "collapsed"
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          type="button"
-          onClick={toggleSidebar}
-          onMouseEnter={() => setActive(true)}
-          onMouseLeave={() => setActive(false)}
-          onFocus={() => setActive(true)}
-          onBlur={() => setActive(false)}
-          aria-label="Kenar çubuğunu aç"
-          // `my-2`: düğme 32px ama genişken burada 48px'lik (h-12) wordmark
-          // düğmesi duruyor. 8+8 piksel dikey marj kutuyu aynı 48'e tamamlar,
-          // böylece açılıp kapanırken başlığın yüksekliği — ve dolayısıyla
-          // ALTINDAKİ her satırın y konumu — hiç oynamaz. Ray genişlerken
-          // yalnızca genişlik animasyonu görünür, içerik zıplamaz.
-          //
-          // `justify-start px-2`: ORTALAMA DEĞİL. İşaret wordmark'tan dar
-          // (14 piksel) olduğu için 32 piksellik kutuda ortalanınca sol kenarı
-          // ~1 piksel sağa kayıyordu — kapanma anında logo yerinden oynuyormuş
-          // gibi. 8 piksel dolgu ile sol kenar wordmark'ın ve altındaki bütün
-          // gezinme ikonlarının hizasına (24 piksel) oturur.
-          className="my-2 hidden size-8 shrink-0 items-center justify-start rounded-md px-2 text-sidebar-foreground ring-sidebar-ring outline-hidden transition-colors group-data-[collapsible=icon]:flex hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2"
-        >
-          <IconSwap swapKey={active ? "toggle" : "mark"}>
-            {active ? (
-              <RiLayoutLeftLine className="cn-rtl-flip size-4" />
-            ) : (
-              // h-6: genişken burada duran wordmark ile birebir aynı yükseklik.
-              <SepetMark className="h-6" />
-            )}
-          </IconSwap>
-        </button>
-      </TooltipTrigger>
-      <TooltipContent side="right">
-        Kenar çubuğunu aç
-        <KbdGroup>
-          <Kbd>{modifier}</Kbd>
-          <Kbd>B</Kbd>
-        </KbdGroup>
-      </TooltipContent>
-    </Tooltip>
+    <div
+      className="relative flex h-12 min-w-0 flex-1 items-center"
+      style={
+        {
+          // h-6 wordmark'ın genişliği ve içindeki işaretin bittiği yer.
+          "--wordmark-w": `calc(1.5rem * ${WORDMARK_WIDTH} / ${WORDMARK_HEIGHT})`,
+          "--wordmark-mark-w": `calc(1.5rem * ${WORDMARK_MARK_WIDTH} / ${WORDMARK_HEIGHT})`,
+        } as React.CSSProperties
+      }
+    >
+      {/* Rayda logonun YERİNE anahtar: 32 pikselden başka yer yok ve ikisi de
+          aynı şeye bakıyor — "burası kenar çubuğu". */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            aria-label="Kenar çubuğunu aç"
+            className="peer/rail absolute inset-y-0 left-0 my-auto hidden size-8 rounded-md ring-sidebar-ring outline-hidden transition-colors group-data-[collapsible=icon]:block hover:bg-sidebar-accent focus-visible:ring-2"
+          />
+        </TooltipTrigger>
+        <TooltipContent side="right">
+          Kenar çubuğunu aç
+          <KbdGroup>
+            <Kbd>{modifier}</Kbd>
+            <Kbd>B</Kbd>
+          </KbdGroup>
+        </TooltipContent>
+      </Tooltip>
+
+      {/* Sağ tık / basılı tutma → marka menüsü; tetikleyici `asChild` ile tek
+          bir eleman çocuk bekliyor. */}
+      <BrandContextMenu>
+        <Link
+          href="/"
+          aria-label="Sepet ana sayfası"
+          className="absolute inset-y-0 left-0 w-[calc(var(--wordmark-w)+1rem)] rounded-md ring-sidebar-ring outline-hidden group-data-[collapsible=icon]:hidden focus-visible:ring-2"
+        />
+      </BrandContextMenu>
+
+      {/* `left-2`: sol kenar wordmark'ın ve altındaki bütün gezinme ikonlarının
+          hizasına (24 piksel) oturur. Genişlik geçişi kenar çubuğununkiyle aynı
+          süre ve eğri. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 left-2 my-auto flex h-6 w-(--wordmark-w) items-center overflow-hidden transition-[width,opacity] duration-200 ease-linear group-data-[collapsible=icon]:w-(--wordmark-mark-w) peer-hover/rail:opacity-0 peer-focus-visible/rail:opacity-0"
+      >
+        <SepetWordmark collapsed={collapsed} className="h-6 w-(--wordmark-w)" />
+      </span>
+
+      {/* Anahtar ikonu yalnız rayda görünür: düğme genişken `hidden`, yani
+          hover varyantı hiç eşleşmez. Fizik IconSwap'ın aynısı. */}
+      <RiLayoutLeftLine
+        aria-hidden
+        className="cn-rtl-flip pointer-events-none absolute inset-y-0 left-2 my-auto size-4 text-sidebar-accent-foreground opacity-0 transition-[opacity,transform,filter] duration-200 ease-linear motion-safe:scale-50 motion-safe:blur-[2px] peer-hover/rail:opacity-100 motion-safe:peer-hover/rail:scale-100 motion-safe:peer-hover/rail:blur-[0px] peer-focus-visible/rail:opacity-100 motion-safe:peer-focus-visible/rail:scale-100 motion-safe:peer-focus-visible/rail:blur-[0px]"
+      />
+    </div>
   )
 }
 
@@ -232,45 +253,10 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
     // eder; etiketleri tooltip taşır (bkz. SidebarMenuButton `tooltip`).
     <Sidebar variant="inset" collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-2">
-            {/* Genişken wordmark + kapatma anahtarı, daralınca üstüne gelince
-                anahtara dönüşen kare işaret. Hangisinin görüneceğine
-                `data-collapsible` karar verir. */}
-            {/* Sağ tık / basılı tutma → marka menüsü. Sarmalayıcı
-                SidebarMenuButton'ın DIŞINDA: o `asChild` ile Slot kullanıyor ve
-                tek bir eleman çocuk bekliyor. İçine konduğunda prop'lar (sınıf,
-                ref) Link'e hiç ulaşmıyor ve menü hiç açılmıyordu. */}
-            <BrandContextMenu>
-              <SidebarMenuButton
-                size="lg"
-                asChild
-                className="hover:bg-transparent active:bg-transparent group-data-[collapsible=icon]:hidden"
-              >
-                <Link href="/">
-                  <Image
-                    src="/brand/sepet-dark.svg"
-                    alt="Sepet"
-                    width={846}
-                    height={178}
-                    priority
-                    className="h-6 w-auto dark:hidden"
-                  />
-                  <Image
-                    src="/brand/sepet-light.svg"
-                    alt=""
-                    aria-hidden
-                    width={846}
-                    height={178}
-                    className="hidden h-6 w-auto dark:block"
-                  />
-                </Link>
-              </SidebarMenuButton>
-            </BrandContextMenu>
-            <SidebarBrandToggle />
-            <SidebarPanelToggle />
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <div className="flex items-center gap-2">
+          <SidebarBrand />
+          <SidebarPanelToggle />
+        </div>
       </SidebarHeader>
 
       <SidebarContent aria-label="Ana gezinme" className="overflow-hidden">

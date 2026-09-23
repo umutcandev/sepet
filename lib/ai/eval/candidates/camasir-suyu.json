@@ -1,0 +1,1114 @@
+{
+  "term": "çamaşır suyu",
+  "category": "Temizlik & kağıt",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T21:07:19.691Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0LJK",
+      "name": "Migros Parfümlü Çamaşır Suyu 1 Lt",
+      "brand": "Migros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 35.95,
+      "maxPrice": 35.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 35.95
+        }
+      ]
+    },
+    {
+      "productId": "0LIL",
+      "name": "Mintax Yoğun Çamaşır Suyu 1 Lt",
+      "brand": "Mintax",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "0MLM",
+      "name": "Mintax Çamaşır Suyu 2.5 Lt",
+      "brand": "Mintax",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "00F8",
+      "name": "Güldal Çamaşır Suyu 2.5 Lt",
+      "brand": "Güldal",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "214I",
+      "name": "Hyper Hypo Çamaşır Suyu 3.73 Lt",
+      "brand": "Hyper Hypo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "0Z5V",
+      "name": "Hypo Çamaşır Suyu 2.5 Kg",
+      "brand": "Hypo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "1REL",
+      "name": "Domestos Kar Beyazı Çamaşır Suyu 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 79.9,
+      "maxPrice": 100.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.9
+        },
+        {
+          "market": "Migros",
+          "price": 100.95
+        }
+      ]
+    },
+    {
+      "productId": "1P4Y",
+      "name": "Ace Klasik Çamaşır Suyu 1 Lt",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 85.95,
+      "maxPrice": 85.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 85.95
+        }
+      ]
+    },
+    {
+      "productId": "1SV6",
+      "name": "Ace Klasik Çamaşır Suyu 2 Lt",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 99.9,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.9
+        },
+        {
+          "market": "Migros",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "099Q",
+      "name": "Ace Klasik Çamaşır Suyu Lavanta 2.2 Kg",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "2A15",
+      "name": "Domestos Ultra Çamaşır Suyu 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "1O6W",
+      "name": "Domestos Yoğun Çamaşır Suyu 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0AEV",
+      "name": "Carrefour Çamaşır Suyu 4 Lt",
+      "brand": "Carrefour",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0E7T",
+      "name": "Carrefour Parfümlü Çamaşır Suyu 4 Lt",
+      "brand": "Carrefour",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0SOT",
+      "name": "Migros Parfümlü Çamaşır Suyu 4 Lt",
+      "brand": "Migros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1ILF",
+      "name": "ABC Bembeyaz Parlak Çamaşır Suyu 4 Lt",
+      "brand": "Abc",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "0LVH",
+      "name": "Mintax Yoğun Çamaşır Suyu 4 Lt",
+      "brand": "Mintax",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 153,
+      "maxPrice": 153,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 153
+        }
+      ]
+    },
+    {
+      "productId": "01PZ",
+      "name": "Domestos Çamaşır Suyu 1.25 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 167,
+      "maxPrice": 167,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 167
+        }
+      ]
+    },
+    {
+      "productId": "0IM5",
+      "name": "Ace Çamaşır Suyu 4 Lt",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "1JCY",
+      "name": "Ace Klasik Çamaşır Suyu 4.3 Lt",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "0G07",
+      "name": "Ace Klasik Çamaşır Suyu Lavanta 4 Lt",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "1NEM",
+      "name": "Ace Klasik Çamaşır Suyu 4 Lt",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 169.95,
+      "maxPrice": 169.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169.95
+        }
+      ]
+    },
+    {
+      "productId": "05JX",
+      "name": "Ace Çamaşır Suyu 4.3 Kg",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0XIH",
+      "name": "Domestos Ultra Çamaşır Suyu 3.24 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 295,
+      "maxPrice": 295,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 295
+        },
+        {
+          "market": "hakmar",
+          "price": 295
+        }
+      ]
+    },
+    {
+      "productId": "0SVY",
+      "name": "Migros Ocean Ultra Çamaşır Suyu 1 Lt",
+      "brand": "Migros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 51.95,
+      "maxPrice": 51.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 51.95
+        }
+      ]
+    },
+    {
+      "productId": "0FT6",
+      "name": "Carrefour Çamaşır Suyu 2.5 Lt",
+      "brand": "Carrefour",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 64.95,
+      "maxPrice": 64.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 64.95
+        }
+      ]
+    },
+    {
+      "productId": "0GNO",
+      "name": "Carrefour Parfümlü Çamaşır Suyu 2.5 Lt",
+      "brand": "Carrefour",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 64.95,
+      "maxPrice": 64.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 64.95
+        }
+      ]
+    },
+    {
+      "productId": "0WHN",
+      "name": "Migros Çamaşır Suyu Parfümlü 2.5 Lt",
+      "brand": "Migros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 64.95,
+      "maxPrice": 64.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 64.95
+        }
+      ]
+    },
+    {
+      "productId": "081N",
+      "name": "Güldal Ultra Çamaşır Suyu 1.25 Lt",
+      "brand": "Güldal",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "05VU",
+      "name": "Hypo Ultra Çamaşır Suyu 1.25 Kg",
+      "brand": "Hypo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1OQ3",
+      "name": "Domestos Çamaşır Suyu Okaliptus 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "0HV2",
+      "name": "Ace Klasik Çamaşır Suyu 1.1 Kg",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 85.95,
+      "maxPrice": 85.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 85.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y4A",
+      "name": "Bingo Oksijen Limon Kokulu Çamaşır Suyu 750 Ml",
+      "brand": "Bingo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 87.95,
+      "maxPrice": 87.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 87.95
+        }
+      ]
+    },
+    {
+      "productId": "146B",
+      "name": "Güldal Çamaşır Suyu 4 Lt",
+      "brand": "Güldal",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 89,
+      "maxPrice": 89,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 89
+        }
+      ]
+    },
+    {
+      "productId": "20TN",
+      "name": "Ace Ultra Kıvamlı Çamaşır Suyu Okaliptüs 750 Ml",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 92.9,
+      "maxPrice": 92.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 92.9
+        }
+      ]
+    },
+    {
+      "productId": "0WNR",
+      "name": "Domestos Ultra Çamaşır Suyu Dağ Esintisi 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "1N3A",
+      "name": "Domestos Çamaşır Suyu Kar Beyazlığı 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1IAP",
+      "name": "Domestos Dağ Esintisi Çamaşır Suyu 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 100.95,
+      "maxPrice": 100.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 100.95
+        }
+      ]
+    },
+    {
+      "productId": "06RN",
+      "name": "Güldal Çam Kokulu Ultra Çamaşır Suyu 3 Kg",
+      "brand": "Güldal",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 114,
+      "maxPrice": 114,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 114
+        }
+      ]
+    },
+    {
+      "productId": "1F13",
+      "name": "Sır Hijyen Köpük Çamaşır Suyu Katkılı 750 Ml",
+      "brand": "Sır",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 117,
+      "maxPrice": 117,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 117
+        }
+      ]
+    },
+    {
+      "productId": "0HF3",
+      "name": "Migros Ultra Yoğun Çamaşır Suyu Fresh 3.704 Lt",
+      "brand": "Migros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "13D9",
+      "name": "Peros Bahar Ferahlığı Ultra Çamaşır Suyu 4 Kg",
+      "brand": "Peros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 119,
+      "maxPrice": 207.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 119
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 207.9
+        }
+      ]
+    },
+    {
+      "productId": "1N30",
+      "name": "Ace Klasik Bahar Çamaşır Suyu 4.3 Kg",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "0EMR",
+      "name": "Ace Klasik Çamaşır Suyu Ekstra Hijyen 4 Lt",
+      "brand": "Ace",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 169.95,
+      "maxPrice": 169.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169.95
+        }
+      ]
+    },
+    {
+      "productId": "1G8E",
+      "name": "Domestos Köpük Gücü Çam Esintisi Çamaşır Suyu 450 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 174.95,
+      "maxPrice": 174.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 174.95
+        }
+      ]
+    },
+    {
+      "productId": "1GEQ",
+      "name": "Domestos Köpük Gücü Kar Beyaz Çamaşır Suyu 450 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 174.95,
+      "maxPrice": 174.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 174.95
+        }
+      ]
+    },
+    {
+      "productId": "2086",
+      "name": "Domestos Beyaz Sabun Ferahlığı Çamaşır Suyu 1.85 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 210.95,
+      "maxPrice": 210.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 210.95
+        }
+      ]
+    },
+    {
+      "productId": "1WKN",
+      "name": "Domestos Çam Ferahlığı Çamaşır Suyu 3.24 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 295,
+      "maxPrice": 295,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 295
+        }
+      ]
+    },
+    {
+      "productId": "13ZI",
+      "name": "Hyper Hypo Beyaz Sabun Ultra Çamaşır Suyu 750 Ml",
+      "brand": "Hyper Hypo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 39,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "0RFF",
+      "name": "Hyper Hypo Ultra Çam Kokulu Çamaşır Suyu 750 Gr",
+      "brand": "Hyper Hypo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 39,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "0QU1",
+      "name": "Hypo Ultra Lavabo Açıcı Çamaşır Suyu 750 Gr",
+      "brand": "Hypo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "0FLC",
+      "name": "Peros Bahar Ferahlığı Ultra Çamaşır Suyu 750 Ml",
+      "brand": "Peros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 49.9,
+      "maxPrice": 49.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "productId": "0OBK",
+      "name": "Migros Ultra Fresh Çamaşır Suyu 1 Lt",
+      "brand": "Migros",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 51.95,
+      "maxPrice": 51.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 51.95
+        }
+      ]
+    },
+    {
+      "productId": "13YG",
+      "name": "Hypo Beyaz Sabun Köpük Çamaşır Suyu 750 Ml",
+      "brand": "Hypo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "05OF",
+      "name": "Carrefour Ultra Çamaşır Suyu Kar Beyazı 1.25 Lt",
+      "brand": "Carrefour",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1XFA",
+      "name": "Ace Ultra Dağ Tazeliği Kıvamlı Çamaşır Suyu 750 Ml",
+      "brand": "Ace Ultra",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 91.95,
+      "maxPrice": 91.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 91.95
+        }
+      ]
+    },
+    {
+      "productId": "2NPH",
+      "name": "Domestos Yoğun Çamaşır Suyu Ferah Güç 693 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "1Q3S",
+      "name": "Domestos Ultra Karbeyazı Çamaşır Suyu 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 99.9,
+      "maxPrice": 99.9,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 99.9
+        }
+      ]
+    },
+    {
+      "productId": "1NI2",
+      "name": "Domestos Çamaşır Suyu Beyaz Sabun Ferahlığı 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 100.95,
+      "maxPrice": 100.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 100.95
+        }
+      ]
+    },
+    {
+      "productId": "20P8",
+      "name": "Domestos Bio Active Mutfak Çamaşır Suyu 750 Ml",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 2,
+      "minPrice": 103.95,
+      "maxPrice": 103.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 103.95
+        },
+        {
+          "market": "Migros",
+          "price": 103.95
+        }
+      ]
+    },
+    {
+      "productId": "0Y84",
+      "name": "Ace Platinum Anadolu Ferahlığı Çamaşır Suyu 1 Lt",
+      "brand": "Ace Platinum",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 105.95,
+      "maxPrice": 105.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 105.95
+        }
+      ]
+    },
+    {
+      "productId": "1RDF",
+      "name": "Domestos Kar Beyazı Çamaşır Suyu 1.85 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 110,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "1MOF",
+      "name": "Domestos Çamaşır Suyu Dağ Esintisi 1.85 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 110,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "0641",
+      "name": "Hyper Hypo Ultra Çamaşır Suyu 3.2 Lt",
+      "brand": "Hyper Hypo",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "1U7T",
+      "name": "Mr Muscle Köpüren Jel Çamaşır Suyu Marine 750 Ml",
+      "brand": "Mr Muscle",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 141,
+      "maxPrice": 141,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 141
+        }
+      ]
+    },
+    {
+      "productId": "1FVV",
+      "name": "Domestos Ultra Beyaz Çamaşır Suyu 1.85 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 210.95,
+      "maxPrice": 210.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 210.95
+        }
+      ]
+    },
+    {
+      "productId": "1YJO",
+      "name": "Domestos Beyaz Sabun Hijyenik Çamaşır Suyu 1.85 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 210.95,
+      "maxPrice": 210.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 210.95
+        }
+      ]
+    },
+    {
+      "productId": "20HO",
+      "name": "Domestos Bio Active Mutfak Çamaşır Suyu 1.85 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 212.95,
+      "maxPrice": 212.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 212.95
+        }
+      ]
+    },
+    {
+      "productId": "0ZZ6",
+      "name": "U Green Clean Bitkisel Çamaşır Suyu 1 Lt",
+      "brand": "U Green Clean",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 228.5,
+      "maxPrice": 228.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 228.5
+        }
+      ]
+    },
+    {
+      "productId": "1VCU",
+      "name": "Domestos Çam Ferahlığı Ultra Çamaşır Suyu 5 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 229,
+      "maxPrice": 229,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 229
+        }
+      ]
+    },
+    {
+      "productId": "1KA0",
+      "name": "Domestos Ultra Dağ Esintisi Çamaşır Suyu 3.24 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 294.95,
+      "maxPrice": 294.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 294.95
+        }
+      ]
+    },
+    {
+      "productId": "1JSP",
+      "name": "Domestos Ultra Kar Beyazı Çamaşır Suyu 3.24 Lt",
+      "brand": "Domestos",
+      "category": "Genel Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 294.95,
+      "maxPrice": 294.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 294.95
+        }
+      ]
+    }
+  ]
+}

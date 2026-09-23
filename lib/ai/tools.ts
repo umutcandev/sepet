@@ -12,8 +12,11 @@ import {
   type ParsedItem,
 } from "./schemas"
 import {
+  geminiFlash,
   geminiFlashLite,
+  GEMINI_FLASH,
   GEMINI_FLASH_LITE,
+  FLASH_THINKING_BUDGET,
   AI_MAX_RETRIES,
   type AiCallOptions,
 } from "./models"
@@ -26,6 +29,7 @@ import {
   type MatchPromptItem,
 } from "./prompts"
 import { stripQuantityTokens, queryGeneralizations } from "./normalize"
+import { POLICY_VERSION } from "./match-policy"
 import {
   MF_MATCH_PAGES,
   MF_PAGE_SIZE,
@@ -113,10 +117,10 @@ export async function analyzeImage(
 ): Promise<ImageAnalysisWithReasoning> {
   const { object, reasoning } = await withLlmCall(
     "analyzeImage",
-    GEMINI_FLASH_LITE,
+    GEMINI_FLASH,
     () =>
       generateObject({
-        model: geminiFlashLite,
+        model: geminiFlash,
         schema: ImageAnalysisSchema,
         temperature: 0.1,
         abortSignal: opts.signal,
@@ -130,10 +134,10 @@ export async function analyzeImage(
             ],
           },
         ],
-        // flash-lite'ta düşünme VARSAYILAN OLARAK KAPALIDIR — bütçe açıkça
-        // verilmezse `reasoning` boş döner ve sohbetteki düşünme akışı
-        // (reasoningStart/Delta/End) sessizce kaybolur. Model değişiminde
-        // korunması gereken kritik ayar burasıdır.
+        // Bütçe İKİ sebeple açıkça verilir. (1) Sohbetteki düşünme akışı
+        // (reasoningStart/Delta/End) `includeThoughts` olmadan sessizce
+        // kaybolur. (2) flash'ta düşünme varsayılan olarak AÇIK ve sınırsıza
+        // yakın; bütçesiz bırakmak çıktı token'ını kat kat artırır.
         providerOptions: {
           google: {
             thinkingConfig: {
@@ -261,8 +265,13 @@ type CachedSelection = {
  * red kuralları her değiştiğinde damga da değişir ve cache kendiliğinden geçersiz
  * olur. `MATCH_PROMPT([])` sabit aday listesiyle (boş) yalnızca kural metnini verir.
  */
-const MATCH_PROMPT_VERSION = createHash("sha1")
+export const MATCH_PROMPT_VERSION = createHash("sha1")
   .update(MATCH_PROMPT([]))
+  // MATCH_PROMPT([]) yalnız KURAL bloğunu verir; §13.1 politika satırları
+  // kalem bazında enjekte edildiği için oraya hiç girmez. Politika metni
+  // değişip kural bloğu aynı kalırsa damga da değişmez ve TTL boyunca eski
+  // seçimler servis edilirdi — bu yüzden politika hash'i ayrıca karıştırılır.
+  .update(POLICY_VERSION)
   .digest("hex")
   .slice(0, 12)
 
@@ -303,8 +312,11 @@ function toMatchedProduct(h: ProductHitItem) {
  * Adayı olan kalemleri tek bir LLM çağrısında doğru ürüne eşler. Dönüş:
  * promptIndex → seçim. Çağrı hata verirse istisna fırlatır; çağıran taraf
  * hits[0] davranışına geri düşer.
+ *
+ * export: golden eval koşucusunun seam'i (lib/ai/eval). Cache mantığı çağıran
+ * lookupProducts'ta olduğundan burası cache dışıdır — eval LLM'i ölçer.
  */
-async function selectMatches(
+export async function selectMatches(
   prepared: Array<{ item: ParsedItem; hits: HitList }>,
   opts: AiCallOptions = {},
 ): Promise<Map<number, MatchSelection["selections"][number]>> {
@@ -313,6 +325,9 @@ async function selectMatches(
     rawName: p.item.name,
     quantity: p.item.quantity,
     unit: p.item.unit,
+    // §13.1 politika aramasının anahtarı. name ham kullanıcı metni ("1 lt süt"),
+    // searchQuery ise PARSE_PROMPT'un normalize ettiği terim ("süt").
+    searchQuery: p.item.searchQuery,
     candidates: p.hits.slice(0, MAX_CANDIDATES).map((h) => ({
       productId: h.productId,
       name: h.name,
@@ -321,15 +336,25 @@ async function selectMatches(
     })),
   }))
 
-  const { object } = await withLlmCall("selectMatches", GEMINI_FLASH_LITE, () =>
-    generateObject({
-      model: geminiFlashLite,
-      schema: MatchSelectionSchema,
-      temperature: 0.1,
-      abortSignal: opts.signal,
-      maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
-      prompt: MATCH_PROMPT(promptItems),
-    }),
+  const { object } = await withLlmCall(
+    "selectMatches",
+    opts.modelId ?? GEMINI_FLASH,
+    () =>
+      generateObject({
+        model: opts.model ?? geminiFlash,
+        schema: MatchSelectionSchema,
+        temperature: 0.1,
+        abortSignal: opts.signal,
+        maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+        prompt: MATCH_PROMPT(promptItems),
+        providerOptions: {
+          google: {
+            thinkingConfig: {
+              thinkingBudget: opts.thinkingBudget ?? FLASH_THINKING_BUDGET,
+            },
+          },
+        },
+      }),
   )
 
   const map = new Map<number, MatchSelection["selections"][number]>()

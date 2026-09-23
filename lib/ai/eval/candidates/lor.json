@@ -1,0 +1,221 @@
+{
+  "term": "lor",
+  "category": "Süt ürünleri",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:42:39.507Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "015V",
+      "name": "Mis Lor Peyniri 500 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1624",
+      "name": "Lor Peyniri 500 Gr",
+      "brand": "Markasız",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0YAV",
+      "name": "Onur Yağsız Lor Peyniri 500 Gr",
+      "brand": "Onur",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 67.9,
+      "maxPrice": 67.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 67.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZEM",
+      "name": "La Vache Qui Rit Sürülebilir Lor Peyniri 150 Gr",
+      "brand": "La vache qui rit",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 69,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69
+        },
+        {
+          "market": "Migros",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "14D4",
+      "name": "Aknaz Yağsız Lor Peyniri 1 Kg",
+      "brand": "Aknaz",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 77.5,
+      "maxPrice": 77.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 77.5
+        }
+      ]
+    },
+    {
+      "productId": "0TC2",
+      "name": "Tahsildaroğlu Torba Lor Peyniri 350 Gr",
+      "brand": "Tahsildaroğlu",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "29U8",
+      "name": "Muratbey Lor Peyniri 500 Gr",
+      "brand": "Muratbey",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "1JRG",
+      "name": "Tahsildaroğlu Torba Lor Peyniri 500 Gr",
+      "brand": "Tahsildaroğlu",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 115,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "0XZ1",
+      "name": "Muratbey Yarım Yağlı Taze Lor Peyniri 500 Gr",
+      "brand": "Muratbey",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 119.9,
+      "maxPrice": 121,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 119.9
+        },
+        {
+          "market": "Migros",
+          "price": 121
+        }
+      ]
+    },
+    {
+      "productId": "1Z94",
+      "name": "Tahsildaroğlu Kahvaltılık Lor 300 Gr",
+      "brand": "Tahsildaroğlu",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 123.35,
+      "maxPrice": 125.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 123.35
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 125.9
+        }
+      ]
+    },
+    {
+      "productId": "201V",
+      "name": "Torku Yarım Yağlı Taze Lor Peyniri 500 Gr",
+      "brand": "Torku",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 124.95,
+      "maxPrice": 124.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 124.95
+        }
+      ]
+    },
+    {
+      "productId": "0W2N",
+      "name": "Kervan Kaşar Loru 1 Kg",
+      "brand": "Kervan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 183.95,
+      "maxPrice": 183.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 183.95
+        }
+      ]
+    },
+    {
+      "productId": "0W5X",
+      "name": "Ünal Taze Lor Peyniri 1 Kg",
+      "brand": "Ünal",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 319,
+      "maxPrice": 319,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 319
+        }
+      ]
+    }
+  ]
+}

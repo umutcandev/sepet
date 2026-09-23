@@ -1,0 +1,179 @@
+{
+  "term": "galeta unu",
+  "category": "Ekmek & unlu",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:44:21.264Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0M68",
+      "name": "Migros Galeta Unu 250 Gr",
+      "brand": "Migros",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 26.75,
+      "maxPrice": 26.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 26.75
+        }
+      ]
+    },
+    {
+      "productId": "0GTT",
+      "name": "Carrefour Galeta Unu 250 Gr",
+      "brand": "Carrefour",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 26.75,
+      "maxPrice": 26.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 26.75
+        }
+      ]
+    },
+    {
+      "productId": "1STP",
+      "name": "Bağdat Galeta Unu 250 Gr",
+      "brand": "Bağdat",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 37.95,
+      "maxPrice": 37.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.95
+        }
+      ]
+    },
+    {
+      "productId": "0V9M",
+      "name": "Bağdat Galeta Unu Ekonomik 250 Gr",
+      "brand": "Bağdat",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "1CJT",
+      "name": "Piyale Galeta Unu 400 Gr",
+      "brand": "Piyale",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 42,
+      "maxPrice": 42,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 42
+        }
+      ]
+    },
+    {
+      "productId": "01JV",
+      "name": "Ekmecik Galeta Unu 400 Gr",
+      "brand": "Ekmecik",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 42,
+      "maxPrice": 42,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 42
+        }
+      ]
+    },
+    {
+      "productId": "09WJ",
+      "name": "Öykü Galeta Unu 400 Gr",
+      "brand": "Öykü",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 42,
+      "maxPrice": 42,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 42
+        }
+      ]
+    },
+    {
+      "productId": "0P3H",
+      "name": "İnci Galeta Unu 400 Gr",
+      "brand": "İnci",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 53.95,
+      "maxPrice": 53.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.95
+        }
+      ]
+    },
+    {
+      "productId": "1AQ7",
+      "name": "Tirmata Panko 200 Gr",
+      "brand": "Tirmata",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0NU6",
+      "name": "Panko Japon Ekmek Kırıntısı 200 Gr",
+      "brand": "Panko",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 81.25,
+      "maxPrice": 81.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 81.25
+        }
+      ]
+    },
+    {
+      "productId": "16HI",
+      "name": "Mayalıhane Glutensiz Galeta Unu 300 Gr",
+      "brand": "Mayalıhane",
+      "category": "Un ve İrmik",
+      "marketCount": 1,
+      "minPrice": 270.5,
+      "maxPrice": 270.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 270.5
+        }
+      ]
+    }
+  ]
+}

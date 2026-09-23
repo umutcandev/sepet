@@ -1,0 +1,241 @@
+{
+  "term": "havuç",
+  "category": "Taze sebze",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:54:02.838Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "20VH",
+      "name": "Sizzle-Pop Stay Funny Havuç & Kırmızı Elma & Çilek 200 Ml",
+      "brand": "Sizzle-Pop",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 15.9,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 15.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "1U5E",
+      "name": "Havuç 1 Kg",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 4,
+      "minPrice": 34.95,
+      "maxPrice": 39.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 34.95
+        },
+        {
+          "market": "BİM",
+          "price": 35
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 36.9
+        },
+        {
+          "market": "Şok",
+          "price": 39.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZRR",
+      "name": "Eker Kefir Detoks Havuç & Zerdeçallı 290 Ml",
+      "brand": "Eker",
+      "category": "Ayran ve Kefir",
+      "marketCount": 2,
+      "minPrice": 53.95,
+      "maxPrice": 56.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 56.9
+        }
+      ]
+    },
+    {
+      "productId": "192S",
+      "name": "Hipp Organik Havuç Püresi 125 Gr",
+      "brand": "Hipp",
+      "category": "Bebek Mamaları",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0JK8",
+      "name": "Naren Nar Karadut Vişne Elma Siyah Havuç Suyu 250 Ml",
+      "brand": "Naren",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 93.5,
+      "maxPrice": 93.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 93.5
+        }
+      ]
+    },
+    {
+      "productId": "1PF1",
+      "name": "Exotic Portakal Havuç Suyu 300 Ml",
+      "brand": "Exotic",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 96.05,
+      "maxPrice": 96.05,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 96.05
+        }
+      ]
+    },
+    {
+      "productId": "1YDF",
+      "name": "Gerber Organik Muzlu Havuç Balkabağı Püresi 90 Gr",
+      "brand": "Gerber",
+      "category": "Bebek Mamaları",
+      "marketCount": 2,
+      "minPrice": 96.95,
+      "maxPrice": 139.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 96.95
+        },
+        {
+          "market": "Migros",
+          "price": 139.95
+        }
+      ]
+    },
+    {
+      "productId": "0KEJ",
+      "name": "Elite Organik Elma-Portakal-Havuç Suyu 200 Ml",
+      "brand": "Elite",
+      "category": "Meyve Suyu",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "1CDP",
+      "name": "Obur Chef Havuç Tarator 200 Gr",
+      "brand": "Obur Chef",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 103.13,
+      "maxPrice": 103.13,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 103.13
+        }
+      ]
+    },
+    {
+      "productId": "1YFA",
+      "name": "Atiye Laçin Portakal Havuç Reçeli 250 Gr",
+      "brand": "Atiye Laçin",
+      "category": "Bal ve Reçel",
+      "marketCount": 1,
+      "minPrice": 111.9,
+      "maxPrice": 111.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 111.9
+        }
+      ]
+    },
+    {
+      "productId": "1LWP",
+      "name": "Exotic Portakal Havuç Suyu 750 Ml",
+      "brand": "Exotic",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 121,
+      "maxPrice": 172.72,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 121
+        },
+        {
+          "market": "Migros",
+          "price": 172.72
+        }
+      ]
+    },
+    {
+      "productId": "0VVU",
+      "name": "Gurmepack Havuç Tarator 200 Gr",
+      "brand": "Gurmepack",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 145,
+      "maxPrice": 145,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 145
+        }
+      ]
+    },
+    {
+      "productId": "20SS",
+      "name": "Dimes Sıkma Havuç & Portakal Suyu 700 Ml",
+      "brand": "Dimes",
+      "category": "Meyve Suyu",
+      "marketCount": 2,
+      "minPrice": 179.9,
+      "maxPrice": 227.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 227.5
+        }
+      ]
+    }
+  ]
+}

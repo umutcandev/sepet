@@ -1,0 +1,758 @@
+{
+  "term": "tortilla",
+  "category": "Dünya mutfağı",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:05:55.336Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0H6X",
+      "name": "Lavaş 200 Gr",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 50.95,
+      "maxPrice": 50.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 50.95
+        }
+      ]
+    },
+    {
+      "productId": "0A7N",
+      "name": "Tandoor Tortilla Lavaş 650 Gr",
+      "brand": "Tandoor",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 52.9,
+      "maxPrice": 52.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 52.9
+        }
+      ]
+    },
+    {
+      "productId": "13TG",
+      "name": "Unlüx Lavaş Ekmek 30 Cm 720 Gr",
+      "brand": "Unlüx",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "0KKZ",
+      "name": "Tamköy Sac Ekmeği 1 Adet",
+      "brand": "Tamköy",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 61.45,
+      "maxPrice": 61.45,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 61.45
+        }
+      ]
+    },
+    {
+      "productId": "2COK",
+      "name": "Aly Lavaş Tortilla 10'lu 300 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "0Q0S",
+      "name": "Nimet Tandır Lavaş Ekmeği 4'lü 276 Gr",
+      "brand": "Nimet",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 73.5,
+      "maxPrice": 73.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 73.5
+        }
+      ]
+    },
+    {
+      "productId": "00XQ",
+      "name": "Ekmecik Lavaş ve Tortilla 840 Gr",
+      "brand": "Ekmecik",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "2CO9",
+      "name": "Aly Lavaş Tortilla 6'lı 390 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "2COA",
+      "name": "Aly Tam Buğdaylı Lavaş Tortilla 6'lı 390 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZS2",
+      "name": "Uno Tam Buğday Lavaş 5li 325 Gr",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 92.5,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "20Z6",
+      "name": "Aly Tortilla Lavaş 15 Cm 10lu 300 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z6O",
+      "name": "Aly Tortilla Tam Buğday Unlu 15cm 10 Adet 300 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 99.5,
+      "maxPrice": 99.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.5
+        }
+      ]
+    },
+    {
+      "productId": "1QWA",
+      "name": "Aly Tortilla Lavaş 25 Cm 6lı 390 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 109.5,
+      "maxPrice": 109.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.5
+        }
+      ]
+    },
+    {
+      "productId": "1P7B",
+      "name": "Aly Tortilla Lavaş Tam Buğdaylı 25 Cm 6lı 390 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 109.5,
+      "maxPrice": 109.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.5
+        }
+      ]
+    },
+    {
+      "productId": "0Q3Y",
+      "name": "Aly Tortilla Lavaş 25 cm 6'lı 390 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 109.5,
+      "maxPrice": 109.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.5
+        }
+      ]
+    },
+    {
+      "productId": "0MFN",
+      "name": "Aly Tortilla Tam Buğdaylı 25 cm 6 Adet 390 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 109.5,
+      "maxPrice": 109.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 109.5
+        }
+      ]
+    },
+    {
+      "productId": "1Q1S",
+      "name": "Unabella Tortilla Sade 15 Cm 330 Gr",
+      "brand": "Unabella",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 163,
+      "maxPrice": 163,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 163
+        }
+      ]
+    },
+    {
+      "productId": "0O11",
+      "name": "Unabella Tortilla Sade 15 Cm 12 Adet",
+      "brand": "Unabella",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 163,
+      "maxPrice": 163,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 163
+        }
+      ]
+    },
+    {
+      "productId": "1RCU",
+      "name": "Unabella Tortilla Sade 25 Cm 650 Gr",
+      "brand": "Unabella",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 192.5,
+      "maxPrice": 192.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 192.5
+        }
+      ]
+    },
+    {
+      "productId": "1Q9M",
+      "name": "Unabella Tortilla Tam Buğday 25 Cm 650 Gr",
+      "brand": "Unabella",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 203,
+      "maxPrice": 203,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 203
+        }
+      ]
+    },
+    {
+      "productId": "0OIT",
+      "name": "Unabella Tortilla Tam Buğdaylı 25 Cm 10 Adet",
+      "brand": "Unabella",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 203,
+      "maxPrice": 203,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 203
+        }
+      ]
+    },
+    {
+      "productId": "0Y3R",
+      "name": "Fiesta Tortilla Cips 450 Gr",
+      "brand": "fiesta",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 226.5,
+      "maxPrice": 226.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 226.5
+        }
+      ]
+    },
+    {
+      "productId": "21R1",
+      "name": "Casamexico Tako Kabuğu 250 Gr",
+      "brand": "Casamexico",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 305.9,
+      "maxPrice": 305.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 305.9
+        }
+      ]
+    },
+    {
+      "productId": "00TO",
+      "name": "Poco Loco Tortilla Cips 450 Gr",
+      "brand": "Poco Loco",
+      "category": "Cips",
+      "marketCount": 1,
+      "minPrice": 377.9,
+      "maxPrice": 377.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 377.9
+        }
+      ]
+    },
+    {
+      "productId": "0P6M",
+      "name": "Tandır Ekmeği 1 Adet",
+      "brand": "Markasız",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 17.5,
+      "maxPrice": 17.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 17.5
+        }
+      ]
+    },
+    {
+      "productId": "09OI",
+      "name": "Gülümoğlu Lavaş Ekmek 5 Adet",
+      "brand": "Gülümoğlu",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "1CE6",
+      "name": "Söke 20 Cm Lavaş Ekmeği 360 Gr",
+      "brand": "Söke",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 35,
+      "maxPrice": 35,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 35
+        }
+      ]
+    },
+    {
+      "productId": "13V6",
+      "name": "Unlüx Lavaş Ekmek 20 Cm 540 Gr",
+      "brand": "Unlüx",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1XCS",
+      "name": "Aly Taco Kabuğu 90 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "3WVC",
+      "name": "Aykanlar Tandır Lavaş 5'li 550 Gr",
+      "brand": "Aykanlar",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 64.9,
+      "maxPrice": 64.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.9
+        }
+      ]
+    },
+    {
+      "productId": "0YAJ",
+      "name": "Nimet Dürümlük Lavaş 200 Gr",
+      "brand": "Nimet",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0PGW",
+      "name": "Uno Anadolu Tandır Lavaş 6 Adet",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 66,
+      "maxPrice": 66,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 66
+        }
+      ]
+    },
+    {
+      "productId": "103B",
+      "name": "Bisto Lavaş 840 Gr",
+      "brand": "Bisto",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 72.5,
+      "maxPrice": 72.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 72.5
+        }
+      ]
+    },
+    {
+      "productId": "3WOT",
+      "name": "Fit Ekmek Lavaş Ekmek Çeşitleri 300 Gr",
+      "brand": "Fit Ekmek",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "1R4D",
+      "name": "Untad Premium Tam Buğday Unlu Lavaş 8 Adet 560 Gr",
+      "brand": "Untad",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 79.5,
+      "maxPrice": 139.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 139.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z4T",
+      "name": "Untad Tandır Ekmeği Lavaşı 276 Gr",
+      "brand": "Untad",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "03XB",
+      "name": "Tazepan Tandır Lavaş 282 Gr",
+      "brand": "Tazepan",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "1HM2",
+      "name": "Chef Alberto 33 Cm Lavaş Ekmeği 1 Kg",
+      "brand": "Chef Alberto",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "2CT8",
+      "name": "Uno Geleneksel Lavaş 390 Gr",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 89.9,
+      "maxPrice": 89.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 89.9
+        }
+      ]
+    },
+    {
+      "productId": "1YGR",
+      "name": "Uno Geleneksel Lavaş 25 Cm 6lı 390 Gr",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 3,
+      "minPrice": 92.5,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.5
+        },
+        {
+          "market": "Şok",
+          "price": 115
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "1TLP",
+      "name": "Uno Tandır Lavaş 6 Adet 282 Gr",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 92.5,
+      "maxPrice": 92.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 92.5
+        }
+      ]
+    },
+    {
+      "productId": "0GS8",
+      "name": "Uno Geleneksel Lavaş 15 Cm 250 Gr",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 110,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "0ERV",
+      "name": "Untad Sade Lavaş 10 Adet",
+      "brand": "Untad",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 115,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "0XGL",
+      "name": "Uno Tandır Lavaş 6'lı 282 Gr",
+      "brand": "Uno",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 115,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "1V1X",
+      "name": "Untad Lavaş 8li 560 Gr",
+      "brand": "Untad",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 2,
+      "minPrice": 139.5,
+      "maxPrice": 139.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139.5
+        },
+        {
+          "market": "Migros",
+          "price": 139.5
+        }
+      ]
+    },
+    {
+      "productId": "1JE7",
+      "name": "Aly Taco Shells 135 Gr",
+      "brand": "Aly",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 139.9,
+      "maxPrice": 139.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 139.9
+        }
+      ]
+    },
+    {
+      "productId": "0SU6",
+      "name": "Lavalia Tam Buğdaylı Lavaş 25 Cm 9 Adet 630 Gr",
+      "brand": "Lavalia",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 154.95,
+      "maxPrice": 154.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 154.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZPH",
+      "name": "Schar Gluten Free Lavash 2x80 Gr",
+      "brand": "Schar",
+      "category": "Ekmek ve Unlu Mamüller",
+      "marketCount": 1,
+      "minPrice": 209.95,
+      "maxPrice": 209.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 209.95
+        }
+      ]
+    }
+  ]
+}

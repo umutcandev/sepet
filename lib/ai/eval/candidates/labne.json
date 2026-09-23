@@ -1,0 +1,644 @@
+{
+  "term": "labne",
+  "category": "Süt ürünleri",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:42:11.659Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0L0B",
+      "name": "Mis Labne 200 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 57.9,
+      "maxPrice": 57.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 57.9
+        }
+      ]
+    },
+    {
+      "productId": "002P",
+      "name": "Kerem Labne 300 Gr",
+      "brand": "Kerem",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 69,
+      "maxPrice": 69,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 69
+        }
+      ]
+    },
+    {
+      "productId": "1YV3",
+      "name": "İçim Labne 180 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 3,
+      "minPrice": 77.9,
+      "maxPrice": 80.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 77.9
+        },
+        {
+          "market": "Migros",
+          "price": 79.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 80.9
+        }
+      ]
+    },
+    {
+      "productId": "1PIJ",
+      "name": "İçim Pesto Soslu Labne 180 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 79.9,
+      "maxPrice": 83.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 83.5
+        }
+      ]
+    },
+    {
+      "productId": "1PGS",
+      "name": "İçim Zeytinli Kekikli Labne 180 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 79.9,
+      "maxPrice": 80.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 80.9
+        }
+      ]
+    },
+    {
+      "productId": "04E1",
+      "name": "Carrefour Labne Peyniri 300 Gr",
+      "brand": "Carrefour",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 84.95,
+      "maxPrice": 84.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 84.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z1Z",
+      "name": "Sütaş Labne 200 Gr",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 88.5,
+      "maxPrice": 88.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 88.5
+        }
+      ]
+    },
+    {
+      "productId": "0KT4",
+      "name": "Torku Labne 180 Gr",
+      "brand": "Torku",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1S60",
+      "name": "Bahçıvan Labne 200 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "0L31",
+      "name": "Mis Labne 400 Gr",
+      "brand": "Mis",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 112,
+      "maxPrice": 112,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 112
+        }
+      ]
+    },
+    {
+      "productId": "1NE8",
+      "name": "Pınar Organik Labne 180 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 113.95,
+      "maxPrice": 118.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 113.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 118.5
+        }
+      ]
+    },
+    {
+      "productId": "1RRI",
+      "name": "Pınar Labne 8x20 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 113.95,
+      "maxPrice": 114.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 113.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 114.5
+        }
+      ]
+    },
+    {
+      "productId": "0SV7",
+      "name": "Biogurme Organik Labne 200 Gr",
+      "brand": "Biogurme",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 127.95,
+      "maxPrice": 127.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 127.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y1Y",
+      "name": "İçim Labne 400 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 3,
+      "minPrice": 149,
+      "maxPrice": 156.75,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 149
+        },
+        {
+          "market": "BİM",
+          "price": 149
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 156.75
+        }
+      ]
+    },
+    {
+      "productId": "19KX",
+      "name": "Kiri Labne 450 Gr",
+      "brand": "Kiri",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 149,
+      "maxPrice": 185,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 185
+        }
+      ]
+    },
+    {
+      "productId": "1ZJW",
+      "name": "Torku Labne 400 Gr",
+      "brand": "Torku",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 154.95,
+      "maxPrice": 154.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 154.95
+        }
+      ]
+    },
+    {
+      "productId": "1DX4",
+      "name": "Carrefour Labne Peynir 540 Gr",
+      "brand": "Carrefour",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 155,
+      "maxPrice": 155,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 155
+        }
+      ]
+    },
+    {
+      "productId": "1SV2",
+      "name": "İçim Labne Peynir 400 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 156.75,
+      "maxPrice": 156.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 156.75
+        }
+      ]
+    },
+    {
+      "productId": "20JZ",
+      "name": "Pınar Labne Peyniri 400 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 165.9,
+      "maxPrice": 165.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 165.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 165.9
+        }
+      ]
+    },
+    {
+      "productId": "0XK9",
+      "name": "İçim Labne 540 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "1KSH",
+      "name": "Pınar Labne 540 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "1ROA",
+      "name": "Bahçıvan Sürülebilir Labne Peyniri 3x180 Gr",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 219.9,
+      "maxPrice": 219.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.9
+        }
+      ]
+    },
+    {
+      "productId": "1WX7",
+      "name": "İçim Labne 3x180 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 223.9,
+      "maxPrice": 232.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 223.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 232.5
+        }
+      ]
+    },
+    {
+      "productId": "1TQU",
+      "name": "Kiri Tam Yağlı Taze Peynir Labne 3x150 Gr",
+      "brand": "Kiri",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "0U7F",
+      "name": "Migros Tam Yağlı Taze Labne Peynir 200 Gr",
+      "brand": "Migros",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 56.95,
+      "maxPrice": 56.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 56.95
+        }
+      ]
+    },
+    {
+      "productId": "1RE9",
+      "name": "Kiri Labne Tam Yağlı Taze Peynir 150 Gr",
+      "brand": "Kiri",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 69,
+      "maxPrice": 69,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 69
+        }
+      ]
+    },
+    {
+      "productId": "1UH5",
+      "name": "Pınar Labne Sürülebilir Peynir 180 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 72.9,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 72.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "215Z",
+      "name": "İçim Rahat Laktozsuz Labne 180 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 83.5,
+      "maxPrice": 83.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 83.5
+        }
+      ]
+    },
+    {
+      "productId": "2AB6",
+      "name": "Pınar Sürülebilir Labne Krem Peynir 180 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 94.5,
+      "maxPrice": 94.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 94.5
+        }
+      ]
+    },
+    {
+      "productId": "1T1K",
+      "name": "Kiri Labne Tam Yağlı Taze Peynir 300 Gr",
+      "brand": "Kiri",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 124.95,
+      "maxPrice": 159,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 124.95
+        },
+        {
+          "market": "Migros",
+          "price": 159
+        }
+      ]
+    },
+    {
+      "productId": "0FD1",
+      "name": "Biogurme Organik Laktozsuz Labne 200 Gr",
+      "brand": "Biogurme",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 127.95,
+      "maxPrice": 127.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 127.95
+        }
+      ]
+    },
+    {
+      "productId": "2A5F",
+      "name": "İçim Labne Krem Peynir 400 Gr",
+      "brand": "İçim",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1UO1",
+      "name": "Pınar Labne Tam Yağlı Taze Peynir 540 Gr",
+      "brand": "Pınar",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 155,
+      "maxPrice": 259.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 155
+        },
+        {
+          "market": "Migros",
+          "price": 259.9
+        }
+      ]
+    },
+    {
+      "productId": "1SYC",
+      "name": "Sütaş Sürülebilir Labne Peyniri 400 Gr",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 167.9,
+      "maxPrice": 167.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 167.9
+        }
+      ]
+    },
+    {
+      "productId": "02NM",
+      "name": "Torku Sürülebilir Labne Peyniri 3x180 Gr",
+      "brand": "Torku",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 169.5,
+      "maxPrice": 169.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 169.5
+        }
+      ]
+    },
+    {
+      "productId": "1KPB",
+      "name": "Bahçıvan Labne Peyniri 3 Adet",
+      "brand": "Bahçıvan",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 189.95
+        }
+      ]
+    },
+    {
+      "productId": "1R2M",
+      "name": "Sütaş Labne Avantaj 540 Gr",
+      "brand": "Sütaş",
+      "category": "Peynir",
+      "marketCount": 1,
+      "minPrice": 237.5,
+      "maxPrice": 237.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 237.5
+        }
+      ]
+    },
+    {
+      "productId": "1T6H",
+      "name": "Baltalı %100 Keçi Labneh 200 Gr",
+      "brand": "Baltalı",
+      "category": "Peynir",
+      "marketCount": 2,
+      "minPrice": 247.5,
+      "maxPrice": 258.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 247.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 258.5
+        }
+      ]
+    }
+  ]
+}

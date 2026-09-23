@@ -1,0 +1,1170 @@
+{
+  "term": "tavuk",
+  "category": "Et & protein",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:45:29.538Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1IBK",
+      "name": "Indomie Tavuk Köri Tavuk Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "0XRC",
+      "name": "Knorr Tavuk Bulyon 6 Adet",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 29.95,
+      "maxPrice": 29.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 29.95
+        }
+      ]
+    },
+    {
+      "productId": "0TK7",
+      "name": "Fide Tavuk Suyu 480 Ml",
+      "brand": "Fide",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 67.95,
+      "maxPrice": 67.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 67.95
+        }
+      ]
+    },
+    {
+      "productId": "042O",
+      "name": "Tavuk Ciğeri 1 Kg",
+      "brand": "Markasız",
+      "category": "Sakatat",
+      "marketCount": 1,
+      "minPrice": 79.9,
+      "maxPrice": 79.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79.9
+        }
+      ]
+    },
+    {
+      "productId": "03XS",
+      "name": "Şenpiliç Lezita Tavuk Ciğer 1 Kg",
+      "brand": "Şenpiliç Lezita",
+      "category": "Sakatat",
+      "marketCount": 1,
+      "minPrice": 90,
+      "maxPrice": 90,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 90
+        }
+      ]
+    },
+    {
+      "productId": "1IW4",
+      "name": "Knorr Tavuk Suyu 2.88 Lt",
+      "brand": "Knorr",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 90.9,
+      "maxPrice": 90.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 90.9
+        }
+      ]
+    },
+    {
+      "productId": "1582",
+      "name": "Mlife Gezen Tavuk M Boy Yumurta 53-62 Gr 10 Adet",
+      "brand": "Mlife",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 94.95,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "0WKG",
+      "name": "Anadolu Çiftliği Gezen Tavuk Yumurta M Boy 10 Adet",
+      "brand": "Anadolu Çiftliği",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "1CRL",
+      "name": "Soslu Buffalo Wings Tavuk Kanat 350 Gr",
+      "brand": "Markasız",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 99,
+      "maxPrice": 99,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 99
+        }
+      ]
+    },
+    {
+      "productId": "1Q6F",
+      "name": "Raya Gezen Tavuk Yumurtası M Boy 53-62 Gr 10 Adet",
+      "brand": "Raya",
+      "category": "Yumurta",
+      "marketCount": 2,
+      "minPrice": 114.95,
+      "maxPrice": 117.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 114.95
+        },
+        {
+          "market": "Migros",
+          "price": 117.95
+        }
+      ]
+    },
+    {
+      "productId": "02J6",
+      "name": "Carrefour Gezen Tavuk Yumurta 10 Adet",
+      "brand": "Carrefour",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 117.95,
+      "maxPrice": 117.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 117.95
+        }
+      ]
+    },
+    {
+      "productId": "04XI",
+      "name": "Şenpiliç Lezita Kemiksiz Tavuk But 1 Kg",
+      "brand": "Şenpiliç Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "09XA",
+      "name": "K.Birlik Yumurta Gezen Tavuk 53-62 Gr 15 Adet",
+      "brand": "K.birlik",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 142.5,
+      "maxPrice": 142.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 142.5
+        }
+      ]
+    },
+    {
+      "productId": "00S1",
+      "name": "Şenpiliç Lezita Tavuk Baget 1 Kg",
+      "brand": "Şenpiliç Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 145,
+      "maxPrice": 145,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 145
+        }
+      ]
+    },
+    {
+      "productId": "070D",
+      "name": "Carrefour Gezen Tavuk Yumurta 15 Adet",
+      "brand": "Carrefour",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "1VSS",
+      "name": "Ali Babanın Bahçesi Gezen Tavuk Yumurtası 15 Adet",
+      "brand": "Ali Babanın Bahçesi",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 171.9,
+      "maxPrice": 171.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 171.9
+        }
+      ]
+    },
+    {
+      "productId": "03XY",
+      "name": "Şenpiliç Lezita Tavuk Göğüs 1 Kg",
+      "brand": "Şenpiliç Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "09LN",
+      "name": "Şenpiliç Tavuk Pirzola 1 Kg",
+      "brand": "Şenpiliç",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 225,
+      "maxPrice": 225,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 225
+        }
+      ]
+    },
+    {
+      "productId": "1384",
+      "name": "Lezita Tavuk Pirzola 1 Kg",
+      "brand": "Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "07M4",
+      "name": "Şenpiliç Lezita Tavuk Kanat İncik Üst 1 Kg",
+      "brand": "Şenpiliç Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 279,
+      "maxPrice": 279,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 279
+        }
+      ]
+    },
+    {
+      "productId": "0BDT",
+      "name": "Şenpiliç Küçük Tabak Bonfile Tavuk 1 Kg",
+      "brand": "Şenpiliç",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 289,
+      "maxPrice": 289,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 289
+        }
+      ]
+    },
+    {
+      "productId": "16F1",
+      "name": "Lezita Tavuk But Izgara Tava Tabak 1 Kg",
+      "brand": "Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 299.5,
+      "maxPrice": 299.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 299.5
+        }
+      ]
+    },
+    {
+      "productId": "0066",
+      "name": "Şenpiliç Lezita Tavuk Kanat 1 Kg",
+      "brand": "Şenpiliç Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 369,
+      "maxPrice": 369,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 369
+        }
+      ]
+    },
+    {
+      "productId": "0BTI",
+      "name": "Yeşilküre Organik Tavuk Göğüs 1 Kg",
+      "brand": "Yeşilküre",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 1199.9,
+      "maxPrice": 1199.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 1199.9
+        }
+      ]
+    },
+    {
+      "productId": "1YQU",
+      "name": "Indomie Tavuk Noodle 70 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 14.96,
+      "maxPrice": 20.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.96
+        },
+        {
+          "market": "Şok",
+          "price": 19.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 20.25
+        }
+      ]
+    },
+    {
+      "productId": "0Z3W",
+      "name": "Noodlex Tavuk Aromalı Noodle 70 Gr",
+      "brand": "Noodlex",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 15.5,
+      "maxPrice": 15.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 15.5
+        }
+      ]
+    },
+    {
+      "productId": "2A77",
+      "name": "Indomie Tavuk Körili Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "01NT",
+      "name": "Hürrem Tavuk Bulyon 80 Gr",
+      "brand": "Hürrem",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 20,
+      "maxPrice": 20,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 20
+        }
+      ]
+    },
+    {
+      "productId": "3WDE",
+      "name": "Yayla Şehriyeli Tavuk Çorbası 65 Gr",
+      "brand": "Ferrero",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 21.75,
+      "maxPrice": 21.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 21.75
+        }
+      ]
+    },
+    {
+      "productId": "1T89",
+      "name": "Pakmaya Tavuk Göğsü 130 Gr",
+      "brand": "Pakmaya",
+      "category": "Tatlılar",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "0OB8",
+      "name": "Kemsan Tavuk Suyu 105 Ml",
+      "brand": "Kemsan",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 32.95,
+      "maxPrice": 32.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 32.95
+        }
+      ]
+    },
+    {
+      "productId": "1NNF",
+      "name": "Knorr Tavuk Bulyon 120 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 2,
+      "minPrice": 44.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 44.5
+        },
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "1IM3",
+      "name": "Tommis Çıtır Tavuk Burger 180 Gr",
+      "brand": "Tommis",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 48,
+      "maxPrice": 48,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 48
+        }
+      ]
+    },
+    {
+      "productId": "02ZU",
+      "name": "Mr. No Çıtır Tavuk Burger 180 Gr",
+      "brand": "Mr. No",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 48,
+      "maxPrice": 48,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 48
+        }
+      ]
+    },
+    {
+      "productId": "1PR0",
+      "name": "Knorr Mangal Lezzeti Tavuk Çeşnisi 29 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 49.9,
+      "maxPrice": 49.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "productId": "3WHI",
+      "name": "Knorr Tavuk Bulyon 24 Adet",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 50,
+      "maxPrice": 50,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 50
+        }
+      ]
+    },
+    {
+      "productId": "1QFR",
+      "name": "Bağdat Tavuk Harcı 65 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "2BH7",
+      "name": "Knorr Mangal Lezzeti Tavuk Çeşnili Harç 29 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "13I5",
+      "name": "Aytaç Tavuk Dürüm Tantuni 165 Gr",
+      "brand": "Aytaç",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "1T01",
+      "name": "Knorr Tavuk Çeşnisi 60 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 93.95,
+      "maxPrice": 96.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 93.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 96.75
+        }
+      ]
+    },
+    {
+      "productId": "1HGJ",
+      "name": "Bağdat Tavuk Çeşnisi Değirmen 48 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 108.71,
+      "maxPrice": 108.71,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 108.71
+        }
+      ]
+    },
+    {
+      "productId": "0N3X",
+      "name": "Tada Tavuk Fileto 2x135 Gr",
+      "brand": "Tada",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 122.97,
+      "maxPrice": 122.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 122.97
+        }
+      ]
+    },
+    {
+      "productId": "13BW",
+      "name": "Zel Tavuk Konservesi 200 Gr",
+      "brand": "Zel",
+      "category": "Konserve",
+      "marketCount": 1,
+      "minPrice": 129.95,
+      "maxPrice": 129.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.95
+        }
+      ]
+    },
+    {
+      "productId": "1HVI",
+      "name": "Sade Tavuk Suyu 200 Ml",
+      "brand": "Markasız",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 189.95
+        }
+      ]
+    },
+    {
+      "productId": "1SMG",
+      "name": "Gurvita Tavuk Suyu Sade 320 Ml",
+      "brand": "Gurvita",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 199.95,
+      "maxPrice": 269.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 269.95
+        }
+      ]
+    },
+    {
+      "productId": "0AQG",
+      "name": "Bolez Köylüm Tavuk Suyu 320 Ml",
+      "brand": "Bolez Köylüm",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "1DKR",
+      "name": "Gurmepack Köri Soslu Tavuk & Fusilli Makarna 360 Gr",
+      "brand": "Gurmepack",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "086Z",
+      "name": "Yaylatürk Tavuk Göğüs Füme 1 Kg",
+      "brand": "Yaylatürk",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 1829.9,
+      "maxPrice": 1829.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 1829.9
+        }
+      ]
+    },
+    {
+      "productId": "1TPK",
+      "name": "Knorr Tavuk Suyu Bulyon 60 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 14.96,
+      "maxPrice": 14.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.96
+        }
+      ]
+    },
+    {
+      "productId": "0XQR",
+      "name": "Dudomi Tavuk Çeşnili Noodle 70 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "1L7M",
+      "name": "Indomie Spesiyel Tavuk Paket Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 20.25,
+      "maxPrice": 20.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 20.25
+        }
+      ]
+    },
+    {
+      "productId": "1WYV",
+      "name": "Indomie Tavuk Çeşnili Bardak Noodle 60 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 30.38,
+      "maxPrice": 40.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30.38
+        },
+        {
+          "market": "Şok",
+          "price": 40
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 40.9
+        }
+      ]
+    },
+    {
+      "productId": "0YGB",
+      "name": "Piyale Şehriyeli Tavuk Çorbası 58 Gr",
+      "brand": "Piyale",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 32.9,
+      "maxPrice": 32.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 32.9
+        }
+      ]
+    },
+    {
+      "productId": "0YLX",
+      "name": "Piyale Kremalı Tavuk Çorbası 62 Gr",
+      "brand": "Piyale",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 32.9,
+      "maxPrice": 32.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 32.9
+        }
+      ]
+    },
+    {
+      "productId": "1LB9",
+      "name": "Dudomi Tavuk Çeşnili Noodle 60 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "2C9H",
+      "name": "Indomie Bardak Tavuk Noodle 60 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 40.25,
+      "maxPrice": 40.25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 40.25
+        }
+      ]
+    },
+    {
+      "productId": "3WPN",
+      "name": "M.Z Ege Çıtır Tavuk Burger 180 Gr",
+      "brand": "M.Z Ege",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 40.5,
+      "maxPrice": 40.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 40.5
+        }
+      ]
+    },
+    {
+      "productId": "1L6L",
+      "name": "Knorr Tavuk Bulyon 24'lü 240 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 42.5,
+      "maxPrice": 42.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 42.5
+        }
+      ]
+    },
+    {
+      "productId": "1JO5",
+      "name": "Knorr Tavuk Suyu Bulyon 120 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 3,
+      "minPrice": 47.9,
+      "maxPrice": 65.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 47.9
+        },
+        {
+          "market": "Migros",
+          "price": 61.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 65.9
+        }
+      ]
+    },
+    {
+      "productId": "1YGU",
+      "name": "Knorr Kremalı Tavuk Çorbası 65 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 4,
+      "minPrice": 49.5,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 49.5
+        },
+        {
+          "market": "BİM",
+          "price": 49.5
+        },
+        {
+          "market": "hakmar",
+          "price": 49.5
+        },
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "005T",
+      "name": "Knorr Kremalı Tavuk Çorbası 53 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "1UNJ",
+      "name": "Knorr Şehriyeli Tavuk Çorbası 51 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 2,
+      "minPrice": 49.5,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 49.5
+        },
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZGV",
+      "name": "Indomie Tavuk Çeşnili Noodle 5x70 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 64.13,
+      "maxPrice": 86.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 64.13
+        },
+        {
+          "market": "BİM",
+          "price": 85
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 86.5
+        }
+      ]
+    },
+    {
+      "productId": "03W5",
+      "name": "Aytaç Tavuk Dürüm Döner 170 Gr",
+      "brand": "Aytaç",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 69.5,
+      "maxPrice": 69.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZRO",
+      "name": "Knorr Tavuk Suyu Bulyon 240 Gr",
+      "brand": "Knorr",
+      "category": "Hazır Gıda Karışımları",
+      "marketCount": 2,
+      "minPrice": 99.95,
+      "maxPrice": 110,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 110
+        }
+      ]
+    },
+    {
+      "productId": "1RWX",
+      "name": "Burcu Meksika Fasulyeli Tavuk Salatası 150 Gr",
+      "brand": "Burcu",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 104.95,
+      "maxPrice": 104.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 104.95
+        }
+      ]
+    },
+    {
+      "productId": "1N8I",
+      "name": "Veg&Bones Tavuk Suyu 480 Ml",
+      "brand": "Veg&Bones",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 105.95,
+      "maxPrice": 105.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 105.95
+        },
+        {
+          "market": "Migros",
+          "price": 105.95
+        }
+      ]
+    },
+    {
+      "productId": "07WJ",
+      "name": "Şenpiliç Lezita Bütün Tavuk 1 Kg",
+      "brand": "Şenpiliç Lezita",
+      "category": "Beyaz Et",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1Y3X",
+      "name": "Yayla Sebzeli Tavuk Sote 200 Gr",
+      "brand": "Yayla",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 136.95,
+      "maxPrice": 136.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 136.95
+        }
+      ]
+    },
+    {
+      "productId": "0KLH",
+      "name": "Gurmepack Tavuk Biryani 250 Gr",
+      "brand": "Gurmepack",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "1SKZ",
+      "name": "Gurvita Tavuk Suyu Sade 4x50 Ml",
+      "brand": "Gurvita",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 189.95
+        }
+      ]
+    },
+    {
+      "productId": "1DCO",
+      "name": "Gurmepack Barbekü Soslu Tavuk & Fusilli Makarna 360 Gr",
+      "brand": "Gurmepack",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269
+        }
+      ]
+    }
+  ]
+}

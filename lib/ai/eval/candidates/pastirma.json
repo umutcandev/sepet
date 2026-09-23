@@ -1,0 +1,397 @@
+{
+  "term": "pastırma",
+  "category": "Et & protein",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T20:49:50.718Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "011L",
+      "name": "Başyazıcı İnan Seçme Pastırma 80 Gr",
+      "brand": "Başyazıcı",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 170.75,
+      "maxPrice": 170.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 170.75
+        }
+      ]
+    },
+    {
+      "productId": "0Q4K",
+      "name": "Lezzetlim Dilimli Pastırma 120 Gr",
+      "brand": "Lezzetlim",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 289,
+      "maxPrice": 289,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 289
+        }
+      ]
+    },
+    {
+      "productId": "07Y3",
+      "name": "Emin Çemensiz Pastırma 120 Gr",
+      "brand": "Emin",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 289,
+      "maxPrice": 289,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 289
+        }
+      ]
+    },
+    {
+      "productId": "0OVS",
+      "name": "Polonez Dilimli Dana Antrikot Pastırma 100 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 289,
+      "maxPrice": 289,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 289
+        }
+      ]
+    },
+    {
+      "productId": "09L9",
+      "name": "Çapanoğlu Çemensiz Pastırma 120 Gr",
+      "brand": "Çapanoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 289,
+      "maxPrice": 289,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 289
+        }
+      ]
+    },
+    {
+      "productId": "0OBB",
+      "name": "Altındana Dana Pastırma 120 Gr",
+      "brand": "Altındana",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0PL4",
+      "name": "Müslümoğlu Dilimli Pastırma 120 Gr",
+      "brand": "Müslümoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "0RMH",
+      "name": "Başyazıcıoğlu İnan Dana Pastırma 120 Gr",
+      "brand": "Başyazıcıoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 299,
+      "maxPrice": 299,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299
+        }
+      ]
+    },
+    {
+      "productId": "104X",
+      "name": "Müslümoğlu Dana Pastırma Çemeni Sıyrılmış 100 Gr",
+      "brand": "Müslümoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 309,
+      "maxPrice": 309,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 309
+        }
+      ]
+    },
+    {
+      "productId": "1Y6Z",
+      "name": "Apikoğlu Parça Pastırma 80 Gr",
+      "brand": "Apikoğlu",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 319,
+      "maxPrice": 319,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 319
+        }
+      ]
+    },
+    {
+      "productId": "0F2H",
+      "name": "Erşan Dilimli Seçme Pastırma 120 Gr",
+      "brand": "Erşan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 339,
+      "maxPrice": 339,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 339
+        }
+      ]
+    },
+    {
+      "productId": "0CDK",
+      "name": "Carrefour Çemeni Sıyrılmış Dana Pastırma 120 Gr",
+      "brand": "Carrefour",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 357.5,
+      "maxPrice": 357.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 357.5
+        }
+      ]
+    },
+    {
+      "productId": "20SX",
+      "name": "Polonez Seçme Pastırma 75 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 399.9,
+      "maxPrice": 399.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 399.9
+        }
+      ]
+    },
+    {
+      "productId": "1ENK",
+      "name": "Cumhuriyet Çemeni Sıyrılmış Antrikot Pastırma 90 Gr",
+      "brand": "Cumhuriyet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 425,
+      "maxPrice": 425,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 425
+        }
+      ]
+    },
+    {
+      "productId": "0PWZ",
+      "name": "Özlem Çemeni Sıyrılmış Dana Pastırma 100 Gr",
+      "brand": "Özlem",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 445,
+      "maxPrice": 445,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 445
+        }
+      ]
+    },
+    {
+      "productId": "0QSC",
+      "name": "Polonez Pastırma 90 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 519.9,
+      "maxPrice": 519.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 519.9
+        }
+      ]
+    },
+    {
+      "productId": "2141",
+      "name": "Apikoğlu Çemeni Sıyrılmış Dana Pastırma 90 Gr",
+      "brand": "Apikoğlu",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 535,
+      "maxPrice": 552.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 535
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 552.5
+        }
+      ]
+    },
+    {
+      "productId": "0TS9",
+      "name": "Polonez Çemeni Sıyrılmış Pastırma 110 Gr",
+      "brand": "Polonez",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 599.9,
+      "maxPrice": 599.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 599.9
+        }
+      ]
+    },
+    {
+      "productId": "0TCJ",
+      "name": "Namet Klasik Dilimli Pastırma 130 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 610,
+      "maxPrice": 610,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 610
+        }
+      ]
+    },
+    {
+      "productId": "0Q59",
+      "name": "Erşan Dilimli Çemeni Sıyrılmış Dana Pastırma 110 Gr",
+      "brand": "Erşan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 620,
+      "maxPrice": 620,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 620
+        }
+      ]
+    },
+    {
+      "productId": "0WAZ",
+      "name": "Namet Çemeni Sıyrılmış Dilimli Pastırma 130 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 2,
+      "minPrice": 645,
+      "maxPrice": 651.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 645
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 651.5
+        }
+      ]
+    },
+    {
+      "productId": "0S9G",
+      "name": "Dana Antrikot Pastırma 1 Kg",
+      "brand": "Markasız",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2499,
+      "maxPrice": 2499,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 2499
+        }
+      ]
+    },
+    {
+      "productId": "0CCQ",
+      "name": "Sultan Dilimli Pastırma 1 Kg",
+      "brand": "Sultan",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2499.9,
+      "maxPrice": 2499.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2499.9
+        }
+      ]
+    },
+    {
+      "productId": "00BB",
+      "name": "Namet Antrikot Pastırma 1 Kg",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 2699.9,
+      "maxPrice": 2699.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 2699.9
+        }
+      ]
+    },
+    {
+      "productId": "0PWY",
+      "name": "Namet Dilimli Dana Antrikot Pastırma 100 Gr",
+      "brand": "Namet",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 239
+        }
+      ]
+    }
+  ]
+}

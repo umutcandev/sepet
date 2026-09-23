@@ -1,0 +1,1170 @@
+{
+  "term": "süt",
+  "category": "Süt ürünleri",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:39:39.702Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1M3M",
+      "name": "Disney Çilekli Süt 180 Ml",
+      "brand": "Disney",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 18.9,
+      "maxPrice": 31.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 18.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 31.5
+        }
+      ]
+    },
+    {
+      "productId": "0ZL5",
+      "name": "Sek Çilekli Süt 180 Ml",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 19,
+      "maxPrice": 19,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19
+        }
+      ]
+    },
+    {
+      "productId": "1P44",
+      "name": "Danone Çilekli Süt 180 Ml",
+      "brand": "Danone",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 21,
+      "maxPrice": 21,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 21
+        }
+      ]
+    },
+    {
+      "productId": "1YG9",
+      "name": "Sek Süt 200 Ml",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 22.5,
+      "maxPrice": 22.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 22.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 22.9
+        }
+      ]
+    },
+    {
+      "productId": "1SW0",
+      "name": "Alpimilk Çikolatalı Süt 180 Ml",
+      "brand": "Alpimilk",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 22.9,
+      "maxPrice": 22.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 22.9
+        }
+      ]
+    },
+    {
+      "productId": "1YXB",
+      "name": "Pınar Süt 200 Ml",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 28,
+      "maxPrice": 31.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 28
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 31.5
+        }
+      ]
+    },
+    {
+      "productId": "1T2S",
+      "name": "İçim Organik Süt 200 Ml",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 29.5,
+      "maxPrice": 29.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 29.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 29.5
+        }
+      ]
+    },
+    {
+      "productId": "20QE",
+      "name": "Pınar Denge Laktozsuz Süt 200 Ml",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 31.5,
+      "maxPrice": 31.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 31.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 31.9
+        }
+      ]
+    },
+    {
+      "productId": "1H2F",
+      "name": "Dost %0.5 Yağlı Süt 1 Lt",
+      "brand": "Dost",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "0VK4",
+      "name": "Teksüt %1.5 Yağlı Süt 1 Lt",
+      "brand": "Teksüt",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 44.5,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "0FV9",
+      "name": "İçim Süt 500 Ml",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 47.9,
+      "maxPrice": 47.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 47.9
+        }
+      ]
+    },
+    {
+      "productId": "0LSL",
+      "name": "Torku Süt 500 Ml",
+      "brand": "Torku",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "1I9X",
+      "name": "İçim Laktozsuz Süt 500 Ml",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 50.5,
+      "maxPrice": 50.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 50.5
+        }
+      ]
+    },
+    {
+      "productId": "1CFQ",
+      "name": "Sek Laktozsuz Süt 1 Lt",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "1T9S",
+      "name": "İçim Süt 1 Lt",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 69.5,
+      "maxPrice": 75.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 75.9
+        }
+      ]
+    },
+    {
+      "productId": "0APR",
+      "name": "İçim Barista Süt 1 Lt",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 74.9,
+      "maxPrice": 74.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 74.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZNC",
+      "name": "İçim İçimino Çilekli Süt 1.08 Lt",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 79,
+      "maxPrice": 115.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79
+        },
+        {
+          "market": "Migros",
+          "price": 115.95
+        }
+      ]
+    },
+    {
+      "productId": "1IYV",
+      "name": "Torku Kakaolu Süt 6x180 Ml",
+      "brand": "Torku",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 82.5,
+      "maxPrice": 82.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 82.5
+        }
+      ]
+    },
+    {
+      "productId": "1PGU",
+      "name": "İçim Çikolatalı Pastörize Süt 1 Lt",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 103.9,
+      "maxPrice": 103.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 103.9
+        }
+      ]
+    },
+    {
+      "productId": "1KU3",
+      "name": "İçim Çikolatalı Süt 1.08 Lt",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 122.9,
+      "maxPrice": 122.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 122.9
+        }
+      ]
+    },
+    {
+      "productId": "1OI6",
+      "name": "Tire Süt Kooperatifi Pastörize Süt 1 Lt",
+      "brand": "Tire Süt Kooperatifi",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 143.5,
+      "maxPrice": 143.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 143.5
+        }
+      ]
+    },
+    {
+      "productId": "1QXS",
+      "name": "Danone Disney Kakaolu Süt 6x180 Ml",
+      "brand": "Danone",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 164.5,
+      "maxPrice": 166.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 166.5
+        }
+      ]
+    },
+    {
+      "productId": "0N7G",
+      "name": "Disney Muz Aromalı Süt 1.08 Lt",
+      "brand": "Disney",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 166.5,
+      "maxPrice": 166.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 166.5
+        }
+      ]
+    },
+    {
+      "productId": "1RNC",
+      "name": "Nesquik Kakaolu Süt 6x180 Ml",
+      "brand": "Nesquik",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 176.95,
+      "maxPrice": 176.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 176.95
+        }
+      ]
+    },
+    {
+      "productId": "10VG",
+      "name": "Yörükoğlu Çilekli Süt 180 Ml",
+      "brand": "Yörükoğlu",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 13.5,
+      "maxPrice": 13.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 13.5
+        }
+      ]
+    },
+    {
+      "productId": "149S",
+      "name": "Aynes %1.5 Yağlı Süt 200 Ml",
+      "brand": "Aynes",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 13.5,
+      "maxPrice": 13.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 13.5
+        }
+      ]
+    },
+    {
+      "productId": "0YXV",
+      "name": "Mis Muzlu Süt 200 Ml",
+      "brand": "Mis",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 16.5,
+      "maxPrice": 16.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 16.5
+        }
+      ]
+    },
+    {
+      "productId": "0ADF",
+      "name": "Göynük Kakaolu Süt 200 Ml",
+      "brand": "Göynük",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 16.5,
+      "maxPrice": 16.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 16.5
+        }
+      ]
+    },
+    {
+      "productId": "1OL6",
+      "name": "Pınar Kido Kakaolu Süt 180 Ml",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 4,
+      "minPrice": 21,
+      "maxPrice": 24.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 21
+        },
+        {
+          "market": "BİM",
+          "price": 21.5
+        },
+        {
+          "market": "Migros",
+          "price": 22.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 24.5
+        }
+      ]
+    },
+    {
+      "productId": "1FJ0",
+      "name": "Aytaç %0.5 Yağlı Süt 1 Lt",
+      "brand": "Aytaç",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 35,
+      "maxPrice": 35,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 35
+        }
+      ]
+    },
+    {
+      "productId": "0OGK",
+      "name": "Pınar %0,5 Yağlı Süt 1 Lt",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 42.5,
+      "maxPrice": 42.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 42.5
+        }
+      ]
+    },
+    {
+      "productId": "20WL",
+      "name": "Sek Süt 500 Ml",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.95
+        },
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "0OM4",
+      "name": "Dost %3.1 Yağlı Süt 1 Lt",
+      "brand": "Dost",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "06EX",
+      "name": "Göynük Doğal %3.1 Yağlı Süt 1 Lt",
+      "brand": "Göynük",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 52.5,
+      "maxPrice": 52.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 52.5
+        }
+      ]
+    },
+    {
+      "productId": "0G47",
+      "name": "Carrefour Yağlı Süt 1 Lt",
+      "brand": "Carrefour",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 52.75,
+      "maxPrice": 52.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 52.75
+        }
+      ]
+    },
+    {
+      "productId": "1T8M",
+      "name": "Pınar Süt 500 Ml",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 53.95,
+      "maxPrice": 54.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 53.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 54.5
+        }
+      ]
+    },
+    {
+      "productId": "0385",
+      "name": "Dost Laktozsuz Süt 1 Lt",
+      "brand": "Dost",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 62.5,
+      "maxPrice": 62.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 62.5
+        }
+      ]
+    },
+    {
+      "productId": "10NM",
+      "name": "Mis Bakraçlık Süt Tam Yağlı 1 Lt",
+      "brand": "Mis",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 64,
+      "maxPrice": 64,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 64
+        }
+      ]
+    },
+    {
+      "productId": "1KUJ",
+      "name": "Sek Süt 1 Lt",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 68.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 68.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "26QG",
+      "name": "Torku Süt 1 Lt",
+      "brand": "Torku",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "1O0V",
+      "name": "Torku Çilekli Süt 6x180 Ml",
+      "brand": "Torku",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 82.5,
+      "maxPrice": 82.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 82.5
+        }
+      ]
+    },
+    {
+      "productId": "1RT9",
+      "name": "Pınar Organik Süt 1 Lt",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 89.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.95
+        },
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1SWV",
+      "name": "Sek Tam Yağlı Pastörize Süt 1 Lt",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 125,
+      "maxPrice": 125,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 125
+        }
+      ]
+    },
+    {
+      "productId": "1VHJ",
+      "name": "İçim Süt 6x200 Ml",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 131,
+      "maxPrice": 131,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 131
+        }
+      ]
+    },
+    {
+      "productId": "1PMF",
+      "name": "Disney Muzlu Süt 6x180 Ml",
+      "brand": "Disney",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 164.5,
+      "maxPrice": 164.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.5
+        }
+      ]
+    },
+    {
+      "productId": "1LJO",
+      "name": "Danone Doğal Süt 6x180 Ml",
+      "brand": "Danone",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 164.5,
+      "maxPrice": 164.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.5
+        }
+      ]
+    },
+    {
+      "productId": "1M3X",
+      "name": "Disney Çilekli Süt 6x180 Ml",
+      "brand": "Disney",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 164.5,
+      "maxPrice": 164.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.5
+        }
+      ]
+    },
+    {
+      "productId": "0RM7",
+      "name": "Danone Kakaolu Süt 9x180 Ml",
+      "brand": "Danone",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 224.95,
+      "maxPrice": 224.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 224.95
+        }
+      ]
+    },
+    {
+      "productId": "01RI",
+      "name": "Kidy Kakaolu Süt 70 Ml",
+      "brand": "Kidy",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 9.5,
+      "maxPrice": 9.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 9.5
+        }
+      ]
+    },
+    {
+      "productId": "01XV",
+      "name": "Dost Muz Aromalı Süt 200 Ml",
+      "brand": "Dost",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 15.5,
+      "maxPrice": 15.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15.5
+        }
+      ]
+    },
+    {
+      "productId": "02Y7",
+      "name": "Dost Kakao Aromalı Süt 200 Ml",
+      "brand": "Dost",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 15.5,
+      "maxPrice": 15.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 15.5
+        }
+      ]
+    },
+    {
+      "productId": "05DV",
+      "name": "Carrefour Tam Yağlı Süt 200 Ml",
+      "brand": "Carrefour",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 15.75,
+      "maxPrice": 15.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 15.75
+        }
+      ]
+    },
+    {
+      "productId": "0KI6",
+      "name": "Mis Ballı Süt 200 Ml",
+      "brand": "Mis",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 16.5,
+      "maxPrice": 16.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 16.5
+        }
+      ]
+    },
+    {
+      "productId": "1KDQ",
+      "name": "Danone Doğal Süt 180 Ml",
+      "brand": "Danone",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 18.9,
+      "maxPrice": 18.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 18.9
+        }
+      ]
+    },
+    {
+      "productId": "11LC",
+      "name": "Sek Kakaolu Süt 180 Ml",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 19,
+      "maxPrice": 19,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19
+        }
+      ]
+    },
+    {
+      "productId": "0TLK",
+      "name": "Torku Çilekli Süt 180 Ml",
+      "brand": "Torku",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 20.5,
+      "maxPrice": 20.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 20.5
+        }
+      ]
+    },
+    {
+      "productId": "1QEN",
+      "name": "Torku Kakaolu Süt 180 Ml",
+      "brand": "Torku",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 20.5,
+      "maxPrice": 20.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 20.5
+        }
+      ]
+    },
+    {
+      "productId": "21ED",
+      "name": "Sütaş Çilekli Süt 200 Ml",
+      "brand": "Sütaş",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 22.5,
+      "maxPrice": 22.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 22.5
+        }
+      ]
+    },
+    {
+      "productId": "1HFO",
+      "name": "Sütaş Muzlu Süt 200 Ml",
+      "brand": "Sütaş",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 22.9,
+      "maxPrice": 22.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 22.9
+        }
+      ]
+    },
+    {
+      "productId": "20IY",
+      "name": "İçim Süt 200 Ml",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 24.75,
+      "maxPrice": 24.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 24.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 24.75
+        }
+      ]
+    },
+    {
+      "productId": "1PO4",
+      "name": "Nesquik Muzlu Süt 180 Ml",
+      "brand": "Nesquik",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 35.75,
+      "maxPrice": 35.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 35.75
+        }
+      ]
+    },
+    {
+      "productId": "1NNL",
+      "name": "Sek %1.5 Yağlı Süt 1 Lt",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 53,
+      "maxPrice": 53,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 53
+        }
+      ]
+    },
+    {
+      "productId": "21MB",
+      "name": "Pınar Laktozsuz Süt 1 Lt",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 57,
+      "maxPrice": 57,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 57
+        }
+      ]
+    },
+    {
+      "productId": "00DR",
+      "name": "Dost Günlük Pastörize Süt 1 Lt",
+      "brand": "Dost",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 59,
+      "maxPrice": 59,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        }
+      ]
+    },
+    {
+      "productId": "2266",
+      "name": "İçim Yağlı Süt 1 Lt",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 59.5,
+      "maxPrice": 59.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 59.5
+        }
+      ]
+    },
+    {
+      "productId": "1I5D",
+      "name": "İçim Light Süt 1 Lt",
+      "brand": "İçim",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 64.9,
+      "maxPrice": 68.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 64.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 68.9
+        }
+      ]
+    },
+    {
+      "productId": "01J5",
+      "name": "Sek Light Süt 1 Lt",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 65.9,
+      "maxPrice": 65.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.9
+        }
+      ]
+    },
+    {
+      "productId": "1QKO",
+      "name": "Pınar Süt 1 Lt",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "0YUC",
+      "name": "Pınar Süt 1 Lt",
+      "brand": "Pınar",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 79.95,
+      "maxPrice": 80,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 79.95
+        },
+        {
+          "market": "hakmar",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "productId": "1MCE",
+      "name": "Sek Kakaolu Protein Süt 330 Ml",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 2,
+      "minPrice": 79.95,
+      "maxPrice": 80.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 80.9
+        }
+      ]
+    },
+    {
+      "productId": "1K60",
+      "name": "Sek Protein Hindistan Cevizi Aromalı Süt 330 Ml",
+      "brand": "Sek",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "1HEV",
+      "name": "Sütaş %3,5 Tam Yağlı Süt 1 Lt",
+      "brand": "Sütaş",
+      "category": "Süt",
+      "marketCount": 1,
+      "minPrice": 86.9,
+      "maxPrice": 86.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 86.9
+        }
+      ]
+    }
+  ]
+}

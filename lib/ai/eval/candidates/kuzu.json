@@ -1,0 +1,284 @@
+{
+  "term": "kuzu",
+  "category": "Et & protein",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:48:53.116Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0MA4",
+      "name": "Kuzu Kulağı Demet 1 Adet",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 26.9,
+      "maxPrice": 26.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 26.9
+        }
+      ]
+    },
+    {
+      "productId": "1IQK",
+      "name": "Akşeker Donuk Kuzu Dilim Kokoreç 200 Gr",
+      "brand": "Akşeker",
+      "category": "Sakatat",
+      "marketCount": 1,
+      "minPrice": 189,
+      "maxPrice": 189,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 189
+        }
+      ]
+    },
+    {
+      "productId": "1Q7R",
+      "name": "Gurvita Kuzu İlikli Kemik Suyu 4x50 Ml",
+      "brand": "Gurvita",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 189.95,
+      "maxPrice": 189.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 189.95
+        }
+      ]
+    },
+    {
+      "productId": "1P6H",
+      "name": "Gurvita Kuzu İlikli Kemik Suyu 320 Ml",
+      "brand": "Gurvita",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "0FON",
+      "name": "Kuzu Kulağı 150 Gr",
+      "brand": "Markasız",
+      "category": "Sebze",
+      "marketCount": 1,
+      "minPrice": 229.9,
+      "maxPrice": 229.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 229.9
+        }
+      ]
+    },
+    {
+      "productId": "004U",
+      "name": "Emin Dana Kuzu Döner 300 Gr",
+      "brand": "Emin",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 239,
+      "maxPrice": 239,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 239
+        }
+      ]
+    },
+    {
+      "productId": "1E42",
+      "name": "Akşeker Baharatlı Kuzu Kokoreç 200 Gr",
+      "brand": "Akşeker",
+      "category": "Sakatat",
+      "marketCount": 1,
+      "minPrice": 245,
+      "maxPrice": 245,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 245
+        }
+      ]
+    },
+    {
+      "productId": "00LQ",
+      "name": "Emin Dana Kuzu Izgara Köfte 400 Gr",
+      "brand": "Emin",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 259,
+      "maxPrice": 259,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 259
+        }
+      ]
+    },
+    {
+      "productId": "0J4Q",
+      "name": "Uzman Kasap Kuzu Dana Kebap 360 Gr",
+      "brand": "Uzman Kasap",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 285.95,
+      "maxPrice": 285.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 285.95
+        }
+      ]
+    },
+    {
+      "productId": "0Z3H",
+      "name": "İnci Dana Kuzu Kaşarlı Köfte 500 Gr",
+      "brand": "İnci",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 289,
+      "maxPrice": 289,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 289
+        }
+      ]
+    },
+    {
+      "productId": "18TW",
+      "name": "Bonfilet Dondurulmuş Dana Kuzu Kıyma 500 Gr",
+      "brand": "Bonfilet",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 319,
+      "maxPrice": 319,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 319
+        }
+      ]
+    },
+    {
+      "productId": "0RPW",
+      "name": "Uzman Kasap Dana Kuzu Kıyma 400 Gr",
+      "brand": "Uzman Kasap",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 320,
+      "maxPrice": 320,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 320
+        }
+      ]
+    },
+    {
+      "productId": "0X7U",
+      "name": "Torku Dondurulmuş Dana Kuzu Cızbız Köfte 390 Gr",
+      "brand": "Torku",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 329,
+      "maxPrice": 329,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 329
+        }
+      ]
+    },
+    {
+      "productId": "0KQD",
+      "name": "İnci Dana Kuzu Kasap Köfte 500 Gr",
+      "brand": "İnci",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "1S51",
+      "name": "Şampiyon Sade Kuzu Kokoreç 180 Gr",
+      "brand": "Şampiyon",
+      "category": "Sakatat",
+      "marketCount": 1,
+      "minPrice": 389.95,
+      "maxPrice": 389.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 389.95
+        }
+      ]
+    },
+    {
+      "productId": "0BD7",
+      "name": "Haket Yağlı Kuzu Dana Kıyma 500 Gr",
+      "brand": "Haket",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 430,
+      "maxPrice": 430,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 430
+        }
+      ]
+    },
+    {
+      "productId": "099F",
+      "name": "Haket Kuzu Sac Kavurma 1 Kg",
+      "brand": "Haket",
+      "category": "Şarküteri",
+      "marketCount": 1,
+      "minPrice": 990,
+      "maxPrice": 990,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 990
+        }
+      ]
+    },
+    {
+      "productId": "2KEK",
+      "name": "Kuzu Kuşbaşı 1 Kg",
+      "brand": "Markasız",
+      "category": "Kırmızı Et",
+      "marketCount": 1,
+      "minPrice": 1090,
+      "maxPrice": 1090,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 1090
+        }
+      ]
+    }
+  ]
+}

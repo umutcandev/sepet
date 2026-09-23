@@ -1,0 +1,1142 @@
+{
+  "term": "pirinç",
+  "category": "Ekmek & unlu",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:43:35.969Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "07U1",
+      "name": "Rençber Pilavlık Pirinç 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "1AP3",
+      "name": "Yayla Pilavlık Pirinç 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 69.95,
+      "maxPrice": 69.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 69.95
+        }
+      ]
+    },
+    {
+      "productId": "0UC1",
+      "name": "Yayla Gurme Siyah Pirinç 500 Gr",
+      "brand": "Yayla Gurme",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 76.97,
+      "maxPrice": 76.97,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 76.97
+        }
+      ]
+    },
+    {
+      "productId": "0X4O",
+      "name": "Anadolu Mutfağı Osmancık Pirinç 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 78,
+      "maxPrice": 78,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 78
+        }
+      ]
+    },
+    {
+      "productId": "0XG5",
+      "name": "Migros Osmancık Pirinç 1 Kg",
+      "brand": "Migros",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 80.95,
+      "maxPrice": 80.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 80.95
+        }
+      ]
+    },
+    {
+      "productId": "04LS",
+      "name": "Carrefour Baldo Pirinç 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "2ASH",
+      "name": "Rençber Basmati Pirinç 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "0PS7",
+      "name": "Tat Basmati Pirinç 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 109.5,
+      "maxPrice": 204.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 109.5
+        },
+        {
+          "market": "Migros",
+          "price": 204.95
+        }
+      ]
+    },
+    {
+      "productId": "1F0V",
+      "name": "Sade Organik Pirinç 500 Gr",
+      "brand": "Sade Organik",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 111,
+      "maxPrice": 111,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 111
+        }
+      ]
+    },
+    {
+      "productId": "117K",
+      "name": "Duru Osmancık Pilavlık Pirinç 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 144.5,
+      "maxPrice": 144.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 144.5
+        }
+      ]
+    },
+    {
+      "productId": "0CI4",
+      "name": "Ovadan Osmancık Pirinç 2.5 Kg",
+      "brand": "Ovadan",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 159.5,
+      "maxPrice": 159.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 159.5
+        }
+      ]
+    },
+    {
+      "productId": "1Z5E",
+      "name": "Yayla Basmati Pirinç 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 164.95,
+      "maxPrice": 164.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.95
+        }
+      ]
+    },
+    {
+      "productId": "0PRZ",
+      "name": "Yayla Osmancık Yerli Pirinç 2 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 169.95,
+      "maxPrice": 169.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169.95
+        }
+      ]
+    },
+    {
+      "productId": "20AG",
+      "name": "Doyum Organik Pirinç 1 Kg",
+      "brand": "Doyum",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 171.47,
+      "maxPrice": 254.75,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 171.47
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 254.75
+        }
+      ]
+    },
+    {
+      "productId": "15TJ",
+      "name": "Reis Osmancık Pirinç 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 179.95,
+      "maxPrice": 179.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 179.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 179.95
+        }
+      ]
+    },
+    {
+      "productId": "02MV",
+      "name": "Rençber Osmancık Pirinç 2.5 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 184.5,
+      "maxPrice": 184.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 184.5
+        }
+      ]
+    },
+    {
+      "productId": "1ZVP",
+      "name": "Hasata Basmati Pirinç 1 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 199.95,
+      "maxPrice": 201.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 201.9
+        }
+      ]
+    },
+    {
+      "productId": "0P95",
+      "name": "Mutlu Baldo Pirinç 2.5 Kg",
+      "brand": "Mutlu",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 254.95,
+      "maxPrice": 254.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 254.95
+        }
+      ]
+    },
+    {
+      "productId": "0IQH",
+      "name": "Organik Gurme Organik Pirinç 1 Kg",
+      "brand": "Organik Gurme",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 269.5,
+      "maxPrice": 269.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 269.5
+        }
+      ]
+    },
+    {
+      "productId": "1R0T",
+      "name": "Reis Basmati Pirinç 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 282.9,
+      "maxPrice": 314.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 282.9
+        },
+        {
+          "market": "Migros",
+          "price": 314.95
+        }
+      ]
+    },
+    {
+      "productId": "1OGZ",
+      "name": "Reis Jasmin Pirinç 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 294.95,
+      "maxPrice": 294.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 294.95
+        }
+      ]
+    },
+    {
+      "productId": "1K1O",
+      "name": "Yayla Trakya Baldo Pirinç 2 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 299.95,
+      "maxPrice": 299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 299.95
+        }
+      ]
+    },
+    {
+      "productId": "06R7",
+      "name": "Carrefour Osmancık Pirinç 5 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 345.9,
+      "maxPrice": 345.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 345.9
+        }
+      ]
+    },
+    {
+      "productId": "0H1X",
+      "name": "Reis Baldo Pirinç 2 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 373.9,
+      "maxPrice": 373.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 373.9
+        }
+      ]
+    },
+    {
+      "productId": "05UZ",
+      "name": "Efsane Ekonomik Pilavlık Pirinç 1 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "00RM",
+      "name": "Yurda Pilavlık Pirinç 1 Kg",
+      "brand": "Yurda",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "10D6",
+      "name": "Anadolu Mutfağı Yerli Pilavlık Pirinç 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 64.5,
+      "maxPrice": 64.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 64.5
+        }
+      ]
+    },
+    {
+      "productId": "0KG9",
+      "name": "Mlife Basmati Pirinç 500 Gr",
+      "brand": "Mlife",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 74.95,
+      "maxPrice": 74.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 74.95
+        }
+      ]
+    },
+    {
+      "productId": "08G2",
+      "name": "Rençber Osmancık Pirinç 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 79.75,
+      "maxPrice": 79.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.75
+        }
+      ]
+    },
+    {
+      "productId": "0HS1",
+      "name": "Carrefour Osmancık Pirinç 1 Kg",
+      "brand": "Carrefour",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 80.95,
+      "maxPrice": 80.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 80.95
+        }
+      ]
+    },
+    {
+      "productId": "0MAX",
+      "name": "Anadolu Mutfağı Baldo Pirinç 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 83.5,
+      "maxPrice": 83.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 83.5
+        }
+      ]
+    },
+    {
+      "productId": "06G7",
+      "name": "Efsane Baldo Pirinç 1 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 87,
+      "maxPrice": 87,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 87
+        }
+      ]
+    },
+    {
+      "productId": "05AH",
+      "name": "Yayla Uzun Tane Pirinç 2 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 109.95,
+      "maxPrice": 109.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.95
+        }
+      ]
+    },
+    {
+      "productId": "0P6A",
+      "name": "Yayla Osmancık Bölgesi Mahsulü Yerli Pirinç 1 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 121.95,
+      "maxPrice": 121.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 121.95
+        }
+      ]
+    },
+    {
+      "productId": "1NNG",
+      "name": "Reis Royal Kepekli Pirinç 500 Gr",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 124.88,
+      "maxPrice": 124.88,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 124.88
+        }
+      ]
+    },
+    {
+      "productId": "02BP",
+      "name": "Efsane Yerli Pilavlık Pirinç 2.5 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 147.5,
+      "maxPrice": 147.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 147.5
+        }
+      ]
+    },
+    {
+      "productId": "0UT3",
+      "name": "Tat Baldo Pirinç 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 164.95,
+      "maxPrice": 164.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 164.95
+        }
+      ]
+    },
+    {
+      "productId": "0Z9P",
+      "name": "Anadolu Mutfağı Osmancık Pirinç 2.5 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "1Z8S",
+      "name": "Reis Royal Superior Basmati Pirinç 500 Gr",
+      "brand": "Reis Royal",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 212,
+      "maxPrice": 212,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 212
+        }
+      ]
+    },
+    {
+      "productId": "005A",
+      "name": "Duru Pilavlık Pirinç 2 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 223.25,
+      "maxPrice": 223.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 223.25
+        }
+      ]
+    },
+    {
+      "productId": "1C8M",
+      "name": "Scotti Arborio Pirinç 500 Gr",
+      "brand": "Scotti",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 231.12,
+      "maxPrice": 231.12,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 231.12
+        }
+      ]
+    },
+    {
+      "productId": "13TP",
+      "name": "Efsane İthal Pilavlık Pirinç 5 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 249,
+      "maxPrice": 249,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 249
+        }
+      ]
+    },
+    {
+      "productId": "144G",
+      "name": "Efsane Yerli Pilavlık Pirinç 5 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "1V8J",
+      "name": "City Farm Organik Pirinç 1 Kg",
+      "brand": "City Farm",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 284.5,
+      "maxPrice": 284.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 284.5
+        }
+      ]
+    },
+    {
+      "productId": "0409",
+      "name": "Duru Osmancık Pirinç 2 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 289.9,
+      "maxPrice": 289.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 289.9
+        }
+      ]
+    },
+    {
+      "productId": "0IO8",
+      "name": "Duru Baldo Pirinç 2 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 318,
+      "maxPrice": 318,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 318
+        }
+      ]
+    },
+    {
+      "productId": "0J9O",
+      "name": "Hasata Gönen Baldo Pirinç 2 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 331.95,
+      "maxPrice": 345,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 331.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 345
+        }
+      ]
+    },
+    {
+      "productId": "0MPK",
+      "name": "Reis Osmancık Pirinç 2.5 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 401.95,
+      "maxPrice": 401.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 401.95
+        }
+      ]
+    },
+    {
+      "productId": "13UZ",
+      "name": "Efsane Kırık Pirinç 1 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 25.75,
+      "maxPrice": 25.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 25.75
+        }
+      ]
+    },
+    {
+      "productId": "0P0J",
+      "name": "Anadolu Mutfağı Kırık Pirinç 1 Kg",
+      "brand": "Anadolu Mutfağı",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 32.5,
+      "maxPrice": 32.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 32.5
+        }
+      ]
+    },
+    {
+      "productId": "0H0T",
+      "name": "Reis Kırık Pirinç 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 62.25,
+      "maxPrice": 62.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 62.25
+        }
+      ]
+    },
+    {
+      "productId": "04AM",
+      "name": "Efsane Yasemin Kokulu Pirinç 1 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "04IN",
+      "name": "Rençber Baldo Pirinç 1 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 87.5,
+      "maxPrice": 87.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 87.5
+        }
+      ]
+    },
+    {
+      "productId": "02LV",
+      "name": "Efsane Ekonomik Pilavlık Pirinç 2.5 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "1N2B",
+      "name": "Hasata Gönen Baldo Pirinç 1 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 129.95,
+      "maxPrice": 169.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 129.95
+        },
+        {
+          "market": "Migros",
+          "price": 169.95
+        }
+      ]
+    },
+    {
+      "productId": "0KML",
+      "name": "Tat Osmancık Pirinç 1 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 136.95,
+      "maxPrice": 136.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 136.95
+        }
+      ]
+    },
+    {
+      "productId": "00PD",
+      "name": "Rençber Pilavlık Pirinç 2.5 Kg",
+      "brand": "Rençber",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 147.5,
+      "maxPrice": 147.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 147.5
+        }
+      ]
+    },
+    {
+      "productId": "1RQT",
+      "name": "Hasata Osmancık Pirinç 1 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 149.95
+        },
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "0YGM",
+      "name": "Duru Baldo Pirinç 1 Kg",
+      "brand": "Duru",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 166.9,
+      "maxPrice": 166.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 166.9
+        }
+      ]
+    },
+    {
+      "productId": "07QD",
+      "name": "Efsane Osmancık Pirinç 2.5 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "04MB",
+      "name": "Efsane Baldo Pirinç 2.5 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 189,
+      "maxPrice": 189,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 189
+        }
+      ]
+    },
+    {
+      "productId": "0WYR",
+      "name": "Yayla Tane Tane Pirinç 2 Kg",
+      "brand": "Yayla",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 249.5,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 249.5
+        },
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "1RMR",
+      "name": "Reis Jasmine Pirinç 1 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 262.5,
+      "maxPrice": 262.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 262.5
+        }
+      ]
+    },
+    {
+      "productId": "1QFE",
+      "name": "Reis Arborio Risotto Vakumlu Pirinç 500 Gr",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 282.95,
+      "maxPrice": 285.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 282.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 285.9
+        }
+      ]
+    },
+    {
+      "productId": "0WYX",
+      "name": "Hasata Osmancık Pirinç 2 Kg",
+      "brand": "Hasata",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 294.95,
+      "maxPrice": 306.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 294.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 306.9
+        }
+      ]
+    },
+    {
+      "productId": "1AHV",
+      "name": "Doyum Baldo Pirinç 2 Kg",
+      "brand": "Doyum",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 309.95,
+      "maxPrice": 309.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 309.95
+        }
+      ]
+    },
+    {
+      "productId": "0AYV",
+      "name": "Tat Baldo Pirinç 2 Kg",
+      "brand": "Tat",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 309.95,
+      "maxPrice": 309.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 309.95
+        }
+      ]
+    },
+    {
+      "productId": "06LD",
+      "name": "Tilda Kahverengi Pirinç 1 Kg",
+      "brand": "Tilda",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 321,
+      "maxPrice": 321,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 321
+        }
+      ]
+    },
+    {
+      "productId": "13OG",
+      "name": "Efsane Osmancık Pirinç 5 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 329,
+      "maxPrice": 329,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 329
+        }
+      ]
+    },
+    {
+      "productId": "1ESC",
+      "name": "Ovadan Pirinç Baldo 5 Kg",
+      "brand": "Ovadan",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 369,
+      "maxPrice": 369,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 369
+        }
+      ]
+    },
+    {
+      "productId": "16UU",
+      "name": "Efsane Baldo Pirinç 5 Kg",
+      "brand": "Efsane",
+      "category": "Bakliyat",
+      "marketCount": 1,
+      "minPrice": 369,
+      "maxPrice": 369,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 369
+        }
+      ]
+    },
+    {
+      "productId": "134E",
+      "name": "Reis Gönen Baldo Pirinç 2.5 Kg",
+      "brand": "Reis",
+      "category": "Bakliyat",
+      "marketCount": 2,
+      "minPrice": 454.95,
+      "maxPrice": 454.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 454.95
+        },
+        {
+          "market": "Migros",
+          "price": 454.95
+        }
+      ]
+    }
+  ]
+}

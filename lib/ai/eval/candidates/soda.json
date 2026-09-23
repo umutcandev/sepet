@@ -1,0 +1,179 @@
+{
+  "term": "soda",
+  "category": "İçecek",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T21:04:25.589Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1HW9",
+      "name": "Lol Cream Soda Vanilya Aromalı Gazlı İçecek 250 Ml",
+      "brand": "Lol",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 49,
+      "maxPrice": 49,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49
+        }
+      ]
+    },
+    {
+      "productId": "1HWI",
+      "name": "Lol Cream Soda Hazelnut Aromalı Gazlı İçecek 250 Ml",
+      "brand": "Lol",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 49,
+      "maxPrice": 49,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49
+        }
+      ]
+    },
+    {
+      "productId": "1HW7",
+      "name": "Lol Cream Soda Salted Caramel Aromalı Gazlı İçecek 250 Ml",
+      "brand": "Lol",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 49,
+      "maxPrice": 49,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49
+        }
+      ]
+    },
+    {
+      "productId": "1HWC",
+      "name": "Lol Cream Soda Çilek Aromalı Gazlı İçecek 250 Ml",
+      "brand": "Lol",
+      "category": "Gazlı İçecekler",
+      "marketCount": 1,
+      "minPrice": 49,
+      "maxPrice": 49,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49
+        }
+      ]
+    },
+    {
+      "productId": "0OW4",
+      "name": "Ernet Çamaşır Sodası 500 Gr",
+      "brand": "Ernet",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 59.95,
+      "maxPrice": 59.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 59.95
+        }
+      ]
+    },
+    {
+      "productId": "002U",
+      "name": "Mintax Soda Matik 500 Gr",
+      "brand": "Mintax",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "102S",
+      "name": "Soda Plus Çamaşır Sodası 500 Gr",
+      "brand": "Soda Plus",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZA6",
+      "name": "San Pellegrino Soda 250 Ml",
+      "brand": "San Pellegrino",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 115,
+      "maxPrice": 115,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 115
+        }
+      ]
+    },
+    {
+      "productId": "0ZWI",
+      "name": "San Pellegrino Soda 750 Ml",
+      "brand": "San Pellegrino",
+      "category": "Maden Suyu",
+      "marketCount": 1,
+      "minPrice": 212,
+      "maxPrice": 212,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 212
+        }
+      ]
+    },
+    {
+      "productId": "0RFS",
+      "name": "Rinso Beyaz Sirke Ve Çamaşır Sodası Beyaz Toz 6 Kg",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 405.95,
+      "maxPrice": 405.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 405.95
+        }
+      ]
+    },
+    {
+      "productId": "2121",
+      "name": "Rinso Beyaz Sirke & Çamaşır Sodası Toz Deterjan 10 Kg",
+      "brand": "Rinso",
+      "category": "Çamaşır Temizlik Ürünleri",
+      "marketCount": 1,
+      "minPrice": 429.95,
+      "maxPrice": 429.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 429.95
+        }
+      ]
+    }
+  ]
+}

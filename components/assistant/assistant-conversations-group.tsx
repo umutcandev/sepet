@@ -24,6 +24,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { SidebarGroupLink } from "@/components/sidebar-group-link"
+import { HistoryViewMenu } from "@/components/assistant/history-view-menu"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +44,8 @@ import {
   useAssistantConversationsHydrated,
 } from "@/lib/stores/assistant-conversations"
 import { useAssistantTitle } from "@/lib/stores/assistant-title"
+import { historyView, useHistoryView } from "@/lib/stores/history-view"
+import { arrangeHistory } from "@/lib/assistant/history-view"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Tooltip,
@@ -66,7 +70,6 @@ function AwaitingIcon({ className }: { className?: string }) {
       strokeLinejoin="round"
       className={className}
       aria-hidden="true"
-      opacity="0.5"
     >
       <circle
         cx="8"
@@ -82,8 +85,7 @@ function AwaitingIcon({ className }: { className?: string }) {
 }
 
 // "Tamamlandı" — karşılaştırma/optimizasyon çalışmış, terminal sonuca ulaşmış
-// sohbet. Sabit #666666 yerine currentColor + opacity ile temaya/aktif duruma
-// uyum sağlar (AwaitingIcon ile aynı görsel ağırlık).
+// sohbet. currentColor: mürekkebi ConversationStateIcon veriyor.
 function CompletedIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -94,7 +96,6 @@ function CompletedIcon({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-hidden="true"
-      opacity="0.5"
     >
       <path
         fillRule="evenodd"
@@ -140,7 +141,12 @@ function ConversationStateIcon({
   return (
     <Tooltip delayDuration={200}>
       <TooltipTrigger asChild>
-        <span className="flex shrink-0 items-center justify-center">
+        {/* Eskiden currentColor'ın (sidebar metni) %50'siydi: doğru ağırlıkta
+            ama kahverengi metin krem zeminle karışınca kroma düşüyor, ikon nötr
+            griye iniyordu (#9C8C7F). Mürekkep artık `--muted-foreground`, yani
+            paletin kendi sıcak tonu; /70 aynı solukluğu sıcaklığı kaybetmeden
+            veriyor. */}
+        <span className="flex shrink-0 items-center justify-center text-muted-foreground/70">
           {icon}
         </span>
       </TooltipTrigger>
@@ -419,6 +425,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
   // useEffect'inde yapılıyor — bkz. app-shell.tsx.
   const list = useAssistantConversations(conversations)
   const storeHydrated = useAssistantConversationsHydrated()
+  const view = useHistoryView()
 
   const { scrollRef, measure, fade } = useScrollFade()
   // Liste uzunluğu değişince (yeni sohbet, silme, stream upsert) yeniden ölç —
@@ -451,9 +458,16 @@ export function AssistantConversationsGroup({ conversations }: Props) {
             scroll kabı. 10 yer tutucu sidebar'a sığmazsa taşma yapmak yerine
             listede olduğu gibi kaydırılır. */}
         <SidebarGroup
-          className={cn("flex min-h-0 flex-1 flex-col", HIDE_ON_RAIL)}
+          className={cn("group/section flex min-h-0 flex-1 flex-col", HIDE_ON_RAIL)}
         >
           <SidebarGroupLabel>Geçmiş Sohbetler</SidebarGroupLabel>
+          <SidebarGroupLink
+            href="/sohbetler"
+            label="Tüm sohbetler"
+            onNavigate={handleNavClick}
+            className="right-9"
+          />
+          <HistoryViewMenu />
           <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto pb-6">
             <SidebarGroupContent>
               <ConversationRowsSkeleton />
@@ -484,7 +498,11 @@ export function AssistantConversationsGroup({ conversations }: Props) {
   const starred = list
     .filter((c) => c.starred)
     .slice(0, SIDEBAR_STARRED_LIMIT)
-  const history = list.slice(0, SIDEBAR_HISTORY_LIMIT)
+  const { sections, total } = arrangeHistory(list, view, SIDEBAR_HISTORY_LIMIT)
+  const rows = sections.flatMap((s) => [
+    ...(s.label ? [{ key: `label:${s.label}`, label: s.label }] : []),
+    ...s.items.map((c) => ({ key: c.id, c })),
+  ])
 
   return (
     <>
@@ -535,7 +553,9 @@ export function AssistantConversationsGroup({ conversations }: Props) {
         </SidebarGroup>
       ) : null}
 
-      <SidebarGroup className={cn("flex min-h-0 flex-1 flex-col", HIDE_ON_RAIL)}>
+      <SidebarGroup
+        className={cn("group/section flex min-h-0 flex-1 flex-col", HIDE_ON_RAIL)}
+      >
         <SidebarGroupLabel asChild>
           <button
             onClick={() => setHistoryCollapsed((p) => !p)}
@@ -552,39 +572,66 @@ export function AssistantConversationsGroup({ conversations }: Props) {
             </span>
           </button>
         </SidebarGroupLabel>
+        <SidebarGroupLink
+          href="/sohbetler"
+          label="Tüm sohbetler"
+          onNavigate={handleNavClick}
+          className="right-9"
+        />
+        <HistoryViewMenu />
         <AnimatePresence initial={false}>
           {!historyCollapsed && (
             <div className="relative min-h-0 flex-1 h-full flex flex-col">
               <div ref={scrollRef} className="no-scrollbar h-full overflow-y-auto pb-6">
                 <SidebarGroupContent>
+                  {total === 0 ? (
+                    <p className="px-2 py-1 text-xs text-muted-foreground">
+                      Bu filtreye uyan sohbet yok.{" "}
+                      <button
+                        type="button"
+                        onClick={() => historyView.reset()}
+                        className="font-medium text-sidebar-foreground underline-offset-2 hover:underline"
+                      >
+                        Sıfırla
+                      </button>
+                    </p>
+                  ) : null}
                   <SidebarMenu>
-                    {history.map((c, i) => (
+                    {rows.map((r, i) => (
                       <motion.div
-                        key={c.id}
+                        key={r.key}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.10, delay: i * 0.008 }}
+                        className={
+                          "c" in r
+                            ? undefined
+                            : "px-2 pt-3 pb-1 text-xs text-muted-foreground first:pt-1"
+                        }
                       >
-                        <ConversationRow
-                          c={c}
-                          isActive={c.id === activeId}
-                          isMobile={isMobile}
-                          onRename={setRenameTarget}
-                          onDelete={setDeleteTarget}
-                          onNavigate={handleNavClick}
-                        />
+                        {"c" in r ? (
+                          <ConversationRow
+                            c={r.c}
+                            isActive={r.c.id === activeId}
+                            isMobile={isMobile}
+                            onRename={setRenameTarget}
+                            onDelete={setDeleteTarget}
+                            onNavigate={handleNavClick}
+                          />
+                        ) : (
+                          r.label
+                        )}
                       </motion.div>
                     ))}
-                    {/* 10'dan fazla sohbet varsa, 10.'dan sonra /sohbetler'e
-                        yönlendiren "daha fazla göster" satırı. */}
-                    {list.length > SIDEBAR_HISTORY_LIMIT ? (
+                    {/* Limitten fazla eşleşme varsa /sohbetler'e yönlendiren satır. */}
+                    {total > SIDEBAR_HISTORY_LIMIT ? (
                       <motion.div
                         key="more"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.10, delay: history.length * 0.008 }}
+                        transition={{ duration: 0.10, delay: rows.length * 0.008 }}
                       >
                         <SidebarMenuItem>
                           <SidebarMenuButton

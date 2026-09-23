@@ -4,7 +4,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/blog"
 import { postToMarkdown } from "@/lib/blog/markdown"
 
 // Yazının ham Markdown'ı (düz metin). "Markdown olarak görüntüle" bunu yeni
-// sekmede açar; "ChatGPT/Claude'da aç" ise asistanın okuması için bu URL'i verir.
+// sekmede açar; "ChatGPT/Claude/Gemini'de aç" ise asistana bu URL'i okutur.
 // Yazılar derleme zamanında statik üretildiğinden bu route da statiktir.
 export const dynamic = "force-static"
 

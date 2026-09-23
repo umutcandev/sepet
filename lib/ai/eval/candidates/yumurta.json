@@ -1,0 +1,979 @@
+{
+  "term": "yumurta",
+  "category": "Et & protein",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:46:07.587Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "07JT",
+      "name": "Kumbasar Yumurta 53-62 Gr 6 Adet",
+      "brand": "Kumbasar",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 46.95,
+      "maxPrice": 46.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 46.95
+        }
+      ]
+    },
+    {
+      "productId": "1PRW",
+      "name": "Doğalım Yumurta 6 Adet",
+      "brand": "Doğalım",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 57.95,
+      "maxPrice": 57.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.95
+        }
+      ]
+    },
+    {
+      "productId": "1OLM",
+      "name": "Güres Bıldırcın Yumurta 12 Adet",
+      "brand": "Güres",
+      "category": "Yumurta",
+      "marketCount": 2,
+      "minPrice": 61.9,
+      "maxPrice": 81.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 61.9
+        },
+        {
+          "market": "Migros",
+          "price": 81.95
+        }
+      ]
+    },
+    {
+      "productId": "0QE9",
+      "name": "Organik Yumurta 6 Adet",
+      "brand": "Markasız",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 65,
+      "maxPrice": 65,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 65
+        }
+      ]
+    },
+    {
+      "productId": "0F45",
+      "name": "Kumbasar Jumbo Yumurta Üstü 10 Adet",
+      "brand": "Kumbasar",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 83.95,
+      "maxPrice": 83.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 83.95
+        }
+      ]
+    },
+    {
+      "productId": "182O",
+      "name": "Kahverengi Yumurta 10 Adet",
+      "brand": "Markasız",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 87.5,
+      "maxPrice": 87.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 87.5
+        }
+      ]
+    },
+    {
+      "productId": "0GWI",
+      "name": "Carrefour Bio Organik Yumurta 6 Adet",
+      "brand": "Carrefour Bio",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 92.9,
+      "maxPrice": 92.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 92.9
+        }
+      ]
+    },
+    {
+      "productId": "0CI6",
+      "name": "Carrefour Yumurta L Boy 15 Adet",
+      "brand": "Carrefour",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "01PV",
+      "name": "Bili Bili Yumurta 15 Adet",
+      "brand": "Bili Bili",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "0IPM",
+      "name": "Carrefour Bio Organik Yumurta 10 Adet",
+      "brand": "Carrefour",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "1YQ1",
+      "name": "Pakköy Organik Yumurta 10 Adet",
+      "brand": "Pakköy",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 108,
+      "maxPrice": 108,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 108
+        }
+      ]
+    },
+    {
+      "productId": "02J6",
+      "name": "Carrefour Gezen Tavuk Yumurta 10 Adet",
+      "brand": "Carrefour",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 117.95,
+      "maxPrice": 117.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 117.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q2F",
+      "name": "Doğalım Boy Yumurta 15 Adet",
+      "brand": "Doğalım",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 124.95,
+      "maxPrice": 124.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 124.95
+        }
+      ]
+    },
+    {
+      "productId": "0O21",
+      "name": "Doğalım Yumurta 15 Adet",
+      "brand": "Doğalım",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 138.9,
+      "maxPrice": 138.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 138.9
+        }
+      ]
+    },
+    {
+      "productId": "0BV2",
+      "name": "Sade Organik Yumurta 10 Adet",
+      "brand": "Sade Organik",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 139.9,
+      "maxPrice": 139.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 139.9
+        }
+      ]
+    },
+    {
+      "productId": "09XA",
+      "name": "K.Birlik Yumurta Gezen Tavuk 53-62 Gr 15 Adet",
+      "brand": "K.birlik",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 142.5,
+      "maxPrice": 142.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 142.5
+        }
+      ]
+    },
+    {
+      "productId": "0TJ5",
+      "name": "Kor Organik Yumurta 53-62 Gr 10 Adet",
+      "brand": "Kor",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 147.95,
+      "maxPrice": 147.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 147.95
+        }
+      ]
+    },
+    {
+      "productId": "0TGC",
+      "name": "Mlife Organik Yumurta M Boy 53-62 Gr 10 Adet",
+      "brand": "Mlife",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 149.95,
+      "maxPrice": 149.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 149.95
+        }
+      ]
+    },
+    {
+      "productId": "1T4C",
+      "name": "Flotty Organik Yumurta 53-62 Gr 10 Adet",
+      "brand": "Flotty",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 152.95,
+      "maxPrice": 152.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 152.95
+        }
+      ]
+    },
+    {
+      "productId": "0Z7H",
+      "name": "Anadolu Çiftliği Yumurta 53-62 Gr 30 Adet",
+      "brand": "Anadolu Çiftliği",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "0GZ3",
+      "name": "Carrefour Yumurta 30 Adet",
+      "brand": "Carrefour",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "070D",
+      "name": "Carrefour Gezen Tavuk Yumurta 15 Adet",
+      "brand": "Carrefour",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "1M3O",
+      "name": "Kumbasar Yumurta 53-62 Gr 30 Adet",
+      "brand": "Kumbasar",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 184.95,
+      "maxPrice": 184.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 184.95
+        }
+      ]
+    },
+    {
+      "productId": "0BGE",
+      "name": "Cityfarm Organik Yumurta 10 Adet",
+      "brand": "Cityfarm",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 198.5,
+      "maxPrice": 198.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 198.5
+        }
+      ]
+    },
+    {
+      "productId": "0RWI",
+      "name": "Keskinoğlu Yumurta 53-62 Gr 6 Adet",
+      "brand": "Keskinoğlu",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 56.5,
+      "maxPrice": 56.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 56.5
+        }
+      ]
+    },
+    {
+      "productId": "0OCL",
+      "name": "Anadolu Çiftliği Omega 3 Yumurta M Boy 53-62 Gr 10 Adet",
+      "brand": "Anadolu Çiftliği",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 70,
+      "maxPrice": 70,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 70
+        }
+      ]
+    },
+    {
+      "productId": "2CRW",
+      "name": "Yumtat Yumurta Beyaz L Boy 63-72 Gr 15 Adet",
+      "brand": "Yumtat",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "01DF",
+      "name": "Kumbasar Kahverengi Yumurta 53-62 Gr 10 Adet",
+      "brand": "Kumbasar",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 91.95,
+      "maxPrice": 91.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 91.95
+        }
+      ]
+    },
+    {
+      "productId": "1RQJ",
+      "name": "Keskinoğlu Boy Yumurta 63-72 Gr 15 Adet",
+      "brand": "Keskinoğlu",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 94.9,
+      "maxPrice": 94.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.9
+        }
+      ]
+    },
+    {
+      "productId": "1582",
+      "name": "Mlife Gezen Tavuk M Boy Yumurta 53-62 Gr 10 Adet",
+      "brand": "Mlife",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 94.95,
+      "maxPrice": 94.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 94.95
+        }
+      ]
+    },
+    {
+      "productId": "0WKG",
+      "name": "Anadolu Çiftliği Gezen Tavuk Yumurta M Boy 10 Adet",
+      "brand": "Anadolu Çiftliği",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "0QQ6",
+      "name": "Anadolu Çiftliği Yumurta 63-72 Gr 15 Adet",
+      "brand": "Anadolu Çiftliği",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 95,
+      "maxPrice": 95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 95
+        }
+      ]
+    },
+    {
+      "productId": "1TNR",
+      "name": "Keskinoğlu Omega-3 Boy Yumurta 10 Adet",
+      "brand": "Keskinoğlu",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 99.95,
+      "maxPrice": 99.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 99.95
+        }
+      ]
+    },
+    {
+      "productId": "0PU6",
+      "name": "Green Ranch Yumurta 53-62 Gr M Boy 10 Adet",
+      "brand": "Green Ranch",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 101.95,
+      "maxPrice": 101.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 101.95
+        }
+      ]
+    },
+    {
+      "productId": "1RMQ",
+      "name": "Keskinoğlu Free Range Yumurta 53-62 Gr 10 Adet",
+      "brand": "Keskinoğlu",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 119.95,
+      "maxPrice": 119.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.95
+        }
+      ]
+    },
+    {
+      "productId": "20VP",
+      "name": "Raya Organik Yumurta M Boy 53-62 Gr 8 Adet",
+      "brand": "Raya",
+      "category": "Yumurta",
+      "marketCount": 2,
+      "minPrice": 122.95,
+      "maxPrice": 127.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 122.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 127.5
+        }
+      ]
+    },
+    {
+      "productId": "0VTP",
+      "name": "Naturaköy Gezen Yumurta M Boy 53-62 Gr 15 Adet",
+      "brand": "Naturaköy",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 129.95,
+      "maxPrice": 129.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 129.95
+        }
+      ]
+    },
+    {
+      "productId": "0C8Z",
+      "name": "Doğalım Organik Yumurta M Boy 53-62 Gr 10 Adet",
+      "brand": "Doğalım",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 142.95,
+      "maxPrice": 142.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 142.95
+        }
+      ]
+    },
+    {
+      "productId": "05OK",
+      "name": "Yumtat Beyaz Yumurta 53-62 Gr 30 Adet",
+      "brand": "Yumtat",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 149,
+      "maxPrice": 149,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 149
+        }
+      ]
+    },
+    {
+      "productId": "1586",
+      "name": "Atatürk Orman Çiftliği Organik Yumurta M Boy 53-63 Gr 10 Adet",
+      "brand": "Atatürk Orman Çiftliği",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 152.95,
+      "maxPrice": 152.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 152.95
+        }
+      ]
+    },
+    {
+      "productId": "0O8T",
+      "name": "Taze Direkt Organik Yumurta 53-62 Gr 10 Adet",
+      "brand": "Taze Direkt",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 154.95,
+      "maxPrice": 154.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 154.95
+        }
+      ]
+    },
+    {
+      "productId": "16BT",
+      "name": "S.S. Organik Gıda Yumurta M Boy 53-63 Gr 10 Adet",
+      "brand": "S.S. Organik Gıda",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 157.95,
+      "maxPrice": 157.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 157.95
+        }
+      ]
+    },
+    {
+      "productId": "1R0I",
+      "name": "Flotty Sports Organik Yumurta M Boy 53-62 Gr 10 Adet",
+      "brand": "Flotty Sports",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 167.9,
+      "maxPrice": 167.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 167.9
+        }
+      ]
+    },
+    {
+      "productId": "0SCV",
+      "name": "Keskinoğlu Beyaz Yumurta L Boy 63-73 Gr 20 Adet",
+      "brand": "Keskinoğlu",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 168.95,
+      "maxPrice": 168.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 168.95
+        }
+      ]
+    },
+    {
+      "productId": "01RD",
+      "name": "Bili Bili Yumurta 53-62 Gr 30 Adet",
+      "brand": "Bili Bili",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 169,
+      "maxPrice": 169,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 169
+        }
+      ]
+    },
+    {
+      "productId": "0R2K",
+      "name": "Güres Yumurta L Boy 53-62 Gr 30 Adet",
+      "brand": "Güres",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 169.9,
+      "maxPrice": 169.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 169.9
+        }
+      ]
+    },
+    {
+      "productId": "21M4",
+      "name": "Güres Yumurta XL Boy 73 Gr 20 Adet",
+      "brand": "Güres",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "073M",
+      "name": "Ali Babanın Bahçesinden Organik Yumurta 15 Adet",
+      "brand": "Ali Babanın Bahçesinden",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 212.5,
+      "maxPrice": 212.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 212.5
+        }
+      ]
+    },
+    {
+      "productId": "0Y4B",
+      "name": "Jimmy Toys Oyuncaklı Yumurta Pembe 25 Gr",
+      "brand": "Jimmy Toys",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 22.5,
+      "maxPrice": 22.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 22.5
+        }
+      ]
+    },
+    {
+      "productId": "0ET9",
+      "name": "Jimmy Toys Oyuncaklı Yumurta Mavi 25 Gr",
+      "brand": "Jimmy Toys",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 22.5,
+      "maxPrice": 22.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 22.5
+        }
+      ]
+    },
+    {
+      "productId": "1NM8",
+      "name": "Cosby Fun Sürpriz Yumurta 20 Gr",
+      "brand": "Cosby",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "0VNZ",
+      "name": "LOL Sürpriz Yumurta 17.5 Gr",
+      "brand": "Lol",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 34.5,
+      "maxPrice": 34.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 34.5
+        }
+      ]
+    },
+    {
+      "productId": "1OX9",
+      "name": "Şölen Ozmo Yumurta 20 Gr",
+      "brand": "Ozmo",
+      "category": "Çikolata",
+      "marketCount": 2,
+      "minPrice": 34.95,
+      "maxPrice": 45.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 34.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 45.5
+        }
+      ]
+    },
+    {
+      "productId": "3WB3",
+      "name": "Kinder Surprise Yumurta 20 Gr",
+      "brand": "Markasız",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 39,
+      "maxPrice": 39,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 39
+        }
+      ]
+    },
+    {
+      "productId": "1M8A",
+      "name": "Kinder Joy Sürpriz Yumurta Çikolata 20 Gr",
+      "brand": "Kinder",
+      "category": "Çikolata",
+      "marketCount": 2,
+      "minPrice": 43,
+      "maxPrice": 44.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 43
+        },
+        {
+          "market": "Şok",
+          "price": 44.5
+        }
+      ]
+    },
+    {
+      "productId": "01XN",
+      "name": "Topi Sürpriz Yumurta Çikolata 1 Adet",
+      "brand": "Topi",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "0LWJ",
+      "name": "Toy Toy Sürpriz Yumurta 2x20 Gr",
+      "brand": "Toy Toy",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "3X2F",
+      "name": "Kinder Sürpriz Yumurta 20 Gr",
+      "brand": "Kinder",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 57.5,
+      "maxPrice": 57.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 57.5
+        }
+      ]
+    },
+    {
+      "productId": "20VF",
+      "name": "Ülker Kanky Mini Yumurta 1 Adet",
+      "brand": "Ülker",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "1NJZ",
+      "name": "Ozmo Yumurta 2x20 Gr",
+      "brand": "Ozmo",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 85.9,
+      "maxPrice": 85.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 85.9
+        }
+      ]
+    },
+    {
+      "productId": "1Q6F",
+      "name": "Raya Gezen Tavuk Yumurtası M Boy 53-62 Gr 10 Adet",
+      "brand": "Raya",
+      "category": "Yumurta",
+      "marketCount": 2,
+      "minPrice": 114.95,
+      "maxPrice": 117.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 114.95
+        },
+        {
+          "market": "Migros",
+          "price": 117.95
+        }
+      ]
+    },
+    {
+      "productId": "1H37",
+      "name": "Happy Roots Yumurta Kabuk Siyez Makarna 1 Adet",
+      "brand": "Happy Roots",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 145.5,
+      "maxPrice": 145.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 145.5
+        }
+      ]
+    },
+    {
+      "productId": "1VSS",
+      "name": "Ali Babanın Bahçesi Gezen Tavuk Yumurtası 15 Adet",
+      "brand": "Ali Babanın Bahçesi",
+      "category": "Yumurta",
+      "marketCount": 1,
+      "minPrice": 171.9,
+      "maxPrice": 171.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 171.9
+        }
+      ]
+    }
+  ]
+}

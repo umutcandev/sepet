@@ -1,0 +1,1126 @@
+{
+  "term": "kahve",
+  "category": "İçecek",
+  "split": "train",
+  "capturedAt": "2026-09-20T21:03:28.691Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "0QD4",
+      "name": "Starbucks Cappuccino Premium Kahve Karışımı 18 Gr",
+      "brand": "Starbucks",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 19.95,
+      "maxPrice": 19.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.95
+        }
+      ]
+    },
+    {
+      "productId": "0S4D",
+      "name": "Migros Kahve Beyazlatıcısı 200 Gr",
+      "brand": "Migros",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "0667",
+      "name": "Carrefour Kahve Beyazlatıcısı 200 Gr",
+      "brand": "Carrefour",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "0HTL",
+      "name": "Kahve Dünyası 3'ü 1 Arada Fındıklı Kahve 144 Gr",
+      "brand": "Kahve Dünyası",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1IOF",
+      "name": "Kahve Dünyası 2'si 1 Arada Kahve 96 Gr",
+      "brand": "Kahve Dünyası",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "1IB4",
+      "name": "Kahve Dünyası 3'ü 1 Arada Kahve 144 Gr",
+      "brand": "Kahve Dünyası",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 65.5,
+      "maxPrice": 65.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 65.5
+        }
+      ]
+    },
+    {
+      "productId": "0DR6",
+      "name": "Carrefour Gold Kahve 100 Gr",
+      "brand": "Carrefour",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 110.95,
+      "maxPrice": 110.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 110.95
+        }
+      ]
+    },
+    {
+      "productId": "103Q",
+      "name": "Lezzcafe Filtre Kahve 250 Gr",
+      "brand": "Lezzcafe",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 189,
+      "maxPrice": 189,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 189
+        }
+      ]
+    },
+    {
+      "productId": "201M",
+      "name": "Kahve Dünyası Filtre Kahve 250 Gr",
+      "brand": "Kahve Dünyası",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 221.25,
+      "maxPrice": 279.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 221.25
+        },
+        {
+          "market": "Migros",
+          "price": 279.95
+        }
+      ]
+    },
+    {
+      "productId": "290C",
+      "name": "Cafissimo Espresso Vanilla Kapsül Kahve 10 Adet",
+      "brand": "Cafissimo",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 227.18,
+      "maxPrice": 227.18,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 227.18
+        }
+      ]
+    },
+    {
+      "productId": "0EF8",
+      "name": "Moliendo No:8 Nespresso Uyumlu Kapsül Kahve 10 Adet",
+      "brand": "Moliendo",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 246.19,
+      "maxPrice": 246.19,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 246.19
+        }
+      ]
+    },
+    {
+      "productId": "20QL",
+      "name": "Kahve Dünyası Kolombiya Filtre Kahve 250 Gr",
+      "brand": "Kahve Dünyası",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 264.75,
+      "maxPrice": 264.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 264.75
+        }
+      ]
+    },
+    {
+      "productId": "1AFH",
+      "name": "Bonheur Colombia Filtre Kahve 250 Gr",
+      "brand": "Bonheur",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 269.9,
+      "maxPrice": 269.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 269.9
+        }
+      ]
+    },
+    {
+      "productId": "0PMS",
+      "name": "Coffee Mate Kahve Beyazlatıcısı 500 Gr",
+      "brand": "Coffee mate",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 333,
+      "maxPrice": 333,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 333
+        }
+      ]
+    },
+    {
+      "productId": "1NDA",
+      "name": "Kurukahveci Mehmet Efendi Colombian Filtre Kahve 250 Gr",
+      "brand": "Kurukahveci Mehmet Efendi",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 345,
+      "maxPrice": 345,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 345
+        }
+      ]
+    },
+    {
+      "productId": "1SGZ",
+      "name": "Jacobs Monarch Filtre Kahve 250 Gr",
+      "brand": "Jacobs",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 349.95,
+      "maxPrice": 349.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.95
+        }
+      ]
+    },
+    {
+      "productId": "0BNF",
+      "name": "Moliendo Guatemala Antigua Kahve 250 Gr",
+      "brand": "Moliendo",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 435.68,
+      "maxPrice": 435.68,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 435.68
+        }
+      ]
+    },
+    {
+      "productId": "085Q",
+      "name": "Juan Valdez Volcan Arabica Öğütülmüş Kahve 250 Gr",
+      "brand": "Juan Valdez",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 507.68,
+      "maxPrice": 507.68,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 507.68
+        }
+      ]
+    },
+    {
+      "productId": "1REW",
+      "name": "Juan Valdez Single Origin Huila Öğütülmüş Kahve 283 Gr",
+      "brand": "Juan Valdez",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 568.13,
+      "maxPrice": 568.13,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 568.13
+        }
+      ]
+    },
+    {
+      "productId": "1WQO",
+      "name": "Jacobs Crema Çekirdek Kahve 500 Gr",
+      "brand": "Jacobs",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 680.93,
+      "maxPrice": 899.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 680.93
+        },
+        {
+          "market": "Migros",
+          "price": 899.95
+        }
+      ]
+    },
+    {
+      "productId": "1OKN",
+      "name": "Davidoff Rich Aroma Filtre Kahve 250 Gr",
+      "brand": "Davidoff",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 686.9,
+      "maxPrice": 686.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 686.9
+        }
+      ]
+    },
+    {
+      "productId": "0924",
+      "name": "Juan Valdez Tolima Arabica Çekirdek Kahve 454 Gr",
+      "brand": "Juan Valdez",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 946.88,
+      "maxPrice": 946.88,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 946.88
+        }
+      ]
+    },
+    {
+      "productId": "3WS7",
+      "name": "Bonheur Çekirdek Kahve 1 Kg",
+      "brand": "Bonheur",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 949.9,
+      "maxPrice": 949.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 949.9
+        }
+      ]
+    },
+    {
+      "productId": "1Y0C",
+      "name": "The Whirl Africa Omni Roast Çekirdek Kahve 500 Gr",
+      "brand": "The Whirl",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 1199.95,
+      "maxPrice": 1199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1199.95
+        }
+      ]
+    },
+    {
+      "productId": "00XW",
+      "name": "Vip Latte Hazır Kahve 17 Gr",
+      "brand": "VIP",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 5.5,
+      "maxPrice": 5.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 5.5
+        }
+      ]
+    },
+    {
+      "productId": "2BPB",
+      "name": "Nescafé Classic Kahve 2 Gr",
+      "brand": "Nescafé",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 13.5,
+      "maxPrice": 13.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 13.5
+        }
+      ]
+    },
+    {
+      "productId": "1QFH",
+      "name": "Starbucks White Mocha Kahve Karışımı 24 Gr",
+      "brand": "Starbucks",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 19.95,
+      "maxPrice": 37.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.25
+        }
+      ]
+    },
+    {
+      "productId": "00RG",
+      "name": "Vip Ekopaket Kahve Beyazlatıcısı 200 Gr",
+      "brand": "VIP",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 49.5,
+      "maxPrice": 49.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 49.5
+        }
+      ]
+    },
+    {
+      "productId": "1OCG",
+      "name": "Nescafé Orijinal Soğuk Kahve 10 Adet",
+      "brand": "Nescafé",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 55,
+      "maxPrice": 55,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 55
+        }
+      ]
+    },
+    {
+      "productId": "0Y6H",
+      "name": "Hisar Kahve Damla Sakızlı Türk Kahvesi 100 Gr",
+      "brand": "Hisar Kahve",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 89.95,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "2CQJ",
+      "name": "Mia Cara Gold Kahve 100 Gr",
+      "brand": "Mia Cara",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "0U8Q",
+      "name": "Migros Gold Kahve 100 Gr",
+      "brand": "Migros",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 110.9,
+      "maxPrice": 110.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 110.9
+        }
+      ]
+    },
+    {
+      "productId": "2A3O",
+      "name": "Nescafé Coffee Mate Kahve Kreması 200 Gr",
+      "brand": "Nescafé",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 139.5,
+      "maxPrice": 139.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 139.5
+        }
+      ]
+    },
+    {
+      "productId": "0VQE",
+      "name": "Migros Filtre Kahve 225 Gr",
+      "brand": "Migros",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 199.5,
+      "maxPrice": 199.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.5
+        }
+      ]
+    },
+    {
+      "productId": "0AXI",
+      "name": "Carrefour Filtre Kahve 225 Gr",
+      "brand": "Carrefour",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "1B50",
+      "name": "Migros Filtre Kahve Etiyopya 225 Gr",
+      "brand": "Migros",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 199.95,
+      "maxPrice": 199.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 199.95
+        }
+      ]
+    },
+    {
+      "productId": "1REU",
+      "name": "L'or Espresso 08 Lungo Profondo Kapsül Kahve 10 Adet 52 Gr",
+      "brand": "L'or Espresso",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 229.95,
+      "maxPrice": 229.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 229.95
+        }
+      ]
+    },
+    {
+      "productId": "1ZRZ",
+      "name": "Tchibo Cafissimo Barista Caffe Crema Kapsül Kahve 10 Adet 76 Gr",
+      "brand": "Tchibo Cafissimo",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 234,
+      "maxPrice": 234,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 234
+        }
+      ]
+    },
+    {
+      "productId": "0KRY",
+      "name": "Coffee Mate Kahve Beyazlatıcısı 400 Gr",
+      "brand": "Coffee mate",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 333,
+      "maxPrice": 333,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 333
+        }
+      ]
+    },
+    {
+      "productId": "1XXU",
+      "name": "Venado Stella Filtre Kahve 250 Gr",
+      "brand": "Venado",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 374.25,
+      "maxPrice": 374.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 374.25
+        }
+      ]
+    },
+    {
+      "productId": "20TC",
+      "name": "Nescafé Gold Filtre Kahve 250 Gr",
+      "brand": "Nescafé",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 389.95,
+      "maxPrice": 393.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 389.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 393.9
+        }
+      ]
+    },
+    {
+      "productId": "10PU",
+      "name": "Lezzcafe Espresso Çekirdek Kahve 500 Gr",
+      "brand": "Lezzcafe",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 399,
+      "maxPrice": 399,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 399
+        }
+      ]
+    },
+    {
+      "productId": "1TW3",
+      "name": "Starbucks House Blend Öğütülmüş Kahve 200 Gr",
+      "brand": "Starbucks",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 399.95,
+      "maxPrice": 399.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 399.95
+        }
+      ]
+    },
+    {
+      "productId": "1T3L",
+      "name": "Jacobs Brazil Origin Çözünebilir Kahve 95 Gr",
+      "brand": "Jacobs",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 459,
+      "maxPrice": 477.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 459
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 477.5
+        }
+      ]
+    },
+    {
+      "productId": "1OQJ",
+      "name": "Tchibo Exclusive Decaf Filtre Kahve 250 Gr",
+      "brand": "Tchibo",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 549.95,
+      "maxPrice": 549.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 549.95
+        }
+      ]
+    },
+    {
+      "productId": "1Q9H",
+      "name": "Nescafé Gold Filtre Kahve 500 Gr",
+      "brand": "Nescafé Gold",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 754.95,
+      "maxPrice": 754.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 754.95
+        }
+      ]
+    },
+    {
+      "productId": "1S7U",
+      "name": "Jacobs Monarch Filtre Kahve 500 Gr",
+      "brand": "Jacobs",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 995.5,
+      "maxPrice": 995.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 995.5
+        }
+      ]
+    },
+    {
+      "productId": "0LKE",
+      "name": "Jacobs Monarch Filtre Kahve 500 Gr",
+      "brand": "Jacobs",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 995.5,
+      "maxPrice": 995.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 995.5
+        }
+      ]
+    },
+    {
+      "productId": "29UK",
+      "name": "Mahmood 3'ü 1 Arada Kahve 18 Gr",
+      "brand": "Mahmood",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 6.5,
+      "maxPrice": 6.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 6.5
+        }
+      ]
+    },
+    {
+      "productId": "1YR5",
+      "name": "Cafe Crown Latte Kahve 17 Gr",
+      "brand": "Cafe Crown",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 15,
+      "maxPrice": 15.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 15
+        },
+        {
+          "market": "Migros",
+          "price": 15.5
+        }
+      ]
+    },
+    {
+      "productId": "04S8",
+      "name": "Intenso Kahve Kreması 200 Gr",
+      "brand": "Intenso",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 47.5,
+      "maxPrice": 47.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 47.5
+        }
+      ]
+    },
+    {
+      "productId": "02YD",
+      "name": "Tarihi Adıyaman Dibek Kakule Kahve 200 Gr",
+      "brand": "Tarihi Adıyaman",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "2CQK",
+      "name": "Mia Cara Classic Kahve 100 Gr",
+      "brand": "Mia Cara",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "06OD",
+      "name": "Carrefour Klasik Kahve 100 Gr",
+      "brand": "Carrefour",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 106.95,
+      "maxPrice": 106.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 106.95
+        }
+      ]
+    },
+    {
+      "productId": "00MT",
+      "name": "Vip Instant Gold Kahve 100 Gr",
+      "brand": "VIP",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 109,
+      "maxPrice": 109,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 109
+        }
+      ]
+    },
+    {
+      "productId": "1NUE",
+      "name": "Coffee Mate Kahve Beyazlatıcısı 200 Gr",
+      "brand": "Coffee mate",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 139.5,
+      "maxPrice": 141.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 139.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 141.5
+        }
+      ]
+    },
+    {
+      "productId": "0ABN",
+      "name": "Mahmood 3ü1 Arada Kahve 24x18 Gr",
+      "brand": "Mahmood",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 149.5,
+      "maxPrice": 149.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 149.5
+        }
+      ]
+    },
+    {
+      "productId": "0GQF",
+      "name": "Migros Filtre Kahve Kolombiya 225 Gr",
+      "brand": "Migros",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 185,
+      "maxPrice": 185,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 185
+        }
+      ]
+    },
+    {
+      "productId": "2A3N",
+      "name": "Nescafé Classic Kahve 100 Gr",
+      "brand": "Nescafé",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 199.5,
+      "maxPrice": 199.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 199.5
+        }
+      ]
+    },
+    {
+      "productId": "0IGP",
+      "name": "Carrefour Gold Kahve 200 Gr",
+      "brand": "Carrefour",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 199.9,
+      "maxPrice": 199.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199.9
+        }
+      ]
+    },
+    {
+      "productId": "1J20",
+      "name": "Cafe Crown Filtre Kahve 250 Gr",
+      "brand": "Cafe Crown",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 199.9,
+      "maxPrice": 199.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199.9
+        }
+      ]
+    },
+    {
+      "productId": "0HMO",
+      "name": "Cafissimo Espresso Caramel Kapsül Kahve 10 Adet",
+      "brand": "Cafissimo",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 227.18,
+      "maxPrice": 227.18,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 227.18
+        }
+      ]
+    },
+    {
+      "productId": "1AF6",
+      "name": "Bonheur Çekirdek Kahve 250 Gr",
+      "brand": "Bonheur",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 239.9,
+      "maxPrice": 239.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 239.9
+        }
+      ]
+    },
+    {
+      "productId": "1AFU",
+      "name": "Bonheur Guatemala Filtre Kahve 250 Gr",
+      "brand": "Bonheur",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 269.9,
+      "maxPrice": 269.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 269.9
+        }
+      ]
+    },
+    {
+      "productId": "2A4W",
+      "name": "Nescafé Gold Granül Kahve 100 Gr",
+      "brand": "Nescafé",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 339.5,
+      "maxPrice": 339.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 339.5
+        }
+      ]
+    },
+    {
+      "productId": "2CRU",
+      "name": "Jacobs Cronat Gold Kahve 100 Gr",
+      "brand": "Jacobs",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 349,
+      "maxPrice": 349,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 349
+        }
+      ]
+    },
+    {
+      "productId": "1WQX",
+      "name": "Venado Moreno Çekirdek Kahve 250 Gr",
+      "brand": "Venado",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 374.25,
+      "maxPrice": 374.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 374.25
+        }
+      ]
+    },
+    {
+      "productId": "0PM7",
+      "name": "Lezzcafe Çekirdek Filtre Kahve 500 Gr",
+      "brand": "Lezzcafe",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 399,
+      "maxPrice": 399,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 399
+        }
+      ]
+    },
+    {
+      "productId": "1TF6",
+      "name": "Nescafé Gold Kafeinsiz Kahve 100 Gr",
+      "brand": "Nescafé Gold",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 629.95,
+      "maxPrice": 629.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 629.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z6N",
+      "name": "Jacobs Espresso Çekirdek Kahve 500 Gr",
+      "brand": "Jacobs",
+      "category": "Kahve",
+      "marketCount": 2,
+      "minPrice": 680.93,
+      "maxPrice": 899.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 680.93
+        },
+        {
+          "market": "Migros",
+          "price": 899.95
+        }
+      ]
+    },
+    {
+      "productId": "1M7E",
+      "name": "Tchibo Latin Grande Çekirdek Kahve 500 Gr",
+      "brand": "Tchibo",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 1299.95,
+      "maxPrice": 1299.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 1299.95
+        }
+      ]
+    },
+    {
+      "productId": "0G7L",
+      "name": "Moliendo Ravello Espresso Blend Kahve 1 Kg",
+      "brand": "Moliendo",
+      "category": "Kahve",
+      "marketCount": 1,
+      "minPrice": 1496.18,
+      "maxPrice": 1496.18,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 1496.18
+        }
+      ]
+    }
+  ]
+}

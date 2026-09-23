@@ -1,0 +1,142 @@
+{
+  "term": "kimyon",
+  "category": "Tatlandırıcı & baharat",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T21:02:37.804Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "109C",
+      "name": "Anadolu Mutfağı Kimyon 75 Gr",
+      "brand": "Anadolu Mutfağı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "02MX",
+      "name": "Destan Kimyon 75 Gr",
+      "brand": "Destan",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "035P",
+      "name": "Edalı Kimyon 75 Gr",
+      "brand": "Edalı",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 36.5,
+      "maxPrice": 36.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 36.5
+        }
+      ]
+    },
+    {
+      "productId": "0VC3",
+      "name": "Migros Kimyon 75 Gr",
+      "brand": "Migros",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 37.5,
+      "maxPrice": 37.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 37.5
+        }
+      ]
+    },
+    {
+      "productId": "16VQ",
+      "name": "Deva Kimyon 65 Gr",
+      "brand": "Deva",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 60.95,
+      "maxPrice": 60.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 60.95
+        }
+      ]
+    },
+    {
+      "productId": "1QLP",
+      "name": "Knorr Kimyon 65 Gr",
+      "brand": "Knorr",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 61.57,
+      "maxPrice": 90.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 61.57
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 90.9
+        }
+      ]
+    },
+    {
+      "productId": "1ZVV",
+      "name": "Bağdat Kimyon 75 Gr",
+      "brand": "Bağdat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 2,
+      "minPrice": 63.71,
+      "maxPrice": 84.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 63.71
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 84.95
+        }
+      ]
+    },
+    {
+      "productId": "1ADA",
+      "name": "Dünyahayat Kimyon 125 Gr",
+      "brand": "Dünyahayat",
+      "category": "Tuz Baharat ve Harçlar",
+      "marketCount": 1,
+      "minPrice": 151.95,
+      "maxPrice": 151.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 151.95
+        }
+      ]
+    }
+  ]
+}

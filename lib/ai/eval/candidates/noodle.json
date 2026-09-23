@@ -1,0 +1,935 @@
+{
+  "term": "noodle",
+  "category": "Dünya mutfağı",
+  "split": "holdout",
+  "capturedAt": "2026-09-20T21:05:40.617Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "1YQU",
+      "name": "Indomie Tavuk Noodle 70 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 14.96,
+      "maxPrice": 20.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.96
+        },
+        {
+          "market": "Şok",
+          "price": 19.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 20.25
+        }
+      ]
+    },
+    {
+      "productId": "1SPH",
+      "name": "Indomie Special Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 14.96,
+      "maxPrice": 14.96,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.96
+        }
+      ]
+    },
+    {
+      "productId": "1UTD",
+      "name": "Indomie Sebzeli Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 14.96,
+      "maxPrice": 20.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.96
+        },
+        {
+          "market": "Şok",
+          "price": 19.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 20.25
+        }
+      ]
+    },
+    {
+      "productId": "06GC",
+      "name": "Noodlex Spesiyal Çeşnili Noodle 70 Gr",
+      "brand": "Noodlex",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 15.5,
+      "maxPrice": 15.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 15.5
+        }
+      ]
+    },
+    {
+      "productId": "1SUB",
+      "name": "Dudomi Körili Noodle 70 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "0XQR",
+      "name": "Dudomi Tavuk Çeşnili Noodle 70 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "1KVM",
+      "name": "Indomie Special Paket Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "2B2C",
+      "name": "Indomie Special Sebzeli Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "1RRZ",
+      "name": "Indomie Jumbo Tavuk Aromalı Hazır Noodle 120 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 25.75,
+      "maxPrice": 25.75,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 25.75
+        }
+      ]
+    },
+    {
+      "productId": "1DRA",
+      "name": "Nissin Yakisoba Japon Soslu Noodle 83 Gr",
+      "brand": "Nissin",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 27.5,
+      "maxPrice": 27.5,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 27.5
+        }
+      ]
+    },
+    {
+      "productId": "1YOC",
+      "name": "Dudomi Bardak Noodle 60 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 29.75,
+      "maxPrice": 29.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 29.75
+        }
+      ]
+    },
+    {
+      "productId": "20T8",
+      "name": "Indomie Sebze Çeşnili Bardak Noodle 60 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 30.38,
+      "maxPrice": 40.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30.38
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 40.9
+        }
+      ]
+    },
+    {
+      "productId": "1VYK",
+      "name": "Indomie Dana Eti Çeşnili Bardak Noodle 60 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 4,
+      "minPrice": 30.38,
+      "maxPrice": 40.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30.38
+        },
+        {
+          "market": "Şok",
+          "price": 40
+        },
+        {
+          "market": "A101",
+          "price": 40
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 40.9
+        }
+      ]
+    },
+    {
+      "productId": "1HTY",
+      "name": "Dudomi Peynirli Jalapeno Noodle 80 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "0O9Y",
+      "name": "Dudomi Körili Noodle 60 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "2A78",
+      "name": "Indomie Köri Bardak Noodle 60 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 40.25,
+      "maxPrice": 40.25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 40.25
+        }
+      ]
+    },
+    {
+      "productId": "1ZGV",
+      "name": "Indomie Tavuk Çeşnili Noodle 5x70 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 64.13,
+      "maxPrice": 86.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 64.13
+        },
+        {
+          "market": "BİM",
+          "price": 85
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 86.5
+        }
+      ]
+    },
+    {
+      "productId": "1K0G",
+      "name": "Indomie Tavuklu Hazır Noodle 5 Adet",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 69.9,
+      "maxPrice": 69.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.9
+        }
+      ]
+    },
+    {
+      "productId": "1HTQ",
+      "name": "Nudo Vegan Noodle 350 Gr",
+      "brand": "Nudo",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "21HE",
+      "name": "Dudomi Körili Paket Noodle 350 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 80,
+      "maxPrice": 80,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "productId": "2B52",
+      "name": "Indomie Tavuklu Noodle 5x70 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "3WCM",
+      "name": "Indomie Körili Noodle 5 Adet",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 86.5,
+      "maxPrice": 86.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 86.5
+        }
+      ]
+    },
+    {
+      "productId": "1GIU",
+      "name": "Dudomi Körili Noodle 10x70 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "0X0N",
+      "name": "Gurmepack Tavuklu Noodle 250 Gr",
+      "brand": "Gurmepack",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 269,
+      "maxPrice": 269,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 269
+        }
+      ]
+    },
+    {
+      "productId": "1YWW",
+      "name": "Indomie Köri Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 14.96,
+      "maxPrice": 20.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 14.96
+        },
+        {
+          "market": "Şok",
+          "price": 19.75
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 20.25
+        }
+      ]
+    },
+    {
+      "productId": "0WH1",
+      "name": "Noodlex Köri Çeşnili Noodle 70 Gr",
+      "brand": "Noodlex",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 15.5,
+      "maxPrice": 15.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 15.5
+        }
+      ]
+    },
+    {
+      "productId": "0Z3W",
+      "name": "Noodlex Tavuk Aromalı Noodle 70 Gr",
+      "brand": "Noodlex",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 15.5,
+      "maxPrice": 15.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 15.5
+        }
+      ]
+    },
+    {
+      "productId": "2B36",
+      "name": "Dudomi Köri Tavuklu Noodle 70 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 18.5,
+      "maxPrice": 18.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 18.5
+        }
+      ]
+    },
+    {
+      "productId": "1KYP",
+      "name": "Indomie Jumbo Tavuk Aromalı Noodle 120 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.13,
+      "maxPrice": 19.13,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 19.13
+        }
+      ]
+    },
+    {
+      "productId": "1JPF",
+      "name": "Indomie Sebze Spesiyal Hazır Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "1IBK",
+      "name": "Indomie Tavuk Köri Tavuk Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "2A77",
+      "name": "Indomie Tavuk Körili Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 19.75,
+      "maxPrice": 19.75,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 19.75
+        }
+      ]
+    },
+    {
+      "productId": "1L7M",
+      "name": "Indomie Spesiyel Tavuk Paket Noodle 75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 20.25,
+      "maxPrice": 20.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 20.25
+        }
+      ]
+    },
+    {
+      "productId": "2AN9",
+      "name": "Indomie Tavuklu Jumbo Hazır Noodle 120 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "1XXS",
+      "name": "Indomie Jumbo Körili Hazır Noodle 120 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 25,
+      "maxPrice": 25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "productId": "2AN8",
+      "name": "Indomie Soya Soslu Hazır Noodle 80 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 26.5,
+      "maxPrice": 26.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 26.5
+        }
+      ]
+    },
+    {
+      "productId": "1WYV",
+      "name": "Indomie Tavuk Çeşnili Bardak Noodle 60 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 30.38,
+      "maxPrice": 40.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30.38
+        },
+        {
+          "market": "Şok",
+          "price": 40
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 40.9
+        }
+      ]
+    },
+    {
+      "productId": "1KQG",
+      "name": "Indomie Köri Çeşnili Bardak Noodle 60 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 30.38,
+      "maxPrice": 40.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 30.38
+        },
+        {
+          "market": "Şok",
+          "price": 40
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 40.9
+        }
+      ]
+    },
+    {
+      "productId": "1HKI",
+      "name": "Dudomi Tom Yum Bardak Noodle 60 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "1LB9",
+      "name": "Dudomi Tavuk Çeşnili Noodle 60 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 39.95,
+      "maxPrice": 39.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 39.95
+        }
+      ]
+    },
+    {
+      "productId": "2C9H",
+      "name": "Indomie Bardak Tavuk Noodle 60 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 40.25,
+      "maxPrice": 40.25,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 40.25
+        }
+      ]
+    },
+    {
+      "productId": "1HKX",
+      "name": "Dudomi Kremalı Fesleğenli Peynirli Bardak Noodle 8 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "1HKL",
+      "name": "Dudomi Kremalı Körili Tavuk Çeşnili Bardak Noodle 80 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 49.95,
+      "maxPrice": 49.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.95
+        }
+      ]
+    },
+    {
+      "productId": "1USL",
+      "name": "Indomie Köri Çeşnili Noodle 5x75 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 69.9,
+      "maxPrice": 85.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 69.9
+        },
+        {
+          "market": "BİM",
+          "price": 85
+        },
+        {
+          "market": "Migros",
+          "price": 85.5
+        }
+      ]
+    },
+    {
+      "productId": "1HKU",
+      "name": "Nudo Tam Buğdaylı Noodle 350 Gr",
+      "brand": "Nudo",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 79.95,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "05AC",
+      "name": "Dudomi Körili Noodle 5x70 Gr",
+      "brand": "Dudomi",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 84.5,
+      "maxPrice": 84.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 84.5
+        }
+      ]
+    },
+    {
+      "productId": "2B51",
+      "name": "Indomie Körili Noodle 5x75 Gr",
+      "brand": "Indomıe",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "0CQD",
+      "name": "Indomie Sebze Aromalı Noodle 5 Adet",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 86.5,
+      "maxPrice": 86.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 86.5
+        }
+      ]
+    },
+    {
+      "productId": "1M81",
+      "name": "Indomie Gurme Acı ve Baharatlı Hazır Noodle 80 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 3,
+      "minPrice": 19.9,
+      "maxPrice": 27.25,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 19.9
+        },
+        {
+          "market": "Migros",
+          "price": 20.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.25
+        }
+      ]
+    },
+    {
+      "productId": "1S5F",
+      "name": "Indomie Gurme Soya Soslu Hazır Noodle 80 Gr",
+      "brand": "İndomie",
+      "category": "Hazır Yemekler",
+      "marketCount": 2,
+      "minPrice": 20.21,
+      "maxPrice": 27.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 20.21
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 27.25
+        }
+      ]
+    },
+    {
+      "productId": "1JKT",
+      "name": "Nudo Egg Noodle 350 Gr",
+      "brand": "Nudo",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 3,
+      "minPrice": 59,
+      "maxPrice": 79.95,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 59
+        },
+        {
+          "market": "Şok",
+          "price": 65
+        },
+        {
+          "market": "Migros",
+          "price": 79.95
+        }
+      ]
+    },
+    {
+      "productId": "11FI",
+      "name": "Chefline Egg Noodle 350 Gr",
+      "brand": "Chefline",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 1,
+      "minPrice": 78,
+      "maxPrice": 78,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 78
+        }
+      ]
+    },
+    {
+      "productId": "1OZ4",
+      "name": "Dolco Egg Noodle Çin Eriştesi 350 Gr",
+      "brand": "Dolco",
+      "category": "Mantı Makarna ve Erişte",
+      "marketCount": 2,
+      "minPrice": 95.95,
+      "maxPrice": 124.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 95.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 124.9
+        }
+      ]
+    },
+    {
+      "productId": "18DE",
+      "name": "Baixiang Baharatlı Dana Çorbası Aromalı Erişte 111 Gr",
+      "brand": "Baixiang",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 116,
+      "maxPrice": 116,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 116
+        }
+      ]
+    },
+    {
+      "productId": "0FNS",
+      "name": "Kore Usulü Hindi Aromalı Erişte 112 Gr",
+      "brand": "Markasız",
+      "category": "Hazır Yemekler",
+      "marketCount": 1,
+      "minPrice": 130,
+      "maxPrice": 130,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 130
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1194 @@
+{
+  "term": "fındık",
+  "category": "Bakliyat & kuruyemiş",
+  "split": "train",
+  "capturedAt": "2026-09-20T20:56:03.601Z",
+  "location": {
+    "lat": 41.06495,
+    "lng": 28.983262,
+    "distance": 10,
+    "depotCount": 35
+  },
+  "candidates": [
+    {
+      "productId": "20LB",
+      "name": "Ülker Çikolata Fındık Rüyası 40 Gr",
+      "brand": "Ülker",
+      "category": "Çikolata",
+      "marketCount": 2,
+      "minPrice": 34.95,
+      "maxPrice": 36,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 34.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 36
+        }
+      ]
+    },
+    {
+      "productId": "0PNA",
+      "name": "Knoppers Gofret Fındık 25 Gr",
+      "brand": "Knoppers",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 51.9,
+      "maxPrice": 51.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 51.9
+        }
+      ]
+    },
+    {
+      "productId": "20NZ",
+      "name": "Tadelle Küp Fındık Kremalı Gofret 200 Gr",
+      "brand": "Tadelle",
+      "category": "Gofret",
+      "marketCount": 2,
+      "minPrice": 68,
+      "maxPrice": 89.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 68
+        },
+        {
+          "market": "Migros",
+          "price": 89.95
+        }
+      ]
+    },
+    {
+      "productId": "1YM2",
+      "name": "Ülker Fındık Rüyası Çikolata 75 Gr",
+      "brand": "Ülker",
+      "category": "Çikolata",
+      "marketCount": 3,
+      "minPrice": 70,
+      "maxPrice": 73.95,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 70
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 73.95
+        },
+        {
+          "market": "Migros",
+          "price": 73.95
+        }
+      ]
+    },
+    {
+      "productId": "1C5W",
+      "name": "Aktürk Fındık Kremalı Gofret 475 Gr",
+      "brand": "Aktürk",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 79,
+      "maxPrice": 79,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 79
+        }
+      ]
+    },
+    {
+      "productId": "3WZX",
+      "name": "Amigo %70 Fındık Ezmesi 300 Gr",
+      "brand": "Amigo",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 179,
+      "maxPrice": 179,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 179
+        }
+      ]
+    },
+    {
+      "productId": "1ZFB",
+      "name": "Ülker Fındık Rüyası Kakaolu Fındık Kreması Cam Kavanoz 350 Gr",
+      "brand": "Ülker",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 180,
+      "maxPrice": 180,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 180
+        }
+      ]
+    },
+    {
+      "productId": "1I38",
+      "name": "Fiskobirlik Fındık Ezmesi 300 Gr",
+      "brand": "Fiskobirlik",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 199,
+      "maxPrice": 360.45,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 199
+        },
+        {
+          "market": "Migros",
+          "price": 360.45
+        }
+      ]
+    },
+    {
+      "productId": "0806",
+      "name": "Trabzon Tarım Fındık Ezmesi 300 Gr",
+      "brand": "Trabzon Tarım",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 215,
+      "maxPrice": 215,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 215
+        }
+      ]
+    },
+    {
+      "productId": "1YNI",
+      "name": "Fiskobirlik Fındık Ezmesi 180 Gr",
+      "brand": "Fiskobirlik",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 217.95,
+      "maxPrice": 230.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 217.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 230.5
+        }
+      ]
+    },
+    {
+      "productId": "17X7",
+      "name": "Gourmet Çelebi Fındık Ezmesi 200 Gr",
+      "brand": "Gourmet Çelebi",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 232.9,
+      "maxPrice": 232.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 232.9
+        }
+      ]
+    },
+    {
+      "productId": "0LS0",
+      "name": "Şenocak Fındık Ezmesi 300 Gr",
+      "brand": "Şenocak",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 243.5,
+      "maxPrice": 243.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 243.5
+        }
+      ]
+    },
+    {
+      "productId": "183P",
+      "name": "By İzzet Kakaolu Fındık Kreması %35 Fındık 320 Gr",
+      "brand": "By İzzet",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 249.95,
+      "maxPrice": 249.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 249.95
+        }
+      ]
+    },
+    {
+      "productId": "1Y8G",
+      "name": "Ülker Fındık Rüyası Kakaolu Fındık Kreması Cam Kavanoz 625 Gr",
+      "brand": "Ülker",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 290.45,
+      "maxPrice": 290.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 290.45
+        }
+      ]
+    },
+    {
+      "productId": "0FYF",
+      "name": "Ülker Golden Fındık Ezmesi 2.1 Kg",
+      "brand": "Ülker",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 297.9,
+      "maxPrice": 297.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 297.9
+        }
+      ]
+    },
+    {
+      "productId": "1QQJ",
+      "name": "Torku Fındık Ezmesi 370 Gr",
+      "brand": "Torku",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 349.95,
+      "maxPrice": 349.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.95
+        }
+      ]
+    },
+    {
+      "productId": "0VKI",
+      "name": "Çotanak Fındık Yağı 1 Lt",
+      "brand": "Çotanak",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 349.95,
+      "maxPrice": 349.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 349.95
+        }
+      ]
+    },
+    {
+      "productId": "1P9J",
+      "name": "Sarelle Fındık Ezmesi 350 Gr",
+      "brand": "Sarelle",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 369.95,
+      "maxPrice": 373.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 369.95
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 373.9
+        }
+      ]
+    },
+    {
+      "productId": "1TD0",
+      "name": "Abdurrahman Tatlıcı Tadıbu Fındık Ezmesi 330 Gr",
+      "brand": "Tadıbu",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 384.5,
+      "maxPrice": 388.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 384.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 388.5
+        }
+      ]
+    },
+    {
+      "productId": "1JFC",
+      "name": "Abdurrahman Tatlıcı Tadıbu Parçacıklı Fındık Ezmesi 330 Gr",
+      "brand": "Tadıbu",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 384.5,
+      "maxPrice": 388.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 384.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 388.5
+        }
+      ]
+    },
+    {
+      "productId": "1S07",
+      "name": "Fiskobirlik Şeker İlavesiz Fındık Ezmesi 300 Gr",
+      "brand": "Fiskobirlik",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 403.95,
+      "maxPrice": 403.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 403.95
+        }
+      ]
+    },
+    {
+      "productId": "0VNC",
+      "name": "Çotanak Fındık Yağı 2 Lt",
+      "brand": "Çotanak",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 649.95,
+      "maxPrice": 649.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 649.95
+        }
+      ]
+    },
+    {
+      "productId": "06VE",
+      "name": "Fındık İçi 1 Kg",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 899,
+      "maxPrice": 899,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 899
+        }
+      ]
+    },
+    {
+      "productId": "0S4J",
+      "name": "Çotanak Fındık Yağı 5 Lt",
+      "brand": "Çotanak",
+      "category": "Sıvı Yağlar",
+      "marketCount": 1,
+      "minPrice": 999.95,
+      "maxPrice": 999.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 999.95
+        }
+      ]
+    },
+    {
+      "productId": "1KZP",
+      "name": "Ülker Beyaz Çikolatalı Fındık Kremalı Gofret 35 Gr",
+      "brand": "Ülker",
+      "category": "Gofret",
+      "marketCount": 4,
+      "minPrice": 17.5,
+      "maxPrice": 17.9,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 17.5
+        },
+        {
+          "market": "hakmar",
+          "price": 17.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 17.9
+        },
+        {
+          "market": "Migros",
+          "price": 17.9
+        }
+      ]
+    },
+    {
+      "productId": "1O9V",
+      "name": "Dippo Fındık Krema Dolgulu Draje Oyuncaklı Gofret 25 Gr",
+      "brand": "Dippo",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 18.95,
+      "maxPrice": 18.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 18.95
+        }
+      ]
+    },
+    {
+      "productId": "20OW",
+      "name": "Nestlé Crunch Patlak Pirinçli Fındık Kremalı Gofret 27 Gr",
+      "brand": "Nestlé",
+      "category": "Gofret",
+      "marketCount": 2,
+      "minPrice": 24.9,
+      "maxPrice": 29.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 24.9
+        },
+        {
+          "market": "Migros",
+          "price": 29.95
+        }
+      ]
+    },
+    {
+      "productId": "00TT",
+      "name": "Centro Fındık Kremalı Gofret 142 Gr",
+      "brand": "Centro",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 29,
+      "maxPrice": 29,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 29
+        }
+      ]
+    },
+    {
+      "productId": "1KH7",
+      "name": "Tadelle Fındık Dolgulu Beyaz Çikolata 30 Gr",
+      "brand": "Tadelle",
+      "category": "Çikolata",
+      "marketCount": 3,
+      "minPrice": 29.5,
+      "maxPrice": 37.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 29.5
+        },
+        {
+          "market": "Migros",
+          "price": 29.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.9
+        }
+      ]
+    },
+    {
+      "productId": "1I4P",
+      "name": "Tadelle Fındık Dolgulu Bitter Çikolata 30 Gr",
+      "brand": "Tadelle",
+      "category": "Çikolata",
+      "marketCount": 2,
+      "minPrice": 29.5,
+      "maxPrice": 37.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 29.5
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 37.9
+        }
+      ]
+    },
+    {
+      "productId": "1OCM",
+      "name": "Ülker Deluxe Gofret Fındık Kremalı 220 Gr",
+      "brand": "Ülker",
+      "category": "Gofret",
+      "marketCount": 3,
+      "minPrice": 44.95,
+      "maxPrice": 58.5,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 44.95
+        },
+        {
+          "market": "Migros",
+          "price": 54.9
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 58.5
+        }
+      ]
+    },
+    {
+      "productId": "0QQN",
+      "name": "Fiorella Çikolatalı Fındık Kremalı Gofret 60 Gr",
+      "brand": "Fiorella",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 57.95,
+      "maxPrice": 57.95,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 57.95
+        }
+      ]
+    },
+    {
+      "productId": "205O",
+      "name": "Kahve Dünyası Sütlü Çikolatalı Fındık Draje 60 Gr",
+      "brand": "Kahve Dünyası",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 109.9,
+      "maxPrice": 109.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 109.9
+        }
+      ]
+    },
+    {
+      "productId": "03E3",
+      "name": "Bonheur Sütlü Fındık Draje 60 Gr",
+      "brand": "Bonheur",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 115.5,
+      "maxPrice": 115.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 115.5
+        }
+      ]
+    },
+    {
+      "productId": "0T8K",
+      "name": "Şenocak Kıyılmış Fındık 100 Gr",
+      "brand": "Şenocak",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 118.45,
+      "maxPrice": 118.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 118.45
+        }
+      ]
+    },
+    {
+      "productId": "0ZNK",
+      "name": "Karmen Kakaolu Fındık Kreması 400 Gr",
+      "brand": "Karmen",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 119,
+      "maxPrice": 119,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 119
+        }
+      ]
+    },
+    {
+      "productId": "20Q5",
+      "name": "Gol Sütlü Çikolata Kaplı Fındık Draje 125 Gr",
+      "brand": "Gol",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 119.9,
+      "maxPrice": 119.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 119.9
+        }
+      ]
+    },
+    {
+      "productId": "20NS",
+      "name": "Milka Sürülebilir Fındık Ezmesi 350 Gr",
+      "brand": "Milka",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 3,
+      "minPrice": 149,
+      "maxPrice": 297.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 149
+        },
+        {
+          "market": "Migros",
+          "price": 169
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 297.9
+        }
+      ]
+    },
+    {
+      "productId": "0ZUE",
+      "name": "Çerezya Çiğ Fındık 150 Gr",
+      "brand": "Çerezya",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 153,
+      "maxPrice": 153,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 153
+        }
+      ]
+    },
+    {
+      "productId": "0TDW",
+      "name": "Amigo Dalından Çiğ Fındık 150 Gr",
+      "brand": "Amigo",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 153,
+      "maxPrice": 153,
+      "markets": [
+        {
+          "market": "Şok",
+          "price": 153
+        }
+      ]
+    },
+    {
+      "productId": "0S8H",
+      "name": "Çerezya Tuzlu Fındık 150 Gr",
+      "brand": "Çerezya",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 153,
+      "maxPrice": 153,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 153
+        }
+      ]
+    },
+    {
+      "productId": "0OEG",
+      "name": "Kellogg's Granola Çikolata Fındık 250 Gr",
+      "brand": "Kellogg's",
+      "category": "Kahvaltılık Gevrek Bar ve Granola",
+      "marketCount": 1,
+      "minPrice": 181.9,
+      "maxPrice": 181.9,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 181.9
+        }
+      ]
+    },
+    {
+      "productId": "0Z25",
+      "name": "Çerezya Fındık İçi 150 Gr",
+      "brand": "Çerezya",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 188,
+      "maxPrice": 188,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 188
+        }
+      ]
+    },
+    {
+      "productId": "29WG",
+      "name": "Nutella Fındık Kreması 400 Gr",
+      "brand": "Nutella",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 189,
+      "maxPrice": 189,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 189
+        }
+      ]
+    },
+    {
+      "productId": "14SG",
+      "name": "Hanımefendi Fındık Fıstık ve Sütlü Çikolata 300 Gr",
+      "brand": "Hanımefendi",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 219,
+      "maxPrice": 219,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 219
+        }
+      ]
+    },
+    {
+      "productId": "0MGN",
+      "name": "Tadım Kavrulmuş Fındık İçi 180 Gr",
+      "brand": "Tadım",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 2,
+      "minPrice": 220,
+      "maxPrice": 222.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 220
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 222.5
+        }
+      ]
+    },
+    {
+      "productId": "1JBZ",
+      "name": "Bahçeden Tuzlu Kavrulmuş Fındık 130 Gr",
+      "brand": "Bahçeden",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 237.5,
+      "maxPrice": 237.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 237.5
+        }
+      ]
+    },
+    {
+      "productId": "0L4T",
+      "name": "Kavrulmuş Fındık 270 Gr",
+      "brand": "Markasız",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 329.9,
+      "maxPrice": 329.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 329.9
+        }
+      ]
+    },
+    {
+      "productId": "1535",
+      "name": "Migros Bailo Sütlü Çikolata Kaplı Fındık Kremalı Gofret 35 Gr",
+      "brand": "Migros",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 17.5,
+      "maxPrice": 17.5,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 17.5
+        }
+      ]
+    },
+    {
+      "productId": "206W",
+      "name": "Eti Canga Yer Fıstığı Kaplı Fındık Kremalı Gofret 34 Gr",
+      "brand": "Eti",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 17.5,
+      "maxPrice": 17.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 17.5
+        }
+      ]
+    },
+    {
+      "productId": "0624",
+      "name": "Centro Sütlü Fındık Kremalı Gofret 60 Gr",
+      "brand": "Centro",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 19.5,
+      "maxPrice": 19.5,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 19.5
+        }
+      ]
+    },
+    {
+      "productId": "1HGP",
+      "name": "Ülker Dido Küçük Fındık Parçalı Gofret 35 Gr",
+      "brand": "Ülker",
+      "category": "Gofret",
+      "marketCount": 2,
+      "minPrice": 25,
+      "maxPrice": 34.95,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 25
+        },
+        {
+          "market": "Migros",
+          "price": 34.95
+        }
+      ]
+    },
+    {
+      "productId": "1Z2F",
+      "name": "Torku Fındık Kremalı Bisküvi 244 Gr",
+      "brand": "Torku",
+      "category": "Bisküvi ve Kraker",
+      "marketCount": 1,
+      "minPrice": 28.25,
+      "maxPrice": 28.25,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 28.25
+        }
+      ]
+    },
+    {
+      "productId": "21FB",
+      "name": "Eti Hoşbeş Fındık Kremalı Gofret 142 Gr",
+      "brand": "Eti",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 47,
+      "maxPrice": 47,
+      "markets": [
+        {
+          "market": "A101",
+          "price": 47
+        }
+      ]
+    },
+    {
+      "productId": "1ZGG",
+      "name": "Migros Sütlü Çikolata Kaplı Fındık Draje 60 Gr",
+      "brand": "Migros",
+      "category": "Çikolata",
+      "marketCount": 1,
+      "minPrice": 49.9,
+      "maxPrice": 49.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 49.9
+        }
+      ]
+    },
+    {
+      "productId": "146G",
+      "name": "Wafermaster Crepe Fındık Krema Gofret 216 Gr",
+      "brand": "Wafermaster",
+      "category": "Gofret",
+      "marketCount": 1,
+      "minPrice": 75,
+      "maxPrice": 75,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 75
+        }
+      ]
+    },
+    {
+      "productId": "0HIP",
+      "name": "B-5 Çerez Fındık 40 Gr",
+      "brand": "B-5",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 77.25,
+      "maxPrice": 77.25,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 77.25
+        }
+      ]
+    },
+    {
+      "productId": "01A7",
+      "name": "Seyidoğlu Boool Fındık Kreması 500 Gr",
+      "brand": "Seyidoğlu",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 79.5,
+      "maxPrice": 79.5,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 79.5
+        }
+      ]
+    },
+    {
+      "productId": "1YEB",
+      "name": "Sayley Sütlü Fındık Kreması 500 Gr",
+      "brand": "Sayley",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 85,
+      "maxPrice": 85,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 85
+        }
+      ]
+    },
+    {
+      "productId": "059C",
+      "name": "Carrefour Susam Kaplamalı Fındık 80 Gr",
+      "brand": "Carrefour",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 105,
+      "maxPrice": 105,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 105
+        }
+      ]
+    },
+    {
+      "productId": "0IR3",
+      "name": "Tadım Fındık İçi 90 Gr",
+      "brand": "Tadım",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 111.5,
+      "maxPrice": 111.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 111.5
+        }
+      ]
+    },
+    {
+      "productId": "1A5P",
+      "name": "Peripella Kakaolu Fındık Kreması 630 Gr",
+      "brand": "Peripella",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 129,
+      "maxPrice": 129,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 129
+        }
+      ]
+    },
+    {
+      "productId": "0AGY",
+      "name": "Carrefour Çiğ Fındık 150 Gr",
+      "brand": "Carrefour",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 154,
+      "maxPrice": 154,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 154
+        }
+      ]
+    },
+    {
+      "productId": "0MGZ",
+      "name": "Fomilk Şekersiz Fındık Sütü 1 Lt",
+      "brand": "Fomilk",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 175,
+      "maxPrice": 175,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "productId": "0YAG",
+      "name": "Migros Kavrulmuş Fındık İçi 150 Gr",
+      "brand": "Migros",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 185,
+      "maxPrice": 185,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 185
+        }
+      ]
+    },
+    {
+      "productId": "1IJX",
+      "name": "Sarelle Kakaolu Fındık Ezmesi 350 Gr",
+      "brand": "Sarelle",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 208.45,
+      "maxPrice": 208.45,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 208.45
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 208.45
+        }
+      ]
+    },
+    {
+      "productId": "1YIN",
+      "name": "Nutella Kakaolu Fındık Kreması 1 Kg",
+      "brand": "Nutella",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 210,
+      "maxPrice": 415.9,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 210
+        },
+        {
+          "market": "CarrefourSA",
+          "price": 415.9
+        }
+      ]
+    },
+    {
+      "productId": "0NYD",
+      "name": "Mlife Çiğ İç Fındık 200 Gr",
+      "brand": "Mlife",
+      "category": "Kuruyemiş ve Kuru Meyve",
+      "marketCount": 1,
+      "minPrice": 219.9,
+      "maxPrice": 219.9,
+      "markets": [
+        {
+          "market": "Migros",
+          "price": 219.9
+        }
+      ]
+    },
+    {
+      "productId": "0XB5",
+      "name": "Alpro Fındık Sütü 1 Lt",
+      "brand": "Alpro",
+      "category": "Diğer Süt Ürünleri",
+      "marketCount": 1,
+      "minPrice": 227.5,
+      "maxPrice": 227.5,
+      "markets": [
+        {
+          "market": "CarrefourSA",
+          "price": 227.5
+        }
+      ]
+    },
+    {
+      "productId": "09Q9",
+      "name": "Sarelle Kakaolu Fındık Kreması 700 Gr",
+      "brand": "Sarelle",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 2,
+      "minPrice": 228,
+      "maxPrice": 345,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 228
+        },
+        {
+          "market": "hakmar",
+          "price": 345
+        }
+      ]
+    },
+    {
+      "productId": "0PNL",
+      "name": "Torku Banada Fındık Kreması 700 Gr",
+      "brand": "Torku",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 259,
+      "maxPrice": 259,
+      "markets": [
+        {
+          "market": "hakmar",
+          "price": 259
+        }
+      ]
+    },
+    {
+      "productId": "0U4F",
+      "name": "Nutella Kakaolu Fındık Kreması 630 Gr",
+      "brand": "Nutella",
+      "category": "Sürülebilir Ürünler ve Kahvaltılık Soslar",
+      "marketCount": 1,
+      "minPrice": 265,
+      "maxPrice": 265,
+      "markets": [
+        {
+          "market": "BİM",
+          "price": 265
+        }
+      ]
+    }
+  ]
+}
