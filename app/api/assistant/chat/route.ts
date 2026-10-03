@@ -44,12 +44,12 @@ import type {
   ParsedItem,
   ReceiptComparison,
 } from "@/lib/ai/schemas"
+import { createConversation } from "@/lib/actions/conversations"
 import {
   appendMessages,
-  createConversation,
   setConversationTitle,
   setConversationStatus,
-} from "@/lib/actions/conversations"
+} from "@/lib/data/conversations"
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
 import { and, eq } from "drizzle-orm"
 import { db, conversations } from "@/lib/db"

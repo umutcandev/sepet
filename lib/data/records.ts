@@ -1,7 +1,7 @@
 import { cache } from "react"
 
-import { getBasketDetail } from "@/lib/actions/baskets"
-import { getReceiptDetail } from "@/lib/actions/receipts"
+import { getBasketDetail } from "@/lib/data/baskets"
+import { getReceiptDetail } from "@/lib/data/receipts"
 
 /**
  * `generateMetadata` ve sayfa bileşeni aynı kaydı okur. Next.js yalnızca `fetch`

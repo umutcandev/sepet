@@ -1,9 +1,9 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { and, asc, count, desc, eq, exists, ilike, inArray, isNotNull, or, sql } from "drizzle-orm"
+import { and, asc, count, desc, eq, exists, ilike, inArray, or, sql } from "drizzle-orm"
 import { auth } from "@/auth"
-import { db, baskets, basketItems, conversations } from "@/lib/db"
+import { db, baskets, basketItems } from "@/lib/db"
 import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
@@ -330,77 +330,4 @@ export async function searchBaskets(
     )
     .orderBy(...orderByForBasketSort(sort))
     .limit(200)
-}
-
-/**
- * Bir sohbet için kullanıcının kaydettiği sepetlerin {toolCallId → basketId}
- * eşlemesini döndürür. Sohbet rehidrate edilirken her `tool-basketContext`
- * çıktısı için "Kaydedildi" durumunu sunucudan kurabilmek için kullanılır.
- */
-export async function getSavedBasketsForConversation(
-  conversationId: string,
-  userId: string,
-): Promise<Record<string, string>> {
-  const rows = await db
-    .select({
-      id: baskets.id,
-      sourceToolCallId: baskets.sourceToolCallId,
-    })
-    .from(baskets)
-    .where(
-      and(
-        eq(baskets.userId, userId),
-        eq(baskets.conversationId, conversationId),
-        isNotNull(baskets.sourceToolCallId),
-      ),
-    )
-  const map: Record<string, string> = {}
-  for (const row of rows) {
-    if (row.sourceToolCallId) map[row.sourceToolCallId] = row.id
-  }
-  return map
-}
-
-/**
- * Sepet + kalemleri + (varsa) geldiği sohbet.
- *
- * İki sorgu ardışık çalışıyordu; birbirine bağlı olmadıkları için paralel.
- * Kalemler `sortIndex` ile çekilir — sırasız SELECT'in bugün doğru görünmesi
- * tesadüftü (bkz. basket_item.sortIndex).
- *
- * `conversationId` hem yazılıyor hem `set null` ile özenle korunuyordu ama
- * hiçbir yerde okunmuyordu: kullanıcı "bu sepeti neden böyle kurdum"a
- * dönemiyordu. Sohbet silinmişse join boş döner, rozet gizlenir.
- */
-export async function getBasketDetail(id: string, userId: string) {
-  if (!isUuid(id)) return null
-
-  // İki sorgu birbirine bağlı değil → paralel. Kalem sorgusu sahiplik
-  // kontrolünden bağımsız çalışır ama sonucu yalnızca sepet bu kullanıcıya
-  // aitse döner; aksi halde aşağıda daha okunmadan atılır.
-  const [rows, items] = await Promise.all([
-    db
-      .select({ basket: baskets, conversationTitle: conversations.title })
-      .from(baskets)
-      .leftJoin(conversations, eq(conversations.id, baskets.conversationId))
-      .where(and(eq(baskets.id, id), eq(baskets.userId, userId)))
-      .limit(1),
-    db
-      .select()
-      .from(basketItems)
-      .where(eq(basketItems.basketId, id))
-      .orderBy(asc(basketItems.sortIndex), asc(basketItems.rawName)),
-  ])
-
-  const row = rows[0]
-  if (!row) return null
-
-  return {
-    basket: row.basket,
-    items,
-    conversation:
-      row.basket.conversationId && row.conversationTitle
-        ? { id: row.basket.conversationId, title: row.conversationTitle }
-        : null,
-  }
 }
