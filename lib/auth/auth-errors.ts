@@ -8,6 +8,7 @@ const MESSAGES: Record<string, string> = {
   "2fa_required": "Bu hesapta iki adımlı doğrulama açık. Kodla giriş yapman gerekiyor.",
   "2fa_invalid": "Kod doğrulanamadı. Tekrar dene.",
   pending_expired: "Oturum doğrulama süresi doldu. Baştan giriş yap.",
+  rate_limited: "Çok fazla deneme yaptın. Lütfen biraz bekle.",
 }
 
 const FALLBACK = "Giriş yapılamadı. Lütfen tekrar dene."
