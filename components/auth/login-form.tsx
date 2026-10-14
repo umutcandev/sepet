@@ -240,7 +240,7 @@ export function LoginForm({ callbackUrl }: Props) {
     if (code.length !== 6 || busy) return
     setError("")
     setBusy(true)
-    const res = await verifySignupAction({ email, code })
+    const res = await verifySignupAction({ email, code, password })
     if (!res.ok) {
       setBusy(false)
       setError(res.error)

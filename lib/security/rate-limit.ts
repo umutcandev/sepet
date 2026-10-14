@@ -98,8 +98,8 @@ export const exportLimiter = new Ratelimit({
 // kolonları asıl sert limittir (Redis flush'a dayanıklı); aşağıdakiler yumuşak
 // throttle katmanıdır.
 
-// Şifreyle giriş. Aynı limiter iki ayrı anahtarla çağrılır: hem IP hem e-posta
-// başına (brute-force iki eksenden de sınırlanır).
+// Şifreyle giriş. Aynı limiter iki ayrı anahtarla çağrılır: IP (loginAction) ve
+// e-posta (authorize; doğrudan /api/auth/callback/credentials POST'unu da kapsar).
 export const credentialsLoginLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(10, "1 m"),
@@ -144,6 +144,14 @@ export const twoFactorLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(5, "1 m"),
   prefix: "rl:auth:2fa",
+  analytics: true,
+})
+
+// 2FA kod denemeleri, hesap başına. Yeni pending_login açarak sayaç sıfırlanamaz.
+export const twoFactorUserLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "15 m"),
+  prefix: "rl:auth:2fa:user",
   analytics: true,
 })
 

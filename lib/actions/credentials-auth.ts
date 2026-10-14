@@ -13,7 +13,7 @@ import {
   hashSecret,
   safeEqual,
 } from "@/lib/auth/codes"
-import { hashPassword, passwordSchema } from "@/lib/auth/password"
+import { hashPassword, passwordSchema, verifyPassword } from "@/lib/auth/password"
 import { sanitizeCallback } from "@/lib/auth/callback"
 import {
   mapCredentialsError,
@@ -66,10 +66,17 @@ const loginSchema = z.object({
   password: z.string().min(1, "Şifre gerekli.").max(128),
   callbackUrl: z.string().optional(),
 })
+const signupPasswordField = z.string().min(1, "Şifre gerekli.").max(128)
 const verifyCodeSchema = z.object({
   email: emailField,
   code: z.string().trim().regex(/^\d{6}$/, "Kod 6 haneli olmalı."),
+  password: signupPasswordField,
 })
+
+// Bekleyen kayıt aynı e-postayla tekrar başlatılınca şifre hash'i ezilir. Doğrulayan
+// kişinin şifresi tutmazsa hesap, ezen tarafın şifresiyle açılmasın diye reddedilir.
+const SIGNUP_SUPERSEDED =
+  "Bu e-posta için sonradan başka bir kayıt isteği yapılmış. Güvenliğin için kaydı yeniden başlat."
 
 // ─── Kayıt (kullanıcı satırı DOĞRULANANA KADAR oluşmaz) ───
 export async function registerAction(input: {
@@ -150,6 +157,7 @@ export async function registerAction(input: {
 export async function verifySignupAction(input: {
   email: string
   code: string
+  password: string
 }): Promise<ActionResult> {
   const parsed = verifyCodeSchema.safeParse(input)
   if (!parsed.success) {
@@ -158,15 +166,18 @@ export async function verifySignupAction(input: {
   const email = normalizeEmail(parsed.data.email)
   const limit = await checkLimit(codeVerifyLimiter, `signup:${email}`)
   if (!limit.ok) return limit
-  return consumeSignupByCode(email, parsed.data.code)
+  return consumeSignupByCode(email, parsed.data.code, parsed.data.password)
 }
 
-// ─── Doğrulama: /dogrula link'inden token (butonla, server action'da) ───
+// ─── Doğrulama: /dogrula link'inden token + kayıt şifresi (butonla, server action'da) ───
 export async function verifySignupByTokenAction(input: {
   token: string
+  password: string
 }): Promise<ActionResult> {
   const token = typeof input?.token === "string" ? input.token : ""
   if (!token) return { ok: false, error: "Bağlantı geçersiz." }
+  const parsedPassword = signupPasswordField.safeParse(input?.password)
+  if (!parsedPassword.success) return { ok: false, error: "Şifre gerekli." }
   const tokenHash = hashSecret(token)
   // İki eksen: token başına (aynı token'ı yeniden deneme) + IP başına (her
   // tahminde taze bucket açan token-anahtarlı limiti aşan cross-token taramaya
@@ -179,26 +190,40 @@ export async function verifySignupByTokenAction(input: {
     if (!check.ok) return check
   }
 
+  // Yanlış şifre denemeleri de kod yolundaki gibi DB'de cap'lenir.
   const [row] = await db
-    .select({
-      id: emailVerification.id,
-      expiresAt: emailVerification.expiresAt,
-    })
-    .from(emailVerification)
+    .update(emailVerification)
+    .set({ attempts: sql`${emailVerification.attempts} + 1` })
     .where(
       and(
         eq(emailVerification.tokenHash, tokenHash),
         eq(emailVerification.purpose, "signup"),
       ),
     )
-    .limit(1)
+    .returning({
+      id: emailVerification.id,
+      expiresAt: emailVerification.expiresAt,
+      attempts: emailVerification.attempts,
+      payload: emailVerification.payload,
+    })
 
   if (!row) return { ok: false, error: "Bağlantı geçersiz ya da süresi dolmuş." }
+  if (row.attempts > MAX_ATTEMPTS) {
+    await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
+    return { ok: false, error: "Çok fazla yanlış deneme. Yeniden kayıt ol." }
+  }
   if (row.expiresAt.getTime() < Date.now()) {
     await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
     return { ok: false, error: "Bağlantının süresi doldu. Yeni kod iste." }
   }
-  return finalizeSignup(row.id)
+  const passwordHash = row.payload?.passwordHash
+  if (!passwordHash || !(await verifyPassword(passwordHash, parsedPassword.data))) {
+    return {
+      ok: false,
+      error: "Şifre eşleşmedi. Kayıt olurken belirlediğin şifreyi gir ya da yeniden kayıt ol.",
+    }
+  }
+  return finalizeSignup(row.id, passwordHash)
 }
 
 // ─── Kodu tekrar gönder (durumdan bağımsız aynı yanıt) ───
@@ -257,11 +282,9 @@ export async function loginAction(input: {
   const email = normalizeEmail(parsed.data.email)
   const ip = await getClientIp()
 
-  // İki eksende throttle: IP + e-posta.
+  // IP ekseni burada; e-posta ekseni authorize'da (doğrudan callback POST'u da kapsar).
   const lIp = await checkLimit(credentialsLoginLimiter, `ip:${ip}`)
   if (!lIp.ok) return lIp
-  const lEmail = await checkLimit(credentialsLoginLimiter, `email:${email}`)
-  if (!lEmail.ok) return lEmail
 
   try {
     await signIn("credentials", {
@@ -342,10 +365,11 @@ async function createPendingLogin(email: string): Promise<string | null> {
 
 // ─── İç yardımcılar ───
 
-// 6 haneli kod yolu: atomik attempts++ (cap MAX_ATTEMPTS) + süre + safeEqual.
+// 6 haneli kod yolu: atomik attempts++ (cap MAX_ATTEMPTS) + süre + safeEqual + şifre bağı.
 async function consumeSignupByCode(
   email: string,
   code: string,
+  password: string,
 ): Promise<ActionResult> {
   const [row] = await db
     .update(emailVerification)
@@ -361,6 +385,7 @@ async function consumeSignupByCode(
       codeHash: emailVerification.codeHash,
       expiresAt: emailVerification.expiresAt,
       attempts: emailVerification.attempts,
+      payload: emailVerification.payload,
     })
 
   if (!row) return { ok: false, error: "Kod geçersiz ya da süresi dolmuş. Baştan dene." }
@@ -376,21 +401,32 @@ async function consumeSignupByCode(
   if (!safeEqual(hashSecret(code), row.codeHash)) {
     return { ok: false, error: "Kod hatalı. Tekrar dene." }
   }
-  return finalizeSignup(row.id)
+  // Kod doğru ama şifre tutmuyor: satır başka bir kayıt isteğiyle ezilmiş.
+  const passwordHash = row.payload?.passwordHash
+  if (!passwordHash || !(await verifyPassword(passwordHash, password))) {
+    await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
+    return { ok: false, error: SIGNUP_SUPERSEDED }
+  }
+  return finalizeSignup(row.id, passwordHash)
 }
 
-// Tek-kullanım commit: DELETE ... RETURNING. Boş dönerse paralel istek kazanmıştır.
-async function finalizeSignup(id: string): Promise<ActionResult> {
+// Tek-kullanım commit: DELETE ... RETURNING. Yalnız doğrulanan şifre hash'i hâlâ
+// satırdaysa silinir; arada ezildiyse ya da paralel istek kazandıysa boş döner.
+async function finalizeSignup(
+  id: string,
+  passwordHash: string,
+): Promise<ActionResult> {
   const [row] = await db
     .delete(emailVerification)
-    .where(eq(emailVerification.id, id))
-    .returning({
-      email: emailVerification.email,
-      payload: emailVerification.payload,
-    })
+    .where(
+      and(
+        eq(emailVerification.id, id),
+        sql`${emailVerification.payload}->>'passwordHash' = ${passwordHash}`,
+      ),
+    )
+    .returning({ email: emailVerification.email })
 
-  const passwordHash = row?.payload?.passwordHash
-  if (!row || !passwordHash) {
+  if (!row) {
     return { ok: false, error: "Doğrulama tamamlanamadı. Baştan dene." }
   }
   const completed = await completeSignup(row.email, passwordHash)

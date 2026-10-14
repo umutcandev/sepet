@@ -7,6 +7,8 @@ import { RiCheckLine } from "@remixicon/react"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 import { FormError } from "@/components/ui/form-error"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { PasswordInput } from "@/components/auth/password-input"
 import { loginDialog } from "@/lib/stores/login-dialog"
 import { verifySignupByTokenAction } from "@/lib/actions/credentials-auth"
 
@@ -14,14 +16,17 @@ type Stage = "idle" | "loading" | "success" | "error"
 
 // Token GET'te DEĞİL, butonla (server action) tüketilir: mail tarayıcı/link
 // önizleme botları GET prefetch yaparak tek kullanımlık token'ı yakmasın.
+// Kayıt şifresi istenir: hesap, kaydı başlatan kişinin şifresine bağlanır.
 export function VerifyEmailCard({ token }: { token: string | null }) {
   const [stage, setStage] = React.useState<Stage>("idle")
   const [error, setError] = React.useState("")
+  const [password, setPassword] = React.useState("")
 
-  async function confirm() {
-    if (!token || stage === "loading") return
+  async function confirm(e: React.FormEvent) {
+    e.preventDefault()
+    if (!token || !password || stage === "loading") return
     setStage("loading")
-    const res = await verifySignupByTokenAction({ token })
+    const res = await verifySignupByTokenAction({ token, password })
     if (res.ok) {
       setStage("success")
     } else {
@@ -86,19 +91,34 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
         >
           <Content
             title="E-postanı doğrula"
-            subtitle="Hesabını etkinleştirmek için aşağıdaki butona tıkla."
+            subtitle="Hesabını etkinleştirmek için kayıt olurken belirlediğin şifreyi gir."
           >
-            <Button
-              className="h-11 w-full gap-2 rounded-xl"
-              disabled={stage === "loading"}
-              onClick={confirm}
-            >
-              {stage === "loading" ? <Spinner /> : null}
-              E-postamı doğrula
-            </Button>
-            {stage === "error" ? (
-              <FormError>{error}</FormError>
-            ) : null}
+            <form onSubmit={confirm} className="flex flex-col gap-3 text-left">
+              <Field>
+                <FieldLabel htmlFor="verify-password">Şifre</FieldLabel>
+                <PasswordInput
+                  id="verify-password"
+                  name="password"
+                  autoComplete="current-password"
+                  required
+                  autoFocus
+                  className="h-10.5 rounded-xl px-3"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Field>
+              {stage === "error" ? (
+                <FormError>{error}</FormError>
+              ) : null}
+              <Button
+                type="submit"
+                className="h-11 w-full gap-2 rounded-xl"
+                disabled={stage === "loading" || !password}
+              >
+                {stage === "loading" ? <Spinner /> : null}
+                E-postamı doğrula
+              </Button>
+            </form>
           </Content>
         </motion.div>
       )}

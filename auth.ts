@@ -23,6 +23,10 @@ import {
   claimTotpStep,
   consumeRecoveryCode,
 } from "@/lib/auth/totp"
+import {
+  credentialsLoginLimiter,
+  twoFactorUserLimiter,
+} from "@/lib/security/rate-limit"
 
 // Revoke kontrolü her istekte değil, en fazla bu aralıkla bir kez DB'ye gider.
 const SID_CHECK_INTERVAL_MS = 60_000
@@ -49,6 +53,9 @@ export class TwoFactorInvalidError extends CredentialsSignin {
 }
 export class PendingExpiredError extends CredentialsSignin {
   code = "pending_expired"
+}
+export class RateLimitedError extends CredentialsSignin {
+  code = "rate_limited"
 }
 
 // 2FA ön-doğrulama (authorize şekil 2). Duruş: pending_login tek kullanımlık,
@@ -78,6 +85,9 @@ async function authorizeTwoFactor(
   if (pending.attempts > 5 || pending.expiresAt.getTime() < Date.now()) {
     await db.delete(pendingLogin).where(eq(pendingLogin.id, pending.id))
     throw new PendingExpiredError()
+  }
+  if (!(await twoFactorUserLimiter.limit(pending.userId)).success) {
+    throw new RateLimitedError()
   }
 
   const [u] = await db
@@ -243,6 +253,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!email || !password) {
           await verifyPassword(await dummyHash(), password || "x")
           throw new InvalidCredentialsError()
+        }
+
+        if (!(await credentialsLoginLimiter.limit(`email:${email}`)).success) {
+          throw new RateLimitedError()
         }
 
         const [user] = await db
