@@ -48,7 +48,13 @@ export async function getReceiptDetail(id: string, userId: string) {
     db
       .select({ receipt: receipts, conversationTitle: conversations.title })
       .from(receipts)
-      .leftJoin(conversations, eq(conversations.id, receipts.conversationId))
+      .leftJoin(
+        conversations,
+        and(
+          eq(conversations.id, receipts.conversationId),
+          eq(conversations.userId, userId),
+        ),
+      )
       .where(and(eq(receipts.id, id), eq(receipts.userId, userId)))
       .limit(1),
     db

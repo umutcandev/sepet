@@ -93,6 +93,13 @@ export function validateUpload(input: { contentType: string; size: number }): {
   return { ok: true }
 }
 
+// Ham ya da %2e kodlu `..` segmenti ön ekin dışına çıkabilir; reddedilir.
+const TRAVERSAL = /(^|[/\\])(\.|%2e){2}([/\\?#]|$)/i
+
+function isUnderPrefix(value: string | null | undefined, prefix: string): boolean {
+  return typeof value === "string" && value.startsWith(prefix) && !TRAVERSAL.test(value)
+}
+
 /**
  * Bir R2 key'inin gerçekten bu kullanıcıya ait olduğunu doğrular. Yüklemeler
  * her zaman `receipts/{userId}/...` altına yazılır (bkz. uploadReceiptDirect);
@@ -103,7 +110,7 @@ export function isOwnedReceiptKey(
   key: string | null | undefined,
   userId: string,
 ): boolean {
-  return typeof key === "string" && key.startsWith(`receipts/${userId}/`)
+  return isUnderPrefix(key, `receipts/${userId}/`)
 }
 
 /**
@@ -116,7 +123,7 @@ export function isOwnedReceiptUrl(
   userId: string,
 ): boolean {
   if (typeof url !== "string") return false
-  return url.startsWith(`${getPublicBase()}/receipts/${userId}/`)
+  return isUnderPrefix(url, `${getPublicBase()}/receipts/${userId}/`)
 }
 
 /**
@@ -130,7 +137,7 @@ export function isOwnedAvatarUrl(
   userId: string,
 ): boolean {
   if (typeof url !== "string") return false
-  return url.startsWith(`${getPublicBase()}/avatars/${userId}/`)
+  return isUnderPrefix(url, `${getPublicBase()}/avatars/${userId}/`)
 }
 
 /** `isOwnedReceiptKey`'in avatar karşılığı — silme öncesi sahiplik kontrolü. */
@@ -138,7 +145,7 @@ function isOwnedAvatarKey(
   key: string | null | undefined,
   userId: string,
 ): boolean {
-  return typeof key === "string" && key.startsWith(`avatars/${userId}/`)
+  return isUnderPrefix(key, `avatars/${userId}/`)
 }
 
 export async function deleteReceiptObject(key: string): Promise<void> {

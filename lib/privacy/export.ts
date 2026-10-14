@@ -16,6 +16,7 @@ import {
 } from "@/lib/db"
 import { getObjectBytes } from "@/lib/storage/r2"
 import { EXPORT_CATEGORIES, type ExportCategory } from "./categories"
+import { EXPORTED_USER_COLUMNS } from "./user-columns"
 
 const ROOT = "sepet-verilerim"
 
@@ -50,8 +51,8 @@ function formatDate(d: Date): string {
  * kullanıcının toplam veri boyutuyla değil, sabit bir tavanla sınırlı kalır ve
  * senkron `zipSync` gibi event-loop'u bloklamaz.
  *
- * Tüm sorgular `eq(userId)` ile kapsanır. Hassas alanlar (OAuth token'ları,
- * session token'ları) hiçbir zaman dahil edilmez. Fiş görselleri best-effort
+ * Tüm sorgular `eq(userId)` ile kapsanır. Hassas alanlar (OAuth/session
+ * token'ları, şifre hash'i, TOTP sırrı) hiçbir zaman dahil edilmez. Fiş görselleri best-effort
  * çekilir; erişilemeyen görseller sessizce atlanır (DB kaynak doğrudur).
  */
 export function buildUserExportStream(
@@ -93,7 +94,7 @@ export function buildUserExportStream(
         // ─── Profil + hesap ───
         if (selected.has("profil")) {
           const [user] = await db
-            .select()
+            .select(EXPORTED_USER_COLUMNS)
             .from(users)
             .where(eq(users.id, userId))
             .limit(1)
