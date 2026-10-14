@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { and, asc, count, desc, eq, exists, ilike, inArray, or, sql } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, baskets, basketItems } from "@/lib/db"
+import { ownedConversationId } from "@/lib/data/conversations"
 import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
@@ -110,8 +111,9 @@ export async function saveBasket(
   if (!session?.user?.id) throw new Error("unauthorized")
 
   const userId = session.user.id
-  const conversationId = input.conversationId ?? null
-  const sourceToolCallId = input.sourceToolCallId ?? null
+  // Başkasının sohbetine bağlanamaz; sahiplik tutmazsa kayıt sohbetsiz yapılır.
+  const conversationId = await ownedConversationId(input.conversationId, userId)
+  const sourceToolCallId = conversationId ? input.sourceToolCallId ?? null : null
 
   // Aynı (sohbet, tool-call) için kullanıcı zaten kaydettiyse aynı id'yi
   // döndür — yenile/yeniden tıkla durumunda kopya satır oluşmasın.

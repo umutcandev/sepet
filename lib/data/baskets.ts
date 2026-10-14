@@ -57,7 +57,13 @@ export async function getBasketDetail(id: string, userId: string) {
     db
       .select({ basket: baskets, conversationTitle: conversations.title })
       .from(baskets)
-      .leftJoin(conversations, eq(conversations.id, baskets.conversationId))
+      .leftJoin(
+        conversations,
+        and(
+          eq(conversations.id, baskets.conversationId),
+          eq(conversations.userId, userId),
+        ),
+      )
       .where(and(eq(baskets.id, id), eq(baskets.userId, userId)))
       .limit(1),
     db

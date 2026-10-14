@@ -3,12 +3,32 @@ import { revalidatePath } from "next/cache"
 import { and, eq, max } from "drizzle-orm"
 import { db, conversations, conversationMessages } from "@/lib/db"
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
+import { isUuid } from "@/lib/utils"
 
 const TITLE_MAX = 100
 
 // Server-only data access. These take an already-authenticated userId from the
 // caller, so they must never live in a "use server" module: every export there
 // becomes a publicly callable action endpoint.
+
+/** İstemciden gelen sohbet id'si bu kullanıcıya aitse id'yi, değilse null döner. */
+export async function ownedConversationId(
+  conversationId: string | null | undefined,
+  userId: string,
+): Promise<string | null> {
+  if (!conversationId || !isUuid(conversationId)) return null
+  const [row] = await db
+    .select({ id: conversations.id })
+    .from(conversations)
+    .where(
+      and(
+        eq(conversations.id, conversationId),
+        eq(conversations.userId, userId),
+      ),
+    )
+    .limit(1)
+  return row?.id ?? null
+}
 
 /**
  * Sunucu tarafından (oturum aç henüz validate edilmiş bir akışta) konuşma

@@ -15,6 +15,7 @@ import {
 } from "drizzle-orm"
 import { auth } from "@/auth"
 import { db, receipts, receiptItems } from "@/lib/db"
+import { ownedConversationId } from "@/lib/data/conversations"
 import {
   deleteReceiptObject,
   isOwnedReceiptKey,
@@ -112,8 +113,8 @@ export async function saveReceipt(input: {
   if (!session?.user?.id) throw new Error("unauthorized")
 
   const userId = session.user.id
-  const conversationId = input.conversationId ?? null
-  const sourceToolCallId = input.sourceToolCallId ?? null
+  const conversationId = await ownedConversationId(input.conversationId, userId)
+  const sourceToolCallId = conversationId ? input.sourceToolCallId ?? null : null
 
   // R2 key'i client'tan geliyor — yalnızca bu kullanıcının klasörüne ait bir
   // key kaydedilebilir. Aksi halde başka bir kullanıcının nesnesi bu fişe
