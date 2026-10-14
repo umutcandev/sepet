@@ -37,7 +37,7 @@
     "@streamdown/cjk": "^1.0.3",
     "@streamdown/code": "^1.1.1",
     "@streamdown/math": "^1.0.2",
-    "@streamdown/mermaid": "^1.0.2",
+    "@streamdown/mermaid": "^1.0.3",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "ai": "^6.0.177",
@@ -52,11 +52,11 @@
     "input-otp": "^1.4.2",
     "leaflet": "^1.9.4",
     "motion": "^12.38.0",
-    "nanoid": "^5.1.11",
+    "nanoid": "^5.1.16",
     "next": "16.3.8",
     "next-auth": "5.0.0-beta.32",
     "next-themes": "^0.4.6",
-    "nodemailer": "^7.0.13",
+    "nodemailer": "^10.0.13",
     "otpauth": "^9.5.1",
     "qrcode.react": "^4.2.0",
     "radix-ui": "^1.4.3",
@@ -65,7 +65,7 @@
     "react-dom": "^19.2.4",
     "react-resizable-panels": "^4.11.0",
     "recharts": "3.8.0",
-    "shadcn": "^4.7.0",
+    "shadcn": "^4.21.1",
     "shadow-plugin": "^2.1.0",
     "shiki": "^4.0.2",
     "sonner": "^2.0.7",
@@ -82,14 +82,13 @@
     "@tailwindcss/typography": "^0.5.20",
     "@types/leaflet": "^1.9.21",
     "@types/node": "^25.5.0",
-    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
     "eslint": "^9.39.4",
     "eslint-config-next": "16.3.8",
-    "postcss": "^8",
+    "postcss": "^8.5.28",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "rehype-autolink-headings": "^7.1.0",
@@ -100,5 +99,30 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "velite": "^0.4.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@babel/core@<7.29.6": "^7.29.6",
+      "@hono/node-server@<1.19.15": "^1.19.15",
+      "baseline-browser-mapping@<2.11.0": "^2.11.0",
+      "body-parser@>=2.0.0 <2.3.0": "^2.3.0",
+      "brace-expansion@<1.1.21": "^1.1.21",
+      "brace-expansion@>=5.0.0 <5.0.12": "^5.0.12",
+      "browserslist@<4.28.7": "^4.28.7",
+      "dompurify@<3.4.16": "3.4.16",
+      "fast-uri@>=3.0.0 <3.1.8": "^3.1.8",
+      "hono@<4.13.7": "^4.13.7",
+      "ip-address@>=10.0.0 <10.7.1": "10.7.3",
+      "js-yaml@>=4.0.0 <4.3.2": "^4.3.2",
+      "mermaid@>=11.0.0 <11.16.1": "^11.16.1",
+      "proxy-addr@<2.0.8": "^2.0.8",
+      "qs@>=6.0.0 <6.16.0": "^6.16.0",
+      "source-map-js@<1.2.2": "^1.2.2"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "nodemailer": "10"
+      }
+    }
   }
 }
