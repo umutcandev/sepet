@@ -11,9 +11,10 @@ import {
 import { cn } from "@/lib/utils"
 import { findMarket, getMarketInitial } from "@/lib/markets/registry"
 
-type Size = "sm" | "default" | "lg"
+type Size = "xs" | "sm" | "default" | "lg"
 
 const SIZE_PX: Record<Size, number> = {
+  xs: 20,
   sm: 24,
   default: 32,
   lg: 40,
