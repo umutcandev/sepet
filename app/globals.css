@@ -1258,6 +1258,22 @@
   opacity: var(--logo-swap);
 }
 
+/* Avatar grubunda bindirme boşluğu (bkz. ui/avatar.tsx AvatarGroup). Boşluk
+   zemin renginde boyanmış bir halka değil, alttaki avatardan oyulan saydam
+   bir yay: yarı saydam menüde, sidebar'da, üzerine gelinmiş satırda ve iki
+   temada da arkadaki zemin görünür. Sağdaki komşunun merkezi bu kutuya göre
+   150% − bindirme noktasında; oyuk yarıçapı yarım kutu + boşluk.
+   Yarıçap boyutta değil durakta: elips boyutuna `calc(% + px)` yazılınca
+   Chromium tüm bildirimi geçersiz sayıyor. Kare kutuda 100% 100% bir daire,
+   duraktaki yüzde de kutu kenarına göre. */
+@utility avatar-cut {
+  mask-image: radial-gradient(
+    100% 100% at calc(150% - var(--avatar-overlap)) 50%,
+    transparent calc(50% + var(--avatar-gap) - 0.25px),
+    #000 calc(50% + var(--avatar-gap) + 0.25px)
+  );
+}
+
 @utility home-header-fade {
   mask-image: linear-gradient(
     to bottom,

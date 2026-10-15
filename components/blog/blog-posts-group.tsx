@@ -54,7 +54,7 @@ function initials(name: string): string {
 function PostAuthorAvatars({ authors }: { authors: readonly AuthorId[] }) {
   const list = getAuthors(authors)
   return (
-    <AvatarGroup className="-space-x-1 *:data-[slot=avatar]:ring-[1.5px]">
+    <AvatarGroup className="[--avatar-gap:1.5px] [--avatar-overlap:0.25rem]">
       {list.map((author) => (
         <Avatar key={author.name} className="size-4">
           {author.avatar ? (

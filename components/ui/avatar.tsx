@@ -84,16 +84,16 @@ function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="avatar-group"
       className={cn(
-        // xs'te 8px bindirme 20px'lik avatarın neredeyse yarısını yiyor; halka
-        // payıyla birlikte arkadaki avatar okunmaz hale geliyordu.
+        // Bindirme boşluğu BOYANMAZ, oyulur (`avatar-cut`). Eskiden zemin
+        // renginde (`--card`) bir halka çiziliyordu; zemin o renk olmayınca
+        // (sidebar, yarı saydam menü, üzerine gelinmiş satır, koyu tema)
+        // halka avatarın çevresinde açık bir şerit olarak okunuyordu. Oyukta
+        // arkadaki zemin ne ise o görünür; tek avatarda hiç iz kalmaz.
         //
-        // HALKA YÜZEYİN RENGİ OLMALI, sayfanınki değil. İşi arkadaki avatarı
-        // "delmek"; rengi altında durduğu zeminden şaşarsa delik değil, ayrı
-        // renkte bir hale olarak okunur. Varsayılan `--card` çünkü gruplar
-        // pratikte hep kart/popover üstünde duruyor (ikisi de aynı değer) —
-        // `--background` iken market logoları kartın üstünde görünür bir
-        // halka çiziyordu. Farklı bir zeminde `--avatar-surface`ı ayarla.
-        "group/avatar-group flex -space-x-2 has-data-[size=xs]:-space-x-1.5 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-[var(--avatar-surface,var(--card))]",
+        // Bindirme ve boşluk değişkenle verilir, çünkü oyuğun konumu bunlardan
+        // hesaplanıyor. xs'te 8px bindirme 20px'lik avatarın neredeyse
+        // yarısını yiyordu, orada 6px.
+        "group/avatar-group flex [--avatar-gap:2px] [--avatar-overlap:0.5rem] *:not-first:-ms-(--avatar-overlap) *:not-last:avatar-cut has-data-[size=xs]:[--avatar-overlap:0.375rem]",
         className
       )}
       {...props}
@@ -109,7 +109,7 @@ function AvatarGroupCount({
     <div
       data-slot="avatar-group-count"
       className={cn(
-        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground ring-2 ring-[var(--avatar-surface,var(--card))] group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 group-has-data-[size=xs]/avatar-group:size-5 group-has-data-[size=xs]/avatar-group:text-[10px] [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3 group-has-data-[size=xs]/avatar-group:[&>svg]:size-3",
+        "relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 group-has-data-[size=xs]/avatar-group:size-5 group-has-data-[size=xs]/avatar-group:text-[10px] [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3 group-has-data-[size=xs]/avatar-group:[&>svg]:size-3",
         className
       )}
       {...props}

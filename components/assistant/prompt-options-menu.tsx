@@ -36,6 +36,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
+import { AvatarGroup } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
@@ -449,12 +450,7 @@ function RootPage({
           {!authed || !location ? (
             <span>Tümü</span>
           ) : chains ? (
-            <MarketLogoGroup
-              names={chains}
-              size="xs"
-              max={3}
-              className="[--avatar-surface:var(--popover)]"
-            />
+            <MarketLogoGroup names={chains} size="xs" max={3} />
           ) : nearby.error ? (
             <span>—</span>
           ) : (
@@ -528,15 +524,14 @@ function NavItem({
 }
 
 function LogoGroupSkeleton() {
+  // Logo grubuyla aynı bindirme ve oyuk; xs boyutu burada data-size ile
+  // gelmediği için bindirme elle verilir.
   return (
-    <span className="flex -space-x-1.5">
+    <AvatarGroup className="[--avatar-overlap:0.375rem]">
       {Array.from({ length: 3 }).map((_, i) => (
-        <Skeleton
-          key={i}
-          className="size-5 rounded-full ring-2 ring-[var(--popover)]"
-        />
+        <Skeleton key={i} className="size-5 rounded-full" />
       ))}
-    </span>
+    </AvatarGroup>
   )
 }
 
@@ -989,11 +984,7 @@ function MarketRow({
       // menünün varsayılanı pasif satırda fare olaylarını tümden kapatıyor.
       className="group/market data-disabled:pointer-events-auto"
     >
-      <MarketLogo
-        name={name}
-        size="xs"
-        className="[--avatar-surface:var(--popover)]"
-      />
+      <MarketLogo name={name} size="xs" />
       <span className="truncate">{name}</span>
       {!available ? (
         // -me-6: tik işaretine ayrılan sağ boşluğa uzanır, metin işaretlerle
