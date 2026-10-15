@@ -6,7 +6,13 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { RiAddLine, RiLayoutLeftLine } from "@remixicon/react"
 import { useTheme } from "next-themes"
-import { animate, motion, useMotionValue, useMotionValueEvent } from "motion/react"
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useTransform,
+} from "motion/react"
 
 import { EASE_OUT_SOFT } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -61,6 +67,22 @@ const HOME_HEADER_SOLID_RANGE = 56
    geliyor ve hızlı bir yukarı fırlatmada katman, rampanın dibi göründüğü
    karede hâlâ gizli kalabilirdi. Pay bir karede kaydırılan mesafeden büyük. */
 const HOME_HERO_OFFSCREEN_MARGIN = 200
+
+/* MOBİLDE KAYDIRMA BELGEDE, MASAÜSTÜNDE <main>'DE.
+
+   Uygulama eskiden her genişlikte ekran boyunda (`h-svh`) bir kutuydu ve
+   kaydırma içerideki <main>'deydi; belge hiç kaymıyordu. iOS Safari 26 saat
+   şeridinin ve alttaki yüzen araç çubuğunun arkasında BELGENİN kendi
+   boyamasını gösteriyor: kutu çubuğun hemen üstünde bittiği için arkasında
+   çizilecek bir şey kalmıyor, kanvas rengi düz bir bant olarak görünüyordu
+   ("kesik" görünüm). Aynı sebeple çubuklar kaydırınca küçülmüyor, Android'de
+   adres çubuğu gizlenmiyordu.
+
+   Mobilde içerik sayfaları artık belgeyle kayıyor ve header `sticky`. Sohbet
+   (`/asistan`) uygulama düzeninde kalıyor: yazma alanı ekranın dibine sabit,
+   mesaj listesi kendi kabında kayıyor. Masaüstü değişmedi: `inset` kart düzeni
+   iç kaydırmaya göre kurulu, Safari'nin sorunu da orada yok. */
+const DESKTOP_QUERY = "(min-width: 48rem)"
 
 // Yalnızca mobil. Masaüstünde anahtar artık kenar çubuğunun kendi başlığında
 // (app-sidebar.tsx): genişken sağ üstteki düğme, daraltılmışken üstüne gelince
@@ -138,6 +160,9 @@ export function AppShell({ blogPosts, children }: Props) {
   const { displayUser, pendingAuth } = useCurrentUser()
   const isAssistantRoute = pathname?.startsWith("/asistan") ?? false
   const isHome = pathname === "/"
+  // Mobilde belge mi kayıyor (bkz. DESKTOP_QUERY notu). Rota sunucuda da belli,
+  // sınıflar hidrasyonda değişmez.
+  const docScroll = !isAssistantRoute
 
   // Ana sayfada blog bölümünden itibaren sayfanın tamamı --home-base zemininde
   // (blog → fiyatlandırma → CTA → footer). Header ve altındaki fade ise
@@ -152,6 +177,7 @@ export function AppShell({ blogPosts, children }: Props) {
   // içeriğin üstünde kalıyordu. Scroll'a bağlı sürümde header rengi her an
   // altındaki içerikle tutarlı; scroll durursa renk de durur.
   const scrollRef = React.useRef<HTMLElement>(null)
+  const headerRef = React.useRef<HTMLDivElement>(null)
   // Değer MotionValue'da tutulur: her scroll karesinde React re-render'ı
   // tetiklemeden doğrudan style'a yazılır.
   const darkness = useMotionValue(0)
@@ -159,6 +185,18 @@ export function AppShell({ blogPosts, children }: Props) {
   // header'ın arkasından kesintisiz akar), ilk kaydırmada 1'e çıkar. Diğer
   // rotalarda header zemini düz CSS sınıfı, bu değer hiç kullanılmaz.
   const headerSolid = useMotionValue(0)
+  /* Ana sayfada mobil header'ın zemini: --background'tan --home-base'e
+     (`darkness`), saydamdan opağa (`headerSolid`). Eskiden opaklığı oynayan iki
+     iç katmandı (compositor'da kalsın diye). Artık header'ın KENDİ
+     `background-color`ı, çünkü iOS Safari 26 sticky header'ın zeminini saat
+     şeridinin rengi olarak kullanıyor ve yalnız elemanın kendi düz zeminini
+     okuyor; `absolute` çocuklara bakmıyor. Renk değişimi yalnız ilk ~160px'lik
+     rampada oluyor ve 64px'lik bir şeridi yeniden boyuyor, maliyeti yok. */
+  const headerBg = useTransform<number, string>(
+    [headerSolid, darkness],
+    ([solid, dark]) =>
+      `color-mix(in srgb, color-mix(in srgb, var(--home-base) ${dark * 100}%, var(--background)) ${solid * 100}%, transparent)`
+  )
   // Hero zemini iki adımda kapanıyor. darkness 1'e vardığında blog bölümünün
   // üst kenarı header'a dayanmıştır: katman artık yalnız bölümün saydam üst
   // rampasından (`.home-dark-ground`) görünür ve shader orada donar (bkz.
@@ -192,7 +230,7 @@ export function AppShell({ blogPosts, children }: Props) {
      bir şey değişmiyor, sayfanın tamamı zaten koyu.
 
      Geriye kalan tek scroll etkisi zemin RENGİ: header --background'tan
-     --home-base'e akıyor (aşağıdaki `darkness` katmanı). O bu haliyle doğru,
+     --home-base'e akıyor (`headerBg`). O bu haliyle doğru,
      çünkü iki renk de aynı temanın kendi tonları. */
   const { resolvedTheme } = useTheme()
   const themeDark = resolvedTheme === "dark"
@@ -237,26 +275,48 @@ export function AppShell({ blogPosts, children }: Props) {
       return
     }
     const root = scrollRef.current
-    if (!root) return
+    const header = headerRef.current
+    if (!root || !header) return
     // Nişan yoksa (blog bölümü hiç render edilmediyse) karartı rampası düşer ama
     // header zemini yine de sürülmeli — yoksa sayfa kaydırılırken içerik saydam
     // bir şeridin altından geçer.
     const target = root.querySelector("[data-home-dark-start]")
     const opaque = root.querySelector("[data-home-opaque-start]")
+    const desktop = window.matchMedia(DESKTOP_QUERY)
+    const html = document.documentElement
 
     let frame = 0
     const measure = () => {
       frame = 0
-      headerSolid.set(Math.min(1, root.scrollTop / HOME_HEADER_SOLID_RANGE))
+      // Mobilde belge, masaüstünde <main> kayıyor; öbürü 0'da duruyor. iOS'un
+      // tepedeki esnemesi negatif scrollY veriyor, o sayılmaz.
+      const scrolled = Math.max(0, window.scrollY) + root.scrollTop
+      headerSolid.set(Math.min(1, scrolled / HOME_HEADER_SOLID_RANGE))
+      /* Kanvas (html zemini) mobilde iki yerde görünüyor: tepedeyken saat
+         şeridinde (header o an saydam, Safari şeridi kanvasla doldurur) ve
+         sayfanın sonunda alttaki araç çubuğunun arkasında. Tepede shader'ın
+         baskın tonu --background, dipte footer bandının rengi. Tek renk ikisine
+         birden uymadığı için kaydırınca dibinkine geçiyor; o arada saat
+         şeridini zaten sticky header'ın kendi rengi dolduruyor. */
+      // Yalnız değişince yazılır: aynı değeri her karede yazmak bile stili
+      // geçersiz kılar.
+      const end = !desktop.matches && scrolled > HOME_HEADER_SOLID_RANGE
+      if (end !== (html.dataset.canvas === "home-end")) {
+        if (end) html.dataset.canvas = "home-end"
+        else delete html.dataset.canvas
+      }
       if (!target) return
-      // Scroll container header'ın hemen altında başlıyor → root'un üst kenarı
-      // = header'ın alt kenarı. d, nişanın oraya olan uzaklığı.
-      const rootTop = root.getBoundingClientRect().top
-      const d = target.getBoundingClientRect().top - rootTop
+      // İçeriğin header'ın altına girdiği çizgi. Mobilde sticky header'ın alt
+      // kenarı; masaüstünde header akıştan çıkmış ve saydam, yani <main>'in
+      // üst kenarı. d, nişanın o çizgiye uzaklığı.
+      const edge = desktop.matches
+        ? root.getBoundingClientRect().top
+        : header.getBoundingClientRect().bottom
+      const d = target.getBoundingClientRect().top - edge
       const p = 1 - d / HOME_DARK_RANGE
       darkness.set(p < 0 ? 0 : p > 1 ? 1 : p)
       if (opaque) {
-        heroOpaqueTop.set(opaque.getBoundingClientRect().top - rootTop)
+        heroOpaqueTop.set(opaque.getBoundingClientRect().top - edge)
       }
     }
     const schedule = () => {
@@ -265,7 +325,9 @@ export function AppShell({ blogPosts, children }: Props) {
     }
 
     measure()
+    window.addEventListener("scroll", schedule, { passive: true })
     root.addEventListener("scroll", schedule, { passive: true })
+    desktop.addEventListener("change", schedule)
     // Görsel yüklenmesi / viewport değişimi hero yüksekliğini oynatabilir.
     const resizeObserver = new ResizeObserver(schedule)
     resizeObserver.observe(root)
@@ -273,13 +335,20 @@ export function AppShell({ blogPosts, children }: Props) {
 
     return () => {
       if (frame) cancelAnimationFrame(frame)
+      window.removeEventListener("scroll", schedule)
       root.removeEventListener("scroll", schedule)
+      desktop.removeEventListener("change", schedule)
       resizeObserver.disconnect()
+      delete html.dataset.canvas
     }
   }, [isHome, darkness, headerSolid, heroOpaqueTop])
 
   return (
-    <SidebarProvider>
+    <SidebarProvider
+      // Mobilde sarmalayıcı ekran boyunda bir kutu değil, içerikle uzayan bir
+      // sütun: belge kayıyor. Masaüstünde ve sohbette eskisi gibi `h-svh`.
+      className={docScroll ? "h-auto min-h-svh md:h-svh" : undefined}
+    >
       {/* Sayfanın ilk odaklanabilir elemanı: sidebar + header tekrarlı chrome,
           klavye kullanıcısı tek Tab ile <main>'e iner.
 
@@ -295,7 +364,15 @@ export function AppShell({ blogPosts, children }: Props) {
         İçeriğe atla
       </a>
       <AppSidebar blogPosts={blogPosts} />
-      <SidebarInset className="min-h-0 overflow-hidden">
+      <SidebarInset
+        // `overflow-hidden` mobilde belgenin içeriğini keser ve sticky
+        // header'ın kaydırma kabını değiştirirdi; yalnız iç kaydırmada.
+        className={
+          docScroll
+            ? "md:min-h-0 md:overflow-hidden"
+            : "min-h-0 overflow-hidden"
+        }
+      >
         {/* Ana sayfanın hero zemini. HEADER'IN DE ARKASINDA: `SidebarInset`in
             (relative) ilk katmanı, header ve <main> onun üstünde.
 
@@ -309,8 +386,11 @@ export function AppShell({ blogPosts, children }: Props) {
             Yükseklik `--hero-vh` (home-hero.tsx'te donduruluyor): mobilde
             header 4rem + hero calc(--hero-vh - 4rem), masaüstünde header
             akıştan çıktığı için hero tek başına --hero-vh. Katmanın dibi
-            birebir çakışıyor. Katman <main>'in DIŞINDA olduğu için kaydırınca
-            yerinde kalır; sayfanın geri kalanı (opak blog bölümü) üstüne akar. */}
+            birebir çakışıyor. Masaüstünde katman <main>'in DIŞINDA olduğu için
+            kaydırınca yerinde kalır; sayfanın geri kalanı (opak blog bölümü)
+            üstüne akar. Mobilde belge kaydığı için hero'yla birlikte yukarı
+            kayar: belgenin parçası olduğundan Safari onu alttaki araç
+            çubuğunun arkasında da çiziyor (sabit bir katmanı çizmezdi). */}
         {isHome ? (
           <HomeHeroBackdrop covered={heroCovered} offscreen={heroOffscreen} />
         ) : null}
@@ -319,12 +399,24 @@ export function AppShell({ blogPosts, children }: Props) {
             yalnızca header'da → koyu zemine gelince metin/ikon/logo paleti açık
             renge döner.
 
-            Ana sayfada düz `bg-background` YOK: zemin scroll'a bağlı bir katman
-            (aşağıda), sayfa tepedeyken saydam. */}
-        <div
+            Ana sayfada düz `bg-background` YOK: zemin scroll'a bağlı
+            (`headerBg`), sayfa tepedeyken saydam.
+
+            Mobilde `sticky`: belge kayarken üstte kalır. iOS Safari kenara
+            yapışık bir sticky elemanın zeminiyle saat şeridini dolduruyor, yani
+            şerit her sayfada header'la aynı renk. */}
+        <motion.div
+          ref={headerRef}
+          style={
+            isHome
+              ? ({ "--header-bg": headerBg } as React.CSSProperties)
+              : undefined
+          }
           className={cn(
             "relative z-10 shrink-0",
+            docScroll && "max-md:sticky max-md:top-0 max-md:z-20",
             !isHome && "bg-background",
+            isHome && "max-md:bg-(--header-bg)",
             /* PC'DE ANA SAYFADA HEADER AKIŞTAN ÇIKIYOR: yer kaplamıyor, zemin
                katmanları kapalı (aşağıda `md:hidden`), yani tamamen saydam —
                arkasındaki shader kesintisiz akıyor ve içerik altından geçiyor.
@@ -335,24 +427,6 @@ export function AppShell({ blogPosts, children }: Props) {
             isHome && "md:absolute md:inset-x-0 md:top-0 md:z-20"
           )}
         >
-          {isHome ? (
-            <motion.div
-              aria-hidden
-              style={{ opacity: headerSolid }}
-              className="pointer-events-none absolute inset-0 bg-background md:hidden"
-            />
-          ) : null}
-          {/* Koyu zemin ayrı katman ve sadece opacity ile sürülüyor: her scroll
-              karesinde background-color yeniden hesaplanmaz, opacity
-              compositor'da kalır. */}
-          <motion.div
-            aria-hidden
-            style={{ opacity: darkness }}
-            className={cn(
-              "pointer-events-none absolute inset-0 bg-[var(--home-base)]",
-              isHome && "md:hidden"
-            )}
-          />
           <motion.header
             // --logo-swap tema geçişini logoya taşır. Tema çözülene kadar
             // yazılmaz; o ana dek CSS varsayılanı (:root / .dark) geçerlidir.
@@ -457,7 +531,7 @@ export function AppShell({ blogPosts, children }: Props) {
               </span>
             </div>
           </motion.header>
-        </div>
+        </motion.div>
         {/* Sayfanın tek <main> landmark'ı ve aynı zamanda kaydırma kabı.
             Header'ın DIŞINDA: <main> içindeki bir <header> banner landmark'ı
             sayılmaz, ayrıca "içeriğe atla" bağlantısının atlayacağı bir şey
@@ -473,7 +547,14 @@ export function AppShell({ blogPosts, children }: Props) {
           // konumlandırılmış olduğu için normal akıştaki <main>'in üstüne
           // boyanırdı. İkisini de aynı yığın seviyesine çıkarınca sıra DOM'a
           // dönüyor: zemin altta, içerik üstünde.
-          className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto cn-scrollbar-thin"
+          // Mobilde içerik sayfalarında kaydırma kabı değil, akıştaki bir sütun
+          // (bkz. DESKTOP_QUERY notu).
+          className={cn(
+            "cn-scrollbar-thin relative z-10 flex flex-1 flex-col",
+            docScroll
+              ? "md:min-h-0 md:overflow-y-auto"
+              : "min-h-0 overflow-y-auto"
+          )}
         >
           {/* Ana sayfada hero görseli, scroll edilince header'ın hemen altında
               tam opaklıkta görünüp keskin yatay bir çizgi oluşturuyordu. Bu
@@ -503,7 +584,9 @@ export function AppShell({ blogPosts, children }: Props) {
               // içeriğin header'ın altından keskin geçmesi daha çok belli
               // oluyor. `md:hidden` yüksekliği de -mb'yi de birlikte
               // düşürüyor, düzen kaymıyor.
-              className="home-header-fade pointer-events-none sticky top-0 z-30 -mb-12 h-12 shrink-0 md:hidden"
+              // `top-16`: mobilde belge kayıyor ve header da sticky; fade onun
+              // hemen altına yapışır (eskiden <main>'in tepesi zaten oradaydı).
+              className="home-header-fade pointer-events-none sticky top-16 z-30 -mb-12 h-12 shrink-0 md:hidden"
             >
               {/* Açık katman da artık `headerSolid`e bağlı. Eskiden düz
                   `bg-background`di ve sayfa tepedeyken hero'nun ilk 48px'ini

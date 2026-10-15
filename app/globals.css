@@ -414,6 +414,28 @@
   html {
     @apply font-sans;
   }
+
+  /* Kanvas rengi. iOS Safari 26 saat şeridini ve alttaki araç çubuğunun
+     arkasını belgenin bittiği yerde bununla dolduruyor (theme-color artık
+     okunmuyor). `body`nin zemini de kanvasa yayılıyordu, ama Safari kökü
+     saydam görünce beyaza düşebiliyor: açıkça yazılı.
+
+     `scroll-padding-top`: mobilde belge kayıyor ve header sticky (bkz.
+     app-shell.tsx); çapaya ya da scrollIntoView ile gidilen başlık onun
+     altında kalmasın. */
+  html {
+    background-color: var(--background);
+    @media (width < 48rem) {
+      scroll-padding-top: 4rem;
+    }
+  }
+
+  /* Ana sayfa mobilde kaydırılınca kanvas footer bandının dibine geçer: o
+     noktadan sonra kanvası yalnız sayfanın sonunda, araç çubuğunun arkasında
+     görüyorsun. Renk page.tsx'teki footer bandının bitiş durağı. */
+  html[data-canvas="home-end"] {
+    background-color: color-mix(in srgb, var(--home-base) 92%, black);
+  }
 }
 
 /* Squircle'ın dokunmatik modu (bkz. components/ui/squircle.tsx): Lisse'in
