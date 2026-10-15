@@ -18,6 +18,16 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: { root: __dirname },
+  experimental: {
+    // Next 16.3'te varsayılan açık; Vercel `.next/cache`i her build'de geri
+    // yüklüyor. Taze clone + eski cache ile Turbopack `globals.css`in ESKİ
+    // derlenmiş hâlini kullandı: bileşenler yeni sınıfları taşırken yeni
+    // token'lar (`--composer`, `--surface-outline`…) CSS'e hiç girmedi ve
+    // prompt ile butonların zemini production'da boş kaldı. Yerelde aynı
+    // senaryoyla tekrarlandı; bu ayar kapalıyken CSS doğru çıkıyor. Bedeli
+    // daha yavaş build. Açmadan önce aynı senaryoyu tekrar dene.
+    turbopackFileSystemCacheForBuild: false,
+  },
   // Telefondan yerel ağ üzerinden test ederken (http://192.168.1.x:3000) Next
   // dev sunucusu /_next/* isteklerini "cross-origin" sayıp ENGELLİYOR. Sonuç
   // sessiz bir bozulma: sayfa 200 dönüyor ama chunk'lar inmediği için istemci
