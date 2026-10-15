@@ -71,6 +71,9 @@
        prompt alanı). `--muted`ten ayrı çünkü dark'ta kenar çubuğuyla aynı
        tonda durmaları gerekiyor; gerekçe `--control` tanımında. */
   --color-control: var(--control);
+  /* Asistan prompt'unun yüzeyi ve kenarı (`bg-composer`, `border-composer-edge`). */
+  --color-composer: var(--composer);
+  --color-composer-edge: var(--composer-edge);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
@@ -114,6 +117,10 @@
   /* Light'ta ayrışmaya gerek yok: `--sidebar` (#FCF3E6) burada zeminin
      (#FFF8F0) neredeyse aynısı, kontroller ona eşitlenseydi kaybolurlardı. */
   --control: var(--muted);
+  /* Prompt light'ta kontrol ailesinde kalır: krem sayfanın üstünde `--muted`
+     zaten ayrışıyor, kenarı da `--hairline`. */
+  --composer: var(--control);
+  --composer-edge: var(--hairline);
   --accent: #f0e0cb;
   --accent-foreground: #3d2418;
   --destructive: #b8442e;
@@ -193,6 +200,13 @@
      butonun `--surface-base`i ve alanların `--surface-well`i
      `color-mix(--input 30%, --background)`, yani ~#201811. */
   --control: var(--sidebar);
+  /* Prompt dark'ta `--control`ü (kenar çubuğu tonu) KULLANMAZ. Hero'da sıcak
+     degradenin üstünde bu ton okunuyor ama /asistan'ın düz zemininde prompt
+     sayfayla 1.05:1'e düşüp kayboluyordu — sayfanın tek ana kontrolü. Değer
+     sayfadan ~6 L* açık (`--muted`e %75), kenar da hairline'ın %6'sı yerine
+     %10: kartlardan (`--card`, ~3,5 L*) bir kademe öne çıkar. */
+  --composer: color-mix(in oklab, var(--muted) 75%, var(--background));
+  --composer-edge: rgba(245, 232, 218, 0.1);
   --accent: #3d2d1f;
   --accent-foreground: #f5e8da;
   --destructive: #e07259;

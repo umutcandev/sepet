@@ -10,6 +10,7 @@ import {
   RiSearchLine,
   RiSparklingLine,
 } from "@remixicon/react"
+import { Card } from "@/components/ui/card"
 import { toast } from "@/components/ui/sonner"
 
 import {
@@ -484,12 +485,12 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
           {/* Liste / sonuç durumları */}
           {displayed.length === 0 ? (
             isSearchActive ? (
-              <div className="rounded-xl border bg-card px-6 py-12 text-center text-sm text-muted-foreground">
+              <Card className="px-6 py-12 text-center text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">
                   “{debouncedQuery.trim()}”
                 </span>{" "}
                 için sonuç bulunamadı.
-              </div>
+              </Card>
             ) : null
           ) : (
             <div>

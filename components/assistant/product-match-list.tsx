@@ -1,6 +1,5 @@
 "use client"
 
-import { Squircle } from "@/components/ui/squircle"
 import Image from "next/image"
 import {
   RiArrowDownSLine,
@@ -17,27 +16,16 @@ import { MarketLogo } from "@/components/market-logo"
 import { DepotInfo } from "@/components/assistant/depot-info"
 import type { MatchResult } from "@/lib/ai/schemas"
 import { formatTL } from "@/lib/format"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
   if (!matches?.length) return null
 
   return (
-    // Kenar `--hairline`: balon, input ve ana sayfa kartlarıyla aynı çizgi.
-    // Ama halka İÇERİDE (`inset-ring`), dış gölge yok.
-    //
-    // DIŞ GÖLGE BU SÜTUNDA ÇALIŞMAZ. `smooth-shadow-ring-sm` 18px offset +
-    // 47px blur ister; kart hem `MessageContent`in hem sohbet sütununun
-    // `overflow-hidden`ı içinde, ikisi de gölgeyi sağdan/soldan/alttan düz
-    // kesiyor ve kart kırpılmış görünüyor. Ana sayfada kartlar açık bir
-    // grid'de durduğu için orada aynı sınıf sorunsuz.
-    //
-    // `effects` de KAPALI: SVG'ye taşınacak CSS border/box-shadow kalmadı,
-    // inset halka clip-path'ten sağ çıkıyor. Lisse'in karta eklediği
-    // sarmalayıcı div ve tema değişimindeki remount da böylece gitti.
-    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
-      <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
-        <span className="text-sm font-medium">Eşleşen Ürünler</span>
-      </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Eşleşen Ürünler</CardTitle>
+      </CardHeader>
       <div className="divide-y">
       {matches.map((m, i) => {
         const cheapest = m.marketPrices[0]
@@ -121,7 +109,9 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
             {hasMore && (
               <Collapsible>
                 <CollapsibleTrigger
-                  className="group flex w-full items-center justify-center gap-1.5 border-t bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/60"
+                  // Odak halkası İÇERİDE: satır kartın `overflow-hidden`ında
+                  // duruyor, dış halka kenarlardan kırpılırdı.
+                  className="group flex w-full items-center justify-center gap-1.5 border-t bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground outline-none transition-colors hover:bg-muted/60 focus-visible:inset-ring-3 focus-visible:inset-ring-ring/50"
                 >
                   <span>
                     Diğer marketlerdeki fiyatları gör
@@ -155,6 +145,6 @@ export function ProductMatchList({ matches }: { matches: MatchResult[] }) {
         )
       })}
       </div>
-    </Squircle>
+    </Card>
   )
 }

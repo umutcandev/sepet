@@ -1,3 +1,4 @@
+import { Card, CardHeader } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 /**
@@ -19,7 +20,7 @@ function CardSkeleton({
   headerWidth?: string
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Card>
       <CardHeaderSkeleton width={headerWidth} />
       <div className="divide-y">
         {Array.from({ length: rows }).map((_, i) => (
@@ -29,7 +30,7 @@ function CardSkeleton({
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   )
 }
 
@@ -45,16 +46,16 @@ function CardHeaderSkeleton({
   extra?: React.ReactNode
 }) {
   return (
-    <div className="flex min-h-12 items-center gap-2 border-b px-4 py-2">
+    <CardHeader>
       <Skeleton className={`h-4 ${width}`} />
       {extra}
-    </div>
+    </CardHeader>
   )
 }
 
 function ItemsCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Card>
       <CardHeaderSkeleton
         width="w-36"
         extra={<Skeleton className="h-5 w-10 rounded-md" />}
@@ -74,13 +75,13 @@ function ItemsCardSkeleton() {
           </li>
         ))}
       </ul>
-    </div>
+    </Card>
   )
 }
 
 function SummaryCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Card>
       <CardHeaderSkeleton width="w-24" />
       <div className="divide-y">
         {Array.from({ length: 2 }).map((_, i) => (
@@ -94,14 +95,14 @@ function SummaryCardSkeleton() {
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   )
 }
 
 /** Halka solda, döküm sağda — bkz. MarketSplitDonut'taki aynı yerleşim. */
 function DonutCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Card>
       <CardHeaderSkeleton width="w-40" />
       <div className="flex items-center gap-3 p-4 sm:gap-4">
         <Skeleton className="size-[140px] shrink-0 rounded-full sm:size-[168px]" />
@@ -117,7 +118,7 @@ function DonutCardSkeleton() {
           ))}
         </div>
       </div>
-    </div>
+    </Card>
   )
 }
 
@@ -166,12 +167,12 @@ export function ReceiptDetailSkeleton() {
       <HeaderSkeleton />
       <div className="grid gap-5 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
         <div className="order-2 min-w-0 space-y-5 md:order-1">
-          <div className="overflow-hidden rounded-xl border bg-card">
+          <Card>
             <CardHeaderSkeleton width="w-24" />
             <div className="p-3">
               <Skeleton className="h-40 w-full rounded-lg md:h-56" />
             </div>
-          </div>
+          </Card>
           <SummaryCardSkeleton />
         </div>
         <div className="order-3 min-w-0 space-y-5 md:order-2">

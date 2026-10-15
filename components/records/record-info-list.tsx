@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 
 /**
  * Anahtar–değer bilgi kartı.
@@ -41,13 +42,13 @@ export function RecordInfoList({
   className?: string
 }) {
   return (
-    <div className={cn("overflow-hidden rounded-xl border bg-card", className)}>
-      <div className="flex min-h-12 items-center gap-2 border-b px-4 py-2">
-        <span className="text-sm font-medium">{title}</span>
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
         {headerRight ? <div className="ml-auto">{headerRight}</div> : null}
-      </div>
+      </CardHeader>
       <dl className="divide-y">{children}</dl>
-    </div>
+    </Card>
   )
 }
 

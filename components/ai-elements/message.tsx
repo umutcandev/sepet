@@ -82,7 +82,10 @@ export const MessageContent = ({
     // türerken iki kez zayıflıyor (rim-alpha %55 × chip'in %22'si) ve
     // `--secondary` zaten zemine çok yakın — ölçtük, light'ta 1 gece 2 seviye.
     "group-[.is-user]:inset-ring group-[.is-user]:inset-ring-hairline",
-    "group-[.is-assistant]:text-foreground",
+    // Asistan içeriği sütunu doldurur: metin için fark etmez (balonu yok),
+    // ama kartlar içerikleri kadar genişlediğinde aynı sohbette 411, 463 ve
+    // 703px'lik kartlar alt alta diziliyordu.
+    "group-[.is-assistant]:w-full group-[.is-assistant]:text-foreground",
     className
   );
 

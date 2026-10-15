@@ -1,12 +1,12 @@
 "use client"
 
-import { Squircle } from "@/components/ui/squircle"
 import { Fragment, useState } from "react"
 import {
   RiArrowDownLine,
   RiArrowDownSLine,
   RiErrorWarningLine,
 } from "@remixicon/react"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
@@ -150,7 +150,7 @@ function OptionRow({
         disabled={!canExpand}
         aria-expanded={canExpand ? open : undefined}
         className={cn(
-          "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors",
+          "flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors focus-visible:inset-ring-3 focus-visible:inset-ring-ring/50",
           canExpand && "cursor-pointer hover:bg-muted/40",
         )}
       >
@@ -268,13 +268,10 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
   ) : null
 
   return (
-    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
-    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
-    // (gerekçenin tamamı product-match-list.tsx'te).
-    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
-      <div className="flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2">
-        <span className="text-sm font-medium">Sepet Özeti</span>
-      </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Sepet Özeti</CardTitle>
+      </CardHeader>
       <div className="divide-y">
         {comboFirst ? (
           <>
@@ -288,6 +285,6 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
           </>
         )}
       </div>
-    </Squircle>
+    </Card>
   )
 }

@@ -65,8 +65,11 @@ function InputGroupAddon({
   )
 }
 
+// `shadow-none` YOK: butonun kenar halkası gölge zincirinde (bkz.
+// globals.css, surface-raised); burada sıfırlanınca prompt'un gönder butonu
+// uygulamadaki tek kenarsız birincil butona dönüşüyordu.
 const inputGroupButtonVariants = cva(
-  "flex items-center gap-2 text-sm shadow-none",
+  "flex items-center gap-2 text-sm",
   {
     variants: {
       size: {

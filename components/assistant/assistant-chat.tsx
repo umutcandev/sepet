@@ -1,6 +1,7 @@
 "use client"
 
 import { Squircle } from "@/components/ui/squircle"
+import { Card } from "@/components/ui/card"
 import * as React from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
@@ -884,13 +885,7 @@ function QuotaExceededCard({
       }).format(new Date(resetAt))
     : null
   return (
-    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu
-    // `overflow-hidden` olduğu için dış gölge kırpılırdı (gerekçenin tamamı
-    // product-match-list.tsx'te).
-    <Squircle
-      className="mx-auto w-full max-w-3xl rounded-xl bg-card p-4 inset-ring inset-ring-hairline"
-      radius="xl"
-    >
+    <Card className="mx-auto w-full max-w-3xl p-4">
       <div className="flex items-start gap-3">
         <RiSparklingLine className="mt-0.5 size-5 shrink-0 text-foreground" />
         <div className="flex flex-col gap-1">
@@ -905,7 +900,7 @@ function QuotaExceededCard({
           </span>
         </div>
       </div>
-    </Squircle>
+    </Card>
   )
 }
 

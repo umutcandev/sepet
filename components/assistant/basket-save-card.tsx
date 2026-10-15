@@ -1,7 +1,7 @@
 "use client"
 
-import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 
 import { SaveRecordRow } from "@/components/assistant/save-record-row"
 import { saveBasket } from "@/lib/actions/baskets"
@@ -44,13 +44,10 @@ export function BasketSaveCard({
   }, [])
 
   return (
-    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
-    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
-    // (gerekçenin tamamı product-match-list.tsx'te).
-    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
-      <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
-        <span className="text-sm font-medium">Sepeti Kaydet</span>
-      </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Sepeti Kaydet</CardTitle>
+      </CardHeader>
       <SaveRecordRow
         className="px-4 py-3"
         namePlaceholder={placeholder}
@@ -72,6 +69,6 @@ export function BasketSaveCard({
         successMessage="Sepet kaydedildi."
         errorMessage="Sepet kaydedilemedi. Lütfen tekrar dene."
       />
-    </Squircle>
+    </Card>
   )
 }

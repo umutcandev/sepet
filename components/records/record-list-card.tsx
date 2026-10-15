@@ -3,6 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 
+import { Card } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 
@@ -52,68 +53,70 @@ export function RecordListCard({
   onToggleSelect: () => void
 }) {
   return (
-    <li
-      onClick={selecting ? onToggleSelect : undefined}
+    <Card
+      asChild
       className={cn(
-        "relative overflow-hidden rounded-xl border bg-card transition-colors",
+        "relative transition-[background-color,box-shadow]",
         // Odak halkası karta ait: başlık linkine verilseydi `overflow-hidden`
         // tarafından kırpılırdı. Outline kendi kutusunun overflow'undan
         // etkilenmez, o yüzden kartın üstünde tam görünür.
         "has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring",
         selecting
           ? cn("cursor-pointer", selected && "bg-secondary/40")
-          : "hover:border-foreground/20",
+          : "hover:inset-ring-foreground/20",
       )}
     >
-      {/* ── Üst bant ── */}
-      <div className="flex items-center gap-2 px-3 py-2.5">
-        {selecting ? (
-          <Checkbox
-            checked={selected}
-            onCheckedChange={onToggleSelect}
-            onClick={(e) => e.stopPropagation()}
-            aria-label={selectLabel}
-            className="shrink-0"
-          />
-        ) : null}
-
-        <div className="min-w-0 flex-1">
+      <li onClick={selecting ? onToggleSelect : undefined}>
+        {/* ── Üst bant ── */}
+        <div className="flex items-center gap-2 px-3 py-2.5">
           {selecting ? (
-            <span className="block truncate text-sm font-medium">{title}</span>
-          ) : (
-            <Link
-              href={href}
-              className="block truncate text-sm font-medium outline-none after:absolute after:inset-0"
-            >
-              {title}
-            </Link>
-          )}
-        </div>
-
-        {primary ? (
-          <div className="ml-auto flex shrink-0 items-center gap-2">
-            {primary}
-          </div>
-        ) : null}
-      </div>
-
-      {/* ── Alt bant ── */}
-      {/* `min-h-9`: seçim moduna girince ⋯ (24px) kaybolup bant yalnız metin
-          yüksekliğine düşüyordu — bütün liste 8px zıplıyordu. */}
-      <div className="flex min-h-9 items-center gap-2 border-t bg-muted/40 py-1.5 pr-2 pl-3">
-        <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted-foreground">
-          {meta}
-        </div>
-        <div className="relative z-10 ml-auto flex shrink-0 items-center gap-1">
-          {metaTrailing ? (
-            <span className="text-xs text-muted-foreground tabular-nums">
-              {metaTrailing}
-            </span>
+            <Checkbox
+              checked={selected}
+              onCheckedChange={onToggleSelect}
+              onClick={(e) => e.stopPropagation()}
+              aria-label={selectLabel}
+              className="shrink-0"
+            />
           ) : null}
-          {selecting ? null : actions}
+
+          <div className="min-w-0 flex-1">
+            {selecting ? (
+              <span className="block truncate text-sm font-medium">{title}</span>
+            ) : (
+              <Link
+                href={href}
+                className="block truncate text-sm font-medium outline-none after:absolute after:inset-0"
+              >
+                {title}
+              </Link>
+            )}
+          </div>
+
+          {primary ? (
+            <div className="ml-auto flex shrink-0 items-center gap-2">
+              {primary}
+            </div>
+          ) : null}
         </div>
-      </div>
-    </li>
+
+        {/* ── Alt bant ── */}
+        {/* `min-h-9`: seçim moduna girince ⋯ (24px) kaybolup bant yalnız metin
+            yüksekliğine düşüyordu — bütün liste 8px zıplıyordu. */}
+        <div className="flex min-h-9 items-center gap-2 border-t bg-muted/40 py-1.5 pr-2 pl-3">
+          <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted-foreground">
+            {meta}
+          </div>
+          <div className="relative z-10 ml-auto flex shrink-0 items-center gap-1">
+            {metaTrailing ? (
+              <span className="text-xs text-muted-foreground tabular-nums">
+                {metaTrailing}
+              </span>
+            ) : null}
+            {selecting ? null : actions}
+          </div>
+        </div>
+      </li>
+    </Card>
   )
 }
 

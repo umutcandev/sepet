@@ -52,8 +52,12 @@ const buttonVariants = cva(
         // kademe sönük durur; hover'da ön plana çıkar. Çağrı yerlerinde elle
         // `text-muted-foreground hover:text-foreground` yazılması bunun eksik
         // olduğunu gösteriyordu.
+        // Hover zemini saydam mürekkep, `bg-muted` DEĞİL: ghost butonlar
+        // `--muted` dolgulu yüzeylerin (prompt, ikincil kartlar) içinde de
+        // duruyor ve orada `bg-muted` zeminle aynı renge düşüp hover'ı
+        // görünmez kılıyordu.
         ghost: cn(
-          "text-muted-foreground hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
+          "text-muted-foreground hover:bg-foreground/6 hover:text-foreground aria-expanded:bg-foreground/6 aria-expanded:text-foreground dark:hover:bg-foreground/8 dark:aria-expanded:bg-foreground/8",
           press
         ),
         link: "text-primary underline-offset-4 hover:underline",
