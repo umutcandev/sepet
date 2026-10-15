@@ -155,10 +155,15 @@ function SegmentedControlItem({
       {...props}
     >
       {selected && (
+        // Aktif zemin şeritten AÇIK olmalı, iki temada da: kabarık bir parça
+        // ışığı yakalar. Light'ta `--background` bunu sağlıyor ama dark'ta
+        // `--background` şeridin `--muted`inden KOYU, segment yuvaya gömülmüş
+        // bir delik gibi okunuyordu. Dark'ta bir basamak yukarısı `--accent`
+        // (switch thumb'ı da dark'ta yuvasından açık).
         <motion.span
           layoutId={ctx.pillId}
           aria-hidden
-          className="absolute inset-0 rounded-md bg-background surface-raised-tight"
+          className="absolute inset-0 rounded-md bg-background surface-raised-tight dark:bg-accent"
           transition={reduceMotion ? { duration: 0 } : SPRING_PILL}
         />
       )}
