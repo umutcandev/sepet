@@ -10,7 +10,7 @@ export type MarketEntry = {
   url: string | null
 }
 
-const REGISTRY: ReadonlyArray<MarketEntry> = [
+export const MARKETS: ReadonlyArray<MarketEntry> = [
   { name: "BİM", icon: "/market-logos/bim.webp", url: "https://www.bim.com.tr" },
   { name: "A101", icon: "/market-logos/a101.webp", url: "https://www.a101.com.tr" },
   { name: "Migros", icon: "/market-logos/migros.webp", url: "https://www.migros.com.tr" },
@@ -59,7 +59,7 @@ const ALIASES: Record<string, string> = {
 }
 
 const BY_KEY = new Map<string, MarketEntry>()
-for (const entry of REGISTRY) {
+for (const entry of MARKETS) {
   BY_KEY.set(normalizeKey(entry.name), entry)
 }
 

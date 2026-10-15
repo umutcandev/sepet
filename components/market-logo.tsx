@@ -11,9 +11,10 @@ import {
 import { cn } from "@/lib/utils"
 import { findMarket, getMarketInitial } from "@/lib/markets/registry"
 
-type Size = "sm" | "default" | "lg"
+type Size = "xs" | "sm" | "default" | "lg"
 
 const SIZE_PX: Record<Size, number> = {
+  xs: 20,
   sm: 24,
   default: 32,
   lg: 40,
@@ -38,8 +39,8 @@ export function MarketLogo({ name, size = "default", className }: MarketLogoProp
   return (
     // Zemin `--background` DEĞİL: logolar saydam PNG ve neredeyse hep kart
     // yüzeyinde duruyor, yani dairenin içi sayfanın kremini gösterip karttan
-    // ayrılıyordu (#FFF8F0 / #FFFBF5). Halkayla aynı değişkeni okuyor ki ikisi
-    // birlikte dönsün (bkz. ui/avatar.tsx).
+    // ayrılıyordu (#FFF8F0 / #FFFBF5). Başka bir zeminde `--avatar-surface`
+    // ile değiştirilir.
     <Avatar
       size={size}
       className={cn("bg-[var(--avatar-surface,var(--card))]", className)}

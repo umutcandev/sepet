@@ -2,13 +2,7 @@
 
 import * as React from "react"
 import { AnimatePresence, motion } from "motion/react"
-import {
-  RiAddLine,
-  RiAttachment2,
-  RiCloseLine,
-  RiImageLine,
-  RiRefreshLine,
-} from "@remixicon/react"
+import { RiAttachment2, RiCloseLine, RiRefreshLine } from "@remixicon/react"
 import { toast } from "@/components/ui/sonner"
 
 import {
@@ -19,10 +13,6 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputTools,
-  PromptInputActionMenu,
-  PromptInputActionMenuContent,
-  PromptInputActionMenuItem,
-  PromptInputActionMenuTrigger,
   usePromptInputAttachments,
   type PromptInputMessage,
 } from "@/components/ai-elements/prompt-input"
@@ -30,6 +20,7 @@ import type { ChatStatus } from "ai"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { VoiceInput } from "@/components/assistant/voice-input"
+import { PromptOptionsMenu } from "@/components/assistant/prompt-options-menu"
 import { Spinner } from "@/components/ui/spinner"
 import {
   Attachment,
@@ -214,7 +205,7 @@ export function AssistantPrompt({
         </PromptInputBody>
         <PromptInputFooter>
           <PromptInputTools>
-            <AddAttachmentMenu />
+            <PromptOptionsMenu />
           </PromptInputTools>
           <div className="ml-auto flex items-center gap-1">
             <VoiceInput
@@ -328,23 +319,6 @@ function UploadManager({
   }, [att, isAuthenticated, setUploads, startUpload])
 
   return null
-}
-
-function AddAttachmentMenu() {
-  const att = usePromptInputAttachments()
-  return (
-    <PromptInputActionMenu>
-      <PromptInputActionMenuTrigger aria-label="Ek yükle" className="rounded-full">
-        <RiAddLine aria-hidden="true" className="size-4" />
-      </PromptInputActionMenuTrigger>
-      <PromptInputActionMenuContent>
-        <PromptInputActionMenuItem onSelect={() => att.openFileDialog()}>
-          <RiImageLine className="size-4" />
-          Resim yükle
-        </PromptInputActionMenuItem>
-      </PromptInputActionMenuContent>
-    </PromptInputActionMenu>
-  )
 }
 
 function AttachmentHeader() {
