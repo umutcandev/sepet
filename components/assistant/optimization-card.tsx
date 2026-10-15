@@ -1,9 +1,11 @@
 "use client"
 
 import { Fragment, useState } from "react"
+import Image from "next/image"
 import {
   RiArrowDownLine,
   RiArrowDownSLine,
+  RiBox3Line,
   RiErrorWarningLine,
 } from "@remixicon/react"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
@@ -32,6 +34,37 @@ function formatMissingItemsText(names: string[], market: string): string {
   return `${joined} ${market} stoğunda yok`
 }
 
+/**
+ * productId → görsel. Döküm satırının görseli `allocation`da taşınır; o alan
+ * eklenmeden önce kaydedilmiş özetlerde çağıranın verdiği bu eşlemeye düşülür
+ * (sohbette aynı turun eşleşmeleri, kayıt sayfasında kalemler).
+ */
+export type ProductImageFallback = Record<string, string>
+
+function AllocationThumb({ url }: { url: string | null }) {
+  // Market CDN'i görsele 404 dönebiliyor (bkz. record-item-list Thumb); kırık
+  // resim ikonu yerine kutu yer-tutucuya düşer.
+  const [failed, setFailed] = useState(false)
+  return (
+    <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
+      {url && !failed ? (
+        <Image
+          src={url}
+          // Ürün adı hemen yanında yazıyor; görsel dekoratif.
+          alt=""
+          width={40}
+          height={40}
+          className="size-10 object-contain"
+          unoptimized
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <RiBox3Line aria-hidden="true" className="size-4 text-muted-foreground" />
+      )}
+    </div>
+  )
+}
+
 // Bir seçeneğin (tek market / iki market) hangi kalemlerden oluştuğunu, market
 // bazında gruplayarak bir tabloda gösterir. Tek market için tek grup → market
 // başlığı gizlenir; kombinasyonda her market kendi başlık satırı altında listelenir.
@@ -40,9 +73,11 @@ function formatMissingItemsText(names: string[], market: string): string {
 function AllocationBreakdown({
   allocation,
   markets,
+  imageFallback,
 }: {
   allocation: MarketAllocation[]
   markets: string[]
+  imageFallback?: ProductImageFallback
 }) {
   const multiMarket = markets.length > 1
   const grouped = markets
@@ -75,30 +110,37 @@ function AllocationBreakdown({
                     key={`${e.productId}-${i}`}
                     className="border-0 hover:bg-transparent"
                   >
-                    <TableCell className="py-1 align-top whitespace-normal">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-medium">
-                          {capitalize(e.rawName) || e.productName}
-                        </span>
-                        {multiPack && (
-                          <Badge variant="secondary" className="tabular-nums">
-                            {e.quantity}×
-                          </Badge>
-                        )}
-                        <DepotInfo depotName={e.depotName} market={e.market} />
+                    <TableCell className="py-1.5 whitespace-normal">
+                      <div className="flex items-center gap-2.5">
+                        <AllocationThumb
+                          url={e.imageUrl ?? imageFallback?.[e.productId] ?? null}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xs font-medium">
+                              {capitalize(e.rawName) || e.productName}
+                            </span>
+                            {multiPack && (
+                              <Badge variant="secondary" className="tabular-nums">
+                                {e.quantity}×
+                              </Badge>
+                            )}
+                            <DepotInfo depotName={e.depotName} market={e.market} />
+                          </div>
+                          <div className="text-[0.6875rem] text-muted-foreground">
+                            {e.productName}
+                            {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
+                          </div>
+                          {e.sizeMismatch && (
+                            <Badge variant="warning" className="mt-0.5">
+                              <RiErrorWarningLine data-icon="inline-start" />
+                              Farklı boyut
+                            </Badge>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-[0.6875rem] text-muted-foreground">
-                        {e.productName}
-                        {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
-                      </div>
-                      {e.sizeMismatch && (
-                        <Badge variant="warning" className="mt-0.5">
-                          <RiErrorWarningLine data-icon="inline-start" />
-                          Farklı boyut
-                        </Badge>
-                      )}
                     </TableCell>
-                    <TableCell className="py-1 text-right align-top text-xs tabular-nums">
+                    <TableCell className="py-1.5 text-right text-xs tabular-nums">
                       {formatTL(e.lineTotal)}
                     </TableCell>
                   </TableRow>
@@ -123,6 +165,7 @@ function OptionRow({
   totalNote,
   allocation,
   markets,
+  imageFallback,
 }: {
   logo: React.ReactNode
   label: string
@@ -135,6 +178,7 @@ function OptionRow({
   totalNote?: React.ReactNode
   allocation: MarketAllocation[]
   markets: string[]
+  imageFallback?: ProductImageFallback
 }) {
   const [open, setOpen] = useState(false)
   // Döküm eklenmeden önce kaydedilmiş özetlerde `allocation` boş dizi olur
@@ -189,14 +233,26 @@ function OptionRow({
         )}
       </button>
       {open && canExpand && (
-        <AllocationBreakdown allocation={allocation} markets={markets} />
+        <AllocationBreakdown
+          allocation={allocation}
+          markets={markets}
+          imageFallback={imageFallback}
+        />
       )}
     </div>
   )
 }
 
-export function OptimizationCard({ summary }: { summary: OptimizationSummary }) {
-  if (!summary) return null
+export function OptimizationCard({
+  summary,
+  imageFallback,
+}: {
+  summary: OptimizationSummary
+  imageFallback?: ProductImageFallback
+}) {
+  // Hiçbir kalem eşleşmediyse gösterilecek bir plan yok; "— ₺0,00" satırı
+  // asistanın "Sepet Özeti çıkaramadım" cümlesiyle çelişirdi.
+  if (!summary || summary.totalItems === 0) return null
 
   const { singleMarket, twoMarketCombo, totalItems } = summary
   const hasCombo = twoMarketCombo.markets.length === 2
@@ -231,6 +287,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
       total={singleMarket.total}
       allocation={singleMarket.allocation}
       markets={[singleMarket.market]}
+      imageFallback={imageFallback}
     />
   )
 
@@ -264,6 +321,7 @@ export function OptimizationCard({ summary }: { summary: OptimizationSummary }) 
       total={twoMarketCombo.total}
       allocation={twoMarketCombo.allocation}
       markets={twoMarketCombo.markets}
+      imageFallback={imageFallback}
     />
   ) : null
 

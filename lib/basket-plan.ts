@@ -114,3 +114,40 @@ export function marketTotals(
     value,
   }))
 }
+
+export type PlanItemProduct = {
+  productId: string | null
+  name: string | null
+  brand: string | null
+  imageUrl: string | null
+}
+
+/**
+ * Kalem satırında gösterilecek ürün: fiyatı gösterilen ürünün KENDİSİ.
+ *
+ * Kayıttaki eşleşen ürün (`matched*`) kalemin temsilcisidir; plan ise her
+ * markette kabul edilen ürünlerin en ucuzunu alır ve bu başka bir ürün
+ * olabilir. Satır temsilcinin adını/fotoğrafını plandaki ürünün fiyatıyla
+ * gösterince "İçim Süt" yazan satırda başka bir sütün fiyatı duruyordu. Planda
+ * yer alan kalem plandaki ürünü gösterir; marka yalnızca aynı ürünse bilinir.
+ * Görsel alanından önce kaydedilmiş planlarda görsel `images`ten (productId →
+ * görsel) tamamlanır; bulunamazsa yanlış ürünün fotoğrafı yerine boş kalır.
+ */
+export function planItemProduct(
+  matched: PlanItemProduct,
+  alloc: MarketAllocation | null,
+  images: Record<string, string> = {},
+): PlanItemProduct {
+  if (!alloc) return matched
+  const same = alloc.productId === matched.productId
+  return {
+    productId: alloc.productId,
+    name: alloc.productName,
+    brand: same ? matched.brand : null,
+    imageUrl:
+      alloc.imageUrl ??
+      (same ? matched.imageUrl : null) ??
+      images[alloc.productId] ??
+      null,
+  }
+}

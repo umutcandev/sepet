@@ -56,6 +56,12 @@ const HOME_DARK_RANGE = 160
    tamamen saydam, zemin katmanları `md:hidden`. */
 const HOME_HEADER_SOLID_RANGE = 56
 
+/* Hero zemininin çizimden çıkması için opak çizginin header'ı ne kadar geçmesi
+   gerektiği (px). Sıfır yetmez: görünürlük React state'i ile bir kare geç
+   geliyor ve hızlı bir yukarı fırlatmada katman, rampanın dibi göründüğü
+   karede hâlâ gizli kalabilirdi. Pay bir karede kaydırılan mesafeden büyük. */
+const HOME_HERO_OFFSCREEN_MARGIN = 200
+
 // Yalnızca mobil. Masaüstünde anahtar artık kenar çubuğunun kendi başlığında
 // (app-sidebar.tsx): genişken sağ üstteki düğme, daraltılmışken üstüne gelince
 // anahtara dönüşen logo. Mobilde ise kenar çubuğu bir `Sheet` ve kapalıyken
@@ -153,13 +159,24 @@ export function AppShell({ blogPosts, children }: Props) {
   // header'ın arkasından kesintisiz akar), ilk kaydırmada 1'e çıkar. Diğer
   // rotalarda header zemini düz CSS sınıfı, bu değer hiç kullanılmaz.
   const headerSolid = useMotionValue(0)
-  // Hero zemini tamamen kapandı mı? darkness 1'e vardığında blog bölümünün üst
-  // kenarı header'a dayanmış demektir, yani katmanın görünen tek pikseli
-  // kalmaz. Shader o noktada donar (bkz. HomeHeroBackdrop `covered`).
+  // Hero zemini iki adımda kapanıyor. darkness 1'e vardığında blog bölümünün
+  // üst kenarı header'a dayanmıştır: katman artık yalnız bölümün saydam üst
+  // rampasından (`.home-dark-ground`) görünür ve shader orada donar (bkz.
+  // HomeHeroBackdrop `covered`). Rampanın bittiği yer de header'ın üstüne
+  // çıkınca katmanın görünen pikseli kalmaz; o noktada çizimden de çıkar
+  // (`offscreen`).
   const [heroCovered, setHeroCovered] = React.useState(false)
 
   useMotionValueEvent(darkness, "change", (v) => {
     setHeroCovered(v >= 1)
+  })
+
+  // Bölümün tam opak başladığı çizginin header'ın altına uzaklığı (px).
+  const heroOpaqueTop = useMotionValue(Number.POSITIVE_INFINITY)
+  const [heroOffscreen, setHeroOffscreen] = React.useState(false)
+
+  useMotionValueEvent(heroOpaqueTop, "change", (v) => {
+    setHeroOffscreen(v < -HOME_HERO_OFFSCREEN_MARGIN)
   })
 
   /* HEADER PALETİ ARTIK SCROLL'A BAĞLI DEĞİL.
@@ -216,6 +233,7 @@ export function AppShell({ blogPosts, children }: Props) {
   React.useEffect(() => {
     if (!isHome) {
       darkness.set(0)
+      heroOpaqueTop.set(Number.POSITIVE_INFINITY)
       return
     }
     const root = scrollRef.current
@@ -224,6 +242,7 @@ export function AppShell({ blogPosts, children }: Props) {
     // header zemini yine de sürülmeli — yoksa sayfa kaydırılırken içerik saydam
     // bir şeridin altından geçer.
     const target = root.querySelector("[data-home-dark-start]")
+    const opaque = root.querySelector("[data-home-opaque-start]")
 
     let frame = 0
     const measure = () => {
@@ -232,10 +251,13 @@ export function AppShell({ blogPosts, children }: Props) {
       if (!target) return
       // Scroll container header'ın hemen altında başlıyor → root'un üst kenarı
       // = header'ın alt kenarı. d, nişanın oraya olan uzaklığı.
-      const d =
-        target.getBoundingClientRect().top - root.getBoundingClientRect().top
+      const rootTop = root.getBoundingClientRect().top
+      const d = target.getBoundingClientRect().top - rootTop
       const p = 1 - d / HOME_DARK_RANGE
       darkness.set(p < 0 ? 0 : p > 1 ? 1 : p)
+      if (opaque) {
+        heroOpaqueTop.set(opaque.getBoundingClientRect().top - rootTop)
+      }
     }
     const schedule = () => {
       // Kare başına tek layout okuması: scroll olayları rAF ile birleştirilir.
@@ -254,7 +276,7 @@ export function AppShell({ blogPosts, children }: Props) {
       root.removeEventListener("scroll", schedule)
       resizeObserver.disconnect()
     }
-  }, [isHome, darkness, headerSolid])
+  }, [isHome, darkness, headerSolid, heroOpaqueTop])
 
   return (
     <SidebarProvider>
@@ -289,7 +311,9 @@ export function AppShell({ blogPosts, children }: Props) {
             akıştan çıktığı için hero tek başına --hero-vh. Katmanın dibi
             birebir çakışıyor. Katman <main>'in DIŞINDA olduğu için kaydırınca
             yerinde kalır; sayfanın geri kalanı (opak blog bölümü) üstüne akar. */}
-        {isHome ? <HomeHeroBackdrop covered={heroCovered} /> : null}
+        {isHome ? (
+          <HomeHeroBackdrop covered={heroCovered} offscreen={heroOffscreen} />
+        ) : null}
         {/* Zemin rengi DIŞ sarmalayıcıda: `dark` sınıfı --home-base'i de gece
             değerine kilitlerdi, oysa bu renk gerçek temaya bağlı olmalı. `dark`
             yalnızca header'da → koyu zemine gelince metin/ikon/logo paleti açık

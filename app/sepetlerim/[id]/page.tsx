@@ -6,6 +6,7 @@ import {
   createAllocationLookup,
   marketTotals,
   parseSummary,
+  planItemProduct,
   recommendedPlan,
 } from "@/lib/basket-plan"
 import { formatDateTime, formatTL } from "@/lib/format"
@@ -59,6 +60,15 @@ export default async function BasketDetailPage({
   // Görseli olmayan kalemler eşleşen üründen tamamlanır — `matchedImageUrl`
   // sütunu sonradan eklendiğinden eski kayıtların tamamı boşta kalmıştı.
   const items = await withResolvedItemImages(detail.items, "basket")
+  // Görsel alanından önce kaydedilmiş özetlerin dökümü, kalemlerin eşleşen
+  // ürün görselleriyle tamamlanır (bkz. ProductImageFallback).
+  const itemImages = Object.fromEntries(
+    items.flatMap((it) =>
+      it.matchedProductId && it.matchedImageUrl
+        ? [[it.matchedProductId, it.matchedImageUrl]]
+        : [],
+    ),
+  )
 
   const twoMarketSavings = basket.twoMarketSavingsTL
     ? Number(basket.twoMarketSavingsTL)
@@ -80,16 +90,28 @@ export default async function BasketDetailPage({
   const takeAllocation = createAllocationLookup(plan?.allocation ?? [])
   const itemViews: RecordItemView[] = items.map((it) => {
     const alloc = takeAllocation(it.rawName)
+    // Ad, görsel ve ürün paneli fiyatı gösterilen ürüne bağlı (bkz.
+    // planItemProduct); Sepet Özeti'nin dökümüyle aynı ürün.
+    const product = planItemProduct(
+      {
+        productId: it.matchedProductId,
+        name: it.matchedName,
+        brand: it.matchedBrand,
+        imageUrl: it.matchedImageUrl,
+      },
+      alloc,
+      itemImages,
+    )
     return {
       id: it.id,
       rawName: it.rawName,
       quantity: Number(it.quantity),
       unit: it.unit,
       matchedName:
-        it.matchedName && it.matchedName !== it.rawName ? it.matchedName : null,
-      matchedBrand: it.matchedBrand,
-      matchedImageUrl: it.matchedImageUrl,
-      matchedProductId: it.matchedProductId,
+        product.name && product.name !== it.rawName ? product.name : null,
+      matchedBrand: product.brand,
+      matchedImageUrl: product.imageUrl,
+      matchedProductId: product.productId,
       searchQuery: it.searchQuery,
       // Eski kayıtlarda lookupStatus yok → eşleşen ürün id'si karar verir.
       matched:
@@ -215,10 +237,14 @@ export default async function BasketDetailPage({
 
         {/* Sohbetteki genişleyen dökümün bütün verisi zaten diskteydi; kayıt
             sayfası bunu yalnızca halka grafik için toplayıp gerisini atıyordu.
-            Kart saf bir bileşen — tek girdisi summary. */}
+            Kart saf bir bileşen — girdisi summary (eski kayıtlarda dökümün
+            görselleri kalemlerden tamamlanır). */}
         {summary && (
           <div className="order-1 min-w-0 md:order-2">
-            <OptimizationCard summary={summary} />
+            <OptimizationCard
+              summary={summary}
+              imageFallback={itemImages}
+            />
           </div>
         )}
 

@@ -57,6 +57,14 @@ export function HomeBlogSection() {
         data-home-dark-start
         className="absolute inset-x-0 top-0 h-px"
       />
+      {/* Zeminin tam opak başladığı çizgi (rampanın sonu). Bu header'ın
+          üstüne çıkınca hero zemini hiçbir yerden görünmez; AppShell shader
+          katmanını o noktada çizimden çıkarır. */}
+      <div
+        aria-hidden
+        data-home-opaque-start
+        className="absolute inset-x-0 top-[calc(var(--home-dark-start)+var(--home-dark-length))] h-px"
+      />
       {/* Market mozaiği ve üç özellik kartı. Zemin (`home-dark-ground`) ve
           `data-home-dark-start` nişanı bu section'a ait olduğu için ikisi de
           BURADA duruyor: page.tsx'te ayrı birer kardeş olsalardı hero'nun

@@ -416,6 +416,19 @@
   }
 }
 
+/* Squircle'ın dokunmatik modu (bkz. components/ui/squircle.tsx): Lisse'in
+   clip-path'i yok, içeriği köşeden kırpan iş burada. `hidden` DEĞİL `clip`:
+   kaydırma kabı kurmuyor, yani flex/grid öğelerinin otomatik min boyutu ve
+   içerideki sticky davranışı değişmiyor. Elemanın kendi gölgesine dokunmaz.
+   `@layer base`te, bir utility gerekirse ezebilsin. */
+@layer base {
+  @media (pointer: coarse) {
+    [data-squircle] {
+      overflow: clip;
+    }
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Windows Yüksek Kontrast (forced-colors)
 

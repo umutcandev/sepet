@@ -50,6 +50,16 @@ function SheetPortal({
  *
  * Kayma mesafesi de tam: `slide-out-to-left-10` yalnız 40px kaydırıyordu
  * (295px'lik çekmece yerinde soluyordu), sonek kaldırılınca -100% oluyor.
+ *
+ * Overlay'de `backdrop-blur` YOK (dialog/drawer'dakinin aksine). Sheet'i yalnız
+ * mobil kenar çubuğu kullanıyor ve ana sayfada altında canlı shader akıyor:
+ * bulanıklık her karede tam ekran yeniden hesaplanıyor, açılıp kapanırken
+ * birleştirme süresi ölçümde 3 kat artıyordu. Düz karartma bedava.
+ *
+ * Bulanıklık sayfayı geri iten şeyin yarısıydı; o gidince eski %15'lik ton
+ * yetmedi: gündüz sayfa olduğu gibi okunuyordu, gece `--foreground` krem
+ * olduğu için karartmak yerine pus bırakıyordu. Gündüz ton aynı aileden ama
+ * koyu, gece düz siyah.
  */
 function SheetOverlay({
   className,
@@ -59,7 +69,7 @@ function SheetOverlay({
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-foreground/15 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 data-closed:fill-mode-forwards",
+        "fixed inset-0 z-50 bg-foreground/25 duration-100 dark:bg-black/45 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 data-closed:fill-mode-forwards",
         className
       )}
       {...props}

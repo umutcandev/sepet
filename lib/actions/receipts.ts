@@ -224,19 +224,36 @@ export async function saveReceipt(input: {
   if (input.items.length > 0) {
     // Fotoğraf/marka `matches` içinde geliyor ama save'e kadar gelip yazılmadan
     // düşüyordu; kayıt sayfasının fakir görünmesi tasarım tercihi değil,
-    // gösterecek verisinin olmamasıydı. Temsilci ürünün id'si üzerinden bağla.
-    const enrichmentByProductId = new Map(
-      input.matches
-        .filter((m) => m.bestMatch)
-        .map((m) => [
-          m.bestMatch!.productId,
-          {
-            brand: m.bestMatch!.brand,
-            imageUrl: m.bestMatch!.imageUrl,
-            lookupStatus: m.lookupStatus,
-          },
-        ]),
-    )
+    // gösterecek verisinin olmamasıydı. Karşılaştırmanın seçtiği ürün
+    // temsilci ürün olmak zorunda değil (her marketteki en ucuz kabul edilen
+    // ürün, bkz. cheapestOption); fotoğraf ve marka o ürünün kendisinden
+    // gelmeli, yoksa satır bir ürünün adını başka bir ürünün fotoğrafıyla
+    // gösterir. Marka yalnızca temsilci ve alternatiflerde var.
+    const enrichmentByProductId = new Map<
+      string,
+      {
+        brand: string | null
+        imageUrl: string | null
+        lookupStatus: MatchResult["lookupStatus"]
+      }
+    >()
+    for (const m of input.matches) {
+      for (const opt of m.marketOptions ?? []) {
+        enrichmentByProductId.set(opt.productId, {
+          brand: null,
+          imageUrl: opt.imageUrl ?? null,
+          lookupStatus: m.lookupStatus,
+        })
+      }
+      for (const p of [m.bestMatch, ...(m.alternatives ?? [])]) {
+        if (!p) continue
+        enrichmentByProductId.set(p.productId, {
+          brand: p.brand,
+          imageUrl: p.imageUrl,
+          lookupStatus: m.lookupStatus,
+        })
+      }
+    }
     const statusByRawName = new Map(
       input.matches.map((m) => [m.rawName, m.lookupStatus]),
     )

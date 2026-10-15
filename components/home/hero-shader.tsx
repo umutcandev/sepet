@@ -85,12 +85,23 @@ const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? React.useEffect : React.useLayoutEffect
 
 type Props = {
-  /* Zemin tamamen kapandığında app-shell true'ya çeker, animasyon donar. Katman
-     <main>'in dışında olduğu için kendi IntersectionObserver'ı bunu göremez. */
+  /* Blog bölümü header'a dayandığında app-shell true'ya çeker, animasyon
+     donar; katman o noktadan sonra yalnız bölümün saydam rampasından görünür.
+     Katman <main>'in dışında olduğu için kendi IntersectionObserver'ı bunu
+     göremez. Sekme arka plandayken kütüphane kendisi durduruyor. */
   covered?: boolean
+  /* Rampa da geçildi, katmanın görünen pikseli yok. Donmuş bir shader bile
+     compositor'a her karede tam ekran bir dörtgen olarak gidiyordu: alt
+     bölümlerde kaydırırken birleştirme süresinin yarısı buydu (ölçüldü).
+     `visibility: hidden` katmanı çizimden çıkarıyor. `display: none` DEĞİL:
+     kutu sıfıra iner, kütüphanenin ResizeObserver'ı tuvali yeniden kurar. */
+  offscreen?: boolean
 }
 
-export function HomeHeroBackdrop({ covered = false }: Props) {
+export function HomeHeroBackdrop({
+  covered = false,
+  offscreen = false,
+}: Props) {
   const theme = useDocumentTheme()
   const reduceMotion = useReducedMotion()
   const containerRef = React.useRef<HTMLDivElement>(null)
@@ -191,6 +202,7 @@ export function HomeHeroBackdrop({ covered = false }: Props) {
       // görünmez; kaydırınca bölümün saydam üst bölgesinden bu sabit zemin
       // görünür, opak bölgesi onu kapatır. --hero-vh home-hero.tsx'te donuyor.
       className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[var(--hero-vh,100svh)] overflow-hidden"
+      style={offscreen ? { visibility: "hidden" } : undefined}
     >
       <div
         className="absolute inset-0 dark:hidden"
@@ -219,7 +231,7 @@ export function HomeHeroBackdrop({ covered = false }: Props) {
             scale={scale}
             colors={[...palette.colors]}
             // speed=0 rAF döngüsünü tamamen iptal ediyor (zaman korunur).
-            speed={reduceMotion || covered ? 0 : SPEED}
+            speed={reduceMotion || covered || offscreen ? 0 : SPEED}
             maxPixelCount={maxPixelCount}
             webGlContextAttributes={WEBGL_CONTEXT}
             style={{ width: "100%", height: "100%" }}

@@ -10,6 +10,7 @@ function option(
   market: string,
   price: number,
   productId = `${market}-p`,
+  imageUrl: string | null = null,
 ): MarketOption {
   return {
     market,
@@ -20,6 +21,7 @@ function option(
     effectiveCost: price,
     unitPriceLabel: null,
     depotName: null,
+    imageUrl,
   }
 }
 
@@ -157,6 +159,35 @@ describe("computeOptimization", () => {
     ])
 
     assert.equal(summary.singleMarket.allocation[0].sizeMismatch, true)
+  })
+
+  test("satırın görseli o markette seçilen ürünün görselidir", () => {
+    // Aynı kalem iki markette iki farklı ürüne çözülüyor; dökümdeki küçük
+    // resim kalemin temsilcisinden değil, o satırda alınan üründen gelmeli.
+    // Tek market A101 (30 + 10 = 40), kombo süt BİM + ekmek A101 (25 + 10).
+    const summary = computeOptimization([
+      match("süt", [
+        option("A101", 30, "a101-sut", "https://cdn/a101-sut.png"),
+        option("BİM", 25, "bim-sut", "https://cdn/bim-sut.png"),
+      ]),
+      match("ekmek", [
+        option("A101", 10, "a101-ekmek", null),
+        option("BİM", 20, "bim-ekmek", "https://cdn/bim-ekmek.png"),
+      ]),
+    ])
+
+    const images = (allocation: typeof summary.singleMarket.allocation) =>
+      Object.fromEntries(allocation.map((a) => [a.rawName, a.imageUrl]))
+
+    assert.equal(summary.singleMarket.market, "A101")
+    assert.deepEqual(images(summary.singleMarket.allocation), {
+      süt: "https://cdn/a101-sut.png",
+      ekmek: null,
+    })
+    assert.deepEqual(images(summary.twoMarketCombo.allocation), {
+      süt: "https://cdn/bim-sut.png",
+      ekmek: null,
+    })
   })
 
   test("para tutarları 2 ondalığa yuvarlanır", () => {
