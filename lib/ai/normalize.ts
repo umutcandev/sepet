@@ -71,3 +71,27 @@ export function queryGeneralizations(query: string): string[] {
   }
   return out
 }
+
+/**
+ * Markette kendi adıyla aranınca doğru ürünü getirmeyen genel terimler →
+ * katalogdaki karşılığı. Anahtar ve değer küçük harf.
+ *
+ * "yağ": kullanıcı ve asistan yemeklik sıvı yağı böyle yazar (özel bir yağ
+ * istenince zaten "zeytinyağı", "tereyağı" diye açıkça yazılır). Ama "yağ"
+ * araması marketfiyati'nde ilk 72 adayın hiçbirinde ayçiçek yağı getirmiyor;
+ * havuz yağ çözücü, şampuan ve bebek yağıyla dolu (bkz. lib/ai/eval/candidates/
+ * yag.json ve taksonomideki notu). Yemeklik yağın raftaki adı ayçiçek yağı.
+ */
+const SEARCH_ALIASES: Record<string, string> = {
+  yağ: "ayçiçek yağı",
+  "sıvı yağ": "ayçiçek yağı",
+  sıvıyağ: "ayçiçek yağı",
+  "yemeklik yağ": "ayçiçek yağı",
+  "yemeklik sıvı yağ": "ayçiçek yağı",
+}
+
+/** Terimin katalogda aranacağı ad; takma adı yoksa null. */
+export function searchAlias(query: string): string | null {
+  const key = query.trim().toLocaleLowerCase("tr-TR").replace(/\s+/g, " ")
+  return SEARCH_ALIASES[key] ?? null
+}

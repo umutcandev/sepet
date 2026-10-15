@@ -44,11 +44,18 @@ export function buildSummaryText(
     ? ` ${joinTr(unmatched.map(capitalizeTr))} eşleştirilemedi, toplama dahil değil.`
     : ""
 
-  const mismatched = matches
-    .filter((m) => m.sizeMismatch && m.bestMatch && m.lookupStatus === "ok")
-    .map((m) => m.rawName)
+  // Rozetle aynı kaynak: Sepet Özeti'nde gösterilen dökümlerde farklı boyutlu
+  // satırı olan kalemler. Kalemin temsilcisine bakmak yetmiyor; ürün marketten
+  // markete değişiyor.
+  const shown = [
+    ...single.allocation,
+    ...(hasFullCombo ? combo.allocation : []),
+  ]
+  const mismatched = [
+    ...new Set(shown.filter((a) => a.sizeMismatch).map((a) => a.rawName)),
+  ]
   const mismatchPart = mismatched.length
-    ? ` ${joinTr(mismatched.map(capitalizeTr))} için istediğin boyutu bulamadım; en yakın boyutla hesapladım ve Sepet Özeti'nde farklı boyut olarak işaretledim.`
+    ? ` ${joinTr(mismatched.map(capitalizeTr))} için istediğin boyut her markette yok; o marketlerde en yakın boyutu aldım ve Sepet Özeti'nde farklı boyut olarak işaretledim.`
     : ""
 
   return `Sepet Özeti hazır. ${plan}${unmatchedPart}${mismatchPart}`

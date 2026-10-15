@@ -1,7 +1,11 @@
 import assert from "node:assert/strict"
 import { test, describe } from "node:test"
 
-import { queryGeneralizations, stripQuantityTokens } from "./normalize"
+import {
+  queryGeneralizations,
+  searchAlias,
+  stripQuantityTokens,
+} from "./normalize"
 
 describe("queryGeneralizations", () => {
   test("sondan kelime atarak genelden spesifiğe iner", () => {
@@ -58,5 +62,20 @@ describe("stripQuantityTokens", () => {
 
   test("marka adını korur", () => {
     assert.equal(stripQuantityTokens("1 paket eti cin"), "eti cin")
+  })
+})
+
+describe("searchAlias", () => {
+  test("genel yemeklik yağı katalogdaki adıyla aratır", () => {
+    assert.equal(searchAlias("yağ"), "ayçiçek yağı")
+    assert.equal(searchAlias("Sıvı Yağ"), "ayçiçek yağı")
+    assert.equal(searchAlias("  sıvı   yağ "), "ayçiçek yağı")
+  })
+
+  test("özel olarak yazılan yağa dokunmaz", () => {
+    // Kullanıcı türü yazdıysa o tür aranır.
+    assert.equal(searchAlias("zeytinyağı"), null)
+    assert.equal(searchAlias("tereyağı"), null)
+    assert.equal(searchAlias("mısırözü yağı"), null)
   })
 })

@@ -73,6 +73,7 @@ A MODU — KAPSAM DİSİPLİNİ (ÖNEMLİ, hallüsinasyona karşı):
   · "sucuklu tost" → SADECE sucuk + ekmek + kaşar peyniri (domates/biber EKLEME).
   · "kıymalı makarna" → makarna + kıyma + (sos için domates salçası kabul) — ama salata/yan malzeme ekleme.
 - Düşünme/reasoning'de "şu malzemeyi de ekleyebilirim" diye spekülasyon YAPMA — kullanıcı bunu okuyor. Doğrudan kararı yaz: "X için çekirdek malzemeler: A, B."
+- YAĞ: Yemeklik sıvı yağ gerekiyorsa name="yağ", searchQuery="yağ" yaz; "sıvı yağ" ya da "ayçiçek yağı" YAZMA. Tarif özellikle tereyağı ya da zeytinyağı gerektiriyorsa onu adıyla yaz.
 - Şüpheliysen FAZLASINI değil EKSİĞİNİ tercih et — kullanıcı kart üzerinden ekleyebilir.
 - MALZEME FORMU YEMEĞE GÖRE BAĞLAM KUR: Her malzemeyi yemeğin gerektirdiği FORMDA çıkar — taze / turşu / kuru / haşlanmış / salça. Aynı sebzenin işlenmiş hali (turşu, salamura, konserve, kurutulmuş) FARKLI bir üründür; yemek hangisini istiyorsa onu yaz:
   · "cacık" → taze salatalık (searchQuery="salatalık"), ASLA salatalık turşusu.
@@ -104,6 +105,7 @@ searchQuery KURALLARI (sıkı):
 4) Lütfen/şu kelime gibi süslemeleri SİL.
 5) Marka adı varsa MUTLAKA kalsın (market API'si marka adıyla daha iyi arıyor).
 6) Birden çok kelime varsa kısa kalsın (2-3 kelime ideal).
+7) Türü belirtilmemiş yemeklik yağ için searchQuery "yağ" olur ("sıvı yağ" → "yağ"). Tür yazılmışsa (zeytinyağı, tereyağı, ayçiçek yağı) aynen korunur.
 
 ÖRNEKLER — ALIŞVERİŞ LİSTESİ MODU (B):
 - "1 lt süt" → name="1 lt süt", quantity=1, unit="l", searchQuery="süt"
@@ -118,6 +120,7 @@ searchQuery KURALLARI (sıkı):
 - "uludağ gazoz" → quantity=1, unit="adet", searchQuery="uludağ gazoz"
 - "1 şişe sek süt" → quantity=1, unit="adet", searchQuery="sek süt"
 - "3 kutu cola" → quantity=3, unit="adet", searchQuery="cola"
+- "1 lt sıvı yağ" → name="1 lt sıvı yağ", quantity=1, unit="l", searchQuery="yağ"
 
 ÖRNEKLER — YEMEK/TARİF MODU (A):
 - "sucuklu yumurta" → 2 kalem (BİLEŞİK AD — sadece adı geçen malzemeler):
@@ -153,7 +156,7 @@ searchQuery KURALLARI (sıkı):
   · name="yumurta", quantity=3, unit="adet", searchQuery="yumurta"
   · name="toz şeker", quantity=200, unit="g", searchQuery="toz şeker"
   · name="süt", quantity=1, unit="l", searchQuery="süt"
-  · name="sıvı yağ", quantity=1, unit="paket", searchQuery="sıvı yağ"
+  · name="yağ", quantity=1, unit="l", searchQuery="yağ"
 
 - "cacık" → 3 kalem (sade yoğurt + TAZE salatalık — turşu DEĞİL):
   · name="yoğurt", quantity=500, unit="g", searchQuery="yoğurt"
@@ -341,7 +344,8 @@ GÖREV — her kalem için:
 KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
 1) ÜRÜN TİPİ DOĞRU OLMALI — EN ÖNEMLİ KURAL: Aday, kullanıcının istediği ürünün ta kendisi olmalı. Adında sorgu kelimesinin geçmesi hiçbir şey ifade etmez; ürünün NE OLDUĞUNA bak. Sık karşılaşılan tuzaklar (hepsi gerçek aday listelerinden):
    · AMACI FARKLI ÜRÜN — RED: Ölçüt "gıda mı, değil mi" DEĞİLDİR; ölçüt "kullanıcının kastettiği ürün mü" sorusudur. Market alışverişi temizlik, kağıt ve kişisel bakım ürünü de içerir; bunlar MEŞRU kalemlerdir ve kullanıcı istediğinde KABUL edilir.
-     – Kullanıcı bir GIDA istiyorsa, aynı kelimeyi taşıyan temizlik/kozmetik ürünü RED: "yağ" (yemeklik) → "Porçöz Yağ Çözücü", "Cif Kir Ve Yağ Çözücü", "Dasty Yağ Sökücü", "Selpak Yağ Emici Havlu", "Elseve Mucizevi Yağ Şampuan", "Johnson's Bebe Yağı" RED; ayçiçek/zeytinyağı/mısırözü/tereyağı KABUL.
+     – Kullanıcı bir GIDA istiyorsa, aynı kelimeyi taşıyan temizlik/kozmetik ürünü RED: "yağ" (yemeklik) → "Porçöz Yağ Çözücü", "Cif Kir Ve Yağ Çözücü", "Dasty Yağ Sökücü", "Selpak Yağ Emici Havlu", "Elseve Mucizevi Yağ Şampuan", "Johnson's Bebe Yağı" RED; ayçiçek/mısırözü/kanola yağı KABUL.
+     – Türü yazılmamış "yağ" ya da "sıvı yağ" YEMEKLİK SIVI YAĞDIR: ayçiçek, mısırözü, kanola, bitkisel/karışık sıvı yağ KABUL. Zeytinyağı, tereyağı, margarin, sürülebilir/sade yağ ve susam/keten gibi özel yağlar RED; kullanıcı onları isterse adıyla yazar.
      – Kullanıcı bir TEMİZLİK/BAKIM ürünü istiyorsa (marka ya da ürün tipiyle belli: "omo", "vanish oxi", "bingo kireç", "deterjan", "çamaşır suyu", "bulaşık deterjanı", "şampuan", "peçete") o ürünler KABUL. Fiş karşılaştırmalarında bu kalemler çok sık geçer; "gıda değil" gerekçesiyle elemek kullanıcının gerçekten aldığı ürünü kaybettirir.
    · ÇEŞNİ/BULYON/BAHARAT/HAZIR ÇORBA — RED: Ürünün kendisi değil, tadını veren katkıdır. "et" → "Knorr Et Bulyon", "Magic Et Baharatı", "Et Suyu" RED. "tavuk" → "Indomie Tavuk Noodle", "Tavuk Bulyon", "Yayla Tavuk Çorbası", "Bağdat Tavuk Harcı" RED.
    · CİPS/KRAKER/ÇEREZ/ŞEKERLEME — RED, İSTİSNASIZ: Bir baz gıda adı, atıştırmalık bir ürünün AROMASI ya da HAMMADDESİ olarak geçiyorsa o ürün istenen şey değildir. Bu, ölçülmüş en güçlü kuraldır — 18 farklı temel gıdanın 18'inde de geçerli çıktı. "patates" → "Lay's Patates Cipsi" RED (taze patates KABUL). "soğan" → "Ruffles Peynir & Soğan" RED. "mercimek"/"nohut" → "Mercimek Cipsi", "Nohut Cipsi" RED. "kola" → "Haribo Happy Kola Yumuşak Şeker" RED. "krema" → "Ekşi Krema Aromalı Cips" RED. "badem"/"fındık" → "Badem Kraker", "Fındık Kremalı Gofret" RED. Kullanıcı cipsi kendisi istediyse (ör. "lays", "patates cipsi") o zaman TERSİ geçerlidir.
@@ -382,7 +386,7 @@ KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
 - rawName="yoğurt" (500 g), adaylar: "Sütaş Süzme Yoğurt 750g" (A), "Danone Meyveli 4'lü" (B), "Eker Light Yoğurt" (C), "Pınar Yoğurt 1kg" (D) → acceptedProductIds=[A, C, D], primaryProductId=A, sizeMismatch=true. Meyveli (B) elenir.
 - rawName="süt" (1 L), adaylar: "İçim Tam Yağlı Süt 1L" (A), "Pınar Süt 200ml" (B), "Pınar Çikolatalı Süt 200ml" (C), "Sek Laktozsuz Süt 1L" (D), "İçim Organik Süt 200ml" (E) → acceptedProductIds=[A, B], primaryProductId=A. Çikolatalı (C) kural 6, laktozsuz (D) ve organik (E) kural 9 gereği elenir — kullanıcı bunların hiçbirini yazmadı.
 - rawName="salatalık" (cacık için, 2 adet), adaylar: "Taze Salatalık kg" (A), "Salatalık Turşusu 720ml" (B), "Kornişon Turşu 370ml" (C) → acceptedProductIds=[A], primaryProductId=A. Turşu (B, C) elenir.
-- rawName="yağ", adaylar: "Porçöz Yağ Çözücü 1 Lt" (A), "Cif Kir Ve Yağ Çözücü" (B), "Selpak Yağ Emici Havlu" (C), "Elseve Mucizevi Yağ Şampuan" (D), "Vita Bitkisel Yağ 2 Lt" (E), "Lurpak Sürülebilir Yağ 200 Gr" (F) → acceptedProductIds=[E, F], primaryProductId=E. Kullanıcı YEMEKLİK yağ istiyor; A/B/C/D bambaşka amaçlı ürünler — elenir. DİKKAT: bu listede alakasız adaylar ÇOĞUNLUKTA; azınlıkta kalmaları kabul için gerekçe değildir.
+- rawName="yağ" (1 l), adaylar: "Porçöz Yağ Çözücü 1 Lt" (A), "Cif Kir Ve Yağ Çözücü" (B), "Selpak Yağ Emici Havlu" (C), "Komili Ayçiçek Yağı 1 Lt" (D), "Dardanel Ayçiçek Yağlı Ton Balığı" (E), "Yudum Ayçiçek Yağı 5 Lt" (F), "Komili Riviera Zeytinyağı 1 Lt" (G), "Lurpak Sürülebilir Yağ 200 Gr" (H) → acceptedProductIds=[D, F], primaryProductId=D. Türü yazılmamış "yağ" yemeklik sıvı yağdır. A/B/C bambaşka amaçlı ürünler, E yağ değil ton balığı konservesi; zeytinyağı ve sürülebilir yağ (G, H) kullanıcı adıyla yazmadığı için elenir. DİKKAT: bu listede alakasız adaylar ÇOĞUNLUKTA; azınlıkta kalmaları kabul için gerekçe değildir.
 - rawName="bingo kireç önleyici", adaylar: "Bingo Sprey Kireç Çözücü 900 Ml" (A) → acceptedProductIds=[A], primaryProductId=A. Kullanıcı AÇIKÇA bir temizlik ürünü istiyor ve aday tam olarak o — "gıda değil" diye ELEME. Aynısı "omo sıvı" → "Omo Sıvı Çamaşır Deterjanı", "vanish oxi" → "Vanish Oxi Action Leke Çıkarıcı" için de geçerlidir.
 - rawName="tavuk", adaylar: "Indomie Tavuk Köri Noodle 75 Gr" (A), "Gezen Tavuk Yumurta 10 Adet" (B), "Knorr Tavuk Bulyon" (C), "Taze Tavuk Baget 1 Kg" (D), "Şenpiliç Kemiksiz Tavuk But 1 Kg" (E), "Çıtır Tavuk Burger 180 Gr" (F) → acceptedProductIds=[D, E], primaryProductId=D. A hazır noodle, B yumurta, C bulyon, F hazır yemek — hepsi elenir.
 - rawName="et", adaylar: "Knorr Et Bulyon 24 Adet" (A), "Dana Füme Kuru Et 100 Gr" (B), "Magic Et Baharatı" (C), "Emin Dana Kuşbaşı Et 400 Gr" (D), "Et Ve Süt Kurumu Kıyma 1 Kg" (E) → acceptedProductIds=[D, E], primaryProductId=E. Bulyon/baharat gıda katkısı, füme kuru et şarküteri — elenir.

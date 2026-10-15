@@ -127,4 +127,19 @@ describe("computeReceiptComparison", () => {
     assert.equal(comp.items[0].bestPrice, 35)
     assert.equal(comp.items[0].savingsTL, null)
   })
+  test("daha ucuz ama farklı boyutlu seçenek yerine boyutu tutanla kıyaslar", () => {
+    // Şok'taki 500 ml daha ucuz; fişteki 1 l, Migros'taki 1 l ile kıyaslanmalı.
+    const match: MatchResult = {
+      ...sut(),
+      marketOptions: [
+        { ...option("Migros", 35, "pinar", "Pınar Süt 1 Lt"), sizeMismatch: false },
+        { ...option("Şok", 20, "sek-05", "Sek Süt 500 Ml"), sizeMismatch: true },
+      ],
+    }
+    const row = computeReceiptComparison([fis("SUT 1L", 45)], [match], null)
+      .items[0]
+    assert.equal(row.matchedProductId, "pinar")
+    assert.equal(row.sizeMismatch, false)
+    assert.equal(row.savingsTL, 10)
+  })
 })

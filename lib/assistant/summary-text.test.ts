@@ -113,8 +113,21 @@ describe("buildSummaryText", () => {
     ])
     assert.match(
       out,
-      / Yoğurt için istediğin boyutu bulamadım; en yakın boyutla hesapladım ve Sepet Özeti'nde farklı boyut olarak işaretledim\.$/
+      / Yoğurt için istediğin boyut her markette yok; o marketlerde en yakın boyutu aldım ve Sepet Özeti'nde farklı boyut olarak işaretledim\.$/
     )
+  })
+
+  test("farklı boyutu dökümde seçilen ürüne göre söyler", () => {
+    // Kalemin temsilcisi boyutu tutsa da bir markette farklı boyut alındıysa
+    // rozet orada çıkar; metin de onu söylemeli.
+    const out = text([
+      match("su", [
+        { ...option("A101", 4), sizeMismatch: true },
+        { ...option("BİM", 8), sizeMismatch: false },
+      ]),
+      match("ekmek", [option("A101", 10), option("BİM", 30)]),
+    ])
+    assert.match(out, / Su için istediğin boyut her markette yok;/)
   })
 
   test("hiçbir kalem eşleşmezse özet yerine yönlendirir", () => {

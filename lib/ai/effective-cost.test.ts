@@ -1,7 +1,13 @@
 import assert from "node:assert/strict"
 import { test, describe } from "node:test"
 
-import { effectiveLineCost, hasBaseMismatch, hasSizeMismatch } from "./effective-cost"
+import {
+  buildMarketOptions,
+  effectiveLineCost,
+  hasBaseMismatch,
+  hasSizeMismatch,
+  sizeFit,
+} from "./effective-cost"
 import type { MarketPrice } from "@/lib/marketfiyati/types"
 
 function price(overrides: Partial<MarketPrice> = {}): MarketPrice {
@@ -101,5 +107,81 @@ describe("hasBaseMismatch", () => {
   test("birim fiyatı olmayan ve adında boyut geçmeyen üründe işaretler", () => {
     const product = { name: "Kıyma", markets: [price()] }
     assert.equal(hasBaseMismatch(250, "g", product), true)
+  })
+})
+
+describe("sizeFit", () => {
+  test("ölçülebilir istekte boyutu tutan aday uyumludur, LLM ne derse desin", () => {
+    const product = { name: "Erikli Su 1 Lt", markets: [price()] }
+    assert.deepEqual(sizeFit(1, "l", product, true), { mismatch: false, distance: 0 })
+  })
+
+  test("boyutu tutmayan adayı istenene uzaklığıyla işaretler", () => {
+    const half = sizeFit(1, "l", { name: "Su 500 Ml", markets: [price()] }, false)
+    const more = sizeFit(1, "l", { name: "Su 1.5 Lt", markets: [price()] }, false)
+    assert.equal(half.mismatch, true)
+    assert.equal(more.mismatch, true)
+    // 1,5 l, 500 ml'den 1 l'ye daha yakın.
+    assert.ok(more.distance < half.distance)
+  })
+
+  test("cl birimini okur", () => {
+    assert.equal(sizeFit(0.5, "l", { name: "Su 50 Cl", markets: [price()] }, false).mismatch, false)
+  })
+
+  test("adet/paket isteğinde ve boyutsuz açık üründe LLM işaretine düşer", () => {
+    const eggs = { name: "Yumurta 10 Adet", markets: [price()] }
+    assert.equal(sizeFit(2, "adet", eggs, true).mismatch, true)
+    assert.equal(sizeFit(2, "adet", eggs, false).mismatch, false)
+    const open = { name: "Domates", markets: [price({ unitBase: "kg", unitPriceValue: 40 })] }
+    assert.equal(sizeFit(1, "kg", open, false).mismatch, false)
+  })
+})
+
+describe("buildMarketOptions", () => {
+  function cand(productId: string, name: string, market: string, p: number) {
+    return { productId, name, imageUrl: null, markets: [price({ market, price: p })] }
+  }
+
+  // Gerçek "su" havuzundan (lib/ai/eval/candidates/su.json) sadeleştirildi.
+  const water = [
+    cand("bim-05", "Su 500 Ml", "BİM", 4.25),
+    cand("bim-1", "Su 1 Lt", "BİM", 7),
+    cand("bim-15", "Su 1.5 Lt", "BİM", 10),
+    cand("mig-05", "Erikli Su 500 Ml", "Migros", 15),
+    cand("mig-15", "Erikli Su 1.5 Lt", "Migros", 20),
+  ]
+
+  test("istenen boyut markette varsa daha ucuz farklı boyuta düşmez", () => {
+    // Şikâyet: 1 l su istendi, 500 ml'lik şişe seçildi ve rozet çıkmadı.
+    const bim = buildMarketOptions(water, { quantity: 1, unit: "l" }, false).find(
+      (o) => o.market === "BİM",
+    )
+    assert.equal(bim?.productId, "bim-1")
+    assert.equal(bim?.sizeMismatch, false)
+  })
+
+  test("istenen boyut yoksa en yakın boyutu alır ve işaretler", () => {
+    const migros = buildMarketOptions(water, { quantity: 1, unit: "l" }, false).find(
+      (o) => o.market === "Migros",
+    )
+    assert.equal(migros?.productId, "mig-15")
+    assert.equal(migros?.sizeMismatch, true)
+  })
+
+  test("boyut istenmediyse markette en ucuzu seçer", () => {
+    const bim = buildMarketOptions(water, { quantity: 1, unit: "adet" }, false).find(
+      (o) => o.market === "BİM",
+    )
+    assert.equal(bim?.productId, "bim-05")
+    assert.equal(bim?.sizeMismatch, false)
+  })
+
+  test("seçenekler fiyata göre sıralı döner", () => {
+    const options = buildMarketOptions(water, { quantity: 1, unit: "l" }, false)
+    assert.deepEqual(
+      options.map((o) => o.market),
+      ["BİM", "Migros"],
+    )
   })
 })

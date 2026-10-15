@@ -123,6 +123,10 @@ export const MarketOptionSchema = z.object({
   depotName: z.string().nullable().default(null),
   // Seçilen ürünün görseli; dökümdeki satıra taşınır. Eski kayıtlarda yok.
   imageUrl: z.string().nullable().default(null),
+  // BU ürünün istenen boyuttan farklı olup olmadığı. Kalem marketten markete
+  // farklı ürüne çözüldüğü için rozet de ürüne aittir. Eski kayıtlarda yok →
+  // tüketici kalemin `sizeMismatch`ine düşer.
+  sizeMismatch: z.boolean().optional(),
 })
 
 export const MatchResultSchema = z.object({
