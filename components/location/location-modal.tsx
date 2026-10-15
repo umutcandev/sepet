@@ -47,15 +47,13 @@ import { locationStore, useUserLocation } from "@/lib/stores/location"
 import { saveUserLocation } from "@/lib/actions/location"
 import { reverseGeocode } from "@/lib/geocode"
 import { TR_PROVINCES, type Province } from "@/lib/location/tr-provinces"
+import { DISTANCE_OPTIONS } from "@/lib/location/nearby-depots"
 import type { NearbyDepot } from "@/app/api/location/nearest/route"
 import { cn } from "@/lib/utils"
 
 // Konum bilinmeden açılırsa harita buradan başlar (İstanbul); kullanıcı geolocate
 // ya da il seçimiyle hemen taşır.
 const FALLBACK_CENTER = { lat: 41.0082, lng: 28.9784 }
-// marketfiyati resmi sitesi yarıçapı 1–10 km arasında tutuyor; daha geniş
-// değerler hem alakasız sonuç hem yavaş sorgu getiriyor.
-const DISTANCE_OPTIONS = [1, 3, 5, 10]
 // Yükleme iskeleti için sabit satır sayısı (tipik sonuç yoğunluğunu taklit eder).
 const SKELETON_ROWS = 6
 
