@@ -291,6 +291,7 @@ export function HomePricingSection() {
                       )}
                     >
                       <Button
+                        variant="default"
                         asChild
                         size="sm"
                         className={ACTION_BUTTON}

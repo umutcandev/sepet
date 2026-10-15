@@ -54,7 +54,7 @@ export function NavGuestInfo() {
           size="icon-xs"
           onClick={handleDismiss}
           aria-label="Kapat"
-          className="absolute top-2 right-2 text-muted-foreground/60 hover:text-foreground"
+          className="absolute top-2 right-2"
         >
           <RiCloseLine />
         </Button>

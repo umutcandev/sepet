@@ -120,7 +120,7 @@ function SocialShare({ url, title }: { url: string; title: string }) {
             size="icon-sm"
             aria-label={target.label}
             title={target.label}
-            className="relative after:absolute after:-inset-1.5"
+            hitArea
           >
             <a href={target.href} target="_blank" rel="noopener noreferrer">
               <target.icon className="size-3.5" />
@@ -133,7 +133,7 @@ function SocialShare({ url, title }: { url: string; title: string }) {
           onClick={handleCopyLink}
           aria-label="Bağlantıyı kopyala"
           title="Bağlantıyı kopyala"
-          className="relative after:absolute after:-inset-1.5"
+          hitArea
         >
           <CopiedIconSwap
             copied={copied}

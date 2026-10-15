@@ -530,6 +530,7 @@ export function LocationModal() {
 
           <ResponsiveDialogFooter className="flex-col gap-2 sm:flex-col">
             <Button
+              variant="default"
               onClick={handleSave}
               // Boş seçimle kaydetmeyi engelle: depots [] kaydedilirse arama
               // tarafı bunu "auto" (tüm yakın şubeler) sayıyor → "hiçbiri"
@@ -588,14 +589,14 @@ export function LocationModal() {
                 </p>
               ) : (
                 filteredProvinces.map((p) => (
-                  <button
+                  <Button
                     key={p.plate}
-                    type="button"
+                    variant="item"
+                    size="auto"
                     onClick={() => handlePickProvince(p)}
-                    className="flex w-full items-center rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
                   >
                     {p.name}
-                  </button>
+                  </Button>
                 ))
               )}
             </div>

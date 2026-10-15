@@ -10,6 +10,7 @@ import {
 } from "@/lib/basket-plan"
 import { formatDateTime, formatTL } from "@/lib/format"
 import { priceFreshness } from "@/lib/price-freshness"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MarketCell } from "@/components/market-cell"
 import { OptimizationCard } from "@/components/assistant/optimization-card"
@@ -195,10 +196,12 @@ export default async function BasketDetailPage({
           </RecordInfoList>
 
           {showSplit && (
-            <div className="overflow-hidden rounded-xl border bg-card">
-              <div className="flex min-h-12 items-center border-b px-4 py-2 text-sm font-medium">
-                {plan.kind === "combo" ? "2-Market Dağılımı" : "Market Dağılımı"}
-              </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  {plan.kind === "combo" ? "2-Market Dağılımı" : "Market Dağılımı"}
+                </CardTitle>
+              </CardHeader>
               <div className="p-4">
                 <MarketSplitDonut
                   data={marketSplit}
@@ -206,7 +209,7 @@ export default async function BasketDetailPage({
                   emptyHint="Dağılım için yeterli market yok."
                 />
               </div>
-            </div>
+            </Card>
           )}
         </div>
 
@@ -220,9 +223,9 @@ export default async function BasketDetailPage({
         )}
 
         <div className="order-2 min-w-0 md:order-3 md:col-span-2">
-          <div className="overflow-hidden rounded-xl border bg-card">
-            <div className="flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2">
-              <span className="text-sm font-medium">Sepetteki Kalemler</span>
+          <Card>
+            <CardHeader>
+              <CardTitle>Sepetteki Kalemler</CardTitle>
               <Badge variant="secondary">
                 {allMatched
                   ? items.length
@@ -233,12 +236,12 @@ export default async function BasketDetailPage({
                   ? `Fiyatlar: ${plan.label} planı`
                   : "Fiyat dökümü yok"}
               </span>
-            </div>
+            </CardHeader>
             <RecordItemList
               items={itemViews}
               emptyHint="Bu sepette kalem yok."
             />
-          </div>
+          </Card>
         </div>
       </div>
     </div>

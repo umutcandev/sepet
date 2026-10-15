@@ -1,8 +1,8 @@
 "use client"
 
-import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
 import { RiAddLine, RiCheckLine, RiCloseLine } from "@remixicon/react"
+import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,8 +21,21 @@ import { UNIT_VALUES } from "@/lib/ai/schemas"
 import { stripQuantityTokens } from "@/lib/ai/normalize"
 import { MarketLogo } from "@/components/market-logo"
 import { formatTLOrDash } from "@/lib/format"
+import { cn } from "@/lib/utils"
 
 type EditableItem = ReceiptOCRItem & { _id: string }
+
+// Dar ekranda (<sm) tablo yatay kaydırma yerine kalem başına iki satırlı bir
+// bloğa döner: üstte ürün adı, altta küçük başlıklı adet / birim / fiyat /
+// tutar. 600px'lik tablo 390px'lik ekranda fiyat, tutar ve sil sütunlarını
+// hiçbir ipucu vermeden görünmez kılıyordu. Başlıklar `data-label`dan gelir;
+// masaüstünde tablo başlığı aynı işi görür.
+const STACK_TABLE =
+  "max-sm:block max-sm:[&_tbody]:block max-sm:[&_tfoot]:block max-sm:[&_td]:p-0!"
+const STACK_ROW =
+  "max-sm:grid max-sm:items-end max-sm:gap-x-2 max-sm:gap-y-2 max-sm:px-4 max-sm:py-3"
+const STACK_CELL =
+  "max-sm:flex max-sm:min-w-0 max-sm:flex-col max-sm:gap-1 max-sm:text-left max-sm:before:text-[0.625rem] max-sm:before:font-medium max-sm:before:tracking-wide max-sm:before:text-muted-foreground max-sm:before:uppercase max-sm:before:content-[attr(data-label)]"
 
 export type ApprovalSubmit = {
   marketName: string | null
@@ -116,18 +129,15 @@ export function ReceiptApprovalCard({
   }
 
   return (
-    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
-    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
-    // (gerekçenin tamamı product-match-list.tsx'te).
-    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
-      <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
-        <span className="text-sm font-medium">Fişindeki Kalemler</span>
+    <Card>
+      <CardHeader>
+        <CardTitle>Fişindeki Kalemler</CardTitle>
         <div className="ml-auto flex flex-wrap gap-1.5">
           {readOnly ? (
             <Badge variant="secondary">Onaylandı</Badge>
           ) : null}
         </div>
-      </div>
+      </CardHeader>
 
       {!readOnly && (
         <div className="grid gap-2 border-b px-4 py-3 sm:grid-cols-2">
@@ -152,8 +162,8 @@ export function ReceiptApprovalCard({
         </div>
       )}
       <div className="overflow-x-auto">
-        <Table className="min-w-[600px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
-          <TableHeader>
+        <Table className={cn("sm:min-w-[600px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4", STACK_TABLE)}>
+          <TableHeader className="max-sm:hidden">
             <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
               <TableHead className="min-w-[140px]">Ürün</TableHead>
               <TableHead className="w-20 text-right">Adet</TableHead>
@@ -175,8 +185,26 @@ export function ReceiptApprovalCard({
               </TableRow>
             ) : (
               items.map((it) => (
-                <TableRow key={it._id}>
-                  <TableCell className="align-top">
+                <TableRow
+                  key={it._id}
+                  className={cn(
+                    STACK_ROW,
+                    // Üst satır: ürün adı + sil. Alt satır: adet, birim, fiyat,
+                    // tutar. Birim 5rem: seçicinin ok dolgusundan sonra
+                    // "paket"e yer kalsın (eşit bölünce "ad…" oluyordu).
+                    readOnly
+                      ? "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)]"
+                      : "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)_auto]",
+                  )}
+                >
+                  <TableCell
+                    className={cn(
+                      "align-top",
+                      readOnly
+                        ? "max-sm:col-span-full"
+                        : "max-sm:col-span-4 max-sm:row-start-1",
+                    )}
+                  >
                     {readOnly ? (
                       <div className="text-sm font-medium">{it.rawName}</div>
                     ) : (
@@ -190,11 +218,15 @@ export function ReceiptApprovalCard({
                             searchQuery: stripQuantityTokens(e.target.value),
                           })
                         }
+                        aria-label="Ürün adı"
                         className="h-8 text-sm"
                       />
                     )}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell
+                    data-label="Adet"
+                    className={cn("text-right", STACK_CELL)}
+                  >
                     {readOnly ? (
                       <span className="tabular-nums">
                         {formatQty(it.quantity)}
@@ -209,11 +241,12 @@ export function ReceiptApprovalCard({
                             quantity: parseFloat(e.target.value) || 0,
                           })
                         }
+                        aria-label="Adet"
                         className="h-8 w-full text-right text-sm tabular-nums"
                       />
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell data-label="Birim" className={STACK_CELL}>
                     {readOnly ? (
                       <span className="text-xs text-muted-foreground">
                         {it.unit}
@@ -227,6 +260,7 @@ export function ReceiptApprovalCard({
                               .value as (typeof UNIT_VALUES)[number],
                           })
                         }
+                        aria-label="Birim"
                         className="h-8 text-sm"
                       >
                         {UNIT_VALUES.map((u) => (
@@ -237,7 +271,10 @@ export function ReceiptApprovalCard({
                       </NativeSelect>
                     )}
                   </TableCell>
-                  <TableCell className="text-right tabular-nums">
+                  <TableCell
+                    data-label="B. Fiyat"
+                    className={cn("text-right tabular-nums", STACK_CELL)}
+                  >
                     {readOnly ? (
                       <span>{formatTLOrDash(it.unitPrice)}</span>
                     ) : (
@@ -253,26 +290,36 @@ export function ReceiptApprovalCard({
                                 : parseFloat(e.target.value),
                           })
                         }
+                        aria-label="Birim fiyat"
                         className="h-8 w-full text-right text-sm tabular-nums"
                       />
                     )}
                   </TableCell>
-                  <TableCell className="text-right tabular-nums">
-                    {formatTLOrDash(
-                      it.totalPrice ??
-                      (it.unitPrice != null
-                        ? it.unitPrice * it.quantity
-                        : null),
+                  <TableCell
+                    data-label="Tutar"
+                    className={cn(
+                      "text-right tabular-nums",
+                      STACK_CELL,
+                      !readOnly && "max-sm:col-span-2",
                     )}
+                  >
+                    <span className="max-sm:flex max-sm:h-8 max-sm:items-center">
+                      {formatTLOrDash(
+                        it.totalPrice ??
+                        (it.unitPrice != null
+                          ? it.unitPrice * it.quantity
+                          : null),
+                      )}
+                    </span>
                   </TableCell>
                   {!readOnly && (
-                    <TableCell className="text-right">
+                    <TableCell className="text-right max-sm:col-start-5 max-sm:row-start-1 max-sm:self-center">
                       <Button
                         type="button"
                         variant="ghost"
-                        size="icon"
+                        size="icon-sm"
                         onClick={() => removeItem(it._id)}
-                        className="size-7 text-muted-foreground hover:text-destructive"
+                        className="hover:text-destructive"
                         aria-label="Kalemi sil"
                       >
                         <RiCloseLine className="size-3.5" />
@@ -284,8 +331,8 @@ export function ReceiptApprovalCard({
             )}
           </TableBody>
           <TableFooter>
-            <TableRow>
-              <TableCell colSpan={4} className="text-muted-foreground">
+            <TableRow className="max-sm:flex max-sm:items-center max-sm:gap-2 max-sm:px-4 max-sm:py-2.5">
+              <TableCell colSpan={4} className="text-muted-foreground max-sm:flex-1">
                 <div className="flex items-center gap-2">
                   {readOnly && (
                     <span className="flex items-center gap-1.5 text-xs">
@@ -305,14 +352,14 @@ export function ReceiptApprovalCard({
               <TableCell className="text-right text-sm font-semibold text-foreground tabular-nums">
                 {formatTLOrDash(ocr.totalAmount ?? totalReceipt)}
               </TableCell>
-              {!readOnly && <TableCell />}
+              {!readOnly && <TableCell className="max-sm:hidden" />}
             </TableRow>
           </TableFooter>
         </Table>
       </div>
 
       {!readOnly && (
-        <div className="flex flex-wrap items-center gap-2 border-t bg-muted/30 px-4 py-3">
+        <CardFooter>
           <Button
             type="button"
             variant="outline"
@@ -327,6 +374,7 @@ export function ReceiptApprovalCard({
               İptal
             </Button>
             <Button
+              variant="default"
               type="button"
               size="sm"
               onClick={handleApprove}
@@ -336,9 +384,9 @@ export function ReceiptApprovalCard({
               Onayla
             </Button>
           </div>
-        </div>
+        </CardFooter>
       )}
-    </Squircle>
+    </Card>
   )
 }
 

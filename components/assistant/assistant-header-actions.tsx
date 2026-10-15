@@ -70,7 +70,8 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
           <Button
             variant="ghost"
             size="icon-xs"
-            className="relative ml-1 size-6 text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
+            hitArea
+              className="ml-1"
             aria-label="Sohbet eylemleri"
           >
             <RiArrowDownSLine className="size-4" />

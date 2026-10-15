@@ -39,7 +39,8 @@ export function RecordRowActions({
           variant="ghost"
           size="icon-xs"
           aria-label={label}
-          className="relative z-10 text-muted-foreground after:absolute after:-inset-2"
+          hitArea
+          className="z-10"
         >
           <RiMoreLine className="size-4" />
         </Button>

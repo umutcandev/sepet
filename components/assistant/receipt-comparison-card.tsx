@@ -1,8 +1,8 @@
 "use client"
 
-import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
 import { RiArrowDownSLine, RiInformationLine } from "@remixicon/react"
+import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -87,12 +87,9 @@ export function ReceiptComparisonCard({
   }, [receiptContext.marketName])
 
   return (
-    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
-    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
-    // (gerekçenin tamamı product-match-list.tsx'te).
-    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
-      <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
-        <span className="text-sm font-medium">Fiş Karşılaştırması</span>
+    <Card>
+      <CardHeader>
+        <CardTitle>Fiş Karşılaştırması</CardTitle>
         {isStale ? (
           <Badge variant="secondary" className="ml-auto">
             <RiInformationLine data-icon="inline-start" />
@@ -105,7 +102,7 @@ export function ReceiptComparisonCard({
             </Badge>
           )
         )}
-      </div>
+      </CardHeader>
 
       <div className="overflow-x-auto">
         <Table className="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
@@ -247,7 +244,7 @@ export function ReceiptComparisonCard({
         </Table>
       </div>
 
-      <div className="space-y-3 border-t bg-muted/30 px-4 py-3 text-sm">
+      <CardFooter className="flex-col items-stretch gap-3 text-sm">
         <div className="flex flex-wrap items-baseline gap-3 text-xs text-muted-foreground">
           <span>
             Fişteki paket fiyatları:{" "}
@@ -301,7 +298,7 @@ export function ReceiptComparisonCard({
           successMessage="Fişlerime kaydedildi."
           errorMessage="Fiş kaydedilemedi. Lütfen tekrar dene."
         />
-      </div>
-    </Squircle>
+      </CardFooter>
+    </Card>
   )
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { Squircle } from "@/components/ui/squircle"
+import { Card } from "@/components/ui/card"
 import * as React from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
@@ -457,18 +458,16 @@ export function AssistantChat({
               ? `${firstName}, bugün ne alıyoruz?`
               : "Bugün ne alıyoruz?"}
           </h1>
-          {/* Çipler ana sayfadaki hero çipleriyle aynı: dolu `bg-muted` yüzey,
-              `rounded-lg`, hover'da kenar ve metin koyulaşıyor, PressFx basma
-              geri bildirimi. Öncesi saydam `rounded-full` bir outline butondu. */}
+          {/* Çipler ana sayfadaki hero çipleriyle aynı `chip` varyantı;
+              PressFx hover'da kaldırır. */}
           <div className="mt-4 flex w-full max-w-2xl flex-wrap justify-center gap-2">
             {SUGGESTIONS.map((s) => (
               <PressFx key={s}>
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="chip"
                   size="sm"
                   onClick={() => handleSuggestionClick(s)}
-                  className="h-auto rounded-lg border-border bg-muted px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/20 hover:bg-muted hover:text-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:border-muted-foreground/35 dark:hover:bg-muted"
                 >
                   {s}
                 </Button>
@@ -886,13 +885,7 @@ function QuotaExceededCard({
       }).format(new Date(resetAt))
     : null
   return (
-    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu
-    // `overflow-hidden` olduğu için dış gölge kırpılırdı (gerekçenin tamamı
-    // product-match-list.tsx'te).
-    <Squircle
-      className="mx-auto w-full max-w-3xl rounded-xl bg-card p-4 inset-ring inset-ring-hairline"
-      radius="xl"
-    >
+    <Card className="mx-auto w-full max-w-3xl p-4">
       <div className="flex items-start gap-3">
         <RiSparklingLine className="mt-0.5 size-5 shrink-0 text-foreground" />
         <div className="flex flex-col gap-1">
@@ -907,7 +900,7 @@ function QuotaExceededCard({
           </span>
         </div>
       </div>
-    </Squircle>
+    </Card>
   )
 }
 

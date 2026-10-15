@@ -28,6 +28,7 @@ import {
 } from "@/components/ai-elements/prompt-input"
 import type { ChatStatus } from "ai"
 import { cn } from "@/lib/utils"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { VoiceInput } from "@/components/assistant/voice-input"
 import { Spinner } from "@/components/ui/spinner"
 import {
@@ -119,6 +120,7 @@ export function AssistantPrompt({
   submitLabel,
   announcement,
 }: AssistantPromptProps) {
+  const isMobile = useIsMobile()
   const [uploads, setUploads] = React.useState<Record<string, UploadState>>({})
   // Submit callback render dışında çalışır; en güncel upload haritasına ref
   // üzerinden ulaşırız.
@@ -188,8 +190,8 @@ export function AssistantPrompt({
         maxFiles={1}
         onSubmit={handleSubmit}
         className={cn(
-          "rounded-xl border-hairline bg-control transition-[background-color,border-color,box-shadow] dark:bg-control",
-          "has-disabled:bg-control has-disabled:opacity-100 dark:has-disabled:bg-control",
+          "rounded-xl border-composer-edge bg-composer transition-[background-color,border-color,box-shadow] dark:bg-composer",
+          "has-disabled:bg-composer has-disabled:opacity-100 dark:has-disabled:bg-composer",
           className,
         )}
       >
@@ -200,7 +202,13 @@ export function AssistantPrompt({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             aria-label="Asistana mesajın"
-            placeholder="Alışveriş listeni, yemek görselini veya fiş fotoğrafını yükle."
+            // Dar ekranda uzun metin iki satıra kırılıyordu; ilk boyama masaüstü
+            // metniyle olur (useIsMobile mount'ta güncellenir, hidrasyon tutarlı).
+            placeholder={
+              isMobile
+                ? "Listeni yaz ya da fotoğraf yükle."
+                : "Alışveriş listeni, yemek görselini veya fiş fotoğrafını yükle."
+            }
             className="text-sm placeholder:text-muted-foreground/40"
           />
         </PromptInputBody>
@@ -466,10 +474,9 @@ function SubmitButton({
       status={status}
       onStop={onStop}
       disabled={disabled}
-      className={cn(
-        "ml-auto",
-        submitLabel && !isGenerating && "px-3 rounded-full",
-      )}
+      // Satırdaki diğer kontroller (ek, mikrofon, ses hapı) tam yuvarlak;
+      // gönder de öyle.
+      className={cn("ml-auto rounded-full", submitLabel && !isGenerating && "px-3")}
       size={size}
     >
       {isGenerating || (!submitIcon && !submitLabel) ? undefined : (

@@ -6,6 +6,7 @@ import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
 import { parseSummary } from "@/lib/basket-plan"
 import { formatDate, formatTL } from "@/lib/format"
 import { priceFreshness } from "@/lib/price-freshness"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MarketCell } from "@/components/market-cell"
 import { OptimizationCard } from "@/components/assistant/optimization-card"
@@ -214,10 +215,12 @@ export default async function ReceiptDetailPage({
           </RecordInfoList>
 
           {showSplit && (
-            <div className="overflow-hidden rounded-xl border bg-card">
-              <div className="flex min-h-12 items-center border-b px-4 py-2 text-sm font-medium">
-                Marketlere Göre Dağılım
-              </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  Marketlere Göre Dağılım
+                </CardTitle>
+              </CardHeader>
               <div className="p-4">
                 <MarketSplitDonut
                   data={marketSplit}
@@ -225,22 +228,22 @@ export default async function ReceiptDetailPage({
                   emptyHint="Dağılım için yeterli market yok."
                 />
               </div>
-            </div>
+            </Card>
           )}
         </div>
 
         <div className="order-1 min-w-0 md:order-3 md:col-span-2">
-          <div className="overflow-hidden rounded-xl border bg-card">
-            <div className="flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2">
-              <span className="text-sm font-medium">Fişteki Kalemler</span>
+          <Card>
+            <CardHeader>
+              <CardTitle>Fişteki Kalemler</CardTitle>
               <Badge variant="secondary">
                 {allMatched
                   ? items.length
                   : `${matchedCount}/${items.length} eşleşti`}
               </Badge>
-            </div>
+            </CardHeader>
             <RecordItemList items={itemViews} emptyHint="Bu fişte kalem yok." />
-          </div>
+          </Card>
         </div>
       </div>
     </div>

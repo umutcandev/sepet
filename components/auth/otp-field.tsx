@@ -10,7 +10,8 @@ import {
 // onComplete tetiklenir. Slotlar sabit genişlikte DEĞİL: kapsayıcının tamamına
 // yayılır (flex-1) ki alan, altındaki tam genişlik butonlarla aynı grid'e
 // otursun; mobil, tablet ve masaüstünde kapsayıcı ne kadar genişse o kadar yer
-// kaplar.
+// kaplar. Köşeler altındaki `size="xl"` butonla ve auth alanlarıyla aynı
+// (`rounded-xl`).
 export function OtpField({
   value,
   onChange,
@@ -36,7 +37,7 @@ export function OtpField({
           <InputOTPSlot
             key={i}
             index={i}
-            className="h-12 min-w-0 flex-1 rounded-lg border-l text-base first:rounded-l-lg last:rounded-r-lg"
+            className="h-12 min-w-0 flex-1 rounded-xl border-l text-base first:rounded-l-xl last:rounded-r-xl"
           />
         ))}
       </InputOTPGroup>

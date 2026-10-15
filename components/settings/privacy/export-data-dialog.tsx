@@ -155,7 +155,7 @@ export function ExportDataDialog() {
                 <DialogClose asChild>
                   <Button variant="outline">Kapat</Button>
                 </DialogClose>
-                <Button asChild>
+                <Button variant="default" asChild>
                   <a href={download.url} download={download.filename}>
                     İndir
                   </a>
@@ -209,7 +209,7 @@ export function ExportDataDialog() {
                 </DialogClose>
                 {/* Hiçbir kategori seçilmemişken de basılabilir: neyin eksik
                     olduğunu devre dışı bir buton değil, üstteki hata söyler. */}
-                <Button onClick={startExport} disabled={preparing}>
+                <Button variant="default" onClick={startExport} disabled={preparing}>
                   {preparing ? (
                     <>
                       <Spinner />

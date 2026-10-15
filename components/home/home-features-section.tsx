@@ -368,7 +368,12 @@ export function HomeFeaturesSection() {
           Asistanla Tanışın
         </h2>
         <PressFx className="shrink-0">
-          <Button asChild size="sm" className="group shrink-0">
+          <Button
+            variant="default"
+            asChild
+            size="sm"
+            className="group shrink-0"
+          >
             <Link href="/asistan">
               Asistanı dene
               <RiArrowRightLine

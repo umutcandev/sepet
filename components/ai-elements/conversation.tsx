@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, type ButtonWrapperProps } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { UIMessage } from "ai";
 import { RiArrowDownLine, RiDownloadLine } from "@remixicon/react";
@@ -90,7 +90,7 @@ export const ConversationEmptyState = ({
   </div>
 );
 
-export type ConversationScrollButtonProps = ComponentProps<typeof Button>;
+export type ConversationScrollButtonProps = ButtonWrapperProps;
 
 export const ConversationScrollButton = ({
   className,
@@ -106,7 +106,7 @@ export const ConversationScrollButton = ({
     !isAtBottom && (
       <Button
         className={cn(
-          "absolute bottom-4 left-[50%] translate-x-[-50%] rounded-full dark:bg-background dark:hover:bg-muted",
+          "absolute bottom-4 left-[50%] translate-x-[-50%] rounded-full",
           className
         )}
         aria-label="En alta in"
@@ -129,7 +129,7 @@ const getMessageText = (message: UIMessage): string =>
     .join("");
 
 export type ConversationDownloadProps = Omit<
-  ComponentProps<typeof Button>,
+  ButtonWrapperProps,
   "onClick"
 > & {
   messages: UIMessage[];
@@ -175,7 +175,7 @@ export const ConversationDownload = ({
   return (
     <Button
       className={cn(
-        "absolute top-4 right-4 rounded-full dark:bg-background dark:hover:bg-muted",
+        "absolute top-4 right-4 rounded-full",
         className
       )}
       aria-label="Sohbeti indir"

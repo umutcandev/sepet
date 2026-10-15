@@ -71,6 +71,9 @@
        prompt alanı). `--muted`ten ayrı çünkü dark'ta kenar çubuğuyla aynı
        tonda durmaları gerekiyor; gerekçe `--control` tanımında. */
   --color-control: var(--control);
+  /* Asistan prompt'unun yüzeyi ve kenarı (`bg-composer`, `border-composer-edge`). */
+  --color-composer: var(--composer);
+  --color-composer-edge: var(--composer-edge);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
@@ -89,6 +92,9 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  /* Kontrol geçişlerinin eğrisi (`ease-out-soft`). lib/motion.ts'teki
+       `EASE_OUT_SOFT` ile aynı sayılar; biri değişirse diğeri de değişmeli. */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
@@ -111,6 +117,10 @@
   /* Light'ta ayrışmaya gerek yok: `--sidebar` (#FCF3E6) burada zeminin
      (#FFF8F0) neredeyse aynısı, kontroller ona eşitlenseydi kaybolurlardı. */
   --control: var(--muted);
+  /* Prompt light'ta kontrol ailesinde kalır: krem sayfanın üstünde `--muted`
+     zaten ayrışıyor, kenarı da `--hairline`. */
+  --composer: var(--control);
+  --composer-edge: var(--hairline);
   --accent: #f0e0cb;
   --accent-foreground: #3d2418;
   --destructive: #b8442e;
@@ -190,6 +200,13 @@
      butonun `--surface-base`i ve alanların `--surface-well`i
      `color-mix(--input 30%, --background)`, yani ~#201811. */
   --control: var(--sidebar);
+  /* Prompt dark'ta `--control`ü (kenar çubuğu tonu) KULLANMAZ. Hero'da sıcak
+     degradenin üstünde bu ton okunuyor ama /asistan'ın düz zemininde prompt
+     sayfayla 1.05:1'e düşüp kayboluyordu — sayfanın tek ana kontrolü. Değer
+     sayfadan ~6 L* açık (`--muted`e %75), kenar da hairline'ın %6'sı yerine
+     %10: kartlardan (`--card`, ~3,5 L*) bir kademe öne çıkar. */
+  --composer: color-mix(in oklab, var(--muted) 75%, var(--background));
+  --composer-edge: rgba(245, 232, 218, 0.1);
   --accent: #3d2d1f;
   --accent-foreground: #f5e8da;
   --destructive: #e07259;
@@ -774,6 +791,38 @@
     var(--background) 92%,
     var(--surface-ink)
   );
+  /* Kabartmanın KENARI (`surface-raised`ın 1px'lik dış halkası) — tabanın
+     mürekkebe doğru koyulaşmış hâli. Kenar her zaman dolgudan KOYU: açık bir
+     kenar iç rim'le yan yana gelince iki paralel çizgi gibi okunuyordu. */
+  --surface-edge-depth: 86%;
+  /* İç kontur: kâğıdın saydam hâli, dört kenar boyunca 1px. Light'ta kâğıt
+     zeminin kendisi olduğu için yalnız koyu (birincil) dolguda görünür. */
+  --surface-highlight: color-mix(
+    in oklab,
+    var(--surface-paper) 12%,
+    transparent
+  );
+  /* Buton varyantlarının dolguları. Dolgu ve ışığın türetildiği taban AYNI
+     token: ikisi ayrı yazıldığında (`bg-destructive/10` + elle hesaplanmış
+     taban) biri değişip diğeri unutuluyordu. Hepsi opak, yani harita gibi
+     desenli bir zeminin üstünde de aynı renkte durur. */
+  --surface-outline: var(--background);
+  --surface-outline-hover: var(--muted);
+  --surface-secondary-hover: color-mix(
+    in oklab,
+    var(--secondary) 80%,
+    var(--background)
+  );
+  --surface-destructive: color-mix(
+    in oklab,
+    var(--destructive) 10%,
+    var(--background)
+  );
+  --surface-destructive-hover: color-mix(
+    in oklab,
+    var(--destructive) 20%,
+    var(--background)
+  );
 }
 
 .dark {
@@ -813,6 +862,30 @@
     var(--input) 50%,
     var(--background)
   );
+  /* Dark'ta kenar sayfadan da koyu bir halka: zeminin altına inen bir
+     çerçeve gibi durur, ışığı iç rim taşır. */
+  --surface-edge-depth: 30%;
+  --surface-highlight: color-mix(
+    in oklab,
+    var(--surface-paper) 6%,
+    transparent
+  );
+  --surface-outline: color-mix(in oklab, var(--input) 30%, var(--background));
+  --surface-outline-hover: color-mix(
+    in oklab,
+    var(--input) 50%,
+    var(--background)
+  );
+  --surface-destructive: color-mix(
+    in oklab,
+    var(--destructive) 20%,
+    var(--background)
+  );
+  --surface-destructive-hover: color-mix(
+    in oklab,
+    var(--destructive) 30%,
+    var(--background)
+  );
 }
 
 /* Tailwind'in box-shadow zinciri. Halkalar (ring) ve gölge ayrı değişkenlerde
@@ -827,43 +900,16 @@
 
    CSS bir elemanın kendi background-color'ını okuyamaz, bu yüzden her varyant
    kendi taban rengini `--surface-base` olarak bildirir; türetme tek yerde.
-   Buton `data-variant` yazdığı için eşleme öznitelik üzerinden kurulur —
-   sınıf dizisine uzun arbitrary değerler serpmeye gerek kalmaz. */
-[data-slot="button"][data-variant="default"],
+   Butonlar tabanı cva varyantında yazar ve dolgusunu da ondan alır
+   (`bg-(--surface-base)`, bkz. ui/button.tsx); türetme `surface-raised`ın
+   içinde. Rozet `data-variant` yazdığı için onun eşlemesi öznitelik üzerinden
+   kurulur. */
 [data-slot="badge"][data-variant="default"] {
   --surface-base: var(--primary);
 }
-[data-slot="button"][data-variant="secondary"],
 [data-slot="badge"][data-variant="secondary"] {
   --surface-base: var(--secondary);
 }
-[data-slot="button"][data-variant="outline"] {
-  --surface-base: var(--background);
-}
-/* DİKKAT — taban, varyantın ADI değil GERÇEKTE GÖRÜNEN renktir. Destructive'in
-   zemini `bg-destructive/10`, yani solgun bir pembe; buraya `--destructive`
-   yazmak tam güçte kırmızıyı solgun pembenin üstüne boyayıp butonu baştan
-   aşağı boyanmış gibi gösteriyordu (ölçüm: kırmızı kanalında 53 seviye
-   düşüş, referansta bu ~%10). Karışımı burada kurup gerçek yüzeyi veriyoruz. */
-[data-slot="button"][data-variant="destructive"] {
-  --surface-base: color-mix(
-    in oklab,
-    var(--destructive) 10%,
-    var(--background)
-  );
-}
-/* Outline dark'ta saydam değil `bg-input/30` taşır. */
-.dark [data-slot="button"][data-variant="outline"] {
-  --surface-base: color-mix(in oklab, var(--input) 30%, var(--background));
-}
-.dark [data-slot="button"][data-variant="destructive"] {
-  --surface-base: color-mix(
-    in oklab,
-    var(--destructive) 20%,
-    var(--background)
-  );
-}
-
 [data-slot="badge"][data-variant="destructive"] {
   --surface-base: color-mix(
     in oklab,
@@ -884,19 +930,6 @@
    atlanmıştı, bu yüzden footer'daki "Sistem Durumu" rozeti düz kalıyordu. */
 [data-slot="badge"][data-variant="outline"] {
   --surface-base: var(--background);
-}
-
-/* Kenar çubuğunun eylem satırları (Oturum Açın, Yeni Sohbet) butonun yüzey
-   reçetesini taşır ama `data-slot="button"` yazmaz — tabanlarını burada
-   bildiriyorlar, dolgularıyla birebir aynı renkte. */
-[data-sidebar="menu-button"][data-variant="primary"] {
-  --surface-base: var(--primary);
-}
-[data-sidebar="menu-button"][data-variant="outline"] {
-  --surface-base: var(--background);
-}
-.dark [data-sidebar="menu-button"][data-variant="outline"] {
-  --surface-base: color-mix(in oklab, var(--input) 30%, var(--background));
 }
 
 /* Success/warning, destructive ile AYNI kalıp: dolgu alfalı (`/15`, dark'ta
@@ -934,10 +967,7 @@
   );
 }
 
-[data-slot="button"][data-variant],
-[data-slot="badge"][data-variant],
-[data-sidebar="menu-button"][data-variant="primary"],
-[data-sidebar="menu-button"][data-variant="outline"] {
+[data-slot="badge"][data-variant] {
   /* Alt gölge: aynı rengin %18 siyaha çekilmiş hâli, %60 alfayla. */
   --surface-shade: color-mix(
     in oklab,
@@ -963,12 +993,29 @@
   );
 }
 
-/* Yukarıdaki türetme `data-slot`/`data-variant` yazan bileşenlere bağlı.
-   Elle yazılmış kontroller (ör. sesli girişin İptal/İlet düğmeleri) bu
-   öznitelikleri taşımaz; onlar `--surface-base`ini kendisi bildirip bu
-   yardımcıyı ekler. Öznitelik kuralı (0,2,0) sınıftan (0,1,0) güçlü olduğu
-   için bileşenlerin mevcut değerleri etkilenmez. */
-@utility surface-tint {
+/* Tıklanabilir alanlar (select tetikleyicisi, native select, combobox) için
+   hover. `surface-inset` ile birlikte kullanılır. */
+@utility surface-inset-interactive {
+  &:hover:not(:disabled):not([data-disabled]) {
+    --surface-well: var(--surface-well-hover);
+  }
+}
+
+/* Kabartma (buton). Tamamı TEK bir gölge zinciri; `border` da gövde gradyanı
+   da yok.
+
+   - Kenar: dış 1px halka (`0 0 0 1px`). Gerçek bir `border` + `bg-clip-padding`
+     ikilisi hover'da 1px açık halka bırakıyor, iç rim'le yan yana gelince çift
+     çizgi çiziyordu. Halka gölgenin içinde olunca kenar ile ışık aynı yerde,
+     aynı sırada boyanır.
+   - Derinlik: alttaki BULANIK iç gölge. Doğrusal gradyan border-radius'u
+     bilmez (koyu ucu alt kenarın eğrisine düşer); iç gölge eğriyi takip eder.
+     `em` cinsinden: yazısı küçük butonda (xs) gölge de küçülür.
+   - Işık: üstte 1px rim + dört kenarda saydam kâğıt konturu.
+
+   Hepsi `--surface-base`ten türer ve burada, elemanın KENDİSİNDE hesaplanır:
+   hover tabanı değiştirince dolgu, kenar ve gölge birlikte döner. */
+@utility surface-raised {
   --surface-shade: color-mix(
     in oklab,
     color-mix(
@@ -989,34 +1036,18 @@
       var(--surface-rim-alpha),
     transparent
   );
-}
-
-/* Tıklanabilir alanlar (select tetikleyicisi, native select, combobox) için
-   hover. `surface-inset` ile birlikte kullanılır. */
-@utility surface-inset-interactive {
-  &:hover:not(:disabled):not([data-disabled]) {
-    --surface-well: var(--surface-well-hover);
-  }
-}
-
-@utility surface-shadow-chain {
-  box-shadow:
-    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
-    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-    var(--tw-shadow, 0 0 #0000);
-}
-
-@utility surface-raised {
-  background-image: linear-gradient(
-    to bottom in oklab,
-    transparent 40%,
-    var(--surface-shade)
+  --surface-edge: color-mix(
+    in oklab,
+    var(--surface-base) var(--surface-edge-depth),
+    var(--surface-ink)
   );
   --tw-inset-shadow:
     inset 0 1px 0 0 var(--surface-rim-top),
-    inset 0 -1px 0 0 var(--surface-rim-bottom);
+    inset 0 0 0 1px var(--surface-highlight),
+    inset 0 -0.55em 0.9em -0.15em var(--surface-shade);
   --tw-shadow:
-    0 1px 2px -1px var(--surface-contact), 0 3px 8px -3px var(--surface-ambient);
+    0 0 0 1px var(--surface-edge), 0 1px 2px -1px var(--surface-contact),
+    0 3px 8px -3px var(--surface-ambient);
   box-shadow:
     var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),

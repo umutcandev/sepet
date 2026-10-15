@@ -5,7 +5,7 @@ import { AlertDialog as AlertDialogPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 import { useRestoreFocusOnClose } from "@/hooks/use-restore-focus-on-close"
-import { Button } from "@/components/ui/button"
+import { Button, type ButtonWrapperProps } from "@/components/ui/button"
 
 function AlertDialog({
   ...props
@@ -161,7 +161,7 @@ function AlertDialogAction({
   size = "default",
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Action> &
-  Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
+  Pick<ButtonWrapperProps, "variant" | "size">) {
   return (
     <Button variant={variant} size={size} asChild>
       <AlertDialogPrimitive.Action
@@ -179,7 +179,7 @@ function AlertDialogCancel({
   size = "default",
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Cancel> &
-  Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
+  Pick<ButtonWrapperProps, "variant" | "size">) {
   return (
     <Button variant={variant} size={size} asChild>
       <AlertDialogPrimitive.Cancel

@@ -18,6 +18,7 @@ import {
   RiStarLine,
   RiStarOffLine,
 } from "@remixicon/react"
+import { Card } from "@/components/ui/card"
 import { toast } from "@/components/ui/sonner"
 
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
@@ -404,7 +405,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
         <p className="max-w-sm text-sm text-muted-foreground">
           Asistan ile bir sohbet başlat; geçmiş sohbetlerin burada listelenir.
         </p>
-        <Button asChild className="mt-2">
+        <Button variant="default" asChild className="mt-2">
           <Link href="/asistan">
             <RiAddLine className="size-4" />
             Yeni Sohbet
@@ -470,7 +471,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
             >
               Sohbetleri Seç
             </Button>
-            <Button asChild size="sm">
+            <Button variant="default" asChild size="sm">
               <Link href="/asistan">
                 <RiAddLine className="size-3.5" />
                 Yeni Sohbet
@@ -508,8 +509,9 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
             {searchLoading ? (
               <Spinner className="size-4 text-muted-foreground" />
             ) : query ? (
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="icon-xs"
                 onClick={() => {
                   setQuery("")
                   reqId.current++
@@ -517,10 +519,9 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                   setSearchLoading(false)
                 }}
                 aria-label="Aramayı temizle"
-                className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
               >
                 <RiCloseLine className="size-4" />
-              </button>
+              </Button>
             ) : null}
           </div>
         </div>
@@ -529,9 +530,9 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
             <Button
               type="button"
               variant="outline"
-              size="icon"
+              size="icon-lg"
               aria-label="Sırala"
-              className="size-9 shrink-0 text-muted-foreground"
+              className="text-muted-foreground"
             >
               <RiFilter3Line className="size-4" />
             </Button>
@@ -562,15 +563,15 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
       {/* Liste / sonuç durumları */}
       {displayed.length === 0 ? (
         isSearchActive ? (
-          <div className="rounded-xl border bg-card px-6 py-12 text-center text-sm text-muted-foreground">
+          <Card className="px-6 py-12 text-center text-sm text-muted-foreground">
             <span className="font-medium text-foreground">
               “{debouncedQuery.trim()}”
             </span>{" "}
             için sonuç bulunamadı.
-          </div>
+          </Card>
         ) : null
       ) : (
-        <div className="overflow-hidden rounded-xl border bg-card">
+        <Card>
           <ul className="divide-y">
             {displayed.map((c) => {
               const isSelected = selected.has(c.id)
@@ -629,7 +630,8 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                               variant="ghost"
                               size="icon-xs"
                               aria-label="Sohbet eylemleri"
-                              className="relative text-muted-foreground transition-opacity after:absolute after:-inset-2 sm:absolute sm:right-2 sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
+                              hitArea
+                              className="sm:absolute sm:right-2 sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
                             >
                               <RiMoreLine className="size-4" />
                             </Button>
@@ -700,7 +702,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
               ) : null}
             </div>
           ) : null}
-        </div>
+        </Card>
       )}
 
       {/* Yeniden adlandırma diyaloğu */}
@@ -742,7 +744,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                 Vazgeç
               </Button>
               {/* Doğrulama submit'te; buton geçerlilik için kilitlenmez. */}
-              <Button type="submit" disabled={renamePending}>
+              <Button variant="default" type="submit" disabled={renamePending}>
                 {renamePending ? "Kaydediliyor..." : "Kaydet"}
               </Button>
             </DialogFooter>

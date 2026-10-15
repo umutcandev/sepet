@@ -49,7 +49,8 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
       >
         <Button
           variant="outline"
-          className="h-11 w-full rounded-xl"
+          size="xl"
+          className="w-full"
           onClick={() => loginDialog.open()}
         >
           Giriş ekranına dön
@@ -83,7 +84,9 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
             }
           >
             <Button
-              className="h-11 w-full rounded-xl"
+              variant="default"
+              size="xl"
+              className="w-full"
               onClick={() => loginDialog.open()}
             >
               Giriş yap
@@ -134,9 +137,11 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
                 <FormError>{error}</FormError>
               ) : null}
               <Button
+                variant="default"
                 type="submit"
+                size="xl"
                 disabled={busy}
-                className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
+                className="mt-1 w-full"
               >
                 {busy ? <Spinner /> : null}
                 Şifreyi güncelle

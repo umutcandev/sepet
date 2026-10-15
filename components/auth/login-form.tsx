@@ -393,8 +393,8 @@ export function LoginForm({ callbackUrl }: Props) {
                     <Button
                       type="submit"
                       variant="outline"
-                      size="lg"
-                      className="h-11 w-full gap-2 rounded-xl px-[6px] text-sm font-medium tracking-[-0.01em]"
+                      size="xl"
+                      className="w-full"
                     >
                       <span className="flex h-5 w-[20px] items-center justify-center rounded-full">
                         <GoogleIcon />
@@ -415,8 +415,8 @@ export function LoginForm({ callbackUrl }: Props) {
                     <Button
                       type="submit"
                       variant="outline"
-                      size="lg"
-                      className="h-11 w-full gap-2 rounded-xl px-[6px] text-sm font-medium tracking-[-0.01em]"
+                      size="xl"
+                      className="w-full"
                     >
                       <span className="flex h-5 w-[20px] items-center justify-center rounded-full">
                         <FacebookIcon />
@@ -458,9 +458,10 @@ export function LoginForm({ callbackUrl }: Props) {
                     />
                     <div className="relative">
                       <Button
+                        variant="default"
                         type="submit"
-                        size="lg"
-                        className="h-11 w-full rounded-xl text-sm font-medium tracking-[-0.01em]"
+                        size="xl"
+                        className="w-full"
                       >
                         E-posta ile devam et
                       </Button>
@@ -507,18 +508,19 @@ export function LoginForm({ callbackUrl }: Props) {
                     <FormError>{error}</FormError>
                   ) : null}
                   <Button
+                    variant="default"
                     type="submit"
-                    size="lg"
+                    size="xl"
                     disabled={busy}
-                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
+                    className="mt-1 w-full"
                   >
                     {busy ? <Spinner /> : null}
                     Giriş yap
                   </Button>
                   <div className="mt-1 flex flex-col items-center gap-1.5 text-[0.8125rem]">
-                    <button
-                      type="button"
-                      className="text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    <Button
+                      variant="link-muted"
+                      size="inline"
                       onClick={() => {
                         setPassword("")
                         setConfirmPassword("")
@@ -526,14 +528,14 @@ export function LoginForm({ callbackUrl }: Props) {
                       }}
                     >
                       Şifreni mi unuttun?
-                    </button>
-                    <button
-                      type="button"
-                      className="text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                    </Button>
+                    <Button
+                      variant="link-muted"
+                      size="inline"
                       onClick={() => goStage("register")}
                     >
                       Hesabın yok mu? Kayıt ol
-                    </button>
+                    </Button>
                   </div>
                 </form>
               ) : null}
@@ -589,21 +591,23 @@ export function LoginForm({ callbackUrl }: Props) {
                     <FormError>{error}</FormError>
                   ) : null}
                   <Button
+                    variant="default"
                     type="submit"
-                    size="lg"
+                    size="xl"
                     disabled={busy}
-                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
+                    className="mt-1 w-full"
                   >
                     {busy ? <Spinner /> : null}
                     Devam et
                   </Button>
-                  <button
-                    type="button"
-                    className="mt-1 text-center text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                  <Button
+                    variant="link-muted"
+                    size="inline"
+                    className="mt-1 text-[0.8125rem]"
                     onClick={() => goStage("email-login")}
                   >
                     Zaten hesabın var mı? Giriş yap
-                  </button>
+                  </Button>
                 </form>
               ) : null}
 
@@ -619,10 +623,11 @@ export function LoginForm({ callbackUrl }: Props) {
                     <FormError>{error}</FormError>
                   ) : null}
                   <Button
+                    variant="default"
                     type="button"
-                    size="lg"
+                    size="xl"
                     disabled={busy || otp.length !== 6}
-                    className="h-11 w-full gap-2 rounded-xl text-sm font-medium"
+                    className="w-full"
                     onClick={() => submitVerify()}
                   >
                     {busy ? <Spinner /> : null}
@@ -634,7 +639,6 @@ export function LoginForm({ callbackUrl }: Props) {
                     size="sm"
                     disabled={resendIn > 0}
                     onClick={resendCode}
-                    className="text-[0.8125rem] text-muted-foreground"
                   >
                     {resendIn > 0
                       ? `Kodu tekrar gönder (${resendIn})`
@@ -666,21 +670,23 @@ export function LoginForm({ callbackUrl }: Props) {
                     <FormError>{error}</FormError>
                   ) : null}
                   <Button
+                    variant="default"
                     type="submit"
-                    size="lg"
+                    size="xl"
                     disabled={busy}
-                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
+                    className="mt-1 w-full"
                   >
                     {busy ? <Spinner /> : null}
                     Sıfırlama bağlantısı gönder
                   </Button>
-                  <button
-                    type="button"
-                    className="mt-1 text-center text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                  <Button
+                    variant="link-muted"
+                    size="inline"
+                    className="mt-1 text-[0.8125rem]"
                     onClick={() => goStage("email-login")}
                   >
                     Girişe dön
-                  </button>
+                  </Button>
                 </form>
               ) : null}
 
@@ -691,20 +697,22 @@ export function LoginForm({ callbackUrl }: Props) {
                     et. Bağlantı 15 dakika geçerlidir.
                   </p>
                   <Button
+                    variant="default"
                     type="button"
-                    size="lg"
+                    size="xl"
                     onClick={() => goStage("email-login")}
-                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
+                    className="mt-1 w-full"
                   >
                     Girişe dön
                   </Button>
-                  <button
-                    type="button"
-                    className="text-center text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                  <Button
+                    variant="link-muted"
+                    size="inline"
+                    className="text-[0.8125rem]"
                     onClick={resendReset}
                   >
                     Bağlantı gelmedi mi? Tekrar gönder
-                  </button>
+                  </Button>
                 </div>
               ) : null}
 
@@ -720,22 +728,24 @@ export function LoginForm({ callbackUrl }: Props) {
                     <FormError>{error}</FormError>
                   ) : null}
                   <Button
+                    variant="default"
                     type="button"
-                    size="lg"
+                    size="xl"
                     disabled={busy || otp.length !== 6}
-                    className="h-11 w-full gap-2 rounded-xl text-sm font-medium"
+                    className="w-full"
                     onClick={() => submitTwoFactor()}
                   >
                     {busy ? <Spinner /> : null}
                     Doğrula
                   </Button>
-                  <button
-                    type="button"
-                    className="text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                  <Button
+                    variant="link-muted"
+                    size="inline"
+                    className="text-[0.8125rem]"
                     onClick={() => goStage("recovery")}
                   >
                     Kurtarma kodu kullan
-                  </button>
+                  </Button>
                 </div>
               ) : null}
 
@@ -761,21 +771,23 @@ export function LoginForm({ callbackUrl }: Props) {
                     <FormError>{error}</FormError>
                   ) : null}
                   <Button
+                    variant="default"
                     type="submit"
-                    size="lg"
+                    size="xl"
                     disabled={busy}
-                    className="mt-1 h-11 w-full gap-2 rounded-xl text-sm font-medium"
+                    className="mt-1 w-full"
                   >
                     {busy ? <Spinner /> : null}
                     Doğrula
                   </Button>
-                  <button
-                    type="button"
-                    className="text-center text-[0.8125rem] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                  <Button
+                    variant="link-muted"
+                    size="inline"
+                    className="text-[0.8125rem]"
                     onClick={() => goStage("two-factor")}
                   >
                     Doğrulama koduna dön
-                  </button>
+                  </Button>
                 </form>
               ) : null}
             </motion.div>
@@ -807,12 +819,9 @@ function TermsDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button
-          type="button"
-          className="underline underline-offset-2 transition-colors hover:text-foreground"
-        >
+        <Button variant="link-muted" size="inline" className="underline">
           Şartlar
-        </button>
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>
@@ -842,12 +851,9 @@ function PrivacyDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button
-          type="button"
-          className="underline underline-offset-2 transition-colors hover:text-foreground"
-        >
+        <Button variant="link-muted" size="inline" className="underline">
           Gizlilik Politikası
-        </button>
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>

@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button, type ButtonWrapperProps } from "@/components/ui/button"
 
 const attachmentVariants = cva(
   "group/attachment relative flex w-fit max-w-full min-w-0 shrink-0 flex-wrap rounded-xl border bg-card text-card-foreground transition-colors focus-within:ring-1 focus-within:ring-ring/50 has-[>a,>button]:hover:bg-muted/50 data-[state=error]:border-destructive/30 data-[state=idle]:border-dashed",
@@ -148,7 +148,7 @@ function AttachmentAction({
   variant,
   size = "icon-xs",
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: ButtonWrapperProps) {
   return (
     <Button
       data-slot="attachment-action"

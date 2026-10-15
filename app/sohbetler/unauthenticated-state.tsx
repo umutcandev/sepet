@@ -14,7 +14,11 @@ export function UnauthenticatedState() {
       <p className="max-w-sm text-sm text-muted-foreground">
         Geçmiş sohbetlerini görmek ve yönetmek için giriş yapmalısın.
       </p>
-      <Button onClick={() => loginDialog.open()} className="mt-2">
+      <Button
+        variant="default"
+        onClick={() => loginDialog.open()}
+        className="mt-2"
+      >
         Giriş Yap
       </Button>
     </div>

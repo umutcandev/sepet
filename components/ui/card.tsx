@@ -1,18 +1,38 @@
 ﻿import * as React from "react"
+import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Uygulamanın TEK kart kabuğu: sohbet kartları (sepet, fiş, eşleşmeler,
+ * özet), kayıt sayfaları (sepet/fiş detayı, bilgi kartları, listeler) ve
+ * iskeletleri. Eskiden üç ayrı biçimde yazılıyordu: sohbette Squircle + iç
+ * halka (yedi kopya, her birinde aynı uzun gerekçe), kayıt sayfalarında
+ * `rounded-xl border bg-card` (on beş kopya), bu dosyada ise hiç kullanılmayan
+ * üçüncü bir dış gölgeli sürüm.
+ *
+ * Kenar İÇERİDE (`inset-ring`), dış gölge yok. Kart çoğu yerde
+ * `overflow-hidden` bir sütunun içinde duruyor (sohbet sütunu, mesaj içeriği);
+ * dış halka ve gölge orada sağdan/soldan/alttan düz kesiliyordu. İç halka
+ * kutunun içinde kalır, hiçbir yerde kırpılmaz.
+ *
+ * Squircle (clip-path) KULLANILMAZ. Kullanılan eğri bu yarıçapta
+ * `border-radius`tan piksel altı sapıyor (bkz. squircle.tsx), ama clip-path
+ * kartın kendi odak çerçevesini (ör. liste kartının `outline`ı) siliyor.
+ * Görünür bir squircle istenirse değişiklik yalnız burada yapılır.
+ */
 function Card({
   className,
-  size = "default",
+  asChild = false,
   ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+}: React.ComponentProps<"div"> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot.Root : "div"
+
   return (
-    <div
+    <Comp
       data-slot="card"
-      data-size={size}
       className={cn(
-        "group/card flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-sm text-card-foreground smooth-shadow-ring-sm has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+        "overflow-hidden rounded-xl bg-card text-card-foreground inset-ring inset-ring-hairline",
         className
       )}
       {...props}
@@ -20,12 +40,13 @@ function Card({
   )
 }
 
+/** Başlık şeridi: her kartta aynı ritim (`min-h-12`), alt çizgiyle ayrılır. */
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-header"
       className={cn(
-        "group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-xl px-4 group-data-[size=sm]/card:px-3 has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-4 group-data-[size=sm]/card:[.border-b]:pb-3",
+        "flex min-h-12 flex-wrap items-center gap-2 border-b px-4 py-2",
         className
       )}
       {...props}
@@ -37,54 +58,19 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn(
-        "cn-font-heading text-base leading-snug font-medium group-data-[size=sm]/card:text-sm",
-        className
-      )}
+      className={cn("text-sm font-medium", className)}
       {...props}
     />
   )
 }
 
-function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-description"
-      className={cn("text-sm text-muted-foreground", className)}
-      {...props}
-    />
-  )
-}
-
-function CardAction({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn("px-4 group-data-[size=sm]/card:px-3", className)}
-      {...props}
-    />
-  )
-}
-
+/** Eylem şeridi (Onayla / İptal / Yeni kalem): sessiz zemin, üst çizgi. */
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center rounded-b-xl border-t bg-muted/50 p-4 group-data-[size=sm]/card:p-3",
+        "flex flex-wrap items-center gap-2 border-t bg-muted/30 px-4 py-3",
         className
       )}
       {...props}
@@ -92,12 +78,4 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-  CardDescription,
-  CardContent,
-}
+export { Card, CardHeader, CardTitle, CardFooter }

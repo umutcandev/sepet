@@ -6,7 +6,7 @@ import useEmblaCarousel, {
 } from "embla-carousel-react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button, type ButtonWrapperProps } from "@/components/ui/button"
 import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react"
 
 type CarouselApi = UseEmblaCarouselType[1]
@@ -178,7 +178,7 @@ function CarouselPrevious({
   variant = "outline",
   size = "icon-sm",
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: ButtonWrapperProps) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel()
 
   return (
@@ -208,7 +208,7 @@ function CarouselNext({
   variant = "outline",
   size = "icon-sm",
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: ButtonWrapperProps) {
   const { orientation, scrollNext, canScrollNext } = useCarousel()
 
   return (

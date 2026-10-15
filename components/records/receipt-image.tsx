@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -28,7 +29,7 @@ export function ReceiptImage({ url }: { url: string }) {
   const [open, setOpen] = React.useState(false)
 
   return (
-    <div className="overflow-hidden rounded-xl border bg-card">
+    <Card>
       {/* Kart başlığı diğer kartlarla aynı ritimde: `min-h-12 border-b px-4
           py-2 text-sm font-medium`. Mobilde ayrıca katlama düğmesi olur. */}
       <button
@@ -88,6 +89,6 @@ export function ReceiptImage({ url }: { url: string }) {
           </DialogContent>
         </Dialog>
       </div>
-    </div>
+    </Card>
   )
 }

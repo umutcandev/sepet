@@ -290,9 +290,8 @@ export function ProductSearchPage({
         <Button
           type="button"
           variant="outline"
-          size="sm"
+          size="lg"
           aria-label="Barkod tara"
-          className="h-9 px-3"
           onClick={(e) => {
             // Dialog açılınca Radix dış ağaca aria-hidden koyuyor; tetikleyici
             // buton focus'lu kalırsa erişilebilirlik uyarısı çıkar. Önce blur
@@ -305,10 +304,10 @@ export function ProductSearchPage({
           Barkod
         </Button>
         <Button
+          variant="default"
           type="submit"
-          size="sm"
+          size="lg"
           disabled={!canSubmit}
-          className="h-9 px-3"
         >
           {view.kind === "loading" ? (
             <Spinner className="size-3.5" />
@@ -425,10 +424,9 @@ function ResultArea({
           <Button
             type="button"
             variant="outline"
-            size="sm"
+            size="lg"
             onClick={onLoadMore}
             disabled={result.loadingMore}
-            className="h-9 px-4"
           >
             {result.loadingMore && <Spinner className="size-3.5" />}
             {result.loadingMore ? "Yükleniyor..." : "Daha fazla göster"}

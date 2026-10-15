@@ -130,10 +130,11 @@ export function HomeCtaSection() {
 
         <PressFx>
           <Button
+            variant="default"
             {...hoverProps}
             asChild
-            size="lg"
-            className="h-10 rounded-full px-5"
+            size="xl"
+            className="rounded-full"
           >
             <Link href="/asistan">Ücretsiz başla</Link>
           </Button>

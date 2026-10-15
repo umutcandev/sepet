@@ -91,7 +91,7 @@ export default function NotFound() {
       </p>
 
       <div className="mt-6">
-        <Button asChild>
+        <Button variant="default" asChild>
           <Link href="/">Ana sayfaya dön</Link>
         </Button>
       </div>

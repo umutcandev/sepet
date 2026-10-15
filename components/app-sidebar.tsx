@@ -274,9 +274,6 @@ export function AppSidebar({ blogPosts, ...props }: AppSidebarProps) {
                     asChild
                     variant="primary"
                     tooltip="Yeni Sohbet"
-                    // Genişken ikon+metin birlikte ortalanır; rayda etiketi
-                    // varyantın kendisi gizliyor, ikon 32'lik kutuda ortalanır.
-                    className="justify-center"
                   >
                     <Link href="/asistan" onClick={handleNewChatClick}>
                       <RiAddLine />

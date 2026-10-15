@@ -296,7 +296,7 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
           size="icon-sm"
           onClick={copy}
           aria-label="Kodu kopyala"
-          className="text-muted-foreground hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent"
+          className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent"
         >
           <CopiedIconSwap
             copied={copied}

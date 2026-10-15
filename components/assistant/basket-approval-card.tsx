@@ -1,8 +1,8 @@
 "use client"
 
-import { Squircle } from "@/components/ui/squircle"
 import * as React from "react"
 import { RiAddLine, RiCheckLine, RiCloseLine } from "@remixicon/react"
+import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -111,18 +111,15 @@ export function BasketApprovalCard({
   }
 
   return (
-    // Kenar içeride (`inset-ring`), dış gölge yok: sohbet sütunu ve
-    // `MessageContent` `overflow-hidden` olduğu için dış gölge kırpılırdı
-    // (gerekçenin tamamı product-match-list.tsx'te).
-    <Squircle className="rounded-xl bg-card inset-ring inset-ring-hairline" radius="xl">
-      <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
-        <span className="text-sm font-medium">Sepetindeki Kalemler</span>
+    <Card>
+      <CardHeader>
+        <CardTitle>Sepetindeki Kalemler</CardTitle>
         <div className="ml-auto flex flex-wrap gap-1.5">
           {readOnly ? (
             <Badge variant="secondary">Onaylandı</Badge>
           ) : null}
         </div>
-      </div>
+      </CardHeader>
 
       <div className="overflow-x-auto">
         <Table className="w-full min-w-[300px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
@@ -130,7 +127,10 @@ export function BasketApprovalCard({
             <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
               <TableHead className="w-auto">Ürün</TableHead>
               <TableHead className="w-16 text-right">Adet</TableHead>
-              <TableHead className="w-20">Birim</TableHead>
+              {/* w-24: seçicinin sağında ok için 32px dolgu var; w-20'de yazıya
+                  ~26px kalıyor ve "paket"/"adet" "pak"/"ade" diye kesiliyordu.
+                  Fiş kartındaki birim sütunuyla aynı genişlik. */}
+              <TableHead className="w-24">Birim</TableHead>
               {!readOnly && <TableHead className="w-8" />}
             </TableRow>
           </TableHeader>
@@ -159,6 +159,7 @@ export function BasketApprovalCard({
                             searchQuery: stripQuantityTokens(e.target.value),
                           })
                         }
+                        aria-label="Ürün adı"
                         className="h-8 text-sm"
                       />
                     )}
@@ -178,6 +179,7 @@ export function BasketApprovalCard({
                             quantity: parseFloat(e.target.value) || 0,
                           })
                         }
+                        aria-label="Adet"
                         className="h-8 w-full text-right text-sm tabular-nums"
                       />
                     )}
@@ -196,6 +198,7 @@ export function BasketApprovalCard({
                               .value as (typeof UNIT_VALUES)[number],
                           })
                         }
+                        aria-label="Birim"
                         className="h-8 text-sm"
                       >
                         {UNIT_VALUES.map((u) => (
@@ -211,9 +214,9 @@ export function BasketApprovalCard({
                       <Button
                         type="button"
                         variant="ghost"
-                        size="icon"
+                        size="icon-sm"
                         onClick={() => removeItem(it._id)}
-                        className="size-7 text-muted-foreground hover:text-destructive"
+                        className="hover:text-destructive"
                         aria-label="Kalemi sil"
                       >
                         <RiCloseLine className="size-3.5" />
@@ -228,7 +231,7 @@ export function BasketApprovalCard({
       </div>
 
       {!readOnly && (
-        <div className="flex flex-wrap items-center gap-2 border-t bg-muted/30 px-4 py-3">
+        <CardFooter>
           <Button
             type="button"
             variant="outline"
@@ -243,6 +246,7 @@ export function BasketApprovalCard({
               İptal
             </Button>
             <Button
+              variant="default"
               type="button"
               size="sm"
               onClick={handleApprove}
@@ -252,9 +256,9 @@ export function BasketApprovalCard({
               Onayla
             </Button>
           </div>
-        </div>
+        </CardFooter>
       )}
-    </Squircle>
+    </Card>
   )
 }
 

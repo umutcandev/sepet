@@ -356,7 +356,7 @@ function CategoryDrawer({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className={className}>
+        <Button variant="default" className={className}>
           {label}
           <RiArrowDownSLine className="text-primary-foreground/70" />
         </Button>

@@ -198,12 +198,12 @@ export function HomeHero() {
             Mobilde header 4rem + bu kap calc(--hero-vh - 4rem) = --hero-vh;
             masaüstünde header akıştan çıktığı (saydam, üstte yüzüyor) için
             kap tek başına --hero-vh. İki halde de dip shader'la çakışıyor. */}
-        {/* Kolon başlıkla birlikte genişler; prompt ve chip'ler kendi
-            `max-w-2xl`lerinde kalır. Sebep: dönen başlıkların en uzunu
-            ("Abdurrahman, yemeğe bakalım mı?") Cooper'da 15.82em — büyük
-            puntoda tek satırda durabilmesi için geniş bir kap şart, ama girdi
-            alanının aynı oranda genişlemesi ergonomiyi bozar. Basamaklar
-            ölçülerek seçildi (bkz. h1). */}
+        {/* Kolon başlıkla birlikte genişler; prompt (`max-w-3xl`, /asistan'la
+            aynı) ve chip'ler (`max-w-2xl`) kendi kaplarında kalır. Sebep:
+            dönen başlıkların en uzunu ("Abdurrahman, yemeğe bakalım mı?")
+            Cooper'da 15.82em — büyük puntoda tek satırda durabilmesi için
+            geniş bir kap şart, ama girdi alanının aynı oranda genişlemesi
+            ergonomiyi bozar. Basamaklar ölçülerek seçildi (bkz. h1). */}
         <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6 sm:max-w-3xl lg:max-w-5xl lg:gap-8 xl:max-w-6xl">
           <div className="flex w-full flex-col items-center gap-3 text-center">
             {/* Açılış dizisinin ilk dört adımı: rozet → başlık → prompt →
@@ -259,9 +259,11 @@ export function HomeHero() {
             </AnimateEnter>
           </div>
 
+          {/* /asistan'daki prompt'la aynı genişlik: buradan gönderilen mesaj
+              asistan sayfasına geçince prompt yer değiştirir, boyu değişmez. */}
           <AnimateEnter
             delay={HOME_ENTER.heroPrompt}
-            className="w-full max-w-2xl"
+            className="w-full max-w-3xl"
           >
             <AssistantPrompt
               input={input}
@@ -281,20 +283,9 @@ export function HomeHero() {
                 <PressFx key={chip}>
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="chip"
                     size="sm"
                     onClick={() => handleChip(chip)}
-                    // Kenar `border-hairline`: eskiden light'ta `border-border`,
-                    // dark'ta `muted-foreground/25` idi. Çatalın sebebi dark'ta
-                    // `--border` ile `--muted`in birebir aynı renk olması;
-                    // token o basamağı kaldırdığı için tema başına ayrı değer
-                    // gerekmiyor. Light'ta değer zaten `--border`ın kendisi,
-                    // yani chip'lerin görünümü değişmiyor.
-                    //
-                    // Hover /20 değil /15: dinlenme çizgisi artık daha sessiz
-                    // bir tonda durduğu için /20 dark'ta 27 seviyelik bir
-                    // sıçrama yapıyordu. /15 iki temada da ~15-17'de kalıyor.
-                    className="h-auto rounded-lg border-hairline bg-control px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/15 hover:bg-control hover:text-foreground dark:bg-control dark:hover:bg-control"
                   >
                     {chip}
                   </Button>
