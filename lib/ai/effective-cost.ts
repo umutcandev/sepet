@@ -1,5 +1,5 @@
-import type { MarketPrice } from "@/lib/marketfiyati/types"
-import type { Unit } from "./schemas"
+import type { MarketPrice, ProductDetail } from "@/lib/marketfiyati/types"
+import type { MarketOption, ParsedItem, Unit } from "./schemas"
 
 type Base = "l" | "kg" | "adet"
 
@@ -30,7 +30,7 @@ function requestBase(
   }
 }
 
-const SIZE_RE = /(\d+(?:[.,]\d+)?)\s*(adet|lt|litre|l|ml|kg|kilo|gr|gram|g)\b/
+const SIZE_RE = /(\d+(?:[.,]\d+)?)\s*(adet|lt|litre|l|ml|cl|kg|kilo|gr|gram|g)\b/
 
 /**
  * Ürün adından paket boyutunu ("10 Adet", "1 Lt", "500 Gr") çıkarıp baz birime
@@ -51,6 +51,8 @@ function parseSizeFromText(text: string): { base: Base; amount: number } | null 
       return { base: "l", amount: n }
     case "ml":
       return { base: "l", amount: n / 1000 }
+    case "cl":
+      return { base: "l", amount: n / 100 }
     case "kg":
     case "kilo":
       return { base: "kg", amount: n }
@@ -149,4 +151,111 @@ export function hasSizeMismatch(
   if (!size || size.base !== req.base || size.amount <= 0) return false
   const ratio = size.amount / req.amount
   return ratio < 1 - SIZE_TOLERANCE || ratio > 1 + SIZE_TOLERANCE
+}
+
+export type SizeFit = {
+  /** "Farklı Boyut" rozeti bu adayın satırına düşmeli mi. */
+  mismatch: boolean
+  /**
+   * İstenen boyuta uzaklık, |ln(paket / istenen)|. Yalnızca AYNI kalemin
+   * adaylarını sıralamak için: boyutu uyan ya da kıyaslanamayan aday 0,
+   * istenen bazda hiç fiyatlanamayan aday (gramajla istenip adetle satılan)
+   * Infinity alır.
+   */
+  distance: number
+}
+
+/**
+ * Bir adayın istenen boyuta uygunluğu. Kalemin "Farklı Boyut" kararı eskiden
+ * yalnızca temsilci ürüne (primary) bakılarak veriliyordu; ama optimizasyon her
+ * markette kabul edilen adayların EN UCUZUNU seçtiğinden "1 l su" isteyen
+ * kullanıcıya bir markette 500 ml'lik şişe gidiyor ve rozet çıkmıyordu. Karar
+ * artık her aday için ayrı verilir ve aday seçiminde de kullanılır (bkz.
+ * lib/ai/tools.ts buildMarketOptions).
+ *
+ * Ölçülebilir istekte (kg/l) karar deterministiktir: adındaki paket boyutu
+ * ±%10 bandındaysa uyar, değilse uymaz. Boyut okunamıyorsa (açık/tartılan ürün)
+ * ya da istek adet/paket ise LLM'in kalem düzeyindeki işaretine düşülür; o
+ * işaret adetli farkları ("2 yumurta" → 10'lu viyol) güvenilir yakalar.
+ */
+export function sizeFit(
+  quantity: number,
+  unit: Unit,
+  product: { name: string; markets: MarketPrice[] },
+  llmMismatch: boolean,
+): SizeFit {
+  const req = requestBase(quantity, unit)
+  if (req.base === "kg" || req.base === "l") {
+    if (hasBaseMismatch(quantity, unit, product)) {
+      return { mismatch: true, distance: Infinity }
+    }
+    const size = parseSizeFromText(product.name)
+    if (size && size.base === req.base && size.amount > 0 && req.amount > 0) {
+      const ratio = size.amount / req.amount
+      const fits = ratio >= 1 - SIZE_TOLERANCE && ratio <= 1 + SIZE_TOLERANCE
+      return fits
+        ? { mismatch: false, distance: 0 }
+        : { mismatch: true, distance: Math.abs(Math.log(ratio)) }
+    }
+  }
+  return { mismatch: llmMismatch, distance: 0 }
+}
+
+/** a, b'den daha iyi bir seçenek mi: önce boyut uyumu, sonra boyuta yakınlık, sonra fiyat. */
+function isBetterOption(
+  a: { fit: SizeFit; cost: number },
+  b: { fit: SizeFit; cost: number },
+): boolean {
+  if (a.fit.mismatch !== b.fit.mismatch) return !a.fit.mismatch
+  if (a.fit.distance !== b.fit.distance) return a.fit.distance < b.fit.distance
+  return a.cost < b.cost
+}
+
+/**
+ * Market-bilinçli optimizasyon girdisi. Kabul edilen adaylar arasından HER
+ * market için en uygun seçeneği bulur. Aynı kalem farklı marketlerde farklı
+ * ürüne çözülebilir — tek/iki market kombinasyonlarının özü budur.
+ *
+ * İstenen miktar fiyatı ÇARPMAZ (bkz. effectiveLineCost) ama ürünü SEÇER:
+ * kullanıcı "1 l su" yazdıysa o markette 1 litrelik şişe varken daha ucuz
+ * diye 500 ml'lik seçilmez. Önce boyutu uyan adaylar arasında en ucuzu alınır;
+ * markette hiç uyan yoksa istenene en yakın boyut, eşitlikte en ucuzu. O
+ * satır "Farklı Boyut" olarak işaretlenir.
+ */
+export function buildMarketOptions(
+  accepted: Array<Pick<ProductDetail, "productId" | "name" | "imageUrl" | "markets">>,
+  item: Pick<ParsedItem, "quantity" | "unit">,
+  llmSizeMismatch: boolean,
+): MarketOption[] {
+  const best = new Map<string, { option: MarketOption; fit: SizeFit }>()
+  for (const cand of accepted) {
+    const fit = sizeFit(item.quantity, item.unit, cand, llmSizeMismatch)
+    for (const mp of cand.markets) {
+      const { packsNeeded, packagePrice, total } = effectiveLineCost(mp)
+      const cur = best.get(mp.market)
+      if (
+        !cur ||
+        isBetterOption({ fit, cost: total }, { fit: cur.fit, cost: cur.option.effectiveCost })
+      ) {
+        best.set(mp.market, {
+          fit,
+          option: {
+            market: mp.market,
+            productId: cand.productId,
+            productName: cand.name,
+            packagePrice,
+            packsNeeded,
+            effectiveCost: total,
+            unitPriceLabel: mp.unitPrice ?? null,
+            depotName: mp.depotName,
+            imageUrl: cand.imageUrl,
+            sizeMismatch: fit.mismatch,
+          },
+        })
+      }
+    }
+  }
+  return Array.from(best.values(), (b) => b.option).sort(
+    (a, b) => a.effectiveCost - b.effectiveCost,
+  )
 }

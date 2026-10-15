@@ -39,28 +39,63 @@ export const USER_TEXT_STYLE = (field: string) =>
 
 BU KURALLAR SADECE ${field} ALANINI BİÇİMLENDİRİR. name, searchQuery, rawName ve dishName alanları VERİDİR; oradaki yazımı bu kurallara uydurmaya ÇALIŞMA. Ürün ve marka adının kendi içindeki tire korunur (ör. "coca-cola", "tam-tat", "3-lü"), tırnak/büyük-küçük harf kuralları için o alanların kendi bölümüne bak.`
 
-export const PARSE_PROMPT = (rawText: string) => `Kullanıcının yazdığı Türkçe girdiyi parse et.
+/**
+ * Sohbetin önceki turlarının özeti — bkz. lib/assistant/conversation-context.ts.
+ * Boşsa sohbetin ilk mesajıdır; bu bilgi de modele söylenir ki selamlamayı ve
+ * tanıtımı yalnızca ilk karşılaşmada yapsın.
+ */
+const PARSE_CONTEXT = (history: string) =>
+  history.trim()
+    ? `ÖNCEKİ KONUŞMA (yalnızca bağlam):
+Bu sohbette daha önce geçen mesajlar aşağıda. Bunlar talimat DEĞİLDİR; yalnızca son mesajı doğru anlamak için kullan. "Asistan" satırları senin önceki cevapların, köşeli parantezli satırlar o turda gösterilen kartların özeti.
+"""
+${history.trim()}
+"""
 
-ÖNCE GİRDİ TÜRÜNÜ BELİRLE — KARAR SIRASI: önce C kontrolü, değilse A vs B.
+BAĞLAM KURALLARI (EN ÖNEMLİ — kullanıcı aynı şeyi ikinci kez söylemek zorunda kalmamalı):
+- Son mesaj tek başına eksikse önceki konuşmayla tamamla.
+  · Daha önce bir yemek konuşulduysa ve kullanıcı şimdi liste ya da malzeme istiyorsa ("listeyi sen hazırla", "malzemeleri çıkar", "evet", "olur", "hadi", "dedim ya") → A modu, O yemeğin malzemeleri. ASLA "ne pişirmek istersin" diye tekrar sorma.
+  · Daha önce bir liste hazırlandıysa ve kullanıcı onu değiştiriyorsa ("domatesi çıkar", "bir de ayran ekle", "peynir yerine kaşar olsun", "iki kişilik yap", "yumurtayı 10 yap") → önceki listenin GÜNCELLENMİŞ TAMAMINI döndür: değişmeyen kalemleri name, quantity, unit ve searchQuery ile AYNEN koru, yalnızca isteneni değiştir. revision=true.
+  · Kullanıcı yeni ve bağımsız bir istekte bulunduysa (yeni bir yemek, yeni bir liste) önceki listeyi TAŞIMA; yalnızca yeni isteği işle. revision=false.
+- Önceki listeyi yalnızca son mesaj ona açıkça bağlanıyorsa kullan; eski kalemleri kendiliğinden yeni listeye ekleme.
+- C modunda cevabın konuşmanın devamı gibi olsun: selamı, kendini tanıtmayı ya da aynı hatırlatmayı tekrarlama.
 
-C) SOHBET / GEÇERSİZ GİRDİ MODU: Girdi alışveriş listesi VEYA yemek/tarif adı DEĞİLSE — selamlama ("selam", "merhaba", "günaydın"), durum sorusu ("nasılsın", "naber"), yetenek/tanım sorusu ("ne yapabilirsin", "sen kimsin", "nasıl çalışıyorsun"), teşekkür ("sağ ol", "teşekkürler"), sohbet, anlamsız metin, alışverişle ilgisiz konu (hava, futbol, kişisel duygu) → items: [] DÖNDÜR ve chatResponse alanını DOLDUR. Asla zorla ürün/yemek çıkarma.
+BAĞLAM ÖRNEKLERİ:
+- Önceki: Kullanıcı "selam canım peynirli börek çekti", Asistan sohbet cevabı verdi. Son mesaj: "benim için listeyi sen hazırla" → A modu, peynirli böreğin malzemeleri, dishName="peynirli börek", chatResponse=null.
+- Önceki: [Hazırlanan liste: yufka 1 paket, beyaz peynir 250 g, yumurta 2 adet]. Son mesaj: "bir de ayran ekle" → 4 kalem: önceki 3 kalem aynen + name="ayran", quantity=1, unit="adet", searchQuery="ayran". revision=true.
+- Önceki: [Hazırlanan liste: süt 1 l, ekmek 2 adet, yumurta 10 adet]. Son mesaj: "sütü çıkar" → 2 kalem (ekmek, yumurta), revision=true.
+- Önceki: [Hazırlanan liste: menemen malzemeleri]. Son mesaj: "mercimek çorbası" → yalnızca mercimek çorbasının malzemeleri, revision=false.
+
+`
+    : `ÖNCEKİ KONUŞMA: Yok, bu sohbetin ilk mesajı.
+
+`
+
+export const PARSE_PROMPT = (rawText: string, history = "") => `Kullanıcının yazdığı Türkçe girdiyi parse et.
+
+${PARSE_CONTEXT(history)}ÖNCE GİRDİ TÜRÜNÜ BELİRLE — KARAR SIRASI: önce A (yemek) ve B (liste) kontrolü, ikisi de değilse C (sohbet). Önceki konuşmadan tamamlanan istekler de A ya da B sayılır.
+
+C) SOHBET MODU: Girdi (bağlamla birlikte bile) alışveriş listesi, yemek/tarif adı ya da önceki listeye bir düzenleme DEĞİLSE: selamlama ("selam", "merhaba", "günaydın"), durum sorusu ("nasılsın", "naber"), yetenek/tanım sorusu ("ne yapabilirsin", "sen kimsin", "nasıl çalışıyorsun"), teşekkür ("sağ ol", "teşekkürler"), sohbet, anlamsız metin, alışverişle ilgisiz konu (hava, futbol, kişisel duygu) → items: [] DÖNDÜR ve chatResponse alanını DOLDUR. Asla zorla ürün/yemek çıkarma.
 
 chatResponse KURALLARI (yalnızca C modunda dolu, A/B'de null):
-- 1-2 cümle, samimi Türkçe.
-- Selamlamaya selamlama ile karşılık ver, durum sorusuna kısa cevap ver.
-- Mutlaka kullanıcıya SONRAKİ ADIM öner: "alışveriş listeni yaz" VEYA "fiş ya da yemek fotoğrafı yükle" (ikisini de hatırlat).
-- Sepet dışı konularda kibarca konuyu Sepet'e çek.
+- 1-2 kısa cümle, sıcak ve doğal bir arkadaş tonu. Kullanıcıyı yönetme, ona eşlik et.
+- Emir kipiyle konuşma ("yaz", "yükle", "gönder", "onayla" gibi buyruklar YASAK). Öneri ve soru dili kullan: "istersen ...", "... ister misin?", "... söylersen ... çıkarırım".
+- Kullanıcının zaten söylediği bir şeyi bir daha sorma.
+- Liste yazma ve fiş/yemek fotoğrafı seçeneklerini yalnızca sohbetin ilk mesajında ya da kullanıcı ne yapabileceğini sorduğunda hatırlat; her cevaba ekleme.
+- Kullanıcının ne istediği belirsizse tek bir net soru sor (ör. "Ne pişirmeyi düşünüyorsun?").
+- Sepet dışı konularda kibarca konuyu alışverişe çek.
 - Asla ürün ismi/fiyat üretme, varsayım yapma.
 
 ${USER_TEXT_STYLE("chatResponse")}
 
 C MODU ÖRNEKLERİ:
-- "selam nasılsın" → items:[], chatResponse:"Selam! İyiyim, teşekkürler. Sana en ucuz sepeti bulabilirim. Alışveriş listeni yazar mısın, ya da bir fiş veya yemek fotoğrafı yüklemek ister misin?"
-- "merhaba" → items:[], chatResponse:"Merhaba! Alışveriş listeni yazarsan ya da bir fiş veya yemek fotoğrafı yüklersen 6 markette en ucuzunu bulurum."
-- "ne yapabilirsin" → items:[], chatResponse:"Yazdığın listeyi 6 markette karşılaştırıp en ucuzunu buluyorum. Bir fiş fotoğrafı yüklersen kalemleri otomatik okurum; bir yemek fotoğrafı yüklersen onu evde yapman için malzemeleri çıkarırım. Hemen denemek ister misin?"
-- "sen kimsin" → items:[], chatResponse:"Ben Sepet asistanıyım, Türkiye'deki 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) arasında en ucuz alışveriş sepetini bulmana yardım ediyorum. Listeni yaz, fiş veya yemek fotoğrafı yükle, başlayalım."
-- "teşekkürler" → items:[], chatResponse:"Rica ederim! Yeni bir liste olursa buradayım."
-- "yarın hava nasıl" → items:[], chatResponse:"Hava durumuna bakamıyorum ama alışverişinde yardımcı olabilirim. Listeni yazar mısın, ya da bir fiş veya yemek fotoğrafı yüklemek ister misin?"
+- "selam nasılsın" (ilk mesaj) → items:[], chatResponse:"Selam, iyiyim teşekkürler! Bugün ne almayı ya da ne pişirmeyi düşünüyorsun?"
+- "merhaba" (ilk mesaj) → items:[], chatResponse:"Merhaba! Aklındaki listeyi ya da pişirmek istediğin yemeği söylersen 6 markette en uygun fiyatları bulurum. İstersen bir fiş ya da yemek fotoğrafı da gönderebilirsin."
+- "ne yapabilirsin" → items:[], chatResponse:"Yazdığın listeyi 6 markette karşılaştırıp en ucuzunu buluyorum. Bir fiş fotoğrafı gönderirsen kalemleri okurum, bir yemek fotoğrafı gönderirsen evde yapman için malzemelerini çıkarırım. Hemen denemek ister misin?"
+- "sen kimsin" → items:[], chatResponse:"Ben Sepet asistanıyım, Türkiye'deki 6 market (BİM, A101, Migros, Şok, CarrefourSA, Tarım Kredi) arasında en ucuz alışveriş sepetini bulmana yardım ediyorum. Ne lazımsa söylemen yeterli."
+- "teşekkürler" → items:[], chatResponse:"Rica ederim! Başka bir şey lazım olursa buradayım."
+- "yarın hava nasıl" → items:[], chatResponse:"Hava durumuna bakamıyorum ama alışverişte yardımcı olabilirim. Bugün ne lazım?"
+- "benim için listeyi sen hazırla" (önceki konuşmada yemek ya da liste YOK) → items:[], chatResponse:"Seve seve! Ne pişirmeyi düşünüyorsun? Yemeğin adını söylersen malzemelerini hemen çıkarırım."
 
 A) YEMEK/TARİF/İÇECEK MODU: Girdi bir yemek, tarif veya ev yapımı içecek adı içeriyorsa (ör. "menemen", "sade sucuklu pizza", "mercimek çorbası", "karnıyarık", "kek", "limonata", "sahlep", "salata") ve içinde virgülle ayrılmış liste veya açık miktar (sayı + birim) YOKSA → o yemeğin/içeceğin temel HAM MALZEMELERİNİ ayrı kalemler olarak çıkar. Her malzeme için makul bir tek-porsiyon miktarı koy. Hazır/işlenmiş ürün aramaktan kaçın (ör. "menemen" için "hazır menemen" değil, yumurta/domates/biber yaz; "limonata" için "hazır limonata" değil, limon/şeker/su yaz).
 
@@ -73,6 +108,8 @@ A MODU — KAPSAM DİSİPLİNİ (ÖNEMLİ, hallüsinasyona karşı):
   · "sucuklu tost" → SADECE sucuk + ekmek + kaşar peyniri (domates/biber EKLEME).
   · "kıymalı makarna" → makarna + kıyma + (sos için domates salçası kabul) — ama salata/yan malzeme ekleme.
 - Düşünme/reasoning'de "şu malzemeyi de ekleyebilirim" diye spekülasyon YAPMA — kullanıcı bunu okuyor. Doğrudan kararı yaz: "X için çekirdek malzemeler: A, B."
+- MALZEME ADI = MARKETTEKİ ÜRÜN ADI: Malzemeyi rafta satıldığı genel adla yaz, yemeğe özgü niteleme ekleme. "börek yufkası" DEĞİL "yufka"; "salata domatesi" DEĞİL "domates"; "kızartmalık patates" DEĞİL "patates".
+- YAĞ: Yemeklik sıvı yağ gerekiyorsa name="yağ", searchQuery="yağ" yaz; "sıvı yağ" ya da "ayçiçek yağı" YAZMA. Tarif özellikle tereyağı ya da zeytinyağı gerektiriyorsa onu adıyla yaz.
 - Şüpheliysen FAZLASINI değil EKSİĞİNİ tercih et — kullanıcı kart üzerinden ekleyebilir.
 - MALZEME FORMU YEMEĞE GÖRE BAĞLAM KUR: Her malzemeyi yemeğin gerektirdiği FORMDA çıkar — taze / turşu / kuru / haşlanmış / salça. Aynı sebzenin işlenmiş hali (turşu, salamura, konserve, kurutulmuş) FARKLI bir üründür; yemek hangisini istiyorsa onu yaz:
   · "cacık" → taze salatalık (searchQuery="salatalık"), ASLA salatalık turşusu.
@@ -85,11 +122,17 @@ A MODU — KAPSAM DİSİPLİNİ (ÖNEMLİ, hallüsinasyona karşı):
 - "X tarifi" / "X yapmak istiyorum" / "X yapacağım" (ör. "kek tarifi", "pizza yapacağım")
 - "X yapmak için ne lazım" / "X için neye ihtiyacım var" / "X yapsam ne almalıyım"
 - "X yapmaya yardım et" / "X için liste çıkar"
+- Canı çekme ve plan cümleleri: "canım X çekti", "X yesek", "X yiyelim", "akşama X yapalım", "X yapsak mı"
+- Selamlama ile birlikte yemek adı geçen cümleler: "selam canım peynirli börek çekti" → A modu. Selamlama tek başına C'dir, ama yanında bir yemek varsa yemek kazanır.
 Bu kalıplarda X'i çekirdek yemek/tarif/içecek olarak al ve onun malzemelerini çıkar. chatResponse=null.
 
 B) ALIŞVERİŞ LİSTESİ MODU: Girdi virgülle/satırla ayrılmışsa VEYA herhangi bir kalemde sayı/birim varsa (ör. "1 ekmek", "2 paket çay", "500g peynir, 4 elma") → her kalemi tek tek parse et, ASLA malzeme bölme yapma. Kullanıcı net bir ürün istemiş demektir. chatResponse=null.
 
 KARAR KURALI: A/B arasında şüpheliysen B'yi seç — kullanıcı net ürün söylediyse bölme. ANCAK A/C arasında şüpheliysen A'yı seç — kullanıcı bir yemek/içecek adı andıran şey yazdıysa malzeme çıkar; kullanıcı kartı silip düzeltebilir, ama hiç malzeme çıkarmazsan iş yapmamış olursun.
+
+EK ALANLAR:
+- dishName: A modunda (doğrudan ya da önceki konuşmadan) malzemelerini çıkardığın yemeğin/içeceğin adı, küçük harfle (ör. "peynirli börek"). B ve C modunda null.
+- revision: Kalemler önceki konuşmada hazırlanan bir listenin güncellenmiş hali ise true, aksi halde false.
 
 ŞEMA (her kalem için):
 - name: kullanıcının yazdığı ham metin (yemek modunda: malzeme adı ör. "yumurta")
@@ -104,6 +147,7 @@ searchQuery KURALLARI (sıkı):
 4) Lütfen/şu kelime gibi süslemeleri SİL.
 5) Marka adı varsa MUTLAKA kalsın (market API'si marka adıyla daha iyi arıyor).
 6) Birden çok kelime varsa kısa kalsın (2-3 kelime ideal).
+7) Türü belirtilmemiş yemeklik yağ için searchQuery "yağ" olur ("sıvı yağ" → "yağ"). Tür yazılmışsa (zeytinyağı, tereyağı, ayçiçek yağı) aynen korunur.
 
 ÖRNEKLER — ALIŞVERİŞ LİSTESİ MODU (B):
 - "1 lt süt" → name="1 lt süt", quantity=1, unit="l", searchQuery="süt"
@@ -118,6 +162,7 @@ searchQuery KURALLARI (sıkı):
 - "uludağ gazoz" → quantity=1, unit="adet", searchQuery="uludağ gazoz"
 - "1 şişe sek süt" → quantity=1, unit="adet", searchQuery="sek süt"
 - "3 kutu cola" → quantity=3, unit="adet", searchQuery="cola"
+- "1 lt sıvı yağ" → name="1 lt sıvı yağ", quantity=1, unit="l", searchQuery="yağ"
 
 ÖRNEKLER — YEMEK/TARİF MODU (A):
 - "sucuklu yumurta" → 2 kalem (BİLEŞİK AD — sadece adı geçen malzemeler):
@@ -153,7 +198,14 @@ searchQuery KURALLARI (sıkı):
   · name="yumurta", quantity=3, unit="adet", searchQuery="yumurta"
   · name="toz şeker", quantity=200, unit="g", searchQuery="toz şeker"
   · name="süt", quantity=1, unit="l", searchQuery="süt"
-  · name="sıvı yağ", quantity=1, unit="paket", searchQuery="sıvı yağ"
+  · name="yağ", quantity=1, unit="l", searchQuery="yağ"
+
+- "selam canım peynirli börek çekti" → dishName="peynirli börek", 5 kalem (selamlama A modunu bozmaz; yufka, börek yufkası DEĞİL):
+  · name="yufka", quantity=1, unit="paket", searchQuery="yufka"
+  · name="beyaz peynir", quantity=250, unit="g", searchQuery="beyaz peynir"
+  · name="yumurta", quantity=2, unit="adet", searchQuery="yumurta"
+  · name="süt", quantity=1, unit="l", searchQuery="süt"
+  · name="yağ", quantity=1, unit="l", searchQuery="yağ"
 
 - "cacık" → 3 kalem (sade yoğurt + TAZE salatalık — turşu DEĞİL):
   · name="yoğurt", quantity=500, unit="g", searchQuery="yoğurt"
@@ -341,7 +393,8 @@ GÖREV — her kalem için:
 KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
 1) ÜRÜN TİPİ DOĞRU OLMALI — EN ÖNEMLİ KURAL: Aday, kullanıcının istediği ürünün ta kendisi olmalı. Adında sorgu kelimesinin geçmesi hiçbir şey ifade etmez; ürünün NE OLDUĞUNA bak. Sık karşılaşılan tuzaklar (hepsi gerçek aday listelerinden):
    · AMACI FARKLI ÜRÜN — RED: Ölçüt "gıda mı, değil mi" DEĞİLDİR; ölçüt "kullanıcının kastettiği ürün mü" sorusudur. Market alışverişi temizlik, kağıt ve kişisel bakım ürünü de içerir; bunlar MEŞRU kalemlerdir ve kullanıcı istediğinde KABUL edilir.
-     – Kullanıcı bir GIDA istiyorsa, aynı kelimeyi taşıyan temizlik/kozmetik ürünü RED: "yağ" (yemeklik) → "Porçöz Yağ Çözücü", "Cif Kir Ve Yağ Çözücü", "Dasty Yağ Sökücü", "Selpak Yağ Emici Havlu", "Elseve Mucizevi Yağ Şampuan", "Johnson's Bebe Yağı" RED; ayçiçek/zeytinyağı/mısırözü/tereyağı KABUL.
+     – Kullanıcı bir GIDA istiyorsa, aynı kelimeyi taşıyan temizlik/kozmetik ürünü RED: "yağ" (yemeklik) → "Porçöz Yağ Çözücü", "Cif Kir Ve Yağ Çözücü", "Dasty Yağ Sökücü", "Selpak Yağ Emici Havlu", "Elseve Mucizevi Yağ Şampuan", "Johnson's Bebe Yağı" RED; ayçiçek/mısırözü/kanola yağı KABUL.
+     – Türü yazılmamış "yağ" ya da "sıvı yağ" YEMEKLİK SIVI YAĞDIR: ayçiçek, mısırözü, kanola, bitkisel/karışık sıvı yağ KABUL. Zeytinyağı, tereyağı, margarin, sürülebilir/sade yağ ve susam/keten gibi özel yağlar RED; kullanıcı onları isterse adıyla yazar.
      – Kullanıcı bir TEMİZLİK/BAKIM ürünü istiyorsa (marka ya da ürün tipiyle belli: "omo", "vanish oxi", "bingo kireç", "deterjan", "çamaşır suyu", "bulaşık deterjanı", "şampuan", "peçete") o ürünler KABUL. Fiş karşılaştırmalarında bu kalemler çok sık geçer; "gıda değil" gerekçesiyle elemek kullanıcının gerçekten aldığı ürünü kaybettirir.
    · ÇEŞNİ/BULYON/BAHARAT/HAZIR ÇORBA — RED: Ürünün kendisi değil, tadını veren katkıdır. "et" → "Knorr Et Bulyon", "Magic Et Baharatı", "Et Suyu" RED. "tavuk" → "Indomie Tavuk Noodle", "Tavuk Bulyon", "Yayla Tavuk Çorbası", "Bağdat Tavuk Harcı" RED.
    · CİPS/KRAKER/ÇEREZ/ŞEKERLEME — RED, İSTİSNASIZ: Bir baz gıda adı, atıştırmalık bir ürünün AROMASI ya da HAMMADDESİ olarak geçiyorsa o ürün istenen şey değildir. Bu, ölçülmüş en güçlü kuraldır — 18 farklı temel gıdanın 18'inde de geçerli çıktı. "patates" → "Lay's Patates Cipsi" RED (taze patates KABUL). "soğan" → "Ruffles Peynir & Soğan" RED. "mercimek"/"nohut" → "Mercimek Cipsi", "Nohut Cipsi" RED. "kola" → "Haribo Happy Kola Yumuşak Şeker" RED. "krema" → "Ekşi Krema Aromalı Cips" RED. "badem"/"fındık" → "Badem Kraker", "Fındık Kremalı Gofret" RED. Kullanıcı cipsi kendisi istediyse (ör. "lays", "patates cipsi") o zaman TERSİ geçerlidir.
@@ -382,7 +435,7 @@ KABUL/RED KURALLARI (bir adayı acceptedProductIds'e koymadan önce uygula):
 - rawName="yoğurt" (500 g), adaylar: "Sütaş Süzme Yoğurt 750g" (A), "Danone Meyveli 4'lü" (B), "Eker Light Yoğurt" (C), "Pınar Yoğurt 1kg" (D) → acceptedProductIds=[A, C, D], primaryProductId=A, sizeMismatch=true. Meyveli (B) elenir.
 - rawName="süt" (1 L), adaylar: "İçim Tam Yağlı Süt 1L" (A), "Pınar Süt 200ml" (B), "Pınar Çikolatalı Süt 200ml" (C), "Sek Laktozsuz Süt 1L" (D), "İçim Organik Süt 200ml" (E) → acceptedProductIds=[A, B], primaryProductId=A. Çikolatalı (C) kural 6, laktozsuz (D) ve organik (E) kural 9 gereği elenir — kullanıcı bunların hiçbirini yazmadı.
 - rawName="salatalık" (cacık için, 2 adet), adaylar: "Taze Salatalık kg" (A), "Salatalık Turşusu 720ml" (B), "Kornişon Turşu 370ml" (C) → acceptedProductIds=[A], primaryProductId=A. Turşu (B, C) elenir.
-- rawName="yağ", adaylar: "Porçöz Yağ Çözücü 1 Lt" (A), "Cif Kir Ve Yağ Çözücü" (B), "Selpak Yağ Emici Havlu" (C), "Elseve Mucizevi Yağ Şampuan" (D), "Vita Bitkisel Yağ 2 Lt" (E), "Lurpak Sürülebilir Yağ 200 Gr" (F) → acceptedProductIds=[E, F], primaryProductId=E. Kullanıcı YEMEKLİK yağ istiyor; A/B/C/D bambaşka amaçlı ürünler — elenir. DİKKAT: bu listede alakasız adaylar ÇOĞUNLUKTA; azınlıkta kalmaları kabul için gerekçe değildir.
+- rawName="yağ" (1 l), adaylar: "Porçöz Yağ Çözücü 1 Lt" (A), "Cif Kir Ve Yağ Çözücü" (B), "Selpak Yağ Emici Havlu" (C), "Komili Ayçiçek Yağı 1 Lt" (D), "Dardanel Ayçiçek Yağlı Ton Balığı" (E), "Yudum Ayçiçek Yağı 5 Lt" (F), "Komili Riviera Zeytinyağı 1 Lt" (G), "Lurpak Sürülebilir Yağ 200 Gr" (H) → acceptedProductIds=[D, F], primaryProductId=D. Türü yazılmamış "yağ" yemeklik sıvı yağdır. A/B/C bambaşka amaçlı ürünler, E yağ değil ton balığı konservesi; zeytinyağı ve sürülebilir yağ (G, H) kullanıcı adıyla yazmadığı için elenir. DİKKAT: bu listede alakasız adaylar ÇOĞUNLUKTA; azınlıkta kalmaları kabul için gerekçe değildir.
 - rawName="bingo kireç önleyici", adaylar: "Bingo Sprey Kireç Çözücü 900 Ml" (A) → acceptedProductIds=[A], primaryProductId=A. Kullanıcı AÇIKÇA bir temizlik ürünü istiyor ve aday tam olarak o — "gıda değil" diye ELEME. Aynısı "omo sıvı" → "Omo Sıvı Çamaşır Deterjanı", "vanish oxi" → "Vanish Oxi Action Leke Çıkarıcı" için de geçerlidir.
 - rawName="tavuk", adaylar: "Indomie Tavuk Köri Noodle 75 Gr" (A), "Gezen Tavuk Yumurta 10 Adet" (B), "Knorr Tavuk Bulyon" (C), "Taze Tavuk Baget 1 Kg" (D), "Şenpiliç Kemiksiz Tavuk But 1 Kg" (E), "Çıtır Tavuk Burger 180 Gr" (F) → acceptedProductIds=[D, E], primaryProductId=D. A hazır noodle, B yumurta, C bulyon, F hazır yemek — hepsi elenir.
 - rawName="et", adaylar: "Knorr Et Bulyon 24 Adet" (A), "Dana Füme Kuru Et 100 Gr" (B), "Magic Et Baharatı" (C), "Emin Dana Kuşbaşı Et 400 Gr" (D), "Et Ve Süt Kurumu Kıyma 1 Kg" (E) → acceptedProductIds=[D, E], primaryProductId=E. Bulyon/baharat gıda katkısı, füme kuru et şarküteri — elenir.
@@ -415,6 +468,46 @@ ${items
     )
   })
   .join("\n\n")}`
+
+// ─── Eşleşmeyen kalem için alternatif arama terimi ───
+
+export type QuerySuggestionPromptItem = {
+  itemIndex: number
+  rawName: string
+  searchQuery: string
+}
+
+/**
+ * Eşleştirilemeyen Ürünler kartındaki "… mı demek istedin?" önerisi. Model
+ * yalnızca aday terim üretir; kullanıcıya gösterilmeden önce her terim
+ * markette sonuç veriyor mu diye aranarak doğrulanır (bkz. suggestQueries).
+ */
+export const QUERY_SUGGESTION_PROMPT = (
+  items: QuerySuggestionPromptItem[],
+) => `Türkiye'deki market arama motorunda aşağıdaki alışveriş kalemleri için uygun ürün bulunamadı. Her kalem için, kullanıcının istediği ürünü markette bulma ihtimali yüksek EN FAZLA 2 alternatif arama terimi öner. En iyi öneri önce gelsin.
+
+KURALLAR:
+- Öneri, kalemin KENDİSİ olan ürünün raftaki genel adıdır. Kalemin kullanıldığı yemeğin adı ya da başka bir ürün DEĞİLDİR ("börek yufkası" için "börek" YANLIŞ, "yufka" DOĞRU).
+- Yemeğe ya da kullanım amacına özgü nitelemeyi at: "börek yufkası" → "yufka", "kızartmalık patates" → "patates".
+- Kısaltmayı ya da gündelik adı raftaki ada çevir: "kaşar" → "kaşar peyniri", "sıvı yağ" → "ayçiçek yağı".
+- Yazım hatasını düzelt: "mozarella" → "mozzarella", "kasar" → "kaşar peyniri".
+- Gerekirse bir kademe genelleştir, ama ürün türünü değiştirme: "organik çilek reçeli" → "çilek reçeli".
+- Denenen aramayı aynen tekrar etme. Sayı, birim ve marka uydurma. Küçük harf, 1-3 kelime.
+- Emin olmadığın kalem için boş liste döndür. Yanlış öneri, hiç öneri olmamasından kötüdür.
+
+ÖRNEKLER:
+- "börek yufkası" (denenen: "börek yufkası") → ["yufka"]
+- "kaşar" (denenen: "kaşar") → ["kaşar peyniri"]
+- "mozarella" (denenen: "mozarella") → ["mozzarella", "mozzarella peyniri"]
+- "tavuk göğüs fileto" (denenen: "tavuk göğüs fileto") → ["tavuk göğüs", "tavuk fileto"]
+- "ejder meyvesi" (denenen: "ejder meyvesi") → []
+
+ÇIKTI: Her kalem için bir kayıt; itemIndex girdidekiyle aynı.
+
+KALEMLER:
+${items
+  .map((it) => `[${it.itemIndex}] "${it.rawName}" (denenen: "${it.searchQuery}")`)
+  .join("\n")}`
 
 // ─── Sohbet başlığı üretimi ───
 

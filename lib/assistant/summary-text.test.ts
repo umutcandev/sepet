@@ -3,7 +3,7 @@ import { describe, test } from "node:test"
 
 import { computeOptimization } from "@/lib/ai/optimize"
 import type { MarketOption, MatchResult } from "@/lib/ai/schemas"
-import { buildSummaryText } from "./summary-text"
+import { buildDraftText, buildSummaryText } from "./summary-text"
 
 function option(market: string, price: number): MarketOption {
   return {
@@ -103,8 +103,16 @@ describe("buildSummaryText", () => {
     )
     assert.match(
       out,
-      / Ejder meyvesi reçeli ve Kinoa eşleştirilemedi, toplama dahil değil\.$/
+      / Ejder meyvesi reçeli ve Kinoa eşleştirilemedi, toplama dahil değil\. İstersen aşağıdan başka bir adla yeniden aratabilirsin\.$/
     )
+  })
+
+  test("yalnız servis hatası varsa yeniden aratmayı önermez", () => {
+    const out = text([
+      match("süt", [option("A101", 10)]),
+      match("kinoa", [], { lookupStatus: "api_error" }),
+    ])
+    assert.match(out, / Kinoa eşleştirilemedi, toplama dahil değil\.$/)
   })
 
   test("farklı boyutu Sepet Özeti'ndeki işarete bağlar", () => {
@@ -113,8 +121,21 @@ describe("buildSummaryText", () => {
     ])
     assert.match(
       out,
-      / Yoğurt için istediğin boyutu bulamadım; en yakın boyutla hesapladım ve Sepet Özeti'nde farklı boyut olarak işaretledim\.$/
+      / Yoğurt için istediğin boyut her markette yok; o marketlerde en yakın boyutu aldım ve Sepet Özeti'nde farklı boyut olarak işaretledim\.$/
     )
+  })
+
+  test("farklı boyutu dökümde seçilen ürüne göre söyler", () => {
+    // Kalemin temsilcisi boyutu tutsa da bir markette farklı boyut alındıysa
+    // rozet orada çıkar; metin de onu söylemeli.
+    const out = text([
+      match("su", [
+        { ...option("A101", 4), sizeMismatch: true },
+        { ...option("BİM", 8), sizeMismatch: false },
+      ]),
+      match("ekmek", [option("A101", 10), option("BİM", 30)]),
+    ])
+    assert.match(out, / Su için istediğin boyut her markette yok;/)
   })
 
   test("hiçbir kalem eşleşmezse özet yerine yönlendirir", () => {
@@ -123,5 +144,38 @@ describe("buildSummaryText", () => {
       out,
       "Listendeki kalemlerin hiçbiri için market fiyatı bulamadım, bu yüzden Sepet Özeti çıkaramadım. Kalemleri farklı bir adla yazıp tekrar deneyebilirsin."
     )
+  })
+})
+
+describe("buildDraftText", () => {
+  test("yemek modunda yemeğin adını söyler", () => {
+    assert.equal(
+      buildDraftText({
+        items: [1, 2, 3, 4, 5],
+        dishName: "peynirli börek",
+        revision: false,
+      }),
+      "Peynirli börek için 5 temel malzemeyi hazırladım. Dilersen miktarları değiştirebilir, kalem ekleyip çıkarabilirsin. Hazır olduğunda Onayla'ya basman yeterli, en uygun marketleri bulayım."
+    )
+  })
+
+  test("liste modunda kalem sayısını söyler", () => {
+    assert.match(
+      buildDraftText({ items: [1, 2], dishName: null, revision: false }),
+      /^Listendeki 2 kalemi hazırladım\. /
+    )
+  })
+
+  test("düzenlemede listenin güncellendiğini söyler", () => {
+    assert.match(
+      buildDraftText({ items: [1, 2, 3], dishName: "menemen", revision: true }),
+      /^Listeni güncelledim, şimdi 3 kalem var\. /
+    )
+  })
+
+  test("buyruk kipinde konuşmaz", () => {
+    // Eski metin "Kontrol edip düzeltmelerini yap, ardından onayla" diyordu.
+    const out = buildDraftText({ items: [1], dishName: null, revision: false })
+    assert.doesNotMatch(out, /düzeltmelerini yap|karşılaştırma için onayla/)
   })
 })

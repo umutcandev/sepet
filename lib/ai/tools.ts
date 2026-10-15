@@ -4,9 +4,9 @@ import {
   ChatTitleSchema,
   ImageAnalysisSchema,
   MatchSelectionSchema,
+  QuerySuggestionSchema,
   type BasketDraft,
   type ImageAnalysis,
-  type MarketOption,
   type MatchResult,
   type MatchSelection,
   type ParsedItem,
@@ -20,15 +20,20 @@ import {
   AI_MAX_RETRIES,
   type AiCallOptions,
 } from "./models"
-import { devLog, withLlmCall } from "./telemetry"
+import { devLog, isAbortError, withLlmCall } from "./telemetry"
 import {
   CHAT_TITLE_PROMPT,
   IMAGE_ANALYSIS_PROMPT,
   MATCH_PROMPT,
   PARSE_PROMPT,
+  QUERY_SUGGESTION_PROMPT,
   type MatchPromptItem,
 } from "./prompts"
-import { stripQuantityTokens, queryGeneralizations } from "./normalize"
+import {
+  stripQuantityTokens,
+  queryGeneralizations,
+  searchAlias,
+} from "./normalize"
 import { POLICY_VERSION } from "./match-policy"
 import {
   MF_MATCH_PAGES,
@@ -41,7 +46,7 @@ import {
   MF_DEFAULT_LOCATION,
   type LocationContext,
 } from "@/lib/marketfiyati/client"
-import { effectiveLineCost, hasBaseMismatch, hasSizeMismatch } from "./effective-cost"
+import { buildMarketOptions, sizeFit } from "./effective-cost"
 import { redis, MF_MATCH_TTL } from "@/lib/redis"
 import { createHash } from "node:crypto"
 
@@ -65,16 +70,21 @@ async function findFirstHit(
   loc: LocationContext,
 ): Promise<FindOutcome> {
   const tried = new Set<string>()
-  const variants = [
-    searchQuery,
-    // Genelleştirmeler rawName varyantından ÖNCE: ölçümde sonucu kurtaran hep
-    // kelime atmak oldu. stripQuantityTokens fiş bağlamında aynı kelime
-    // sayısını üretiyor ("omo sivi color" → "omo sıvı color"), yani sıfır
-    // sonucu sıfır sonuca çeviriyor ama denemelerden birini harcıyordu.
-    ...queryGeneralizations(searchQuery),
-    // Son çare: searchQuery hatalı üretilmişse ham ad farklı bir ipucu taşır.
-    stripQuantityTokens(rawName),
-  ]
+  const alias = searchAlias(searchQuery)
+  const variants = alias
+    ? // Takma adlı terimin kendi araması bilerek alakasız ürün getiriyor
+      // (bkz. searchAlias); genelleştirmesi de ("ayçiçek") başka bir ürün.
+      [alias, searchQuery]
+    : [
+        searchQuery,
+        // Genelleştirmeler rawName varyantından ÖNCE: ölçümde sonucu kurtaran
+        // hep kelime atmak oldu. stripQuantityTokens fiş bağlamında aynı kelime
+        // sayısını üretiyor ("omo sivi color" → "omo sıvı color"), yani sıfır
+        // sonucu sıfır sonuca çeviriyor ama denemelerden birini harcıyordu.
+        ...queryGeneralizations(searchQuery),
+        // Son çare: searchQuery hatalı üretilmişse ham ad farklı bir ipucu taşır.
+        stripQuantityTokens(rawName),
+      ]
     .map((v) => v.trim())
     .filter((v) => v.length >= 2 && !tried.has(v) && tried.add(v))
     .slice(0, MAX_SEARCH_ATTEMPTS)
@@ -193,9 +203,15 @@ export type BasketDraftWithReasoning = {
   reasoning: string | null
 }
 
+/**
+ * @param history Sohbetin önceki turlarının özeti (bkz.
+ * lib/assistant/conversation-context.ts). Model "listeyi sen hazırla" ya da
+ * "bir de ayran ekle" gibi tek başına eksik mesajları bununla tamamlar.
+ */
 export async function parseShoppingList(
   rawText: string,
   opts: AiCallOptions = {},
+  history = "",
 ): Promise<BasketDraftWithReasoning> {
   const { object, reasoning } = await withLlmCall(
     "parseShoppingList",
@@ -207,7 +223,7 @@ export async function parseShoppingList(
         temperature: 0.1,
         abortSignal: opts.signal,
         maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
-        prompt: PARSE_PROMPT(rawText),
+        prompt: PARSE_PROMPT(rawText, history),
         providerOptions: {
           google: {
             thinkingConfig: {
@@ -404,38 +420,6 @@ function resolveSelection(
   }
 }
 
-/**
- * Market-bilinçli optimizasyon girdisi. Kabul edilen adaylar arasından HER
- * market için en hesaplı (tek paket raf fiyatı en düşük) seçeneği bulur. İstenen
- * miktar fiyata etki etmez — yalnızca eşleştirmede kullanılır. Aynı kalem farklı
- * marketlerde farklı ürüne çözülebilir — tek/iki market kombinasyonlarının özü budur.
- */
-function buildMarketOptions(accepted: HitList): MarketOption[] {
-  const byMarket = new Map<string, MarketOption>()
-  for (const cand of accepted) {
-    for (const mp of cand.markets) {
-      const { packsNeeded, packagePrice, total } = effectiveLineCost(mp)
-      const cur = byMarket.get(mp.market)
-      if (!cur || total < cur.effectiveCost) {
-        byMarket.set(mp.market, {
-          market: mp.market,
-          productId: cand.productId,
-          productName: cand.name,
-          packagePrice,
-          packsNeeded,
-          effectiveCost: total,
-          unitPriceLabel: mp.unitPrice ?? null,
-          depotName: mp.depotName,
-          imageUrl: cand.imageUrl,
-        })
-      }
-    }
-  }
-  return Array.from(byMarket.values()).sort(
-    (a, b) => a.effectiveCost - b.effectiveCost,
-  )
-}
-
 export async function lookupProducts(
   items: ParsedItem[],
   loc: LocationContext = MF_DEFAULT_LOCATION,
@@ -488,7 +472,13 @@ export async function lookupProducts(
         null
       try {
         selections = await selectMatches(
-          misses.map(({ item, hits }) => ({ item, hits })),
+          misses.map(({ item, hits }) => ({
+            // Politika satırı adayları getiren sorguya aittir: "yağ" için
+            // yazılmış politika "yağ" havuzunu anlatır, takma adla gelen
+            // ayçiçek yağı havuzunu değil.
+            item: { ...item, searchQuery: searchAlias(item.searchQuery) ?? item.searchQuery },
+            hits,
+          })),
           opts,
         )
       } catch (err) {
@@ -545,20 +535,21 @@ export async function lookupProducts(
         : undefined) ??
       accepted[0] ??
       null
-    const best = primary
     // LLM yalnızca adetli/rawName boyut farklarını (ör. "2 yumurta" → 10'lu
     // viyol) güvenilir işaretler. Sepet onayında ölçülebilir boyut ayrı
-    // quantity/unit alanında gelir; bu yüzden kg/l farklarını deterministik
-    // kontrollerle yakalarız:
-    //   · hasBaseMismatch — gramaj istenip adetle satılan ürünle eşleşme
-    //     ("tavuk göğüs 200 g" → "Tavuk Göğsü 1 Adet").
-    //   · hasSizeMismatch — ürün adındaki paket boyutu istenenden ±%10'dan
-    //     fazla sapıyor ("yoğurt 500 g" → "... Yoğurt 750 Gr", 1,5×).
-    const sizeMismatch = best
-      ? (selection?.sizeMismatch ?? false) ||
-        hasBaseMismatch(item.quantity, item.unit, best) ||
-        hasSizeMismatch(item.quantity, item.unit, best)
-      : false
+    // quantity/unit alanında gelir; kg/l farklarını sizeFit deterministik
+    // olarak yakalar (gramajla istenip adetle satılan ürün, ±%10'dan fazla
+    // sapan paket boyutu).
+    const llmSizeMismatch = selection?.sizeMismatch ?? false
+    const fitOf = (h: ProductHitItem) =>
+      sizeFit(item.quantity, item.unit, h, llmSizeMismatch)
+    // Temsilci istenen boyutu tutmuyorsa ve kabul edilenler arasında tutan bir
+    // aday varsa kart onu göstersin; kalemin rozeti de buna göre çıkar.
+    const best =
+      primary && fitOf(primary).mismatch
+        ? (accepted.find((h) => !fitOf(h).mismatch) ?? primary)
+        : primary
+    const sizeMismatch = best ? fitOf(best).mismatch : false
 
     const lookupStatus: MatchResult["lookupStatus"] =
       outcome.kind === "hit"
@@ -592,7 +583,7 @@ export async function lookupProducts(
       unit: item.unit,
       bestMatch: best ? toMatchedProduct(best) : null,
       marketPrices,
-      marketOptions: buildMarketOptions(accepted),
+      marketOptions: buildMarketOptions(accepted, item, llmSizeMismatch),
       alternatives: accepted
         .filter((h) => h.productId !== best?.productId)
         .slice(0, 3)
@@ -603,4 +594,94 @@ export async function lookupProducts(
     } satisfies MatchResult
   })
   return { matches }
+}
+
+/** Öneri üretilecek en fazla kalem; prompt'u ve doğrulama aramalarını sınırlar. */
+const MAX_SUGGESTION_ITEMS = 8
+/** Kalem başına doğrulanacak en fazla öneri (her biri bir arama demek). */
+const MAX_SUGGESTIONS_PER_ITEM = 2
+
+/**
+ * Eşleştirilemeyen kalemlere ("no_match") marketlerde sonuç veren bir
+ * alternatif arama terimi bulur ve `suggestedQuery` olarak işler. Kart bunu
+ * "Yufka mı demek istedin?" diye sunar; tıklanınca sepet o terimle yeniden
+ * eşleştirilir.
+ *
+ * Model önerisi tek başına gösterilmez: her terim önce aranır, en az bir
+ * markette fiyatı olan ürün dönmezse atlanır. Kullanıcıya "şunu dene" deyip
+ * yine boş sonuç göstermek öneri vermemekten kötü.
+ *
+ * Servis hatası (api_error) kalemlerine dokunmaz: orada sorun ad değil.
+ * Hata ya da iptal durumunda eşleşmeleri olduğu gibi döndürür; öneri
+ * yardımcı bir ekstradır, turu düşürmemeli.
+ */
+export async function suggestQueries(
+  matches: MatchResult[],
+  loc: LocationContext = MF_DEFAULT_LOCATION,
+  opts: AiCallOptions = {},
+): Promise<MatchResult[]> {
+  const targets = matches
+    .map((m, index) => ({ m, index }))
+    .filter(({ m }) => m.lookupStatus === "no_match")
+    .slice(0, MAX_SUGGESTION_ITEMS)
+  if (targets.length === 0) return matches
+
+  let proposals: Map<number, string[]>
+  try {
+    const { object } = await withLlmCall("suggestQueries", GEMINI_FLASH_LITE, () =>
+      generateObject({
+        model: geminiFlashLite,
+        schema: QuerySuggestionSchema,
+        temperature: 0.2,
+        abortSignal: opts.signal,
+        maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+        prompt: QUERY_SUGGESTION_PROMPT(
+          targets.map(({ m }, itemIndex) => ({
+            itemIndex,
+            rawName: m.rawName,
+            searchQuery: m.searchQuery,
+          })),
+        ),
+      }),
+    )
+    proposals = new Map(object.suggestions.map((s) => [s.itemIndex, s.queries]))
+  } catch (err) {
+    if (!isAbortError(err)) {
+      console.error("[suggestQueries] suggestion failed", err)
+    }
+    return matches
+  }
+
+  const verified = await Promise.all(
+    targets.map(async ({ m }, itemIndex) => {
+      const tried = new Set(
+        [m.searchQuery, m.rawName, searchAlias(m.searchQuery) ?? ""]
+          .map(stripQuantityTokens)
+          .filter(Boolean),
+      )
+      const queries = (proposals.get(itemIndex) ?? [])
+        .map(stripQuantityTokens)
+        .filter((q) => q.length >= 2 && !tried.has(q) && tried.add(q))
+        .slice(0, MAX_SUGGESTIONS_PER_ITEM)
+      for (const q of queries) {
+        if (opts.signal?.aborted) return null
+        try {
+          const { details } = await searchProductDetails(q, loc)
+          if (details.some((d) => d.markets.length > 0)) return q
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err)
+          console.error(`[suggestQueries] verify search failed ${message}`)
+        }
+      }
+      return null
+    }),
+  )
+  console.log(
+    `[suggestQueries] items=${targets.length} suggested=${verified.filter(Boolean).length}`,
+  )
+
+  const byIndex = new Map(targets.map(({ index }, i) => [index, verified[i]]))
+  return matches.map((m, i) =>
+    byIndex.has(i) ? { ...m, suggestedQuery: byIndex.get(i) ?? null } : m,
+  )
 }

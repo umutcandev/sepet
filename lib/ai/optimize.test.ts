@@ -199,4 +199,34 @@ describe("computeOptimization", () => {
     assert.equal(summary.singleMarket.total, 109.01)
     assert.equal(summary.twoMarketCombo.total, 30.01)
   })
+  test("Farklı Boyut rozeti o markette seçilen ürüne aittir", () => {
+    // Kalem genel olarak boyutu tutuyor ama BİM'de farklı boyut alındı.
+    const summary = computeOptimization([
+      match("su", [
+        { ...option("A101", 8), sizeMismatch: false },
+        { ...option("BİM", 4), sizeMismatch: true },
+      ]),
+    ])
+    const row = summary.singleMarket.allocation[0]
+    assert.equal(row.market, "BİM")
+    assert.equal(row.sizeMismatch, true)
+  })
+
+  test("seçenek işareti olmayan eski kayıtta kalemin işaretine düşer", () => {
+    const summary = computeOptimization([match("yoğurt", [option("A101", 40)], true)])
+    assert.equal(summary.singleMarket.allocation[0].sizeMismatch, true)
+  })
+  test("kombinasyon kalemi önce istenen boyutu tutan marketten alır", () => {
+    // Su: A101'de 1 l (8 TL), BİM'de yalnız 500 ml (4 TL). Ekmek BİM'de ucuz.
+    const summary = computeOptimization([
+      match("su", [
+        { ...option("A101", 8), sizeMismatch: false },
+        { ...option("BİM", 4), sizeMismatch: true },
+      ]),
+      match("ekmek", [option("A101", 20), option("BİM", 10)]),
+    ])
+    const su = summary.twoMarketCombo.allocation.find((a) => a.rawName === "su")
+    assert.equal(su?.market, "A101")
+    assert.equal(su?.sizeMismatch, false)
+  })
 })

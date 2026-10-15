@@ -142,9 +142,21 @@ export type ReceiptComparisonInputItem = {
  * Özeti başka bir ürünü daha ucuza gösteriyordu.
  */
 export function cheapestOption(match: MatchResult | undefined) {
+  // Boyutu tutan seçenek önce: fişteki 1 l'lik ürün başka bir markette daha
+  // ucuz diye 500 ml'likle kıyaslanmasın (bkz. buildMarketOptions). Eski
+  // kayıtlarda seçenek işareti yok → kalemin işareti, yani yalnız fiyat.
+  const fits = (opt: MatchResult["marketOptions"][number]) =>
+    !(opt.sizeMismatch ?? match?.sizeMismatch ?? false)
   let best: MatchResult["marketOptions"][number] | null = null
   for (const opt of match?.marketOptions ?? []) {
-    if (!best || opt.packagePrice < best.packagePrice) best = opt
+    if (
+      !best ||
+      (fits(opt) !== fits(best)
+        ? fits(opt)
+        : opt.packagePrice < best.packagePrice)
+    ) {
+      best = opt
+    }
   }
   return best
 }
@@ -157,7 +169,8 @@ export function computeReceiptComparison(
   const items = payloadItems.map((it, idx) => {
     const match = matches[idx]
     const best = cheapestOption(match)
-    const sizeMismatch = match?.sizeMismatch ?? false
+    // Rozet tabloda gösterilen ürüne ait (Sepet Özeti'ndeki gibi).
+    const sizeMismatch = best?.sizeMismatch ?? match?.sizeMismatch ?? false
     const bestMarket = best?.market ?? null
     const bestPrice = best?.packagePrice ?? null
     // Fişte o satır için ödenen gerçek para (bağlam; karşılaştırmaya girmez).

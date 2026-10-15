@@ -16,13 +16,14 @@ type MarketChoice = {
   productName: string
   depotName: string | null
   imageUrl: string | null
+  // Bu markette alınan ürün istenen boyuttan farklı — allocation satırındaki
+  // "Farklı Boyut" rozeti. Kalem marketten markete farklı ürüne çözüldüğü
+  // için rozet kaleme değil seçilen ürüne aittir.
+  sizeMismatch: boolean
 }
 
 type ItemMarketPrice = {
   rawName: string
-  // İstenen boyut bulunamadı, farklı boyutlu ürünle eşleşti — allocation
-  // satırında "Farklı Boyut" rozeti için kalem boyunca taşınır.
-  sizeMismatch: boolean
   // market display adı → o markette en hesaplı kabul edilebilir seçenek.
   marketChoices: Map<string, MarketChoice>
 }
@@ -45,10 +46,13 @@ function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
           productName: opt.productName,
           depotName: opt.depotName,
           imageUrl: opt.imageUrl,
+          // Seçenek başına işaretten önce kaydedilmiş kayıtlarda kalemin
+          // işaretine düşülür.
+          sizeMismatch: opt.sizeMismatch ?? m.sizeMismatch,
         })
       }
     }
-    items.push({ rawName: m.rawName, sizeMismatch: m.sizeMismatch, marketChoices })
+    items.push({ rawName: m.rawName, marketChoices })
   }
   return items
 }
@@ -104,7 +108,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
         unitPrice: choice.packagePrice,
         quantity: choice.packsNeeded,
         lineTotal: choice.cost,
-        sizeMismatch: item.sizeMismatch,
+        sizeMismatch: choice.sizeMismatch,
         depotName: choice.depotName,
         imageUrl: choice.imageUrl,
       })
@@ -162,13 +166,18 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
           valid = false
           break
         }
-        // İki markette de varsa ucuz olanı; sadece birinde varsa o.
+        // İki markette de varsa istenen boyutu tutanı, ikisi de aynıysa ucuz
+        // olanı; sadece birinde varsa o. Boyut önce gelir: "1 l su" isteyene
+        // diğer markette 1 litre varken ucuz diye 500 ml'lik verilmez
+        // (market içindeki seçimle aynı kural, bkz. buildMarketOptions).
         const pickA =
           choiceB === undefined
             ? true
             : choiceA === undefined
               ? false
-              : choiceA.cost <= choiceB.cost
+              : choiceA.sizeMismatch !== choiceB.sizeMismatch
+                ? !choiceA.sizeMismatch
+                : choiceA.cost <= choiceB.cost
         const pickedMarket = pickA ? a : b
         const choice = (pickA ? choiceA : choiceB) as MarketChoice
         if (pickA) usedA = true
@@ -182,7 +191,7 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
           unitPrice: choice.packagePrice,
           quantity: choice.packsNeeded,
           lineTotal: choice.cost,
-          sizeMismatch: item.sizeMismatch,
+          sizeMismatch: choice.sizeMismatch,
           depotName: choice.depotName,
           imageUrl: choice.imageUrl,
         })

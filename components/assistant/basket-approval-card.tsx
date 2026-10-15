@@ -37,7 +37,8 @@ export type BasketApprovalSubmit = {
 }
 
 type Props = {
-  data: BasketDraft
+  // Kart yalnızca kalemleri okur; yemek görselinden gelen taslakta da aynı.
+  data: Pick<BasketDraft, "items">
   alreadyApproved?: boolean
   approvedItems?: BasketApprovalSubmit["items"]
   onApprove?: (input: BasketApprovalSubmit) => void

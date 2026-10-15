@@ -71,6 +71,7 @@ import {
   type MessageLike,
 } from "@/lib/assistant/turn-state"
 import { PressFx } from "@/components/motion/press-fx"
+import { stripQuantityTokens } from "@/lib/ai/normalize"
 import { cn } from "@/lib/utils"
 
 const SEED_KEY = "assistant:seed"
@@ -478,6 +479,44 @@ export function AssistantChat({
     [isBusy, sendMessage],
   )
 
+  // Eşleştirilemeyen bir kalemi yeni bir adla yeniden aratır: aynı sepet, o
+  // kalemin adı/sorgusu değişmiş olarak yeni bir sepet onayı turu olur. Böylece
+  // kalem bulunursa Sepet Özeti onu da içerecek şekilde baştan kurulur.
+  const handleRetryUnmatched = React.useCallback(
+    (matches: MatchResult[], index: number, query: string) => {
+      if (isBusy) return
+      const target = matches[index]
+      const name = query.trim()
+      if (!target || !name) return
+      // Aynı adla yeniden deneme (servis hatası) kalemin sorgusunu korur.
+      const same =
+        name.toLocaleLowerCase("tr-TR") === target.rawName.toLocaleLowerCase("tr-TR")
+      const items = matches.map((m, i) =>
+        i === index && !same
+          ? {
+              rawName: name,
+              searchQuery:
+                stripQuantityTokens(name) || name.toLocaleLowerCase("tr-TR"),
+              quantity: m.quantity,
+              unit: m.unit,
+            }
+          : {
+              rawName: m.rawName,
+              searchQuery: m.searchQuery,
+              quantity: m.quantity,
+              unit: m.unit,
+            },
+      )
+      sendMessage({
+        metadata: { kind: "basketApproval", payload: { items } },
+        text: same
+          ? `${capitalizeTr(name)} için tekrar dener misin?`
+          : `${capitalizeTr(target.rawName)} yerine ${name.toLocaleLowerCase("tr-TR")} ile arar mısın?`,
+      })
+    },
+    [isBusy, sendMessage],
+  )
+
   const isStoppedMessage = React.useCallback(
     (m: MessageLike) => stoppedIds.has(m.id) || hasStoppedMarker(m.parts),
     [stoppedIds],
@@ -697,6 +736,15 @@ export function AssistantChat({
                                   matches={
                                     (out as { matches: MatchResult[] }).matches
                                   }
+                                  // Yeniden arama yalnızca son turda: eski bir
+                                  // kartta tıklamak sohbetin ortasına geçmiş
+                                  // bir sepetin yeni sonucunu düşürürdü.
+                                  onRetry={
+                                    msgIdx === thread.length - 1
+                                      ? handleRetryUnmatched
+                                      : undefined
+                                  }
+                                  disabled={isBusy}
                                 />
                               ),
                             suppressToolLoader,
@@ -750,13 +798,9 @@ export function AssistantChat({
                                 )
                               }
                               if (analysis.kind === "food" && analysis.food) {
-                                const draft: BasketDraft = {
-                                  items: analysis.food.items,
-                                  chatResponse: null,
-                                }
                                 return (
                                   <BasketApprovalCard
-                                    data={draft}
+                                    data={{ items: analysis.food.items }}
                                     alreadyApproved={card?.locked}
                                     approvedItems={approvedBasketItems}
                                     onApprove={handleBasketApprove}
@@ -876,6 +920,11 @@ export function AssistantChat({
       />
     </div>
   )
+}
+
+/** "börek yufkası" → "Börek yufkası" (Türkçe i/İ kuralına uyar). */
+function capitalizeTr(s: string): string {
+  return s ? s[0].toLocaleUpperCase("tr-TR") + s.slice(1) : s
 }
 
 type ToolPartLike = {
