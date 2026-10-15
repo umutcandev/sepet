@@ -239,7 +239,16 @@ export function HomeHeroBackdrop({
         </div>
       ) : null}
 
-      {/* Dip rampası BURADA DEĞİL. Eskiden 13.5rem'lik `.home-hero-fade` vardı
+      {/* MOBİLDE dip rampası BURADA. Belge kaydığı için katman hero'yla
+          birlikte yukarı kayıyor (bkz. app-shell.tsx); blog bölümünün saydam
+          rampası artık sabit bir shader'ın değil, katmanın bittiği yerdeki düz
+          --background'un üstünden geçiyor ve shader'ın dibi yatay bir çizgi
+          olarak kesiliyordu (gece belirgin). Katmanın son 10rem'i o zemine
+          eriyor, bölümün rampası oradan --home-base'e devralıyor. Maske değil
+          düz gradyan: ucuz. Masaüstünde katman yerinde durduğu için gerekmiyor. */}
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-background/0 to-background md:hidden" />
+
+      {/* Masaüstünde dip rampası BURADA DEĞİL. Eskiden 13.5rem'lik `.home-hero-fade` vardı
           ve en alt 1.5rem'i tam opak --home-base'ti; logo şeridi hero dibinin
           4-92px üstünde durduğu için karartı tam şeridin arkasından başlıyordu.
           Geçişin tamamı artık bölümün kendi zemininde (`.home-dark-ground`),

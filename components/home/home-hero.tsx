@@ -45,12 +45,27 @@ const ASSISTANT_FILE_KEY = "assistant:file"
  * `--hero-vh` yalnız GENİŞLİK değiştiğinde (döndürme, pencere boyutlandırma)
  * tazelenir; yalnız yüksekliğin değiştiği resize = klavye demektir, yok sayılır.
  * JS çalışmazsa Tailwind sınıfındaki `100svh` fallback'i devrededir.
+ *
+ * Ölçü `innerHeight` değil, `100svh`: mobilde belge kayıyor ve iOS Safari 26'da
+ * içerik alttaki yüzen araç çubuğunun arkasına da uzanıyor. `innerHeight` o
+ * alanı kapsarsa hero'nun dibi (logo şeridi) açılışta çubuğun altında kalırdı;
+ * `svh` çubuklar açıkken görünen yükseklik. Diğer tarayıcılarda ikisi aynı.
  */
+function measureSmallViewport() {
+  const probe = document.createElement("div")
+  probe.style.cssText =
+    "position:absolute;top:0;height:100svh;width:0;visibility:hidden"
+  document.body.appendChild(probe)
+  const height = probe.getBoundingClientRect().height
+  probe.remove()
+  return height || window.innerHeight
+}
+
 function useFrozenViewportHeight() {
   React.useEffect(() => {
     const root = document.documentElement
     const apply = () =>
-      root.style.setProperty("--hero-vh", `${window.innerHeight}px`)
+      root.style.setProperty("--hero-vh", `${measureSmallViewport()}px`)
 
     let lastWidth = window.innerWidth
     apply()
