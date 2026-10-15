@@ -196,7 +196,8 @@ export function MarketLogoTrack() {
                 yolunun üstünde duruyor. Köşelerde eğrilik en yüksekken zemin o
                 çizginin dışına yarım piksel taşıp kutunun köşesini kenardan
                 ayrık gösteriyordu. `padding-box` zemini içeri çekiyor, dış
-                sınırı tek çizen SVG kalıyor.
+                sınırı tek çizen SVG kalıyor. Dokunmatikte `border-box`: Lisse
+                yok, kenar CSS (bkz. home-markets-section.tsx'teki panel).
 
                 Zemin tek token (`--home-tile`), panelin bir tık AÇIĞI. Eskiden
                 light'ta `--card` (#FFFBF5) yani kâğıt beyazıydı; sıcak krem bir
@@ -204,7 +205,7 @@ export function MarketLogoTrack() {
             <Squircle
               radius="xl"
               effects
-              className="flex aspect-[4/3] items-center justify-center border border-hairline bg-[var(--home-tile)] bg-clip-padding p-4 @lg/markets:p-6"
+              className="flex aspect-[4/3] items-center justify-center border border-hairline bg-[var(--home-tile)] bg-clip-padding p-4 @lg/markets:p-6 pointer-coarse:bg-clip-border"
             >
               {/* Wordmark'lar `currentColor`: renk `text-primary` — eski
                   şeritteki canlı marka tonu, iki temada da (gündüz koyu kahve,

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { SmoothCorners } from "@lisse/react"
+import { Slot, SmoothCorners } from "@lisse/react"
 
 import { useDocumentTheme } from "@/hooks/use-document-theme"
 
@@ -24,6 +24,13 @@ import { useDocumentTheme } from "@/hooks/use-document-theme"
  * `box-shadow`u sökülüp SVG olarak yeniden çizilir; bu bir sarmalayıcı `div`
  * doğurur ve o özelliklerdeki CSS transition'ları durdurur. Kenarı/gölgesi
  * olmayan yüzeylerde `effects={false}` bırak — hem daha ucuz hem DOM'u bozmaz.
+ *
+ * DOKUNMATİK CİHAZLARDA LİSSE YOK. Köşe düz `border-radius`, kenar ve gölge
+ * elemanın kendi CSS'i, içeriği köşeden kırpan iş `overflow: clip` (globals.css,
+ * `[data-squircle]`). Ana sayfada 74 SVG `feGaussianBlur` ve 106 `clip-path`
+ * vardı; Android'de kaydırırken raster işinin ~4/5'i bunlardı ve karolar
+ * yetişmeyip boş görünüyordu. Görünen fark yok (aşağıda, CURVE). İşaretleme iki
+ * modda birebir aynı: mod hidrasyonda değişmez, sunucuyla uyuşmazlık doğmaz.
  */
 
 /**
@@ -78,18 +85,67 @@ export type SquircleProps<E extends React.ElementType = "div"> =
 const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? React.useEffect : React.useLayoutEffect
 
+// `hero-shader.tsx`teki işaretle aynı: dokunmatik = pil ve tile tabanlı GPU.
+const PLAIN_QUERY = "(pointer: coarse)"
+
+/* `useMediaQuery` DEĞİL: o hidrasyonda sunucu değerini (false) döndürüyor,
+   yani telefonda Lisse önce kurulup SVG'lerini açar, bir sonraki render'da
+   söker ve alt ağacı yeniden mount ederdi. Değer yalnız hangi yolun
+   çalışacağını seçiyor, işaretlemeyi değiştirmiyor; ilk istemci render'ında
+   gerçek değeri okumak bu yüzden güvenli. */
+function usePlainCorners() {
+  const [plain, setPlain] = React.useState(
+    () =>
+      typeof window !== "undefined" && window.matchMedia(PLAIN_QUERY).matches
+  )
+  React.useEffect(() => {
+    const mql = window.matchMedia(PLAIN_QUERY)
+    const onChange = (event: MediaQueryListEvent) => setPlain(event.matches)
+    mql.addEventListener("change", onChange)
+    return () => mql.removeEventListener("change", onChange)
+  }, [])
+  return plain
+}
+
+type PlainCornersProps = {
+  as?: React.ElementType
+  asChild?: boolean
+  style?: React.CSSProperties
+} & Record<string, unknown>
+
+/* `SmoothCorners`ın sunucuda ürettiği işaretlemenin aynısı: `effects`le
+   `position: relative` bir sarmalayıcı, elemanda ilk boyamanın
+   `border-radius`u. Lisse bunu hidrasyondan sonra clip-path ve SVG ile
+   değiştiriyor; burada olduğu gibi kalıyor. */
+function PlainCorners({
+  radius,
+  effects,
+  props: { as: Tag = "div", asChild, style, ...rest },
+}: {
+  radius: number
+  effects: boolean
+  props: PlainCornersProps
+}) {
+  const own = { ...rest, style: { borderRadius: `${radius}px`, ...style } }
+  const element = asChild ? <Slot {...own} /> : <Tag {...own} />
+  return effects ? (
+    <div style={{ position: "relative" }}>{element}</div>
+  ) : (
+    element
+  )
+}
+
 export function Squircle<E extends React.ElementType = "div">({
   radius = "lg",
   effects = false,
   ...props
 }: SquircleProps<E>) {
+  const radiusPx = typeof radius === "number" ? radius : SQUIRCLE_RADIUS[radius]
   const corners = React.useMemo(
-    () => ({
-      ...CURVE,
-      radius: typeof radius === "number" ? radius : SQUIRCLE_RADIUS[radius],
-    }),
-    [radius]
+    () => ({ ...CURVE, radius: radiusPx }),
+    [radiusPx]
   )
+  const plain = usePlainCorners()
 
   /* Lisse CSS `border`/`box-shadow`u YALNIZ mount'ta okuyup SVG'ye taşıyor,
      MutationObserver'ı yok. Tema değişince SVG eski renkte kalıyor: gece→gündüz
@@ -98,7 +154,8 @@ export function Squircle<E extends React.ElementType = "div">({
      remount — `key` tema DEĞİŞİMİNDE artıyor (ilk yüklemede değil, yoksa her
      sayfa açılışı hidrasyondan sonra boşuna remount olurdu). Layout aşamasında
      olduğu için ekrana ara kare düşmüyor. `effects` kapalıyken okunan bir stil
-     yok, o yüzden orada hiç tetiklenmiyor. */
+     yok, o yüzden orada hiç tetiklenmiyor; dokunmatik modda da yok, kenar ve
+     gölge zaten CSS'te kalıyor ve temayla kendiliğinden değişiyor. */
   const theme = useDocumentTheme()
   const [themeGeneration, setThemeGeneration] = React.useState(0)
   const lastTheme = React.useRef<typeof theme>(null)
@@ -106,10 +163,20 @@ export function Squircle<E extends React.ElementType = "div">({
   useIsomorphicLayoutEffect(() => {
     const previous = lastTheme.current
     lastTheme.current = theme
-    if (effects && theme && previous && previous !== theme) {
+    if (effects && !plain && theme && previous && previous !== theme) {
       setThemeGeneration((generation) => generation + 1)
     }
-  }, [effects, theme])
+  }, [effects, plain, theme])
+
+  if (plain) {
+    return (
+      <PlainCorners
+        radius={radiusPx}
+        effects={effects}
+        props={{ ...(props as PlainCornersProps), "data-squircle": "" }}
+      />
+    )
+  }
 
   // `SmoothCorners`ın polimorfik imzası çözülmemiş bir jenerik `E` ile
   // eşleşmiyor (TS `Omit<ComponentProps<E>, ...>`i daraltamıyor). Dışa açık
@@ -125,6 +192,7 @@ export function Squircle<E extends React.ElementType = "div">({
       corners={corners}
       autoEffects={effects}
       {...(props as Record<string, unknown>)}
+      data-squircle=""
     />
   )
 }

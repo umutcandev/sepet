@@ -53,7 +53,10 @@ export function HomeMarketsSection() {
                 `border-box`a kadar boyanıyor: köşelerde eğrilik en yüksekken
                 zemin çizginin dışına yarım piksel taşıp kutunun köşesini
                 kenardan ayrık gösteriyordu. Zemini `padding-box`a çekince dış
-                sınırı tek çizen SVG kalıyor.
+                sınırı tek çizen SVG kalıyor. Dokunmatikte Lisse yok, kenar düz
+                CSS (bkz. squircle.tsx): orada zemin yine `border-box`a uzanıyor,
+                yoksa yarı saydam hairline kutunun değil bandın zemininin
+                üstüne düşüp dark'ta sönük kalıyordu.
 
                 ZEMİN TEK TOKEN. Burada bir zamanlar `bg-muted dark:bg-card`
                 vardı, çünkü paletin sırası temalarda ters dönüyor. İki sorunu
@@ -68,7 +71,7 @@ export function HomeMarketsSection() {
               // `justify-between` iş yapmıyor ve cümle ile CTA arasındaki tek
               // ölçü bu boşluk. İki kolona geçince panel kutuların boyuna
               // esniyor, aralığı `justify-between` veriyor.
-              className="flex h-full flex-col justify-between gap-10 border border-hairline bg-[var(--home-panel)] bg-clip-padding p-6 @4xl/markets:gap-8 @4xl/markets:p-7"
+              className="flex h-full flex-col justify-between gap-10 border border-hairline bg-[var(--home-panel)] bg-clip-padding p-6 @4xl/markets:gap-8 @4xl/markets:p-7 pointer-coarse:bg-clip-border"
             >
               {/* Punto skaladan: eskiden `text-[21px] leading-7`di, yani
                   sayfadaki hiçbir kademeye denk gelmeyen elle bir değer.
