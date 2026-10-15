@@ -113,7 +113,7 @@ function StepVideo({ src }: { src: string }) {
         onClick={toggle}
         aria-label={playing ? "Videoyu duraklat" : "Videoyu oynat"}
         className={cn(
-          "absolute right-2 bottom-2 rounded-full transition-opacity duration-150",
+          "absolute right-2 bottom-2 rounded-full",
           playing &&
             "opacity-0 group-hover/step-video:opacity-100 focus-visible:opacity-100"
         )}
@@ -193,16 +193,15 @@ function OnboardingStepContent({
             size="sm"
             onClick={onSkip}
             disabled={disabled}
-            className="text-xs text-muted-foreground"
           >
             Atla
           </Button>
           {isLastStep ? (
-            <Button size="sm" onClick={onFinish} disabled={disabled}>
+            <Button variant="default" size="sm" onClick={onFinish} disabled={disabled}>
               Başla
             </Button>
           ) : (
-            <Button size="sm" onClick={onNext} disabled={disabled}>
+            <Button variant="default" size="sm" onClick={onNext} disabled={disabled}>
               İleri
               <RiArrowRightLine className="ml-1 h-3.5 w-3.5" data-icon="inline-end" />
             </Button>

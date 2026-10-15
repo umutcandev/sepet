@@ -14,7 +14,7 @@ export function UnauthenticatedState() {
       <p className="max-w-sm text-sm text-muted-foreground">
         Yüklediğiniz fişleri ve potansiyel tasarruflarınızı görmek için giriş yapmalısınız.
       </p>
-      <Button onClick={() => loginDialog.open()} className="mt-2">
+      <Button variant="default" onClick={() => loginDialog.open()} className="mt-2">
         Giriş Yap
       </Button>
     </div>

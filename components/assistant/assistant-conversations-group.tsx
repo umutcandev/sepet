@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/sonner"
 import { AnimatePresence, motion } from "motion/react"
 import {
@@ -587,13 +588,13 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                   {total === 0 ? (
                     <p className="px-2 py-1 text-xs text-muted-foreground">
                       Bu filtreye uyan sohbet yok.{" "}
-                      <button
-                        type="button"
+                      <Button
+                        variant="link"
+                        size="inline"
                         onClick={() => historyView.reset()}
-                        className="font-medium text-sidebar-foreground underline-offset-2 hover:underline"
                       >
                         Sıfırla
-                      </button>
+                      </Button>
                     </p>
                   ) : null}
                   <SidebarMenu>

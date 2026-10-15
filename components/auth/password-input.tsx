@@ -3,6 +3,7 @@
 import * as React from "react"
 import { RiEyeLine, RiEyeOffLine } from "@remixicon/react"
 
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
@@ -19,25 +20,25 @@ export function PasswordInput({
     <div className="relative">
       <Input
         type={visible ? "text" : "password"}
-        className={cn("pr-10", className)}
+        // Sağ dolgu SONDA: çağrı yerlerinin `px-3`ü önce gelirse tailwind-merge
+        // `pr-*`ı düşürüyor ve metin göz düğmesinin altına giriyordu.
+        className={cn(className, "pr-11")}
         {...props}
       />
-      <button
-        type="button"
-        // Sekme sırasında: her pointer etkileşiminin klavye yolu olmalı.
-        // Eskiden tabIndex={-1} idi ve klavye kullanıcısı şifresini hiç
-        // göremiyordu; aria-pressed de ulaşılamadığı için işe yaramıyordu.
-        aria-label={visible ? "Şifreyi gizle" : "Şifreyi göster"}
-        aria-pressed={visible}
-        onClick={() => setVisible((v) => !v)}
-        className="absolute inset-y-0 right-0 flex w-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-      >
-        {visible ? (
-          <RiEyeOffLine className="size-4" aria-hidden />
-        ) : (
-          <RiEyeLine className="size-4" aria-hidden />
-        )}
-      </button>
+      <div className="absolute inset-y-0 right-1.5 flex items-center">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          // Sekme sırasında: her pointer etkileşiminin klavye yolu olmalı.
+          // Eskiden tabIndex={-1} idi ve klavye kullanıcısı şifresini hiç
+          // göremiyordu; aria-pressed de ulaşılamadığı için işe yaramıyordu.
+          aria-label={visible ? "Şifreyi gizle" : "Şifreyi göster"}
+          aria-pressed={visible}
+          onClick={() => setVisible((v) => !v)}
+        >
+          {visible ? <RiEyeOffLine aria-hidden /> : <RiEyeLine aria-hidden />}
+        </Button>
+      </div>
     </div>
   )
 }

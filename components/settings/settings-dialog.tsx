@@ -3,6 +3,7 @@
 import * as React from "react"
 import { RiEqualizerLine, RiSearchLine } from "@remixicon/react"
 
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,7 +11,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
 
 import {
   NAV_ITEMS,
@@ -185,20 +185,15 @@ export function SettingsDialog({
                 const Icon = item.icon
                 return (
                   <li key={item.key} className="shrink-0 sm:w-full">
-                    <button
-                      type="button"
+                    <Button
+                      variant="nav"
                       onClick={() => setTab(item.key)}
                       aria-current={active ? "page" : undefined}
-                      className={cn(
-                        "flex h-7 w-full items-center gap-1.5 rounded-lg px-2.5 text-left text-sm font-medium transition-colors sm:h-8 sm:gap-2.5 sm:px-2",
-                        active
-                          ? "bg-accent text-accent-foreground"
-                          : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
-                      )}
+                      className="w-full"
                     >
-                      <Icon className="hidden shrink-0 sm:block sm:size-4" />
+                      <Icon className="hidden sm:block" />
                       <span className="truncate sm:flex-1">{item.label}</span>
-                    </button>
+                    </Button>
                   </li>
                 )
               })}
@@ -216,10 +211,10 @@ export function SettingsDialog({
                       const Icon = r.icon
                       return (
                         <li key={r.key}>
-                          <button
-                            type="button"
+                          <Button
+                            variant="item"
+                            size="auto"
                             onClick={() => handleSelect(r)}
-                            className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-accent"
                           >
                             <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
                               <Icon className="size-4" />
@@ -235,7 +230,7 @@ export function SettingsDialog({
                                 {r.subtitle}
                               </span>
                             </span>
-                          </button>
+                          </Button>
                         </li>
                       )
                     })}

@@ -43,7 +43,8 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
       >
         <Button
           variant="outline"
-          className="h-11 w-full rounded-xl"
+          size="xl"
+          className="w-full"
           onClick={() => loginDialog.open()}
         >
           Giriş ekranına dön
@@ -73,7 +74,9 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
             subtitle="Artık e-posta ve şifrenle giriş yapabilirsin."
           >
             <Button
-              className="h-11 w-full rounded-xl"
+              variant="default"
+              size="xl"
+              className="w-full"
               onClick={() => loginDialog.open()}
             >
               Giriş yap
@@ -111,8 +114,10 @@ export function VerifyEmailCard({ token }: { token: string | null }) {
                 <FormError>{error}</FormError>
               ) : null}
               <Button
+                variant="default"
                 type="submit"
-                className="h-11 w-full gap-2 rounded-xl"
+                size="xl"
+                className="w-full"
                 disabled={stage === "loading" || !password}
               >
                 {stage === "loading" ? <Spinner /> : null}

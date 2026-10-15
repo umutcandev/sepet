@@ -211,9 +211,9 @@ export function BasketApprovalCard({
                       <Button
                         type="button"
                         variant="ghost"
-                        size="icon"
+                        size="icon-sm"
                         onClick={() => removeItem(it._id)}
-                        className="size-7 text-muted-foreground hover:text-destructive"
+                        className="hover:text-destructive"
                         aria-label="Kalemi sil"
                       >
                         <RiCloseLine className="size-3.5" />
@@ -243,6 +243,7 @@ export function BasketApprovalCard({
               İptal
             </Button>
             <Button
+              variant="default"
               type="button"
               size="sm"
               onClick={handleApprove}

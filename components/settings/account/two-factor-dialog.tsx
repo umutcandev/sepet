@@ -168,7 +168,7 @@ function SetupTwoFactor({
             {error ? <FormError>{error}</FormError> : null}
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={busy || !reauthValue} className="gap-2">
+            <Button variant="default" type="submit" disabled={busy || !reauthValue}>
               {busy ? <Spinner /> : null}
               Devam
             </Button>
@@ -190,7 +190,7 @@ function SetupTwoFactor({
             <FormError>{error}</FormError>
           ) : null}
           <DialogFooter>
-            <Button onClick={sendSetupCode} disabled={busy} className="gap-2">
+            <Button variant="default" onClick={sendSetupCode} disabled={busy}>
               {busy ? <Spinner /> : null}
               Kod gönder
             </Button>
@@ -230,9 +230,9 @@ function SetupTwoFactor({
             Kodu tekrar gönder
           </Button>
           <Button
+            variant="default"
             type="submit"
             disabled={busy || reauthValue.length !== 6}
-            className="gap-2"
           >
             {busy ? <Spinner /> : null}
             Devam
@@ -274,9 +274,9 @@ function SetupTwoFactor({
             Geri
           </Button>
           <Button
+            variant="default"
             type="submit"
             disabled={busy || code.length !== 6}
-            className="gap-2"
           >
             {busy ? <Spinner /> : null}
             Doğrula ve aç
@@ -301,9 +301,10 @@ function SetupTwoFactor({
           {setup ? <QRCodeSVG value={setup.otpauthUri} size={172} /> : null}
         </div>
         {setup ? (
-          <button
-            type="button"
-            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+          <Button
+            variant="link-muted"
+            size="inline"
+            className="text-xs"
             onClick={() => {
               navigator.clipboard
                 .writeText(setup.secretB32)
@@ -313,11 +314,11 @@ function SetupTwoFactor({
           >
             Elle giriş anahtarı:{" "}
             <span className="font-mono tracking-wider">{setup.secretB32}</span>
-          </button>
+          </Button>
         ) : null}
       </div>
       <DialogFooter>
-        <Button onClick={() => setStep("confirm")}>Devam</Button>
+        <Button variant="default" onClick={() => setStep("confirm")}>Devam</Button>
       </DialogFooter>
     </>
   )
@@ -422,9 +423,10 @@ function ManageTwoFactor({
             />
           )}
         </Field>
-        <button
-          type="button"
-          className="self-start text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+        <Button
+          variant="link-muted"
+          size="inline"
+          className="self-start text-xs"
           onClick={() => {
             setSecret("")
             setError("")
@@ -436,7 +438,7 @@ function ManageTwoFactor({
               ? "Şifre kullan"
               : "Doğrulama kodu kullan"
             : "Kurtarma kodu kullan"}
-        </button>
+        </Button>
         {error ? <FormError>{error}</FormError> : null}
       </div>
       <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between">
@@ -445,7 +447,6 @@ function ManageTwoFactor({
           variant="outline"
           onClick={regen}
           disabled={busy !== null}
-          className="gap-2"
         >
           {busy === "regen" ? <Spinner /> : null}
           Kurtarma kodlarını yenile
@@ -455,7 +456,6 @@ function ManageTwoFactor({
           variant="destructive"
           onClick={disable}
           disabled={busy !== null}
-          className="gap-2"
         >
           {busy === "disable" ? <Spinner /> : null}
           Kapat
@@ -504,7 +504,7 @@ function RecoveryCodes({
         >
           Tümünü kopyala
         </Button>
-        <Button onClick={onDone}>Bitir</Button>
+        <Button variant="default" onClick={onDone}>Bitir</Button>
       </DialogFooter>
     </>
   )

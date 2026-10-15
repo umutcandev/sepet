@@ -131,7 +131,7 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
         {error ? <FormError>{error}</FormError> : null}
       </div>
       <DialogFooter>
-        <Button type="submit" disabled={busy} className="gap-2">
+        <Button variant="default" type="submit" disabled={busy}>
           {busy ? <Spinner /> : null}
           Şifreyi güncelle
         </Button>
@@ -179,12 +179,11 @@ function SetPasswordLink({ onClose }: { onClose: () => void }) {
             variant="ghost"
             onClick={sendLink}
             disabled={busy}
-            className="gap-2"
           >
             {busy ? <Spinner /> : null}
             Bağlantıyı tekrar gönder
           </Button>
-          <Button type="button" onClick={onClose}>
+          <Button variant="default" type="button" onClick={onClose}>
             Tamam
           </Button>
         </DialogFooter>
@@ -203,7 +202,7 @@ function SetPasswordLink({ onClose }: { onClose: () => void }) {
       </DialogHeader>
       {error ? <FormError>{error}</FormError> : null}
       <DialogFooter>
-        <Button onClick={sendLink} disabled={busy} className="gap-2">
+        <Button variant="default" onClick={sendLink} disabled={busy}>
           {busy ? <Spinner /> : null}
           Bağlantı gönder
         </Button>

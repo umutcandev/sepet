@@ -457,18 +457,16 @@ export function AssistantChat({
               ? `${firstName}, bugün ne alıyoruz?`
               : "Bugün ne alıyoruz?"}
           </h1>
-          {/* Çipler ana sayfadaki hero çipleriyle aynı: dolu `bg-muted` yüzey,
-              `rounded-lg`, hover'da kenar ve metin koyulaşıyor, PressFx basma
-              geri bildirimi. Öncesi saydam `rounded-full` bir outline butondu. */}
+          {/* Çipler ana sayfadaki hero çipleriyle aynı `chip` varyantı;
+              PressFx hover'da kaldırır. */}
           <div className="mt-4 flex w-full max-w-2xl flex-wrap justify-center gap-2">
             {SUGGESTIONS.map((s) => (
               <PressFx key={s}>
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="chip"
                   size="sm"
                   onClick={() => handleSuggestionClick(s)}
-                  className="h-auto rounded-lg border-border bg-muted px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/20 hover:bg-muted hover:text-foreground dark:border-muted-foreground/25 dark:bg-muted dark:hover:border-muted-foreground/35 dark:hover:bg-muted"
                 >
                   {s}
                 </Button>

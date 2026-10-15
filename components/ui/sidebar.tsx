@@ -7,7 +7,7 @@ import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants, type ButtonWrapperProps } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -293,7 +293,7 @@ function SidebarTrigger({
   className,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: ButtonWrapperProps) {
   const { toggleSidebar } = useSidebar()
 
   return (
@@ -519,20 +519,23 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
   )
 }
 
+// Rayda (daraltılmış kenar çubuğu) eylem satırı yalnız ikonunu gösterir.
+const railAction =
+  "group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:[&>span]:hidden"
+
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate",
+  "peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden p-2 text-left text-sm outline-hidden group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate",
   {
     variants: {
       variant: {
-        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        default:
+          "rounded-md ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground",
         // outline/primary = EYLEM satırları (Oturum Açın, Yeni Sohbet). Gezinme
-        // satırlarından farklı olarak ui/button.tsx'in yüzey reçetesini birebir
-        // taşırlar: rounded-lg + surface-raised + aynı basma fiziği. Rayda p-0:
-        // kenarlık 1px yediği için p-2 kalsaydı 32px kutuda ikon kırpılırdı.
-        outline:
-          "rounded-lg border border-border bg-background bg-clip-padding transition-all surface-raised hover:bg-muted hover:text-foreground active:translate-y-px active:scale-[0.98] active:bg-muted active:text-foreground active:[--surface-ambient:transparent] dark:border-input dark:border-t-[color-mix(in_oklab,var(--foreground)_17%,transparent)] dark:bg-input/30 dark:[--surface-rim-top:transparent] dark:hover:bg-input/50 dark:active:bg-input/50 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:[&>span]:hidden",
-        primary:
-          "rounded-lg border border-primary bg-primary bg-clip-padding text-primary-foreground transition-all surface-raised hover:border-primary-hover hover:bg-primary-hover hover:text-primary-foreground active:translate-y-px active:scale-[0.98] active:border-primary-hover active:bg-primary-hover active:text-primary-foreground active:[--surface-ambient:transparent] group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:[&>span]:hidden",
+        // satırı değil buton oldukları için sınıflarını ui/button.tsx'ten
+        // ALIRLAR; eskiden reçete buraya kopyalanmıştı ve butonla ayrışıyordu.
+        // Yükseklik bu bileşenin `size`ından gelir, buton boyutu kullanılmaz.
+        outline: cn(buttonVariants({ variant: "outline", size: null }), railAction),
+        primary: cn(buttonVariants({ variant: "default", size: null }), railAction),
       },
       size: {
         default: "h-8 text-sm",

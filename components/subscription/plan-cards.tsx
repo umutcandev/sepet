@@ -16,9 +16,13 @@ import {
   RiShoppingBasketLine,
 } from "@remixicon/react"
 
-import { EASE_OUT_SOFT, SPRING_PILL } from "@/lib/motion"
+import { EASE_OUT_SOFT } from "@/lib/motion"
 import { limitCell, limitFeature, type Plan } from "@/lib/usage/limits"
 import { cn } from "@/lib/utils"
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+} from "@/components/ui/segmented-control"
 
 export type Interval = "month" | "year"
 
@@ -129,68 +133,30 @@ export function BillingToggle({
   size?: "default" | "sm"
 }) {
   const sm = size === "sm"
-  const reduce = useReducedMotion()
-  // layoutId global bir isim uzayıdır: aynı sayfada iki BillingToggle
-  // render edilirse (ör. ana sayfa + panel) iki pill aynı kimliği paylaşır ve
-  // birbirlerinin konumuna uçarlar. useId her kopyaya kendi kimliğini verir.
-  const pillId = React.useId()
 
   return (
-    <div
-      role="group"
+    <SegmentedControl
       aria-label="Faturalandırma aralığı"
-      className={cn(
-        "inline-flex w-fit items-center rounded-lg border border-border bg-muted/60 surface-inset",
-        sm ? "h-6 gap-px p-px text-[0.6875rem]" : "h-8 gap-0.5 p-0.5 text-sm"
-      )}
+      size={sm ? "xs" : "default"}
+      value={value}
+      onValueChange={onChange}
     >
-      {(["month", "year"] as const).map((iv) => {
-        const active = value === iv
-        return (
-          <button
-            key={iv}
-            type="button"
-            onClick={() => onChange(iv)}
-            aria-pressed={active}
-            className={cn(
-              "relative flex items-center self-stretch rounded-md font-medium transition-colors",
-              sm ? "gap-0.5 px-1.5" : "gap-1 px-3",
-              active
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            {/* Aktif zemin ayrı bir katman: iki buton arasında `layoutId` ile
-                kayar. Eskiden her butonun kendi `bg-background`ı vardı, yani
-                vurgu bir yerde sönüp diğerinde yanıyordu — hareket yoktu. */}
-            {active && (
-              <motion.span
-                layoutId={pillId}
-                aria-hidden
-                className="absolute inset-0 rounded-md bg-background surface-raised-tight"
-                transition={reduce ? { duration: 0 } : SPRING_PILL}
-              />
-            )}
-            <span className="relative z-10">
-              {iv === "month" ? "Aylık" : "Yıllık"}
+      {(["month", "year"] as const).map((iv) => (
+        <SegmentedControlItem key={iv} value={iv}>
+          {iv === "month" ? "Aylık" : "Yıllık"}
+          {iv === "year" && (
+            <span
+              className={cn(
+                "rounded-full bg-muted-foreground/10 px-1 py-px font-mono leading-none font-medium text-muted-foreground transition-colors group-aria-checked/segment:bg-primary/15 group-aria-checked/segment:text-primary",
+                sm ? "text-[0.5rem]" : "text-[0.625rem]"
+              )}
+            >
+              %17
             </span>
-            {iv === "year" && (
-              <span
-                className={cn(
-                  "relative z-10 rounded-full px-1 py-px font-mono leading-none font-medium transition-colors",
-                  sm ? "text-[0.5rem]" : "text-[0.625rem]",
-                  active
-                    ? "bg-primary/15 text-primary"
-                    : "bg-muted-foreground/10 text-muted-foreground"
-                )}
-              >
-                %17
-              </span>
-            )}
-          </button>
-        )
-      })}
-    </div>
+          )}
+        </SegmentedControlItem>
+      ))}
+    </SegmentedControl>
   )
 }
 

@@ -99,13 +99,14 @@ function NewConversationButton() {
 
   return (
     <>
-      <Button asChild size="sm" className="hidden h-7 gap-1.5 md:inline-flex">
+      <Button variant="default" asChild size="sm" className="hidden md:inline-flex">
         <Link href="/asistan" onClick={handleClick}>
           <RiAddLine className="size-3.5" />
           Yeni Sohbet
         </Link>
       </Button>
       <Button
+        variant="default"
         asChild
         size="icon-sm"
         className="md:hidden"
@@ -415,7 +416,7 @@ export function AppShell({ blogPosts, children }: Props) {
                 misafir statik HTML'de doğrudan "Hemen Başla" görür, dönen
                 kullanıcı avatarını görür. */}
               <span data-session-guest>
-                <Button size="sm" onClick={() => loginDialog.open()}>
+                <Button variant="default" size="sm" onClick={() => loginDialog.open()}>
                   Oturum Aç
                 </Button>
               </span>

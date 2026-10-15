@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, type ButtonWrapperProps } from "@/components/ui/button";
 import {
   ButtonGroup,
   ButtonGroupText,
@@ -132,7 +132,7 @@ export const MessageActions = ({
   </div>
 );
 
-export type MessageActionProps = ComponentProps<typeof Button> & {
+export type MessageActionProps = ButtonWrapperProps & {
   tooltip?: string;
   label?: string;
 };
@@ -307,7 +307,7 @@ export const MessageBranchSelector = ({
   );
 };
 
-export type MessageBranchPreviousProps = ComponentProps<typeof Button>;
+export type MessageBranchPreviousProps = ButtonWrapperProps;
 
 export const MessageBranchPrevious = ({
   children,
@@ -330,7 +330,7 @@ export const MessageBranchPrevious = ({
   );
 };
 
-export type MessageBranchNextProps = ComponentProps<typeof Button>;
+export type MessageBranchNextProps = ButtonWrapperProps;
 
 export const MessageBranchNext = ({
   children,

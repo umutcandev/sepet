@@ -22,7 +22,7 @@ export function RecordNotFoundState({
       <h1 className="text-lg font-semibold">{title}</h1>
       <p className="mt-2 text-sm text-muted-foreground">{description}</p>
       <div className="mt-5 flex items-center justify-center gap-2">
-        <Button asChild>
+        <Button variant="default" asChild>
           <Link href={backHref}>{backLabel}</Link>
         </Button>
         <Button variant="outline" asChild>

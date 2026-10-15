@@ -107,6 +107,7 @@ export function SaveRecordRow({
         </div>
       ) : (
         <Button
+          variant="default"
           type="button"
           size={size}
           onClick={handleSave}

@@ -10,7 +10,6 @@ import { loadLeaflet, TILE_ATTRIBUTION, TILE_URL } from "@/lib/leaflet"
 import { getMarketInitial, getMarketLogo } from "@/lib/markets/registry"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
-import { cn } from "@/lib/utils"
 
 type LngLat = { lat: number; lng: number }
 
@@ -228,35 +227,18 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
     )
   }, [])
 
-  // Opak arka plan: harita döşemeleri üstünde saydam buton berbat göründüğü
-  // için bg-background'ı her iki temada da zorluyoruz.
-  //
-  // `outline` varyantı kullanılıyor, `default` DEĞİL: default'un tabanı
-  // `--primary` ve zemini `bg-primary`. Burada zemini `bg-background` ile
-  // ezmek, kenarlığı (`border-primary`) ve gradyanın türetildiği
-  // `--surface-base`'i ezmiyordu; sonuç krem butonun üstünde kahve bir
-  // kenarlık ve kahve bir dip gölgesiydi. `outline`ın tabanı zaten
-  // `--background`, yani zeminle uyumlu.
-  //
-  // Dark'ta `outline` normalde `bg-input/30` taşır; opaklık için onu da
-  // ezdiğimizden tabanı elle `--background`a sabitliyoruz ki türetme yine
-  // gerçekte görünen renge dayansın.
-  //
-  // `smooth-shadow-ring-xs` KALDIRILDI: `box-shadow`u doğrudan yazdığı için
-  // `surface-raised`ın rim ve gölge katmanlarını tamamen eziyordu — kontrol
-  // hem yanlış kenarlıklı hem düz kalıyordu. Derinliği artık tek sistem verir.
-  const controlClass =
-    "size-7 bg-background text-foreground hover:bg-muted dark:bg-background dark:[--surface-base:var(--background)] dark:hover:bg-muted"
-
   return (
     <div className="relative h-full w-full">
       <div ref={containerRef} className="h-full w-full" />
+      {/* Harita döşemelerinin üstünde düz `outline` yeterli: dolgusu iki
+          temada da opak (`--surface-outline`), kenarı ve gölgesi o dolgudan
+          türüyor. Eskiden dark'ta `bg-input/30` saydamdı ve burada zemin,
+          taban ve hover ayrı ayrı eziliyordu. */}
       <div className="absolute top-2 right-2 z-[1000] flex flex-col gap-1.5">
         <Button
           type="button"
           variant="outline"
           size="icon-sm"
-          className={controlClass}
           aria-label="Yakınlaştır"
           onClick={() => mapRef.current?.zoomIn()}
         >
@@ -266,7 +248,6 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
           type="button"
           variant="outline"
           size="icon-sm"
-          className={controlClass}
           aria-label="Uzaklaştır"
           onClick={() => mapRef.current?.zoomOut()}
         >
@@ -276,7 +257,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
           type="button"
           variant="outline"
           size="icon-sm"
-          className={cn(controlClass, "mt-1")}
+          className="mt-1"
           aria-label="Konumumu bul"
           disabled={locating}
           onClick={handleLocate}

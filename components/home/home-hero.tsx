@@ -281,20 +281,9 @@ export function HomeHero() {
                 <PressFx key={chip}>
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="chip"
                     size="sm"
                     onClick={() => handleChip(chip)}
-                    // Kenar `border-hairline`: eskiden light'ta `border-border`,
-                    // dark'ta `muted-foreground/25` idi. Çatalın sebebi dark'ta
-                    // `--border` ile `--muted`in birebir aynı renk olması;
-                    // token o basamağı kaldırdığı için tema başına ayrı değer
-                    // gerekmiyor. Light'ta değer zaten `--border`ın kendisi,
-                    // yani chip'lerin görünümü değişmiyor.
-                    //
-                    // Hover /20 değil /15: dinlenme çizgisi artık daha sessiz
-                    // bir tonda durduğu için /20 dark'ta 27 seviyelik bir
-                    // sıçrama yapıyordu. /15 iki temada da ~15-17'de kalıyor.
-                    className="h-auto rounded-lg border-hairline bg-control px-3 py-1.5 text-xs font-normal text-muted-foreground hover:border-foreground/15 hover:bg-control hover:text-foreground dark:bg-control dark:hover:bg-control"
                   >
                     {chip}
                   </Button>

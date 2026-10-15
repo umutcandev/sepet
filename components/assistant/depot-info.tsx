@@ -1,6 +1,7 @@
 "use client"
 
 import { RiInformationLine } from "@remixicon/react"
+import { Button } from "@/components/ui/button"
 import {
   Popover,
   PopoverContent,
@@ -30,17 +31,17 @@ export function DepotInfo({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon-2xs"
+          // Görünen daire 16px kalıyor ama tıklama alanı 32px'e açılıyor
+          // (WCAG 2.5.8 tabanı 24px).
+          hitArea
           aria-label="Fiyatın alındığı şube"
           onClick={(e) => e.stopPropagation()}
-          // Görünen daire 16px kalıyor ama tıklama alanı ::after ile 32px'e
-          // açılıyor (WCAG 2.5.8 tabanı 24px). Odak göstergesi gerçek bir
-          // halka: renk değişimi tek başına gösterge sayılmaz.
-          className="relative inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground/50 transition-colors after:absolute after:-inset-2 hover:text-foreground focus-visible:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
         >
-          <RiInformationLine className="size-3.5" />
-        </button>
+          <RiInformationLine />
+        </Button>
       </PopoverTrigger>
       <PopoverContent
         side="top"

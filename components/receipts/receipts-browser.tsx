@@ -396,7 +396,7 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
             Asistan&apos;a market fişinin fotoğrafını yükle. Sana ne kadar
             tasarruf edebileceğini hesaplayıp burada saklayalım.
           </p>
-          <Button asChild className="mt-2">
+          <Button variant="default" asChild className="mt-2">
             <Link href="/asistan">Asistan&apos;a git</Link>
           </Button>
         </div>
@@ -430,8 +430,9 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                 {searchLoading ? (
                   <Spinner className="size-4 text-muted-foreground" />
                 ) : query ? (
-                  <button
-                    type="button"
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
                     onClick={() => {
                       setQuery("")
                       reqId.current++
@@ -439,10 +440,9 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                       setSearchLoading(false)
                     }}
                     aria-label="Aramayı temizle"
-                    className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
                   >
                     <RiCloseLine className="size-4" />
-                  </button>
+                  </Button>
                 ) : null}
               </div>
             </div>
@@ -451,9 +451,9 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                 <Button
                   type="button"
                   variant="outline"
-                  size="icon"
+                  size="icon-lg"
                   aria-label="Sırala"
-                  className="size-9 shrink-0 text-muted-foreground"
+                  className="text-muted-foreground"
                 >
                   <RiFilter3Line className="size-4" />
                 </Button>

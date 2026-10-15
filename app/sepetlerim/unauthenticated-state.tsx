@@ -15,7 +15,11 @@ export function UnauthenticatedState() {
         Oluşturduğunuz sepetleri ve en ucuz market seçeneklerini görmek için
         giriş yapmalısınız.
       </p>
-      <Button onClick={() => loginDialog.open()} className="mt-2">
+      <Button
+        variant="default"
+        onClick={() => loginDialog.open()}
+        className="mt-2"
+      >
         Giriş Yap
       </Button>
     </div>

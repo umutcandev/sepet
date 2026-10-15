@@ -10,6 +10,7 @@ import {
 } from "@remixicon/react"
 
 import { PromptInputButton } from "@/components/ai-elements/prompt-input"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 // Dolgu her yönde eşit. Önceden sol %10'du (`pl-2.5`) çünkü kayıt sırasında
@@ -19,12 +20,6 @@ import { cn } from "@/lib/utils"
 // Payı artık ihtiyacı olan çocuk kendisi taşıyor (aşağıya bkz.).
 export const voiceContainerClass =
   "flex items-center gap-1 rounded-full border bg-background/80 p-1"
-
-// Hap ölçeği rozetle aynı: ~24px yükseklikte tam yuvarlak bir yüzeyde 1px rim
-// çepeçevre sert bir kontura dönüşür, o yüzden buton değil ÇİP kabartması
-// kullanılıyor (bkz. globals.css, surface-raised-chip). `surface-tint`
-// gerekiyor çünkü bunlar shadcn varyantı değil, `data-variant` yazmıyorlar.
-const voicePillSurface = "surface-tint surface-raised-chip"
 
 export interface VoiceMicButtonProps {
   onClick: () => void
@@ -46,6 +41,9 @@ export function VoiceMicButton({ onClick, disabled, className }: VoiceMicButtonP
   )
 }
 
+// Haplar sıradan butonlar: kabın içinde tam yuvarlak durdukları için yalnız
+// köşe `rounded-full`. Kayıt sırasındaki tek eylem (Durdur) ve gözden
+// geçirmedeki onay (İlet) birincil; İptal ikincil.
 export interface VoiceStopButtonProps {
   onClick: () => void
   loading?: boolean
@@ -62,24 +60,17 @@ export function VoiceStopButton({
   className,
 }: VoiceStopButtonProps) {
   return (
-    <button
-      type="button"
+    <Button
+      variant="default"
+      size="icon-xs"
       onClick={onClick}
       aria-label={ariaLabel}
       aria-busy={loading || undefined}
       disabled={disabled}
-      className={cn(
-        voicePillSurface,
-        "flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-background [--surface-base:var(--foreground)] transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-90",
-        className,
-      )}
+      className={cn("rounded-full", className)}
     >
-      {loading ? (
-        <RiLoader4Line className="size-3 animate-spin" />
-      ) : (
-        <RiStopFill className="size-3" />
-      )}
-    </button>
+      {loading ? <RiLoader4Line className="animate-spin" /> : <RiStopFill />}
+    </Button>
   )
 }
 
@@ -95,20 +86,17 @@ export function VoiceCancelButton({
   className,
 }: VoiceCancelButtonProps) {
   return (
-    <button
-      type="button"
+    <Button
+      variant="secondary"
+      size="xs"
       onClick={onClick}
       disabled={disabled}
       aria-label="Ses kaydını iptal et"
-      className={cn(
-        voicePillSurface,
-        "flex h-6 shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-2 text-xs font-medium text-foreground [--surface-base:var(--muted)] transition-colors hover:bg-muted/80 disabled:cursor-not-allowed disabled:opacity-60",
-        className,
-      )}
+      className={cn("rounded-full", className)}
     >
-      <RiCloseLine className="size-3" />
+      <RiCloseLine />
       <span>İptal</span>
-    </button>
+    </Button>
   )
 }
 
@@ -128,35 +116,24 @@ export function VoiceConfirmButton({
   className,
 }: VoiceConfirmButtonProps) {
   return (
-    <button
-      type="button"
+    <Button
+      variant="default"
+      size="xs"
       onClick={onClick}
       disabled={disabled || loading}
       aria-label="Sesi yazıya çevir ve metne ekle"
       aria-busy={loading || undefined}
-      className={cn(
-        voicePillSurface,
-        "flex h-6 shrink-0 items-center justify-center gap-1 rounded-full bg-foreground px-2.5 text-xs font-medium text-background [--surface-base:var(--foreground)] transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-80",
-        className,
-      )}
+      className={cn("rounded-full", className)}
     >
-      {loading ? (
-        <RiLoader4Line className="size-3 animate-spin" />
-      ) : (
-        <RiCheckLine className="size-3" />
-      )}
+      {loading ? <RiLoader4Line className="animate-spin" /> : <RiCheckLine />}
       <span>İlet</span>
       {elapsedLabel && !loading && (
         <span className="ml-0.5 tabular-nums opacity-70">{elapsedLabel}</span>
       )}
-    </button>
+    </Button>
   )
 }
 
-/**
- * MediaRecorder için cihazda desteklenen ilk audio mime'ı döndürür.
- * iOS Safari opus desteklemez, mp4/aac fallback gerekir.
- */
 export function pickAudioMime(): string | null {
   if (typeof MediaRecorder === "undefined") return null
   const candidates = [

@@ -23,6 +23,8 @@ export const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1]
 /**
  * Kısa mesafeli, dekoratif geçişler (alt çizgi, fiyat odometresi) için biraz
  * daha yumuşak inen expo-out varyantı. Projede zaten kullanılan değerdir.
+ * CSS karşılığı `app/globals.css` içindeki `--ease-out-soft` (butonların
+ * `ease-out-soft` geçişi); sayılar birlikte güncellenmelidir.
  */
 export const EASE_OUT_SOFT: [number, number, number, number] = [
   0.22, 1, 0.36, 1,

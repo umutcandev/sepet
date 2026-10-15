@@ -1,49 +1,28 @@
 "use client"
 
-import { useTheme } from "next-themes"
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+} from "@/components/ui/segmented-control"
+import { THEME_OPTIONS, useThemeChoice } from "@/components/theme-toggle"
 
-import { useMounted } from "@/hooks/use-mounted"
-import { cn } from "@/lib/utils"
-
-// İkonsuz segmentli tema seçici (Ayarlar no-icon kuralı). theme-toggle.tsx'teki
-// radiogroup düzenini kullanır ama yalnızca metin gösterir.
-const OPTIONS = [
-  { value: "light", label: "Açık" },
-  { value: "dark", label: "Koyu" },
-  { value: "system", label: "Sistem" },
-] as const
-
+// İkonsuz segmentli tema seçici (Ayarlar no-icon kuralı). Menüdeki ve
+// footer'daki anahtarlarla aynı kontrol, yalnız metin gösterir.
 export function AppearanceTheme() {
-  const { theme, setTheme } = useTheme()
-  const mounted = useMounted()
-  const current = mounted ? (theme ?? "system") : "light"
+  const { current, setTheme } = useThemeChoice()
 
   return (
-    <div
-      role="radiogroup"
+    <SegmentedControl
       aria-label="Tema seçimi"
-      className="surface-inset flex items-center gap-0.5 rounded-md bg-muted p-0.5"
+      size="sm"
+      value={current}
+      onValueChange={setTheme}
     >
-      {OPTIONS.map(({ value, label }) => {
-        const selected = current === value
-        return (
-          <button
-            key={value}
-            type="button"
-            role="radio"
-            aria-checked={selected}
-            onClick={() => setTheme(value)}
-            className={cn(
-              "rounded-sm px-2.5 py-1 text-xs transition-colors",
-              selected
-                ? "surface-raised-tight bg-background text-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {label}
-          </button>
-        )
-      })}
-    </div>
+      {THEME_OPTIONS.map(({ value, label }) => (
+        <SegmentedControlItem key={value} value={value}>
+          {label}
+        </SegmentedControlItem>
+      ))}
+    </SegmentedControl>
   )
 }

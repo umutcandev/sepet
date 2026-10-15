@@ -175,7 +175,7 @@ export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
               aria-label="Kullanımı yenile"
               // Görünen kutu 24px; dokunma hedefi pseudo-element ile 40px'e
               // genişletilir (bkz. checkbox/radio-group aynı kalıbı kullanıyor).
-              className="relative after:absolute after:-inset-2"
+              hitArea
             >
               <RiRefreshLine
                 className={cn("size-3.5", refreshing && "animate-spin")}

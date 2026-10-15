@@ -131,7 +131,8 @@ export function SessionsTable() {
                       aria-label="Oturum eylemleri"
                       disabled={busyId === r.id}
                       // Mobilde her zaman görünür; masaüstünde hover/açıkken belirir.
-                      className="relative text-muted-foreground transition-opacity after:absolute after:-inset-2 sm:opacity-0 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
+                      hitArea
+                      className="sm:opacity-0 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
                     >
                       <RiMoreLine />
                     </Button>

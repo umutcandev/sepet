@@ -306,7 +306,7 @@ function UpgradeState() {
           interval={interval}
           badge={<Badge variant="default">Önerilen</Badge>}
           action={
-            <Button asChild size="default" className="w-full">
+            <Button variant="default" asChild size="default" className="w-full">
               <a href={`/api/checkout?interval=${interval}`}>
                 Pro&apos;ya Geç
                 <RiArrowRightLine data-icon="inline-end" />
@@ -413,13 +413,14 @@ function StatusHintDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon-2xs"
+          hitArea
           aria-label="Durum hakkında bilgi"
-          className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         >
-          <RiInformationLine className="size-3.5" />
-        </button>
+          <RiInformationLine />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"

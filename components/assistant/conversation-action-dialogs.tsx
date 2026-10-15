@@ -117,7 +117,7 @@ export function ConversationRenameDialog({
             {/* Gönder butonu form geçerli olana kadar KİLİTLENMEZ: devre dışı
                 bir aksiyon neyin eksik olduğunu söylemez. Doğrulama submit'te
                 yapılır ve odak hatalı alana taşınır. */}
-            <Button type="submit" disabled={pending}>
+            <Button variant="default" type="submit" disabled={pending}>
               {pending ? "Kaydediliyor..." : "Kaydet"}
             </Button>
           </DialogFooter>

@@ -39,7 +39,7 @@ export function RecordErrorState({
         Kayıt açılırken beklenmedik bir şey oldu. Tekrar deneyin.
       </p>
       <div className="mt-5 flex items-center justify-center gap-2">
-        <Button type="button" onClick={reset}>
+        <Button variant="default" type="button" onClick={reset}>
           <RiResetLeftLine className="mr-1.5 size-3.5" />
           Tekrar dene
         </Button>
