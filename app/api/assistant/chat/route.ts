@@ -18,6 +18,7 @@ import {
   parseShoppingList,
   analyzeImage,
   lookupProducts,
+  suggestQueries,
 } from "@/lib/ai/tools"
 import {
   textStart,
@@ -32,7 +33,8 @@ import {
   dataPart,
 } from "@/lib/assistant/ui-chunks"
 import { computeOptimization } from "@/lib/ai/optimize"
-import { buildSummaryText } from "@/lib/assistant/summary-text"
+import { buildDraftText, buildSummaryText } from "@/lib/assistant/summary-text"
+import { buildConversationContext } from "@/lib/assistant/conversation-context"
 import {
   buildReceiptComparisonText,
   computeReceiptComparison,
@@ -62,7 +64,7 @@ export const runtime = "nodejs"
 export const maxDuration = 60
 
 const FALLBACK_TEXT =
-  'Sana yardım edebilmem için alışveriş listeni yazar mısın? Örnek: "2 ekmek, 1 lt süt, 500g beyaz peynir".'
+  "Ne almak ya da pişirmek istediğini söylersen hemen bakarım. Örneğin: 2 ekmek, 1 lt süt, 500 g beyaz peynir."
 
 const MODEL_BUSY_TEXT =
   "Yapay zeka servisi şu an yoğun (geçici bir durum). Birkaç dakika sonra tekrar dener misin?"
@@ -266,6 +268,12 @@ export async function POST(req: Request) {
   if (!lastUserMessage) {
     return NextResponse.json({ error: "no_user_message" }, { status: 400 })
   }
+  // Metin turunun hafızası: son mesajdan önceki konuşma (bkz.
+  // buildConversationContext). Yalnızca metin turunda modele gider.
+  const history =
+    mode.kind === "text"
+      ? buildConversationContext(messages.slice(0, messages.lastIndexOf(lastUserMessage)))
+      : ""
 
   // Kullanıcının kayıtlı konumu — ürün eşleştirme/optimizasyon bu koordinat ve
   // seçili şubelerle çalışır. Konum yoksa env fallback'e düşer.
@@ -444,6 +452,7 @@ export async function POST(req: Request) {
           runAssistantTurn({
             writer: wrappedWriter,
             mode,
+            history,
             loc,
             onImageKind: handleImageKind,
             signal: requestSignal,
@@ -691,12 +700,15 @@ const STOPPED_TURN: TurnResult = { awaiting: false }
 async function runAssistantTurn({
   writer,
   mode,
+  history,
   loc,
   onImageKind,
   signal,
 }: {
   writer: WriterLike
   mode: Exclude<LastUserMode, { kind: "empty" }>
+  /** Önceki konuşmanın özeti; yalnızca metin turunda kullanılır. */
+  history: string
   loc: LocationContext
   onImageKind?: (
     kind: ImageAnalysis["kind"],
@@ -761,8 +773,8 @@ async function runAssistantTurn({
       await emitText(
         writer,
         !hasItems
-          ? "Fişten ürün çıkartamadım. Lütfen tüm satırların net göründüğü bir kare çek."
-          : "Fişindeki kalemleri çıkardım. Aşağıdan kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.",
+          ? "Bu fişteki ürün satırlarını okuyamadım. Satırların net göründüğü bir fotoğrafla tekrar dener misin?"
+          : "Fişindeki kalemleri çıkardım. Bir göz atıp gerekirse düzeltebilirsin. Onayladığında aynı ürünleri bugünkü fiyatlarla karşılaştırırım.",
       )
       // Kalem çıktıysa onay kartı gösterilir → awaiting; çıkmadıysa terminal.
       return { awaiting: hasItems }
@@ -779,7 +791,7 @@ async function runAssistantTurn({
       }
       await emitText(
         writer,
-        `Görseldeki yemeği ${food.dishName} olarak tanıdım ve evde yapman için temel malzemelerini çıkardım. Miktarları tek porsiyona göre tahmin ettim, market paket boyutları farklı olabilir. Kontrol et, düzeltmelerini yap ve karşılaştırma için onayla.`,
+        `Görseldeki yemek ${food.dishName} gibi görünüyor. Evde yapman için temel malzemelerini tek porsiyona göre çıkardım, market paketleri farklı boyutta olabilir. Dilersen düzenleyebilirsin, hazır olduğunda Onayla'ya basman yeterli.`,
       )
       return { awaiting: true }
     }
@@ -869,8 +881,13 @@ async function runAssistantTurn({
       toolInputAvailable(lookupCallId, "lookupProducts", { items: parsedItems }),
     )
 
-    const { matches } = await lookupProducts(parsedItems, loc, aiOpts)
+    const { matches: found } = await lookupProducts(parsedItems, loc, aiOpts)
     if (signal?.aborted) return STOPPED_TURN // bkz. fiş onayındaki aynı kontrol
+
+    // Eşleşmeyen kalemlere "… mı demek istedin?" önerisi. Fiş turunda
+    // eşleşmeyenler karşılaştırma tablosunda kalıyor, orada öneri yok.
+    const matches = await suggestQueries(found, loc, aiOpts)
+    if (signal?.aborted) return STOPPED_TURN
 
     writer.write(toolOutputAvailable(lookupCallId, { matches }))
 
@@ -902,7 +919,7 @@ async function runAssistantTurn({
   let basket: BasketDraft
   let parseReasoning: string | null = null
   try {
-    const result = await parseShoppingList(rawText, aiOpts)
+    const result = await parseShoppingList(rawText, aiOpts, history)
     basket = result.draft
     parseReasoning = result.reasoning
   } catch (err) {
@@ -933,10 +950,7 @@ async function runAssistantTurn({
     return { awaiting: false }
   }
 
-  await emitText(
-    writer,
-    `${basket.items.length} kalem çıkardım. Kontrol edip düzeltmelerini yap, ardından karşılaştırma için onayla.`,
-  )
+  await emitText(writer, buildDraftText(basket))
   // Sepet onay kartı gösterildi → kullanıcının "Onayla" aksiyonunu bekliyoruz.
   return { awaiting: true }
 }

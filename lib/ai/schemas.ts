@@ -26,6 +26,20 @@ export const BasketDraftSchema = z.object({
     .describe(
       "items boşsa kullanıcıya bağlama uygun kısa Türkçe cevap (selam ver, yetenekleri söyle, yönlendir). items doluysa null.",
     ),
+  // Asistanın kalemlerin üstüne yazdığı cümle için ("Peynirli börek için 5
+  // malzeme hazırladım"). Bu iki alan sonradan eklendi; eski kayıtlarda
+  // yoklar ama yalnızca o turun metni üretilirken okunuyorlar.
+  dishName: z
+    .string()
+    .nullable()
+    .describe(
+      "Malzemeleri çıkarılan yemeğin/içeceğin küçük harfle adı (ör. 'peynirli börek'). Yemek modu dışında null.",
+    ),
+  revision: z
+    .boolean()
+    .describe(
+      "Kalemler önceki konuşmada hazırlanan listenin güncellenmiş hali ise true, aksi halde false.",
+    ),
 })
 
 export const MarketAllocationSchema = z.object({
@@ -145,6 +159,10 @@ export const MatchResultSchema = z.object({
   // Eşleşti ama ham isimde belirtilen boyut/varyant API'de yoktu — farklı
   // boyutlu aynı ürünle eşleştirildi. Bu kalemde tasarruf hesabı yapılmaz.
   sizeMismatch: z.boolean(),
+  // Eşleşmeyen kalem için marketlerde sonuç verdiği doğrulanmış alternatif
+  // arama terimi ("börek yufkası" → "yufka"). Eşleştirilemeyen Ürünler
+  // kartındaki "… mı demek istedin?" önerisi. Eski kayıtlarda yok.
+  suggestedQuery: z.string().nullable().optional(),
 })
 
 // lookupProducts içindeki LLM seçim adımının batch çıktısı. Tek ürün yerine
@@ -161,6 +179,18 @@ export const MatchSelectionSchema = z.object({
       acceptedProductIds: z.array(z.string()).default([]),
       sizeMismatch: z.boolean(),
       reason: z.string(),
+    }),
+  ),
+})
+
+// Eşleşmeyen kalemler için alternatif arama terimi önerileri (doğrulanmamış).
+export const QuerySuggestionSchema = z.object({
+  suggestions: z.array(
+    z.object({
+      itemIndex: z.number(),
+      queries: z
+        .array(z.string())
+        .describe("En fazla 2 alternatif arama terimi, en iyisi önce. Emin değilsen boş."),
     }),
   ),
 })

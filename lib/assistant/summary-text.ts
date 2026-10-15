@@ -40,8 +40,14 @@ export function buildSummaryText(
 
   // "Eşleştirilemedi" edilgen ve tekil: Türkçede cansız çoğul özne tekil
   // fiil alır, ürün adına ek getirmek de gerekmez ("reçelini" vb.).
+  // Eşleşme yoksa kart yeniden aratmayı sunuyor (bkz. UnmatchedProductList);
+  // servis hatasında yeni bir ad işe yaramayacağı için o cümle eklenmez.
+  const canRename = matches.some((m) => m.lookupStatus === "no_match")
   const unmatchedPart = unmatched.length
-    ? ` ${joinTr(unmatched.map(capitalizeTr))} eşleştirilemedi, toplama dahil değil.`
+    ? ` ${joinTr(unmatched.map(capitalizeTr))} eşleştirilemedi, toplama dahil değil.` +
+      (canRename
+        ? " İstersen aşağıdan başka bir adla yeniden aratabilirsin."
+        : "")
     : ""
 
   // Rozetle aynı kaynak: Sepet Özeti'nde gösterilen dökümlerde farklı boyutlu
@@ -59,6 +65,29 @@ export function buildSummaryText(
     : ""
 
   return `Sepet Özeti hazır. ${plan}${unmatchedPart}${mismatchPart}`
+}
+
+/**
+ * Metin turunda kalemler çıkınca onay kartının üstüne yazılan cümle.
+ *
+ * Eskiden sabit bir buyruktu ("Kontrol edip düzeltmelerini yap, ardından
+ * karşılaştırma için onayla.") ve kullanıcıya sert, yönetir gibi geliyordu.
+ * Artık neyin hazırlandığını söyler (yemek adı ya da listenin güncellendiği)
+ * ve kalan adımı öneri diliyle bırakır.
+ */
+export function buildDraftText(draft: {
+  items: readonly unknown[]
+  dishName?: string | null
+  revision?: boolean
+}): string {
+  const n = draft.items.length
+  const dish = draft.dishName?.trim()
+  const lead = draft.revision
+    ? `Listeni güncelledim, şimdi ${n} kalem var.`
+    : dish
+      ? `${capitalizeTr(dish)} için ${n} temel malzemeyi hazırladım.`
+      : `Listendeki ${n} kalemi hazırladım.`
+  return `${lead} Dilersen miktarları değiştirebilir, kalem ekleyip çıkarabilirsin. Hazır olduğunda Onayla'ya basman yeterli, en uygun marketleri bulayım.`
 }
 
 function formatTL(n: number): string {

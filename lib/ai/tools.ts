@@ -4,6 +4,7 @@ import {
   ChatTitleSchema,
   ImageAnalysisSchema,
   MatchSelectionSchema,
+  QuerySuggestionSchema,
   type BasketDraft,
   type ImageAnalysis,
   type MatchResult,
@@ -19,12 +20,13 @@ import {
   AI_MAX_RETRIES,
   type AiCallOptions,
 } from "./models"
-import { devLog, withLlmCall } from "./telemetry"
+import { devLog, isAbortError, withLlmCall } from "./telemetry"
 import {
   CHAT_TITLE_PROMPT,
   IMAGE_ANALYSIS_PROMPT,
   MATCH_PROMPT,
   PARSE_PROMPT,
+  QUERY_SUGGESTION_PROMPT,
   type MatchPromptItem,
 } from "./prompts"
 import {
@@ -201,9 +203,15 @@ export type BasketDraftWithReasoning = {
   reasoning: string | null
 }
 
+/**
+ * @param history Sohbetin önceki turlarının özeti (bkz.
+ * lib/assistant/conversation-context.ts). Model "listeyi sen hazırla" ya da
+ * "bir de ayran ekle" gibi tek başına eksik mesajları bununla tamamlar.
+ */
 export async function parseShoppingList(
   rawText: string,
   opts: AiCallOptions = {},
+  history = "",
 ): Promise<BasketDraftWithReasoning> {
   const { object, reasoning } = await withLlmCall(
     "parseShoppingList",
@@ -215,7 +223,7 @@ export async function parseShoppingList(
         temperature: 0.1,
         abortSignal: opts.signal,
         maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
-        prompt: PARSE_PROMPT(rawText),
+        prompt: PARSE_PROMPT(rawText, history),
         providerOptions: {
           google: {
             thinkingConfig: {
@@ -588,3 +596,92 @@ export async function lookupProducts(
   return { matches }
 }
 
+/** Öneri üretilecek en fazla kalem; prompt'u ve doğrulama aramalarını sınırlar. */
+const MAX_SUGGESTION_ITEMS = 8
+/** Kalem başına doğrulanacak en fazla öneri (her biri bir arama demek). */
+const MAX_SUGGESTIONS_PER_ITEM = 2
+
+/**
+ * Eşleştirilemeyen kalemlere ("no_match") marketlerde sonuç veren bir
+ * alternatif arama terimi bulur ve `suggestedQuery` olarak işler. Kart bunu
+ * "Yufka mı demek istedin?" diye sunar; tıklanınca sepet o terimle yeniden
+ * eşleştirilir.
+ *
+ * Model önerisi tek başına gösterilmez: her terim önce aranır, en az bir
+ * markette fiyatı olan ürün dönmezse atlanır. Kullanıcıya "şunu dene" deyip
+ * yine boş sonuç göstermek öneri vermemekten kötü.
+ *
+ * Servis hatası (api_error) kalemlerine dokunmaz: orada sorun ad değil.
+ * Hata ya da iptal durumunda eşleşmeleri olduğu gibi döndürür; öneri
+ * yardımcı bir ekstradır, turu düşürmemeli.
+ */
+export async function suggestQueries(
+  matches: MatchResult[],
+  loc: LocationContext = MF_DEFAULT_LOCATION,
+  opts: AiCallOptions = {},
+): Promise<MatchResult[]> {
+  const targets = matches
+    .map((m, index) => ({ m, index }))
+    .filter(({ m }) => m.lookupStatus === "no_match")
+    .slice(0, MAX_SUGGESTION_ITEMS)
+  if (targets.length === 0) return matches
+
+  let proposals: Map<number, string[]>
+  try {
+    const { object } = await withLlmCall("suggestQueries", GEMINI_FLASH_LITE, () =>
+      generateObject({
+        model: geminiFlashLite,
+        schema: QuerySuggestionSchema,
+        temperature: 0.2,
+        abortSignal: opts.signal,
+        maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+        prompt: QUERY_SUGGESTION_PROMPT(
+          targets.map(({ m }, itemIndex) => ({
+            itemIndex,
+            rawName: m.rawName,
+            searchQuery: m.searchQuery,
+          })),
+        ),
+      }),
+    )
+    proposals = new Map(object.suggestions.map((s) => [s.itemIndex, s.queries]))
+  } catch (err) {
+    if (!isAbortError(err)) {
+      console.error("[suggestQueries] suggestion failed", err)
+    }
+    return matches
+  }
+
+  const verified = await Promise.all(
+    targets.map(async ({ m }, itemIndex) => {
+      const tried = new Set(
+        [m.searchQuery, m.rawName, searchAlias(m.searchQuery) ?? ""]
+          .map(stripQuantityTokens)
+          .filter(Boolean),
+      )
+      const queries = (proposals.get(itemIndex) ?? [])
+        .map(stripQuantityTokens)
+        .filter((q) => q.length >= 2 && !tried.has(q) && tried.add(q))
+        .slice(0, MAX_SUGGESTIONS_PER_ITEM)
+      for (const q of queries) {
+        if (opts.signal?.aborted) return null
+        try {
+          const { details } = await searchProductDetails(q, loc)
+          if (details.some((d) => d.markets.length > 0)) return q
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err)
+          console.error(`[suggestQueries] verify search failed ${message}`)
+        }
+      }
+      return null
+    }),
+  )
+  console.log(
+    `[suggestQueries] items=${targets.length} suggested=${verified.filter(Boolean).length}`,
+  )
+
+  const byIndex = new Map(targets.map(({ index }, i) => [index, verified[i]]))
+  return matches.map((m, i) =>
+    byIndex.has(i) ? { ...m, suggestedQuery: byIndex.get(i) ?? null } : m,
+  )
+}
