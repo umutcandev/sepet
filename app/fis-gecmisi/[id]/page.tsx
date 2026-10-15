@@ -64,6 +64,15 @@ export default async function ReceiptDetailPage({
   const { receipt, conversation } = detail
   // Bkz. sepet detayı: görseli boş kalan kalemler eşleşen üründen tamamlanır.
   const items = await withResolvedItemImages(detail.items, "receipt")
+  // Görsel alanından önce kaydedilmiş özetlerin dökümü, kalemlerin eşleşen
+  // ürün görselleriyle tamamlanır (bkz. ProductImageFallback).
+  const itemImages = Object.fromEntries(
+    items.flatMap((it) =>
+      it.matchedProductId && it.matchedImageUrl
+        ? [[it.matchedProductId, it.matchedImageUrl]]
+        : [],
+    ),
+  )
 
   const isStale = isReceiptStaleByDate(receipt.purchaseDate)
   const totalSavings =
@@ -156,7 +165,9 @@ export default async function ReceiptDetailPage({
         <div className="order-2 min-w-0 space-y-5 md:order-1">
           <ReceiptImage url={receipt.imageUrl} />
 
-          {summary && <OptimizationCard summary={summary} />}
+          {summary && (
+            <OptimizationCard summary={summary} imageFallback={itemImages} />
+          )}
         </div>
 
         <div className="order-3 min-w-0 space-y-5 md:order-2">

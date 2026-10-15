@@ -46,6 +46,10 @@ export const MarketAllocationSchema = z.object({
   // Bu kalemin fiyatının alındığı şube (depo) adı — UI'da "fiyat kaynağı" bilgi
   // balonu için. Eski kayıtlarda yok → nullable + default.
   depotName: z.string().nullable().default(null),
+  // Bu markette alınan ürünün görseli — Sepet Özeti dökümündeki küçük resim.
+  // Kalem marketten markete farklı ürüne çözülebildiği için görsel de kaleme
+  // değil bu satırın ürününe aittir. Eski kayıtlarda yok → nullable + default.
+  imageUrl: z.string().nullable().default(null),
 })
 
 export const SingleMarketResultSchema = z.object({
@@ -117,6 +121,8 @@ export const MarketOptionSchema = z.object({
   unitPriceLabel: z.string().nullable(),
   // Seçilen ürünün fiyatının alındığı şube (depo) adı. Eski kayıtlarda yok.
   depotName: z.string().nullable().default(null),
+  // Seçilen ürünün görseli; dökümdeki satıra taşınır. Eski kayıtlarda yok.
+  imageUrl: z.string().nullable().default(null),
 })
 
 export const MatchResultSchema = z.object({

@@ -54,15 +54,6 @@ export function ReceiptComparisonCard({
   const { comparison, receiptContext, summary, matches } = data
   const [expanded, setExpanded] = React.useState<Set<number>>(new Set())
 
-  // productId → tüm market fiyatları (best dahil). Satır genişletildiğinde
-  // best dışındakileri sırayla göstereceğiz.
-  const marketPricesByProductId = React.useMemo(() => {
-    const map = new Map<string, MatchResult["marketPrices"]>()
-    for (const m of matches) {
-      if (m.bestMatch) map.set(m.bestMatch.productId, m.marketPrices)
-    }
-    return map
-  }, [matches])
 
   function toggleRow(idx: number) {
     setExpanded((prev) => {
@@ -121,14 +112,13 @@ export function ReceiptComparisonCard({
           <TableBody>
             {comparison.items.map((it, idx) => {
               const hasSavings = (it.savingsTL ?? 0) > 0
-              const allPrices = it.matchedProductId
-                ? marketPricesByProductId.get(it.matchedProductId) ?? []
-                : []
-              // best market dışındaki entry'ler. bestMarket eşleşmiyorsa
-              // (sentetik fallback durumu) tüm liste gösterilir.
-              const otherPrices = it.bestMarket
-                ? allPrices.filter((mp) => mp.market !== it.bestMarket)
-                : allPrices
+              // Diğer marketler de "en iyi" ile AYNI kümeden: her markette
+              // kabul edilen ürünlerin en ucuzu, Sepet Özeti'nin o marketteki
+              // satırıyla aynı ürün. Ürün marketten markete değişebildiği
+              // için adı da yazılır. Kalemler `matches` ile aynı sırada.
+              const otherPrices = [...(matches[idx]?.marketOptions ?? [])]
+                .filter((opt) => opt.market !== it.bestMarket)
+                .sort((a, b) => a.packagePrice - b.packagePrice)
               const canExpand = otherPrices.length > 0
               const isOpen = expanded.has(idx)
               return (
@@ -216,19 +206,24 @@ export function ReceiptComparisonCard({
                               İçerideki `divide-y` `--border`da kalıyor —
                               ayraç, dış kenardan zayıf olmalı. */}
                           <ul className="grid divide-y rounded-md border border-hairline bg-background">
-                            {otherPrices.map((mp, i) => (
+                            {otherPrices.map((opt, i) => (
                               <li
-                                key={`${mp.market}-${i}`}
+                                key={`${opt.market}-${i}`}
                                 className="flex items-center justify-between gap-2 px-3 py-2 text-sm"
                               >
-                                <div className="flex items-center gap-2">
-                                  <MarketLogo name={mp.market} size="sm" />
-                                  <span className="text-muted-foreground">
-                                    {mp.market}
-                                  </span>
+                                <div className="flex min-w-0 items-center gap-2">
+                                  <MarketLogo name={opt.market} size="sm" />
+                                  <div className="min-w-0">
+                                    <div className="text-muted-foreground">
+                                      {opt.market}
+                                    </div>
+                                    <div className="truncate text-[0.6875rem] text-muted-foreground">
+                                      {opt.productName}
+                                    </div>
+                                  </div>
                                 </div>
-                                <span className="font-medium tabular-nums">
-                                  {formatTLOrDash(mp.price)}
+                                <span className="shrink-0 font-medium tabular-nums">
+                                  {formatTLOrDash(opt.packagePrice)}
                                 </span>
                               </li>
                             ))}

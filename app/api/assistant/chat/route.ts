@@ -32,18 +32,20 @@ import {
   dataPart,
 } from "@/lib/assistant/ui-chunks"
 import { computeOptimization } from "@/lib/ai/optimize"
+import { buildSummaryText } from "@/lib/assistant/summary-text"
+import {
+  buildReceiptComparisonText,
+  computeReceiptComparison,
+} from "@/lib/assistant/receipt-comparison"
+import {
+  STOPPED_PART_TYPE,
+  approvalKind,
+  statusAfterStop,
+} from "@/lib/assistant/turn-state"
 import { isAbortError } from "@/lib/ai/telemetry"
 import { getUserLocationContext } from "@/lib/auth/location"
 import type { LocationContext } from "@/lib/marketfiyati/client"
-import { STALE_DAY_THRESHOLD } from "@/lib/receipt-staleness"
-import type {
-  BasketDraft,
-  ImageAnalysis,
-  MatchResult,
-  OptimizationSummary,
-  ParsedItem,
-  ReceiptComparison,
-} from "@/lib/ai/schemas"
+import type { BasketDraft, ImageAnalysis, ParsedItem } from "@/lib/ai/schemas"
 import { createConversation } from "@/lib/actions/conversations"
 import {
   appendMessages,
@@ -209,280 +211,6 @@ function detectLastUserMode(messages: UIMessage[]): LastUserMode {
   return { kind: "empty" }
 }
 
-function formatTL(n: number) {
-  return n.toLocaleString("tr-TR", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
-}
-
-/**
- * Yüzde etiketi. Küçük oranlarda tek hane ondalık anlamlı, büyük oranlarda
- * gürültü; her iki durumda da ayırıcı Türkçe virgül olmalı ("%11,4" — "%11.4"
- * değil).
- */
-function formatPct(n: number): string {
-  return n.toLocaleString("tr-TR", {
-    maximumFractionDigits: n < 10 ? 1 : 0,
-  })
-}
-
-/** "kuru fasulye" → "Kuru fasulye" (Türkçe i/İ kuralına uyar). */
-function capitalizeTr(s: string): string {
-  if (!s) return s
-  return s[0].toLocaleUpperCase("tr-TR") + s.slice(1)
-}
-
-function formatRequestedQty(qty: number, unit: MatchResult["unit"]): string {
-  return `${qty} ${unit}`
-}
-
-/**
- * Ortak gerekçe ("tam boyutu bulamadım") tek seferde başlıkta söylenir; madde
- * satırları yalnız kaleme özgü bilgiyi taşır. Aynı cümleyi her maddede
- * tekrarlamak listeyi okunmaz yapıyordu.
- */
-function buildSizeMismatchNote(matches: MatchResult[]): string {
-  const mismatches = matches.filter(
-    (m) => m.sizeMismatch && m.bestMatch && m.lookupStatus === "ok",
-  )
-  if (mismatches.length === 0) return ""
-  const lines = mismatches.map((m) => {
-    const requested = formatRequestedQty(m.quantity, m.unit)
-    return `- ${capitalizeTr(m.rawName)}: ${requested} istedin, ${m.bestMatch!.name} ile eşleştirdim.`
-  })
-  return `\n\n**Bazı kalemlerde istediğin tam boyutu bulamadım.** Kartlardan değiştirebilirsin:\n\n${lines.join("\n")}`
-}
-
-function buildSummaryText(
-  summary: OptimizationSummary,
-  matches: MatchResult[],
-): string {
-  const matchedCount = summary.totalItems
-  const missing = matches
-    .filter((m) => m.lookupStatus !== "ok" || !m.bestMatch)
-    .map((m) => m.rawName)
-  const missingPart = missing.length
-    ? ` Eşleştiremediklerim: ${missing.join(", ")}.`
-    : ""
-  const mismatchNote = buildSizeMismatchNote(matches)
-
-  if (matchedCount === 0) {
-    return `Listendeki hiçbir kalemi şu an eşleştiremedim.${missingPart}`
-  }
-
-  const single = summary.singleMarket
-  const combo = summary.twoMarketCombo
-  const hasFullCombo = combo.markets.length === 2
-
-  if (single.isFullCoverage) {
-    const head = `${matchedCount} kalemli sepetini hazırladım. En ucuz tek market ${single.market}, sepetin tamamı ${formatTL(single.total)} TL.`
-    const comboPart =
-      hasFullCombo && combo.savingsTL > 0
-        ? ` Alışverişi ${combo.markets.join(" ve ")} arasında bölersen ${formatTL(combo.savingsTL)} TL (%${formatPct(combo.savingsPct)}) daha ucuza geliyor.`
-        : ""
-    return head + comboPart + missingPart + mismatchNote
-  }
-
-  if (hasFullCombo) {
-    const head = `${matchedCount} kalemli sepetini hazırladım. Tek markette tümünü bulamadım ama ${combo.markets.join(" ve ")} ikilisiyle sepetin tamamı ${formatTL(combo.total)} TL.`
-    return head + missingPart + mismatchNote
-  }
-
-  const head = `${matchedCount} kalemli sepetini hazırladım. Tek markette tümünü bulamadım. En iyi seçenek ${single.market} marketi: ${single.itemCount}/${matchedCount} kalem ${formatTL(single.total)} TL.`
-  return head + missingPart + mismatchNote
-}
-
-/**
- * Fiş ile bugünü kıyaslarken YALNIZCA bugün fiyatı bulunabilen kalemler
- * sayılmalı. `totalReceiptAmount` kalemlerin tamamını, `totalBestAmount` ise
- * sadece eşleşenleri topladığından ikisini doğrudan çıkarmak, bulunamayan her
- * kalemi "bugün 0 TL" saymak demektir; uçta hiçbir kalem eşleşmezse "207,15 TL
- * harcadın, bugün 0,00 TL'ye gelir, 207,15 TL tasarruf" gibi tamamen yanlış
- * bir sonuç çıkar.
- *
- * Toplananlar paket fiyatlarıdır, satır tutarları değil (bkz.
- * ReceiptComparison) — cümledeki tabanla ekrandaki taban aynı olmalı.
- */
-function comparableTotals(items: ReceiptComparison["items"]): {
-  count: number
-  receiptTotal: number
-} {
-  const matched = items.filter(
-    (i) => i.bestPrice != null && i.receiptUnitPrice != null,
-  )
-  return {
-    count: matched.length,
-    // Paket başına — `totalBestAmount` ile aynı taban (bkz. ReceiptComparison).
-    receiptTotal: matched.reduce((s, i) => s + (i.receiptUnitPrice ?? 0), 0),
-  }
-}
-
-function buildReceiptComparisonText(comp: ReceiptComparison): string {
-  if (comp.items.length === 0) {
-    return "Fişindeki kalemleri çıkardım ama eşleşen ürün bulamadım."
-  }
-
-  const comparable = comparableTotals(comp.items)
-  // Kalemler okundu ama hiçbirine bugünden fiyat bulunamadı → kıyaslanacak bir
-  // şey yok. Tutar cümlesi kurmak burada yanlış sayı üretir.
-  if (comparable.count === 0) {
-    return `Fişindeki ${comp.items.length} kalemi okudum ama hiçbiri için güncel market fiyatı bulamadım. Bu yüzden bir karşılaştırma yapamadım.`
-  }
-  // Kısmi eşleşmede hangi kümeden konuştuğumuz açık olmalı; okuyucu aksi halde
-  // rakamları fişin tamamı sanır.
-  const scopeNote =
-    comparable.count < comp.items.length
-      ? ` (${comp.items.length} kalemden ${comparable.count} tanesi için fiyat bulunabildi)`
-      : ""
-
-  if (comp.staleness?.isStale) {
-    // İşaretli fark: pozitif → bugün daha ucuz (tasarruf mümkün), negatif →
-    // bugün daha pahalı. comp.totalSavingsTL kalem bazında Math.max(0, …) ile
-    // toplandığı için her zaman ≥ 0; "iki tutar neredeyse aynı" mı yoksa
-    // "bugün çok daha pahalı" mı ayrımı için ham farkı kullanmamız şart.
-    const diff = comparable.receiptTotal - comp.totalBestAmount
-    const tolerance = Math.max(
-      1,
-      Math.max(comparable.receiptTotal, comp.totalBestAmount) * 0.02,
-    )
-    const figuresPart = (() => {
-      const head = `Yine de bilgi amaçlı: fişteki paket fiyatlarının toplamı ${formatTL(comparable.receiptTotal)} TL, aynı ürünlerin bugünkü en iyi paket fiyatları ${formatTL(comp.totalBestAmount)} TL${scopeNote}.`
-      if (Math.abs(diff) <= tolerance) {
-        return `${head} İki tutar neredeyse aynı.`
-      }
-      if (diff > 0) {
-        return `${head} Bugüne kıyasla yaklaşık ${formatTL(diff)} TL tasarruf mümkün olurdu.`
-      }
-      return `${head} Bugün aynı sepeti almak yaklaşık ${formatTL(Math.abs(diff))} TL daha pahalıya geliyor.`
-    })()
-    if (comp.staleness.reason === "date" && comp.staleness.ageLabel) {
-      return `Bu fiş ${comp.staleness.ageLabel} öncesine ait. O dönemin fiyatları bugünkü piyasayla birebir karşılaştırılamaz, bu yüzden tasarruf hesabı tam olarak anlamlı değil. ${figuresPart}`
-    }
-    return `Fişindeki tutar bugünkü fiyatlarla kıyaslanamayacak kadar düşük görünüyor. Büyük olasılıkla farklı bir döneme ait, tasarruf hesabı birebir anlamlı değil. ${figuresPart}`
-  }
-  if (comp.totalSavingsTL <= 0) {
-    return `Fişteki paket fiyatlarının toplamı ${formatTL(comparable.receiptTotal)} TL; bulduğumuz en iyi fiyatlar buna zaten yakın, ek bir kazanç çıkmadı${scopeNote}.`
-  }
-  // Karşılaştırmanın tabanı cümlede geçmezse okuyucu rakamı fişin genel
-  // toplamıyla kıyaslar ve tutarsız bulur — taban paket başınadır.
-  return `Fişteki paket fiyatlarının toplamı ${formatTL(comparable.receiptTotal)} TL. Aynı ürünlerin bugünkü en iyi paket fiyatları ${formatTL(comp.totalBestAmount)} TL, aradaki fark ${formatTL(comp.totalSavingsTL)} TL${scopeNote}. Karşılaştırma paket başına yapılır, aldığın adet fiyatı çarpmaz.`
-}
-
-const STALE_RATIO_THRESHOLD = 3
-
-function formatAgeLabel(days: number): string {
-  if (days < 30) return `~${Math.max(1, Math.round(days / 7))} hafta`
-  if (days < 365) return `~${Math.round(days / 30)} ay`
-  return `~${Math.round(days / 365)} yıl`
-}
-
-function computeStaleness(input: {
-  purchaseDate: string | null
-  totalReceiptAmount: number
-  totalBestAmount: number
-  itemCount: number
-}): ReceiptComparison["staleness"] {
-  if (input.itemCount === 0) return null
-
-  let ageDays: number | null = null
-  let ageLabel: string | null = null
-  if (input.purchaseDate) {
-    const d = new Date(input.purchaseDate)
-    if (!Number.isNaN(d.getTime())) {
-      ageDays = Math.floor((Date.now() - d.getTime()) / 86_400_000)
-      if (ageDays >= 0) ageLabel = formatAgeLabel(ageDays)
-    }
-  }
-
-  const priceRatio =
-    input.totalReceiptAmount > 0
-      ? input.totalBestAmount / input.totalReceiptAmount
-      : null
-
-  let reason: "date" | "ratio" | null = null
-  if (ageDays != null && ageDays >= STALE_DAY_THRESHOLD) reason = "date"
-  else if (priceRatio != null && priceRatio >= STALE_RATIO_THRESHOLD) reason = "ratio"
-
-  return { isStale: reason !== null, reason, ageDays, ageLabel, priceRatio }
-}
-
-function computeReceiptComparison(
-  payloadItems: ReceiptApprovalPayload["items"],
-  matches: MatchResult[],
-  purchaseDate: string | null,
-): ReceiptComparison {
-  const items = payloadItems.map((it, idx) => {
-    const match = matches[idx]
-    const best = match?.bestMatch ?? null
-    const sizeMismatch = match?.sizeMismatch ?? false
-    const minPrice = best?.minPrice ?? null
-    const marketWithMin = best
-      ? match.marketPrices.find((mp) => mp.price === minPrice) ?? null
-      : null
-    const bestMarket = marketWithMin?.market ?? null
-    const bestPrice = minPrice ?? null
-    // Fişte o satır için ödenen gerçek para (bağlam; karşılaştırmaya girmez).
-    const receiptTotal =
-      it.totalPrice ??
-      (it.unitPrice != null ? it.unitPrice * it.quantity : null)
-    // Karşılaştırma PAKET BAŞINA: `bestPrice` tek paketin raf fiyatı olduğu
-    // için fiş tarafı da tek paket olmalı. Adetle çarpmak "3 ekmeğe ödenen
-    // para"yı "1 ekmeğin fiyatı"yla kıyaslar ve tasarrufu şişirirdi; ayrıca
-    // aynı karttaki `summary` toplamları da çarpımsız (bkz. effective-cost.ts).
-    // OCR birim fiyatı okuyamadıysa satır toplamından türet.
-    const receiptUnit =
-      it.unitPrice ??
-      (it.totalPrice != null && it.quantity > 0
-        ? it.totalPrice / it.quantity
-        : null)
-    // Farklı boyutlu ürünle eşleşmişse fiyatlar kıyaslanamaz — tasarruf yazma.
-    const savingsTL =
-      !sizeMismatch && receiptUnit != null && bestPrice != null
-        ? Math.max(0, receiptUnit - bestPrice)
-        : null
-    return {
-      rawName: it.rawName,
-      receiptUnitPrice: receiptUnit,
-      receiptTotalPrice: receiptTotal,
-      matchedProductId: best?.productId ?? null,
-      matchedName: best?.name ?? null,
-      bestMarket,
-      bestPrice,
-      savingsTL,
-      sizeMismatch,
-    }
-  })
-
-  // Kartın altındaki iki toplam da PAKET BAŞINA. Fişin basılı genel toplamı
-  // buraya girmez: farklı tabandaki iki sayıyı yan yana koymak karşılaştırmayı
-  // anlamsız kılardı. Basılı toplam ayrı taşınır (`receipt.totalAmount`) ve
-  // onay ekranında kalem silinse bile bu toplamlar güncel listeyi yansıtır.
-  const totalReceiptAmount = items.reduce(
-    (sum, i) => sum + (i.receiptUnitPrice ?? 0),
-    0,
-  )
-  const totalBestAmount = items.reduce((sum, i) => sum + (i.bestPrice ?? 0), 0)
-  const totalSavingsTL = items.reduce(
-    (sum, i) => sum + (i.savingsTL ?? 0),
-    0,
-  )
-
-  // Bayatlık oranı yalnızca KARŞILAŞTIRILABİLİR kalemler üzerinden anlamlıdır:
-  // bugün fiyatı bulunamayan kalem totalBestAmount'a 0 katkı yapar, oysa fişteki
-  // tutarı totalReceiptAmount'ta durur. İkisini bölmek, eşleşme oranı düştükçe
-  // oranı yapay olarak küçültür.
-  const comparable = comparableTotals(items)
-  const staleness = computeStaleness({
-    purchaseDate,
-    totalReceiptAmount: comparable.receiptTotal,
-    totalBestAmount,
-    itemCount: comparable.count,
-  })
-
-  return { items, totalReceiptAmount, totalBestAmount, totalSavingsTL, staleness }
-}
-
 export async function POST(req: Request) {
   const session = await auth()
   if (!session?.user?.id) {
@@ -642,7 +370,7 @@ export async function POST(req: Request) {
   const stream = createUIMessageStream({
     execute: async ({ writer }) => {
       const recorder = createAssistantRecorder()
-      const wrappedWriter = wrapWriter(writer, recorder)
+      const wrappedWriter = wrapWriter(writer, recorder, requestSignal)
 
       writer.write({ type: "start" })
 
@@ -688,7 +416,9 @@ export async function POST(req: Request) {
             })
             await emitTitleIfNew(title)
           } catch (err) {
-            console.error("[assistant/chat] title generation failed", err)
+            if (!isAbortError(err)) {
+              console.error("[assistant/chat] title generation failed", err)
+            }
           }
         })()
       }
@@ -735,8 +465,13 @@ export async function POST(req: Request) {
         await refundReservation()
       }
 
+      // Kullanıcı Stop'a bastıysa istemci bağlantıyı kesti: kayıt, istemcinin
+      // o ana kadar gördüğüyle aynı olsun (wrapWriter iptalden sonrasını
+      // yazmıyor) ve turun yarıda kaldığı işaretlensin. Aksi halde sayfa
+      // yenilenince durdurulan cevap tamamlanmış gibi geri gelirdi.
+      const stopped = requestSignal.aborted
       // Persist the assistant message before signalling finish.
-      const parts = recorder.finalize()
+      const parts = stopped ? recorder.finalizeStopped() : recorder.finalize()
       if (parts.length > 0) {
         try {
           await appendMessages(newConversationId, userId, [
@@ -750,7 +485,11 @@ export async function POST(req: Request) {
       // Sidebar ikon durumunu yaz ve client'a transient event olarak ilet —
       // store anında güncellensin (RSC refresh gerektirmeden). Turn bir onay
       // kartında bittiyse "awaiting", terminal sonuçta bittiyse "completed".
-      const status: ConversationStatus = turn.awaiting ? "awaiting" : "completed"
+      const status: ConversationStatus = stopped
+        ? statusAfterStop(parts, approvalKind(lastUserMessage) !== null)
+        : turn.awaiting
+          ? "awaiting"
+          : "completed"
       try {
         await setConversationStatus(newConversationId, userId, status)
       } catch (err) {
@@ -796,15 +535,23 @@ type StoredToolPart = {
   output?: unknown
   errorText?: string
 }
+type StoredStoppedPart = { type: typeof STOPPED_PART_TYPE; data: object }
 type StoredPart =
   | StoredTextPart
   | StoredReasoningPart
   | StoredFilePart
   | StoredToolPart
+  | StoredStoppedPart
 
 type AssistantRecorder = {
   handle: (chunk: UIMessageChunk) => void
   finalize: () => StoredPart[]
+  /**
+   * Durdurulan tur: yalnız tamamlanmış part'lar kalır (çıktısı gelmemiş tool
+   * çağrısı yeniden yüklemede sonsuz bir "yükleniyor" demek olurdu) ve sonuna
+   * durdurma işareti eklenir.
+   */
+  finalizeStopped: () => StoredPart[]
 }
 
 /**
@@ -889,7 +636,23 @@ function createAssistantRecorder(): AssistantRecorder {
     }
   }
 
-  return { handle, finalize: () => parts }
+  function finalizeStopped(): StoredPart[] {
+    const kept: StoredPart[] = []
+    for (const p of parts) {
+      if (p.type === "text") {
+        if ((p as StoredTextPart).text) kept.push(p)
+      } else if (p.type === "reasoning") {
+        const r = p as StoredReasoningPart
+        if (r.text) kept.push({ ...r, state: "done" })
+      } else if ((p as StoredToolPart).state !== "input-available") {
+        kept.push(p)
+      }
+    }
+    kept.push({ type: STOPPED_PART_TYPE, data: {} })
+    return kept
+  }
+
+  return { handle, finalize: () => parts, finalizeStopped }
 }
 
 type WriterLike = Pick<UIMessageStreamWriter, "write">
@@ -897,9 +660,13 @@ type WriterLike = Pick<UIMessageStreamWriter, "write">
 function wrapWriter(
   writer: UIMessageStreamWriter,
   recorder: AssistantRecorder,
+  signal: AbortSignal,
 ): WriterLike {
   return {
     write(chunk) {
+      // İptalden sonra yazılan hiçbir şey istemciye ulaşmıyor; kayda da
+      // girmesin.
+      if (signal.aborted) return
       recorder.handle(chunk)
       writer.write(chunk)
     },
@@ -913,6 +680,13 @@ function wrapWriter(
  * optimizasyon, ya da kapanış/hata mesajı). Sidebar ikonu buna göre seçilir.
  */
 type TurnResult = { awaiting: boolean; hardError?: boolean }
+
+/**
+ * Kullanıcı Stop'a bastı: kalan adımlar (eşleştirme sonrası hesap, metin)
+ * çalıştırılmaz. Sidebar durumu bu dönüşten değil kaydedilen part'lardan
+ * çıkarılır (bkz. statusAfterStop), o yüzden `awaiting` burada önemsiz.
+ */
+const STOPPED_TURN: TurnResult = { awaiting: false }
 
 async function runAssistantTurn({
   writer,
@@ -948,6 +722,7 @@ async function runAssistantTurn({
       analysis = result.analysis
       parseReasoning = result.reasoning
     } catch (err) {
+      if (signal?.aborted) return STOPPED_TURN
       console.error("[assistant/chat] image analysis failed", err)
       writer.write(
         toolOutputError(
@@ -964,6 +739,7 @@ async function runAssistantTurn({
       // çıkar.
       return { awaiting: false, hardError: !isAbortError(err) }
     }
+    if (signal?.aborted) return STOPPED_TURN
 
     if (parseReasoning) {
       await emitReasoning(writer, parseReasoning)
@@ -1036,7 +812,10 @@ async function runAssistantTurn({
       toolInputAvailable(lookupCallId, "lookupProducts", { items: parsedItems }),
     )
 
+    // lookupProducts iptalde patlamaz (eşleştirme LLM'i düşerse ilk adaya
+    // geri döner); durdurulduysa sonucu burada bırak.
     const { matches } = await lookupProducts(parsedItems, loc, aiOpts)
+    if (signal?.aborted) return STOPPED_TURN
 
     writer.write(toolOutputAvailable(lookupCallId, { matches }))
 
@@ -1091,6 +870,7 @@ async function runAssistantTurn({
     )
 
     const { matches } = await lookupProducts(parsedItems, loc, aiOpts)
+    if (signal?.aborted) return STOPPED_TURN // bkz. fiş onayındaki aynı kontrol
 
     writer.write(toolOutputAvailable(lookupCallId, { matches }))
 
@@ -1126,6 +906,7 @@ async function runAssistantTurn({
     basket = result.draft
     parseReasoning = result.reasoning
   } catch (err) {
+    if (signal?.aborted) return STOPPED_TURN
     console.error("[assistant/chat] parse failed", err)
     const busy = isModelOverloaded(err)
     writer.write(
@@ -1139,6 +920,7 @@ async function runAssistantTurn({
     // hardError DEĞİLDİR (bkz. receiptImage kolundaki aynı gerekçe).
     return { awaiting: false, hardError: !isAbortError(err) }
   }
+  if (signal?.aborted) return STOPPED_TURN
 
   if (parseReasoning) {
     await emitReasoning(writer, parseReasoning)

@@ -426,6 +426,7 @@ function buildMarketOptions(accepted: HitList): MarketOption[] {
           effectiveCost: total,
           unitPriceLabel: mp.unitPrice ?? null,
           depotName: mp.depotName,
+          imageUrl: cand.imageUrl,
         })
       }
     }

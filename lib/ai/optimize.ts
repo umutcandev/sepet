@@ -15,6 +15,7 @@ type MarketChoice = {
   productId: string
   productName: string
   depotName: string | null
+  imageUrl: string | null
 }
 
 type ItemMarketPrice = {
@@ -43,6 +44,7 @@ function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
           productId: opt.productId,
           productName: opt.productName,
           depotName: opt.depotName,
+          imageUrl: opt.imageUrl,
         })
       }
     }
@@ -104,6 +106,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
         lineTotal: choice.cost,
         sizeMismatch: item.sizeMismatch,
         depotName: choice.depotName,
+        imageUrl: choice.imageUrl,
       })
     }
     if (count === 0) continue
@@ -181,6 +184,7 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
           lineTotal: choice.cost,
           sizeMismatch: item.sizeMismatch,
           depotName: choice.depotName,
+          imageUrl: choice.imageUrl,
         })
       }
       if (!valid) continue

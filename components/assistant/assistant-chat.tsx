@@ -9,6 +9,7 @@ import {
   RiAlertLine,
   RiArrowDownSLine,
   RiSparklingLine,
+  RiStopCircleLine,
 } from "@remixicon/react"
 
 import {
@@ -38,8 +39,11 @@ import type {
   OptimizationSummary,
   ReceiptOCR,
 } from "@/lib/ai/schemas"
-import { ProductMatchList } from "./product-match-list"
-import { OptimizationCard } from "./optimization-card"
+import { UnmatchedProductList } from "./unmatched-product-list"
+import {
+  OptimizationCard,
+  type ProductImageFallback,
+} from "./optimization-card"
 import {
   ReceiptApprovalCard,
   type ApprovalSubmit,
@@ -57,7 +61,15 @@ import {
   type BasketContextPayload,
 } from "./basket-save-card"
 import { ThinkingText } from "./ai-thinking-text"
-import { Marker, MarkerContent } from "@/components/ui/marker"
+import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
+import {
+  STOPPED_PART_TYPE,
+  approvalKind,
+  hasStoppedMarker,
+  resolveApprovalCard,
+  statusAfterStop,
+  type MessageLike,
+} from "@/lib/assistant/turn-state"
 import { PressFx } from "@/components/motion/press-fx"
 import { cn } from "@/lib/utils"
 
@@ -132,6 +144,13 @@ export function AssistantChat({
     [],
   )
   /* eslint-enable react-hooks/refs, react-hooks/preserve-manual-memoization */
+  // Stop ile kesilen turlar. Anahtar, durdurulan asistan mesajının id'si; ilk
+  // chunk gelmeden durdurulduysa asistan mesajı hiç oluşmaz, o zaman cevabı
+  // gelmeyen kullanıcı mesajının id'si. Yeniden yüklenen sohbette aynı bilgi
+  // sunucunun kaydettiği `data-stopped` part'ından okunur (bkz. turn-state).
+  const [stoppedIds, setStoppedIds] = React.useState<ReadonlySet<string>>(
+    () => new Set(),
+  )
   const { messages, sendMessage, status, stop, error } = useChat({
     transport,
     messages: initialMessages as UIMessage[] | undefined,
@@ -195,10 +214,30 @@ export function AssistantChat({
         }
       }
     },
-    onFinish: () => {
+    onFinish: ({ message, messages: finalMessages, isAbort }) => {
       // Sunucu title event'i göndermediyse skeleton'u kapat — header
       // çizgide kalır ya da varsa mevcut title'a düşer.
       assistantTitle.setLoading(false)
+      if (isAbort) {
+        const cut = finalMessages.find((m) => m.id === message.id)
+        const lastUser = [...finalMessages]
+          .reverse()
+          .find((m) => m.role === "user")
+        const key = cut?.id ?? lastUser?.id
+        if (key) setStoppedIds((prev) => new Set(prev).add(key))
+        // Kesilen akış durum event'ini getiremez; sunucunun kaydettiği
+        // durumla aynı kurala göre burada yaz.
+        const stoppedId = conversationIdRef.current
+        if (stoppedId) {
+          assistantConversations.setStatus(
+            stoppedId,
+            statusAfterStop(
+              cut?.parts ?? [],
+              lastUser ? approvalKind(lastUser) !== null : false,
+            ),
+          )
+        }
+      }
       // NOT: Eskiden burada router.refresh() vardı — sidebar konuşma
       // listesini güncellemek için. Ama URL replaceState ile değişmişken
       // refresh, segment tree'yi /asistan → /asistan/[id]'ye swap edip
@@ -439,6 +478,30 @@ export function AssistantChat({
     [isBusy, sendMessage],
   )
 
+  const isStoppedMessage = React.useCallback(
+    (m: MessageLike) => stoppedIds.has(m.id) || hasStoppedMarker(m.parts),
+    [stoppedIds],
+  )
+  // İlk chunk gelmeden durdurulan turda asistan mesajı hiç oluşmaz. Sunucu o
+  // turu yalnızca durdurma işaretini taşıyan bir mesaj olarak kaydeder; aynısı
+  // burada da eklenir ki canlı görünüm ile yeniden yüklenen sohbet aynı olsun.
+  const thread = React.useMemo(
+    () =>
+      messages.flatMap((m) =>
+        m.role === "user" && stoppedIds.has(m.id)
+          ? [
+              m,
+              {
+                id: `${m.id}-stopped`,
+                role: "assistant",
+                parts: [{ type: STOPPED_PART_TYPE, data: {} }],
+              } satisfies UIMessage,
+            ]
+          : [m],
+      ),
+    [messages, stoppedIds],
+  )
+
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4">
       {messages.length === 0 && !showSeedOptimistic ? (
@@ -508,52 +571,57 @@ export function AssistantChat({
                 </Message>
               </>
             )}
-            {messages.map((m, msgIdx) => {
-              const isLatestAssistant =
-                m.role === "assistant" && msgIdx === messages.length - 1
-              const nextMsg = messages[msgIdx + 1]
-              const nextMeta = (nextMsg as { metadata?: unknown } | undefined)
-                ?.metadata as
+            {thread.map((m, msgIdx) => {
+              // Yalnızca şu an akan mesajın bitmemiş part'ları "yükleniyor"
+              // gösterir. Stop'tan (ya da hatadan) sonra çıktısı hiç gelmeyecek
+              // bir tool çağrısı sonsuza dek "Hallediyorum…" diye dönüyordu ve
+              // durdurma işe yaramamış gibi görünüyordu.
+              const isStreamingMsg =
+                isBusy &&
+                m.role === "assistant" &&
+                msgIdx === thread.length - 1
+              const stopped = isStoppedMessage(m)
+              const card =
+                m.role === "assistant"
+                  ? resolveApprovalCard(thread, msgIdx, {
+                      busy: isBusy,
+                      isStopped: isStoppedMessage,
+                    })
+                  : null
+              const approvalMeta = card?.approval?.metadata as
                 | { kind?: string; payload?: { items?: BasketApprovalSubmit["items"] } }
                 | undefined
               const approvedBasketItems =
-                nextMsg?.role === "user" &&
-                nextMeta?.kind === "basketApproval" &&
-                Array.isArray(nextMeta.payload?.items)
-                  ? nextMeta.payload!.items
+                approvalMeta?.kind === "basketApproval" &&
+                Array.isArray(approvalMeta.payload?.items)
+                  ? approvalMeta.payload.items
                   : undefined
               // Aktif (henüz "done" olmayan) bir reasoning part'ı varsa
               // pending tool part'larının yükleniyor etiketi ("Hallediyorum…"
               // vb.) bastırılır — aynı anda iki "düşünme" animasyonu (örn.
               // "Hallediyorum" + "Düşünüyorum") görmemek için. Reasoning
               // "done" olur olmaz tool kendi etiketini gösterir.
-              const hasActiveReasoning = m.parts.some(
-                (p) =>
-                  p.type === "reasoning" &&
-                  (p as { state?: string }).state !== "done",
-              )
-              // Asistan mesajlarında text/reasoning kısımlarını tool & file
-              // kart(lar)ından ÖNCE render et. Sunucu stream sırası genelde
-              // [tool, reasoning, text] şeklinde geliyor; kullanıcı için
-              // doğal okuma sırası ise önce kısa özet/açıklama, sonra
-              // detay/kart. User mesajlarında parts olduğu gibi gösterilir.
+              const hasActiveReasoning =
+                isStreamingMsg &&
+                m.parts.some(
+                  (p) =>
+                    p.type === "reasoning" &&
+                    (p as { state?: string }).state !== "done",
+                )
+              const suppressToolLoader = !isStreamingMsg || hasActiveReasoning
               const orderedParts =
-                m.role === "assistant"
-                  ? [
-                      ...m.parts.filter(
-                        (p) => p.type === "text" || p.type === "reasoning",
-                      ),
-                      ...m.parts.filter(
-                        (p) => p.type !== "text" && p.type !== "reasoning",
-                      ),
-                    ]
-                  : m.parts
+                m.role === "assistant" ? orderAssistantParts(m.parts) : m.parts
+              // Fiş turunda karşılaştırma kartı her satırı (eşleşmeyenler
+              // dahil, "eşleşme yok") zaten listeliyor; ayrı bir
+              // Eşleştirilemeyen Ürünler kartı aynı bilgiyi tekrarlardı.
+              const hasReceiptComparison = m.parts.some(
+                (p) => p.type === "tool-receiptComparison",
+              )
               return (
                 <Message from={m.role} key={m.id}>
                   <MessageContent>
                     {orderedParts.map((part, i) => {
                       const key = `${m.id}-${i}`
-                      const suppressToolLoader = hasActiveReasoning
                       switch (part.type) {
                         case "text":
                           return (
@@ -573,7 +641,7 @@ export function AssistantChat({
                             <ReasoningBlock
                               key={key}
                               text={text}
-                              streaming={p.state !== "done"}
+                              streaming={isStreamingMsg && p.state !== "done"}
                             />
                           )
                         }
@@ -588,7 +656,7 @@ export function AssistantChat({
                               return (
                                 <BasketApprovalCard
                                   data={draft}
-                                  alreadyApproved={!isLatestAssistant}
+                                  alreadyApproved={card?.locked}
                                   approvedItems={approvedBasketItems}
                                   onApprove={handleBasketApprove}
                                 />
@@ -623,13 +691,14 @@ export function AssistantChat({
                             key,
                             part,
                             "Ürünleri aratıyorum…",
-                            (out) => (
-                              <ProductMatchList
-                                matches={
-                                  (out as { matches: MatchResult[] }).matches
-                                }
-                              />
-                            ),
+                            (out) =>
+                              hasReceiptComparison ? null : (
+                                <UnmatchedProductList
+                                  matches={
+                                    (out as { matches: MatchResult[] }).matches
+                                  }
+                                />
+                              ),
                             suppressToolLoader,
                           )
                         case "tool-summarizeOptimization":
@@ -640,6 +709,7 @@ export function AssistantChat({
                             (out) => (
                               <OptimizationCard
                                 summary={out as OptimizationSummary}
+                                imageFallback={matchImageFallback(m.parts)}
                               />
                             ),
                             suppressToolLoader,
@@ -652,7 +722,7 @@ export function AssistantChat({
                             (out) => (
                               <ReceiptApprovalCard
                                 data={out as ParseReceiptOutput}
-                                alreadyApproved={!isLatestAssistant}
+                                alreadyApproved={card?.locked}
                                 onApprove={handleApprove}
                               />
                             ),
@@ -674,7 +744,7 @@ export function AssistantChat({
                                       receiptImageUrl,
                                       receiptImageR2Key,
                                     }}
-                                    alreadyApproved={!isLatestAssistant}
+                                    alreadyApproved={card?.locked}
                                     onApprove={handleApprove}
                                   />
                                 )
@@ -687,7 +757,7 @@ export function AssistantChat({
                                 return (
                                   <BasketApprovalCard
                                     data={draft}
-                                    alreadyApproved={!isLatestAssistant}
+                                    alreadyApproved={card?.locked}
                                     approvedItems={approvedBasketItems}
                                     onApprove={handleBasketApprove}
                                   />
@@ -751,6 +821,7 @@ export function AssistantChat({
                           return null
                       }
                     })}
+                    {m.role === "assistant" && stopped && <StoppedMarker />}
                   </MessageContent>
                 </Message>
               )
@@ -845,6 +916,65 @@ function renderToolPart(
         <MarkerContent className="shimmer font-medium">{loadingLabel}</MarkerContent>
       </Marker>
     </div>
+  )
+}
+
+type PartLike = UIMessage["parts"][number]
+
+/**
+ * Asistan mesajında text/reasoning kısımları tool & file kart(lar)ından ÖNCE
+ * gelir: sunucu stream sırası genelde [tool, reasoning, text]; kullanıcı için
+ * doğal okuma sırası ise önce kısa özet/açıklama, sonra detay/kart.
+ *
+ * Kartlarda asıl sonuç Sepet Özeti: eşleştirme part'ı (artık yalnızca
+ * eşleştirilemeyen kalemleri gösteriyor) sunucuda önce gelse de özetin
+ * hemen ALTINA taşınır. Eski sohbetler de aynı sırayla görünür.
+ */
+function orderAssistantParts(parts: PartLike[]): PartLike[] {
+  const isProse = (p: PartLike) => p.type === "text" || p.type === "reasoning"
+  const prose = parts.filter(isProse)
+  const cards = parts.filter((p) => !isProse(p))
+  const at = cards.findIndex((p) => p.type === "tool-summarizeOptimization")
+  // Özet henüz gelmediyse eşleştirme part'ı (yükleniyor etiketi) yerinde kalır.
+  if (at === -1) return [...prose, ...cards]
+  const isLookup = (p: PartLike) => p.type === "tool-lookupProducts"
+  return [
+    ...prose,
+    ...cards.slice(0, at + 1).filter((p) => !isLookup(p)),
+    ...cards.filter(isLookup),
+    ...cards.slice(at + 1).filter((p) => !isLookup(p)),
+  ]
+}
+
+/**
+ * Görsel alanından önce kaydedilmiş sohbetlerde Sepet Özeti dökümü
+ * görselsizdir; aynı turun eşleşmelerinden productId → görsel eşlemesi kurulur.
+ */
+function matchImageFallback(parts: PartLike[]): ProductImageFallback | undefined {
+  const lookup = parts.find(
+    (p) =>
+      p.type === "tool-lookupProducts" &&
+      (p as { state?: string }).state === "output-available",
+  ) as { output?: { matches?: MatchResult[] } } | undefined
+  const matches = lookup?.output?.matches
+  if (!matches) return undefined
+  const images: ProductImageFallback = {}
+  for (const m of matches) {
+    for (const product of [m.bestMatch, ...m.alternatives]) {
+      if (product?.imageUrl) images[product.productId] = product.imageUrl
+    }
+  }
+  return images
+}
+
+function StoppedMarker() {
+  return (
+    <Marker role="status">
+      <MarkerIcon>
+        <RiStopCircleLine />
+      </MarkerIcon>
+      <MarkerContent>Yanıtı durdurdun.</MarkerContent>
+    </Marker>
   )
 }
 
