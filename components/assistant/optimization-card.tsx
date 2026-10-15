@@ -1,7 +1,13 @@
 "use client"
 
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import Image from "next/image"
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type Transition,
+} from "motion/react"
 import {
   RiArrowDownLine,
   RiArrowDownSLine,
@@ -15,6 +21,7 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { formatPercent, formatTL } from "@/lib/format"
 import { DepotInfo } from "@/components/assistant/depot-info"
+import { EASE_OUT_EXPO } from "@/lib/motion"
 import type { MarketAllocation, OptimizationSummary } from "@/lib/ai/schemas"
 
 function capitalize(s: string): string {
@@ -154,6 +161,78 @@ function AllocationBreakdown({
   )
 }
 
+/**
+ * Kullanıcı bir Sepet Özeti satırını en az bir kez açtı mı. Açtıysa satırların
+ * açılabildiğini öğrenmiştir; ipucu animasyonu bir daha oynamaz. Kişisel bir
+ * kolaylık, kaybolursa yalnızca ipucu tekrar oynar.
+ */
+const HINT_KEY = "sepet:summary-accordion-opened"
+
+function hintLearned(): boolean {
+  try {
+    return window.localStorage.getItem(HINT_KEY) === "1"
+  } catch {
+    return false
+  }
+}
+
+function markHintLearned() {
+  try {
+    window.localStorage.setItem(HINT_KEY, "1")
+  } catch {
+    // depolama kapalı → ipucu bir sonraki kartta yine oynar
+  }
+}
+
+/** Kart göründükten sonra ipucunun başlamasına kadar geçen süre. */
+const PEEK_DELAY_MS = 700
+/** İpucunda dökümün aralandığı yükseklik: ilk satırın yaklaşık yarısı. */
+const PEEK_HEIGHT = 44
+
+const EXPAND: Transition = { duration: 0.32, ease: EASE_OUT_EXPO }
+const PEEK: Transition = {
+  duration: 1.6,
+  times: [0, 0.3, 0.65, 1],
+  ease: "easeInOut",
+}
+
+/**
+ * Sepet Özeti'nin satırları akordiyon; ama kapalı bir satır yalnızca küçük
+ * bir okla bunu söylüyor ve ilk kez gören kullanıcı dökümün varlığını fark
+ * etmiyordu. İpucu: satır ekrana ilk girdiğinde döküm kendiliğinden biraz
+ * aralanıp geri kapanır. Kullanıcı bir satırı açtığında öğrenilmiş sayılır ve
+ * bir daha oynamaz. Hareket azaltma tercihinde hiç oynamaz.
+ */
+function usePeekHint(
+  ref: React.RefObject<HTMLElement | null>,
+  enabled: boolean,
+) {
+  const [peeking, setPeeking] = useState(false)
+  const reduceMotion = useReducedMotion()
+  useEffect(() => {
+    const el = ref.current
+    if (!enabled || reduceMotion || !el || hintLearned()) return
+    if (typeof IntersectionObserver === "undefined") return
+    let timer: number | undefined
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return
+        io.disconnect()
+        timer = window.setTimeout(() => {
+          if (!hintLearned()) setPeeking(true)
+        }, PEEK_DELAY_MS)
+      },
+      { threshold: 0.6 },
+    )
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      if (timer) window.clearTimeout(timer)
+    }
+  }, [enabled, reduceMotion, ref])
+  return [peeking, setPeeking] as const
+}
+
 function OptionRow({
   logo,
   label,
@@ -166,6 +245,7 @@ function OptionRow({
   allocation,
   markets,
   imageFallback,
+  hint = false,
 }: {
   logo: React.ReactNode
   label: string
@@ -179,23 +259,38 @@ function OptionRow({
   allocation: MarketAllocation[]
   markets: string[]
   imageFallback?: ProductImageFallback
+  /** Kartın önerdiği ilk satır: açılabildiğini ipucuyla gösterir. */
+  hint?: boolean
 }) {
   const [open, setOpen] = useState(false)
+  const reduceMotion = useReducedMotion()
   // Döküm eklenmeden önce kaydedilmiş özetlerde `allocation` boş dizi olur
   // (bkz. şemadaki `.default([])`) — kart toplamı ve marketi gösterir, yalnızca
   // açılır döküm kapalı kalır.
   const canExpand = allocation.length > 0
+  const rowRef = useRef<HTMLButtonElement>(null)
+  const [peeking, setPeeking] = usePeekHint(rowRef, hint && canExpand)
+
+  function toggle() {
+    if (!canExpand) return
+    // İpucu sürerken dokunulursa döküm o yükseklikten açılmaya devam eder.
+    setPeeking(false)
+    markHintLearned()
+    setOpen((v) => !v)
+  }
 
   return (
     <div>
       <button
+        ref={rowRef}
         type="button"
-        onClick={() => canExpand && setOpen((v) => !v)}
+        onClick={toggle}
         disabled={!canExpand}
         aria-expanded={canExpand ? open : undefined}
         className={cn(
-          "flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors focus-visible:inset-ring-3 focus-visible:inset-ring-ring/50",
+          "flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors duration-300 focus-visible:inset-ring-3 focus-visible:inset-ring-ring/50",
           canExpand && "cursor-pointer hover:bg-muted/40",
+          peeking && "bg-muted/40",
         )}
       >
         {logo}
@@ -224,21 +319,48 @@ function OptionRow({
           {totalNote}
         </div>
         {canExpand && (
-          <RiArrowDownSLine
-            className={cn(
-              "size-4 shrink-0 text-muted-foreground transition-transform",
-              open && "rotate-180",
-            )}
-          />
+          <motion.span
+            aria-hidden="true"
+            className="shrink-0"
+            animate={peeking ? { y: [0, 3, 0, 3, 0] } : { y: 0 }}
+            transition={peeking ? { duration: 1.2, ease: "easeInOut" } : EXPAND}
+          >
+            <RiArrowDownSLine
+              className={cn(
+                "size-4 text-muted-foreground transition-transform",
+                open && "rotate-180",
+              )}
+            />
+          </motion.span>
         )}
       </button>
-      {open && canExpand && (
-        <AllocationBreakdown
-          allocation={allocation}
-          markets={markets}
-          imageFallback={imageFallback}
-        />
-      )}
+      <AnimatePresence initial={false}>
+        {canExpand && (open || peeking) && (
+          <motion.div
+            key="breakdown"
+            className="overflow-hidden"
+            initial={{ height: 0 }}
+            animate={
+              open
+                ? { height: "auto", transition: reduceMotion ? { duration: 0 } : EXPAND }
+                : { height: [0, PEEK_HEIGHT, PEEK_HEIGHT, 0], transition: PEEK }
+            }
+            exit={{ height: 0, transition: reduceMotion ? { duration: 0 } : EXPAND }}
+            onAnimationComplete={() => {
+              if (!open) setPeeking(false)
+            }}
+            // İpucu sırasında döküm yalnızca görsel; odak ve ekran okuyucu
+            // yalnızca kullanıcının açtığı dökümü görür.
+            inert={!open}
+          >
+            <AllocationBreakdown
+              allocation={allocation}
+              markets={markets}
+              imageFallback={imageFallback}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
@@ -265,6 +387,7 @@ export function OptimizationCard({
   const singleRow = (
     <OptionRow
       key="single"
+      hint={!comboFirst}
       logo={<MarketLogo name={singleMarket.market} size="default" />}
       label={
         singleIsFull
@@ -294,6 +417,7 @@ export function OptimizationCard({
   const comboRow = hasCombo ? (
     <OptionRow
       key="combo"
+      hint={comboFirst}
       logo={<MarketLogoGroup names={twoMarketCombo.markets} size="default" />}
       label={
         comboFirst ? "Tüm sepeti karşılayan kombinasyon" : "İki market kombinasyonu"
