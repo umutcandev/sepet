@@ -672,10 +672,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                               )}
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onSelect={(e) => {
-                                e.preventDefault()
-                                setRenameTarget(c)
-                              }}
+                              onSelect={() => setRenameTarget(c)}
                             >
                               <RiPencilLine className="size-4" />
                               Yeniden adlandır
@@ -692,10 +689,7 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                               variant="destructive"
-                              onSelect={(e) => {
-                                e.preventDefault()
-                                setSingleDeleteTarget(c)
-                              }}
+                              onSelect={() => setSingleDeleteTarget(c)}
                             >
                               <RiDeleteBinLine className="size-4" />
                               Sil

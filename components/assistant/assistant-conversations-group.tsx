@@ -349,12 +349,7 @@ function ConversationRow({
               </>
             )}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onSelect={(e) => {
-              e.preventDefault()
-              onRename(c)
-            }}
-          >
+          <DropdownMenuItem onSelect={() => onRename(c)}>
             <RiPencilLine className="size-4" />
             Yeniden adlandır
           </DropdownMenuItem>
@@ -363,13 +358,7 @@ function ConversationRow({
             Paylaş
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            variant="destructive"
-            onSelect={(e) => {
-              e.preventDefault()
-              onDelete(c)
-            }}
-          >
+          <DropdownMenuItem variant="destructive" onSelect={() => onDelete(c)}>
             <RiDeleteBinLine className="size-4" />
             Sil
           </DropdownMenuItem>
