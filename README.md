@@ -44,7 +44,7 @@ Yapay zekâ katmanı Vercel AI SDK ile Google Gemini 2.5 Flash Lite modelini kul
 
 ## Yerel Geliştirme
 
-Node.js 20 ve pnpm 9 gerekir. Gerekli ortam değişkenlerinin tam listesi için `.env.example` dosyasına bakınız.
+Node.js 22 ve pnpm 9 gerekir. Gerekli ortam değişkenlerinin tam listesi için `.env.example` dosyasına bakınız.
 
 ```bash
 git clone https://github.com/umutcandev/sepet.git

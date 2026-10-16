@@ -3,6 +3,7 @@ import {
   text,
   timestamp,
   integer,
+  bigint,
   numeric,
   boolean,
   uuid,
@@ -81,6 +82,12 @@ export const users = pgTable("user", {
   totpEnabled: boolean("totpEnabled").notNull().default(false),
   totpSecretEnc: text("totpSecretEnc"),
   totpLastUsedStep: integer("totpLastUsedStep"),
+  // ─── Geçiş anahtarı (WebAuthn) kullanıcı tanıtıcısı ───
+  // Authenticator'a `user.id` olarak verilen opak, rastgele 32 bayt (base64url).
+  // Spec gereği PII olamaz (e-posta/user id değil); ilk geçiş anahtarında bir kez
+  // üretilir ve kullanıcının tüm anahtarlarında aynı kalır — aynı cihazda ikinci
+  // kayıt eskisinin üzerine yazılır, girişte userHandle bu değerle eşleşmeli.
+  webauthnUserId: text("webauthnUserId").unique(),
 })
 
 export const accounts = pgTable(
@@ -165,8 +172,10 @@ export const verificationTokens = pgTable(
 // hesap devralma senaryosunu kapatır.
 //
 // purpose "totp_setup" (şifresiz hesapta 2FA kurulumu için yeniden
-// doğrulama) için userId dolu. Sosyal giriş hesabına şifre belirleme burada DEĞİL,
-// password_reset üzerinden link ile yürür (bkz. requestSetPasswordLinkAction).
+// doğrulama) ve "reauth" (şifresiz hesapta hassas işlem öncesi yeniden
+// doğrulama, bkz. lib/auth/sudo.ts) için userId dolu. Sosyal giriş hesabına
+// şifre belirleme burada DEĞİL, password_reset üzerinden link ile yürür (bkz.
+// requestSetPasswordLinkAction).
 // Kod ve token yalnız HMAC (codeHash/tokenHash) olarak saklanır. Tek satır per
 // (email, purpose): yeni istek öncekini ezer. TTL 15 dk, max 5 deneme.
 export const emailVerification = pgTable(
@@ -176,7 +185,9 @@ export const emailVerification = pgTable(
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID()),
     email: text("email").notNull(),
-    purpose: text("purpose").$type<"signup" | "totp_setup">().notNull(),
+    purpose: text("purpose")
+      .$type<"signup" | "totp_setup" | "reauth">()
+      .notNull(),
     userId: text("userId").references(() => users.id, { onDelete: "cascade" }),
     codeHash: text("codeHash").notNull(),
     tokenHash: text("tokenHash").notNull(),
@@ -256,6 +267,44 @@ export const twoFactorRecoveryCode = pgTable(
     createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
   },
   (t) => [index("two_factor_recovery_user_idx").on(t.userId)],
+)
+
+// ─── Geçiş anahtarları (WebAuthn / passkey) ───
+// Her satır bir kimlik bilgisi. Sır yok: publicKey yalnız imza doğrular, özel
+// anahtar authenticator'dan hiç çıkmaz. credentialId global unique — aynı
+// kimlik ikinci kez kaydedilemez (L3: RP kaydı reddetmeli).
+//
+// counter WebAuthn'da uint32 → int4'e sığmaz, bigint. Senkronize anahtarlarda
+// (iCloud, Google…) hep 0 kalır; sıfırdan farklıysa gerilemesi klon işaretidir
+// ve doğrulama reddedilir (bkz. lib/auth/webauthn.ts).
+// deviceType kayıtta sabittir (singleDevice = cihaza bağlı, multiDevice =
+// senkronize edilebilir); backedUp ise her girişte tazelenir, sonradan değişebilir.
+export const passkeys = pgTable(
+  "passkey",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    credentialId: text("credentialId").notNull(),
+    publicKey: text("publicKey").notNull(),
+    counter: bigint("counter", { mode: "number" }).notNull().default(0),
+    transports: jsonb("transports").$type<string[]>(),
+    aaguid: text("aaguid"),
+    deviceType: text("deviceType")
+      .$type<"singleDevice" | "multiDevice">()
+      .notNull(),
+    backedUp: boolean("backedUp").notNull().default(false),
+    name: text("name").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+    lastUsedAt: timestamp("lastUsedAt", { mode: "date" }),
+  },
+  (t) => [
+    uniqueIndex("passkey_credential_idx").on(t.credentialId),
+    index("passkey_user_idx").on(t.userId),
+  ],
 )
 
 // ─── Sepet: ürün / fiyat cache ───

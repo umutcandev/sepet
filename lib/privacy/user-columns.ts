@@ -32,4 +32,5 @@ export const EXCLUDED_USER_COLUMNS = [
   "passwordHash",
   "totpSecretEnc",
   "totpLastUsedStep",
+  "webauthnUserId",
 ] as const

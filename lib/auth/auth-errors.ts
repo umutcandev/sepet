@@ -9,6 +9,10 @@ const MESSAGES: Record<string, string> = {
   "2fa_invalid": "Kod doğrulanamadı. Tekrar dene.",
   pending_expired: "Oturum doğrulama süresi doldu. Baştan giriş yap.",
   rate_limited: "Çok fazla deneme yaptın. Lütfen biraz bekle.",
+  passkey_invalid: "Geçiş anahtarı doğrulanamadı. Tekrar dene.",
+  passkey_unknown:
+    "Bu geçiş anahtarı artık hesabında kayıtlı değil. Başka bir yöntemle giriş yap.",
+  passkey_expired: "Giriş isteğinin süresi doldu. Tekrar dene.",
 }
 
 const FALLBACK = "Giriş yapılamadı. Lütfen tekrar dene."

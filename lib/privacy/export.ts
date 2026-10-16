@@ -5,6 +5,7 @@ import {
   db,
   users,
   accounts,
+  passkeys,
   userSessions,
   usageCounters,
   baskets,
@@ -131,15 +132,28 @@ export function buildUserExportStream(
               .from(usageCounters)
               .where(eq(usageCounters.userId, userId)),
           ])
+          // Açık anahtar ve kimlik bilgisi ID'si dahil edilmez: kullanıcıya
+          // anlamı yok, yalnız ad ve kullanım bilgisi.
+          const passkeyRows = await db
+            .select({
+              name: passkeys.name,
+              deviceType: passkeys.deviceType,
+              backedUp: passkeys.backedUp,
+              createdAt: passkeys.createdAt,
+              lastUsedAt: passkeys.lastUsedAt,
+            })
+            .from(passkeys)
+            .where(eq(passkeys.userId, userId))
 
           addJson(`${ROOT}/profil.json`, {
             profil: user ?? null,
             baglıHesaplar: providerRows,
+            gecisAnahtarlari: passkeyRows,
             oturumlar: sessionRows,
             kullanim: usageRows,
           })
           includedSections.push(
-            "profil.json — profil, bağlı hesaplar, oturumlar, kullanım",
+            "profil.json — profil, bağlı hesaplar, geçiş anahtarları, oturumlar, kullanım",
           )
         }
 

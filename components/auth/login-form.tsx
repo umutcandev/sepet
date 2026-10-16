@@ -4,7 +4,11 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
-import { RiArrowLeftLine, RiArrowRightUpLine } from "@remixicon/react"
+import {
+  RiArrowLeftLine,
+  RiArrowRightUpLine,
+  RiFingerprintLine,
+} from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +16,7 @@ import { PasswordInput } from "@/components/auth/password-input"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
 import { OtpField } from "@/components/auth/otp-field"
+import { usePasskeyLogin } from "@/components/auth/use-passkey-login"
 import {
   Dialog,
   DialogContent,
@@ -175,11 +180,19 @@ export function LoginForm({ callbackUrl }: Props) {
   // Başarılı girişte OAuth dönüşünü aynalayan tam navigasyon (fresh session).
   // markPending: navigasyon sonrası ilk boyamada iyimser "authed" ipucu — Google
   // akışıyla aynı; /api/me gerçeği yazana dek avatar skeleton'ı gösterilir.
-  function completeLogin(target: string) {
-    setLastLoginMethod("email")
+  function completeLogin(target: string, method: LastLoginMethod = "email") {
+    setLastLoginMethod(method)
     sessionSnapshot.markPending()
     window.location.assign(target)
   }
+
+  // Geçiş anahtarı: e-posta alanlarındaki otomatik doldurma + method aşamasındaki
+  // buton. Hatalar toast'la gösterilir (method aşamasında form hata alanı yok).
+  const passkey = usePasskeyLogin({
+    callbackUrl,
+    onSuccess: (target) => completeLogin(target, "passkey"),
+    onError: (message) => toast.error(message),
+  })
 
   // loginAction sonucunu işler: 2FA istiyorsa aşamaya geç, değilse yönlendir.
   function handleLoginResult(
@@ -426,6 +439,29 @@ export function LoginForm({ callbackUrl }: Props) {
                     {lastMethod === "facebook" ? <LastUsedBadge /> : null}
                   </form>
 
+                  {passkey.available ? (
+                    <div className="relative">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="xl"
+                        className="w-full"
+                        disabled={passkey.busy}
+                        onClick={passkey.signIn}
+                      >
+                        <span className="flex h-5 w-[20px] items-center justify-center">
+                          {passkey.busy ? (
+                            <Spinner />
+                          ) : (
+                            <RiFingerprintLine className="size-[18px]" />
+                          )}
+                        </span>
+                        Geçiş anahtarı ile devam et
+                      </Button>
+                      {lastMethod === "passkey" ? <LastUsedBadge /> : null}
+                    </div>
+                  ) : null}
+
                   <div className="flex items-center gap-3" aria-hidden>
                     <span className="h-px flex-1 bg-border" />
                     <span className="text-xs tracking-[-0.01em] text-muted-foreground/60">
@@ -443,12 +479,14 @@ export function LoginForm({ callbackUrl }: Props) {
                       goStage("email-login")
                     }}
                   >
+                    {/* "webauthn" son token olmalı: bekleyen otomatik doldurma
+                        isteği bu alana odaklanınca geçiş anahtarlarını önerir. */}
                     <Input
                       id="method-email"
                       name="email"
                       type="email"
                       inputMode="email"
-                      autoComplete="email"
+                      autoComplete="username webauthn"
                       aria-label="E-posta adresin"
                       required
                       placeholder="E-posta adresin"
@@ -483,7 +521,7 @@ export function LoginForm({ callbackUrl }: Props) {
                       name="email"
                       type="email"
                       inputMode="email"
-                      autoComplete="email"
+                      autoComplete="username webauthn"
                       required
                       autoFocus={!email}
                       className="h-10.5 rounded-xl px-3"

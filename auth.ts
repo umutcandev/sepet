@@ -23,8 +23,11 @@ import {
   claimTotpStep,
   consumeRecoveryCode,
 } from "@/lib/auth/totp"
+import { verifyAssertion } from "@/lib/auth/webauthn"
+import { grantSudo } from "@/lib/auth/sudo"
 import {
   credentialsLoginLimiter,
+  passkeyLoginLimiter,
   twoFactorUserLimiter,
 } from "@/lib/security/rate-limit"
 
@@ -56,6 +59,65 @@ export class PendingExpiredError extends CredentialsSignin {
 }
 export class RateLimitedError extends CredentialsSignin {
   code = "rate_limited"
+}
+export class PasskeyInvalidError extends CredentialsSignin {
+  code = "passkey_invalid"
+}
+export class PasskeyUnknownError extends CredentialsSignin {
+  code = "passkey_unknown"
+}
+export class PasskeyExpiredError extends CredentialsSignin {
+  code = "passkey_expired"
+}
+
+// Geçiş anahtarı yanıtı form alanı olarak JSON string gelir; makul üst sınır.
+const MAX_PASSKEY_PAYLOAD = 64 * 1024
+
+// Geçiş anahtarıyla giriş (Credentials provider "passkey"). authorize kendi
+// başına yeterli olmalı: /api/auth/callback/passkey'e doğrudan POST da atılabilir.
+// Challenge tüketimi, kimlik bilgisi araması, imza + UV doğrulaması ve sayaç
+// güncellemesi verifyAssertion'da (lib/auth/webauthn.ts).
+//
+// TOTP BİLEREK SORULMAZ: UV (biyometri/PIN) zorunlu doğrulanmış bir geçiş
+// anahtarı zaten iki faktörlü ve oltalamaya dayanıklıdır (cihaz + biyometri/PIN;
+// NIST 800-63B AAL2, GitHub ile aynı duruş). UV'siz imza verifyAssertion'da reddedilir.
+async function authorizePasskey(raw: string) {
+  let parsed: unknown = null
+  if (raw && raw.length <= MAX_PASSKEY_PAYLOAD) {
+    try {
+      parsed = JSON.parse(raw)
+    } catch {
+      parsed = null
+    }
+  }
+
+  // Kimlik bilgisi başına yumuşak tavan (IP ekseni passkeyLoginAction'da).
+  const credentialId = (parsed as { id?: unknown } | null)?.id
+  if (typeof credentialId === "string" && credentialId.length <= 2048) {
+    if (!(await passkeyLoginLimiter.limit(`cred:${credentialId}`)).success) {
+      throw new RateLimitedError()
+    }
+  }
+
+  const result = await verifyAssertion(parsed, "login")
+  if (!result.ok) {
+    if (result.code === "expired") throw new PasskeyExpiredError()
+    if (result.code === "unknown") throw new PasskeyUnknownError()
+    throw new PasskeyInvalidError()
+  }
+
+  const [u] = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      name: users.name,
+      image: users.image,
+    })
+    .from(users)
+    .where(eq(users.id, result.userId))
+    .limit(1)
+  if (!u) throw new PasskeyUnknownError()
+  return u
 }
 
 // 2FA ön-doğrulama (authorize şekil 2). Duruş: pending_login tek kullanımlık,
@@ -294,6 +356,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
       },
     }),
+    Credentials({
+      id: "passkey",
+      name: "Geçiş anahtarı",
+      credentials: { response: {} },
+      authorize: async (credentials) =>
+        authorizePasskey(
+          typeof credentials?.response === "string" ? credentials.response : "",
+        ),
+    }),
   ],
   callbacks: {
     ...authConfig.callbacks,
@@ -358,6 +429,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }
         } catch {
           // Oturum kaydı oluşmazsa cihaz listede görünmez ama giriş tamamlanır.
+        }
+        // Taze giriş = yeni yapılmış bir kimlik doğrulaması: bu oturuma sudo
+        // penceresi açılır (bkz. lib/auth/sudo.ts). Giriş sonrası geçiş anahtarı
+        // önerisi böylece şifreyi ikinci kez sormadan anahtar oluşturabilir.
+        try {
+          await grantSudo(uid, token.sid as string | undefined)
+        } catch {
+          // Redis erişilemezse hassas işlemde yeniden doğrulama istenir, o kadar.
         }
         return token
       }

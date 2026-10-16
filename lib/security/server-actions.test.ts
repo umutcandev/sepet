@@ -19,6 +19,8 @@ const PUBLIC_ACTIONS = new Set([
   "verifyTwoFactorAction",
   "forgotPasswordAction",
   "resetPasswordAction",
+  "beginPasskeyLoginAction",
+  "passkeyLoginAction",
 ])
 
 const AUTH_CALL = /\bawait (auth|requireReauth|requireUserId)\(/
