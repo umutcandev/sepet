@@ -313,6 +313,27 @@ export const ImageAnalysisSchema = z.object({
     ),
 })
 
+/**
+ * Kullanıcının "Düşündüm" başlığı altında okuduğu kısa not (bkz.
+ * USER_THOUGHT_STYLE). Model bunu kartın verisiyle birlikte üretir; kayda ve
+ * kartlara girmez, tools.ts ayırıp `reasoning` olarak döndürür.
+ */
+const UserThoughtSchema = z
+  .string()
+  .describe(
+    "Kullanıcının ne istediği ve ona nasıl karşılık verdiğin, 1-3 kısa Türkçe cümle. İç işleyişten (mod, kural, alan adı) bahsetmez.",
+  )
+
+export const BasketDraftOutputSchema = z.object({
+  thought: UserThoughtSchema,
+  ...BasketDraftSchema.shape,
+})
+
+export const ImageAnalysisOutputSchema = z.object({
+  thought: UserThoughtSchema,
+  ...ImageAnalysisSchema.shape,
+})
+
 // Fiş karşılaştırması PAKET BAŞINA yapılır: `receiptUnitPrice` ile `bestPrice`
 // aynı tabandadır (ikisi de tek paketin fiyatı) ve fark ikisinin arasındadır.
 // Adetle çarpmak, sepet tarafındaki kuralla (bkz. lib/ai/effective-cost.ts —

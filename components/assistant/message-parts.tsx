@@ -5,7 +5,6 @@ import type { UIMessage } from "ai"
 import {
   RiAlertLine,
   RiArrowDownSLine,
-  RiCheckLine,
   RiFileCopyLine,
   RiStopCircleLine,
 } from "@remixicon/react"
@@ -14,6 +13,7 @@ import { Squircle } from "@/components/ui/squircle"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/sonner"
 import { MessageResponse } from "@/components/ai-elements/message"
+import { CopiedIconSwap } from "@/components/blog/article-actions"
 import { useMounted } from "@/hooks/use-mounted"
 import { copyText } from "@/lib/copy"
 import { formatMessageTime, formatMessageTimeFull } from "@/lib/message-time"
@@ -185,9 +185,10 @@ export function MessageFooter({
   const [copied, setCopied] = React.useState(false)
   const date = new Date(at)
 
+  // Blogdaki kod kopyalama butonuyla aynı süre ve aynı ikon geçişi.
   React.useEffect(() => {
     if (!copied) return
-    const t = window.setTimeout(() => setCopied(false), 1500)
+    const t = window.setTimeout(() => setCopied(false), 1600)
     return () => window.clearTimeout(t)
   }, [copied])
 
@@ -208,21 +209,36 @@ export function MessageFooter({
       <time
         dateTime={date.toISOString()}
         title={mounted ? formatMessageTimeFull(date) : undefined}
-        className="px-1 text-[0.6875rem] leading-4 text-muted-foreground/80 tabular-nums"
+        // Dış kenarda boşluk yok: saat, mesaj metninin (ya da balonun)
+        // kenarıyla aynı hizada başlar.
+        className={cn(
+          "text-[0.6875rem] leading-4 text-muted-foreground/80 tabular-nums",
+          align === "end" ? "pl-1" : "pr-1"
+        )}
       >
         {mounted ? formatMessageTime(date) : null}
       </time>
+      {/* Etiket sabit kalır: odaklı butonun aria-label'ını değiştirmek ekran
+          okuyucularda güvenilir duyurulmuyor; onay aşağıdaki durum
+          bölgesinden okunur (blogdaki kod kopyalamayla aynı). */}
       <Button
         variant="ghost"
         size="icon-xs"
         onClick={() => void handleCopy()}
-        aria-label={copied ? "Kopyalandı" : "Mesajı kopyala"}
+        aria-label="Mesajı kopyala"
         title="Markdown olarak kopyala"
         data-copied={copied || undefined}
         className="transition-opacity focus-visible:opacity-100 data-copied:opacity-100 pointer-fine:opacity-0 pointer-fine:group-hover:opacity-100"
       >
-        {copied ? <RiCheckLine /> : <RiFileCopyLine />}
+        <CopiedIconSwap
+          copied={copied}
+          idleIcon={RiFileCopyLine}
+          copiedClassName="text-primary"
+        />
       </Button>
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? "Mesaj kopyalandı" : ""}
+      </span>
     </div>
   )
 }

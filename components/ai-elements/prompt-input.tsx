@@ -958,6 +958,12 @@ export const PromptInputTextarea = ({
         if (e.shiftKey) {
           return;
         }
+        // Dokunmatik ekranda klavye Shift bilgisini göndermez: Enter hep
+        // gönderirse alt satıra geçmenin yolu kalmaz. Orada Enter alt satır,
+        // gönderim butonla.
+        if (window.matchMedia("(pointer: coarse)").matches) {
+          return;
+        }
         e.preventDefault();
 
         // Check if the submit button is disabled before submitting

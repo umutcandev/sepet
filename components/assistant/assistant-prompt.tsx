@@ -99,24 +99,6 @@ const UploadsContext = React.createContext<UploadsContextValue>({
 })
 const useUploads = () => React.useContext(UploadsContext)
 
-// Placeholder metni için ekran genişliği. Tailwind `md` kırılımı (useIsMobile
-// ile aynı). Sunucuda ve hidrasyonda undefined: genişlik henüz bilinmiyor.
-const MOBILE_QUERY = "(max-width: 767px)"
-
-function subscribeMobileQuery(callback: () => void) {
-  const mql = window.matchMedia(MOBILE_QUERY)
-  mql.addEventListener("change", callback)
-  return () => mql.removeEventListener("change", callback)
-}
-
-function useMobileViewport(): boolean | undefined {
-  return React.useSyncExternalStore(
-    subscribeMobileQuery,
-    () => window.matchMedia(MOBILE_QUERY).matches,
-    () => undefined
-  )
-}
-
 export function AssistantPrompt({
   input,
   setInput,
@@ -128,7 +110,6 @@ export function AssistantPrompt({
   submitLabel,
   announcement,
 }: AssistantPromptProps) {
-  const mobileViewport = useMobileViewport()
   const [uploads, setUploads] = React.useState<Record<string, UploadState>>({})
   // Submit callback render dışında çalışır; en güncel upload haritasına ref
   // üzerinden ulaşırız.
@@ -210,22 +191,11 @@ export function AssistantPrompt({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             aria-label="Asistana mesajın"
-            // Dar ekranda uzun metin iki satıra kırılıyordu, orada kısası
-            // gösterilir. Sunucu HTML'i ekranı bilmediği için masaüstü metniyle
-            // gelir; giriş animasyonu (enter-fx, CSS) hidrasyondan önce oynadığı
-            // için telefonda o metin görünüp sonra değişiyordu. Genişlik
-            // bilinene dek dar ekranda placeholder saydam: önce boş, sonra doğru
-            // metin. Masaüstünde ilk kareden doğru metin.
-            placeholder={
-              mobileViewport
-                ? "Listeni yaz ya da fotoğraf yükle."
-                : "Alışveriş listeni, yemek görselini veya fiş fotoğrafını yükle."
-            }
-            className={cn(
-              "text-sm placeholder:text-muted-foreground/40",
-              mobileViewport === undefined &&
-                "max-md:placeholder:text-transparent"
-            )}
+            // Tek metin: sunucu HTML'i ilk kareden doğru metinle gelir, ekran
+            // genişliğine göre değişip geç görünmez. 320px telefonda da tek
+            // satıra sığacak uzunlukta tutulmalı.
+            placeholder="Alışveriş listeni yaz ya da fotoğraf yükle."
+            className="text-sm placeholder:text-muted-foreground/40"
           />
         </PromptInputBody>
         <PromptInputFooter>

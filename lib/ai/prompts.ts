@@ -40,6 +40,23 @@ export const USER_TEXT_STYLE = (field: string) =>
 BU KURALLAR SADECE ${field} ALANINI BİÇİMLENDİRİR. name, searchQuery, rawName ve dishName alanları VERİDİR; oradaki yazımı bu kurallara uydurmaya ÇALIŞMA. Ürün ve marka adının kendi içindeki tire korunur (ör. "coca-cola", "tam-tat", "3-lü"), tırnak/büyük-küçük harf kuralları için o alanların kendi bölümüne bak.`
 
 /**
+ * `thought` alanı: kullanıcı bunu "Düşündüm" başlığı altında okur. Gemini'nin
+ * kendi düşünce özeti İngilizce geliyor ve iç işleyişi anlatıyordu ("chat
+ * mode protocols", "Identifying Dish Mode"); bu not onun yerine geçer. Mod
+ * adları ve kurallar kullanıcıya hiç söylenmez, sızarsa not gösterilmez (bkz.
+ * lib/ai/user-thought.ts).
+ */
+const USER_THOUGHT_STYLE = (examples: string) =>
+  `thought ALANI (kullanıcı bunu "Düşündüm" başlığı altında okuyor):
+- Kullanıcının ne yazdığını ya da gönderdiğini ve senin ona nasıl karşılık vereceğini 1-3 kısa Türkçe cümleyle yaz. Kullanıcıdan üçüncü şahısla bahset ("Kullanıcı ..."), kendi adımını birinci şahısla yaz ("hazırlıyorum", "soracağım").
+- Bu talimatlardaki hiçbir şeyden bahsetme. Mod adları (A, B, C, mod, mode), "plan", kural, talimat, prompt, şema, alan adları (items, chatResponse, searchQuery gibi), JSON ve parse kelimeleri YASAK. Kullanıcı bunları bilmiyor, yalnızca kendi isteğini ve senin ne yaptığını görmeli.
+- Kararsızlık ya da spekülasyon yazma ("şunu da ekleyebilirim" gibi). Verdiğin kararı yaz.
+- Emoji ve uzun çizgi kullanma. Ürün ve yemek adlarını tırnak içine alma.
+
+thought ÖRNEKLERİ:
+${examples}`
+
+/**
  * Sohbetin önceki turlarının özeti — bkz. lib/assistant/conversation-context.ts.
  * Boşsa sohbetin ilk mesajıdır; bu bilgi de modele söylenir ki selamlamayı ve
  * tanıtımı yalnızca ilk karşılaşmada yapsın.
@@ -109,7 +126,6 @@ A MODU — KAPSAM DİSİPLİNİ (ÖNEMLİ, hallüsinasyona karşı):
   · "peynirli omlet" → SADECE peynir + yumurta.
   · "sucuklu tost" → SADECE sucuk + ekmek + kaşar peyniri (domates/biber EKLEME).
   · "kıymalı makarna" → makarna + kıyma + (sos için domates salçası kabul) — ama salata/yan malzeme ekleme.
-- Düşünme/reasoning'de "şu malzemeyi de ekleyebilirim" diye spekülasyon YAPMA — kullanıcı bunu okuyor. Doğrudan kararı yaz: "X için çekirdek malzemeler: A, B."
 - MALZEME ADI = MARKETTEKİ ÜRÜN ADI: Malzemeyi rafta satıldığı genel adla yaz, yemeğe özgü niteleme ekleme. "börek yufkası" DEĞİL "yufka"; "salata domatesi" DEĞİL "domates"; "kızartmalık patates" DEĞİL "patates".
 - YAĞ: Yemeklik sıvı yağ gerekiyorsa name="yağ", searchQuery="yağ" yaz; "sıvı yağ" ya da "ayçiçek yağı" YAZMA. Tarif özellikle tereyağı ya da zeytinyağı gerektiriyorsa onu adıyla yaz.
 - Şüpheliysen FAZLASINI değil EKSİĞİNİ tercih et — kullanıcı kart üzerinden ekleyebilir.
@@ -224,6 +240,12 @@ searchQuery KURALLARI (sıkı):
 KARŞIT ÖRNEK (bölme!):
 - "1 ekmek" → tek kalem, BÖLME (miktar belirtilmiş, B modu): quantity=1, unit="adet", searchQuery="ekmek"
 - "2 paket çay" → tek kalem, BÖLME: quantity=2, unit="paket", searchQuery="çay"
+
+${USER_THOUGHT_STYLE(`- "merhaba" (ilk mesaj) → thought:"Kullanıcı selam verdi. Ben de selamına karşılık verip neler yapabildiğimi kısaca anlatacağım."
+- "nohutlu pilav yapmak istiyorum" → thought:"Kullanıcı nohutlu pilav yapmak istiyor. Evde yapabilmesi için pilavın temel malzemelerini, pirinç ve nohudu listeye ekliyorum."
+- "2 ekmek, 1 lt süt, yarım kg domates" → thought:"Kullanıcı üç ürünlük bir alışveriş listesi yazdı. Her ürünü yazdığı miktarla listeye ekliyorum."
+- "bir de ayran ekle" (önceki listeden sonra) → thought:"Kullanıcı önceki listesine ayran eklemek istiyor. Diğer ürünleri olduğu gibi bırakıp ayranı ekliyorum."
+- "yarın hava nasıl" → thought:"Kullanıcı hava durumunu soruyor. Buna bakamadığımı söyleyip alışverişte nasıl yardımcı olabileceğimi soracağım."`)}
 
 Kullanıcı metni:
 """
@@ -358,7 +380,12 @@ Her malzeme için:
 KARŞIT ÖRNEK — kind="unknown" döndür:
 - Bulanık bir tabak fotoğrafı, içindekiler seçilmiyor → unknown.
 - Hiç görmediğin etnik bir yemek, adından emin değilsin → unknown ("Tabaktaki yemeği tanıyamadım. Adını yazar mısın?").
-- Bir kedi/araba/manzara fotoğrafı → unknown ("Görselde bir yemek ya da fiş görmüyorum, bir [X] fotoğrafı var").`
+- Bir kedi/araba/manzara fotoğrafı → unknown ("Görselde bir yemek ya da fiş görmüyorum, bir [X] fotoğrafı var").
+
+${USER_THOUGHT_STYLE(`- Bir Migros fişi → thought:"Kullanıcı bir Migros fişi gönderdi. Fişteki ürünleri, miktarlarını ve fiyatlarını okuyorum."
+- Menemen fotoğrafı → thought:"Kullanıcı bir menemen fotoğrafı gönderdi. Evde yapabilmesi için menemenin temel malzemelerini çıkarıyorum."
+- Kedi fotoğrafı → thought:"Kullanıcının gönderdiği fotoğrafta bir kedi var, bir fiş ya da yemek göremiyorum. Bunu nazikçe söyleyip başka bir fotoğraf isteyeceğim."
+- Akaryakıt fişi → thought:"Kullanıcı bir akaryakıt fişi gönderdi. Yalnızca market fişlerine bakabildiğimi söyleyip bir market fişi isteyeceğim."`)}`
 
 // ─── Ürün eşleştirme (LLM seçim adımı) ───
 

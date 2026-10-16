@@ -153,13 +153,13 @@ export function BasketApprovalCard({
           <TableHeader>
             <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
               <TableHead className="w-auto">Ürün</TableHead>
-              {/* Telefonda w-12: her satırdaki not butonu ad alanından 32px
-                  alıyor; adet alanı "1", "500", "1.5" için 48px'te de yetiyor. */}
-              <TableHead className="w-12 text-right sm:w-16">Adet</TableHead>
-              {/* w-24: seçicinin sağında ok için 32px dolgu var; w-20'de yazıya
-                  ~26px kalıyor ve "paket"/"adet" "pak"/"ade" diye kesiliyordu.
-                  Fiş kartındaki birim sütunuyla aynı genişlik. */}
-              <TableHead className="w-24">Birim</TableHead>
+              {/* Adet ve Birim sütunlarında sol dolgu pl-1: alanlar arası
+                  boşluk her yerde 12px (sil sütunuyla aynı). w-16: "500" ve
+                  "1000" kesilmeden sığar. */}
+              <TableHead className="w-16 pl-1 text-right">Adet</TableHead>
+              {/* w-20: seçici en uzun birime ("paket") göre daraltıldı, ok
+                  yazının hemen sağında (bkz. seçicinin sınıfları). */}
+              <TableHead className="w-20 pl-1">Birim</TableHead>
               {!readOnly && <TableHead className="w-4 pl-1" />}
             </TableRow>
           </TableHeader>
@@ -216,7 +216,7 @@ export function BasketApprovalCard({
                       </ButtonGroup>
                     )}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="pl-1 text-right">
                     {readOnly ? (
                       <span className="tabular-nums">
                         {formatQty(it.quantity)}
@@ -232,11 +232,11 @@ export function BasketApprovalCard({
                           })
                         }
                         aria-label="Adet"
-                        className="h-8 w-full text-right text-sm tabular-nums"
+                        className="h-8 w-full px-2 text-right text-sm tabular-nums"
                       />
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="pl-1">
                     {readOnly ? (
                       <span className="text-xs text-muted-foreground">
                         {it.unit}
@@ -251,7 +251,9 @@ export function BasketApprovalCard({
                           })
                         }
                         aria-label="Birim"
-                        className="h-8 text-sm"
+                        // Varsayılan 32px'lik ok dolgusu tek harflik birimlerde
+                        // bile alanı geniş tutuyordu. Küçük ok yazıya yakın.
+                        className="h-8 w-full text-sm [&_select]:pr-[22px] [&_select]:pl-1.5 [&_svg]:right-1.5 [&_svg]:size-3.5"
                       >
                         {UNIT_VALUES.map((u) => (
                           <option key={u} value={u}>
