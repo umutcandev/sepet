@@ -4,7 +4,7 @@ import { and, eq, inArray, sql } from "drizzle-orm"
 import { z } from "zod"
 
 import { signIn } from "@/auth"
-import { db, users, accounts, emailVerification, pendingLogin } from "@/lib/db"
+import { db, users, accounts, emailVerification } from "@/lib/db"
 import { UNPROVEN_EMAIL_PROVIDERS } from "@/lib/auth/providers"
 import {
   normalizeEmail,
@@ -15,6 +15,7 @@ import {
 } from "@/lib/auth/codes"
 import { hashPassword, passwordSchema, verifyPassword } from "@/lib/auth/password"
 import { sanitizeCallback } from "@/lib/auth/callback"
+import { createPendingLogin } from "@/lib/auth/pending-login"
 import {
   mapCredentialsError,
   isAuthError,
@@ -38,7 +39,6 @@ import {
 // Doğrulama satırı ömrü ve maksimum yanlış kod denemesi. Sert limit DB'de zorlanır
 // (attempts), Upstash yalnız yumuşak throttle katmanı.
 const SIGNUP_TTL_MS = 15 * 60 * 1000
-const PENDING_TTL_MS = 5 * 60 * 1000
 const MAX_ATTEMPTS = 5
 
 export type ActionResult = { ok: true } | { ok: false; error: string }
@@ -297,7 +297,7 @@ export async function loginAction(input: {
     // 2FA'lı hesap: authorize şifreyi doğruladıktan SONRA TwoFactorRequiredError
     // atar (yani şifre doğru). pending_login üretip 2FA aşamasına geç.
     if (authErrorCode(error) === "2fa_required") {
-      const pendingToken = await createPendingLogin(email)
+      const pendingToken = await createPendingLoginForEmail(email)
       if (!pendingToken) {
         return { ok: false, error: "Giriş yapılamadı. Lütfen tekrar dene." }
       }
@@ -344,23 +344,17 @@ export async function verifyTwoFactorAction(input: {
   return { ok: true, callbackUrl: sanitizeCallback(input?.callbackUrl) }
 }
 
-// Şifre doğrulandıktan sonra 2FA ara durumu: ham token yalnız istemciye, DB'de
-// yalnız HMAC. Tek aktif pending: öncekiler temizlenir.
-async function createPendingLogin(email: string): Promise<string | null> {
+// Şifre doğrulandıktan sonra 2FA ara durumu (bkz. lib/auth/pending-login.ts).
+async function createPendingLoginForEmail(
+  email: string,
+): Promise<string | null> {
   const [user] = await db
     .select({ id: users.id })
     .from(users)
     .where(eq(users.email, email))
     .limit(1)
   if (!user) return null
-  const raw = generateToken()
-  await db.delete(pendingLogin).where(eq(pendingLogin.userId, user.id))
-  await db.insert(pendingLogin).values({
-    userId: user.id,
-    tokenHash: hashSecret(raw),
-    expiresAt: new Date(Date.now() + PENDING_TTL_MS),
-  })
-  return raw
+  return (await createPendingLogin(user.id)).token
 }
 
 // ─── İç yardımcılar ───

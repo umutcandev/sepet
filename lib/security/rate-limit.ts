@@ -162,3 +162,32 @@ export const passwordChangeLimiter = new Ratelimit({
   prefix: "rl:auth:pwchange",
   analytics: true,
 })
+
+// ─── Geçiş anahtarı (WebAuthn) ───
+
+// Giriş seçenekleri (challenge) üretimi, IP başına. Oturumsuz uç: her çağrı
+// Redis'e 5 dk'lık bir challenge yazar; giriş modalı ~4 dk'da bir tazeler, bu
+// tavan normal kullanımın çok üstünde, yalnız toplu üretimi keser.
+export const passkeyOptionsLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(30, "1 m"),
+  prefix: "rl:auth:passkey:options",
+  analytics: true,
+})
+
+// Geçiş anahtarıyla giriş doğrulaması. İki anahtarla çağrılır: IP (action) ve
+// credential ID (authorize; doğrudan /api/auth/callback/passkey POST'unu da kapsar).
+export const passkeyLoginLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1 m"),
+  prefix: "rl:auth:passkey:login",
+  analytics: true,
+})
+
+// Yeni geçiş anahtarı kaydı başlatma. Anahtar: userId.
+export const passkeyRegisterLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "10 m"),
+  prefix: "rl:auth:passkey:register",
+  analytics: true,
+})

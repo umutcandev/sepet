@@ -8,6 +8,7 @@ import { siteGraphLd } from "@/lib/blog/jsonld"
 import { LoginDialogHost } from "@/components/auth/login-dialog-host"
 import { LocationHost } from "@/components/location/location-host"
 import { OnboardingHost } from "@/components/onboarding/onboarding-host"
+import { PasskeyPromptHost } from "@/components/passkeys/passkey-prompt"
 import { CheckoutResultHost } from "@/components/subscription/checkout-result-host"
 import { SessionProvider } from "@/components/providers/session-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
@@ -119,6 +120,7 @@ export default function RootLayout({
                 <LoginDialogHost />
               </Suspense>
               <OnboardingHost />
+              <PasskeyPromptHost />
               <LocationHost />
               <CheckoutResultHost />
               <Toaster position="top-right" richColors />

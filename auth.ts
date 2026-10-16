@@ -23,8 +23,15 @@ import {
   claimTotpStep,
   consumeRecoveryCode,
 } from "@/lib/auth/totp"
+import { verifyAssertion } from "@/lib/auth/webauthn"
+import { grantSudo } from "@/lib/auth/sudo"
+import {
+  beginLinkTwoFactor,
+  completeLinkTwoFactor,
+} from "@/lib/auth/oauth-link"
 import {
   credentialsLoginLimiter,
+  passkeyLoginLimiter,
   twoFactorUserLimiter,
 } from "@/lib/security/rate-limit"
 
@@ -56,6 +63,79 @@ export class PendingExpiredError extends CredentialsSignin {
 }
 export class RateLimitedError extends CredentialsSignin {
   code = "rate_limited"
+}
+export class PasskeyInvalidError extends CredentialsSignin {
+  code = "passkey_invalid"
+}
+export class PasskeyUnknownError extends CredentialsSignin {
+  code = "passkey_unknown"
+}
+export class PasskeyExpiredError extends CredentialsSignin {
+  code = "passkey_expired"
+}
+
+// Geçiş anahtarı yanıtı form alanı olarak JSON string gelir; makul üst sınır.
+const MAX_PASSKEY_PAYLOAD = 64 * 1024
+
+// Geçiş anahtarıyla giriş (Credentials provider "passkey"). authorize kendi
+// başına yeterli olmalı: /api/auth/callback/passkey'e doğrudan POST da atılabilir.
+// Challenge tüketimi, kimlik bilgisi araması, imza + UV doğrulaması ve sayaç
+// güncellemesi verifyAssertion'da (lib/auth/webauthn.ts).
+//
+// TOTP BİLEREK SORULMAZ: UV (biyometri/PIN) zorunlu doğrulanmış bir geçiş
+// anahtarı zaten iki faktörlü ve oltalamaya dayanıklıdır (cihaz + biyometri/PIN;
+// NIST 800-63B AAL2, GitHub ile aynı duruş). UV'siz imza verifyAssertion'da reddedilir.
+async function authorizePasskey(raw: string) {
+  let parsed: unknown = null
+  if (raw && raw.length <= MAX_PASSKEY_PAYLOAD) {
+    try {
+      parsed = JSON.parse(raw)
+    } catch {
+      parsed = null
+    }
+  }
+
+  // Kimlik bilgisi başına yumuşak tavan (IP ekseni passkeyLoginAction'da).
+  // Yalnız challenge'ı geçerli olup imzası tutmayan denemeler ("invalid")
+  // sayılır; burada yalnız okunur. Önceden sayılsaydı credential ID'yi bilen
+  // biri challenge'sız/biçimsiz isteklerle kovayı doldurup sahibinin girişini
+  // kilitleyebilirdi.
+  const credentialId = (parsed as { id?: unknown } | null)?.id
+  const credKey =
+    typeof credentialId === "string" && credentialId.length <= 2048
+      ? `cred:${credentialId}`
+      : null
+  if (
+    credKey &&
+    (await passkeyLoginLimiter.getRemaining(credKey)).remaining <= 0
+  ) {
+    throw new RateLimitedError()
+  }
+
+  const result = await verifyAssertion(parsed, "login")
+  if (!result.ok) {
+    if (result.code === "expired") throw new PasskeyExpiredError()
+    if (result.code === "unknown") throw new PasskeyUnknownError()
+    if (result.code === "invalid" && credKey) {
+      await passkeyLoginLimiter.limit(credKey)
+    }
+    throw new PasskeyInvalidError()
+  }
+
+  const [u] = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      name: users.name,
+      image: users.image,
+    })
+    .from(users)
+    .where(eq(users.id, result.userId))
+    .limit(1)
+  if (!u) throw new PasskeyUnknownError()
+  // passkeyId jwt callback'te oturum kaydına yazılır: anahtar silinince o
+  // oturum da kapanır (bkz. deletePasskeyAction).
+  return { ...u, passkeyId: result.passkeyId }
 }
 
 // 2FA ön-doğrulama (authorize şekil 2). Duruş: pending_login tek kullanımlık,
@@ -128,6 +208,14 @@ async function authorizeTwoFactor(
     .returning({ id: pendingLogin.id })
   if (!consumed) throw new PendingExpiredError()
 
+  // 2FA, Google'ın bu hesaba ilk bağlanışı için istendiyse bağlantı şimdi
+  // kurulur (bkz. lib/auth/oauth-link.ts).
+  try {
+    await completeLinkTwoFactor(pending.id, u.id)
+  } catch {
+    // Bağlanamasa da giriş tamamlanır; sonraki Google girişinde kod yeniden sorulur.
+  }
+
   return { id: u.id, email: u.email, name: u.name, image: u.image }
 }
 
@@ -184,7 +272,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // allowDangerousEmailAccountLinking GÜVENLİDİR çünkü: (a) credentials kullanıcısı
   // e-posta doğrulanmadan asla oluşmaz, (b) Google profilleri yalnız email_verified
   // === true ile kabul edilir (aşağıdaki signIn callback). İki taraf da e-posta
-  // sahipliğini kanıtladığından aynı users satırına bağlanma güvenli.
+  // sahipliğini kanıtladığından aynı users satırına bağlanma güvenli. TOTP'si açık
+  // bir hesaba ilk bağlamada ayrıca 2FA kodu istenir (signIn callback).
   providers: [
     Google({ allowDangerousEmailAccountLinking: true }),
     // Facebook'ta allowDangerousEmailAccountLinking BİLEREK YOK: Google için
@@ -294,6 +383,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
       },
     }),
+    Credentials({
+      id: "passkey",
+      name: "Geçiş anahtarı",
+      credentials: { response: {} },
+      authorize: async (credentials) =>
+        authorizePasskey(
+          typeof credentials?.response === "string" ? credentials.response : "",
+        ),
+    }),
   ],
   callbacks: {
     ...authConfig.callbacks,
@@ -301,7 +399,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // bağlamanın önkoşulu). Credentials ve diğer akışlar için engel yok.
     async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
-        return profile?.email_verified === true
+        if (profile?.email_verified !== true) return false
+        // TOTP'li mevcut bir hesaba İLK bağlama: Auth.js bağlamadan önce 2FA
+        // adımına yönlendir; kod doğrulanınca bağlanır (lib/auth/oauth-link.ts).
+        // Token adres çubuğundan LoginDialogHost'ta hemen silinir.
+        if (account.type === "oidc" || account.type === "oauth") {
+          const pendingToken = await beginLinkTwoFactor({
+            email: user?.email,
+            provider: account.provider,
+            providerAccountId: account.providerAccountId,
+            type: account.type,
+          })
+          if (pendingToken) return `/?2fa=${encodeURIComponent(pendingToken)}`
+        }
+        return true
       }
       if (account?.provider === "facebook") {
         // Facebook e-posta döndürmeyebilir: mobilde açılan hesaplarda e-posta
@@ -350,6 +461,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               deviceLabel: info.deviceLabel,
               ip: info.ip,
               locationLabel: info.locationLabel,
+              passkeyId: user.passkeyId ?? null,
             })
             .returning({ id: userSessions.id })
           if (row) {
@@ -358,6 +470,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }
         } catch {
           // Oturum kaydı oluşmazsa cihaz listede görünmez ama giriş tamamlanır.
+        }
+        // Taze giriş = yeni yapılmış bir kimlik doğrulaması: bu oturuma sudo
+        // penceresi açılır (bkz. lib/auth/sudo.ts). Giriş sonrası geçiş anahtarı
+        // önerisi böylece şifreyi ikinci kez sormadan anahtar oluşturabilir.
+        try {
+          await grantSudo(uid, token.sid as string | undefined)
+        } catch {
+          // Redis erişilemezse hassas işlemde yeniden doğrulama istenir, o kadar.
         }
         return token
       }

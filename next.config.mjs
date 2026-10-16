@@ -18,6 +18,17 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: { root: __dirname },
+  // Geçiş anahtarı rpID'sini çözen env'in istemciye aktarılan kopyası (bkz.
+  // lib/auth/passkey-availability.ts). Arayüz, rpID'nin sayfa host'una uyup
+  // uymadığını sunucu yanıtını beklemeden bilir; preview'da belirip
+  // kaybolmaz. Gizli değil: rpID her giriş seçeneğinde zaten açıkça gider.
+  // Sunucu kodu WEBAUTHN_* adlarını okumaya devam eder (farklı adlar şart:
+  // `env` anahtarları sunucu bundle'ına da gömülür).
+  env: {
+    NEXT_PUBLIC_PASSKEY_RP_ID: process.env.WEBAUTHN_RP_ID ?? "",
+    NEXT_PUBLIC_PASSKEY_ORIGINS: process.env.WEBAUTHN_ORIGINS ?? "",
+    NEXT_PUBLIC_PASSKEY_VERCEL_URL: process.env.VERCEL_URL ?? "",
+  },
   experimental: {
     // Next 16.3'te varsayılan açık; Vercel `.next/cache`i her build'de geri
     // yüklüyor. Taze clone + eski cache ile Turbopack `globals.css`in ESKİ

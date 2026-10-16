@@ -80,6 +80,13 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
     setBusy(false)
     if (res.ok) {
       toast.success("Şifren güncellendi. Diğer cihazlar çıkış yaptı.")
+      // Şifre değişikliği geçiş anahtarlarını silmez (bkz. changePasswordAction).
+      if (res.passkeys > 0) {
+        toast.warning(
+          "Geçiş anahtarların silinmedi. Tanımadığın bir anahtar varsa Geçiş anahtarları bölümünden sil.",
+          { duration: 10_000 }
+        )
+      }
       onDone()
     } else {
       setError(res.error)

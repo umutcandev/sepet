@@ -31,5 +31,10 @@ export function applySecurityHeaders(h: Headers) {
   h.set("X-Frame-Options", "DENY")
   h.set("X-Content-Type-Options", "nosniff")
   h.set("Referrer-Policy", "strict-origin-when-cross-origin")
-  h.set("Permissions-Policy", "camera=(self), microphone=(self), geolocation=(self)")
+  // publickey-credentials-*: geçiş anahtarları. Varsayılan izin listesi zaten
+  // 'self'; açık yazılması üçüncü taraf iframe'lere asla devredilmeyeceğini belgeler.
+  h.set(
+    "Permissions-Policy",
+    "camera=(self), microphone=(self), geolocation=(self), publickey-credentials-get=(self), publickey-credentials-create=(self)",
+  )
 }

@@ -46,10 +46,12 @@ const AUTH_ERROR_MESSAGES = new Map<string, string>([
 ])
 
 // NextAuth'un eklediği parametreler + oturumsuz ziyaretçiyi ödeme rotalarından
-// geri getiren `login=1` (bkz. api/checkout, api/portal). Hepsi bize ait,
-// işlendikten sonra adres çubuğunda kalmamalı ve aşağıdaki callbackUrl'e
-// sızmamalı — `login=1` sızarsa giriş sonrası modal yeniden açılırdı.
-const AUTH_PARAMS = ["error", "callbackUrl", "login"] as const
+// geri getiren `login=1` (bkz. api/checkout, api/portal) + Google'ın TOTP'li
+// hesaba ilk bağlanışında gelen `2fa=<pending token>` (bkz. auth.ts signIn
+// callback). Hepsi bize ait, işlendikten sonra adres çubuğunda kalmamalı ve
+// aşağıdaki callbackUrl'e sızmamalı — `login=1` sızarsa giriş sonrası modal
+// yeniden açılırdı.
+const AUTH_PARAMS = ["error", "callbackUrl", "login", "2fa"] as const
 
 function withoutAuthParams(params: URLSearchParams | null): string {
   const rest = new URLSearchParams(params?.toString() ?? "")
@@ -65,7 +67,7 @@ function looksSignedIn(): boolean {
 }
 
 export function LoginDialogHost() {
-  const { open, setOpen } = useLoginDialog()
+  const { open, setOpen, pendingToken, openTwoFactor } = useLoginDialog()
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -138,7 +140,33 @@ export function LoginDialogHost() {
     })
   }, [loginRequested, pathname, router, searchParams, setOpen])
 
+  // Google, TOTP'si açık bir hesaba ilk kez bağlanıyor: modal doğrudan 2FA
+  // aşamasında açılır, kod doğrulanınca hesap bağlanıp giriş tamamlanır. Token
+  // (5 dk, tek kullanımlık, deneme sınırlı) adres çubuğundan hemen silinir;
+  // router.replace geçmiş kaydının da yerine geçer.
+  const linkToken = searchParams?.get("2fa") ?? null
+
+  React.useEffect(() => {
+    if (!linkToken) return
+    // ?error= ile aynı gerekçe: oturumu açık birine gönderilmiş linke dokunma.
+    if (!looksSignedIn()) {
+      // Google butonu markPending() yazmıştı; giriş henüz tamamlanmadı.
+      sessionSnapshot.set(null)
+      openTwoFactor(linkToken)
+    }
+
+    const qs = withoutAuthParams(searchParams)
+    router.replace(qs ? `${pathname}?${qs}` : (pathname ?? "/"), {
+      scroll: false,
+    })
+  }, [linkToken, openTwoFactor, pathname, router, searchParams])
+
   return (
-    <LoginDialog open={open} onOpenChange={setOpen} callbackUrl={callbackUrl} />
+    <LoginDialog
+      open={open}
+      onOpenChange={setOpen}
+      callbackUrl={callbackUrl}
+      pendingToken={pendingToken ?? undefined}
+    />
   )
 }

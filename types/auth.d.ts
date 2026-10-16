@@ -9,6 +9,12 @@ declare module "next-auth" {
       id: string
     } & DefaultSession["user"]
   }
+
+  interface User {
+    /** Yalnız geçiş anahtarıyla girişte (authorize → jwt callback): oturum
+     *  kaydına yazılır. Session'a/istemciye taşınmaz. */
+    passkeyId?: string
+  }
 }
 
 declare module "next-auth/jwt" {

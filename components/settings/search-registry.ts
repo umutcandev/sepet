@@ -8,6 +8,7 @@ import {
   RiDownloadLine,
   RiEqualizerLine,
   RiFileTextLine,
+  RiFingerprintLine,
   RiKey2Line,
   RiLogoutBoxLine,
   RiMapPinLine,
@@ -103,6 +104,13 @@ const HESAP_SETTINGS: SettingEntry[] = [
     keywords:
       "iki adimli dogrulama 2fa two factor totp authenticator kod guvenlik kurtarma",
     icon: RiShieldCheckLine,
+  },
+  {
+    target: "gecis-anahtarlari",
+    title: "Geçiş anahtarları",
+    keywords:
+      "gecis anahtari passkey sifresiz giris parmak izi yuz tanima face id touch id windows hello biyometri guvenlik",
+    icon: RiFingerprintLine,
   },
   {
     target: "oturumlar",

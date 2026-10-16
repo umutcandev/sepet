@@ -185,6 +185,75 @@ export function totpSetupCodeEmail(args: { code: string }): Email {
   }
 }
 
+// ─── Şifresiz hesapta hassas işlem öncesi yeniden doğrulama kodu ───
+// (ör. geçiş anahtarı ekleme/silme; bkz. lib/auth/sudo.ts)
+export function reauthCodeEmail(args: { code: string }): Email {
+  const heading = "Kimlik doğrulama kodun"
+  const body =
+    p("Hesabındaki güvenlik ayarlarını değiştirmeden önce kimliğini doğrulamak için kodun:") +
+    codeBlock(args.code) +
+    p("Bu kodu Sepet'te açık olan pencereye gir. Kod 15 dakika geçerli.") +
+    p("Bu isteği sen yapmadıysan e-postayı yok sayabilirsin; hesabında bir değişiklik yapılmaz.")
+  const text = textBlock([
+    "Kimlik doğrulama kodun",
+    "",
+    `Kodun: ${args.code}`,
+    "",
+    "Bu kodu Sepet'te açık olan pencereye gir. Kod 15 dakika geçerli.",
+    "Bu isteği sen yapmadıysan e-postayı yok sayabilirsin; hesabında bir değişiklik yapılmaz.",
+  ])
+  return {
+    subject: "Sepet kimlik doğrulama kodu",
+    html: layout({ heading, body, preview: `Doğrulama kodun: ${args.code}` }),
+    text,
+  }
+}
+
+// ─── Bildirim: geçiş anahtarı eklendi ───
+// Cihaz/konum, eklemenin yapıldığı oturumun istek başlıklarından gelir.
+export function passkeyAddedEmail(args: {
+  name: string
+  deviceLabel: string | null
+  locationLabel: string | null
+}): Email {
+  const heading = "Hesabına geçiş anahtarı eklendi"
+  const where = [args.deviceLabel, args.locationLabel].filter(Boolean).join(", ")
+  const detail = where ? `"${args.name}" (${where})` : `"${args.name}"`
+  const body =
+    p(`Sepet hesabına ${esc(detail)} adlı yeni bir geçiş anahtarı eklendi. Artık bu anahtarla şifre ya da doğrulama kodu girmeden giriş yapabilirsin.`) +
+    p("Bunu sen yapmadıysan hemen Ayarlar > Hesap > Geçiş anahtarları bölümünden anahtarı sil, şifreni değiştir ve tüm cihazlardan çıkış yap.")
+  const text = textBlock([
+    heading,
+    "",
+    `Sepet hesabına ${detail} adlı yeni bir geçiş anahtarı eklendi.`,
+    "Bunu sen yapmadıysan hemen Ayarlar > Hesap > Geçiş anahtarları bölümünden anahtarı sil, şifreni değiştir ve tüm cihazlardan çıkış yap.",
+  ])
+  return {
+    subject: "Sepet hesabına geçiş anahtarı eklendi",
+    html: layout({ heading, body, preview: "Hesabına yeni bir geçiş anahtarı eklendi." }),
+    text,
+  }
+}
+
+// ─── Bildirim: geçiş anahtarı silindi ───
+export function passkeyRemovedEmail(args: { name: string }): Email {
+  const heading = "Geçiş anahtarı silindi"
+  const body =
+    p(`Sepet hesabından "${esc(args.name)}" adlı geçiş anahtarı silindi. Bu anahtarla artık giriş yapılamaz.`) +
+    p("Bunu sen yapmadıysan hemen şifreni değiştir ve tüm cihazlardan çıkış yap.")
+  const text = textBlock([
+    heading,
+    "",
+    `Sepet hesabından "${args.name}" adlı geçiş anahtarı silindi. Bu anahtarla artık giriş yapılamaz.`,
+    "Bunu sen yapmadıysan hemen şifreni değiştir ve tüm cihazlardan çıkış yap.",
+  ])
+  return {
+    subject: "Sepet geçiş anahtarı silindi",
+    html: layout({ heading, body, preview: "Hesabından bir geçiş anahtarı silindi." }),
+    text,
+  }
+}
+
 // ─── Bildirim: şifre değişti ───
 export function passwordChangedEmail(): Email {
   const heading = "Şifren değişti"
