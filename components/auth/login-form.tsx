@@ -68,11 +68,15 @@ type Stage =
 
 type Props = {
   callbackUrl?: string
+  /** Doğrudan 2FA aşamasında başla: Google, TOTP'si açık bir hesaba ilk kez
+   *  bağlanıyor (bkz. LoginDialogHost, lib/auth/oauth-link.ts). */
+  pendingToken?: string
 }
 
 function stageHeader(
   stage: Stage,
   email: string,
+  linkingGoogle: boolean,
 ): { title: string; subtitle: string } {
   switch (stage) {
     case "method":
@@ -100,7 +104,9 @@ function stageHeader(
     case "two-factor":
       return {
         title: "İki adımlı doğrulama",
-        subtitle: "Doğrulama uygulamandaki 6 haneli kodu gir.",
+        subtitle: linkingGoogle
+          ? "Google hesabını bağlamak için doğrulama uygulamandaki 6 haneli kodu gir."
+          : "Doğrulama uygulamandaki 6 haneli kodu gir.",
       }
     case "recovery":
       return {
@@ -142,13 +148,18 @@ function backTarget(stage: Stage): Stage | null {
   }
 }
 
-export function LoginForm({ callbackUrl }: Props) {
-  const [stage, setStage] = React.useState<Stage>("method")
+export function LoginForm({ callbackUrl, pendingToken: linkToken }: Props) {
+  const [stage, setStage] = React.useState<Stage>(
+    linkToken ? "two-factor" : "method",
+  )
+  // Google ilk bağlama 2FA'sı sürüyor: başlık metni ve "son kullanılan" rozeti
+  // (google) buna göre. Şifreyle yeni bir giriş başlarsa düşer.
+  const [linkingGoogle, setLinkingGoogle] = React.useState(Boolean(linkToken))
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
   const [confirmPassword, setConfirmPassword] = React.useState("")
   const [otp, setOtp] = React.useState("")
-  const [pendingToken, setPendingToken] = React.useState("")
+  const [pendingToken, setPendingToken] = React.useState(linkToken ?? "")
   const [recoveryCode, setRecoveryCode] = React.useState("")
   const [error, setError] = React.useState("")
   const [busy, setBusy] = React.useState(false)
@@ -160,7 +171,7 @@ export function LoginForm({ callbackUrl }: Props) {
     getLastLoginMethod(),
   )
 
-  const { title, subtitle } = stageHeader(stage, email)
+  const { title, subtitle } = stageHeader(stage, email, linkingGoogle)
   const back = backTarget(stage)
 
   // "Kodu tekrar gönder" geri sayımı.
@@ -205,7 +216,7 @@ export function LoginForm({ callbackUrl }: Props) {
       return true
     }
     if (res.ok) {
-      completeLogin(res.callbackUrl)
+      completeLogin(res.callbackUrl, linkingGoogle ? "google" : "email")
       return true // busy kalır; sayfa yönleniyor
     }
     // pending_login süresi doldu/tüketildi: 2FA aşamasında sıkışmak yerine
@@ -225,6 +236,7 @@ export function LoginForm({ callbackUrl }: Props) {
   async function submitLogin(e: React.FormEvent) {
     e.preventDefault()
     setError("")
+    setLinkingGoogle(false)
     setBusy(true)
     const res = await loginAction({ email, password, callbackUrl })
     handleLoginResult(res)

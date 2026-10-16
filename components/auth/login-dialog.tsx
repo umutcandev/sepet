@@ -14,9 +14,16 @@ type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
   callbackUrl?: string
+  /** Doğrudan 2FA aşamasında aç (bkz. LoginForm). */
+  pendingToken?: string
 }
 
-export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
+export function LoginDialog({
+  open,
+  onOpenChange,
+  callbackUrl,
+  pendingToken,
+}: Props) {
   const isDesktop = useMediaQuery("(min-width: 768px)")
 
   if (isDesktop) {
@@ -25,6 +32,7 @@ export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
         open={open}
         onOpenChange={onOpenChange}
         callbackUrl={callbackUrl}
+        pendingToken={pendingToken}
       />
     )
   }
@@ -34,6 +42,7 @@ export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
       open={open}
       onOpenChange={onOpenChange}
       callbackUrl={callbackUrl}
+      pendingToken={pendingToken}
     />
   )
 }
@@ -44,7 +53,12 @@ export function LoginDialog({ open, onOpenChange, callbackUrl }: Props) {
 // h-dvh + iç kaydırma; klavye açılınca Android viewport'u küçültür
 // (interactiveWidget: resizes-content), iOS odaklanan input'u en yakın
 // kaydırılabilir atada görünür alana getirir.
-function MobileDialog({ open, onOpenChange, callbackUrl }: Props) {
+function MobileDialog({
+  open,
+  onOpenChange,
+  callbackUrl,
+  pendingToken,
+}: Props) {
   // Trigger yok (store'dan açılıyor) → odağı geri veren tek mekanizma bu.
   // `open` ŞART: bu bileşen Root'la birlikte sürekli mount kalıyor, mount anı
   // açılış anı değil.
@@ -68,7 +82,7 @@ function MobileDialog({ open, onOpenChange, callbackUrl }: Props) {
           </DialogPrimitive.Title>
 
           <div className="flex-1 overflow-y-auto pt-[env(safe-area-inset-top)] pb-[max(env(safe-area-inset-bottom),1rem)]">
-            <LoginForm callbackUrl={callbackUrl} />
+            <LoginForm callbackUrl={callbackUrl} pendingToken={pendingToken} />
           </div>
 
           <DialogPrimitive.Close asChild>
@@ -87,7 +101,12 @@ function MobileDialog({ open, onOpenChange, callbackUrl }: Props) {
   )
 }
 
-function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
+function DesktopDialog({
+  open,
+  onOpenChange,
+  callbackUrl,
+  pendingToken,
+}: Props) {
   const restoreFocus = useRestoreFocusOnClose(open)
 
   return (
@@ -117,7 +136,7 @@ function DesktopDialog({ open, onOpenChange, callbackUrl }: Props) {
           </DialogPrimitive.Title>
 
           <div className="relative flex w-full justify-center">
-            <LoginForm callbackUrl={callbackUrl} />
+            <LoginForm callbackUrl={callbackUrl} pendingToken={pendingToken} />
           </div>
 
           <DialogPrimitive.Close asChild>

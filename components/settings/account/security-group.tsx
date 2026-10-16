@@ -53,6 +53,15 @@ export function SecurityGroup() {
   const setPasswordDescription = label
     ? `${label} hesabın için bir şifre belirle`
     : "Hesabın için bir şifre belirle"
+  // 2FA kodu yalnız e-posta + şifre girişinde (ve Google'ın hesaba ilk
+  // bağlanışında) sorulur; bağlı sosyal hesapla giriş sağlayıcının kendi
+  // doğrulamasına bırakılır. Şifresiz hesapta kod girişte hiç sorulmaz, yalnız
+  // hassas işlemlerde istenir — kullanıcı korunduğunu sanmasın.
+  const twoFactorDescription = loading
+    ? "Hesabın için ek güvenlik katmanı ekle"
+    : hasPassword
+      ? "E-posta ve şifreyle girişte ek doğrulama kodu ister"
+      : `${label ? `${label} ile` : "Sosyal"} girişte sorulmaz, hassas işlemlerde kod ister`
 
   return (
     <SettingGroup title="Güvenlik">
@@ -79,7 +88,7 @@ export function SecurityGroup() {
           )
         }
         target="iki-adimli-dogrulama"
-        description="Hesabın için ek güvenlik katmanı ekle"
+        description={twoFactorDescription}
       >
         {loading ? (
           <Skeleton className="h-7 w-28" />

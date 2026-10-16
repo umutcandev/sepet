@@ -2,30 +2,36 @@
 
 import * as React from "react"
 
-type Listener = (open: boolean) => void
+// pendingToken: Google'ın TOTP'li hesaba ilk bağlanışında modal doğrudan 2FA
+// aşamasında açılır (bkz. LoginDialogHost). Modal kapanınca temizlenir ki bir
+// sonraki açılış normal giriş ekranıyla başlasın.
+type Snapshot = { open: boolean; pendingToken: string | null }
+type Listener = (snapshot: Snapshot) => void
 
-let openState = false
+let state: Snapshot = { open: false, pendingToken: null }
 const listeners = new Set<Listener>()
 
-function notify() {
-  for (const l of listeners) l(openState)
+function update(next: Snapshot) {
+  if (next.open === state.open && next.pendingToken === state.pendingToken) {
+    return
+  }
+  state = next
+  for (const l of listeners) l(state)
 }
 
 export const loginDialog = {
   open() {
-    if (openState) return
-    openState = true
-    notify()
+    update({ ...state, open: true })
   },
   close() {
-    if (!openState) return
-    openState = false
-    notify()
+    update({ open: false, pendingToken: null })
   },
   set(open: boolean) {
-    if (openState === open) return
-    openState = open
-    notify()
+    update(open ? { ...state, open } : { open, pendingToken: null })
+  },
+  /** Modalı 2FA aşamasında, bu pending token'la aç. */
+  openTwoFactor(pendingToken: string) {
+    update({ open: true, pendingToken })
   },
   subscribe(l: Listener) {
     listeners.add(l)
@@ -34,17 +40,19 @@ export const loginDialog = {
     }
   },
   get isOpen() {
-    return openState
+    return state.open
   },
 }
 
 export function useLoginDialog() {
-  const [open, setOpen] = React.useState<boolean>(() => loginDialog.isOpen)
-  React.useEffect(() => loginDialog.subscribe(setOpen), [])
+  const [snapshot, setSnapshot] = React.useState<Snapshot>(() => state)
+  React.useEffect(() => loginDialog.subscribe(setSnapshot), [])
   return {
-    open,
+    open: snapshot.open,
+    pendingToken: snapshot.pendingToken,
     openDialog: loginDialog.open,
     closeDialog: loginDialog.close,
     setOpen: loginDialog.set,
+    openTwoFactor: loginDialog.openTwoFactor,
   }
 }

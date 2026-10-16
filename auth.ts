@@ -26,6 +26,10 @@ import {
 import { verifyAssertion } from "@/lib/auth/webauthn"
 import { grantSudo } from "@/lib/auth/sudo"
 import {
+  beginLinkTwoFactor,
+  completeLinkTwoFactor,
+} from "@/lib/auth/oauth-link"
+import {
   credentialsLoginLimiter,
   passkeyLoginLimiter,
   twoFactorUserLimiter,
@@ -204,6 +208,14 @@ async function authorizeTwoFactor(
     .returning({ id: pendingLogin.id })
   if (!consumed) throw new PendingExpiredError()
 
+  // 2FA, Google'ın bu hesaba ilk bağlanışı için istendiyse bağlantı şimdi
+  // kurulur (bkz. lib/auth/oauth-link.ts).
+  try {
+    await completeLinkTwoFactor(pending.id, u.id)
+  } catch {
+    // Bağlanamasa da giriş tamamlanır; sonraki Google girişinde kod yeniden sorulur.
+  }
+
   return { id: u.id, email: u.email, name: u.name, image: u.image }
 }
 
@@ -260,7 +272,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // allowDangerousEmailAccountLinking GÜVENLİDİR çünkü: (a) credentials kullanıcısı
   // e-posta doğrulanmadan asla oluşmaz, (b) Google profilleri yalnız email_verified
   // === true ile kabul edilir (aşağıdaki signIn callback). İki taraf da e-posta
-  // sahipliğini kanıtladığından aynı users satırına bağlanma güvenli.
+  // sahipliğini kanıtladığından aynı users satırına bağlanma güvenli. TOTP'si açık
+  // bir hesaba ilk bağlamada ayrıca 2FA kodu istenir (signIn callback).
   providers: [
     Google({ allowDangerousEmailAccountLinking: true }),
     // Facebook'ta allowDangerousEmailAccountLinking BİLEREK YOK: Google için
@@ -386,7 +399,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // bağlamanın önkoşulu). Credentials ve diğer akışlar için engel yok.
     async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
-        return profile?.email_verified === true
+        if (profile?.email_verified !== true) return false
+        // TOTP'li mevcut bir hesaba İLK bağlama: Auth.js bağlamadan önce 2FA
+        // adımına yönlendir; kod doğrulanınca bağlanır (lib/auth/oauth-link.ts).
+        // Token adres çubuğundan LoginDialogHost'ta hemen silinir.
+        if (account.type === "oidc" || account.type === "oauth") {
+          const pendingToken = await beginLinkTwoFactor({
+            email: user?.email,
+            provider: account.provider,
+            providerAccountId: account.providerAccountId,
+            type: account.type,
+          })
+          if (pendingToken) return `/?2fa=${encodeURIComponent(pendingToken)}`
+        }
+        return true
       }
       if (account?.provider === "facebook") {
         // Facebook e-posta döndürmeyebilir: mobilde açılan hesaplarda e-posta
