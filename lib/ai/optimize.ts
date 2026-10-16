@@ -24,13 +24,16 @@ type MarketChoice = {
 
 type ItemMarketPrice = {
   rawName: string
+  // Kalemin `matches` içindeki sırası; eşleşmeyen kalemler atlandığı için
+  // `items` dizisindeki sırayla aynı değildir.
+  itemIndex: number
   // market display adı → o markette en hesaplı kabul edilebilir seçenek.
   marketChoices: Map<string, MarketChoice>
 }
 
 function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
   const items: ItemMarketPrice[] = []
-  for (const m of matches) {
+  for (const [itemIndex, m] of matches.entries()) {
     if (m.marketOptions.length === 0) continue
     const marketChoices = new Map<string, MarketChoice>()
     for (const opt of m.marketOptions) {
@@ -52,7 +55,7 @@ function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
         })
       }
     }
-    items.push({ rawName: m.rawName, marketChoices })
+    items.push({ rawName: m.rawName, itemIndex, marketChoices })
   }
   return items
 }
@@ -111,6 +114,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
         sizeMismatch: choice.sizeMismatch,
         depotName: choice.depotName,
         imageUrl: choice.imageUrl,
+        itemIndex: item.itemIndex,
       })
     }
     if (count === 0) continue
@@ -194,6 +198,7 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
           sizeMismatch: choice.sizeMismatch,
           depotName: choice.depotName,
           imageUrl: choice.imageUrl,
+          itemIndex: item.itemIndex,
         })
       }
       if (!valid) continue

@@ -3,7 +3,7 @@ import { describe, test } from "node:test"
 
 import { computeOptimization } from "@/lib/ai/optimize"
 import type { MarketOption, MatchResult } from "@/lib/ai/schemas"
-import { buildDraftText, buildSummaryText } from "./summary-text"
+import { buildDraftText, buildSummaryText, diffDraft } from "./summary-text"
 
 function option(market: string, price: number): MarketOption {
   return {
@@ -147,11 +147,28 @@ describe("buildSummaryText", () => {
   })
 })
 
+/** Taslak kalemi; adı verilmezse sıradan üretilir. */
+function draftItem(
+  name: string,
+  extra: { quantity?: number; unit?: string; note?: string | null } = {}
+) {
+  return {
+    name,
+    searchQuery: name,
+    quantity: extra.quantity ?? 1,
+    unit: extra.unit ?? "adet",
+    note: extra.note ?? null,
+  }
+}
+
+const items = (n: number) =>
+  Array.from({ length: n }, (_, i) => draftItem(`kalem ${i + 1}`))
+
 describe("buildDraftText", () => {
   test("yemek modunda yemeğin adını söyler", () => {
     assert.equal(
       buildDraftText({
-        items: [1, 2, 3, 4, 5],
+        items: items(5),
         dishName: "peynirli börek",
         revision: false,
       }),
@@ -161,21 +178,118 @@ describe("buildDraftText", () => {
 
   test("liste modunda kalem sayısını söyler", () => {
     assert.match(
-      buildDraftText({ items: [1, 2], dishName: null, revision: false }),
+      buildDraftText({ items: items(2), dishName: null, revision: false }),
       /^Listendeki 2 kalemi hazırladım\. /
     )
   })
 
   test("düzenlemede listenin güncellendiğini söyler", () => {
     assert.match(
-      buildDraftText({ items: [1, 2, 3], dishName: "menemen", revision: true }),
+      buildDraftText({ items: items(3), dishName: "menemen", revision: true }),
       /^Listeni güncelledim, şimdi 3 kalem var\. /
     )
   })
 
   test("buyruk kipinde konuşmaz", () => {
     // Eski metin "Kontrol edip düzeltmelerini yap, ardından onayla" diyordu.
-    const out = buildDraftText({ items: [1], dishName: null, revision: false })
+    const out = buildDraftText({
+      items: items(1),
+      dishName: null,
+      revision: false,
+    })
     assert.doesNotMatch(out, /düzeltmelerini yap|karşılaştırma için onayla/)
+  })
+
+  test("liste aynı kaldıysa güncelledim demez, Değiştir'i önerir", () => {
+    // Ekran görüntüsündeki vaka: kullanıcı "konserve olmamalı" dedi, model
+    // aynı listeyi döndürdü ve asistan "Listeni güncelledim" dedi.
+    const previous = [
+      draftItem("kuru fasulye", { unit: "paket" }),
+      draftItem("soğan"),
+      draftItem("domates salçası", { unit: "paket" }),
+    ]
+    const out = buildDraftText(
+      { items: [...previous].reverse(), dishName: null, revision: true },
+      previous
+    )
+    assert.doesNotMatch(out, /güncelledim/)
+    assert.match(out, /^Listende bir değişiklik yapmadım/)
+    assert.match(out, /Değiştir/)
+  })
+
+  test("yalnızca not eklendiyse notu söyler ve sınırını belirtir", () => {
+    const previous = [
+      draftItem("kuru fasulye", { unit: "paket" }),
+      draftItem("soğan"),
+    ]
+    const out = buildDraftText(
+      {
+        items: [
+          draftItem("kuru fasulye", {
+            unit: "paket",
+            note: "konserve olmasın",
+          }),
+          draftItem("soğan"),
+        ],
+        dishName: null,
+        revision: true,
+      },
+      previous
+    )
+    assert.match(out, /^Kuru fasulye için notunu ekledim: konserve olmasın\. /)
+    assert.match(out, /Değiştir/)
+    assert.doesNotMatch(out, /güncelledim/)
+  })
+
+  test("kalem değiştiyse güncelledim der, yeni notu da ekler", () => {
+    const previous = [draftItem("kuru fasulye", { unit: "paket" })]
+    const out = buildDraftText(
+      {
+        items: [
+          draftItem("kuru fasulye", {
+            unit: "paket",
+            note: "konserve olmasın",
+          }),
+          draftItem("ayran"),
+        ],
+        dishName: null,
+        revision: true,
+      },
+      previous
+    )
+    assert.match(
+      out,
+      /^Listeni güncelledim, şimdi 2 kalem var\. Kuru fasulye için notunu ekledim: konserve olmasın\. /
+    )
+  })
+
+  test("önceki listede zaten olan not yeniden söylenmez", () => {
+    const withNote = draftItem("kuru fasulye", {
+      unit: "paket",
+      note: "konserve olmasın",
+    })
+    const out = buildDraftText(
+      { items: [withNote, draftItem("ayran")], dishName: null, revision: true },
+      [withNote]
+    )
+    assert.doesNotMatch(out, /notunu ekledim/)
+  })
+})
+
+describe("diffDraft", () => {
+  test("miktar farkı kalemi değişmiş sayar", () => {
+    const { sameItems } = diffDraft(
+      [draftItem("yumurta", { quantity: 2 })],
+      [draftItem("yumurta", { quantity: 10 })]
+    )
+    assert.equal(sameItems, false)
+  })
+
+  test("aynı adlı iki kalemden biri silinince fark görülür", () => {
+    const { sameItems } = diffDraft(
+      [draftItem("süt"), draftItem("süt")],
+      [draftItem("süt")]
+    )
+    assert.equal(sameItems, false)
   })
 })

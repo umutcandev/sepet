@@ -56,10 +56,12 @@ import {
   BasketApprovalCard,
   type BasketApprovalSubmit,
 } from "./basket-approval-card"
+import { BasketSummary } from "./basket-summary"
+import type { BasketContextPayload } from "./basket-save-footer"
 import {
-  BasketSaveCard,
-  type BasketContextPayload,
-} from "./basket-save-card"
+  applySelectionToParts,
+  type SelectionUpdate,
+} from "@/lib/assistant/selection-update"
 import { ThinkingText } from "./ai-thinking-text"
 import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
 import {
@@ -152,7 +154,7 @@ export function AssistantChat({
   const [stoppedIds, setStoppedIds] = React.useState<ReadonlySet<string>>(
     () => new Set(),
   )
-  const { messages, sendMessage, status, stop, error } = useChat({
+  const { messages, sendMessage, setMessages, status, stop, error } = useChat({
     transport,
     messages: initialMessages as UIMessage[] | undefined,
     onData: (dataPart) => {
@@ -499,12 +501,15 @@ export function AssistantChat({
                 stripQuantityTokens(name) || name.toLocaleLowerCase("tr-TR"),
               quantity: m.quantity,
               unit: m.unit,
+              // Ad değişse de kullanıcının tercihi aynı ürüne ait.
+              note: m.note ?? null,
             }
           : {
               rawName: m.rawName,
               searchQuery: m.searchQuery,
               quantity: m.quantity,
               unit: m.unit,
+              note: m.note ?? null,
             },
       )
       sendMessage({
@@ -515,6 +520,20 @@ export function AssistantChat({
       })
     },
     [isBusy, sendMessage],
+  )
+
+  // Sepet Özeti'nden ürün değiştirildi: sunucu kayıtlı mesajı güncelledi,
+  // ekrandaki mesaj aynı fonksiyonla güncellenir (bkz. applySelectionToParts).
+  const handleSelectionApplied = React.useCallback(
+    (toolCallId: string, update: SelectionUpdate) => {
+      setMessages((prev) =>
+        prev.map((m) => {
+          const parts = applySelectionToParts(m.parts, toolCallId, update)
+          return parts ? { ...m, parts } : m
+        }),
+      )
+    },
+    [setMessages],
   )
 
   const isStoppedMessage = React.useCallback(
@@ -703,28 +722,10 @@ export function AssistantChat({
                             },
                             suppressToolLoader,
                           )
-                        case "tool-basketContext": {
-                          const toolCallId =
-                            (part as { toolCallId?: string }).toolCallId ?? null
-                          const savedId =
-                            toolCallId && initialSavedBaskets
-                              ? initialSavedBaskets[toolCallId] ?? null
-                              : null
-                          return renderToolPart(
-                            key,
-                            part,
-                            "Sepetini hazırlıyorum…",
-                            (out) => (
-                              <BasketSaveCard
-                                data={out as BasketContextPayload}
-                                conversationId={conversationId ?? null}
-                                toolCallId={toolCallId}
-                                initialSavedId={savedId}
-                              />
-                            ),
-                            suppressToolLoader,
-                          )
-                        }
+                        case "tool-basketContext":
+                          // Kaydet artık Sepet Özeti kartının alt şeridinde
+                          // (bkz. tool-summarizeOptimization kolu).
+                          return null
                         case "tool-lookupProducts":
                           return renderToolPart(
                             key,
@@ -749,19 +750,53 @@ export function AssistantChat({
                               ),
                             suppressToolLoader,
                           )
-                        case "tool-summarizeOptimization":
+                        case "tool-summarizeOptimization": {
+                          // Sepet onayı turunda özet, kayıt bağlamıyla birlikte
+                          // tek kart: Kaydet ve ürün değiştirme onun üstünde.
+                          // Fiş turunda bağlam yok; düz özet kartı.
+                          const context = m.parts.find(
+                            (p) =>
+                              p.type === "tool-basketContext" &&
+                              (p as { state?: string }).state ===
+                                "output-available",
+                          ) as
+                            | { toolCallId?: string; output?: unknown }
+                            | undefined
+                          const contextCallId = context?.toolCallId ?? null
                           return renderToolPart(
                             key,
                             part,
                             "En ucuz market kombinasyonunu hesaplıyorum…",
-                            (out) => (
-                              <OptimizationCard
-                                summary={out as OptimizationSummary}
-                                imageFallback={matchImageFallback(m.parts)}
-                              />
-                            ),
+                            (out) =>
+                              context?.output ? (
+                                <BasketSummary
+                                  data={context.output as BasketContextPayload}
+                                  toolCallId={contextCallId}
+                                  conversationId={conversationId ?? null}
+                                  initialSavedId={
+                                    contextCallId && initialSavedBaskets
+                                      ? (initialSavedBaskets[contextCallId] ??
+                                        null)
+                                      : null
+                                  }
+                                  // Ürün değiştirme yalnızca son turda: eski
+                                  // bir kartı değiştirmek sohbetin ortasındaki
+                                  // geçmiş bir sepeti sessizce değiştirirdi.
+                                  editable={
+                                    !isBusy && msgIdx === thread.length - 1
+                                  }
+                                  imageFallback={matchImageFallback(m.parts)}
+                                  onUpdated={handleSelectionApplied}
+                                />
+                              ) : (
+                                <OptimizationCard
+                                  summary={out as OptimizationSummary}
+                                  imageFallback={matchImageFallback(m.parts)}
+                                />
+                              ),
                             suppressToolLoader,
                           )
+                        }
                         case "tool-parseReceipt":
                           return renderToolPart(
                             key,

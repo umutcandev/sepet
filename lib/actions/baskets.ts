@@ -5,6 +5,7 @@ import { and, asc, count, desc, eq, exists, ilike, inArray, or, sql } from "driz
 import { auth } from "@/auth"
 import { db, baskets, basketItems } from "@/lib/db"
 import { ownedConversationId } from "@/lib/data/conversations"
+import { basketItemMatchFields, basketSummaryFields } from "@/lib/data/baskets"
 import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
@@ -165,13 +166,6 @@ export async function saveBasket(
   // sonrası sessiz bir bomba bırakmaz.
   const summary = OptimizationSummarySchema.parse(input.summary)
 
-  const bestSingle =
-    summary.singleMarket.itemCount > 0 ? summary.singleMarket : null
-  const twoMarketSavings =
-    summary.twoMarketCombo.markets.length === 2
-      ? summary.twoMarketCombo.savingsTL
-      : null
-
   const [inserted] = await db
     .insert(baskets)
     .values({
@@ -179,11 +173,7 @@ export async function saveBasket(
       conversationId,
       sourceToolCallId,
       name,
-      bestSingleMarket: bestSingle?.market ?? null,
-      bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
-      twoMarketSavingsTL:
-        twoMarketSavings != null ? twoMarketSavings.toFixed(2) : null,
-      summaryJson: summary,
+      ...basketSummaryFields(summary),
     })
     .returning({ id: baskets.id })
 
@@ -191,31 +181,15 @@ export async function saveBasket(
 
   if (input.items.length > 0) {
     await db.insert(basketItems).values(
-      input.items.map((it, idx) => {
-        const match = matchForItem(input.matches, it.rawName, idx)
-        const best = match?.bestMatch ?? null
-        const minPrice = best?.minPrice ?? null
-        const marketWithMin =
-          best && match
-            ? match.marketPrices.find((mp) => mp.price === minPrice) ?? null
-            : null
-        return {
-          basketId: inserted.id,
-          sortIndex: idx,
-          rawName: it.rawName,
-          searchQuery: it.searchQuery,
-          quantity: it.quantity.toString(),
-          unit: it.unit,
-          matchedProductId: best?.productId ?? null,
-          matchedName: best?.name ?? null,
-          matchedBrand: best?.brand ?? null,
-          matchedImageUrl: best?.imageUrl ?? null,
-          lookupStatus: match?.lookupStatus ?? null,
-          // Referans fiyat — plana ait değil. Bkz. schema.ts'teki uzun yorum.
-          minPrice: minPrice != null ? minPrice.toFixed(2) : null,
-          minPriceMarket: marketWithMin?.market ?? null,
-        }
-      }),
+      input.items.map((it, idx) => ({
+        basketId: inserted.id,
+        sortIndex: idx,
+        rawName: it.rawName,
+        searchQuery: it.searchQuery,
+        quantity: it.quantity.toString(),
+        unit: it.unit,
+        ...basketItemMatchFields(matchForItem(input.matches, it.rawName, idx)),
+      })),
     )
   }
 

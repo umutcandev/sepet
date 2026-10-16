@@ -1,6 +1,6 @@
 import "server-only"
 import { revalidatePath } from "next/cache"
-import { and, eq, max } from "drizzle-orm"
+import { and, eq, max, sql } from "drizzle-orm"
 import { db, conversations, conversationMessages } from "@/lib/db"
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
 import { isUuid } from "@/lib/utils"
@@ -125,4 +125,58 @@ export async function appendMessages(
     .where(eq(conversations.id, conversationId))
 
   revalidatePath("/asistan", "layout")
+}
+
+/**
+ * Bu kullanıcının sohbetinde verilen tool çağrısını taşıyan asistan mesajı.
+ * Mesaj id'si istemcide farklı (canlı akışta SDK üretir), tool çağrısı id'si
+ * ise sunucunun ürettiği ve kayıtta aynen duran tek ortak anahtar.
+ */
+export async function findAssistantMessageByToolCall(
+  conversationId: string,
+  userId: string,
+  toolCallId: string,
+): Promise<{ id: string; parts: unknown } | null> {
+  if (!isUuid(conversationId)) return null
+  const [row] = await db
+    .select({ id: conversationMessages.id, parts: conversationMessages.parts })
+    .from(conversationMessages)
+    .innerJoin(
+      conversations,
+      and(
+        eq(conversations.id, conversationMessages.conversationId),
+        eq(conversations.userId, userId),
+      ),
+    )
+    .where(
+      and(
+        eq(conversationMessages.conversationId, conversationId),
+        eq(conversationMessages.role, "assistant"),
+        // jsonb kapsama: part dizisinde bu toolCallId'yi taşıyan bir eleman var.
+        sql`${conversationMessages.parts} @> ${JSON.stringify([{ toolCallId }])}::jsonb`,
+      ),
+    )
+    .limit(1)
+  return row ?? null
+}
+
+/**
+ * Kayıtlı bir mesajın part'larını yerinde günceller. Yalnızca Sepet Özeti'nden
+ * ürün değiştirme kullanır; sohbetin sırası ve `updatedAt`i değişmez, mesaj
+ * aynı kartın düzeltilmiş hâlidir.
+ */
+export async function updateMessageParts(
+  messageId: string,
+  conversationId: string,
+  parts: unknown,
+): Promise<void> {
+  await db
+    .update(conversationMessages)
+    .set({ parts: parts as object })
+    .where(
+      and(
+        eq(conversationMessages.id, messageId),
+        eq(conversationMessages.conversationId, conversationId),
+      ),
+    )
 }
