@@ -2,6 +2,7 @@ import "server-only"
 import { and, asc, eq, isNotNull } from "drizzle-orm"
 import { db, baskets, basketItems, conversations } from "@/lib/db"
 import { isUuid } from "@/lib/utils"
+import type { MatchResult, OptimizationSummary } from "@/lib/ai/schemas"
 
 // Server-only data access. These take an already-authenticated userId from the
 // caller, so they must never live in a "use server" module: every export there
@@ -84,4 +85,93 @@ export async function getBasketDetail(id: string, userId: string) {
         ? { id: row.basket.conversationId, title: row.conversationTitle }
         : null,
   }
+}
+
+/**
+ * Bir kalem satırının eşleşmeden türeyen alanları. Kaydetme ve kayıtlı sepeti
+ * Sepet Özeti'nden güncelleme aynı alanları yazsın diye tek yerde.
+ */
+export function basketItemMatchFields(match: MatchResult | null) {
+  const best = match?.bestMatch ?? null
+  const minPrice = best?.minPrice ?? null
+  const marketWithMin =
+    best && match
+      ? match.marketPrices.find((mp) => mp.price === minPrice) ?? null
+      : null
+  return {
+    matchedProductId: best?.productId ?? null,
+    matchedName: best?.name ?? null,
+    matchedBrand: best?.brand ?? null,
+    matchedImageUrl: best?.imageUrl ?? null,
+    lookupStatus: match?.lookupStatus ?? null,
+    // Referans fiyat — plana ait değil. Bkz. schema.ts'teki uzun yorum.
+    minPrice: minPrice != null ? minPrice.toFixed(2) : null,
+    minPriceMarket: marketWithMin?.market ?? null,
+  }
+}
+
+/** Sepet satırının özet sütunları (liste sayfası bunları okur). */
+export function basketSummaryFields(summary: OptimizationSummary) {
+  const bestSingle =
+    summary.singleMarket.itemCount > 0 ? summary.singleMarket : null
+  const twoMarketSavings =
+    summary.twoMarketCombo.markets.length === 2
+      ? summary.twoMarketCombo.savingsTL
+      : null
+  return {
+    bestSingleMarket: bestSingle?.market ?? null,
+    bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
+    twoMarketSavingsTL:
+      twoMarketSavings != null ? twoMarketSavings.toFixed(2) : null,
+    summaryJson: summary,
+  }
+}
+
+/**
+ * Sohbetteki bir Sepet Özeti kaydedildiyse, kartta ürün değiştirilince kayıt
+ * da aynı hâle getirilir (kart ile kayıt tek doğru kaynak). Kayıt yoksa
+ * `null`; varsa güncellenen sepetin id'si.
+ *
+ * Kalem satırı `sortIndex` ile bulunur (kayıtta kalemler basketContext'teki
+ * sırayla yazılır) ve ham ad tutmazsa dokunulmaz: yanlış satıra başka kalemin
+ * ürününü yazmaktansa satırı eski hâliyle bırakmak daha iyi.
+ */
+export async function updateSavedBasketSelection(input: {
+  userId: string
+  conversationId: string
+  toolCallId: string
+  itemIndex: number
+  match: MatchResult
+  summary: OptimizationSummary
+}): Promise<string | null> {
+  const [basket] = await db
+    .select({ id: baskets.id })
+    .from(baskets)
+    .where(
+      and(
+        eq(baskets.userId, input.userId),
+        eq(baskets.conversationId, input.conversationId),
+        eq(baskets.sourceToolCallId, input.toolCallId),
+      ),
+    )
+    .limit(1)
+  if (!basket) return null
+
+  await db
+    .update(baskets)
+    .set(basketSummaryFields(input.summary))
+    .where(and(eq(baskets.id, basket.id), eq(baskets.userId, input.userId)))
+
+  await db
+    .update(basketItems)
+    .set(basketItemMatchFields(input.match))
+    .where(
+      and(
+        eq(basketItems.basketId, basket.id),
+        eq(basketItems.sortIndex, input.itemIndex),
+        eq(basketItems.rawName, input.match.rawName),
+      ),
+    )
+
+  return basket.id
 }

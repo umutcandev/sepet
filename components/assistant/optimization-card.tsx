@@ -11,10 +11,11 @@ import {
 import {
   RiArrowDownLine,
   RiArrowDownSLine,
+  RiArrowLeftRightLine,
   RiBox3Line,
   RiErrorWarningLine,
 } from "@remixicon/react"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
@@ -47,6 +48,13 @@ function formatMissingItemsText(names: string[], market: string): string {
  * (sohbette aynı turun eşleşmeleri, kayıt sayfasında kalemler).
  */
 export type ProductImageFallback = Record<string, string>
+
+/**
+ * Döküm satırındaki "Değiştir": kullanıcı o kalemin hangi ürünlerle
+ * karşılanacağını kendisi seçer. Verilmezse (kayıt sayfası, fiş turu, sohbetin
+ * eski kartları) buton görünmez.
+ */
+export type EditAllocation = (entry: MarketAllocation) => void
 
 function AllocationThumb({ url }: { url: string | null }) {
   // Market CDN'i görsele 404 dönebiliyor (bkz. record-item-list Thumb); kırık
@@ -81,10 +89,12 @@ function AllocationBreakdown({
   allocation,
   markets,
   imageFallback,
+  onEdit,
 }: {
   allocation: MarketAllocation[]
   markets: string[]
   imageFallback?: ProductImageFallback
+  onEdit?: EditAllocation
 }) {
   const multiMarket = markets.length > 1
   const grouped = markets
@@ -102,7 +112,7 @@ function AllocationBreakdown({
             <Fragment key={g.market}>
               {multiMarket && (
                 <TableRow className="border-0 hover:bg-transparent">
-                  <TableCell colSpan={2} className="pb-1 pt-2">
+                  <TableCell className="pb-1 pt-2">
                     <div className="flex items-center gap-1.5">
                       <MarketLogo name={g.market} size="sm" />
                       <span className="text-[0.6875rem] font-semibold">{g.market}</span>
@@ -122,9 +132,14 @@ function AllocationBreakdown({
                         <AllocationThumb
                           url={e.imageUrl ?? imageFallback?.[e.productId] ?? null}
                         />
+                        {/* Tutar ad satırında, "Değiştir" ürün adı satırında:
+                            iki sütun ayrı hücrelerdeyken satırlar kendi
+                            yüksekliklerine göre diziliyor, tutar ile ad, Değiştir
+                            ile ürün adı aynı hizaya oturmuyordu. Aynı satırı
+                            paylaşınca hiza ve aralık yapı gereği eşit. */}
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-xs font-medium">
+                          <div className="flex h-5 items-center gap-1.5">
+                            <span className="min-w-0 truncate text-xs font-medium">
                               {capitalize(e.rawName) || e.productName}
                             </span>
                             {multiPack && (
@@ -133,10 +148,26 @@ function AllocationBreakdown({
                               </Badge>
                             )}
                             <DepotInfo depotName={e.depotName} market={e.market} />
+                            <span className="ml-auto shrink-0 pl-2 text-xs tabular-nums">
+                              {formatTL(e.lineTotal)}
+                            </span>
                           </div>
-                          <div className="text-[0.6875rem] text-muted-foreground">
-                            {e.productName}
-                            {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
+                          <div className="flex items-start gap-2">
+                            <span className="min-w-0 flex-1 text-[0.6875rem] leading-4 text-muted-foreground">
+                              {e.productName}
+                              {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
+                            </span>
+                            {onEdit && (
+                              <button
+                                type="button"
+                                onClick={() => onEdit(e)}
+                                aria-label={`${capitalize(e.rawName) || e.productName} için ürünü değiştir`}
+                                className="relative inline-flex shrink-0 items-center gap-1 text-[0.6875rem] font-medium leading-4 text-muted-foreground transition-colors after:absolute after:-inset-x-1.5 after:-inset-y-2 hover:text-foreground focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                              >
+                                <RiArrowLeftRightLine aria-hidden="true" className="size-3" />
+                                Değiştir
+                              </button>
+                            )}
                           </div>
                           {e.sizeMismatch && (
                             <Badge variant="warning" className="mt-0.5">
@@ -146,9 +177,6 @@ function AllocationBreakdown({
                           )}
                         </div>
                       </div>
-                    </TableCell>
-                    <TableCell className="py-1.5 text-right text-xs tabular-nums">
-                      {formatTL(e.lineTotal)}
                     </TableCell>
                   </TableRow>
                 )
@@ -245,6 +273,7 @@ function OptionRow({
   allocation,
   markets,
   imageFallback,
+  onEdit,
   hint = false,
 }: {
   logo: React.ReactNode
@@ -259,6 +288,7 @@ function OptionRow({
   allocation: MarketAllocation[]
   markets: string[]
   imageFallback?: ProductImageFallback
+  onEdit?: EditAllocation
   /** Kartın önerdiği ilk satır: açılabildiğini ipucuyla gösterir. */
   hint?: boolean
 }) {
@@ -357,6 +387,7 @@ function OptionRow({
               allocation={allocation}
               markets={markets}
               imageFallback={imageFallback}
+              onEdit={onEdit}
             />
           </motion.div>
         )}
@@ -368,9 +399,14 @@ function OptionRow({
 export function OptimizationCard({
   summary,
   imageFallback,
+  onEditItem,
+  footer,
 }: {
   summary: OptimizationSummary
   imageFallback?: ProductImageFallback
+  onEditItem?: EditAllocation
+  /** Kartın altındaki eylem şeridi (sohbette: Kaydet). */
+  footer?: React.ReactNode
 }) {
   // Hiçbir kalem eşleşmediyse gösterilecek bir plan yok; "— ₺0,00" satırı
   // asistanın "Sepet Özeti çıkaramadım" cümlesiyle çelişirdi.
@@ -411,6 +447,7 @@ export function OptimizationCard({
       allocation={singleMarket.allocation}
       markets={[singleMarket.market]}
       imageFallback={imageFallback}
+      onEdit={onEditItem}
     />
   )
 
@@ -446,6 +483,7 @@ export function OptimizationCard({
       allocation={twoMarketCombo.allocation}
       markets={twoMarketCombo.markets}
       imageFallback={imageFallback}
+      onEdit={onEditItem}
     />
   ) : null
 
@@ -467,6 +505,7 @@ export function OptimizationCard({
           </>
         )}
       </div>
+      {footer && <CardFooter>{footer}</CardFooter>}
     </Card>
   )
 }
