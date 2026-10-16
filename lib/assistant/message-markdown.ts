@@ -155,8 +155,8 @@ function summaryMarkdown(summary: OptimizationSummary): string {
   const comboFirst = !single.isFullCoverage && hasCombo
 
   const singleTitle = single.isFullCoverage
-    ? "Tek market en ucuz"
-    : "Tek markette sepet eksik kalıyor"
+    ? "En Ucuz Tek Market"
+    : "Eksik Kalemli Tek Market"
   const singleSub =
     !single.isFullCoverage && single.missingItemNames.length > 0
       ? missingText(single.missingItemNames, single.market)
@@ -172,7 +172,7 @@ function summaryMarkdown(summary: OptimizationSummary): string {
 
   const comboBlock = hasCombo
     ? [
-        `**${comboFirst ? "Tüm sepeti karşılayan kombinasyon" : "İki market kombinasyonu"}: ${combo.markets.join(" + ")} — ${formatTL(combo.total)}** (${totalItems}/${totalItems} kalem${
+        `**${comboFirst ? "Eksiksiz İki Market" : "İki Market Kombinasyonu"}: ${combo.markets.join(" + ")} — ${formatTL(combo.total)}** (${totalItems}/${totalItems} kalem${
           combo.savingsTL > 0
             ? `, ${formatTL(combo.savingsTL)} tasarruf, ${formatPercent(combo.savingsPct)}`
             : ""

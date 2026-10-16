@@ -63,7 +63,7 @@ describe("messageToMarkdown", () => {
     assert.match(md, /\*\*Sepet Özeti\*\*/)
     assert.match(
       md,
-      /\*\*Tek market en ucuz: Migros — ₺35,00\*\* \(1\/1 kalem\)/
+      /\*\*En Ucuz Tek Market: Migros — ₺35,00\*\* \(1\/1 kalem\)/
     )
     assert.match(md, /\| Süt \| Süt 1 L \| 1 \| ₺35,00 \|/)
   })

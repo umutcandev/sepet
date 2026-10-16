@@ -1506,6 +1506,45 @@
   }
 }
 
+/* Tek satırlık kayan metin — bkz. components/ui/marquee-text.tsx. Sığmayan
+   metin bekler, gizli ucuna kayar, bekler, geri döner. Sağdaki solma, satırın
+   devam ettiğini söyler; kayma solma payı kadar fazla gittiği için son harfler
+   uçta tam okunur. */
+@keyframes marquee-pingpong {
+  0%,
+  20% {
+    transform: translateX(0);
+  }
+  50%,
+  70% {
+    transform: translateX(var(--marquee-shift));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.marquee-text[data-overflow] {
+  mask-image: linear-gradient(to right, #000 calc(100% - 12px), transparent);
+}
+
+.marquee-text[data-overflow] > span {
+  animation: marquee-pingpong var(--marquee-duration) ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-text {
+    text-overflow: ellipsis;
+  }
+  .marquee-text[data-overflow] {
+    mask-image: none;
+  }
+  .marquee-text > span {
+    display: inline;
+    animation: none !important;
+  }
+}
+
 @keyframes conv-typing-blink {
   0%,
   80%,

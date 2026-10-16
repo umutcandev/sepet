@@ -2,7 +2,6 @@ import { Squircle } from "@/components/ui/squircle"
 import Image from "next/image"
 import Link from "next/link"
 import {
-  RiArrowDownLine,
   RiArrowDownSLine,
   RiArrowRightLine,
   RiBox3Line,
@@ -192,13 +191,10 @@ function OptimizationMock() {
           <MarketAvatar src="/market-logos/bim.webp" />
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="truncate text-[0.6875rem]/[1rem] font-medium text-muted-foreground">
-              Tek market en ucuz
+              En Ucuz Tek Market
             </span>
             <span className="truncate text-base/[1.5rem] font-semibold text-foreground">
               BİM
-            </span>
-            <span className="truncate text-[0.6875rem]/[1rem] text-muted-foreground">
-              3/3 kalem
             </span>
           </span>
           <span className="shrink-0 text-lg font-bold text-foreground tabular-nums">
@@ -221,22 +217,21 @@ function OptimizationMock() {
             />
           </span>
           <span className="flex min-w-0 flex-1 flex-col">
-            <span className="flex min-w-0 items-center gap-1 text-[0.6875rem]/[1rem] font-medium text-muted-foreground">
-              <span className="truncate">İki market</span>
-              <span className="flex shrink-0 items-center rounded-md border border-emerald-500/40 px-1 text-[0.625rem]/[0.875rem] text-emerald-300">
-                <RiArrowDownLine className="mr-0.5 size-2.5" />
-                %7,8
-              </span>
+            <span className="truncate text-[0.6875rem]/[1rem] font-medium text-muted-foreground">
+              İki Market Kombinasyonu
             </span>
             <span className="truncate text-base/[1.5rem] font-semibold text-foreground">
               Migros + BİM
             </span>
-            <span className="truncate text-[0.6875rem]/[1rem] font-medium text-emerald-300">
+          </span>
+          {/* Gerçek karttaki gibi tasarruf tutarın altında. */}
+          <span className="flex shrink-0 flex-col items-end">
+            <span className="text-lg font-bold text-foreground tabular-nums">
+              {formatTL(104.45)}
+            </span>
+            <span className="text-[0.6875rem]/[1rem] font-medium text-emerald-300">
               {formatTL(8.8)} tasarruf
             </span>
-          </span>
-          <span className="shrink-0 text-lg font-bold text-foreground tabular-nums">
-            {formatTL(104.45)}
           </span>
           <RiArrowDownSLine className="size-3.5 shrink-0 text-muted-foreground" />
         </div>

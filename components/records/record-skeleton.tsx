@@ -131,29 +131,135 @@ function HeaderSkeleton() {
   return (
     <div className="mb-5 space-y-2">
       <div className="flex items-start justify-between gap-4">
-        <Skeleton className="h-7 w-56" />
-        <Skeleton className="h-8 w-28 shrink-0" />
+        {/* Başlık satırı h1'in satır yüksekliği kadar (mobilde 28, sm'de
+            32px); "İşlem Yapın" 28px. */}
+        <Skeleton className="h-7 w-56 sm:h-8" />
+        <Skeleton className="h-7 w-28 shrink-0" />
       </div>
-      <Skeleton className="h-3.5 w-52" />
+      {/* Tarih satırı 16px (text-xs); çubuk 14px, satır yüksekliği korunur. */}
+      <div className="flex h-4 items-center">
+        <Skeleton className="h-3.5 w-52" />
+      </div>
     </div>
   )
 }
 
-/** /sepetlerim/[id] — solda bilgi + dağılım, sağda özet, altta kalemler. */
+/** Sohbetteki kilitli kalem kartı: başlık, ÜRÜN/ADET/BİRİM şeridi, satırlar. */
+function BasketItemsTableSkeleton({ rows = 4 }: { rows?: number }) {
+  return (
+    <Card>
+      <CardHeaderSkeleton width="w-36" />
+      <div className="divide-y">
+        <div className="flex h-10 items-center gap-4 px-4">
+          <Skeleton className="h-2.5 w-10" />
+          <Skeleton className="ml-auto h-2.5 w-9" />
+          <Skeleton className="h-2.5 w-11" />
+        </div>
+        {Array.from({ length: rows }).map((_, i) => (
+          <div key={i} className="flex h-[2.3125rem] items-center gap-4 px-4">
+            <Skeleton className="h-3.5 w-24" />
+            <Skeleton className="ml-auto h-3.5 w-4" />
+            <Skeleton className="h-3 w-11" />
+          </div>
+        ))}
+      </div>
+    </Card>
+  )
+}
+
+/** Dökümde bir ürün satırı: görsel, ad + tutar, eşleşen ürün adı (52px). */
+function BreakdownItemSkeleton() {
+  return (
+    <div className="flex h-13 items-center gap-2.5 px-2">
+      <Skeleton className="size-10 shrink-0 rounded-md" />
+      <div className="min-w-0 flex-1 space-y-1.5">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-3.5 w-2/5" />
+          <Skeleton className="ml-auto h-3.5 w-12" />
+        </div>
+        <Skeleton className="h-3 w-3/5" />
+      </div>
+    </div>
+  )
+}
+
+/** Dökümde market başlığı: logo + ad (36px, yalnız iki marketli planda). */
+function BreakdownMarketSkeleton() {
+  return (
+    <div className="flex h-9 items-end gap-1.5 px-2 pb-1">
+      <Skeleton className="size-5 shrink-0 rounded-full" />
+      <Skeleton className="h-3 w-16" />
+    </div>
+  )
+}
+
+/**
+ * Sepet Özeti, iki satırın dökümü açık (sayfada varsayılan açık). Ölçüler
+ * gerçek karttan: tek market satırı 64,5px (etiket + market), kombinasyon
+ * satırı tutarın altındaki tasarrufla 68,5px, döküm satırı 52px, market
+ * başlığı 36px.
+ */
+function OpenSummaryCardSkeleton() {
+  const row = (height: string, withNote: boolean) => (
+    <div className={`flex ${height} items-center gap-3 px-4`}>
+      <Skeleton className="size-8 shrink-0 rounded-full" />
+      <div className="flex-1 space-y-1.5">
+        <Skeleton className="h-3 w-24" />
+        <Skeleton className="h-4 w-28" />
+      </div>
+      <div className="flex flex-col items-end gap-1.5">
+        <Skeleton className="h-6 w-20" />
+        {withNote ? <Skeleton className="h-3 w-16" /> : null}
+      </div>
+    </div>
+  )
+  return (
+    <Card>
+      <CardHeaderSkeleton width="w-24" />
+      <div className="divide-y">
+        <div>
+          {row("h-[64.5px]", false)}
+          <div className="border-t bg-muted/30 px-2 py-1">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <BreakdownItemSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+        <div>
+          {row("h-[68.5px]", true)}
+          <div className="border-t bg-muted/30 px-2 py-1">
+            <BreakdownMarketSkeleton />
+            <BreakdownItemSkeleton />
+            <BreakdownItemSkeleton />
+            <BreakdownMarketSkeleton />
+            <BreakdownItemSkeleton />
+            <BreakdownItemSkeleton />
+          </div>
+        </div>
+      </div>
+    </Card>
+  )
+}
+
+/**
+ * /sepetlerim/[id] — solda kalemler ve altında bilgi, sağda iki satırı kaplayan
+ * özet (bkz. sayfadaki ızgara). Mobilde sıra: özet, kalemler, bilgi.
+ * Dağılım halkası iskelette yok: yalnızca iki marketli planda çıkıyor ve en
+ * altta olduğu için geldiğinde hiçbir şeyi itmiyor.
+ */
 export function BasketDetailSkeleton() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
       <HeaderSkeleton />
-      <div className="grid gap-5 md:grid-cols-2">
-        <div className="order-3 min-w-0 space-y-5 md:order-1">
-          <CardSkeleton rows={4} />
-          <DonutCardSkeleton />
+      <div className="grid items-start gap-5 md:grid-cols-2 md:grid-rows-[auto_1fr]">
+        <div className="order-2 min-w-0 md:col-start-1 md:row-start-1">
+          <BasketItemsTableSkeleton />
         </div>
-        <div className="order-1 min-w-0 md:order-2">
-          <SummaryCardSkeleton />
+        <div className="order-3 min-w-0 md:col-start-1 md:row-start-2">
+          <CardSkeleton rows={3} />
         </div>
-        <div className="order-2 min-w-0 md:order-3 md:col-span-2">
-          <ItemsCardSkeleton />
+        <div className="order-1 min-w-0 md:col-start-2 md:row-span-2 md:row-start-1">
+          <OpenSummaryCardSkeleton />
         </div>
       </div>
     </div>

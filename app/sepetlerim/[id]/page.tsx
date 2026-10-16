@@ -201,6 +201,7 @@ export default async function BasketDetailPage({
             <OptimizationCard
               summary={summary}
               imageFallback={itemImages}
+              defaultOpen
             />
           </div>
         )}
