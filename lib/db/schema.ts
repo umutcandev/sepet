@@ -143,6 +143,11 @@ export const userSessions = pgTable(
       .notNull()
       .defaultNow(),
     revokedAt: timestamp("revokedAt", { mode: "date" }),
+    // Oturum bir geçiş anahtarıyla açıldıysa o anahtar: anahtar silinince bu
+    // oturumlar da kapatılır (bkz. deletePasskeyAction). Diğer yöntemlerde null.
+    passkeyId: text("passkeyId").references(() => passkeys.id, {
+      onDelete: "set null",
+    }),
   },
   (t) => [index("user_session_user_idx").on(t.userId)],
 )

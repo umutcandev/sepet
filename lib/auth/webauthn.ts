@@ -61,7 +61,19 @@ export function getRelyingParty(): RelyingParty | null {
 // ─── Challenge deposu ───
 
 type ChallengePurpose = "login" | "register" | "reauth"
-type StoredChallenge = { u: string | null }
+// u: kullanıcı, s: cihaz oturumu (sid). Girişte ikisi de null.
+type StoredChallenge = { u: string | null; s: string | null }
+
+/**
+ * Oturum içi törenin (kayıt, kimlik teyidi) sahibi. Challenge yalnız onu
+ * isteyen cihaz oturumunda tüketilebilir: aynı kullanıcının sudo'suz başka bir
+ * oturumu (ör. çalınmış cookie) onu kullanamaz.
+ */
+export type CeremonyOwner = { userId: string; sid: string }
+
+function ownedBy(stored: StoredChallenge, owner: CeremonyOwner) {
+  return stored.u === owner.userId && stored.s === owner.sid
+}
 
 // generateChallenge 32 bayt → 43 karakter base64url. Anahtara istemciden gelen
 // değer girdiği için biçim sınırlı tutulur.
@@ -74,11 +86,11 @@ function challengeKey(purpose: ChallengePurpose, challenge: string) {
 async function storeChallenge(
   purpose: ChallengePurpose,
   challenge: string,
-  userId: string | null
+  owner: CeremonyOwner | null
 ) {
   await redis.set<StoredChallenge>(
     challengeKey(purpose, challenge),
-    { u: userId },
+    { u: owner?.userId ?? null, s: owner?.sid ?? null },
     { ex: CHALLENGE_TTL_S, nx: true }
   )
 }
@@ -205,7 +217,7 @@ export async function createLoginOptions(): Promise<PublicKeyCredentialRequestOp
 
 /** Oturum açıkken kimlik teyidi: yalnız bu kullanıcının anahtarları. */
 export async function createReauthOptions(
-  userId: string
+  owner: CeremonyOwner
 ): Promise<PublicKeyCredentialRequestOptionsJSON | null> {
   const rp = getRelyingParty()
   if (!rp) return null
@@ -215,7 +227,7 @@ export async function createReauthOptions(
       transports: passkeys.transports,
     })
     .from(passkeys)
-    .where(eq(passkeys.userId, userId))
+    .where(eq(passkeys.userId, owner.userId))
   if (rows.length === 0) return null
   const options = await generateAuthenticationOptions({
     rpID: rp.id,
@@ -226,7 +238,7 @@ export async function createReauthOptions(
     userVerification: "required",
     timeout: CEREMONY_TIMEOUT_MS,
   })
-  await storeChallenge("reauth", options.challenge, userId)
+  await storeChallenge("reauth", options.challenge, owner)
   return options
 }
 
@@ -247,10 +259,11 @@ export type RegistrationOptionsResult =
   | { ok: false; reason: "disabled" | "limit" | "no_user" }
 
 export async function createRegistrationOptions(
-  userId: string
+  owner: CeremonyOwner
 ): Promise<RegistrationOptionsResult> {
   const rp = getRelyingParty()
   if (!rp) return { ok: false, reason: "disabled" }
+  const { userId } = owner
 
   const [[user], existing] = await Promise.all([
     db
@@ -295,7 +308,7 @@ export async function createRegistrationOptions(
     supportedAlgorithmIDs: SUPPORTED_ALGORITHMS,
     timeout: CEREMONY_TIMEOUT_MS,
   })
-  await storeChallenge("register", options.challenge, userId)
+  await storeChallenge("register", options.challenge, owner)
   return { ok: true, options }
 }
 
@@ -316,7 +329,7 @@ export type RegistrationResult =
   | { ok: false; code: "disabled" | "expired" | "invalid" }
 
 export async function verifyRegistration(
-  userId: string,
+  owner: CeremonyOwner,
   input: unknown
 ): Promise<RegistrationResult> {
   const rp = getRelyingParty()
@@ -326,9 +339,10 @@ export async function verifyRegistration(
   const challenge = readChallenge(response.response.clientDataJSON)
   if (!challenge) return { ok: false, code: "invalid" }
 
-  // Challenge başka bir kullanıcıya verilmişse de süresi dolmuş sayılır.
+  // Challenge başka bir kullanıcıya ya da aynı kullanıcının başka bir cihaz
+  // oturumuna verilmişse de süresi dolmuş sayılır.
   const stored = await consumeChallenge("register", challenge)
-  if (!stored || stored.u !== userId) return { ok: false, code: "expired" }
+  if (!stored || !ownedBy(stored, owner)) return { ok: false, code: "expired" }
 
   try {
     const { verified, registrationInfo } = await verifyRegistrationResponse({
@@ -364,28 +378,33 @@ export async function verifyRegistration(
 
 export type AssertionResult =
   | { ok: true; userId: string; passkeyId: string }
-  | { ok: false; code: "disabled" | "expired" | "unknown" | "invalid" }
+  | {
+      ok: false
+      code: "disabled" | "malformed" | "expired" | "unknown" | "invalid"
+    }
 
 /**
- * Giriş (purpose "login") ve oturum içi kimlik teyidi (purpose "reauth", userId
- * zorunlu) için ortak imza doğrulaması. "unknown" = kimlik bilgisi bizde yok
- * (silinmiş) → istemci şifre yöneticisine signalUnknownCredential gönderir.
+ * Giriş (purpose "login") ve oturum içi kimlik teyidi (purpose "reauth", owner
+ * zorunlu) için ortak imza doğrulaması. "malformed" = yanıt biçimsiz, challenge'a
+ * hiç bakılmadı. "unknown" = kimlik bilgisi bizde yok (silinmiş) → istemci şifre
+ * yöneticisine signalUnknownCredential gönderir. "invalid" = challenge geçerliydi
+ * ve tüketildi, ama imza / userHandle / sayaç doğrulanamadı.
  */
 export async function verifyAssertion(
   input: unknown,
   purpose: "login" | "reauth",
-  userId?: string
+  owner?: CeremonyOwner
 ): Promise<AssertionResult> {
   const rp = getRelyingParty()
   if (!rp) return { ok: false, code: "disabled" }
   const response = parseAssertion(input)
-  if (!response) return { ok: false, code: "invalid" }
+  if (!response) return { ok: false, code: "malformed" }
   const challenge = readChallenge(response.response.clientDataJSON)
-  if (!challenge) return { ok: false, code: "invalid" }
+  if (!challenge) return { ok: false, code: "malformed" }
 
   const stored = await consumeChallenge(purpose, challenge)
   if (!stored) return { ok: false, code: "expired" }
-  if (purpose === "reauth" && (!userId || stored.u !== userId)) {
+  if (purpose === "reauth" && (!owner || !ownedBy(stored, owner))) {
     return { ok: false, code: "expired" }
   }
 
@@ -403,7 +422,7 @@ export async function verifyAssertion(
     .where(eq(passkeys.credentialId, response.id))
     .limit(1)
   if (!row) return { ok: false, code: "unknown" }
-  if (purpose === "reauth" && row.userId !== userId) {
+  if (purpose === "reauth" && row.userId !== owner?.userId) {
     return { ok: false, code: "unknown" }
   }
 

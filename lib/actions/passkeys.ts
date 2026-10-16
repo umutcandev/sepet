@@ -1,13 +1,13 @@
 "use server"
 
-import { and, count, eq } from "drizzle-orm"
+import { and, count, eq, isNull, ne } from "drizzle-orm"
 import type {
   PublicKeyCredentialCreationOptionsJSON,
   PublicKeyCredentialRequestOptionsJSON,
 } from "@simplewebauthn/server"
 
 import { auth, signIn } from "@/auth"
-import { db, users, accounts, passkeys } from "@/lib/db"
+import { db, users, accounts, passkeys, userSessions } from "@/lib/db"
 import { sanitizeCallback } from "@/lib/auth/callback"
 import {
   mapCredentialsError,
@@ -205,14 +205,15 @@ export async function beginPasskeyRegistrationAction(): Promise<
   const session = await auth()
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
   const uid = session.user.id
+  const sid = session.sid
 
-  if (!(await hasSudo(uid, session.sid))) {
+  if (!sid || !(await hasSudo(uid, sid))) {
     return { ok: false, error: SUDO_REQUIRED, code: "sudo_required" }
   }
   const limit = await checkLimit(passkeyRegisterLimiter, uid)
   if (!limit.ok) return limit
 
-  const result = await createRegistrationOptions(uid)
+  const result = await createRegistrationOptions({ userId: uid, sid })
   if (result.ok) return result
   if (result.reason === "limit") {
     return {
@@ -224,21 +225,29 @@ export async function beginPasskeyRegistrationAction(): Promise<
   return { ok: false, error: "Oturum bulunamadı." }
 }
 
-// Kayıt seçenekleri yalnız sudo penceresinde ve bu kullanıcıya bağlı bir
-// challenge ile verilir; challenge tek kullanımlık olduğundan burada ayrıca sudo
-// aranmaz (pencere, tarayıcı penceresi açıkken kapanmış olabilir).
+// Kayıt seçenekleri yalnız sudo penceresinde ve bu kullanıcıya + bu cihaz
+// oturumuna (sid) bağlı bir challenge ile verilir; challenge tek kullanımlık ve
+// başka oturumda tüketilemez olduğundan burada ayrıca sudo aranmaz (pencere,
+// tarayıcı penceresi açıkken kapanmış olabilir).
 export async function finishPasskeyRegistrationAction(input: {
   response: unknown
 }): Promise<{ ok: true; passkey: PasskeyItem } | { ok: false; error: string }> {
   const session = await auth()
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
   const uid = session.user.id
+  const expired = {
+    ok: false,
+    error: "İsteğin süresi doldu. Tekrar dene.",
+  } as const
+  // sid'siz oturuma kayıt challenge'ı hiç verilmez.
+  if (!session.sid) return expired
 
-  const result = await verifyRegistration(uid, input?.response)
+  const result = await verifyRegistration(
+    { userId: uid, sid: session.sid },
+    input?.response
+  )
   if (!result.ok) {
-    if (result.code === "expired") {
-      return { ok: false, error: "İsteğin süresi doldu. Tekrar dene." }
-    }
+    if (result.code === "expired") return expired
     if (result.code === "disabled") return { ok: false, error: DISABLED }
     return { ok: false, error: "Geçiş anahtarı doğrulanamadı. Tekrar dene." }
   }
@@ -346,6 +355,21 @@ export async function deletePasskeyAction(input: {
         "Bu, hesabına girmenin tek yolu. Silmeden önce başka bir giriş yöntemi ekle.",
     }
   }
+
+  // Bu anahtarla açılmış oturumlar da kapanır (60 sn içinde, bkz. jwt
+  // callback): tanınmayan bir anahtarı silmek, onunla girmiş birini dışarıda
+  // bırakmalı. Silme işlemini yapan bu cihaz (sudo'lu) HARİÇ. Satır silinince
+  // passkeyId null'a düştüğü için silmeden ÖNCE.
+  const revoke = [
+    eq(userSessions.userId, uid),
+    eq(userSessions.passkeyId, id),
+    isNull(userSessions.revokedAt),
+  ]
+  if (session.sid) revoke.push(ne(userSessions.id, session.sid))
+  await db
+    .update(userSessions)
+    .set({ revokedAt: new Date() })
+    .where(and(...revoke))
 
   const [row] = await db
     .delete(passkeys)

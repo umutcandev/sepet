@@ -1,10 +1,10 @@
 "use server"
 
-import { and, eq, isNull, ne } from "drizzle-orm"
+import { and, count, eq, isNull, ne } from "drizzle-orm"
 import { z } from "zod"
 
 import { auth } from "@/auth"
-import { db, users, passwordReset, userSessions } from "@/lib/db"
+import { db, users, passwordReset, userSessions, passkeys } from "@/lib/db"
 import {
   normalizeEmail,
   generateCode,
@@ -38,10 +38,23 @@ const RESET_TTL_MS = 15 * 60 * 1000
 export type ActionResult = { ok: true } | { ok: false; error: string }
 // Sıfırlama/belirleme sonucu: sessionsRevoked yalnız var olan bir şifre
 // DEĞİŞTİĞİNDE true olur (ilk kez şifre belirleyen sosyal giriş kullanıcısının
-// oturumları düşürülmez); başarı ekranı metnini bu belirler.
+// oturumları düşürülmez); başarı ekranı metnini bu belirler. passkeys: o
+// durumda kayıtlı geçiş anahtarı sayısı (bkz. countPasskeys).
 export type ResetResult =
-  | { ok: true; sessionsRevoked: boolean }
+  | { ok: true; sessionsRevoked: boolean; passkeys: number }
   | { ok: false; error: string }
+
+// Şifre değişikliği geçiş anahtarlarını SİLMEZ (kullanıcı kendi anahtarlarını
+// kaybetmesin). Ama ele geçirme sonrası şifresini değiştiren kullanıcı,
+// saldırganın eklediği bir anahtarı da kaldırmalı: sayı, başarı ekranında
+// "tanımadığın anahtar varsa sil" uyarısı göstermek için döner.
+async function countPasskeys(userId: string): Promise<number> {
+  const [row] = await db
+    .select({ n: count() })
+    .from(passkeys)
+    .where(eq(passkeys.userId, userId))
+  return row?.n ?? 0
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const emailField = z
@@ -186,7 +199,11 @@ async function applyReset(
       ...(hadPassword ? passwordChangedEmail() : passwordSetEmail()),
     })
   }
-  return { ok: true, sessionsRevoked: hadPassword }
+  return {
+    ok: true,
+    sessionsRevoked: hadPassword,
+    passkeys: hadPassword ? await countPasskeys(userId) : 0,
+  }
 }
 
 // ─── Ayarlar > Güvenlik ───
@@ -220,11 +237,12 @@ export async function getSecurityStateAction(): Promise<{
 }
 
 // Şifresi olan kullanıcı için: mevcut şifreyi doğrula, güncelle, bu cihaz HARİÇ
-// tüm oturumları düşür, bildirim gönder.
+// tüm oturumları düşür, bildirim gönder. passkeys: uyarı için (bkz.
+// countPasskeys).
 export async function changePasswordAction(input: {
   currentPassword: string
   newPassword: string
-}): Promise<ActionResult> {
+}): Promise<{ ok: true; passkeys: number } | { ok: false; error: string }> {
   const session = await auth()
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
   const uid = session.user.id
@@ -267,7 +285,7 @@ export async function changePasswordAction(input: {
     .where(and(...conditions))
 
   if (u.email) void sendMail({ to: u.email, ...passwordChangedEmail() })
-  return { ok: true }
+  return { ok: true, passkeys: await countPasskeys(uid) }
 }
 
 // Şifresiz sosyal giriş hesabı (passwordHash IS NULL) için şifre belirleme bağlantısı iste.

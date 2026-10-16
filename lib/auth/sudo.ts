@@ -11,15 +11,17 @@ import { redis } from "@/lib/redis"
 // açılır (GitHub sudo modu gibi); pencere kayan değil, sabittir.
 //
 // Anahtar cihaz oturumuna (sid) bağlıdır: başka cihazdaki teyit buraya geçmez.
-// sid yalnız oturum kaydı yazılamadıysa yoktur; o durumda kullanıcı kapsamlı
-// ortak bir anahtara düşülür.
+// sid yalnız oturum kaydı yazılamadıysa yoktur; o oturumda pencere HİÇ açılmaz.
+// Kullanıcı kapsamlı ortak bir anahtar, sid'siz bütün oturumlara (başka
+// cihazlar dahil) aynı pencereyi verirdi.
 const SUDO_TTL_S = 10 * 60
 
-function sudoKey(userId: string, sid: string | undefined) {
-  return `sudo:${userId}:${sid ?? "-"}`
+function sudoKey(userId: string, sid: string) {
+  return `sudo:${userId}:${sid}`
 }
 
 export async function grantSudo(userId: string, sid: string | undefined) {
+  if (!sid) return
   await redis.set(sudoKey(userId, sid), 1, { ex: SUDO_TTL_S })
 }
 
@@ -27,5 +29,6 @@ export async function hasSudo(
   userId: string,
   sid: string | undefined
 ): Promise<boolean> {
+  if (!sid) return false
   return (await redis.exists(sudoKey(userId, sid))) === 1
 }

@@ -32,6 +32,10 @@ import {
 const REAUTH_TTL_MS = 15 * 60 * 1000
 const MAX_ATTEMPTS = 5
 const FAILED = "Doğrulama başarısız. Bilgilerini kontrol edip tekrar dene."
+// Oturum kaydı (sid) yazılamamış oturumda sudo penceresi açılamaz (bkz.
+// lib/auth/sudo.ts); yeni giriş yeni bir kayıt oluşturur.
+const NO_SID =
+  "Bu oturumda kimliğin doğrulanamıyor. Çıkış yapıp tekrar giriş yap."
 
 export type ActionResult = { ok: true } | { ok: false; error: string }
 
@@ -45,6 +49,7 @@ export type SudoInput =
 export async function requestSudoEmailCodeAction(): Promise<ActionResult> {
   const session = await auth()
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
+  if (!session.sid) return { ok: false, error: NO_SID }
   const uid = session.user.id
 
   const [u] = await db
@@ -104,7 +109,11 @@ export async function beginSudoPasskeyAction(): Promise<
 > {
   const session = await auth()
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
-  const options = await createReauthOptions(session.user.id)
+  if (!session.sid) return { ok: false, error: NO_SID }
+  const options = await createReauthOptions({
+    userId: session.user.id,
+    sid: session.sid,
+  })
   if (!options) {
     return { ok: false, error: "Hesabında kayıtlı bir geçiş anahtarı yok." }
   }
@@ -117,9 +126,13 @@ export async function confirmSudoAction(
 ): Promise<ActionResult> {
   const session = await auth()
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
+  const sid = session.sid
+  if (!sid) return { ok: false, error: NO_SID }
   const uid = session.user.id
 
-  const limit = await checkLimit(passwordChangeLimiter, `sudo:${uid}`)
+  // Şifre değiştirme ve 2FA kapatmayla AYNI kova (anahtar uid): çalınmış bir
+  // oturum burada şifre/TOTP tahmini için ayrı bir hak kazanmaz.
+  const limit = await checkLimit(passwordChangeLimiter, uid)
   if (!limit.ok) return limit
 
   const [u] = await db
@@ -137,7 +150,10 @@ export async function confirmSudoAction(
   let ok = false
   switch (input?.method) {
     case "passkey": {
-      const result = await verifyAssertion(input.response, "reauth", uid)
+      const result = await verifyAssertion(input.response, "reauth", {
+        userId: uid,
+        sid,
+      })
       if (!result.ok && result.code === "expired") {
         return { ok: false, error: "İsteğin süresi doldu. Tekrar dene." }
       }
@@ -176,7 +192,7 @@ export async function confirmSudoAction(
   }
 
   if (!ok) return { ok: false, error: FAILED }
-  await grantSudo(uid, session.sid)
+  await grantSudo(uid, sid)
   return { ok: true }
 }
 

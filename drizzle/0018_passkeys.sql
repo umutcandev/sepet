@@ -28,4 +28,12 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "passkey_credential_idx" ON "passkey" USING btree ("credentialId");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "passkey_user_idx" ON "passkey" USING btree ("userId");
+CREATE INDEX IF NOT EXISTS "passkey_user_idx" ON "passkey" USING btree ("userId");--> statement-breakpoint
+-- Geçiş anahtarıyla açılan oturum hangi anahtarla açıldı: anahtar silinince o
+-- oturumlar da kapatılır.
+ALTER TABLE "user_session" ADD COLUMN IF NOT EXISTS "passkeyId" text;--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "user_session" ADD CONSTRAINT "user_session_passkeyId_passkey_id_fk" FOREIGN KEY ("passkeyId") REFERENCES "public"."passkey"("id") ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;

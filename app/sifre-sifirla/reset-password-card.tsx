@@ -2,8 +2,9 @@
 
 import * as React from "react"
 import { AnimatePresence, motion } from "motion/react"
-import { RiCheckLine } from "@remixicon/react"
+import { RiAlertLine, RiCheckLine } from "@remixicon/react"
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
@@ -21,10 +22,12 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
   const [error, setError] = React.useState("")
   // null = form aşamasında; dolu = başarı ekranı. sessionsRevoked yalnız var
   // olan şifre değiştiğinde true olur (ilk belirlemede cihazlardan çıkış yok),
-  // başarı alt metni buna göre seçilir.
-  const [done, setDone] = React.useState<{ sessionsRevoked: boolean } | null>(
-    null,
-  )
+  // başarı alt metni buna göre seçilir. passkeys > 0 ise geçiş anahtarlarının
+  // silinmediği uyarısı gösterilir.
+  const [done, setDone] = React.useState<{
+    sessionsRevoked: boolean
+    passkeys: number
+  } | null>(null)
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -37,8 +40,11 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
     setBusy(true)
     const res = await resetPasswordAction({ token, newPassword: password })
     setBusy(false)
-    if (res.ok) setDone({ sessionsRevoked: res.sessionsRevoked })
-    else setError(res.error)
+    if (res.ok) {
+      setDone({ sessionsRevoked: res.sessionsRevoked, passkeys: res.passkeys })
+    } else {
+      setError(res.error)
+    }
   }
 
   if (!token) {
@@ -83,6 +89,18 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
                 : "Artık e-postan ve şifrenle de giriş yapabilirsin."
             }
           >
+            {done.passkeys > 0 ? (
+              <Alert className="mb-4">
+                <RiAlertLine />
+                <AlertTitle>Geçiş anahtarların silinmedi</AlertTitle>
+                <AlertDescription>
+                  Hesabında {done.passkeys} geçiş anahtarı kayıtlı ve şifre
+                  değişikliği onları kaldırmaz. Giriş yaptıktan sonra Ayarlar
+                  &gt; Hesap &gt; Geçiş anahtarları bölümüne bak; tanımadığın
+                  bir anahtar varsa sil.
+                </AlertDescription>
+              </Alert>
+            ) : null}
             <Button
               variant="default"
               size="xl"

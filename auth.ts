@@ -92,17 +92,29 @@ async function authorizePasskey(raw: string) {
   }
 
   // Kimlik bilgisi başına yumuşak tavan (IP ekseni passkeyLoginAction'da).
+  // Yalnız challenge'ı geçerli olup imzası tutmayan denemeler ("invalid")
+  // sayılır; burada yalnız okunur. Önceden sayılsaydı credential ID'yi bilen
+  // biri challenge'sız/biçimsiz isteklerle kovayı doldurup sahibinin girişini
+  // kilitleyebilirdi.
   const credentialId = (parsed as { id?: unknown } | null)?.id
-  if (typeof credentialId === "string" && credentialId.length <= 2048) {
-    if (!(await passkeyLoginLimiter.limit(`cred:${credentialId}`)).success) {
-      throw new RateLimitedError()
-    }
+  const credKey =
+    typeof credentialId === "string" && credentialId.length <= 2048
+      ? `cred:${credentialId}`
+      : null
+  if (
+    credKey &&
+    (await passkeyLoginLimiter.getRemaining(credKey)).remaining <= 0
+  ) {
+    throw new RateLimitedError()
   }
 
   const result = await verifyAssertion(parsed, "login")
   if (!result.ok) {
     if (result.code === "expired") throw new PasskeyExpiredError()
     if (result.code === "unknown") throw new PasskeyUnknownError()
+    if (result.code === "invalid" && credKey) {
+      await passkeyLoginLimiter.limit(credKey)
+    }
     throw new PasskeyInvalidError()
   }
 
@@ -117,7 +129,9 @@ async function authorizePasskey(raw: string) {
     .where(eq(users.id, result.userId))
     .limit(1)
   if (!u) throw new PasskeyUnknownError()
-  return u
+  // passkeyId jwt callback'te oturum kaydına yazılır: anahtar silinince o
+  // oturum da kapanır (bkz. deletePasskeyAction).
+  return { ...u, passkeyId: result.passkeyId }
 }
 
 // 2FA ön-doğrulama (authorize şekil 2). Duruş: pending_login tek kullanımlık,
@@ -421,6 +435,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               deviceLabel: info.deviceLabel,
               ip: info.ip,
               locationLabel: info.locationLabel,
+              passkeyId: user.passkeyId ?? null,
             })
             .returning({ id: userSessions.id })
           if (row) {

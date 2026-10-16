@@ -28,7 +28,7 @@ export function AccountPanel() {
         <SettingRow
           title="Tüm cihazlardan çıkış yap"
           target="cikis"
-          description="Tüm aktif oturumları kapatır"
+          description="Tüm aktif oturumları kapatır, geçiş anahtarlarını silmez"
         >
           <Button
             variant="outline"
