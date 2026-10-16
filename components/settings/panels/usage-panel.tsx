@@ -218,7 +218,9 @@ function UsageMeter({
       <div className="flex min-w-50 grow items-center gap-3">
         <div className="grow">
           {unlimited ? (
-            <div className="h-2 w-full rounded-full bg-muted" />
+            // Sınırsız mor şeritle ayrışır: boş kahverengi şerit "hiç
+            // kullanılmamış" gibi okunuyordu, dolu kahverengi "doldu" gibi.
+            <div className="h-2 w-full rounded-full bg-linear-to-r from-violet-400 to-violet-600 dark:from-violet-500 dark:to-violet-400" />
           ) : (
             <Progress
               value={pct}

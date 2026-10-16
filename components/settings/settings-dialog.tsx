@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { RiEqualizerLine, RiSearchLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
@@ -11,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { SPRING_PILL } from "@/lib/motion"
 
 import {
   NAV_ITEMS,
@@ -39,6 +41,87 @@ function HighlightedLabel({ text, query }: { text: string; query: string }) {
       </mark>
       {text.slice(idx + q.length)}
     </>
+  )
+}
+
+/**
+ * Sekme listesi. Aktif sekmenin zemini sekmeler arasında kayar; fareyle
+ * gezinirken daha soluk ikinci bir zemin imleci izler (eski Vercel
+ * sekmeleri). İkisi de segmented control'deki gibi `layoutId` ile kayar:
+ * ölçü yok, mobildeki yatay kaydırmada ve diyaloğun açılış ölçeğinde de
+ * doğru yerde kalır. layoutId global bir isim uzayı, kimlikler bileşene özel.
+ */
+function SettingsNavList({
+  tab,
+  onSelect,
+}: {
+  tab: TabKey
+  onSelect: (tab: TabKey) => void
+}) {
+  const activeId = React.useId()
+  const hoverId = React.useId()
+  const [hovered, setHovered] = React.useState<TabKey | null>(null)
+  const reduceMotion = useReducedMotion()
+  const slide = reduceMotion ? { duration: 0 } : SPRING_PILL
+
+  return (
+    <ul
+      onPointerLeave={() => setHovered(null)}
+      className="flex gap-1 overflow-x-auto [scrollbar-width:none] sm:flex-col sm:gap-0.5 sm:overflow-x-visible [&::-webkit-scrollbar]:hidden"
+    >
+      {NAV_ITEMS.map((item) => {
+        const isActive = tab === item.key
+        const Icon = item.icon
+        return (
+          <li key={item.key} className="shrink-0 sm:w-full">
+            <Button
+              variant="nav"
+              onClick={() => onSelect(item.key)}
+              onPointerEnter={(e) => {
+                // Dokunmada hover yok; parmağın altında zemin kalmasın.
+                if (e.pointerType === "mouse") setHovered(item.key)
+              }}
+              aria-current={isActive ? "page" : undefined}
+              // Zemin kayan öğede; butonun kendi zemini saydam.
+              className="w-full hover:bg-transparent aria-[current=page]:bg-transparent"
+            >
+              {/* Zemin yeni sekmenin içinde doğar ve eski yerinden kayar;
+                  ağaç sırasıyla boyansaydı yolundaki sekmelerin yazısını
+                  örterdi. Yazılar z-10, zeminler z-0: kayan zemin her sekmenin
+                  altından geçer. */}
+              <AnimatePresence initial={false}>
+                {hovered === item.key && (
+                  <motion.span
+                    layoutId={hoverId}
+                    aria-hidden
+                    className="absolute inset-0 z-0 rounded-[inherit] bg-accent/50"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      ...slide,
+                      opacity: { duration: reduceMotion ? 0 : 0.15 },
+                    }}
+                  />
+                )}
+              </AnimatePresence>
+              {isActive && (
+                <motion.span
+                  layoutId={activeId}
+                  aria-hidden
+                  className="absolute inset-0 z-0 rounded-[inherit] bg-accent"
+                  transition={slide}
+                />
+              )}
+              <Icon className="relative z-10 hidden sm:block" />
+              <span className="relative z-10 truncate sm:flex-1">
+                {item.label}
+              </span>
+            </Button>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 
@@ -179,25 +262,7 @@ export function SettingsDialog({
             <div className="hidden px-2 pt-1 text-[0.6875rem] font-medium tracking-wide text-muted-foreground/70 sm:block">
               Ayarlar
             </div>
-            <ul className="flex gap-1 overflow-x-auto [scrollbar-width:none] sm:flex-col sm:gap-0.5 sm:overflow-x-visible [&::-webkit-scrollbar]:hidden">
-              {NAV_ITEMS.map((item) => {
-                const active = tab === item.key
-                const Icon = item.icon
-                return (
-                  <li key={item.key} className="shrink-0 sm:w-full">
-                    <Button
-                      variant="nav"
-                      onClick={() => setTab(item.key)}
-                      aria-current={active ? "page" : undefined}
-                      className="w-full"
-                    >
-                      <Icon className="hidden sm:block" />
-                      <span className="truncate sm:flex-1">{item.label}</span>
-                    </Button>
-                  </li>
-                )
-              })}
-            </ul>
+            <SettingsNavList tab={tab} onSelect={setTab} />
 
             {trimmed && (
               <div className="absolute top-12 left-1.5 z-30 w-[min(18rem,calc(100vw-4rem))] overflow-hidden rounded-xl bg-popover smooth-shadow-ring-lg">
@@ -243,7 +308,9 @@ export function SettingsDialog({
           {/* İçerik */}
           <div
             ref={contentRef}
-            className="cn-scrollbar-thin min-h-0 min-w-0 flex-1 overflow-y-auto"
+            // overscroll-contain: sona gelen kaydırma alttaki sayfaya geçip
+            // onu (ve bulanıklık olmasa da birleştirmeyi) oynatmasın.
+            className="cn-scrollbar-thin min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain"
           >
             <div className="px-5 pt-6 pb-8 sm:px-7 sm:pt-10">
               {tab === "genel" ? (

@@ -91,10 +91,14 @@ export function SessionsTable() {
     // Tek tablo (mobil dahil). Table'ın iç kabı overflow-x-auto olduğu için
     // taşmada yatay kaydırılır; ince, yuvarlak scrollbar tüm Ayarlar modalıyla
     // ortak `cn-scrollbar-thin-table` yardımcısından gelir (bkz. globals.css).
-    <div className="cn-scrollbar-thin-table">
-      <Table>
+    // Dış çerçeve, koyu başlık şeridi ve sıra sıra değişen satır zemini: satır
+    // çok olduğunda göz aynı satırda kalsın, liste değil tablo okunsun.
+    // Dark'ta `--border` `--muted` ile aynı renk: çerçeve ve zebra satırlar
+    // birbirine karışmasın diye çerçeve bir basamak açık (`--accent`).
+    <div className="cn-scrollbar-thin-table overflow-hidden rounded-lg border dark:border-accent">
+      <Table className="[&_td]:px-3 [&_th]:px-3">
         <TableHeader>
-          <TableRow>
+          <TableRow className="bg-muted text-xs hover:bg-muted dark:bg-accent/60 dark:hover:bg-accent/60 [&_th]:h-9 [&_th]:font-medium [&_th]:text-muted-foreground">
             <TableHead>Cihaz</TableHead>
             <TableHead>Konum</TableHead>
             <TableHead>Oluşturma</TableHead>
@@ -104,7 +108,10 @@ export function SessionsTable() {
         </TableHeader>
         <TableBody>
           {rows.map((r) => (
-            <TableRow key={r.id} className="group">
+            <TableRow
+              key={r.id}
+              className="group even:bg-muted/50 hover:bg-accent/50 dark:even:bg-muted dark:hover:bg-accent/50"
+            >
               <TableCell className="font-medium">
                 <span className="flex items-center gap-2">
                   {r.deviceLabel}

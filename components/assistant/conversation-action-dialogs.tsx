@@ -30,6 +30,7 @@ import {
   renameConversation,
 } from "@/lib/actions/conversations"
 import { assistantConversations } from "@/lib/stores/assistant-conversations"
+import { assistantTitle } from "@/lib/stores/assistant-title"
 
 export type ConversationTarget = {
   id: string
@@ -71,6 +72,10 @@ export function ConversationRenameDialog({
       // Sidebar listesini hemen güncelle — server action revalidatePath
       // çağırsa da client cache yalnızca sonraki navigasyonda yenileniyor.
       assistantConversations.setTitle(target.id, trimmed)
+      // Açık sohbet kenar çubuğundan adlandırıldıysa header da güncellensin.
+      if (assistantTitle.current.conversationId === target.id) {
+        assistantTitle.setTitle(trimmed)
+      }
       onClose()
     } catch (err) {
       toast.error(

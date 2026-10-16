@@ -29,6 +29,7 @@ function DrawerClose({
   return <DrawerPrimitive.Close data-slot="drawer-close" {...props} />
 }
 
+// Bulanıklık yok, koyu ton: bkz. dialog.tsx DialogOverlay.
 function DrawerOverlay({
   className,
   ...props
@@ -37,7 +38,7 @@ function DrawerOverlay({
     <DrawerPrimitive.Overlay
       data-slot="drawer-overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-foreground/15 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0",
+        "fixed inset-0 z-50 bg-foreground/25 dark:bg-black/45 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0",
         className
       )}
       {...props}

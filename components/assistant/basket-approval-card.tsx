@@ -151,15 +151,17 @@ export function BasketApprovalCard({
       <div className="overflow-x-auto">
         <Table className="w-full min-w-[300px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
           <TableHeader>
-            <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
-              <TableHead className="w-auto">Ürün</TableHead>
+            {/* Büyük harf metinde yazılı, CSS `uppercase` ile değil: bazı
+                tarayıcılar onu Türkçe kurala göre yapmıyor ("BIRIM"). */}
+            <TableRow className="text-[0.6875rem] tracking-wide text-muted-foreground">
+              <TableHead className="w-auto">ÜRÜN</TableHead>
               {/* Adet ve Birim sütunlarında sol dolgu pl-1: alanlar arası
                   boşluk her yerde 12px (sil sütunuyla aynı). w-16: "500" ve
                   "1000" kesilmeden sığar. */}
-              <TableHead className="w-16 pl-1 text-right">Adet</TableHead>
+              <TableHead className="w-16 pl-1 text-right">ADET</TableHead>
               {/* w-20: seçici en uzun birime ("paket") göre daraltıldı, ok
                   yazının hemen sağında (bkz. seçicinin sınıfları). */}
-              <TableHead className="w-20 pl-1">Birim</TableHead>
+              <TableHead className="w-20 pl-1">BİRİM</TableHead>
               {!readOnly && <TableHead className="w-4 pl-1" />}
             </TableRow>
           </TableHeader>

@@ -202,7 +202,7 @@ export function MessageFooter({
   return (
     <div
       className={cn(
-        "-mt-1.5 flex h-6 items-center gap-0.5",
+        "relative -mt-1.5 flex h-6 items-center gap-0.5",
         align === "end" ? "flex-row-reverse self-end" : "self-start"
       )}
     >
@@ -236,7 +236,15 @@ export function MessageFooter({
           copiedClassName="text-primary"
         />
       </Button>
-      <span role="status" aria-live="polite" className="sr-only">
+      {/* Konum açıkça sol üst: flex içindeki mutlak öğe yerini flex
+          hizasından alıyordu; sağa hizalı (kullanıcı) mesajda sr-only'nin -1px
+          marjı onu sohbet kabının 1px dışına taşırıyor, sohbet telefonda yana
+          kayıyordu. */}
+      <span
+        role="status"
+        aria-live="polite"
+        className="sr-only top-0 left-0"
+      >
         {copied ? "Mesaj kopyalandı" : ""}
       </span>
     </div>

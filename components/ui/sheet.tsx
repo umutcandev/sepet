@@ -51,7 +51,7 @@ function SheetPortal({
  * Kayma mesafesi de tam: `slide-out-to-left-10` yalnız 40px kaydırıyordu
  * (295px'lik çekmece yerinde soluyordu), sonek kaldırılınca -100% oluyor.
  *
- * Overlay'de `backdrop-blur` YOK (dialog/drawer'dakinin aksine). Sheet'i yalnız
+ * Overlay'de `backdrop-blur` YOK (dialog/drawer'da da yok, aynı sebep). Sheet'i yalnız
  * mobil kenar çubuğu kullanıyor ve ana sayfada altında canlı shader akıyor:
  * bulanıklık her karede tam ekran yeniden hesaplanıyor, açılıp kapanırken
  * birleştirme süresi ölçümde 3 kat artıyordu. Düz karartma bedava.
