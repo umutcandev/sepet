@@ -62,6 +62,8 @@ type Props = {
   approvedItems?: BasketApprovalSubmit["items"]
   onApprove?: (input: BasketApprovalSubmit) => void
   onCancel?: () => void
+  /** Onaylanmamış kartı da kilitler, "Onaylandı" demeden (paylaşılan sayfa). */
+  readOnly?: boolean
 }
 
 export function BasketApprovalCard({
@@ -70,6 +72,7 @@ export function BasketApprovalCard({
   approvedItems,
   onApprove,
   onCancel,
+  readOnly: forceReadOnly = false,
 }: Props) {
   const [items, setItems] = React.useState<EditableItem[]>(() => {
     const source =
@@ -91,7 +94,7 @@ export function BasketApprovalCard({
     return source.map((it) => ({ _id: crypto.randomUUID(), ...it }))
   })
 
-  const readOnly = !!alreadyApproved
+  const readOnly = !!alreadyApproved || forceReadOnly
 
   function updateItem(id: string, patch: Partial<EditableItem>) {
     setItems((arr) =>
@@ -139,7 +142,7 @@ export function BasketApprovalCard({
       <CardHeader>
         <CardTitle>Sepetindeki Kalemler</CardTitle>
         <div className="ml-auto flex flex-wrap gap-1.5">
-          {readOnly ? (
+          {alreadyApproved ? (
             <Badge variant="secondary">Onaylandı</Badge>
           ) : null}
         </div>

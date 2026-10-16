@@ -45,11 +45,14 @@ export function ReceiptComparisonCard({
   conversationId = null,
   toolCallId = null,
   initialSavedId = null,
+  readOnly = false,
 }: {
   data: ReceiptComparisonPayload
   conversationId?: string | null
   toolCallId?: string | null
   initialSavedId?: string | null
+  /** Kaydet şeridi yok (paylaşılan sayfa). */
+  readOnly?: boolean
 }) {
   const { comparison, receiptContext, summary, matches } = data
   const [expanded, setExpanded] = React.useState<Set<number>>(new Set())
@@ -265,34 +268,36 @@ export function ReceiptComparisonCard({
         <p className="text-[0.6875rem] text-muted-foreground">
           Karşılaştırma paket başına yapılır; aldığın adet fiyatı çarpmaz.
         </p>
-        <SaveRecordRow
-          size="sm"
-          namePlaceholder={namePlaceholder}
-          nameLabel="Fiş adı"
-          saveLabel="Fişi Kaydet"
-          viewHref={(id) => `/fis-gecmisi/${id}`}
-          initialSavedId={initialSavedId}
-          disabled={!canSave}
-          save={(name) =>
-            saveReceipt({
-              name,
-              imageUrl: receiptContext.imageUrl,
-              imageR2Key: receiptContext.imageR2Key!,
-              marketName: receiptContext.marketName,
-              purchaseDate: receiptContext.purchaseDate,
-              totalAmount: receiptContext.totalAmount,
-              items: receiptContext.items,
-              summary,
-              matches,
-              comparison,
-              conversationId,
-              sourceToolCallId: toolCallId,
-            })
-          }
-          limitMessage="Fiş kaydetme limitin doldu. Eski bir fişi sil ya da Pro'ya geç."
-          successMessage="Fişlerime kaydedildi."
-          errorMessage="Fiş kaydedilemedi. Lütfen tekrar dene."
-        />
+        {readOnly ? null : (
+          <SaveRecordRow
+            size="sm"
+            namePlaceholder={namePlaceholder}
+            nameLabel="Fiş adı"
+            saveLabel="Fişi Kaydet"
+            viewHref={(id) => `/fis-gecmisi/${id}`}
+            initialSavedId={initialSavedId}
+            disabled={!canSave}
+            save={(name) =>
+              saveReceipt({
+                name,
+                imageUrl: receiptContext.imageUrl,
+                imageR2Key: receiptContext.imageR2Key!,
+                marketName: receiptContext.marketName,
+                purchaseDate: receiptContext.purchaseDate,
+                totalAmount: receiptContext.totalAmount,
+                items: receiptContext.items,
+                summary,
+                matches,
+                comparison,
+                conversationId,
+                sourceToolCallId: toolCallId,
+              })
+            }
+            limitMessage="Fiş kaydetme limitin doldu. Eski bir fişi sil ya da Pro'ya geç."
+            successMessage="Fişlerime kaydedildi."
+            errorMessage="Fiş kaydedilemedi. Lütfen tekrar dene."
+          />
+        )}
       </CardFooter>
     </Card>
   )

@@ -8,8 +8,10 @@ import { PanelHeader, SettingGroup, SettingRow } from "../settings-row"
 import { ExportDataDialog } from "../privacy/export-data-dialog"
 import { ClearDataDialog } from "../privacy/clear-data-dialog"
 import { AnalyticsToggle } from "../privacy/analytics-toggle"
+import { SharedLinksDialog } from "../privacy/shared-links-dialog"
 
-// Gizlilik: verilerini dışa aktar, toplu sil, analiz tercihi ve yasal kısayol.
+// Gizlilik: verilerini dışa aktar, paylaşılan bağlantılar, toplu sil, analiz
+// tercihi ve yasal kısayol.
 // GeneralPanel/AccountPanel ile aynı PanelHeader + SettingGroup + SettingRow
 // kalıbını kullanır.
 export function PrivacyPanel() {
@@ -27,6 +29,13 @@ export function PrivacyPanel() {
           description="Hesap verilerini ve içeriklerini dışa aktar"
         >
           <ExportDataDialog />
+        </SettingRow>
+        <SettingRow
+          title="Paylaşılan bağlantılar"
+          target="paylasilan-baglantilar"
+          description="Herkese açık paylaştığın sohbetleri gör ve kaldır"
+        >
+          <SharedLinksDialog />
         </SettingRow>
       </SettingGroup>
 

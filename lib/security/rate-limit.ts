@@ -92,6 +92,38 @@ export const exportLimiter = new Ratelimit({
   analytics: true,
 })
 
+// ─── Sohbet paylaşımı ───
+
+// Paylaşım oluşturma/güncelleme/kapatma, hesap başına. Her paylaşım sohbetin
+// tüm mesajlarını okuyup temizlenmiş bir kopyasını yazar; tavan normal
+// kullanımın çok üstünde, yalnız döngüyle tetiklenen yazmaları keser.
+export const shareActionLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(30, "10 m"),
+  prefix: "rl:share:action",
+  analytics: true,
+})
+
+// Paylaşım penceresinin açılışı (durum okuma), hesap başına. Kopyanın güncel
+// olup olmadığını anlamak için sohbetin tamamını okur; yazma limitinden ayrı
+// ve daha geniş, pencereyi açıp kapatmak hiç takılmasın.
+export const shareReadLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(60, "1 m"),
+  prefix: "rl:share:read",
+  analytics: true,
+})
+
+// Paylaşılan sayfa (/paylasim/[token]), IP başına. Token 128 bit olduğundan
+// tahminle bulunamaz; bu tavan DB'yi toplu taramaya karşı korur. Cömert:
+// operatör NAT'ı arkasında çok sayıda telefon aynı IP'yi paylaşıyor.
+export const shareViewLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(600, "1 m"),
+  prefix: "rl:share:view",
+  analytics: true,
+})
+
 // ─── E-posta/şifre kimlik doğrulama limiter'ları ───
 // Bunlar proxy.ts değil, server action'lar içinde uygulanır (bkz.
 // lib/security/action-rate-limit.ts). Derinlemesine savunma: DB `attempts`

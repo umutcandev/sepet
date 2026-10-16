@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils"
 import { useMounted } from "@/hooks/use-mounted"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
+import { ShareConversationButton } from "@/components/assistant/share-conversation-dialog"
 import { HomeHeroBackdrop } from "@/components/home/hero-shader"
 import type { BlogNavItem } from "@/components/blog/blog-posts-group"
 import { Button } from "@/components/ui/button"
@@ -519,7 +520,19 @@ export function AppShell({ blogPosts, children }: Props) {
                 </Button>
               </span>
               <span data-session-authed>
-                {displayUser ? (
+                {isAssistantRoute ? (
+                  /* Sohbette sağ üst köşe Paylaş'ın (Claude'daki gibi).
+                     Mobilde avatarın yerini alır: hesap menüsü kenar
+                     çubuğunun altında da duruyor, iki dokunuş uzakta.
+                     Yeni sohbette (henüz kayıt yok) paylaşılacak bir şey
+                     olmadığı için boş kalır. */
+                  conversationId && title ? (
+                    <ShareConversationButton
+                      conversationId={conversationId}
+                      title={title}
+                    />
+                  ) : null
+                ) : displayUser ? (
                   <HeaderUserMenu user={displayUser} className="md:hidden" />
                 ) : pendingAuth ? (
                   // Yalnızca yeni giriş / OAuth dönüşünde (pending ipucu): /api/me

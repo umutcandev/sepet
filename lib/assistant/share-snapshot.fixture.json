@@ -1,0 +1,426 @@
+[
+  {
+    "id": "m0",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "süt al"
+      }
+    ]
+  },
+  {
+    "id": "m1",
+    "role": "assistant",
+    "parts": [
+      {
+        "type": "tool-parseShoppingList",
+        "state": "output-available",
+        "output": {
+          "items": [
+            {
+              "name": "süt",
+              "quantity": 1,
+              "unit": "l",
+              "searchQuery": "süt"
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "text": "Listeni hazırladım."
+      }
+    ]
+  },
+  {
+    "id": "m2",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Sepeti onayladım."
+      }
+    ],
+    "metadata": {
+      "kind": "basketApproval",
+      "payload": {
+        "items": [
+          {
+            "rawName": "süt",
+            "searchQuery": "süt",
+            "quantity": 1,
+            "unit": "l",
+            "note": null
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "m3",
+    "role": "assistant",
+    "parts": [
+      {
+        "type": "tool-lookupProducts",
+        "state": "output-available",
+        "output": {
+          "matches": [
+            {
+              "rawName": "süt",
+              "searchQuery": "süt",
+              "quantity": 1,
+              "unit": "l",
+              "bestMatch": {
+                "productId": "P1",
+                "name": "Süt 1 L",
+                "brand": "Marka",
+                "category": "Süt",
+                "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg",
+                "averagePrice": 40,
+                "minPrice": 35,
+                "maxPrice": 45,
+                "marketCount": 2
+              },
+              "marketPrices": [
+                {
+                  "market": "Migros",
+                  "price": 35,
+                  "depotName": null
+                }
+              ],
+              "marketOptions": [
+                {
+                  "market": "Migros",
+                  "productId": "P1",
+                  "productName": "Süt 1 L",
+                  "packagePrice": 35,
+                  "packsNeeded": 1,
+                  "effectiveCost": 35,
+                  "unitPriceLabel": null,
+                  "depotName": null,
+                  "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg"
+                }
+              ],
+              "alternatives": [],
+              "lookupStatus": "ok",
+              "errorMessage": null,
+              "sizeMismatch": false,
+              "note": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool-summarizeOptimization",
+        "state": "output-available",
+        "output": {
+          "singleMarket": {
+            "market": "Migros",
+            "total": 35,
+            "itemCount": 1,
+            "missingItemCount": 0,
+            "missingItemNames": [],
+            "isFullCoverage": true,
+            "allocation": [
+              {
+                "market": "Migros",
+                "rawName": "süt",
+                "productId": "P1",
+                "productName": "Süt 1 L",
+                "unitPrice": 35,
+                "quantity": 1,
+                "lineTotal": 35,
+                "sizeMismatch": false,
+                "depotName": null,
+                "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg",
+                "itemIndex": 0
+              }
+            ]
+          },
+          "twoMarketCombo": {
+            "markets": [],
+            "total": 0,
+            "savingsTL": 0,
+            "savingsPct": 0,
+            "allocation": []
+          },
+          "currency": "TRY",
+          "totalItems": 1
+        }
+      },
+      {
+        "type": "tool-basketContext",
+        "state": "output-available",
+        "output": {
+          "items": [
+            {
+              "rawName": "süt",
+              "searchQuery": "süt",
+              "quantity": 1,
+              "unit": "l",
+              "note": null
+            }
+          ],
+          "matches": [
+            {
+              "rawName": "süt",
+              "searchQuery": "süt",
+              "quantity": 1,
+              "unit": "l",
+              "bestMatch": {
+                "productId": "P1",
+                "name": "Süt 1 L",
+                "brand": "Marka",
+                "category": "Süt",
+                "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg",
+                "averagePrice": 40,
+                "minPrice": 35,
+                "maxPrice": 45,
+                "marketCount": 2
+              },
+              "marketPrices": [
+                {
+                  "market": "Migros",
+                  "price": 35,
+                  "depotName": null
+                }
+              ],
+              "marketOptions": [
+                {
+                  "market": "Migros",
+                  "productId": "P1",
+                  "productName": "Süt 1 L",
+                  "packagePrice": 35,
+                  "packsNeeded": 1,
+                  "effectiveCost": 35,
+                  "unitPriceLabel": null,
+                  "depotName": null,
+                  "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg"
+                }
+              ],
+              "alternatives": [],
+              "lookupStatus": "ok",
+              "errorMessage": null,
+              "sizeMismatch": false,
+              "note": null
+            }
+          ],
+          "summary": {
+            "singleMarket": {
+              "market": "Migros",
+              "total": 35,
+              "itemCount": 1,
+              "missingItemCount": 0,
+              "missingItemNames": [],
+              "isFullCoverage": true,
+              "allocation": [
+                {
+                  "market": "Migros",
+                  "rawName": "süt",
+                  "productId": "P1",
+                  "productName": "Süt 1 L",
+                  "unitPrice": 35,
+                  "quantity": 1,
+                  "lineTotal": 35,
+                  "sizeMismatch": false,
+                  "depotName": null,
+                  "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg",
+                  "itemIndex": 0
+                }
+              ]
+            },
+            "twoMarketCombo": {
+              "markets": [],
+              "total": 0,
+              "savingsTL": 0,
+              "savingsPct": 0,
+              "allocation": []
+            },
+            "currency": "TRY",
+            "totalItems": 1
+          }
+        }
+      },
+      {
+        "type": "text",
+        "text": "En ucuz tek market Migros."
+      }
+    ]
+  },
+  {
+    "id": "m4",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Bu görseli analiz et"
+      },
+      {
+        "type": "data-image-omitted",
+        "data": {}
+      }
+    ]
+  },
+  {
+    "id": "m5",
+    "role": "assistant",
+    "parts": [
+      {
+        "type": "tool-analyzeImage",
+        "state": "output-available",
+        "output": {
+          "analysis": {
+            "kind": "receipt",
+            "receipt": {
+              "marketName": "Migros",
+              "purchaseDate": "2026-10-01",
+              "totalAmount": 35,
+              "items": [
+                {
+                  "rawName": "SUT 1L",
+                  "quantity": 1,
+                  "unit": "adet",
+                  "unitPrice": 35,
+                  "totalPrice": 35,
+                  "searchQuery": "süt"
+                }
+              ]
+            },
+            "food": null,
+            "unknownReason": null
+          },
+          "receiptImageUrl": "",
+          "receiptImageR2Key": null
+        }
+      }
+    ]
+  },
+  {
+    "id": "m6",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Bu kalemleri onayladım, karşılaştır."
+      }
+    ],
+    "metadata": {
+      "kind": "receiptApproval"
+    }
+  },
+  {
+    "id": "m7",
+    "role": "assistant",
+    "parts": [
+      {
+        "type": "tool-receiptComparison",
+        "state": "output-available",
+        "output": {
+          "comparison": {
+            "items": [],
+            "totalReceiptAmount": 35,
+            "totalBestAmount": 35,
+            "totalSavingsTL": 0,
+            "staleness": null
+          },
+          "receiptContext": {
+            "imageUrl": "",
+            "imageR2Key": null,
+            "marketName": "Migros",
+            "purchaseDate": "2026-10-01",
+            "totalAmount": 35,
+            "items": [
+              {
+                "rawName": "SUT 1L",
+                "quantity": 1,
+                "unit": "adet",
+                "unitPrice": 35,
+                "totalPrice": 35,
+                "searchQuery": "süt"
+              }
+            ]
+          },
+          "summary": {
+            "singleMarket": {
+              "market": "Migros",
+              "total": 35,
+              "itemCount": 1,
+              "missingItemCount": 0,
+              "missingItemNames": [],
+              "isFullCoverage": true,
+              "allocation": [
+                {
+                  "market": "Migros",
+                  "rawName": "süt",
+                  "productId": "P1",
+                  "productName": "Süt 1 L",
+                  "unitPrice": 35,
+                  "quantity": 1,
+                  "lineTotal": 35,
+                  "sizeMismatch": false,
+                  "depotName": null,
+                  "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg",
+                  "itemIndex": 0
+                }
+              ]
+            },
+            "twoMarketCombo": {
+              "markets": [],
+              "total": 0,
+              "savingsTL": 0,
+              "savingsPct": 0,
+              "allocation": []
+            },
+            "currency": "TRY",
+            "totalItems": 1
+          },
+          "matches": [
+            {
+              "rawName": "süt",
+              "searchQuery": "süt",
+              "quantity": 1,
+              "unit": "l",
+              "bestMatch": {
+                "productId": "P1",
+                "name": "Süt 1 L",
+                "brand": "Marka",
+                "category": "Süt",
+                "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg",
+                "averagePrice": 40,
+                "minPrice": 35,
+                "maxPrice": 45,
+                "marketCount": 2
+              },
+              "marketPrices": [
+                {
+                  "market": "Migros",
+                  "price": 35,
+                  "depotName": null
+                }
+              ],
+              "marketOptions": [
+                {
+                  "market": "Migros",
+                  "productId": "P1",
+                  "productName": "Süt 1 L",
+                  "packagePrice": 35,
+                  "packsNeeded": 1,
+                  "effectiveCost": 35,
+                  "unitPriceLabel": null,
+                  "depotName": null,
+                  "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg"
+                }
+              ],
+              "alternatives": [],
+              "lookupStatus": "ok",
+              "errorMessage": null,
+              "sizeMismatch": false,
+              "note": null
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
