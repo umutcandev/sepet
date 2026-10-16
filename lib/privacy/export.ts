@@ -14,7 +14,9 @@ import {
   receiptItems,
   conversations,
   conversationMessages,
+  conversationShares,
 } from "@/lib/db"
+import { absoluteUrl } from "@/lib/site"
 import { getObjectBytes } from "@/lib/storage/r2"
 import { EXPORT_CATEGORIES, type ExportCategory } from "./categories"
 import { EXPORTED_USER_COLUMNS } from "./user-columns"
@@ -263,15 +265,41 @@ export function buildUserExportStream(
                 .orderBy(asc(conversationMessages.sequence))
             : []
           const msgsByConv = groupBy(msgRows, (m) => m.conversationId)
+          // Paylaşım: bağlantı ve ayarları. Kopyanın içeriği sohbetin
+          // mesajlarından türediği için tekrar yazılmaz.
+          const shareRows = await db
+            .select({
+              conversationId: conversationShares.conversationId,
+              token: conversationShares.token,
+              anonymous: conversationShares.anonymous,
+              createdAt: conversationShares.createdAt,
+              updatedAt: conversationShares.updatedAt,
+            })
+            .from(conversationShares)
+            .where(eq(conversationShares.userId, userId))
+          const shareByConv = new Map(
+            shareRows.map((r) => [r.conversationId, r]),
+          )
 
           addJson(
             `${ROOT}/sohbetler.json`,
-            convRows.map((c) => ({
-              ...c,
-              mesajlar: (msgsByConv.get(c.id) ?? []).map(
-                ({ conversationId: _omit, ...m }) => m,
-              ),
-            })),
+            convRows.map((c) => {
+              const share = shareByConv.get(c.id)
+              return {
+                ...c,
+                paylasim: share
+                  ? {
+                      baglanti: absoluteUrl(`/paylasim/${share.token}`),
+                      anonim: share.anonymous,
+                      olusturulma: share.createdAt,
+                      sonGuncelleme: share.updatedAt,
+                    }
+                  : null,
+                mesajlar: (msgsByConv.get(c.id) ?? []).map(
+                  ({ conversationId: _omit, ...m }) => m,
+                ),
+              }
+            }),
           )
           includedSections.push(`sohbetler.json — ${convRows.length} sohbet`)
         }

@@ -6,6 +6,7 @@ import {
   RiArrowDownSLine,
   RiDeleteBinLine,
   RiPencilLine,
+  RiShareBoxLine,
   RiStarLine,
   RiStarOffLine,
 } from "@remixicon/react"
@@ -23,6 +24,7 @@ import {
   ConversationRenameDialog,
   type ConversationTarget,
 } from "@/components/assistant/conversation-action-dialogs"
+import { ShareConversationDialog } from "@/components/assistant/share-conversation-dialog"
 import { setConversationStarred } from "@/lib/actions/conversations"
 import {
   assistantConversations,
@@ -42,6 +44,7 @@ const EMPTY: ConversationListItem[] = []
 export function AssistantHeaderActions({ conversationId, title }: Props) {
   const [renameOpen, setRenameOpen] = React.useState(false)
   const [deleteOpen, setDeleteOpen] = React.useState(false)
+  const [shareOpen, setShareOpen] = React.useState(false)
 
   // Yıldız durumunu sidebar ile aynı store'dan oku; iki yer de senkron kalır.
   const list = useAssistantConversations(EMPTY)
@@ -77,6 +80,10 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
             <RiArrowDownSLine className="size-4" />
           </Button>
         </DropdownMenuTrigger>
+        {/* Pencere açan öğelerde menü kapanır (preventDefault yok): açık
+            tutulan menü pencere kapandıktan sonra da sayfanın üstünde açık
+            kalıyor, dışına tıklanana kadar sayfayı kilitliyordu. Yalnızca
+            yıldız menüde kalır, değişimi orada görünsün diye. */}
         <DropdownMenuContent align="start" className="w-auto min-w-40">
           <DropdownMenuItem
             onSelect={(e) => {
@@ -96,22 +103,18 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
               </>
             )}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onSelect={(e) => {
-              e.preventDefault()
-              setRenameOpen(true)
-            }}
-          >
+          <DropdownMenuItem onSelect={() => setRenameOpen(true)}>
             <RiPencilLine className="size-4" />
             Yeniden adlandır
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setShareOpen(true)}>
+            <RiShareBoxLine className="size-4" />
+            Paylaş
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             variant="destructive"
-            onSelect={(e) => {
-              e.preventDefault()
-              setDeleteOpen(true)
-            }}
+            onSelect={() => setDeleteOpen(true)}
           >
             <RiDeleteBinLine className="size-4" />
             Sil
@@ -127,6 +130,12 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
         target={deleteOpen ? target : null}
         activeId={conversationId}
         onClose={() => setDeleteOpen(false)}
+      />
+      <ShareConversationDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        conversationId={conversationId}
+        title={title}
       />
     </>
   )

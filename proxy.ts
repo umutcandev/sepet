@@ -10,6 +10,7 @@ import {
   locationLimiter,
   productLimiter,
   receiptUploadLimiter,
+  shareViewLimiter,
   transcribeBurstLimiter,
   transcribeDailyLimiter,
 } from "@/lib/security/rate-limit"
@@ -100,7 +101,7 @@ const apiMiddleware = withAuth(async (req) => {
 // Sayfa rotaları auth okumaz → CSRF cookie set edilmez → statik/ISR yanıtları
 // CDN'de cache'lenebilir. Yalnızca güvenlik başlıkları eklenir (CSP tek kaynak
 // burada kalır). /api rotaları auth gerektiren hız-limiti sarmalayıcısına gider.
-export default function proxy(req: NextRequest, ev: NextFetchEvent) {
+export default async function proxy(req: NextRequest, ev: NextFetchEvent) {
   if (req.nextUrl.pathname.startsWith("/api")) {
     // NextAuth `withAuth` sarmalayıcısı ikinci argümanı route-handler context'i
     // olarak tipler; middleware olarak çağrıldığında runtime NextFetchEvent
@@ -110,9 +111,53 @@ export default function proxy(req: NextRequest, ev: NextFetchEvent) {
       ev as unknown as Parameters<typeof apiMiddleware>[1],
     )
   }
+  if (req.nextUrl.pathname.startsWith(SHARE_PATH)) {
+    return shareResponse(req)
+  }
   const res = NextResponse.next()
   applySecurityHeaders(res.headers)
   return res
+}
+
+const SHARE_PATH = "/paylasim/"
+
+/* Paylaşılan sohbet sayfası. URL'nin kendisi erişim anahtarı (token), bu
+   yüzden:
+   - Referrer-Policy no-referrer: sayfadan dışarı giden bir bağlantı ya da
+     istek, Referer başlığında token'ı taşımasın (varsayılan politika aynı
+     origin'e tam URL gönderir).
+   - X-Robots-Tag: bağlantı bir yerde yayımlansa bile arama motoru dizine
+     almasın. robots.txt'te engellemek yerine bu: engellenen sayfanın noindex
+     başlığını tarayıcı hiç göremezdi.
+   - IP başına hız limiti: token tahmin edilemez, limit yalnızca DB'yi toplu
+     taramaya karşı korur. Tavan cömert: operatör NAT'ı arkasında aynı IP'yi
+     paylaşan çok sayıda telefon, bir grupta dolaşan bağlantıyı açabilmeli.
+   Önbellek başlığı burada yazılmıyor: sayfa `force-dynamic`, Next zaten
+   no-store gönderiyor; paylaşım kapatılınca bağlantı anında 404 olur. */
+async function shareResponse(req: NextRequest) {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon"
+  const { success, reset } = await shareViewLimiter.limit(`ip:${ip}`)
+  const res = success ? NextResponse.next() : shareTooManyResponse(reset)
+  applySecurityHeaders(res.headers)
+  res.headers.set("Referrer-Policy", "no-referrer")
+  res.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive")
+  return res
+}
+
+// Bağlantıyı açan bir insan: JSON yerine okunur bir sayfa.
+function shareTooManyResponse(reset: number) {
+  const retryAfter = Math.max(1, Math.ceil((reset - Date.now()) / 1000))
+  return new NextResponse(
+    '<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Biraz bekle</title><p style="font-family:system-ui,sans-serif;max-width:32rem;margin:4rem auto;padding:0 1rem;line-height:1.5">Bu bağlantı şu an çok sık açılıyor. Birkaç saniye sonra sayfayı yenileyebilirsin.</p></html>',
+    {
+      status: 429,
+      headers: {
+        "content-type": "text/html; charset=utf-8",
+        "retry-after": String(retryAfter),
+      },
+    },
+  )
 }
 
 export const config = {

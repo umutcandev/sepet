@@ -18,6 +18,8 @@ const SEED_TITLE_MAX = 60
 
 type StoredMessage = Pick<UIMessage, "id" | "role" | "parts"> & {
   metadata?: unknown
+  /** Mesajın kaydedildiği an (ISO); sohbette mesajın altında gösterilir. */
+  createdAt: string
 }
 
 function extractTitleFromMessage(msg: UIMessage): string {
@@ -229,6 +231,7 @@ export async function getConversation(id: string): Promise<{
         role: conversationMessages.role,
         parts: conversationMessages.parts,
         metadata: conversationMessages.metadata,
+        createdAt: conversationMessages.createdAt,
       })
       .from(conversationMessages)
       .where(eq(conversationMessages.conversationId, id))
@@ -242,6 +245,7 @@ export async function getConversation(id: string): Promise<{
     role: r.role as UIMessage["role"],
     parts: (r.parts ?? []) as UIMessage["parts"],
     metadata: r.metadata ?? undefined,
+    createdAt: r.createdAt.toISOString(),
   }))
 
   return { id: conv.id, title: conv.title, messages, savedBaskets, savedReceipts }

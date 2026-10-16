@@ -15,6 +15,7 @@ import {
 import type { AdapterAccountType } from "next-auth/adapters"
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
 import type { MatchResult, OptimizationSummary } from "@/lib/ai/schemas"
+import type { SharedMessage } from "@/lib/assistant/share-types"
 
 export const users = pgTable("user", {
   id: text("id")
@@ -577,6 +578,58 @@ export const conversationMessages = pgTable(
       .defaultNow(),
   },
   (t) => [index("msg_conv_seq_idx").on(t.conversationId, t.sequence)],
+)
+
+// ─── Paylaşılan sohbetler (anlık görüntü) ───
+//
+// "Bağlantıya sahip herkes" paylaşımı. Sohbetin canlı mesajları DEĞİL,
+// paylaşım anında alınmış TEMİZLENMİŞ bir kopyası saklanır (bkz.
+// lib/assistant/share-snapshot.ts): fiş görselleri, R2 anahtarları, yakın
+// şube adları ve istemciden gelen ham metadata kopyaya girmez. Sonradan
+// yazılan mesajlar kullanıcı "Güncelle" demedikçe görünmez.
+//
+// Sohbet başına tek satır. Paylaşımı kapatmak satırı SİLER: aynı sohbet tekrar
+// paylaşılırsa yeni bir token üretilir, eski bağlantı bir daha açılmaz. Sohbet
+// ya da hesap silinince cascade ile gider; arşivlenmiş (silinmeyi bekleyen)
+// hesabın paylaşımları okuma tarafında gizlenir.
+//
+// token 128 bit rastgele (base64url, 22 karakter); URL'deki tek anahtar odur.
+// Düz saklanır: sahibi bağlantıyı tekrar kopyalayabilmeli, ve DB'yi okuyabilen
+// biri zaten sohbetlerin kendisini okuyabilir — hash bir şey kazandırmaz.
+export const conversationShares = pgTable(
+  "conversation_share",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    token: text("token").notNull(),
+    conversationId: uuid("conversationId")
+      .notNull()
+      .references(() => conversations.id, { onDelete: "cascade" }),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    messages: jsonb("messages").$type<SharedMessage[]>().notNull(),
+    // Kopyanın içerik özeti (başlık + mesajlar). Sohbetin şimdiki hâliyle
+    // karşılaştırılır: farklıysa paylaşım penceresi "Güncelle" önerir. Yerinde
+    // düzenlenen mesajları (Sepet Özeti'nden ürün değiştirme) da yakalar.
+    contentHash: text("contentHash").notNull(),
+    // Açıkken paylaşılan sayfada ad gösterilmez. Ad kopyalanmaz, okurken
+    // kullanıcı satırından gelir: adını değiştiren ya da anonime geçen
+    // kullanıcının tüm paylaşımları anında güncellenir.
+    anonymous: boolean("anonymous").notNull().default(false),
+    createdAt: timestamp("createdAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+    // Kopyanın alındığı an (ilk paylaşım ya da son "Güncelle").
+    updatedAt: timestamp("updatedAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("conversation_share_token_idx").on(t.token),
+    uniqueIndex("conversation_share_conversation_idx").on(t.conversationId),
+    index("conversation_share_user_idx").on(t.userId, t.updatedAt.desc()),
+  ],
 )
 
 // ─── Kullanım sayaçları: hesap + ay bazında aylık kotalar ───

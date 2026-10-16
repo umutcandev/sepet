@@ -1017,9 +1017,9 @@ async function emitText(writer: WriterLike, text: string) {
 }
 
 /**
- * Gemini'nin thought summary'sini kullanıcıya kelime kelime akıt. generateObject
- * sonrası bütün halinde elimize geçtiği için yapay bir gecikme ile word-by-word
- * yayınlanır — kullanıcı modelin düşündüğü adımları okuyabilsin. Reasoning sonuç
+ * Modelin kullanıcıya yazdığı "Düşündüm" notunu (bkz. lib/ai/user-thought.ts)
+ * kelime kelime akıt. generateObject sonrası bütün halinde elimize geçtiği için
+ * yapay bir gecikme ile word-by-word yayınlanır. Reasoning sonuç
  * KARTINDAN ÖNCE yayınlandığı için toplam gecikme REASONING_STREAM_BUDGET_MS ile
  * sınırlandırılır: uzun bir özet kartın görünmesini saniyelerce geciktirmesin.
  */

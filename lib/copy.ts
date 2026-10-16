@@ -30,3 +30,33 @@ export async function copyText(text: string): Promise<boolean> {
     return false
   }
 }
+
+/**
+ * Henüz elde olmayan bir metni kopyalar (ör. sunucunun döndüreceği paylaşım
+ * bağlantısı). Safari, bir `await`ten sonra yapılan pano yazımını kullanıcı
+ * hareketinin dışında sayıp reddediyor; `ClipboardItem`e Promise vermek
+ * yazımı tıklama anında başlatır, içerik sonra gelir. Desteklenmeyen
+ * tarayıcıda metin gelince normal kopyalamaya düşer. Promise reddedilir ya da
+ * null dönerse hiçbir şey kopyalanmaz.
+ */
+export async function copyTextWhenReady(
+  text: Promise<string | null>
+): Promise<boolean> {
+  if (typeof ClipboardItem !== "undefined" && navigator.clipboard?.write) {
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          "text/plain": text.then((value) => {
+            if (value == null) throw new Error("no_text")
+            return new Blob([value], { type: "text/plain" })
+          }),
+        }),
+      ])
+      return true
+    } catch {
+      // aşağıdaki yola düş
+    }
+  }
+  const value = await text.catch(() => null)
+  return value != null ? copyText(value) : false
+}

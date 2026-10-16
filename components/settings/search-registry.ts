@@ -10,6 +10,7 @@ import {
   RiFileTextLine,
   RiFingerprintLine,
   RiKey2Line,
+  RiLinksLine,
   RiLogoutBoxLine,
   RiMapPinLine,
   RiQuestionLine,
@@ -126,6 +127,13 @@ const GIZLILIK_SETTINGS: SettingEntry[] = [
     title: "Verilerini dışa aktar",
     keywords: "veri disa aktar export indir zip yedek tasima gdpr kvkk",
     icon: RiDownloadLine,
+  },
+  {
+    target: "paylasilan-baglantilar",
+    title: "Paylaşılan bağlantılar",
+    keywords:
+      "paylas paylasim paylasilan baglanti link herkese acik sohbet anonim kaldir",
+    icon: RiLinksLine,
   },
   {
     target: "sohbet-sil",

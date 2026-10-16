@@ -55,6 +55,8 @@ type Props = {
   alreadyApproved?: boolean
   onApprove?: (input: ApprovalSubmit) => void
   onCancel?: () => void
+  /** Onaylanmamış kartı da kilitler, "Onaylandı" demeden (paylaşılan sayfa). */
+  readOnly?: boolean
 }
 
 export function ReceiptApprovalCard({
@@ -62,6 +64,7 @@ export function ReceiptApprovalCard({
   alreadyApproved,
   onApprove,
   onCancel,
+  readOnly: forceReadOnly = false,
 }: Props) {
   const { ocr, receiptImageUrl, receiptImageR2Key } = data
 
@@ -73,7 +76,7 @@ export function ReceiptApprovalCard({
     ocr.items.map((it) => ({ ...it, _id: crypto.randomUUID() })),
   )
 
-  const readOnly = !!alreadyApproved
+  const readOnly = !!alreadyApproved || forceReadOnly
 
   const totalReceipt = items.reduce((sum, it) => {
     const t =
@@ -133,7 +136,7 @@ export function ReceiptApprovalCard({
       <CardHeader>
         <CardTitle>Fişindeki Kalemler</CardTitle>
         <div className="ml-auto flex flex-wrap gap-1.5">
-          {readOnly ? (
+          {alreadyApproved ? (
             <Badge variant="secondary">Onaylandı</Badge>
           ) : null}
         </div>

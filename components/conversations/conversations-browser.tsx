@@ -14,6 +14,7 @@ import {
   RiPencilLine,
   RiQuestionAnswerLine,
   RiSearchLine,
+  RiShareBoxLine,
   RiStarFill,
   RiStarLine,
   RiStarOffLine,
@@ -22,6 +23,7 @@ import { Card } from "@/components/ui/card"
 import { toast } from "@/components/ui/sonner"
 
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
+import { ShareConversationDialog } from "@/components/assistant/share-conversation-dialog"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -126,6 +128,10 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
   const [singleDeleteTarget, setSingleDeleteTarget] =
     React.useState<ConversationListItem | null>(null)
   const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState(false)
+  // Paylaş: kapanış animasyonu boyunca hedef yerinde kalsın diye açıklık ayrı.
+  const [shareTarget, setShareTarget] =
+    React.useState<ConversationListItem | null>(null)
+  const [shareOpen, setShareOpen] = React.useState(false)
   const [deletePending, setDeletePending] = React.useState(false)
 
   const displayed = searchResults ?? items
@@ -666,21 +672,24 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
                               )}
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onSelect={(e) => {
-                                e.preventDefault()
-                                setRenameTarget(c)
-                              }}
+                              onSelect={() => setRenameTarget(c)}
                             >
                               <RiPencilLine className="size-4" />
                               Yeniden adlandır
                             </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onSelect={() => {
+                                setShareTarget(c)
+                                setShareOpen(true)
+                              }}
+                            >
+                              <RiShareBoxLine className="size-4" />
+                              Paylaş
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                               variant="destructive"
-                              onSelect={(e) => {
-                                e.preventDefault()
-                                setSingleDeleteTarget(c)
-                              }}
+                              onSelect={() => setSingleDeleteTarget(c)}
                             >
                               <RiDeleteBinLine className="size-4" />
                               Sil
@@ -704,6 +713,15 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
           ) : null}
         </Card>
       )}
+
+      {shareTarget ? (
+        <ShareConversationDialog
+          open={shareOpen}
+          onOpenChange={setShareOpen}
+          conversationId={shareTarget.id}
+          title={shareTarget.title}
+        />
+      ) : null}
 
       {/* Yeniden adlandırma diyaloğu */}
       <Dialog

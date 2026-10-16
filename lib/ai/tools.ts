@@ -1,8 +1,8 @@
 import { generateObject } from "ai"
 import {
-  BasketDraftSchema,
+  BasketDraftOutputSchema,
   ChatTitleSchema,
-  ImageAnalysisSchema,
+  ImageAnalysisOutputSchema,
   MatchSelectionSchema,
   QuerySuggestionSchema,
   type BasketDraft,
@@ -21,6 +21,7 @@ import {
   type AiCallOptions,
 } from "./models"
 import { devLog, isAbortError, withLlmCall } from "./telemetry"
+import { userThought } from "./user-thought"
 import {
   CHAT_TITLE_PROMPT,
   IMAGE_ANALYSIS_PROMPT,
@@ -137,6 +138,12 @@ async function findFirstHit(
   return lastError ?? { kind: "no_match" }
 }
 
+/** Üretim logu: notun uzunluğu ya da kontrolde düştüğü (içerik yazılmaz). */
+function thoughtLog(raw: string, shown: string | null): string {
+  if (shown) return `${shown.length}c`
+  return raw.trim() ? "dropped" : "none"
+}
+
 export type ImageAnalysisWithReasoning = {
   analysis: ImageAnalysis
   reasoning: string | null
@@ -146,13 +153,13 @@ export async function analyzeImage(
   imageUrl: string,
   opts: AiCallOptions = {},
 ): Promise<ImageAnalysisWithReasoning> {
-  const { object, reasoning } = await withLlmCall(
+  const { object: output } = await withLlmCall(
     "analyzeImage",
     GEMINI_FLASH,
     () =>
       generateObject({
         model: geminiFlash,
-        schema: ImageAnalysisSchema,
+        schema: ImageAnalysisOutputSchema,
         temperature: 0.1,
         abortSignal: opts.signal,
         maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
@@ -165,20 +172,19 @@ export async function analyzeImage(
             ],
           },
         ],
-        // Bütçe İKİ sebeple açıkça verilir. (1) Sohbetteki düşünme akışı
-        // (reasoningStart/Delta/End) `includeThoughts` olmadan sessizce
-        // kaybolur. (2) flash'ta düşünme varsayılan olarak AÇIK ve sınırsıza
-        // yakın; bütçesiz bırakmak çıktı token'ını kat kat artırır.
+        // flash'ta düşünme varsayılan olarak AÇIK ve sınırsıza yakın;
+        // bütçesiz bırakmak çıktı token'ını kat kat artırır. Düşünce özeti
+        // (includeThoughts) istenmez: İngilizce geliyor ve iç işleyişi
+        // anlatıyor. Kullanıcı "Düşündüm"de modelin `thought` notunu okur.
         providerOptions: {
           google: {
-            thinkingConfig: {
-              thinkingBudget: 1024,
-              includeThoughts: true,
-            },
+            thinkingConfig: { thinkingBudget: 1024 },
           },
         },
       }),
   )
+  const { thought, ...object } = output
+  const reasoning = userThought(thought)
   // Üretim: sınıflandırma + sayılar (içeriksiz). Market adı, tutar, yemek adı
   // ve unknownReason kullanıcı içeriğidir → dev.
   const itemCount =
@@ -189,7 +195,7 @@ export async function analyzeImage(
         : undefined
   console.log(
     `[analyzeImage] kind=${object.kind} items=${itemCount ?? "-"} ` +
-      `reasoning=${reasoning ? `${reasoning.length}c` : "none"}`,
+      `thought=${thoughtLog(thought, reasoning)}`,
   )
   devLog(
     "[analyzeImage] detail:",
@@ -199,7 +205,7 @@ export async function analyzeImage(
         ? `dish=${object.food?.dishName}`
         : `reason=${object.unknownReason}`,
   )
-  return { analysis: object, reasoning: reasoning ?? null }
+  return { analysis: object, reasoning }
 }
 
 export async function generateChatTitle(
@@ -234,38 +240,38 @@ export async function parseShoppingList(
   opts: AiCallOptions = {},
   history = "",
 ): Promise<BasketDraftWithReasoning> {
-  const { object, reasoning } = await withLlmCall(
+  const { object: output } = await withLlmCall(
     "parseShoppingList",
     GEMINI_FLASH_LITE,
     () =>
       generateObject({
         model: geminiFlashLite,
-        schema: BasketDraftSchema,
+        schema: BasketDraftOutputSchema,
         temperature: 0.1,
         abortSignal: opts.signal,
         maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
         prompt: PARSE_PROMPT(rawText, history),
+        // Düşünce özeti istenmez, bkz. analyzeImage.
         providerOptions: {
           google: {
-            thinkingConfig: {
-              thinkingBudget: 512,
-              includeThoughts: true,
-            },
+            thinkingConfig: { thinkingBudget: 512 },
           },
         },
       }),
   )
+  const { thought, ...object } = output
+  const reasoning = userThought(thought)
   // Üretim: kaç kalem çıktı (parse kalitesi metriği). Kalem adları ve arama
   // sorguları kullanıcının alışveriş listesidir → dev.
   console.log(
     `[parseShoppingList] items=${object.items.length} ` +
-      `reasoning=${reasoning ? `${reasoning.length}c` : "none"}`,
+      `thought=${thoughtLog(thought, reasoning)}`,
   )
   devLog(
     "[parseShoppingList] detail:",
     object.items.map((i) => `${i.name} → "${i.searchQuery}"`).join(" | "),
   )
-  return { draft: object, reasoning: reasoning ?? null }
+  return { draft: object, reasoning }
 }
 
 type HitList = Candidate[]
