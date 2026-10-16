@@ -34,7 +34,13 @@ import {
 } from "@/lib/assistant/ui-chunks"
 import { computeOptimization } from "@/lib/ai/optimize"
 import { buildDraftText, buildSummaryText } from "@/lib/assistant/summary-text"
-import { buildConversationContext } from "@/lib/assistant/conversation-context"
+import {
+  buildConversationContext,
+  lastBasketItems,
+  type PreviousListItem,
+} from "@/lib/assistant/conversation-context"
+import { collectUserSelections } from "@/lib/assistant/user-selections"
+import type { CarriedSelection } from "@/lib/ai/match-result"
 import {
   buildReceiptComparisonText,
   computeReceiptComparison,
@@ -110,6 +116,7 @@ type BasketApprovalPayload = {
     searchQuery: string
     quantity: number
     unit: ParsedItem["unit"]
+    note?: string | null
   }>
 }
 
@@ -126,6 +133,9 @@ const basketApprovalPayloadSchema = z.object({
       searchQuery: z.string(),
       quantity: finiteNum.refine((n) => n >= 0, "negatif olamaz"),
       unit: unitSchema,
+      // Eşleştirme modeline giden tercih notu. Prompt'a tek satır olarak
+      // basıldığından uzunluğu sınırlı.
+      note: z.string().max(200).nullish(),
     }),
   ),
 })
@@ -270,10 +280,17 @@ export async function POST(req: Request) {
   }
   // Metin turunun hafızası: son mesajdan önceki konuşma (bkz.
   // buildConversationContext). Yalnızca metin turunda modele gider.
-  const history =
-    mode.kind === "text"
-      ? buildConversationContext(messages.slice(0, messages.lastIndexOf(lastUserMessage)))
-      : ""
+  const earlier = messages.slice(0, messages.lastIndexOf(lastUserMessage))
+  const history = mode.kind === "text" ? buildConversationContext(earlier) : ""
+  // Metin turunda taslak cümlesi gerçekte neyin değiştiğini söyleyebilsin diye
+  // sohbetteki son liste (bkz. buildDraftText).
+  const previousItems = mode.kind === "text" ? lastBasketItems(earlier) : null
+  // Sepet onayında: kullanıcının önceki Sepet Özeti'lerinde elle seçtiği
+  // ürünler. Aynı kalem yeniden eşleştirilirken asistana bırakılmaz.
+  const carried =
+    mode.kind === "basketApproval"
+      ? collectUserSelections(earlier)
+      : new Map<string, CarriedSelection>()
 
   // Kullanıcının kayıtlı konumu — ürün eşleştirme/optimizasyon bu koordinat ve
   // seçili şubelerle çalışır. Konum yoksa env fallback'e düşer.
@@ -453,6 +470,8 @@ export async function POST(req: Request) {
             writer: wrappedWriter,
             mode,
             history,
+            previousItems,
+            carried,
             loc,
             onImageKind: handleImageKind,
             signal: requestSignal,
@@ -701,6 +720,8 @@ async function runAssistantTurn({
   writer,
   mode,
   history,
+  previousItems,
+  carried,
   loc,
   onImageKind,
   signal,
@@ -709,6 +730,10 @@ async function runAssistantTurn({
   mode: Exclude<LastUserMode, { kind: "empty" }>
   /** Önceki konuşmanın özeti; yalnızca metin turunda kullanılır. */
   history: string
+  /** Sohbetteki son liste; yalnızca metin turunda kullanılır. */
+  previousItems: PreviousListItem[] | null
+  /** Kullanıcının önceki turlarda elle seçtiği ürünler; sepet onayında. */
+  carried: ReadonlyMap<string, CarriedSelection>
   loc: LocationContext
   onImageKind?: (
     kind: ImageAnalysis["kind"],
@@ -874,6 +899,7 @@ async function runAssistantTurn({
       searchQuery: it.searchQuery,
       quantity: it.quantity,
       unit: it.unit,
+      note: it.note?.trim() || null,
     }))
 
     const lookupCallId = nanoid()
@@ -881,7 +907,14 @@ async function runAssistantTurn({
       toolInputAvailable(lookupCallId, "lookupProducts", { items: parsedItems }),
     )
 
-    const { matches: found } = await lookupProducts(parsedItems, loc, aiOpts)
+    // Kullanıcının bu sohbette Sepet Özeti'nden elle seçtiği ürünler aynı
+    // kalem tekrar geçince yeniden asistana bırakılmaz (bkz. collectUserSelections).
+    const { matches: found } = await lookupProducts(
+      parsedItems,
+      loc,
+      aiOpts,
+      carried,
+    )
     if (signal?.aborted) return STOPPED_TURN // bkz. fiş onayındaki aynı kontrol
 
     // Eşleşmeyen kalemlere "… mı demek istedin?" önerisi. Fiş turunda
@@ -950,7 +983,7 @@ async function runAssistantTurn({
     return { awaiting: false }
   }
 
-  await emitText(writer, buildDraftText(basket))
+  await emitText(writer, buildDraftText(basket, previousItems))
   // Sepet onay kartı gösterildi → kullanıcının "Onayla" aksiyonunu bekliyoruz.
   return { awaiting: true }
 }

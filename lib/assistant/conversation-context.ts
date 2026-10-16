@@ -1,3 +1,5 @@
+import { parseSummary, recommendedPlan } from "@/lib/basket-plan"
+
 /**
  * Asistanın "hafızası": sohbetin önceki turlarını, metin turunu ayrıştıran
  * modele (PARSE_PROMPT) verilecek kısa bir dökümle özetler.
@@ -65,7 +67,13 @@ function formatItems(items: unknown): string {
           : ""
     if (!name.trim()) continue
     const qty = formatQuantity(it.quantity, it.unit)
-    out.push(qty ? `${name.trim()} ${qty}` : name.trim())
+    // Not, kalemi revize ederken korunması gereken veridir (bkz. PARSE_PROMPT
+    // bağlam kuralları); dökümde görünmezse model onu sessizce düşürür.
+    const note =
+      typeof it.note === "string" && it.note.trim()
+        ? ` (not: ${clip(it.note, 80)})`
+        : ""
+    out.push(`${qty ? `${name.trim()} ${qty}` : name.trim()}${note}`)
   }
   if (items.length > MAX_ITEMS)
     out.push(`ve ${items.length - MAX_ITEMS} kalem daha`)
@@ -130,6 +138,10 @@ function assistantLines(m: ContextMessage): string[] {
     lines.push(`[Hazırlanan liste${dish}: ${clip(draftItems)}]`)
   }
 
+  const products = formatPlanProducts(outputOf(parts, "tool-basketContext"))
+  if (products)
+    lines.push(`[Sepet Özeti'nde seçilen ürünler: ${clip(products)}]`)
+
   const image = outputOf(parts, "tool-analyzeImage") as
     | {
         analysis?: {
@@ -155,6 +167,104 @@ function assistantLines(m: ContextMessage): string[] {
   }
 
   return lines
+}
+
+/**
+ * Sepet Özeti'nin önerdiği plandaki ürünler: "kuru fasulye → Yurt Kuru
+ * Fasulye 400 Gr (A101)". Kullanıcı "konserve olanı seçmişsin" diye itiraz
+ * ettiğinde model hangi ürünün kastedildiğini ancak buradan bilir; eskiden
+ * dökümde yalnızca kalem adları vardı.
+ */
+function formatPlanProducts(output: unknown): string {
+  const ctx = output as { summary?: unknown; matches?: unknown } | undefined
+  const plan = recommendedPlan(parseSummary(ctx?.summary))
+  if (!plan) return ""
+  const matches = Array.isArray(ctx?.matches) ? ctx.matches : []
+  const out: string[] = []
+  for (const a of plan.allocation.slice(0, MAX_ITEMS)) {
+    const match =
+      a.itemIndex != null
+        ? (matches[a.itemIndex] as
+            | { selection?: { userAcceptedProductIds?: unknown } | null }
+            | undefined)
+        : undefined
+    const userPicked = Array.isArray(match?.selection?.userAcceptedProductIds)
+    out.push(
+      `${a.rawName} → ${a.productName} (${a.market}${userPicked ? ", kullanıcı seçti" : ""})`
+    )
+  }
+  return out.join("; ")
+}
+
+export type PreviousListItem = {
+  name: string
+  searchQuery: string
+  quantity: number
+  unit: string
+  note: string | null
+}
+
+function toListItems(items: unknown): PreviousListItem[] | null {
+  if (!Array.isArray(items)) return null
+  const out: PreviousListItem[] = []
+  for (const raw of items) {
+    if (!raw || typeof raw !== "object") continue
+    const it = raw as Record<string, unknown>
+    const name =
+      typeof it.name === "string"
+        ? it.name
+        : typeof it.rawName === "string"
+          ? it.rawName
+          : ""
+    if (!name.trim()) continue
+    out.push({
+      name,
+      searchQuery: typeof it.searchQuery === "string" ? it.searchQuery : "",
+      quantity: typeof it.quantity === "number" ? it.quantity : NaN,
+      unit: typeof it.unit === "string" ? it.unit : "",
+      note: typeof it.note === "string" && it.note.trim() ? it.note : null,
+    })
+  }
+  return out
+}
+
+/**
+ * Sohbette en son geçerli olan liste: son onaylanan sepet ya da son hazırlanan
+ * taslak, hangisi daha yeniyse. Asistan "listeni güncelledim" demeden önce
+ * gerçekten bir şeyin değişip değişmediğini bununla kıyaslar.
+ */
+export function lastBasketItems(
+  messages: readonly ContextMessage[]
+): PreviousListItem[] | null {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const m = messages[i]
+    const parts = m.parts ?? []
+    if (m.role === "user") {
+      const meta = (m.metadata ?? null) as {
+        kind?: unknown
+        payload?: { items?: unknown }
+      } | null
+      if (meta?.kind === "basketApproval") {
+        const items = toListItems(meta.payload?.items)
+        if (items) return items
+      }
+      continue
+    }
+    if (m.role !== "assistant") continue
+    const draft = outputOf(parts, "tool-parseShoppingList") as
+      | { items?: unknown }
+      | undefined
+    const draftItems = toListItems(draft?.items)
+    if (draftItems && draftItems.length > 0) return draftItems
+    const image = outputOf(parts, "tool-analyzeImage") as
+      | { analysis?: { kind?: unknown; food?: { items?: unknown } | null } }
+      | undefined
+    if (image?.analysis?.kind === "food") {
+      const foodItems = toListItems(image.analysis.food?.items)
+      if (foodItems && foodItems.length > 0) return foodItems
+    }
+  }
+  return null
 }
 
 /**

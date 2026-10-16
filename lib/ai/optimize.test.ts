@@ -230,3 +230,20 @@ describe("computeOptimization", () => {
     assert.equal(su?.sizeMismatch, false)
   })
 })
+
+describe("computeOptimization — kalem sırası", () => {
+  test("döküm satırları kalemin matches içindeki sırasını taşır, eşleşmeyen kalem atlansa da", () => {
+    const summary = computeOptimization([
+      match("süt", [option("A101", 30)]),
+      match("yufka", []),
+      match("ekmek", [option("A101", 10), option("BİM", 5)]),
+    ])
+    const single = Object.fromEntries(
+      summary.singleMarket.allocation.map((a) => [a.rawName, a.itemIndex]),
+    )
+    assert.deepEqual(single, { süt: 0, ekmek: 2 })
+    for (const a of summary.twoMarketCombo.allocation) {
+      assert.equal(a.itemIndex, a.rawName === "süt" ? 0 : 2)
+    }
+  })
+})

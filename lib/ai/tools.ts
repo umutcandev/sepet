@@ -38,6 +38,7 @@ import { POLICY_VERSION } from "./match-policy"
 import {
   MF_MATCH_PAGES,
   MF_PAGE_SIZE,
+  getProductById,
   searchProductDetails,
 } from "@/lib/marketfiyati/cache"
 import type { ProductDetail } from "@/lib/marketfiyati/types"
@@ -46,15 +47,38 @@ import {
   MF_DEFAULT_LOCATION,
   type LocationContext,
 } from "@/lib/marketfiyati/client"
-import { buildMarketOptions, sizeFit } from "./effective-cost"
+import {
+  buildMatchResult,
+  type CarriedSelection,
+  resolveSelection,
+  resolveUserSelection,
+  selectionKey,
+  type Candidate,
+  type ItemSelection,
+  type PoolOutcome,
+} from "./match-result"
 import { redis, MF_MATCH_TTL } from "@/lib/redis"
 import { createHash } from "node:crypto"
 
-type FindOutcome =
-  | { kind: "hit"; hits: ProductDetail[] }
-  | { kind: "no_match" }
-  | { kind: "api_quota"; message: string }
-  | { kind: "api_error"; message: string }
+/**
+ * Bir sorgunun aday havuzu: eşleştirme ile Sepet Özeti'ndeki ürün değiştirme
+ * ekranı AYNI havuzu görsün diye tek yerde. Arama sonuçları Redis'te
+ * paylaşımlı olduğundan aynı sorgu ikinci kez API'ye gitmez.
+ *
+ * En az bir marketten gerçek fiyatı olmayan adaylar elenir — bir depo fiyatı
+ * yoksa o ürün optimizasyona katkı yapamaz.
+ */
+export async function searchCandidatePool(
+  query: string,
+  loc: LocationContext,
+): Promise<{ hits: ProductDetail[]; cached: boolean; total: number }> {
+  const result = await searchProductDetails(query, loc, { pages: MF_MATCH_PAGES })
+  return {
+    hits: result.details.filter((d) => d.markets.length >= 1),
+    cached: result.cached,
+    total: result.details.length,
+  }
+}
 
 /**
  * Bir kalem için atılacak en fazla arama denemesi. Kısaltma yalnızca sonuç
@@ -68,7 +92,7 @@ async function findFirstHit(
   searchQuery: string,
   rawName: string,
   loc: LocationContext,
-): Promise<FindOutcome> {
+): Promise<PoolOutcome> {
   const tried = new Set<string>()
   const alias = searchAlias(searchQuery)
   const variants = alias
@@ -89,20 +113,17 @@ async function findFirstHit(
     .filter((v) => v.length >= 2 && !tried.has(v) && tried.add(v))
     .slice(0, MAX_SEARCH_ATTEMPTS)
 
-  let lastError: FindOutcome | null = null
+  let lastError: PoolOutcome | null = null
 
   for (const q of variants) {
     try {
-      const result = await searchProductDetails(q, loc, { pages: MF_MATCH_PAGES })
-      // En az bir marketten gerçek fiyatı olmayan adayları ele — bir depo
-      // fiyatı yoksa o ürün optimizasyona katkı yapamaz.
-      const hits = result.details.filter((d) => d.markets.length >= 1)
+      const { hits, cached, total } = await searchCandidatePool(q, loc)
       // Sorgu metni kullanıcı içeriğidir → yalnızca dev. Üretimde cache
       // isabet oranı `[lookupProducts] match cache` satırından okunur.
       devLog(
-        `[lookupProducts] q="${q}" cached=${result.cached} hits=${result.details.length} withMarket=${hits.length}`,
+        `[lookupProducts] q="${q}" cached=${cached} hits=${total} withMarket=${hits.length}`,
       )
-      if (hits.length > 0) return { kind: "hit", hits }
+      if (hits.length > 0) return { kind: "hit", hits, query: q }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
       const status = err instanceof MarketfiyatiError ? err.status : undefined
@@ -247,8 +268,7 @@ export async function parseShoppingList(
   return { draft: object, reasoning: reasoning ?? null }
 }
 
-type HitList = ProductDetail[]
-type ProductHitItem = ProductDetail
+type HitList = Candidate[]
 
 /**
  * LLM'e gönderilen aday tavanı — asıl darboğaz burasıydı, arama sayfa boyutu
@@ -266,12 +286,6 @@ type ProductHitItem = ProductDetail
  * hareket etmeli.
  */
 const MAX_CANDIDATES = MF_MATCH_PAGES * MF_PAGE_SIZE
-
-type CachedSelection = {
-  primaryProductId: string | null
-  acceptedProductIds: string[]
-  sizeMismatch: boolean
-}
 
 /**
  * MATCH_PROMPT'un içeriğinden türetilen kısa sürüm damgası. Eskiden cache anahtarı
@@ -292,36 +306,27 @@ export const MATCH_PROMPT_VERSION = createHash("sha1")
   .slice(0, 12)
 
 /**
- * LLM eşleştirme cache anahtarı. Aynı kalem (ham ad + miktar + birim) aynı aday
- * kümesi VE aynı prompt sürümüyle gelirse seçim de aynıdır — LLM'i tekrar
+ * LLM eşleştirme cache anahtarı. Aynı kalem (ham ad + miktar + birim + not) aynı
+ * aday kümesi VE aynı prompt sürümüyle gelirse seçim de aynıdır — LLM'i tekrar
  * çağırmaya gerek yok. Prompt sürümü (MATCH_PROMPT_VERSION) anahtara dahil
  * olduğundan kural değişikliği eski seçimleri otomatik geçersiz kılar.
+ *
+ * Not anahtarın parçası: kullanıcı "konserve olmasın" diye itiraz ettiğinde
+ * kalemin geri kalanı aynı kalıyor. Not anahtarda olmasaydı düzeltme turu
+ * itiraz edilen seçimi cache'ten aynen geri getirirdi.
  */
 function matchCacheKey(item: ParsedItem, hits: HitList): string {
   const payload = JSON.stringify({
     rawName: item.name.trim().toLocaleLowerCase("tr-TR"),
     quantity: item.quantity,
     unit: item.unit,
+    note: item.note?.trim().toLocaleLowerCase("tr-TR") || null,
     candidates: hits
       .slice(0, MAX_CANDIDATES)
       .map((h) => h.productId)
       .sort(),
   })
   return `mf:match:${MATCH_PROMPT_VERSION}:${createHash("sha1").update(payload).digest("hex")}`
-}
-
-function toMatchedProduct(h: ProductHitItem) {
-  return {
-    productId: h.productId,
-    name: h.name,
-    brand: h.brand,
-    category: h.category,
-    imageUrl: h.imageUrl,
-    averagePrice: h.averagePrice,
-    minPrice: h.minPrice,
-    maxPrice: h.maxPrice,
-    marketCount: h.marketCount,
-  }
 }
 
 /**
@@ -344,6 +349,7 @@ export async function selectMatches(
     // §13.1 politika aramasının anahtarı. name ham kullanıcı metni ("1 lt süt"),
     // searchQuery ise PARSE_PROMPT'un normalize ettiği terim ("süt").
     searchQuery: p.item.searchQuery,
+    note: p.item.note?.trim() || null,
     candidates: p.hits.slice(0, MAX_CANDIDATES).map((h) => ({
       productId: h.productId,
       name: h.name,
@@ -379,74 +385,102 @@ export async function selectMatches(
 }
 
 /**
- * LLM seçimini (ya da yokluğunu) normalize CachedSelection'a çevirir:
- * - Sadece gerçekten aday listesinde olan productId'leri tutar (halüsinasyon ele).
- * - acceptedProductIds'in primary'yi içermesini garanti eder.
- * - LLM yok/başarısızsa en üst adaya geri düşer (cache'lenmez).
+ * Taşınan seçimde aday havuzunda OLMAYAN (kullanıcının değiştirme ekranında
+ * aramayla eklediği) ürünler tek tek getirilir. Tur başına tavan: seçimler
+ * istemcinin gönderdiği sohbetten okunuyor, sınırsız bırakmak upstream'e keyfi
+ * istek açardı.
  */
-function resolveSelection(
-  sel: MatchSelection["selections"][number] | null | undefined,
-  hits: HitList,
-): CachedSelection {
-  const validIds = new Set(hits.map((h) => h.productId))
+const MAX_CARRIED_EXTRA_FETCHES = 12
 
-  if (!sel) {
-    const top = hits[0]?.productId ?? null
-    return {
-      primaryProductId: top,
-      acceptedProductIds: top ? [top] : [],
-      sizeMismatch: false,
-    }
-  }
-
-  // LLM aynı productId'yi birden çok kez döndürebiliyor (ölçümde tek kalemde 72
-  // adaya karşılık 153 id geldi). Fiyat hesabını bozmuyor — buildMarketOptions
-  // market başına en ucuzu tuttuğundan idempotent — ama cache'e ve prompt'a
-  // şişmiş liste taşımamak için tekilleştiriyoruz.
-  const accepted = [
-    ...new Set((sel.acceptedProductIds ?? []).filter((id) => validIds.has(id))),
-  ]
-  let primary =
-    sel.primaryProductId && validIds.has(sel.primaryProductId)
-      ? sel.primaryProductId
-      : null
-  if (primary && !accepted.includes(primary)) accepted.unshift(primary)
-  if (!primary) primary = accepted[0] ?? null
-
-  return {
-    primaryProductId: primary,
-    acceptedProductIds: accepted,
-    sizeMismatch: sel.sizeMismatch,
-  }
+async function fetchExtraCandidates(
+  ids: string[],
+  loc: LocationContext,
+): Promise<ProductDetail[]> {
+  const found = await Promise.all(
+    ids.map(async (id) => {
+      try {
+        return await getProductById(id, loc)
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err)
+        console.error(`[lookupProducts] carried product fetch failed ${message}`)
+        return null
+      }
+    }),
+  )
+  return found.filter(
+    (d): d is ProductDetail => d !== null && d.markets.length > 0,
+  )
 }
 
 export async function lookupProducts(
   items: ParsedItem[],
   loc: LocationContext = MF_DEFAULT_LOCATION,
   opts: AiCallOptions = {},
+  carried: ReadonlyMap<string, CarriedSelection> = new Map(),
 ): Promise<{ matches: MatchResult[] }> {
   // Faz 1 — her kalem için aday ürünleri getir.
   const outcomes = await Promise.all(
     items.map((item) => findFirstHit(item.searchQuery, item.name, loc)),
   )
 
+  // index (orijinal item sırası) → optimizasyona girecek seçim.
+  const pick = new Map<number, ItemSelection>()
+  // index → asistanın seçimi; yalnızca kullanıcı seçimi taşınan kalemlerde
+  // `pick`ten farklıdır.
+  const aiPick = new Map<number, ItemSelection>()
+  const userIds = new Map<number, string[]>()
+
+  // Faz 1b — kullanıcının bu sohbette daha önce seçtiği ürünler. Seçim havuzla
+  // kesişiyorsa LLM'e hiç gitmez.
+  let extraBudget = MAX_CARRIED_EXTRA_FETCHES
+  for (const [index, item] of items.entries()) {
+    const outcome = outcomes[index]
+    if (outcome.kind !== "hit") continue
+    const prev = carried.get(selectionKey(item.searchQuery, item.note))
+    if (!prev) continue
+    const wanted = prev.state.userAcceptedProductIds
+    const inPool = new Set(outcome.hits.map((h) => h.productId))
+    const missing = wanted.filter((id) => !inPool.has(id)).slice(0, extraBudget)
+    extraBudget -= missing.length
+    const hits =
+      missing.length > 0
+        ? [...outcome.hits, ...(await fetchExtraCandidates(missing, loc))]
+        : outcome.hits
+    // Miktar değiştiyse eski "istenen boyut yok" işareti yeni miktara ait değil.
+    const sameSize = prev.quantity === item.quantity && prev.unit === item.unit
+    const aiSizeMismatch = sameSize ? prev.state.aiSizeMismatch : false
+    const user = resolveUserSelection(wanted, hits, {
+      previousPrimaryId: prev.primaryProductId,
+      aiSizeMismatch,
+    })
+    if (user.acceptedProductIds.length === 0) continue
+    outcomes[index] = { ...outcome, hits }
+    pick.set(index, user)
+    userIds.set(index, user.acceptedProductIds)
+    aiPick.set(index, {
+      primaryProductId: null,
+      acceptedProductIds: prev.state.aiAcceptedProductIds,
+      sizeMismatch: aiSizeMismatch,
+    })
+  }
+
   // Faz 2 — adayı olan kalemleri doğru ürüne eşle. Önce match-cache'e bak;
   // yalnızca cache miss olan kalemleri tek bir LLM çağrısına gönder.
   const withHits: Array<{ index: number; item: ParsedItem; hits: HitList }> = []
   outcomes.forEach((outcome, index) => {
-    if (outcome.kind === "hit") {
+    if (outcome.kind === "hit" && !pick.has(index)) {
       withHits.push({ index, item: items[index], hits: outcome.hits })
     }
   })
-
-  // index (orijinal item sırası) → seçim.
-  const pick = new Map<number, CachedSelection>()
+  if (userIds.size > 0) {
+    console.log(`[lookupProducts] carried user selections: ${userIds.size}`)
+  }
 
   if (withHits.length > 0) {
     const cacheKeys = withHits.map((e) => matchCacheKey(e.item, e.hits))
-    let cached: (CachedSelection | null)[] = []
+    let cached: (ItemSelection | null)[] = []
     try {
-      cached = await redis.mget<(CachedSelection | null)[]>(...cacheKeys)
+      cached = await redis.mget<(ItemSelection | null)[]>(...cacheKeys)
     } catch (err) {
       console.error("[lookupProducts] match cache read failed", err)
       cached = []
@@ -490,7 +524,7 @@ export async function lookupProducts(
       }
 
       // promptIndex (misses sırası) → orijinal item index'ine geri eşle.
-      const toCache: Array<{ key: string; value: CachedSelection }> = []
+      const toCache: Array<{ key: string; value: ItemSelection }> = []
       misses.forEach((miss, promptIndex) => {
         const sel = selections?.get(promptIndex)
         const entry = withHits[miss.withHitsIdx]
@@ -520,78 +554,14 @@ export async function lookupProducts(
   // Faz 3 — sonuçları kur. /search zaten her adayın market kırılımını getirdiği
   // için ekstra ürün detayı çağrısına gerek yok.
   const matches: MatchResult[] = items.map((item, index) => {
-    const outcome = outcomes[index]
-    const hits = outcome.kind === "hit" ? outcome.hits : []
     const selection = pick.get(index) ?? null
-
-    // Kabul edilen ve gerçek market fiyatı olan adaylar.
-    const acceptedIds = new Set(selection?.acceptedProductIds ?? [])
-    const accepted = hits.filter(
-      (h) => acceptedIds.has(h.productId) && h.markets.length > 0,
-    )
-    const primary =
-      (selection?.primaryProductId
-        ? accepted.find((h) => h.productId === selection.primaryProductId)
-        : undefined) ??
-      accepted[0] ??
-      null
-    // LLM yalnızca adetli/rawName boyut farklarını (ör. "2 yumurta" → 10'lu
-    // viyol) güvenilir işaretler. Sepet onayında ölçülebilir boyut ayrı
-    // quantity/unit alanında gelir; kg/l farklarını sizeFit deterministik
-    // olarak yakalar (gramajla istenip adetle satılan ürün, ±%10'dan fazla
-    // sapan paket boyutu).
-    const llmSizeMismatch = selection?.sizeMismatch ?? false
-    const fitOf = (h: ProductHitItem) =>
-      sizeFit(item.quantity, item.unit, h, llmSizeMismatch)
-    // Temsilci istenen boyutu tutmuyorsa ve kabul edilenler arasında tutan bir
-    // aday varsa kart onu göstersin; kalemin rozeti de buna göre çıkar.
-    const best =
-      primary && fitOf(primary).mismatch
-        ? (accepted.find((h) => !fitOf(h).mismatch) ?? primary)
-        : primary
-    const sizeMismatch = best ? fitOf(best).mismatch : false
-
-    const lookupStatus: MatchResult["lookupStatus"] =
-      outcome.kind === "hit"
-        ? best
-          ? "ok"
-          : "no_match"
-        : outcome.kind === "no_match"
-          ? "no_match"
-          : outcome.kind === "api_quota"
-            ? "api_quota"
-            : "api_error"
-
-    const errorMessage =
-      outcome.kind === "api_quota" || outcome.kind === "api_error"
-        ? outcome.message
-        : null
-
-    // Temsilci ürünün (UI kartı) market fiyatları.
-    const marketPrices = best
-      ? best.markets.map((m) => ({
-          market: m.market,
-          price: m.price,
-          depotName: m.depotName,
-        }))
-      : []
-
-    return {
-      rawName: item.name,
-      searchQuery: item.searchQuery,
-      quantity: item.quantity,
-      unit: item.unit,
-      bestMatch: best ? toMatchedProduct(best) : null,
-      marketPrices,
-      marketOptions: buildMarketOptions(accepted, item, llmSizeMismatch),
-      alternatives: accepted
-        .filter((h) => h.productId !== best?.productId)
-        .slice(0, 3)
-        .map(toMatchedProduct),
-      lookupStatus,
-      errorMessage,
-      sizeMismatch,
-    } satisfies MatchResult
+    return buildMatchResult({
+      item,
+      outcome: outcomes[index],
+      selection,
+      ai: aiPick.get(index) ?? selection,
+      userAcceptedProductIds: userIds.get(index) ?? null,
+    })
   })
   return { matches }
 }

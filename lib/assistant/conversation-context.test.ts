@@ -1,8 +1,11 @@
 import assert from "node:assert/strict"
 import { describe, test } from "node:test"
 
+import { computeOptimization } from "@/lib/ai/optimize"
+import type { MarketOption, MatchResult } from "@/lib/ai/schemas"
 import {
   buildConversationContext,
+  lastBasketItems,
   type ContextMessage,
 } from "./conversation-context"
 
@@ -147,5 +150,200 @@ describe("buildConversationContext", () => {
     assert.ok(!out.includes("mesaj 0 "))
     assert.ok(out.includes("mesaj 39 "))
     assert.ok(out.length <= 4000)
+  })
+})
+
+function option(
+  market: string,
+  price: number,
+  productName: string
+): MarketOption {
+  return {
+    market,
+    productId: `${productName}-${market}`,
+    productName,
+    packagePrice: price,
+    packsNeeded: 1,
+    effectiveCost: price,
+    unitPriceLabel: null,
+    depotName: null,
+    imageUrl: null,
+  }
+}
+
+function basketMatch(
+  rawName: string,
+  options: MarketOption[],
+  userPicked = false
+): MatchResult {
+  return {
+    rawName,
+    searchQuery: rawName,
+    quantity: 1,
+    unit: "paket",
+    bestMatch: null,
+    marketPrices: [],
+    marketOptions: options,
+    alternatives: [],
+    lookupStatus: "ok",
+    errorMessage: null,
+    sizeMismatch: false,
+    selection: {
+      poolQuery: rawName,
+      aiAcceptedProductIds: [],
+      aiSizeMismatch: false,
+      userAcceptedProductIds: userPicked ? [options[0].productId] : null,
+    },
+  }
+}
+
+function summaryTurn(matches: MatchResult[]): ContextMessage {
+  return assistant("Sepet Özeti hazır.", [
+    {
+      type: "tool-basketContext",
+      state: "output-available",
+      output: { items: [], matches, summary: computeOptimization(matches) },
+    },
+  ])
+}
+
+describe("Sepet Özeti ürünleri", () => {
+  test("önerilen plandaki ürünleri kalem kalem yazar", () => {
+    // Ekran görüntüsündeki vaka: model hangi ürüne itiraz edildiğini ancak
+    // burada görür.
+    const out = buildConversationContext([
+      summaryTurn([
+        basketMatch("kuru fasulye", [
+          option("A101", 71.5, "Yurt Kuru Fasulye 400 Gr"),
+        ]),
+        basketMatch("soğan", [option("A101", 25.15, "Soğan 1 Kg")]),
+      ]),
+    ])
+    assert.match(
+      out,
+      /\[Sepet Özeti'nde seçilen ürünler: kuru fasulye → Yurt Kuru Fasulye 400 Gr \(A101\); soğan → Soğan 1 Kg \(A101\)\]/
+    )
+  })
+
+  test("kullanıcının elle seçtiği ürünü işaretler", () => {
+    const out = buildConversationContext([
+      summaryTurn([
+        basketMatch(
+          "kuru fasulye",
+          [option("CarrefourSA", 99.9, "Carrefour Dermason Kuru Fasulye 1 Kg")],
+          true
+        ),
+      ]),
+    ])
+    assert.match(out, /\(CarrefourSA, kullanıcı seçti\)/)
+  })
+
+  test("bozuk özet bağlamı düşürmez", () => {
+    const out = buildConversationContext([
+      assistant("Sepet Özeti hazır.", [
+        {
+          type: "tool-basketContext",
+          state: "output-available",
+          output: { summary: 5 },
+        },
+      ]),
+    ])
+    assert.equal(out, "Asistan: Sepet Özeti hazır.")
+  })
+
+  test("kalem notu dökümde görünür", () => {
+    const out = buildConversationContext([
+      user("Sepeti onayladım.", {
+        kind: "basketApproval",
+        payload: {
+          items: [
+            {
+              rawName: "kuru fasulye",
+              quantity: 1,
+              unit: "paket",
+              note: "konserve olmasın",
+            },
+          ],
+        },
+      }),
+    ])
+    assert.match(out, /kuru fasulye 1 paket \(not: konserve olmasın\)/)
+  })
+})
+
+describe("lastBasketItems", () => {
+  test("ilk mesajda liste yok", () => {
+    assert.equal(lastBasketItems([]), null)
+  })
+
+  test("en son onaylanan sepeti döndürür", () => {
+    const items = lastBasketItems([
+      assistant("Hazırladım.", [
+        {
+          type: "tool-parseShoppingList",
+          state: "output-available",
+          output: {
+            items: [
+              { name: "süt", searchQuery: "süt", quantity: 1, unit: "l" },
+            ],
+          },
+        },
+      ]),
+      user("Sepeti onayladım.", {
+        kind: "basketApproval",
+        payload: {
+          items: [
+            {
+              rawName: "süt",
+              searchQuery: "süt",
+              quantity: 2,
+              unit: "l",
+              note: "cam şişe",
+            },
+          ],
+        },
+      }),
+      summaryTurn([]),
+    ])
+    assert.deepEqual(items, [
+      {
+        name: "süt",
+        searchQuery: "süt",
+        quantity: 2,
+        unit: "l",
+        note: "cam şişe",
+      },
+    ])
+  })
+
+  test("onaydan sonra yeni taslak geldiyse taslağı döndürür", () => {
+    const items = lastBasketItems([
+      user("Sepeti onayladım.", {
+        kind: "basketApproval",
+        payload: {
+          items: [
+            { rawName: "süt", searchQuery: "süt", quantity: 1, unit: "l" },
+          ],
+        },
+      }),
+      assistant("Güncelledim.", [
+        {
+          type: "tool-parseShoppingList",
+          state: "output-available",
+          output: {
+            items: [
+              {
+                name: "ayran",
+                searchQuery: "ayran",
+                quantity: 1,
+                unit: "adet",
+              },
+            ],
+          },
+        },
+      ]),
+    ])
+    assert.equal(items?.[0].name, "ayran")
+    assert.equal(items?.[0].note, null)
   })
 })

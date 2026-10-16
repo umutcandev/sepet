@@ -16,6 +16,16 @@ export const ParsedItemSchema = z.object({
     .describe(
       "Bu ürün için market arama API'sine gönderilecek normalize Türkçe sorgu. Marka, birim ve miktar bilgisi içermez. Ör. 'beyaz peynir', 'toz deterjan', 'uht süt'.",
     ),
+  // Aramaya GİRMEYEN tercih: "konserve olmasın", "cam şişe olsun". Arama
+  // sorgusuna yazılsa marketfiyati kelimeleri AND'lediği için sonuç sıfıra
+  // düşerdi; bu yüzden yalnızca eşleştirme modeline ayrı satır olarak gider.
+  // Sonradan eklendi: eski taslaklarda ve fiş kalemlerinde yok.
+  note: z
+    .string()
+    .nullish()
+    .describe(
+      "Kullanıcının bu kalem için arama terimi OLMAYAN tercihi ya da itirazı, kısa Türkçe (ör. 'konserve olmasın', 'cam şişe olsun'). Yoksa null.",
+    ),
 })
 
 export const BasketDraftSchema = z.object({
@@ -64,6 +74,10 @@ export const MarketAllocationSchema = z.object({
   // Kalem marketten markete farklı ürüne çözülebildiği için görsel de kaleme
   // değil bu satırın ürününe aittir. Eski kayıtlarda yok → nullable + default.
   imageUrl: z.string().nullable().default(null),
+  // Satırın ait olduğu kalemin `matches` içindeki sırası. Ham ad tekil değil
+  // (iki ayrı "süt" olabilir); Sepet Özeti'nden ürün değiştirirken hangi
+  // kalemin düzenlendiğini bu söyler. Eski kayıtlarda yok.
+  itemIndex: z.number().optional(),
 })
 
 export const SingleMarketResultSchema = z.object({
@@ -143,6 +157,21 @@ export const MarketOptionSchema = z.object({
   sizeMismatch: z.boolean().optional(),
 })
 
+export const MatchSelectionStateSchema = z.object({
+  // Aday havuzunu getiren arama (takma ad ya da genelleştirme olabilir, bkz.
+  // findFirstHit). Havuz aynı sorguyla yeniden çekilir.
+  poolQuery: z.string(),
+  // Asistanın kabul ettiği ürünler (market fiyatı olanlar).
+  aiAcceptedProductIds: z.array(z.string()),
+  // Eşleştirme modelinin kalem düzeyindeki "istenen boyut yok" işareti. Adetli
+  // isteklerde boyut kararını bu verir (bkz. sizeFit); kullanıcı ürün
+  // değiştirince kararın aynı kalması için saklanır.
+  aiSizeMismatch: z.boolean(),
+  // Kullanıcının Sepet Özeti'nden seçtiği ürünler. Doluysa optimizasyon bu
+  // kümeyle kurulur; null → asistanın seçimi geçerli.
+  userAcceptedProductIds: z.array(z.string()).nullable(),
+})
+
 export const MatchResultSchema = z.object({
   rawName: z.string(),
   searchQuery: z.string(),
@@ -163,6 +192,12 @@ export const MatchResultSchema = z.object({
   // arama terimi ("börek yufkası" → "yufka"). Eşleştirilemeyen Ürünler
   // kartındaki "… mı demek istedin?" önerisi. Eski kayıtlarda yok.
   suggestedQuery: z.string().nullable().optional(),
+  // Kalemin tercih notu (bkz. ParsedItemSchema.note). Eski kayıtlarda yok.
+  note: z.string().nullable().optional(),
+  // Ürün kümesinin nasıl seçildiği. Sepet Özeti'nden ürün değiştirme ekranı
+  // aday havuzunu bununla yeniden açar ve kullanıcının seçimini asistanınkinden
+  // ayırır. Aday havuzu olmayan (eşleşmeyen) kalemlerde ve eski kayıtlarda yok.
+  selection: MatchSelectionStateSchema.nullable().optional(),
 })
 
 // lookupProducts içindeki LLM seçim adımının batch çıktısı. Tek ürün yerine
@@ -200,6 +235,7 @@ export type BasketDraft = z.infer<typeof BasketDraftSchema>
 export type MatchResult = z.infer<typeof MatchResultSchema>
 export type MarketOption = z.infer<typeof MarketOptionSchema>
 export type MatchSelection = z.infer<typeof MatchSelectionSchema>
+export type MatchSelectionState = z.infer<typeof MatchSelectionStateSchema>
 export type OptimizationSummary = z.infer<typeof OptimizationSummarySchema>
 export type MarketAllocation = z.infer<typeof MarketAllocationSchema>
 
