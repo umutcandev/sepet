@@ -4,6 +4,7 @@ import { test, describe } from "node:test"
 import {
   isRpIdValidForHost,
   isValidRpId,
+  passkeysUsableOnHost,
   resolveRelyingParty,
 } from "./webauthn-config"
 
@@ -84,5 +85,43 @@ describe("rpID kuralları", () => {
     assert.ok(isRpIdValidForHost("trysepet.com", "trysepet.com"))
     assert.ok(!isRpIdValidForHost("trysepet.com", "eviltrysepet.com"))
     assert.ok(!isRpIdValidForHost("trysepet.com", "192.168.1.20"))
+  })
+})
+
+describe("passkeysUsableOnHost", () => {
+  const PROD = {
+    WEBAUTHN_RP_ID: "trysepet.com",
+    NEXT_PUBLIC_SITE_URL: "https://www.trysepet.com",
+  }
+
+  test("üretim alan adında açık", () => {
+    assert.ok(passkeysUsableOnHost(PROD, "www.trysepet.com"))
+    assert.ok(passkeysUsableOnHost(PROD, "trysepet.com"))
+  })
+
+  test("preview production SITE_URL'ünü taşısa da vercel.app'te kapalı", () => {
+    assert.ok(
+      !passkeysUsableOnHost(
+        { NEXT_PUBLIC_SITE_URL: "https://www.trysepet.com" },
+        "sepet-git-feat-passkey-team.vercel.app"
+      )
+    )
+  })
+
+  test("SITE_URL'süz preview yalnız kendi deployment adresinde açık", () => {
+    const env = { VERCEL_URL: "sepet-abc123-team.vercel.app" }
+    assert.ok(passkeysUsableOnHost(env, "sepet-abc123-team.vercel.app"))
+    assert.ok(
+      !passkeysUsableOnHost(env, "sepet-git-feat-passkey-team.vercel.app")
+    )
+  })
+
+  test("geçersiz yapılandırmada kapalı", () => {
+    assert.ok(
+      !passkeysUsableOnHost(
+        { NEXT_PUBLIC_SITE_URL: "http://192.168.1.20:3000" },
+        "192.168.1.20"
+      )
+    )
   })
 })

@@ -44,6 +44,7 @@ import {
 } from "@/lib/actions/passkeys"
 import { PASSKEY_NAME_MAX } from "@/lib/auth/passkey-names"
 import { isRpIdValidForHost } from "@/lib/auth/webauthn-config"
+import { passkeysUsableHere } from "@/lib/auth/passkey-availability"
 
 import { SettingGroup, SettingRow } from "../settings-row"
 import { CreatePasskeyDialog } from "./create-passkey-dialog"
@@ -87,8 +88,10 @@ function syncSignals(state: EnabledState) {
 // (bkz. lib/auth/sudo.ts); yeniden adlandırma istemez.
 export function PasskeysGroup() {
   const [state, setState] = React.useState<EnabledState | null>(null)
+  // Ayarlar diyaloğu yalnız istemcide mount olur → lazy initializer güvenli.
+  // Bu host'ta geçiş anahtarı çalışmayacaksa iskelet hiç çizilmez.
   const [status, setStatus] = React.useState<"loading" | "ready" | "hidden">(
-    "loading"
+    () => (passkeysUsableHere() ? "loading" : "hidden")
   )
   const [supported, setSupported] = React.useState(true)
   const [sudoFor, setSudoFor] = React.useState<Pending | null>(null)
@@ -113,6 +116,7 @@ export function PasskeysGroup() {
   }, [apply])
 
   React.useEffect(() => {
+    if (!passkeysUsableHere()) return
     let active = true
     getPasskeyStateAction()
       .then((s) => {

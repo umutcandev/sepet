@@ -30,6 +30,7 @@ import {
   type ReauthMethods,
 } from "@/lib/actions/passkeys"
 import { isRpIdValidForHost } from "@/lib/auth/webauthn-config"
+import { passkeysUsableHere } from "@/lib/auth/passkey-availability"
 
 // "Şimdi değil" sonrası aynı cihazda tekrar sorulmayacak süre.
 const COOLDOWN_MS = 30 * 24 * 60 * 60 * 1000
@@ -97,7 +98,7 @@ function PasskeyPrompt() {
   const { prepare } = registration
 
   React.useEffect(() => {
-    if (!browserSupportsWebAuthn()) return
+    if (!browserSupportsWebAuthn() || !passkeysUsableHere()) return
     if (readStorage("session", SEEN_KEY) || recentlyDismissed()) return
     let active = true
     let timer: number | undefined

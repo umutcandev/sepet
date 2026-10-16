@@ -85,3 +85,14 @@ export function resolveRelyingParty(env: RpEnv): RelyingParty | null {
   }
   return { id, name: RP_NAME, origins: valid }
 }
+
+/**
+ * Geçiş anahtarları bu host'ta çalışır mı: yapılandırma geçerli ve rpID host'a
+ * uyuyor. İstemci bunu build'de aktarılan env ile ilk çizimde sorar (bkz.
+ * lib/auth/passkey-availability.ts); uymayan ortamda (preview, LAN IP'si)
+ * arayüz hiç görünmez, sunucu yanıtını beklerken belirip kaybolmaz.
+ */
+export function passkeysUsableOnHost(env: RpEnv, host: string): boolean {
+  const rp = resolveRelyingParty(env)
+  return rp !== null && isRpIdValidForHost(rp.id, host)
+}

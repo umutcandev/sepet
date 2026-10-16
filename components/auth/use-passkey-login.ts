@@ -16,6 +16,7 @@ import {
   passkeyLoginAction,
 } from "@/lib/actions/passkeys"
 import { isRpIdValidForHost } from "@/lib/auth/webauthn-config"
+import { passkeysUsableHere } from "@/lib/auth/passkey-availability"
 
 // Sunucudaki challenge 5 dk yaşıyor; süresi dolmadan tazelenir.
 const REFRESH_MS = 4 * 60 * 1000
@@ -40,8 +41,10 @@ type Args = {
  */
 export function usePasskeyLogin({ callbackUrl, onSuccess, onError }: Args) {
   // Dialog içeriği yalnız istemcide mount olur → lazy initializer güvenli.
-  const [available, setAvailable] = React.useState(() =>
-    browserSupportsWebAuthn()
+  // rpID bu host'a uymuyorsa (preview, LAN IP'si) buton hiç çizilmez; sunucu
+  // seçenekleri gelince gizlenip "1 sn görünüp kaybolma" olmaz.
+  const [available, setAvailable] = React.useState(
+    () => browserSupportsWebAuthn() && passkeysUsableHere()
   )
   const [busy, setBusy] = React.useState(false)
 
@@ -150,7 +153,8 @@ export function usePasskeyLogin({ callbackUrl, onSuccess, onError }: Args) {
   }, [load])
 
   React.useEffect(() => {
-    if (!browserSupportsWebAuthn()) return
+    // Kullanılamayacak ortamda seçenek (ve Redis'te challenge) hiç üretilmez.
+    if (!browserSupportsWebAuthn() || !passkeysUsableHere()) return
     stoppedRef.current = false
     let active = true
     void browserSupportsWebAuthnAutofill()
