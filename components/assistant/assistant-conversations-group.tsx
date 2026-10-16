@@ -11,6 +11,7 @@ import {
   RiHistoryLine,
   RiMoreLine,
   RiPencilLine,
+  RiShareBoxLine,
   RiStarLine,
   RiStarOffLine,
 } from "@remixicon/react"
@@ -34,6 +35,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ShareConversationDialog } from "@/components/assistant/share-conversation-dialog"
 import {
   ConversationDeleteDialog,
   ConversationRenameDialog,
@@ -286,6 +288,7 @@ function ConversationRow({
   isActive,
   isMobile,
   onRename,
+  onShare,
   onDelete,
   onNavigate,
 }: {
@@ -293,6 +296,7 @@ function ConversationRow({
   isActive: boolean
   isMobile: boolean
   onRename: (c: ConversationListItem) => void
+  onShare: (c: ConversationListItem) => void
   onDelete: (c: ConversationListItem) => void
   onNavigate: () => void
 }) {
@@ -353,6 +357,10 @@ function ConversationRow({
           >
             <RiPencilLine className="size-4" />
             Yeniden adlandır
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => onShare(c)}>
+            <RiShareBoxLine className="size-4" />
+            Paylaş
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -439,6 +447,15 @@ export function AssistantConversationsGroup({ conversations }: Props) {
     React.useState<ConversationListItem | null>(null)
   const [deleteTarget, setDeleteTarget] =
     React.useState<ConversationListItem | null>(null)
+  // Paylaş penceresi kapanırken (animasyon) hedef yerinde kalsın diye açıklık
+  // ayrı tutulur.
+  const [shareTarget, setShareTarget] =
+    React.useState<ConversationListItem | null>(null)
+  const [shareOpen, setShareOpen] = React.useState(false)
+  const openShare = React.useCallback((c: ConversationListItem) => {
+    setShareTarget(c)
+    setShareOpen(true)
+  }, [])
 
   const handleNavClick = React.useCallback(() => {
     if (isMobile) setOpenMobile(false)
@@ -542,6 +559,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                         isActive={c.id === activeId}
                         isMobile={isMobile}
                         onRename={setRenameTarget}
+                        onShare={openShare}
                         onDelete={setDeleteTarget}
                         onNavigate={handleNavClick}
                       />
@@ -617,6 +635,7 @@ export function AssistantConversationsGroup({ conversations }: Props) {
                             isActive={r.c.id === activeId}
                             isMobile={isMobile}
                             onRename={setRenameTarget}
+                            onShare={openShare}
                             onDelete={setDeleteTarget}
                             onNavigate={handleNavClick}
                           />
@@ -685,6 +704,14 @@ export function AssistantConversationsGroup({ conversations }: Props) {
         activeId={activeId}
         onClose={() => setDeleteTarget(null)}
       />
+      {shareTarget ? (
+        <ShareConversationDialog
+          open={shareOpen}
+          onOpenChange={setShareOpen}
+          conversationId={shareTarget.id}
+          title={shareTarget.title}
+        />
+      ) : null}
     </>
   )
 }

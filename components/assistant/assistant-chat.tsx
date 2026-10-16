@@ -55,6 +55,7 @@ import {
   type SelectionUpdate,
 } from "@/lib/assistant/selection-update"
 import {
+  MessageFooter,
   ReasoningBlock,
   StoppedMarker,
   matchImageFallback,
@@ -72,6 +73,7 @@ import {
 } from "@/lib/assistant/turn-state"
 import { PressFx } from "@/components/motion/press-fx"
 import { stripQuantityTokens } from "@/lib/ai/normalize"
+import { messageToMarkdown } from "@/lib/assistant/message-markdown"
 
 const SEED_KEY = "assistant:seed"
 const FILE_KEY = "assistant:file"
@@ -105,6 +107,8 @@ type AssistantChatProps = {
   initialTitle?: string
   initialMessages?: Array<Pick<UIMessage, "id" | "role" | "parts"> & {
     metadata?: unknown
+    /** Kayıt anı (ISO); mesajın altındaki zaman etiketi. */
+    createdAt?: string
   }>
   initialSavedBaskets?: Record<string, string>
   initialSavedReceipts?: Record<string, string>
@@ -151,9 +155,16 @@ export function AssistantChat({
   const [stoppedIds, setStoppedIds] = React.useState<ReadonlySet<string>>(
     () => new Set(),
   )
+  // useChat'e zaman alanı olmadan verilir: mesajlar her istekte sunucuya
+  // geri gidiyor, kayıt anının orada işi yok.
+  const [chatSeed] = React.useState<UIMessage[] | undefined>(() =>
+    initialMessages?.map(
+      ({ createdAt: _createdAt, ...m }) => m as UIMessage,
+    ),
+  )
   const { messages, sendMessage, setMessages, status, stop, error } = useChat({
     transport,
-    messages: initialMessages as UIMessage[] | undefined,
+    messages: chatSeed,
     onData: (dataPart) => {
       if (
         dataPart.type === "data-conversation-id" &&
@@ -385,6 +396,35 @@ export function AssistantChat({
   }, [sendMessage, initialMessages, markPendingTitleIfNew])
 
   const isBusy = status === "submitted" || status === "streaming"
+
+  // Mesajın altındaki zaman. Kayıtlı mesajlar DB'deki kayıt anıyla gelir;
+  // bu oturumda gönderilenler ekrana ilk düştükleri an, asistanın cevabı ise
+  // akış bittiği an damgalanır (sunucu cevabı da tur sonunda kaydediyor,
+  // yenilenince aynı saati gösterir). Akan cevapta zaman yok.
+  const [times, setTimes] = React.useState<Record<string, number>>(() => {
+    const out: Record<string, number> = {}
+    for (const m of initialMessages ?? []) {
+      const at = m.createdAt ? Date.parse(m.createdAt) : NaN
+      if (Number.isFinite(at)) out[m.id] = at
+    }
+    return out
+  })
+  React.useEffect(() => {
+    const last = messages[messages.length - 1]
+    const pending = messages.filter(
+      (m) =>
+        !(m.id in times) &&
+        !(isBusy && m.role === "assistant" && m.id === last?.id),
+    )
+    if (pending.length === 0) return
+    const now = Date.now()
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- yeni mesaj göründüğü an bir kez damgalanır
+    setTimes((prev) => {
+      const next = { ...prev }
+      for (const m of pending) next[m.id] ??= now
+      return next
+    })
+  }, [messages, isBusy, times])
 
   // Sidebar'da bu sohbet için üç nokta animasyonunu süren istemci-içi bayrak.
   // Stream başladığında (id biliniyorsa) işaretle, bittiğinde/değiştiğinde
@@ -899,6 +939,20 @@ export function AssistantChat({
                     })}
                     {m.role === "assistant" && stopped && <StoppedMarker />}
                   </MessageContent>
+                  {times[m.id] ? (
+                    <MessageFooter
+                      at={times[m.id]}
+                      align={m.role === "user" ? "end" : "start"}
+                      // Kart neyi gösteriyorsa kopya da onu yazar: kilitli
+                      // onay kartında onaylanan kalemler.
+                      getMarkdown={() =>
+                        messageToMarkdown(m, {
+                          locked: card?.locked,
+                          approvedItems: approvedBasketItems,
+                        })
+                      }
+                    />
+                  ) : null}
                 </Message>
               )
             })}

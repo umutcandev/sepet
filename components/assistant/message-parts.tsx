@@ -5,11 +5,18 @@ import type { UIMessage } from "ai"
 import {
   RiAlertLine,
   RiArrowDownSLine,
+  RiCheckLine,
+  RiFileCopyLine,
   RiStopCircleLine,
 } from "@remixicon/react"
 
 import { Squircle } from "@/components/ui/squircle"
+import { Button } from "@/components/ui/button"
+import { toast } from "@/components/ui/sonner"
 import { MessageResponse } from "@/components/ai-elements/message"
+import { useMounted } from "@/hooks/use-mounted"
+import { copyText } from "@/lib/copy"
+import { formatMessageTime, formatMessageTimeFull } from "@/lib/message-time"
 import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
 import type { MatchResult } from "@/lib/ai/schemas"
 import { cn } from "@/lib/utils"
@@ -67,30 +74,8 @@ export function renderToolPart(
 
 export type PartLike = UIMessage["parts"][number]
 
-/**
- * Asistan mesajında text/reasoning kısımları tool & file kart(lar)ından ÖNCE
- * gelir: sunucu stream sırası genelde [tool, reasoning, text]; kullanıcı için
- * doğal okuma sırası ise önce kısa özet/açıklama, sonra detay/kart.
- *
- * Kartlarda asıl sonuç Sepet Özeti: eşleştirme part'ı (artık yalnızca
- * eşleştirilemeyen kalemleri gösteriyor) sunucuda önce gelse de özetin
- * hemen ALTINA taşınır. Eski sohbetler de aynı sırayla görünür.
- */
-export function orderAssistantParts(parts: PartLike[]): PartLike[] {
-  const isProse = (p: PartLike) => p.type === "text" || p.type === "reasoning"
-  const prose = parts.filter(isProse)
-  const cards = parts.filter((p) => !isProse(p))
-  const at = cards.findIndex((p) => p.type === "tool-summarizeOptimization")
-  // Özet henüz gelmediyse eşleştirme part'ı (yükleniyor etiketi) yerinde kalır.
-  if (at === -1) return [...prose, ...cards]
-  const isLookup = (p: PartLike) => p.type === "tool-lookupProducts"
-  return [
-    ...prose,
-    ...cards.slice(0, at + 1).filter((p) => !isLookup(p)),
-    ...cards.filter(isLookup),
-    ...cards.slice(at + 1).filter((p) => !isLookup(p)),
-  ]
-}
+// Sıralama paylaşılan sayfa ve markdown kopyasıyla ortak (bkz. part-order).
+export { orderAssistantParts } from "@/lib/assistant/part-order"
 
 /**
  * Görsel alanından önce kaydedilmiş sohbetlerde Sepet Özeti dökümü
@@ -170,6 +155,74 @@ export function ReasoningBlock({ text, streaming }: ReasoningBlockProps) {
           <MessageResponse>{text}</MessageResponse>
         </div>
       )}
+    </div>
+  )
+}
+
+/**
+ * Mesajın altındaki şerit: gönderilme/alınma zamanı ("14:32", "Dün 14:32") ve
+ * "Kopyala". Kullanıcı mesajında sağda, asistanınkinde solda.
+ *
+ * Zaman yalnızca istemcide yazılır: sunucu UTC'de, kullanıcı kendi saat
+ * diliminde; sunucuda çizilse hidrasyonda saat değişirdi. O ana kadar aynı
+ * yükseklikte boş durur, mesaj listesi kaymaz.
+ *
+ * Kopyala fareyle gezinirken mesajın üstüne gelince görünür (ekranı
+ * kalabalıklaştırmasın); dokunmatik ekranda üstüne gelmek olmadığı için hep
+ * görünür. Metni çağıran üretir (bkz. messageToMarkdown): tıklanana kadar
+ * hesaplanmaz.
+ */
+export function MessageFooter({
+  at,
+  align,
+  getMarkdown,
+}: {
+  at: number
+  align: "start" | "end"
+  getMarkdown: () => string
+}) {
+  const mounted = useMounted()
+  const [copied, setCopied] = React.useState(false)
+  const date = new Date(at)
+
+  React.useEffect(() => {
+    if (!copied) return
+    const t = window.setTimeout(() => setCopied(false), 1500)
+    return () => window.clearTimeout(t)
+  }, [copied])
+
+  async function handleCopy() {
+    const text = getMarkdown()
+    if (!text) return
+    if (await copyText(text)) setCopied(true)
+    else toast.error("Mesaj kopyalanamadı.")
+  }
+
+  return (
+    <div
+      className={cn(
+        "-mt-1.5 flex h-6 items-center gap-0.5",
+        align === "end" ? "flex-row-reverse self-end" : "self-start"
+      )}
+    >
+      <time
+        dateTime={date.toISOString()}
+        title={mounted ? formatMessageTimeFull(date) : undefined}
+        className="px-1 text-[0.6875rem] leading-4 text-muted-foreground/80 tabular-nums"
+      >
+        {mounted ? formatMessageTime(date) : null}
+      </time>
+      <Button
+        variant="ghost"
+        size="icon-xs"
+        onClick={() => void handleCopy()}
+        aria-label={copied ? "Kopyalandı" : "Mesajı kopyala"}
+        title="Markdown olarak kopyala"
+        data-copied={copied || undefined}
+        className="transition-opacity focus-visible:opacity-100 data-copied:opacity-100 pointer-fine:opacity-0 pointer-fine:group-hover:opacity-100"
+      >
+        {copied ? <RiCheckLine /> : <RiFileCopyLine />}
+      </Button>
     </div>
   )
 }

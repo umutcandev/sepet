@@ -6,6 +6,7 @@ import {
   RiArrowDownSLine,
   RiDeleteBinLine,
   RiPencilLine,
+  RiShareBoxLine,
   RiStarLine,
   RiStarOffLine,
 } from "@remixicon/react"
@@ -23,6 +24,7 @@ import {
   ConversationRenameDialog,
   type ConversationTarget,
 } from "@/components/assistant/conversation-action-dialogs"
+import { ShareConversationDialog } from "@/components/assistant/share-conversation-dialog"
 import { setConversationStarred } from "@/lib/actions/conversations"
 import {
   assistantConversations,
@@ -42,6 +44,7 @@ const EMPTY: ConversationListItem[] = []
 export function AssistantHeaderActions({ conversationId, title }: Props) {
   const [renameOpen, setRenameOpen] = React.useState(false)
   const [deleteOpen, setDeleteOpen] = React.useState(false)
+  const [shareOpen, setShareOpen] = React.useState(false)
 
   // Yıldız durumunu sidebar ile aynı store'dan oku; iki yer de senkron kalır.
   const list = useAssistantConversations(EMPTY)
@@ -105,6 +108,13 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
             <RiPencilLine className="size-4" />
             Yeniden adlandır
           </DropdownMenuItem>
+          {/* Menü kapanır, pencere sonra açılır: menüyü açık tutmak
+              (preventDefault) pencere kapanınca onu sayfanın üstünde açık
+              bırakıyordu. */}
+          <DropdownMenuItem onSelect={() => setShareOpen(true)}>
+            <RiShareBoxLine className="size-4" />
+            Paylaş
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             variant="destructive"
@@ -127,6 +137,12 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
         target={deleteOpen ? target : null}
         activeId={conversationId}
         onClose={() => setDeleteOpen(false)}
+      />
+      <ShareConversationDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        conversationId={conversationId}
+        title={title}
       />
     </>
   )
