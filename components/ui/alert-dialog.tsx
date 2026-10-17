@@ -29,6 +29,7 @@ function AlertDialogPortal({
   )
 }
 
+// Bulanıklık yok, koyu ton: bkz. dialog.tsx DialogOverlay.
 function AlertDialogOverlay({
   className,
   ...props
@@ -37,7 +38,7 @@ function AlertDialogOverlay({
     <AlertDialogPrimitive.Overlay
       data-slot="alert-dialog-overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-foreground/15 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0",
+        "fixed inset-0 z-50 bg-foreground/25 dark:bg-black/45 duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0",
         className
       )}
       {...props}

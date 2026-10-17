@@ -10,6 +10,7 @@ import {
   locationLimiter,
   productLimiter,
   receiptUploadLimiter,
+  shareImageLimiter,
   shareViewLimiter,
   transcribeBurstLimiter,
   transcribeDailyLimiter,
@@ -120,6 +121,7 @@ export default async function proxy(req: NextRequest, ev: NextFetchEvent) {
 }
 
 const SHARE_PATH = "/paylasim/"
+const SHARE_IMAGE_PATH = /^\/paylasim\/[^/]+\/gorsel\//
 
 /* Paylaşılan sohbet sayfası. URL'nin kendisi erişim anahtarı (token), bu
    yüzden:
@@ -137,7 +139,11 @@ const SHARE_PATH = "/paylasim/"
 async function shareResponse(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon"
-  const { success, reset } = await shareViewLimiter.limit(`ip:${ip}`)
+  // Görseller ayrı sayılır: sayfa başına 20'ye kadar istek sayfa limitini yemesin.
+  const limiter = SHARE_IMAGE_PATH.test(req.nextUrl.pathname)
+    ? shareImageLimiter
+    : shareViewLimiter
+  const { success, reset } = await limiter.limit(`ip:${ip}`)
   const res = success ? NextResponse.next() : shareTooManyResponse(reset)
   applySecurityHeaders(res.headers)
   res.headers.set("Referrer-Policy", "no-referrer")

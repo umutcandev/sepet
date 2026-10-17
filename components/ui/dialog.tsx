@@ -32,6 +32,13 @@ function DialogClose({
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 }
 
+/**
+ * Overlay'de `backdrop-blur` YOK (bkz. sheet.tsx'teki aynı karar). Ana
+ * sayfada altta canlı shader akıyor; bulanıklık her karede tam ekran yeniden
+ * hesaplanıyor ve pencerenin içini kaydırırken kare çizimini ~22 ms'ye
+ * çıkarıyordu (60 fps bütçesi 16,7 ms): Ayarlar telefonda takılarak
+ * kayıyordu. Bulanıklıksız ~12-16 ms. Sayfayı geri iten koyu ton sheet'le aynı.
+ */
 function DialogOverlay({
   className,
   ...props
@@ -40,7 +47,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 isolate z-50 bg-foreground/15 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0",
+        "fixed inset-0 isolate z-50 bg-foreground/25 dark:bg-black/45 duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fill-mode-forwards data-closed:fade-out-0",
         className
       )}
       {...props}

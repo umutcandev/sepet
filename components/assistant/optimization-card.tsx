@@ -1,6 +1,6 @@
 "use client"
 
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useEffect, useId, useRef, useState } from "react"
 import Image from "next/image"
 import {
   AnimatePresence,
@@ -9,7 +9,6 @@ import {
   type Transition,
 } from "motion/react"
 import {
-  RiArrowDownLine,
   RiArrowDownSLine,
   RiArrowLeftRightLine,
   RiBox3Line,
@@ -17,10 +16,19 @@ import {
 } from "@remixicon/react"
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { MarqueeText } from "@/components/ui/marquee-text"
+import { Button } from "@/components/ui/button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
-import { formatPercent, formatTL } from "@/lib/format"
+import { formatTL } from "@/lib/format"
 import { DepotInfo } from "@/components/assistant/depot-info"
 import { EASE_OUT_EXPO } from "@/lib/motion"
 import type { MarketAllocation, OptimizationSummary } from "@/lib/ai/schemas"
@@ -113,9 +121,15 @@ function AllocationBreakdown({
               {multiMarket && (
                 <TableRow className="border-0 hover:bg-transparent">
                   <TableCell className="pb-1 pt-2">
+                    {/* Şube bilgisi market başına bir kez, adın sağında: her
+                        kalemde aynı balon tekrar ediyordu. */}
                     <div className="flex items-center gap-1.5">
                       <MarketLogo name={g.market} size="sm" />
-                      <span className="text-[0.6875rem] font-semibold">{g.market}</span>
+                      <span className="text-sm font-semibold">{g.market}</span>
+                      <DepotInfo
+                        depotName={g.entries.map((e) => e.depotName)}
+                        market={g.market}
+                      />
                     </div>
                   </TableCell>
                 </TableRow>
@@ -132,48 +146,57 @@ function AllocationBreakdown({
                         <AllocationThumb
                           url={e.imageUrl ?? imageFallback?.[e.productId] ?? null}
                         />
-                        {/* Tutar ad satırında, "Değiştir" ürün adı satırında:
-                            iki sütun ayrı hücrelerdeyken satırlar kendi
-                            yüksekliklerine göre diziliyor, tutar ile ad, Değiştir
-                            ile ürün adı aynı hizaya oturmuyordu. Aynı satırı
-                            paylaşınca hiza ve aralık yapı gereği eşit. */}
-                        <div className="min-w-0 flex-1">
-                          <div className="flex h-5 items-center gap-1.5">
-                            <span className="min-w-0 truncate text-xs font-medium">
+                        {/* Izgara: ad ve ürün adı solda, "Farklı boyut" ikisinin
+                            ortasında ve sağında (tutarın hemen solunda, satırlar
+                            arasında aynı kolonda), tutar ile Değiştir en sağda.
+                            Tutar ad satırında, Değiştir ürün adı satırında
+                            kalır; ayrı kolonlarken satırlar kendi
+                            yüksekliklerine göre diziliyor, hizalar kayıyordu. */}
+                        <div className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-2">
+                          <div className="col-start-1 row-start-1 flex h-5 min-w-0 items-center gap-1.5">
+                            <MarqueeText className="text-xs font-medium">
                               {capitalize(e.rawName) || e.productName}
-                            </span>
+                            </MarqueeText>
                             {multiPack && (
-                              <Badge variant="secondary" className="tabular-nums">
+                              <Badge
+                                variant="secondary"
+                                className={cn(COMPACT_BADGE, "tabular-nums")}
+                              >
                                 {e.quantity}×
                               </Badge>
                             )}
-                            <DepotInfo depotName={e.depotName} market={e.market} />
-                            <span className="ml-auto shrink-0 pl-2 text-xs tabular-nums">
-                              {formatTL(e.lineTotal)}
-                            </span>
                           </div>
-                          <div className="flex items-start gap-2">
-                            <span className="min-w-0 flex-1 text-[0.6875rem] leading-4 text-muted-foreground">
-                              {e.productName}
-                              {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
-                            </span>
-                            {onEdit && (
-                              <button
-                                type="button"
-                                onClick={() => onEdit(e)}
-                                aria-label={`${capitalize(e.rawName) || e.productName} için ürünü değiştir`}
-                                className="relative inline-flex shrink-0 items-center gap-1 text-[0.6875rem] font-medium leading-4 text-muted-foreground transition-colors after:absolute after:-inset-x-1.5 after:-inset-y-2 hover:text-foreground focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                              >
-                                <RiArrowLeftRightLine aria-hidden="true" className="size-3" />
-                                Değiştir
-                              </button>
-                            )}
-                          </div>
+                          {/* Tek satır: yanındaki "Farklı boyut" yüzünden alt
+                              satıra kırılıyordu; sığmayan ad kayarak okunur. */}
+                          <MarqueeText className="col-start-1 row-start-2 text-[0.6875rem] leading-4 text-muted-foreground">
+                            {e.productName}
+                            {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
+                          </MarqueeText>
                           {e.sizeMismatch && (
-                            <Badge variant="warning" className="mt-0.5">
+                            <Badge
+                              variant="warning"
+                              className={cn(
+                                COMPACT_BADGE,
+                                "col-start-2 row-span-2 row-start-1 self-center",
+                              )}
+                            >
                               <RiErrorWarningLine data-icon="inline-start" />
                               Farklı boyut
                             </Badge>
+                          )}
+                          <span className="col-start-3 row-start-1 justify-self-end text-xs font-semibold tabular-nums">
+                            {formatTL(e.lineTotal)}
+                          </span>
+                          {onEdit && (
+                            <button
+                              type="button"
+                              onClick={() => onEdit(e)}
+                              aria-label={`${capitalize(e.rawName) || e.productName} için ürünü değiştir`}
+                              className="relative col-start-3 row-start-2 inline-flex shrink-0 items-center gap-1 justify-self-end text-[0.6875rem] font-medium leading-4 text-muted-foreground transition-colors after:absolute after:-inset-x-1.5 after:-inset-y-2 hover:text-foreground focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                            >
+                              <RiArrowLeftRightLine aria-hidden="true" className="size-3" />
+                              Değiştir
+                            </button>
                           )}
                         </div>
                       </div>
@@ -188,6 +211,13 @@ function AllocationBreakdown({
     </div>
   )
 }
+
+/**
+ * Kart içi küçük rozet ("Farklı boyut", indirim yüzdesi): 16px yükseklik, 10px
+ * yazı. Varsayılan rozet (20px) satırda üçüncü bir satır kadar yer tutuyordu.
+ */
+const COMPACT_BADGE =
+  "h-4 gap-0.5 rounded-[5px] px-1 text-[0.625rem] leading-none has-data-[icon=inline-start]:pl-0.5 [&>svg]:size-2.5!"
 
 /**
  * Kullanıcı bir Sepet Özeti satırını en az bir kez açtı mı. Açtıysa satırların
@@ -261,13 +291,41 @@ function usePeekHint(
   return [peeking, setPeeking] as const
 }
 
+/**
+ * Market adının sağındaki yuvarlak "!": tek markette eksik kalan kalemleri
+ * tıklanınca açılan balonda söyler (hover yok, mobil ve masaüstü aynı;
+ * bkz. DepotInfo). Eskiden satırın altyazısıydı ve satırı uzatıyordu.
+ */
+function MissingItemsInfo({ text }: { text: string }) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon-2xs"
+          hitArea
+          aria-label="Eksik kalemler"
+          className="text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300"
+        >
+          <RiErrorWarningLine />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent side="top" align="center" className="w-56 gap-1 p-3">
+        <PopoverTitle className="text-xs">Eksik kalemler</PopoverTitle>
+        <PopoverDescription className="text-xs text-muted-foreground">
+          {text}
+        </PopoverDescription>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
 function OptionRow({
   logo,
   label,
-  badge,
   title,
-  subtitle,
-  subtitleClassName,
+  titleInfo,
+  notice,
   total,
   totalNote,
   allocation,
@@ -275,13 +333,15 @@ function OptionRow({
   imageFallback,
   onEdit,
   hint = false,
+  defaultOpen = false,
 }: {
   logo: React.ReactNode
   label: string
-  badge?: React.ReactNode
   title: string
-  subtitle: React.ReactNode
-  subtitleClassName: string
+  /** Market adının sağındaki bilgi balonu (tek market satırında şube). */
+  titleInfo?: React.ReactNode
+  /** Tek markette eksik kalan kalemler: market adının sağındaki "!" açar. */
+  notice?: string
   total: number
   /** Tutarın ALTINA giren açıklama (ör. "₺1,65 tasarruf"). */
   totalNote?: React.ReactNode
@@ -291,15 +351,23 @@ function OptionRow({
   onEdit?: EditAllocation
   /** Kartın önerdiği ilk satır: açılabildiğini ipucuyla gösterir. */
   hint?: boolean
+  /** Döküm açık başlar (kayıtlı sepet sayfası); ipucu gerekmez. */
+  defaultOpen?: boolean
 }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
   const reduceMotion = useReducedMotion()
   // Döküm eklenmeden önce kaydedilmiş özetlerde `allocation` boş dizi olur
   // (bkz. şemadaki `.default([])`) — kart toplamı ve marketi gösterir, yalnızca
   // açılır döküm kapalı kalır.
   const canExpand = allocation.length > 0
   const rowRef = useRef<HTMLButtonElement>(null)
-  const [peeking, setPeeking] = usePeekHint(rowRef, hint && canExpand)
+  const labelId = useId()
+  const titleId = useId()
+  const totalId = useId()
+  const [peeking, setPeeking] = usePeekHint(
+    rowRef,
+    hint && canExpand && !defaultOpen,
+  )
 
   function toggle() {
     if (!canExpand) return
@@ -311,59 +379,67 @@ function OptionRow({
 
   return (
     <div>
-      <button
-        ref={rowRef}
-        type="button"
-        onClick={toggle}
-        disabled={!canExpand}
-        aria-expanded={canExpand ? open : undefined}
-        className={cn(
-          "flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors duration-300 focus-visible:inset-ring-3 focus-visible:inset-ring-ring/50",
-          canExpand && "cursor-pointer hover:bg-muted/40",
-          peeking && "bg-muted/40",
-        )}
-      >
-        {logo}
-        <div className="min-w-0 flex-1">
-          <div className="text-[0.6875rem] font-medium text-muted-foreground">
-            {label}
+      {/* Satırın tamamı akordiyonu açar, ama market adının yanındaki "!" ayrı
+          bir buton: buton içinde buton olamayacağı için açma butonu satırı
+          saydam bir katman olarak kaplıyor, içerik onun üstünde tıklamaları
+          geçiriyor (pointer-events-none), yalnız "!" kendi tıklamasını alıyor.
+          Butonun adı görünen metinden gelir (aria-labelledby). */}
+      <div className="relative">
+        <button
+          ref={rowRef}
+          type="button"
+          onClick={toggle}
+          disabled={!canExpand}
+          aria-expanded={canExpand ? open : undefined}
+          aria-labelledby={`${labelId} ${titleId} ${totalId}`}
+          className={cn(
+            "absolute inset-0 outline-none transition-colors duration-300 focus-visible:inset-ring-3 focus-visible:inset-ring-ring/50",
+            canExpand && "cursor-pointer hover:bg-muted/40",
+            peeking && "bg-muted/40",
+          )}
+        />
+        <div className="pointer-events-none relative flex items-center gap-3 px-4 py-3">
+          {logo}
+          <div className="min-w-0 flex-1">
+            <MarqueeText className="text-[0.6875rem] font-medium text-muted-foreground">
+              <span id={labelId}>{label}</span>
+            </MarqueeText>
+            <div className="flex min-w-0 items-center gap-1.5">
+              <MarqueeText className="text-base font-semibold">
+                <span id={titleId}>{title}</span>
+              </MarqueeText>
+              {titleInfo || notice ? (
+                <span className="pointer-events-auto flex shrink-0 items-center gap-1">
+                  {titleInfo}
+                  {notice ? <MissingItemsInfo text={notice} /> : null}
+                </span>
+              ) : null}
+            </div>
           </div>
-          {/* Rozet market adlarının SAĞINDA. Etiket satırındayken neyi nitelediği
-              belirsizdi ("İki market kombinasyonu"nun sıfatı gibi okunuyordu);
-              indirim bu kombinasyona ait, o yüzden adların yanında duruyor.
-              `min-w-0` şart, yoksa uzun adlarda `truncate` iş görmez. */}
-          <div className="flex items-center gap-1.5">
-            <span className="min-w-0 truncate text-base font-semibold">
-              {title}
+          {/* Tutar ve tasarruf tek kolonda: tasarruf toplamın açıklaması. */}
+          <div className="flex shrink-0 flex-col items-end">
+            <span id={totalId} className="text-xl font-bold tabular-nums">
+              {formatTL(total)}
             </span>
-            {badge}
+            {totalNote}
           </div>
-          <div className={subtitleClassName}>{subtitle}</div>
+          {canExpand && (
+            <motion.span
+              aria-hidden="true"
+              className="shrink-0"
+              animate={peeking ? { y: [0, 3, 0, 3, 0] } : { y: 0 }}
+              transition={peeking ? { duration: 1.2, ease: "easeInOut" } : EXPAND}
+            >
+              <RiArrowDownSLine
+                className={cn(
+                  "size-4 text-muted-foreground transition-transform",
+                  open && "rotate-180",
+                )}
+              />
+            </motion.span>
+          )}
         </div>
-        {/* Tutar + indirim tek kolonda: indirim toplamın açıklaması, satırın
-            sol ucundayken aralarındaki bağ kopuyordu. */}
-        <div className="flex shrink-0 flex-col items-end">
-          <span className="text-xl font-bold tabular-nums">
-            {formatTL(total)}
-          </span>
-          {totalNote}
-        </div>
-        {canExpand && (
-          <motion.span
-            aria-hidden="true"
-            className="shrink-0"
-            animate={peeking ? { y: [0, 3, 0, 3, 0] } : { y: 0 }}
-            transition={peeking ? { duration: 1.2, ease: "easeInOut" } : EXPAND}
-          >
-            <RiArrowDownSLine
-              className={cn(
-                "size-4 text-muted-foreground transition-transform",
-                open && "rotate-180",
-              )}
-            />
-          </motion.span>
-        )}
-      </button>
+      </div>
       <AnimatePresence initial={false}>
         {canExpand && (open || peeking) && (
           <motion.div
@@ -401,18 +477,24 @@ export function OptimizationCard({
   imageFallback,
   onEditItem,
   footer,
+  defaultOpen = false,
 }: {
   summary: OptimizationSummary
   imageFallback?: ProductImageFallback
   onEditItem?: EditAllocation
   /** Kartın altındaki eylem şeridi (sohbette: Kaydet). */
   footer?: React.ReactNode
+  /**
+   * Satırların dökümü açık başlar. Kayıtlı sepet sayfasında döküm sayfanın
+   * asıl içeriği; sohbette kart kısa kalsın diye kapalı.
+   */
+  defaultOpen?: boolean
 }) {
   // Hiçbir kalem eşleşmediyse gösterilecek bir plan yok; "— ₺0,00" satırı
   // asistanın "Sepet Özeti çıkaramadım" cümlesiyle çelişirdi.
   if (!summary || summary.totalItems === 0) return null
 
-  const { singleMarket, twoMarketCombo, totalItems } = summary
+  const { singleMarket, twoMarketCombo } = summary
   const hasCombo = twoMarketCombo.markets.length === 2
   const singleIsFull = singleMarket.isFullCoverage
 
@@ -424,25 +506,31 @@ export function OptimizationCard({
     <OptionRow
       key="single"
       hint={!comboFirst}
+      defaultOpen={defaultOpen}
       logo={<MarketLogo name={singleMarket.market} size="default" />}
-      label={
-        singleIsFull
-          ? "Tek market en ucuz"
-          : "Tek markette sepet eksik kalıyor"
-      }
+      // Etiketler kısa ad öbeği, her kelime büyük: "En Ucuz Tek Market",
+      // "İki Market Kombinasyonu". Kalem sayısı ("3/3 kalem") yazılmıyor;
+      // eksik kalemler market adının sağındaki "!" içinde.
+      label={singleIsFull ? "En Ucuz Tek Market" : "Eksik Kalemli Tek Market"}
       title={singleMarket.market}
-      subtitle={
+      // Tek market dökümünde market başlığı yok; şube balonu market adının
+      // sağında, dökümün kalemlerinde tekrar etmiyor.
+      titleInfo={
+        <DepotInfo
+          depotName={singleMarket.allocation.map((a) => a.depotName)}
+          market={singleMarket.market}
+        />
+      }
+      notice={
         singleIsFull
-          ? `${singleMarket.itemCount}/${totalItems} kalem`
-          : singleMarket.missingItemNames &&
-              singleMarket.missingItemNames.length > 0
+          ? undefined
+          : singleMarket.missingItemNames.length > 0
             ? formatMissingItemsText(
                 singleMarket.missingItemNames,
                 singleMarket.market,
               )
-            : `${singleMarket.itemCount}/${totalItems} kalem`
+            : `${singleMarket.missingItemCount} kalem ${singleMarket.market} stoğunda yok`
       }
-      subtitleClassName="truncate text-[0.6875rem] text-muted-foreground"
       total={singleMarket.total}
       allocation={singleMarket.allocation}
       markets={[singleMarket.market]}
@@ -455,23 +543,12 @@ export function OptimizationCard({
     <OptionRow
       key="combo"
       hint={comboFirst}
+      defaultOpen={defaultOpen}
       logo={<MarketLogoGroup names={twoMarketCombo.markets} size="default" />}
-      label={
-        comboFirst ? "Tüm sepeti karşılayan kombinasyon" : "İki market kombinasyonu"
-      }
-      badge={
-        twoMarketCombo.savingsTL > 0 ? (
-          <Badge variant="success">
-            <RiArrowDownLine data-icon="inline-start" />
-            {formatPercent(twoMarketCombo.savingsPct)}
-          </Badge>
-        ) : undefined
-      }
+      // Tek market eksik kaldığında bu satır öne geçer: "Eksiksiz" farkı
+      // söyler, uzun "Tüm sepeti karşılayan kombinasyon" dar ekranda kesiliyordu.
+      label={comboFirst ? "Eksiksiz İki Market" : "İki Market Kombinasyonu"}
       title={twoMarketCombo.markets.join(" + ")}
-      // Kalem sayısı artık her iki satırda da altyazı: tasarruf tutarı sağa,
-      // tutarın altına taşındı ve burası boş kalıyordu.
-      subtitle={`${totalItems}/${totalItems} kalem`}
-      subtitleClassName="text-[0.6875rem] text-muted-foreground"
       totalNote={
         twoMarketCombo.savingsTL > 0 ? (
           <span className="text-[0.6875rem] font-medium text-emerald-700 dark:text-emerald-300">

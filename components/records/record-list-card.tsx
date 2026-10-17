@@ -56,14 +56,14 @@ export function RecordListCard({
     <Card
       asChild
       className={cn(
-        "relative transition-[background-color,box-shadow]",
+        "relative transition-[background-color,border-color]",
         // Odak halkası karta ait: başlık linkine verilseydi `overflow-hidden`
         // tarafından kırpılırdı. Outline kendi kutusunun overflow'undan
         // etkilenmez, o yüzden kartın üstünde tam görünür.
         "has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring",
         selecting
           ? cn("cursor-pointer", selected && "bg-secondary/40")
-          : "hover:inset-ring-foreground/20",
+          : "hover:border-foreground/20",
       )}
     >
       <li onClick={selecting ? onToggleSelect : undefined}>

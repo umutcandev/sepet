@@ -10,7 +10,6 @@ import {
   generateShareToken,
   shareAuthorName,
 } from "@/lib/data/conversation-shares"
-import { ownedConversationId } from "@/lib/data/conversations"
 import { shareActionLimiter, shareReadLimiter } from "@/lib/security/rate-limit"
 import { isUuid } from "@/lib/utils"
 
@@ -22,6 +21,8 @@ import { isUuid } from "@/lib/utils"
 export type ConversationShareInfo = {
   token: string
   anonymous: boolean
+  /** Görseller paylaşılan sayfada gizli mi. */
+  hideImages: boolean
   /** Kopyanın alındığı an (ISO). */
   sharedAt: string
   /** Sohbet kopyadan sonra değişti mi (yeni mesaj, yeniden adlandırma, ürün değiştirme). */
@@ -31,6 +32,8 @@ export type ConversationShareInfo = {
 export type ConversationShareState = {
   /** Anonim olmayan paylaşımda sayfada görünecek ad (pencere önizler). */
   authorName: string | null
+  /** Sohbette paylaşılabilecek görsel var mı ("Resimleri gizle" yalnız o zaman). */
+  hasImages: boolean
   share: ConversationShareInfo | null
 }
 
@@ -47,6 +50,12 @@ type Result<T> = ({ ok: true } & T) | { ok: false; error: ShareActionError }
 const shareInputSchema = z.object({
   conversationId: z.string().refine(isUuid),
   anonymous: z.boolean(),
+  hideImages: z.boolean().default(true),
+})
+
+const hideImagesInputSchema = z.object({
+  conversationId: z.string().refine(isUuid),
+  hideImages: z.boolean(),
 })
 
 async function authorNameFor(userId: string): Promise<string | null> {
@@ -83,6 +92,8 @@ export async function getConversationShareState(
       .select({
         token: conversationShares.token,
         anonymous: conversationShares.anonymous,
+        hideImages: conversationShares.hideImages,
+        images: conversationShares.images,
         updatedAt: conversationShares.updatedAt,
         contentHash: conversationShares.contentHash,
       })
@@ -97,29 +108,34 @@ export async function getConversationShareState(
     authorNameFor(userId),
   ])
 
-  if (!share) {
-    // Paylaşılmamış: sohbet gerçekten bu kullanıcının mı? Değilse pencere
-    // "paylaş" seçeneği sunmasın.
-    if (!(await ownedConversationId(conversationId, userId))) {
-      return { ok: false, error: "not_found" }
-    }
-    return { ok: true, state: { authorName, share: null } }
-  }
-
-  // Kopya güncel mi: sohbetin şimdiki hâlinin özeti kayıtlı özetle aynı mı.
+  // Sohbetin şimdiki hâli: bu kullanıcının mı (değilse pencere "paylaş"
+  // sunmasın), görsel var mı, paylaşılmışsa kopya güncel mi.
   const current = await buildShareSnapshot(conversationId, userId)
   if (!current.ok && current.error === "not_found") {
     return { ok: false, error: "not_found" }
   }
+  const hasImages = current.ok && current.snapshot.images.length > 0
+
+  if (!share) {
+    return { ok: true, state: { authorName, hasImages, share: null } }
+  }
+
   return {
     ok: true,
     state: {
       authorName,
+      hasImages,
       share: {
         token: share.token,
         anonymous: share.anonymous,
+        hideImages: share.hideImages,
         sharedAt: share.updatedAt.toISOString(),
-        stale: current.ok && current.snapshot.contentHash !== share.contentHash,
+        // Görsel numaraları gelmeden önce alınmış kopyada görsel listesi boş;
+        // sohbet değişmemiş olsa da güncellenmeden görseller gösterilemez.
+        stale:
+          current.ok &&
+          (current.snapshot.contentHash !== share.contentHash ||
+            (hasImages && share.images.length === 0)),
       },
     },
   }
@@ -133,6 +149,7 @@ export async function getConversationShareState(
 export async function shareConversation(input: {
   conversationId: string
   anonymous: boolean
+  hideImages?: boolean
 }): Promise<
   Result<{
     state: ConversationShareState
@@ -145,12 +162,15 @@ export async function shareConversation(input: {
   if (!userId) return { ok: false, error: "unauthorized" }
   const parsed = shareInputSchema.safeParse(input)
   if (!parsed.success) return { ok: false, error: "not_found" }
-  const { conversationId, anonymous } = parsed.data
+  const { conversationId, anonymous, hideImages } = parsed.data
   if (await limited(userId)) return { ok: false, error: "rate_limited" }
 
   const built = await buildShareSnapshot(conversationId, userId)
   if (!built.ok) return { ok: false, error: built.error }
-  const { title, messages, contentHash } = built.snapshot
+  const { title, messages, contentHash, images } = built.snapshot
+  // Görseli olmayan kopyada tercih anlamsız; gizli saklanır ki sohbete sonradan
+  // eklenen görsel, sahibi pencerede görmeden açılmasın.
+  const storedHideImages = images.length > 0 ? hideImages : true
 
   try {
     const now = new Date()
@@ -164,12 +184,22 @@ export async function shareConversation(input: {
         messages,
         contentHash,
         anonymous,
+        images,
+        hideImages: storedHideImages,
         createdAt: now,
         updatedAt: now,
       })
       .onConflictDoUpdate({
         target: conversationShares.conversationId,
-        set: { title, messages, contentHash, anonymous, updatedAt: now },
+        set: {
+          title,
+          messages,
+          contentHash,
+          anonymous,
+          images,
+          hideImages: storedHideImages,
+          updatedAt: now,
+        },
         // Savunma: sohbet bu kullanıcının olduğu için paylaşımı da onundur;
         // yine de başkasının satırı asla ezilmesin.
         setWhere: eq(conversationShares.userId, userId),
@@ -177,6 +207,7 @@ export async function shareConversation(input: {
       .returning({
         token: conversationShares.token,
         anonymous: conversationShares.anonymous,
+        hideImages: conversationShares.hideImages,
         updatedAt: conversationShares.updatedAt,
         // Postgres: INSERT edilen satırda xmax 0, ON CONFLICT ile
         // güncellenende değil. Pencere açıkken bağlantı başka yerden
@@ -190,9 +221,11 @@ export async function shareConversation(input: {
       created: row.created,
       state: {
         authorName: await authorNameFor(userId),
+        hasImages: images.length > 0,
         share: {
           token: row.token,
           anonymous: row.anonymous,
+          hideImages: row.hideImages,
           sharedAt: row.updatedAt.toISOString(),
           stale: false,
         },
@@ -234,6 +267,38 @@ export async function setConversationShareAnonymous(input: {
     .returning({ anonymous: conversationShares.anonymous })
   if (rows.length === 0) return { ok: false, error: "not_found" }
   return { ok: true, anonymous: rows[0].anonymous }
+}
+
+/**
+ * Var olan paylaşımda görsellerin gösterilip gösterilmeyeceği. Kopyaya
+ * dokunmaz: görsel numaraları kopyada hep durur, bu bayrak yalnız sayfanın
+ * ve görsel ucunun onları verip vermeyeceğini belirler; değişiklik anında
+ * geçerli olur.
+ */
+export async function setConversationShareHideImages(input: {
+  conversationId: string
+  hideImages: boolean
+}): Promise<Result<{ hideImages: boolean }>> {
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!userId) return { ok: false, error: "unauthorized" }
+  const parsed = hideImagesInputSchema.safeParse(input)
+  if (!parsed.success) return { ok: false, error: "not_found" }
+  const { conversationId, hideImages } = parsed.data
+  if (await limited(userId)) return { ok: false, error: "rate_limited" }
+
+  const rows = await db
+    .update(conversationShares)
+    .set({ hideImages })
+    .where(
+      and(
+        eq(conversationShares.conversationId, conversationId),
+        eq(conversationShares.userId, userId)
+      )
+    )
+    .returning({ hideImages: conversationShares.hideImages })
+  if (rows.length === 0) return { ok: false, error: "not_found" }
+  return { ok: true, hideImages: rows[0].hideImages }
 }
 
 /**

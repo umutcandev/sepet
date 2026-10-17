@@ -132,7 +132,10 @@ export default async function SharedConversationPage({ params }: Props) {
         ) : null}
       </header>
 
-      <SharedConversation messages={shared.messages} />
+      <SharedConversation
+        messages={shared.messages}
+        imageBase={shared.hideImages ? null : `/paylasim/${token}/gorsel`}
+      />
 
       <footer className="mt-14 grid gap-4">
         <Card className="flex flex-col items-start gap-3 p-5 sm:flex-row sm:items-center">

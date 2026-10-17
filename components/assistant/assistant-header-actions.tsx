@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {
   ConversationDeleteDialog,
-  ConversationRenameDialog,
   type ConversationTarget,
 } from "@/components/assistant/conversation-action-dialogs"
 import { ShareConversationDialog } from "@/components/assistant/share-conversation-dialog"
@@ -35,14 +34,22 @@ import type { ConversationListItem } from "@/components/assistant/assistant-conv
 type Props = {
   conversationId: string
   title: string
+  /** "Yeniden adlandır": başlığı yerinde düzenlemeye açar (bkz. ConversationTitleEditor). */
+  onRename: () => void
 }
 
 // Hidrasyondan önce store boş; stabil referans, useSyncExternalStore'un
 // getSnapshot'ını her render'da yeniden oluşturmamak için modül seviyesinde.
 const EMPTY: ConversationListItem[] = []
 
-export function AssistantHeaderActions({ conversationId, title }: Props) {
-  const [renameOpen, setRenameOpen] = React.useState(false)
+export function AssistantHeaderActions({
+  conversationId,
+  title,
+  onRename,
+}: Props) {
+  // Menü kapanınca Radix odağı tetikleyiciye geri veriyor; yerinde düzenleme
+  // açılırken bu, input'un odağını hemen çalardı.
+  const renamingRef = React.useRef(false)
   const [deleteOpen, setDeleteOpen] = React.useState(false)
   const [shareOpen, setShareOpen] = React.useState(false)
 
@@ -84,7 +91,16 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
             tutulan menü pencere kapandıktan sonra da sayfanın üstünde açık
             kalıyor, dışına tıklanana kadar sayfayı kilitliyordu. Yalnızca
             yıldız menüde kalır, değişimi orada görünsün diye. */}
-        <DropdownMenuContent align="start" className="w-auto min-w-40">
+        <DropdownMenuContent
+          align="start"
+          className="w-auto min-w-40"
+          onCloseAutoFocus={(e) => {
+            if (!renamingRef.current) return
+            renamingRef.current = false
+            e.preventDefault()
+            onRename()
+          }}
+        >
           <DropdownMenuItem
             onSelect={(e) => {
               e.preventDefault()
@@ -103,7 +119,7 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
               </>
             )}
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setRenameOpen(true)}>
+          <DropdownMenuItem onSelect={() => (renamingRef.current = true)}>
             <RiPencilLine className="size-4" />
             Yeniden adlandır
           </DropdownMenuItem>
@@ -122,10 +138,6 @@ export function AssistantHeaderActions({ conversationId, title }: Props) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ConversationRenameDialog
-        target={renameOpen ? target : null}
-        onClose={() => setRenameOpen(false)}
-      />
       <ConversationDeleteDialog
         target={deleteOpen ? target : null}
         activeId={conversationId}

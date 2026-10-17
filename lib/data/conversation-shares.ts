@@ -14,8 +14,15 @@ import {
   SHARED_MESSAGES_MAX,
   sanitizeMessagesForShare,
   sanitizeShareTitle,
+  type ImageRefCollector,
   type SharedMessage,
 } from "@/lib/assistant/share-snapshot"
+import { SHARED_IMAGES_MAX } from "@/lib/assistant/share-types"
+import {
+  isOwnedReceiptKey,
+  isOwnedReceiptUrl,
+  publicUrlForKey,
+} from "@/lib/storage/r2"
 
 // Server-only: bu modüldeki fonksiyonlar kimliği doğrulanmış bir userId alır,
 // "use server" modülünde durmamalı (oradaki her export herkese açık bir uç olur).
@@ -74,6 +81,32 @@ export type ShareSnapshot = {
   title: string
   messages: SharedMessage[]
   contentHash: string
+  /** Kopyadaki görsellerin R2 anahtarları, sıra numarasıyla. Yalnız sunucuda. */
+  images: string[]
+}
+
+/**
+ * Kullanıcının mesajındaki görselin R2 anahtarı, yalnızca gerçekten bu
+ * kullanıcının klasöründeyse. `filename` istemcinin gönderdiği haliyle
+ * kaydedildiği için önek zorunlu; adres yalnız yedek.
+ */
+function ownedImageKey(
+  image: { url: string | null; filename: string | null },
+  userId: string
+): string | null {
+  if (image.filename && isOwnedReceiptKey(image.filename, userId)) {
+    return image.filename
+  }
+  try {
+    if (image.url && isOwnedReceiptUrl(image.url, userId)) {
+      const base = publicUrlForKey("")
+      const key = image.url.slice(base.length)
+      return isOwnedReceiptKey(key, userId) ? key : null
+    }
+  } catch {
+    // R2 adresi tanımlı değil: görsel numaralanmaz, "paylaşılmadı" olur.
+  }
+  return null
 }
 
 export type SnapshotResult =
@@ -107,7 +140,18 @@ export async function buildShareSnapshot(
     .where(eq(conversationMessages.conversationId, conversationId))
     .orderBy(asc(conversationMessages.sequence))
 
-  const messages = sanitizeMessagesForShare(rows)
+  // Görseller sıra numarasına dönüşür; aynı görsel tek numara alır.
+  const images: string[] = []
+  const collectImage: ImageRefCollector = (image) => {
+    const key = ownedImageKey(image, userId)
+    if (!key) return null
+    const existing = images.indexOf(key)
+    if (existing >= 0) return existing
+    if (images.length >= SHARED_IMAGES_MAX) return null
+    images.push(key)
+    return images.length - 1
+  }
+  const messages = sanitizeMessagesForShare(rows, collectImage)
   if (!hasVisibleParts(messages)) return { ok: false, error: "empty" }
   if (messages.length > SHARED_MESSAGES_MAX) {
     return { ok: false, error: "too_large" }
@@ -123,6 +167,7 @@ export async function buildShareSnapshot(
       title: sanitizeShareTitle(conv.title),
       messages,
       contentHash: conversationHash(conv.title, rows),
+      images,
     },
   }
 }
@@ -133,6 +178,8 @@ export type SharedConversationView = {
   /** null → anonim paylaşım (ya da adı hiç olmayan hesap). */
   authorName: string | null
   anonymous: boolean
+  /** Açıkken görseller "paylaşılmadı" işaretiyle gösterilir. */
+  hideImages: boolean
   sharedAt: Date
   /** Yalnızca sahibine "sohbete dön" bağlantısı göstermek için. */
   ownerId: string
@@ -156,6 +203,7 @@ export const getSharedConversation = cache(
         title: conversationShares.title,
         messages: conversationShares.messages,
         anonymous: conversationShares.anonymous,
+        hideImages: conversationShares.hideImages,
         updatedAt: conversationShares.updatedAt,
         userId: conversationShares.userId,
         conversationId: conversationShares.conversationId,
@@ -180,9 +228,41 @@ export const getSharedConversation = cache(
       messages,
       authorName: row.anonymous ? null : shareAuthorName(row.name),
       anonymous: row.anonymous,
+      hideImages: row.hideImages,
       sharedAt: row.updatedAt,
       ownerId: row.userId,
       conversationId: row.conversationId,
     }
   }
 )
+
+/**
+ * Paylaşılan sayfadaki n. görselin R2 anahtarı. Yalnızca paylaşım varken,
+ * sahibinin hesabı açıkken ve "Resimleri gizle" kapalıyken; anahtar yine de
+ * sahibinin klasöründe olmalı. Aksi her durumda null (çağıran 404 döner).
+ */
+export async function getSharedImageKey(
+  token: string,
+  ref: number
+): Promise<string | null> {
+  if (!isShareToken(token)) return null
+  if (!Number.isInteger(ref) || ref < 0 || ref >= SHARED_IMAGES_MAX) return null
+  const [row] = await db
+    .select({
+      images: conversationShares.images,
+      hideImages: conversationShares.hideImages,
+      userId: conversationShares.userId,
+    })
+    .from(conversationShares)
+    .innerJoin(
+      users,
+      and(eq(users.id, conversationShares.userId), isNull(users.archivedAt))
+    )
+    .where(eq(conversationShares.token, token))
+    .limit(1)
+  if (!row || row.hideImages || !Array.isArray(row.images)) return null
+  const key = row.images[ref]
+  return typeof key === "string" && isOwnedReceiptKey(key, row.userId)
+    ? key
+    : null
+}

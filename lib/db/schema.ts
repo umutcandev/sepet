@@ -617,6 +617,16 @@ export const conversationShares = pgTable(
     // kullanıcı satırından gelir: adını değiştiren ya da anonime geçen
     // kullanıcının tüm paylaşımları anında güncellenir.
     anonymous: boolean("anonymous").notNull().default(false),
+    // Sohbetin yüklenen görsellerinin R2 anahtarları, kopyadaki sıra
+    // numarasıyla (`data-shared-image` part'ı yalnız numarayı taşır). Yalnız
+    // sunucuda okunur: anahtar kullanıcı kimliğini içerir, sayfaya hiç gitmez.
+    // Görsel /paylasim/[token]/gorsel/[n] üzerinden, meta verisi silinerek
+    // verilir.
+    images: jsonb("images").$type<string[]>().notNull().default([]),
+    // Açıkken görseller paylaşılan sayfada gösterilmez ("görsel paylaşılmadı").
+    // Varsayılan açık: bu alan eklenmeden önceki paylaşımlarda görsel hiç
+    // yoktu, öyle kalırlar.
+    hideImages: boolean("hideImages").notNull().default(true),
     createdAt: timestamp("createdAt", { mode: "date" })
       .notNull()
       .defaultNow(),

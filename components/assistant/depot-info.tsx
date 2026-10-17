@@ -24,10 +24,21 @@ export function DepotInfo({
   depotName,
   market,
 }: {
-  depotName: string | null | undefined
+  /**
+   * Tek şube ya da bir marketin kalemlerinin şubeleri (Sepet Özeti'nde market
+   * başına tek balon). Liste tekrarsızlaştırılır; boşsa balon yok.
+   */
+  depotName: string | null | undefined | ReadonlyArray<string | null | undefined>
   market?: string
 }) {
-  if (!depotName) return null
+  const names = [
+    ...new Set(
+      (Array.isArray(depotName) ? depotName : [depotName]).filter(
+        (n): n is string => !!n,
+      ),
+    ),
+  ]
+  if (names.length === 0) return null
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -37,7 +48,9 @@ export function DepotInfo({
           // Görünen daire 16px kalıyor ama tıklama alanı 32px'e açılıyor
           // (WCAG 2.5.8 tabanı 24px).
           hitArea
-          aria-label="Fiyatın alındığı şube"
+          aria-label={
+            names.length > 1 ? "Fiyatların alındığı şubeler" : "Fiyatın alındığı şube"
+          }
           onClick={(e) => e.stopPropagation()}
         >
           <RiInformationLine />
@@ -49,7 +62,15 @@ export function DepotInfo({
         onClick={(e) => e.stopPropagation()}
         className="w-56 gap-1 p-3"
       >
-        <PopoverTitle className="text-xs"><b>{depotName}</b> {market ? ` (${market})` : ""}</PopoverTitle>
+        <PopoverTitle className="text-xs">
+          {names.map((n, i) => (
+            <span key={n}>
+              {i > 0 ? ", " : null}
+              <b>{n}</b>
+            </span>
+          ))}
+          {market ? ` (${market})` : ""}
+        </PopoverTitle>
         <PopoverDescription className="text-[0.625rem] text-muted-foreground/70">
           Yakınındaki şubeler arasından seçildi. Zincir marketlerde fiyat
           çoğunlukla ülke geneli aynıdır.

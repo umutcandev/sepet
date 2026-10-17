@@ -69,6 +69,7 @@
     "recharts": "3.8.0",
     "shadcn": "^4.21.1",
     "shadow-plugin": "^2.1.0",
+    "sharp": "^0.35.5",
     "shiki": "^4.0.2",
     "sonner": "^2.0.7",
     "streamdown": "^2.5.0",

@@ -63,8 +63,10 @@ export function RecordInfoRow({
 }) {
   return (
     <div className={cn(ROW, className)}>
-      <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd className="min-w-0 max-w-full text-right text-sm font-medium text-foreground break-words">
+      {/* Etiket koyu ve kalın, değer normal ağırlıkta: göz önce neyin
+          yazdığını bulsun. */}
+      <dt className="text-sm font-medium text-foreground">{label}</dt>
+      <dd className="min-w-0 max-w-full text-right text-sm text-foreground break-words">
         {children}
       </dd>
     </div>

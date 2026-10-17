@@ -36,6 +36,7 @@ import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   getConversationShareState,
   setConversationShareAnonymous,
+  setConversationShareHideImages,
   shareConversation,
   unshareConversation,
   type ConversationShareState,
@@ -55,21 +56,25 @@ const ERROR_TEXT: Record<ShareActionError, string> = {
   failed: "Paylaşım şu an yapılamadı. Lütfen tekrar dene.",
 }
 
-// Yeni bir paylaşımda anonim anahtarının başlangıç değeri: kullanıcının son
-// seçimi. Yalnızca bu cihazda bir kolaylık; asıl değer paylaşım satırında.
+// Yeni bir paylaşımda anahtarların başlangıç değeri: kullanıcının son seçimi.
+// Yalnızca bu cihazda bir kolaylık; asıl değer paylaşım satırında.
 const ANON_PREF_KEY = "sepet:share-anonymous"
+// Görseller varsayılan olarak gizli: fiş fotoğrafında ad, adres ya da kart
+// numarası olabilir; göstermek kullanıcının bilinçli seçimi olsun.
+const HIDE_IMAGES_PREF_KEY = "sepet:share-hide-images"
 
-function readAnonPref(): boolean {
+function readPref(key: string, fallback: boolean): boolean {
   try {
-    return window.localStorage.getItem(ANON_PREF_KEY) === "1"
+    const value = window.localStorage.getItem(key)
+    return value === null ? fallback : value === "1"
   } catch {
-    return false
+    return fallback
   }
 }
 
-function writeAnonPref(value: boolean) {
+function writePref(key: string, value: boolean) {
   try {
-    window.localStorage.setItem(ANON_PREF_KEY, value ? "1" : "0")
+    window.localStorage.setItem(key, value ? "1" : "0")
   } catch {
     // gizli pencere / engellenmiş depolama: tercih hatırlanmaz, sorun değil
   }
@@ -87,7 +92,7 @@ const dateFormat = new Intl.DateTimeFormat("tr-TR", {
 })
 
 type Access = "private" | "link"
-type Busy = "share" | "anonymous" | "revoke" | null
+type Busy = "share" | "anonymous" | "images" | "revoke" | null
 
 // Hidrasyondan önce store boş; stabil referans (bkz. assistant-header-actions).
 const EMPTY: ConversationListItem[] = []
@@ -144,8 +149,10 @@ export function ShareConversationDialog({
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>Sohbeti paylaş</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
-            Yalnızca şu ana kadarki mesajlar paylaşılır; fiş görselleri ve şube
-            adları paylaşılmaz.
+            {/* Görseller "Resimleri gizle" seçeneğine bağlı (yalnız görselli
+                sohbette görünür); şube adları hiçbir durumda paylaşılmaz. */}
+            Yalnızca şu ana kadarki mesajlar paylaşılır; şube adları
+            paylaşılmaz.
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         {/* İçerik her açılışta baştan kurulur: durum (kopya güncel mi)
@@ -171,9 +178,11 @@ function SharePanel({
   )
   const [access, setAccess] = React.useState<Access>("private")
   const [anonymous, setAnonymous] = React.useState(false)
+  const [hideImages, setHideImages] = React.useState(true)
   const [busy, setBusy] = React.useState<Busy>(null)
   const [copied, setCopied] = React.useState(false)
   const anonId = React.useId()
+  const hideImagesId = React.useId()
 
   // Yanıt akarken kopya yarım bir turu yakalardı (kullanıcı mesajı kayıtlı,
   // cevap henüz değil).
@@ -195,7 +204,14 @@ function SharePanel({
         setState(res.state)
         setAccess(res.state.share ? "link" : "private")
         setAnonymous(
-          res.state.share ? res.state.share.anonymous : readAnonPref()
+          res.state.share
+            ? res.state.share.anonymous
+            : readPref(ANON_PREF_KEY, false)
+        )
+        setHideImages(
+          res.state.share
+            ? res.state.share.hideImages
+            : readPref(HIDE_IMAGES_PREF_KEY, true)
         )
       })
       .catch(() => {
@@ -218,7 +234,11 @@ function SharePanel({
   async function handleShare() {
     if (busy || streaming) return
     setBusy("share")
-    const request = shareConversation({ conversationId, anonymous })
+    const request = shareConversation({
+      conversationId,
+      anonymous,
+      hideImages,
+    })
     // Pano yazımı tıklama anında başlar, bağlantı sunucudan gelince dolar.
     const copying = copyTextWhenReady(
       request.then((res) =>
@@ -232,7 +252,10 @@ function SharePanel({
         return
       }
       setState(res.state)
-      writeAnonPref(anonymous)
+      // Görselsiz kopyada sunucu gizli saklar; kutu kaydedileni göstersin.
+      if (res.state.share) setHideImages(res.state.share.hideImages)
+      writePref(ANON_PREF_KEY, anonymous)
+      if (res.state.hasImages) writePref(HIDE_IMAGES_PREF_KEY, hideImages)
       const ok = await copying
       if (ok) setCopied(true)
       const copiedText = ok ? " ve kopyalandı" : ""
@@ -313,12 +336,41 @@ function SharePanel({
         toast.error(ERROR_TEXT[res.error])
         return
       }
-      writeAnonPref(next)
+      writePref(ANON_PREF_KEY, next)
       setState((s) =>
         s?.share ? { ...s, share: { ...s.share, anonymous: next } } : s
       )
     } catch {
       setAnonymous(!next)
+      toast.error(ERROR_TEXT.failed)
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  async function handleHideImagesChange(next: boolean) {
+    if (busy) return
+    setHideImages(next)
+    if (!share) return
+    // Var olan bağlantıda görseller anında gizlenir/gösterilir; kopyaya
+    // dokunulmaz (görsel numaraları kopyada hep durur).
+    setBusy("images")
+    try {
+      const res = await setConversationShareHideImages({
+        conversationId,
+        hideImages: next,
+      })
+      if (!res.ok) {
+        setHideImages(!next)
+        toast.error(ERROR_TEXT[res.error])
+        return
+      }
+      writePref(HIDE_IMAGES_PREF_KEY, next)
+      setState((s) =>
+        s?.share ? { ...s, share: { ...s.share, hideImages: next } } : s
+      )
+    } catch {
+      setHideImages(!next)
       toast.error(ERROR_TEXT.failed)
     } finally {
       setBusy(null)
@@ -394,16 +446,37 @@ function SharePanel({
           {/* Yalnızca bağlantı paylaşımının alt seçeneği: kartın hemen altında,
               "Bağlantıya sahip herkes" seçiliyken. */}
           {access === "link" ? (
-            <div className="flex items-center gap-2.5 px-1 pt-1">
-              <Checkbox
-                id={anonId}
-                checked={anonymous}
-                onCheckedChange={(v) => void handleAnonymousChange(v === true)}
-                disabled={busy !== null}
-              />
-              <label htmlFor={anonId} className="text-sm font-medium">
-                Anonim olarak paylaş
-              </label>
+            <div className="grid gap-2.5 px-1 pt-1">
+              <div className="flex items-center gap-2.5">
+                <Checkbox
+                  id={anonId}
+                  checked={anonymous}
+                  onCheckedChange={(v) =>
+                    void handleAnonymousChange(v === true)
+                  }
+                  disabled={busy !== null}
+                />
+                <label htmlFor={anonId} className="text-sm font-medium">
+                  Anonim olarak paylaş
+                </label>
+              </div>
+              {/* Yalnız görsel içeren sohbette: görselsizde seçeneğin
+                  etkisi olmazdı. */}
+              {state.hasImages ? (
+                <div className="flex items-center gap-2.5">
+                  <Checkbox
+                    id={hideImagesId}
+                    checked={hideImages}
+                    onCheckedChange={(v) =>
+                      void handleHideImagesChange(v === true)
+                    }
+                    disabled={busy !== null}
+                  />
+                  <label htmlFor={hideImagesId} className="text-sm font-medium">
+                    Resimleri gizle
+                  </label>
+                </div>
+              ) : null}
             </div>
           ) : null}
         </section>

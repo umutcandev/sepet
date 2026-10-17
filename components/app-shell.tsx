@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils"
 import { useMounted } from "@/hooks/use-mounted"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
+import { ConversationTitleEditor } from "@/components/assistant/conversation-title-editor"
 import { ShareConversationButton } from "@/components/assistant/share-conversation-dialog"
 import { HomeHeroBackdrop } from "@/components/home/hero-shader"
 import type { BlogNavItem } from "@/components/blog/blog-posts-group"
@@ -152,6 +153,7 @@ function NewConversationButton() {
 export function AppShell({ blogPosts, children }: Props) {
   const pathname = usePathname()
   const { title, loading, conversationId } = useAssistantTitle()
+  const [editingTitle, setEditingTitle] = React.useState(false)
   // Kullanıcı/sohbet listesi artık kök layout prop'undan değil, istemci
   // tarafı SessionProvider'dan gelir (paylaşımlı rotalar statik cache'lenebilsin
   // diye). Sidebar sohbet listesi assistantConversations store'undan okunur ve
@@ -494,15 +496,25 @@ export function AppShell({ blogPosts, children }: Props) {
                   <Skeleton className="h-4 w-40 rounded-md" />
                 ) : title ? (
                   <div className="flex min-w-0 items-center">
-                    <span className="truncate text-sm font-medium text-foreground">
-                      {title}
-                    </span>
                     {conversationId ? (
-                      <AssistantHeaderActions
-                        conversationId={conversationId}
-                        title={title}
-                      />
-                    ) : null}
+                      <>
+                        <ConversationTitleEditor
+                          conversationId={conversationId}
+                          title={title}
+                          editing={editingTitle}
+                          onEditingChange={setEditingTitle}
+                        />
+                        <AssistantHeaderActions
+                          conversationId={conversationId}
+                          title={title}
+                          onRename={() => setEditingTitle(true)}
+                        />
+                      </>
+                    ) : (
+                      <span className="truncate text-sm font-medium text-foreground">
+                        {title}
+                      </span>
+                    )}
                   </div>
                 ) : null
               ) : null}

@@ -167,6 +167,9 @@ importers:
       shadow-plugin:
         specifier: ^2.1.0
         version: 2.1.0
+      sharp:
+        specifier: ^0.35.5
+        version: 0.35.5(@types/node@25.6.2)
       shiki:
         specifier: ^4.0.2
         version: 4.0.2
@@ -7917,7 +7920,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.34.5':
     dependencies:
-      '@emnapi/runtime': 1.10.0
+      '@emnapi/runtime': 1.11.3
     optional: true
 
   '@img/sharp-wasm32@0.35.5':
@@ -13380,7 +13383,6 @@ snapshots:
       '@img/sharp-win32-ia32': 0.35.5
       '@img/sharp-win32-x64': 0.35.5
       '@types/node': 25.6.2
-    optional: true
 
   shebang-command@2.0.0:
     dependencies:
