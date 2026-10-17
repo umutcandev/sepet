@@ -95,9 +95,17 @@ export function validateUpload(input: { contentType: string; size: number }): {
 
 // Ham ya da %2e kodlu `..` segmenti ön ekin dışına çıkabilir; reddedilir.
 const TRAVERSAL = /(^|[/\\])(\.|%2e){2}([/\\?#]|$)/i
+// Kontrol karakterleri de: URL ayrıştırıcı sekme ve satır sonunu sessizce
+// siler, `.\t.` gibi bir segment kontrolden geçip fetch'te `..` olurdu.
+const CONTROL = /[\u0000-\u001f\u007f]/
 
 function isUnderPrefix(value: string | null | undefined, prefix: string): boolean {
-  return typeof value === "string" && value.startsWith(prefix) && !TRAVERSAL.test(value)
+  return (
+    typeof value === "string" &&
+    value.startsWith(prefix) &&
+    !TRAVERSAL.test(value) &&
+    !CONTROL.test(value)
+  )
 }
 
 /**

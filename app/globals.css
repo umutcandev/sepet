@@ -1506,19 +1506,57 @@
   }
 }
 
+/* Tablo başlık şeridi ve sıra sıra satır zemini (Aktif oturumlar, Sepetindeki
+   Kalemler). Zemin `background` değil satırın iç gölgesi: Chrome satır
+   zeminini hücre hücre boyuyor ve telefonda (2,625x) kesirli piksele düşen
+   hücre sınırlarında 1px'lik dikişler kalıyordu. Gölge satırı tek parça
+   boyar. */
+.table-head-fill {
+  box-shadow: inset 0 0 0 9999px var(--muted);
+}
+.dark .table-head-fill {
+  box-shadow: inset 0 0 0 9999px
+    color-mix(in oklab, var(--accent) 60%, transparent);
+}
+/* Sıra sıra satır zemini hafif: satırı izlemeye yetecek kadar, keskin
+   şeritler gibi görünmeyecek kadar (yarım ton keskin geliyordu). Yalnız
+   `.table-zebra` satırları sayılır (`of`): bir satırın altına açılan ek satır
+   (`.table-zebra-cont`, ör. kalem notu) sırayı kaydırmaz, üstündeki satırın
+   zeminini alır. */
+.table-zebra:nth-child(even of .table-zebra),
+.table-zebra:nth-child(even of .table-zebra) + .table-zebra-cont {
+  box-shadow: inset 0 0 0 9999px
+    color-mix(in oklab, var(--muted) 30%, transparent);
+}
+.dark .table-zebra:nth-child(even of .table-zebra),
+.dark .table-zebra:nth-child(even of .table-zebra) + .table-zebra-cont {
+  box-shadow: inset 0 0 0 9999px
+    color-mix(in oklab, var(--muted) 45%, transparent);
+}
+@media (hover: hover) {
+  .table-zebra:hover,
+  .table-zebra:nth-child(even of .table-zebra):hover {
+    box-shadow: inset 0 0 0 9999px
+      color-mix(in oklab, var(--accent) 50%, transparent);
+  }
+}
+
 /* Tek satırlık kayan metin — bkz. components/ui/marquee-text.tsx. Sığmayan
    metin bekler, gizli ucuna kayar, bekler, geri döner. Sağdaki solma, satırın
    devam ettiğini söyler; kayma solma payı kadar fazla gittiği için son harfler
    uçta tam okunur. */
 @keyframes marquee-pingpong {
+  /* Uzun bekleme, yavaş gidiş, bekleme, yavaş dönüş, kısa bekleme. Gidiş ve
+     dönüş sürenin %25'er'i (bkz. marquee-text.tsx). */
   0%,
-  20% {
+  30% {
     transform: translateX(0);
   }
-  50%,
+  55%,
   70% {
     transform: translateX(var(--marquee-shift));
   }
+  95%,
   100% {
     transform: translateX(0);
   }

@@ -18,6 +18,7 @@ import type {
 } from "@/lib/ai/schemas"
 import {
   IMAGE_OMITTED_PART_TYPE,
+  SHARED_IMAGE_PART_TYPE,
   type SharedMessage,
   type SharedPart,
 } from "@/lib/assistant/share-types"
@@ -78,8 +79,14 @@ function isStopped(m: MessageLike) {
 
 export function SharedConversation({
   messages,
+  imageBase = null,
 }: {
   messages: SharedMessage[]
+  /**
+   * Görsellerin verildiği uç (`/paylasim/[token]/gorsel`). null: sahibi
+   * "Resimleri gizle" demiş, görsellerin yerine "paylaşılmadı" işareti çıkar.
+   */
+  imageBase?: string | null
 }) {
   return (
     <div className="flex flex-col gap-8">
@@ -89,6 +96,7 @@ export function SharedConversation({
           <SharedMessageView
             key={m.id}
             message={m}
+            imageBase={imageBase}
             card={
               m.role === "assistant"
                 ? resolveApprovalCard(messages, msgIdx, {
@@ -107,9 +115,11 @@ export function SharedConversation({
 function SharedMessageView({
   message: m,
   card,
+  imageBase,
 }: {
   message: SharedMessage
   card: ReturnType<typeof resolveApprovalCard> | null
+  imageBase: string | null
 }) {
   const approvalMeta = card?.approval?.metadata as
     | SharedMessage["metadata"]
@@ -140,6 +150,12 @@ function SharedMessageView({
               return <SharedText key={key}>{part.text}</SharedText>
             case IMAGE_OMITTED_PART_TYPE:
               return <ImageOmitted key={key} />
+            case SHARED_IMAGE_PART_TYPE:
+              return imageBase ? (
+                <SharedImage key={key} src={`${imageBase}/${part.data.ref}`} />
+              ) : (
+                <ImageOmitted key={key} />
+              )
             case "tool-parseShoppingList":
               return renderToolPart(
                 key,
@@ -284,6 +300,23 @@ function SharedMessageView({
         ) : null}
       </MessageContent>
     </Message>
+  )
+}
+
+/** Sohbetteki yüklenen görselle aynı çerçeve (bkz. assistant-chat). */
+function SharedImage({ src }: { src: string }) {
+  return (
+    <div className="max-w-[280px] overflow-hidden rounded-lg outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt="Paylaşılan görsel"
+        loading="lazy"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        className="block h-auto w-full"
+      />
+    </div>
   )
 }
 

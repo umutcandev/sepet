@@ -3,7 +3,6 @@
 import * as React from "react"
 import { RiMoreLine } from "@remixicon/react"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -11,6 +10,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
@@ -98,7 +102,7 @@ export function SessionsTable() {
     <div className="cn-scrollbar-thin-table overflow-hidden rounded-lg border dark:border-accent">
       <Table className="[&_td]:px-3 [&_th]:px-3">
         <TableHeader>
-          <TableRow className="bg-muted text-xs hover:bg-muted dark:bg-accent/60 dark:hover:bg-accent/60 [&_th]:h-9 [&_th]:font-medium [&_th]:text-muted-foreground">
+          <TableRow className="table-head-fill text-xs hover:bg-transparent [&_th]:h-7 [&_th]:font-medium [&_th]:text-muted-foreground">
             <TableHead>Cihaz</TableHead>
             <TableHead>Konum</TableHead>
             <TableHead>Oluşturma</TableHead>
@@ -110,14 +114,14 @@ export function SessionsTable() {
           {rows.map((r) => (
             <TableRow
               key={r.id}
-              className="group even:bg-muted/50 hover:bg-accent/50 dark:even:bg-muted dark:hover:bg-accent/50"
+              className="group table-zebra hover:bg-transparent"
             >
               <TableCell className="font-medium">
-                <span className="flex items-center gap-2">
+                {/* İşaret adın solunda, diğer satırların adlarıyla aynı
+                    hizada; yalnız bu satırın adı sağa kayar. */}
+                <span className="flex items-center gap-1.5">
+                  {r.isCurrent ? <CurrentDeviceMark /> : null}
                   {r.deviceLabel}
-                  {r.isCurrent ? (
-                    <Badge variant="secondary">Bu cihaz</Badge>
-                  ) : null}
                 </span>
               </TableCell>
               <TableCell className="text-muted-foreground">
@@ -162,6 +166,56 @@ export function SessionsTable() {
         </TableBody>
       </Table>
     </div>
+  )
+}
+
+/**
+ * Şu an kullanılan cihazın oturumu: "Bu cihaz" yazılı rozet yerine halkalı
+ * küçük bir nokta. Açıklaması fareyle üstüne gelince, dokunmatikte
+ * dokununca, klavyede odaklanıp Enter'la açılır.
+ */
+function CurrentDeviceMark() {
+  const [open, setOpen] = React.useState(false)
+  // Fareyle tıklamak açık/kapalıyı çevirmesin: üstüne gelince zaten açık,
+  // tıklama onu kapatıyordu.
+  const pointerType = React.useRef<string | null>(null)
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          aria-label="Şu an kullandığın cihaz"
+          onPointerDown={(e) => {
+            pointerType.current = e.pointerType
+          }}
+          onPointerEnter={(e) => {
+            if (e.pointerType === "mouse") setOpen(true)
+          }}
+          onPointerLeave={(e) => {
+            if (e.pointerType === "mouse") setOpen(false)
+          }}
+          onClick={(e) => {
+            if (pointerType.current === "mouse") e.preventDefault()
+            pointerType.current = null
+          }}
+          // Ana renkte dolu nokta ve çevresinde soluk halka (onay simgesiyle
+          // aynı renk dili). Görünen 14px; dokunma alanı after ile 30px'e açılır.
+          className="relative inline-flex size-3.5 shrink-0 items-center justify-center rounded-full outline-none after:absolute after:-inset-2 focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          <span className="size-2 rounded-full bg-primary ring-3 ring-primary/20" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        side="top"
+        align="start"
+        // Yalnız bir açıklama: odak tetikleyicide kalsın.
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="pointer-events-none w-auto px-2.5 py-1.5 text-xs font-medium"
+      >
+        Şu an kullandığın cihaz
+      </PopoverContent>
+    </Popover>
   )
 }
 

@@ -244,7 +244,7 @@ function comparisonMarkdown(comparison: ReceiptComparison): string {
   const title = stale
     ? "**Fiş Karşılaştırması** (fiş eski, bugünkü fiyatlarla)"
     : comparison.totalSavingsTL > 0
-      ? `**Fiş Karşılaştırması** (${formatTL(comparison.totalSavingsTL)} tasarruf mümkündü)`
+      ? `**Fiş Karşılaştırması** (${formatTL(comparison.totalSavingsTL)} potansiyel tasarruf)`
       : "**Fiş Karşılaştırması**"
   return [
     title,

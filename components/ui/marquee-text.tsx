@@ -6,8 +6,13 @@ import { cn } from "@/lib/utils"
 
 /** Sağ kenardaki solma payı. Kayma bu kadar fazla gider ki son harfler solmadan okunsun. */
 const FADE_PX = 12
-/** Kayma hızı (px/s): okunabilir, göz yormayan bir tempo. */
-const SPEED_PX_PER_S = 28
+/**
+ * Kayma hızı (px/s): okurken dikkat dağıtmayacak kadar yavaş. 28px/s ile
+ * döngü birkaç saniyede bir dönüyor, kartta sürekli bir şey kıpırdıyordu.
+ */
+const SPEED_PX_PER_S = 10
+/** Bir döngünün en kısa süresi: kısa taşmalar da sakin kalsın. */
+const MIN_CYCLE_S = 16
 
 /**
  * Tek satırlık metin. Sığıyorsa düz durur; sığmıyorsa alt satıra kırılmak ya
@@ -46,8 +51,9 @@ export function MarqueeText({
   }, [])
 
   const shift = overflow > 0 ? overflow + FADE_PX : 0
-  // Kayma toplam sürenin %60'ı (gidiş + dönüş), kalan %40 iki uçta bekleme.
-  const duration = Math.max(4, (2 * shift) / SPEED_PX_PER_S / 0.6)
+  // Gidiş ve dönüş toplam sürenin %25'er'i (globals.css `marquee-pingpong`),
+  // kalan %50 uçlarda bekleme.
+  const duration = Math.max(MIN_CYCLE_S, shift / SPEED_PX_PER_S / 0.25)
 
   return (
     <span

@@ -11,10 +11,16 @@ import { cn } from "@/lib/utils"
  * `rounded-xl border bg-card` (on beş kopya), bu dosyada ise hiç kullanılmayan
  * üçüncü bir dış gölgeli sürüm.
  *
- * Kenar İÇERİDE (`inset-ring`), dış gölge yok. Kart çoğu yerde
- * `overflow-hidden` bir sütunun içinde duruyor (sohbet sütunu, mesaj içeriği);
- * dış halka ve gölge orada sağdan/soldan/alttan düz kesiliyordu. İç halka
- * kutunun içinde kalır, hiçbir yerde kırpılmaz.
+ * Kenar düz CSS `border`, dış gölge yok. Kart çoğu yerde `overflow-hidden`
+ * bir sütunun içinde duruyor (sohbet sütunu, mesaj içeriği); dış halka ve
+ * gölge orada sağdan/soldan/alttan düz kesiliyordu. Border kutunun içinde
+ * kalır, hiçbir yerde kırpılmaz.
+ *
+ * Eskiden `inset-ring` (gölgeyle çizilen halka) idi. Telefonda (2,625x) halka
+ * kenar yumuşatmasıyla ~3 cihaz pikseline yayılırken kartın içindeki satır ve
+ * başlık çizgileri (`border`) 2 piksele oturuyordu: dış kenar, içteki
+ * çizgilerden belirgin kalın görünüyordu. Hepsi aynı ilkel olunca her
+ * yoğunlukta aynı kalınlıkta çizilir. Renk `--border`, içteki çizgilerle aynı.
  *
  * Squircle (clip-path) KULLANILMAZ. Kullanılan eğri bu yarıçapta
  * `border-radius`tan piksel altı sapıyor (bkz. squircle.tsx), ama clip-path
@@ -32,7 +38,7 @@ function Card({
     <Comp
       data-slot="card"
       className={cn(
-        "overflow-hidden rounded-xl bg-card text-card-foreground inset-ring inset-ring-hairline",
+        "overflow-hidden rounded-xl border bg-card text-card-foreground",
         className
       )}
       {...props}

@@ -92,7 +92,7 @@ export function ReceiptComparisonCard({
         ) : (
           comparison.totalSavingsTL > 0 && (
             <Badge variant="success" className="ml-auto">
-              {formatTLOrDash(comparison.totalSavingsTL)} tasarruf mümkündü
+              {formatTLOrDash(comparison.totalSavingsTL)} Potansiyel Tasarruf
             </Badge>
           )
         )}
@@ -101,15 +101,18 @@ export function ReceiptComparisonCard({
       <div className="overflow-x-auto">
         <Table className="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
           <TableHeader>
-            <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
-              <TableHead className="min-w-[140px]">Ürün</TableHead>
+            {/* Başlık şeridi diğer kart tablolarıyla aynı: dolgulu, satırlardan
+                alçak. Büyük harf metinde yazılı, CSS `uppercase` ile değil:
+                bazı tarayıcılar onu Türkçe kurala göre yapmıyor ("EN IYI"). */}
+            <TableRow className="table-head-fill text-[0.625rem] tracking-wide hover:bg-transparent [&_th]:h-7 [&_th]:font-medium [&_th]:text-muted-foreground">
+              <TableHead className="min-w-[140px]">ÜRÜN</TableHead>
               {/* Üç sayı kolonu da PAKET başına: "Fişteki" satır toplamıyken
                   yanındaki "En iyi fiyat" tek paketti, yani tablo iki farklı
                   tabanı yan yana koyup farkını alıyordu. */}
-              <TableHead className="w-28 text-right">Fişteki paket</TableHead>
-              <TableHead className="min-w-[140px]">En iyi market</TableHead>
-              <TableHead className="w-24 text-right">En iyi paket</TableHead>
-              <TableHead className="w-24 text-right">Fark</TableHead>
+              <TableHead className="w-28 text-right">FİŞTEKİ PAKET</TableHead>
+              <TableHead className="min-w-[140px]">EN İYİ MARKET</TableHead>
+              <TableHead className="w-24 text-right">EN İYİ PAKET</TableHead>
+              <TableHead className="w-24 text-right">FARK</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

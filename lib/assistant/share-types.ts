@@ -15,6 +15,14 @@ import { STOPPED_PART_TYPE } from "./turn-state"
 // şemalar tarayıcı paketine girmez.
 
 export const IMAGE_OMITTED_PART_TYPE = "data-image-omitted"
+/**
+ * Paylaşılan görsel: yalnız sıra numarası. Görselin kendisi
+ * /paylasim/[token]/gorsel/[ref] üzerinden, paylaşım "Resimleri gizle" kapalı
+ * olduğu sürece verilir; adres ve R2 anahtarı sayfaya hiç gitmez.
+ */
+export const SHARED_IMAGE_PART_TYPE = "data-shared-image"
+/** Bir kopyaya girebilecek azami görsel sayısı (fazlası "paylaşılmadı" olur). */
+export const SHARED_IMAGES_MAX = 20
 
 export type SharedApprovedItem = {
   rawName: string
@@ -27,6 +35,7 @@ export type SharedApprovedItem = {
 export type SharedPart =
   | { type: "text"; text: string }
   | { type: typeof IMAGE_OMITTED_PART_TYPE; data: Record<string, never> }
+  | { type: typeof SHARED_IMAGE_PART_TYPE; data: { ref: number } }
   | { type: typeof STOPPED_PART_TYPE; data: Record<string, never> }
   | SharedToolPart
 

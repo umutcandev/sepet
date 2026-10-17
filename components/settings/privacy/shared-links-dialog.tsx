@@ -200,9 +200,8 @@ export function SharedLinksDialog() {
                       </a>
                     </Button>
                     <Button
-                      variant="ghost"
+                      variant="destructive"
                       size="icon-sm"
-                      className="hover:text-destructive"
                       aria-label={`${item.title} bağlantısını kaldır`}
                       disabled={pending.has(item.conversationId)}
                       onClick={() => void revoke(item)}

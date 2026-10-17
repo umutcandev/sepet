@@ -3,7 +3,7 @@
 import * as React from "react"
 import { RiAddLine, RiCheckLine, RiCloseLine } from "@remixicon/react"
 import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { StatusChip } from "@/components/ui/status-chip"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { NativeSelect } from "@/components/ui/native-select"
@@ -35,7 +35,7 @@ const STACK_TABLE =
 const STACK_ROW =
   "max-sm:grid max-sm:items-end max-sm:gap-x-2 max-sm:gap-y-2 max-sm:px-4 max-sm:py-3"
 const STACK_CELL =
-  "max-sm:flex max-sm:min-w-0 max-sm:flex-col max-sm:gap-1 max-sm:text-left max-sm:before:text-[0.625rem] max-sm:before:font-medium max-sm:before:tracking-wide max-sm:before:text-muted-foreground max-sm:before:uppercase max-sm:before:content-[attr(data-label)]"
+  "max-sm:flex max-sm:min-w-0 max-sm:flex-col max-sm:gap-1 max-sm:text-left max-sm:before:text-[0.625rem] max-sm:before:font-medium max-sm:before:tracking-wide max-sm:before:text-muted-foreground max-sm:before:content-[attr(data-label)]"
 
 export type ApprovalSubmit = {
   marketName: string | null
@@ -136,9 +136,7 @@ export function ReceiptApprovalCard({
       <CardHeader>
         <CardTitle>Fişindeki Kalemler</CardTitle>
         <div className="ml-auto flex flex-wrap gap-1.5">
-          {alreadyApproved ? (
-            <Badge variant="secondary">Onaylandı</Badge>
-          ) : null}
+          {alreadyApproved ? <StatusChip status="approved" /> : null}
         </div>
       </CardHeader>
 
@@ -167,12 +165,15 @@ export function ReceiptApprovalCard({
       <div className="overflow-x-auto">
         <Table className={cn("sm:min-w-[600px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4", STACK_TABLE)}>
           <TableHeader className="max-sm:hidden">
-            <TableRow className="text-[0.6875rem] uppercase tracking-wide text-muted-foreground">
-              <TableHead className="min-w-[140px]">Ürün</TableHead>
-              <TableHead className="w-20 text-right">Adet</TableHead>
-              <TableHead className="w-24">Birim</TableHead>
-              <TableHead className="w-24 text-right">B. Fiyat</TableHead>
-              <TableHead className="w-24 text-right">Tutar</TableHead>
+            {/* Büyük harf metinde (ve data-label'larda) yazılı, CSS
+                `uppercase` ile değil: bazı tarayıcılar onu Türkçe kurala göre
+                yapmıyor ("BIRIM"). */}
+            <TableRow className="text-[0.6875rem] tracking-wide text-muted-foreground">
+              <TableHead className="min-w-[140px]">ÜRÜN</TableHead>
+              <TableHead className="w-20 text-right">ADET</TableHead>
+              <TableHead className="w-24">BİRİM</TableHead>
+              <TableHead className="w-24 text-right">B. FİYAT</TableHead>
+              <TableHead className="w-24 text-right">TUTAR</TableHead>
               {!readOnly && <TableHead className="w-8" />}
             </TableRow>
           </TableHeader>
@@ -195,8 +196,10 @@ export function ReceiptApprovalCard({
                     // Üst satır: ürün adı + sil. Alt satır: adet, birim, fiyat,
                     // tutar. Birim 5rem: seçicinin ok dolgusundan sonra
                     // "paket"e yer kalsın (eşit bölünce "ad…" oluyordu).
+                    // Salt okunurda değerlerin yüksekliği farklı; alta
+                    // hizalanınca başlıklar basamak basamak duruyordu.
                     readOnly
-                      ? "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)]"
+                      ? "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)] max-sm:items-start"
                       : "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)_auto]",
                   )}
                 >
@@ -227,7 +230,7 @@ export function ReceiptApprovalCard({
                     )}
                   </TableCell>
                   <TableCell
-                    data-label="Adet"
+                    data-label="ADET"
                     className={cn("text-right", STACK_CELL)}
                   >
                     {readOnly ? (
@@ -249,9 +252,9 @@ export function ReceiptApprovalCard({
                       />
                     )}
                   </TableCell>
-                  <TableCell data-label="Birim" className={STACK_CELL}>
+                  <TableCell data-label="BİRİM" className={STACK_CELL}>
                     {readOnly ? (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-muted-foreground max-sm:text-sm">
                         {it.unit}
                       </span>
                     ) : (
@@ -275,7 +278,7 @@ export function ReceiptApprovalCard({
                     )}
                   </TableCell>
                   <TableCell
-                    data-label="B. Fiyat"
+                    data-label="B. FİYAT"
                     className={cn("text-right tabular-nums", STACK_CELL)}
                   >
                     {readOnly ? (
@@ -299,14 +302,18 @@ export function ReceiptApprovalCard({
                     )}
                   </TableCell>
                   <TableCell
-                    data-label="Tutar"
+                    data-label="TUTAR"
                     className={cn(
                       "text-right tabular-nums",
                       STACK_CELL,
                       !readOnly && "max-sm:col-span-2",
                     )}
                   >
-                    <span className="max-sm:flex max-sm:h-8 max-sm:items-center">
+                    <span
+                      className={cn(
+                        !readOnly && "max-sm:flex max-sm:h-8 max-sm:items-center",
+                      )}
+                    >
                       {formatTLOrDash(
                         it.totalPrice ??
                         (it.unitPrice != null
@@ -319,10 +326,9 @@ export function ReceiptApprovalCard({
                     <TableCell className="text-right max-sm:col-start-5 max-sm:row-start-1 max-sm:self-center">
                       <Button
                         type="button"
-                        variant="ghost"
+                        variant="destructive"
                         size="icon-sm"
                         onClick={() => removeItem(it._id)}
-                        className="hover:text-destructive"
                         aria-label="Kalemi sil"
                       >
                         <RiCloseLine className="size-3.5" />

@@ -18,6 +18,8 @@ import {
 } from "@/lib/ai/schemas"
 import {
   IMAGE_OMITTED_PART_TYPE,
+  SHARED_IMAGE_PART_TYPE,
+  SHARED_IMAGES_MAX,
   type SharedMessage,
   type SharedMessageMetadata,
   type SharedPart,
@@ -36,9 +38,13 @@ import { STOPPED_PART_TYPE } from "./turn-state"
  * gelmez.
  *
  * Bilinçli olarak dışarıda kalanlar:
- *  - Yüklenen görseller (fiş/yemek fotoğrafı). R2 adresi kullanıcı kimliğini
- *    taşır (`receipts/{userId}/…`), görselin kendisi de ad, adres ya da kart
- *    numarası içerebilir. Yerine "görsel paylaşılmadı" işareti konur.
+ *  - Yüklenen görsellerin adresi ve R2 anahtarı. Anahtar kullanıcı kimliğini
+ *    taşır (`receipts/{userId}/…`). Paylaşım anında görsel yalnız bir sıra
+ *    numarasına dönüşür (`data-shared-image`); anahtarlar kopyanın dışında,
+ *    sunucuda tutulur. Görseli göstermek sahibinin tercihidir ("Resimleri
+ *    gizle" kapalıysa), gösterilirken de meta verisi (konum dahil) silinir
+ *    (bkz. app/paylasim/[token]/gorsel). Numaralanamayan görselin yerine
+ *    "görsel paylaşılmadı" işareti konur.
  *  - Modelin düşünme metni ("Düşündüm"). Görsel turunda model fişte okuduğu
  *    her şeyi (mağaza adresi, kart numarasının son haneleri, kasiyer adı)
  *    burada özetleyebiliyor; görseli saklayıp metnini yayımlamak anlamsız olurdu.
@@ -64,7 +70,7 @@ const TITLE_MAX = 100
 const NAME_MAX = 200
 const APPROVED_ITEMS_MAX = 100
 
-export { IMAGE_OMITTED_PART_TYPE }
+export { IMAGE_OMITTED_PART_TYPE, SHARED_IMAGE_PART_TYPE }
 export type { SharedMessage, SharedPart } from "./share-types"
 
 type ToolOutputs = SharedToolOutputs
@@ -248,6 +254,30 @@ type RawPart = {
   output?: unknown
   errorText?: unknown
   mediaType?: unknown
+  url?: unknown
+  filename?: unknown
+  data?: unknown
+}
+
+/**
+ * Paylaşım anında yüklenen görseli numaralar: sahibine ait bir R2 anahtarıysa
+ * sıra numarasını, değilse null döner (bkz. lib/data/conversation-shares).
+ * Okurken verilmez; kopyadaki numaralar olduğu gibi doğrulanır.
+ */
+export type ImageRefCollector = (image: {
+  url: string | null
+  filename: string | null
+}) => number | null
+
+const OMITTED: SharedPart = { type: IMAGE_OMITTED_PART_TYPE, data: {} }
+
+function isImageRef(value: unknown): value is number {
+  return (
+    typeof value === "number" &&
+    Number.isInteger(value) &&
+    value >= 0 &&
+    value < SHARED_IMAGES_MAX
+  )
 }
 
 function asText(value: unknown, max: number): string | null {
@@ -258,19 +288,40 @@ function asText(value: unknown, max: number): string | null {
 
 const EMPTY_DATA: Record<string, never> = {}
 
-function sanitizeUserPart(part: RawPart): SharedPart | null {
+function sanitizeUserPart(
+  part: RawPart,
+  collectImage?: ImageRefCollector
+): SharedPart | null {
   if (part.type === "text") {
     const text = asText(part.text, SHARED_TEXT_MAX)
     return text ? { type: "text", text } : null
   }
   if (part.type === "file") {
-    // Görselin yerini tutar; adresi, adı ve R2 anahtarı (filename) düşer.
-    return typeof part.mediaType === "string" &&
-      part.mediaType.startsWith("image/")
-      ? { type: IMAGE_OMITTED_PART_TYPE, data: EMPTY_DATA }
-      : null
+    if (
+      typeof part.mediaType !== "string" ||
+      !part.mediaType.startsWith("image/")
+    ) {
+      return null
+    }
+    // Adres ve R2 anahtarı (filename) kopyaya girmez; yalnız sıra numarası.
+    const ref = collectImage?.({
+      url: typeof part.url === "string" ? part.url : null,
+      filename: typeof part.filename === "string" ? part.filename : null,
+    })
+    return isImageRef(ref)
+      ? { type: SHARED_IMAGE_PART_TYPE, data: { ref } }
+      : OMITTED
   }
-  // Okurken tekrar temizlenen kopyada işaret yerinde kalır.
+  // Okurken tekrar temizlenen kopyada işaret ve numara yerinde kalır. Kayıttan
+  // kopya alınırken (collectImage var) bu tür gerçek bir mesajda bulunmaz;
+  // istemcinin uydurduğu numara bir görsele bağlanmasın.
+  if (part.type === SHARED_IMAGE_PART_TYPE) {
+    if (collectImage) return OMITTED
+    const ref = (part.data as { ref?: unknown } | null | undefined)?.ref
+    return isImageRef(ref)
+      ? { type: SHARED_IMAGE_PART_TYPE, data: { ref } }
+      : OMITTED
+  }
   if (part.type === IMAGE_OMITTED_PART_TYPE) {
     return { type: IMAGE_OMITTED_PART_TYPE, data: EMPTY_DATA }
   }
@@ -330,7 +381,8 @@ export type StoredMessageLike = {
 }
 
 export function sanitizeMessagesForShare(
-  rows: readonly StoredMessageLike[]
+  rows: readonly StoredMessageLike[],
+  collectImage?: ImageRefCollector
 ): SharedMessage[] {
   const out: SharedMessage[] = []
   for (const row of rows) {
@@ -341,7 +393,9 @@ export function sanitizeMessagesForShare(
     for (const raw of rawParts) {
       if (!raw || typeof raw !== "object") continue
       const part =
-        role === "user" ? sanitizeUserPart(raw) : sanitizeAssistantPart(raw)
+        role === "user"
+          ? sanitizeUserPart(raw, collectImage)
+          : sanitizeAssistantPart(raw)
       if (part) parts.push(part)
     }
     // Boş kalan kullanıcı mesajı düşer. Asistan mesajı boş da olsa yerini

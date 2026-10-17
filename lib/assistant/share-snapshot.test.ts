@@ -7,6 +7,7 @@ import { computeOptimization } from "@/lib/ai/optimize"
 import type { MatchResult } from "@/lib/ai/schemas"
 import {
   IMAGE_OMITTED_PART_TYPE,
+  SHARED_IMAGE_PART_TYPE,
   SHARED_TEXT_MAX,
   sanitizeMessagesForShare,
   sanitizeShareTitle,
@@ -464,6 +465,75 @@ describe("sanitizeMessagesForShare", () => {
 // şemalara default'suz bir alan eklemek ya da bir alanı daraltmak bu kartları
 // mevcut bütün paylaşımlardan sessizce düşürürdü; bu test onu yakalar.
 // Bilerek değiştirilen bir kural varsa dosyayı yeniden üret ve farkı incele.
+describe("paylaşılan görseller", () => {
+  const userImage = {
+    role: "user",
+    parts: [
+      { type: "text", text: "Bu fişe bak" },
+      {
+        type: "file",
+        mediaType: "image/jpeg",
+        url: RECEIPT_URL,
+        filename: RECEIPT_KEY,
+      },
+    ],
+  }
+
+  test("numaralanan görsel yalnız sıra numarası taşır, adres ve anahtar düşer", () => {
+    const seen: Array<{ url: string | null; filename: string | null }> = []
+    const [m] = sanitizeMessagesForShare([userImage], (image) => {
+      seen.push(image)
+      return 0
+    })
+    assert.deepEqual(seen, [{ url: RECEIPT_URL, filename: RECEIPT_KEY }])
+    assert.deepEqual(m.parts[1], { type: SHARED_IMAGE_PART_TYPE, data: { ref: 0 } })
+    const json = JSON.stringify(m)
+    assert.doesNotMatch(json, /receipts\//)
+    assert.doesNotMatch(json, /user-123/)
+  })
+
+  test("numaralanamayan görsel (başkasının anahtarı) işaret olur", () => {
+    const [m] = sanitizeMessagesForShare([userImage], () => null)
+    assert.equal(m.parts[1].type, IMAGE_OMITTED_PART_TYPE)
+  })
+
+  test("okurken geçerli numara kalır, geçersizi işarete döner", () => {
+    const stored = {
+      role: "user",
+      parts: [
+        { type: SHARED_IMAGE_PART_TYPE, data: { ref: 3 } },
+        { type: SHARED_IMAGE_PART_TYPE, data: { ref: 99 } },
+        { type: SHARED_IMAGE_PART_TYPE, data: { ref: "0" } },
+        { type: SHARED_IMAGE_PART_TYPE, data: { ref: -1 } },
+        { type: SHARED_IMAGE_PART_TYPE, data: { ref: 1.5 } },
+      ],
+    }
+    const [m] = sanitizeMessagesForShare([stored])
+    assert.deepEqual(m.parts.map((p) => p.type), [
+      SHARED_IMAGE_PART_TYPE,
+      IMAGE_OMITTED_PART_TYPE,
+      IMAGE_OMITTED_PART_TYPE,
+      IMAGE_OMITTED_PART_TYPE,
+      IMAGE_OMITTED_PART_TYPE,
+    ])
+    assert.deepEqual(m.parts[0], { type: SHARED_IMAGE_PART_TYPE, data: { ref: 3 } })
+  })
+
+  test("numaralayıcı yoksa (okurken) ham görsel işaret olur", () => {
+    const [m] = sanitizeMessagesForShare([userImage])
+    assert.equal(m.parts[1].type, IMAGE_OMITTED_PART_TYPE)
+  })
+
+  test("kayıttan kopya alınırken istemcinin uydurduğu numara işarete döner", () => {
+    const forged = {
+      role: "user",
+      parts: [{ type: SHARED_IMAGE_PART_TYPE, data: { ref: 0 } }],
+    }
+    const [m] = sanitizeMessagesForShare([forged], () => 0)
+    assert.deepEqual(m.parts.map((p) => p.type), [IMAGE_OMITTED_PART_TYPE])
+  })
+})
+
 describe("kayıtlı kopya", () => {
   test("bugünkü kurallardan aynen geçer", () => {
     const fixture = JSON.parse(

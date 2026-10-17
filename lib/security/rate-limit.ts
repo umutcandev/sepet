@@ -124,6 +124,17 @@ export const shareViewLimiter = new Ratelimit({
   analytics: true,
 })
 
+// Paylaşılan sohbetteki görseller (/paylasim/[token]/gorsel/n), IP başına.
+// Sayfadan ayrı: bir sayfa 20 görsel çekebilir, sayfa limitini yemesin.
+// Görsel ucu yeniden kodlama yapar (CPU); tavan bunu toplu çağrıya karşı da
+// sınırlar.
+export const shareImageLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(600, "1 m"),
+  prefix: "rl:share:image",
+  analytics: true,
+})
+
 // ─── E-posta/şifre kimlik doğrulama limiter'ları ───
 // Bunlar proxy.ts değil, server action'lar içinde uygulanır (bkz.
 // lib/security/action-rate-limit.ts). Derinlemesine savunma: DB `attempts`
