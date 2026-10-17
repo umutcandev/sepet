@@ -1520,16 +1520,15 @@
 }
 /* Sıra sıra satır zemini hafif: satırı izlemeye yetecek kadar, keskin
    şeritler gibi görünmeyecek kadar (yarım ton keskin geliyordu). Yalnız
-   `.table-zebra` satırları sayılır (`of`): bir satırın altına açılan ek satır
-   (`.table-zebra-cont`, ör. kalem notu) sırayı kaydırmaz, üstündeki satırın
-   zeminini alır. */
+   `.table-zebra` satırları sayılır (`of`). `.table-head-soft` aynı hafif tonda
+   başlık şeridi: satırları düz kalan tablolarda (Sepetindeki Kalemler). */
 .table-zebra:nth-child(even of .table-zebra),
-.table-zebra:nth-child(even of .table-zebra) + .table-zebra-cont {
+.table-head-soft {
   box-shadow: inset 0 0 0 9999px
     color-mix(in oklab, var(--muted) 30%, transparent);
 }
 .dark .table-zebra:nth-child(even of .table-zebra),
-.dark .table-zebra:nth-child(even of .table-zebra) + .table-zebra-cont {
+.dark .table-head-soft {
   box-shadow: inset 0 0 0 9999px
     color-mix(in oklab, var(--muted) 45%, transparent);
 }

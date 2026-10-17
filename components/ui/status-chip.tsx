@@ -1,21 +1,24 @@
 import * as React from "react"
-import { RiCheckLine } from "@remixicon/react"
+import { RiUserFollowLine } from "@remixicon/react"
 
 import { cn } from "@/lib/utils"
 
-// Her durumun rengi tonuyla birlikte burada: onay ana renkte (primary).
-// Yeni bir durum (ör. reddedildi → destructive) aynı kalıba eklenir.
+// Her durumun rengi tonuyla birlikte burada: onay, Pro rozetiyle aynı dolu
+// ana renk (Badge `default`). Yeni bir durum (ör. reddedildi → destructive)
+// aynı kalıba eklenir.
 const STATUS = {
   approved: {
     label: "Onaylandı",
-    icon: RiCheckLine,
-    tone: "border-primary/25 bg-primary/10 text-primary dark:border-primary/30 dark:bg-primary/12",
+    // Kullanıcı + onay: tek başına ✓ dolu zeminde bir "Onayla" butonu gibi
+    // duruyordu; bu, bir eylem değil "sen onayladın" durumu.
+    icon: RiUserFollowLine,
+    tone: "surface-raised-chip border-transparent bg-primary text-primary-foreground",
   },
 } as const
 
 /**
- * Kart başlığındaki durum, yalnızca simge: ana renkte işaret, aynı rengin
- * soluk zemini ve ince kenarı, köşeleri hafif yuvarlak kare. "Onaylandı"
+ * Kart başlığındaki durum, yalnızca simge: Pro rozeti gibi dolu ana renk
+ * zemin üstünde simge, köşeleri hafif yuvarlak kare. "Onaylandı"
  * yazılı rozet başlık şeridinde kartın adı kadar yer tutuyordu. Ad ekran
  * okuyucuya ve fareyle üstüne gelene (title) söylenir.
  */

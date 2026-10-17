@@ -184,10 +184,10 @@ export function BasketApprovalCard({
           <TableHeader>
             {/* Büyük harf metinde yazılı, CSS `uppercase` ile değil: bazı
                 tarayıcılar onu Türkçe kurala göre yapmıyor ("BIRIM").
-                Başlık şeridi ve sıra sıra satır zemini Aktif oturumlar
-                tablosuyla aynı; şerit satırlardan belirgin alçak (28px,
-                10px yazı). */}
-            <TableRow className="table-head-fill text-[0.625rem] tracking-wide hover:bg-transparent [&_th]:h-7 [&_th]:font-medium [&_th]:text-muted-foreground">
+                Başlık şeridi hafif tonda, satırların hepsi düz: sıra sıra
+                koyu satır bu kısa listede gereksiz kalabalıktı. Şerit
+                satırlardan belirgin alçak (28px, 10px yazı). */}
+            <TableRow className="table-head-soft text-[0.625rem] tracking-wide hover:bg-transparent [&_th]:h-7 [&_th]:font-medium [&_th]:text-muted-foreground">
               <TableHead className="w-auto">ÜRÜN</TableHead>
               {/* Adet ve Birim sütunlarında sol dolgu pl-1: alanlar arası
                   boşluk her yerde 12px (sil sütunuyla aynı). w-16: "500" ve
@@ -219,7 +219,7 @@ export function BasketApprovalCard({
                         // Not açıkken satırı koyulaştıran varsayılan vurgu
                         // (has-aria-expanded) kapalı: kalem ve altındaki not
                         // satırı aynı tonda kalsın.
-                        "table-zebra hover:bg-transparent has-aria-expanded:bg-transparent",
+                        "hover:bg-transparent has-aria-expanded:bg-transparent",
                         // Altında not satırı açıkken ikisi tek parça okunsun.
                         noteOpen && "border-b-0",
                       )}
@@ -603,7 +603,7 @@ function NoteRow({
   }, [onClose])
 
   return (
-    <TableRow ref={rowRef} className="table-zebra-cont hover:bg-transparent">
+    <TableRow ref={rowRef} className="hover:bg-transparent">
       <TableCell colSpan={4}>
         <InputGroup>
           <InputGroupInput

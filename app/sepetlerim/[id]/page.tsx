@@ -149,19 +149,19 @@ export default async function BasketDetailPage({
           )}
         >
           <RecordInfoList title="Sepet Bilgisi">
-            <RecordInfoRow label="Oluşturma tarihi">
+            <RecordInfoRow label="Oluşturma Tarihi">
               <span className="tabular-nums">
                 {formatDateTime(basket.createdAt)}
               </span>
             </RecordInfoRow>
-            <RecordInfoRow label="Kalem sayısı">
+            <RecordInfoRow label="Kalem Sayısı">
               <span className="tabular-nums">
                 {allMatched
                   ? items.length
                   : `${items.length} (${matchedCount} eşleşti)`}
               </span>
             </RecordInfoRow>
-            <RecordInfoRow label="Potansiyel tasarruf miktarı">
+            <RecordInfoRow label="Potansiyel Tasarruf Miktarı">
               <span className="tabular-nums">{formatTL(twoMarketSavings)}</span>
             </RecordInfoRow>
             {!hasBreakdown && (

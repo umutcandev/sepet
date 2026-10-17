@@ -199,7 +199,7 @@ export default async function ReceiptDetailPage({
                   : `${matchedCount}/${items.length} eşleşti`}
               </span>
             </RecordInfoRow>
-            <RecordInfoRow label="Fiş tutarı">
+            <RecordInfoRow label="Fiş Tutarı">
               <span className="tabular-nums">
                 {receipt.totalAmount
                   ? formatTL(Number(receipt.totalAmount))
@@ -207,7 +207,7 @@ export default async function ReceiptDetailPage({
               </span>
             </RecordInfoRow>
             {receipt.bestSingleMarket && (
-              <RecordInfoRow label="En iyi market">
+              <RecordInfoRow label="En İyi Market">
                 <div className="flex flex-wrap items-center justify-end gap-x-2">
                   <MarketCell name={receipt.bestSingleMarket} size="sm" />
                   {receipt.bestSingleTotal && (
