@@ -3,9 +3,11 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { ArticleActions } from "@/components/blog/article-actions"
+import { ArticleToc } from "@/components/blog/article-toc"
 import { JsonLd } from "@/components/blog/json-ld"
 import { MdxContent } from "@/components/blog/mdx-content"
-import { MobileArticleBar } from "@/components/blog/mobile-article-bar"
+import { MobileArticleActions } from "@/components/blog/mobile-article-actions"
+import { PostCover } from "@/components/blog/post-cover"
 import { PostHeader } from "@/components/blog/post-header"
 import { RelatedPosts } from "@/components/blog/related-posts"
 import { TableOfContents } from "@/components/blog/table-of-contents"
@@ -14,13 +16,13 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/blog"
 import { getAuthor } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
+import { formatPostDate } from "@/lib/blog/format"
 import { blogPostingLd, breadcrumbLd } from "@/lib/blog/jsonld"
 import { postToMarkdown } from "@/lib/blog/markdown"
 import { absoluteUrl } from "@/lib/site"
@@ -93,36 +95,60 @@ export default async function BlogPostPage({
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-12 xl:gap-16">
         <article className="min-w-0 max-w-2xl">
-          <Breadcrumb className="mb-6">
-            <BreadcrumbList className="flex-nowrap">
-              <BreadcrumbItem className="shrink-0">
-                <BreadcrumbLink asChild>
-                  <Link href="/blog">Blog</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="shrink-0" />
-              <BreadcrumbItem className="min-w-0">
-                <BreadcrumbPage className="min-w-0 truncate">
-                  {post.title}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          {/* Üst satır: solda Blog › kategori, sağda tarih; ikisi de büyük harf.
+              Yazının adı zaten hemen altındaki başlıkta. */}
+          <div className="mb-6 flex items-center justify-between gap-4 text-xs font-medium tracking-wider uppercase">
+            <Breadcrumb>
+              <BreadcrumbList className="flex-nowrap text-xs">
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/blog">Blog</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    asChild
+                    className="text-primary hover:text-primary/80"
+                  >
+                    <Link href={`/blog?kategori=${category.slug}`}>
+                      {category.label}
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+            <time
+              dateTime={post.publishedAt}
+              className="shrink-0 text-muted-foreground"
+            >
+              {formatPostDate(post.publishedAt)}
+            </time>
+          </div>
 
-          <PostHeader post={post} />
-
-          {/* Mobilde içerik üstüne gelen yatay eylem satırı; masaüstünde kenar
-              çubuğu kullanıldığı için gizli (lg:hidden bileşen içinde). */}
-          <MobileArticleBar
-            toc={post.toc}
-            markdown={markdown}
-            markdownUrl={markdownUrl}
-            pageUrl={pageUrl}
-            title={post.title}
-            className="mt-6"
+          {/* Mobilde Kopyala ve Paylaş yazar satırının sağında; masaüstünde
+              kenar çubuğu kullanıldığı için gizli (lg:hidden bileşen içinde). */}
+          <PostHeader
+            post={post}
+            actions={
+              <MobileArticleActions
+                markdown={markdown}
+                markdownUrl={markdownUrl}
+                pageUrl={pageUrl}
+                title={post.title}
+              />
+            }
           />
 
           <Separator className="my-8" />
+
+          {/* Kapak içeriğin başında, ayraçtan hemen sonra. Sayfanın en büyük
+              görseli olduğu için hemen yüklenir. */}
+          <PostCover post={post} priority className="mb-8" />
+
+          {/* Mobilde içindekiler metnin başında bir blok; masaüstünde kenar
+              çubuğunda (lg:hidden bileşen içinde). */}
+          <ArticleToc toc={post.toc} className="mb-8" />
 
           <div className="prose max-w-none">
             <MdxContent code={post.content} />

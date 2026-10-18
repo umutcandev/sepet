@@ -3,8 +3,8 @@ import type { Post } from "@/lib/blog"
 import { cn } from "@/lib/utils"
 
 // Yazının üretilen op-art kapağı (bkz. lib/blog/cover). Ayrı bir SVG dosyası:
-// sayfa kapağı bir kez indirir ve önbellekten kullanır. Dekoratif; başlık hemen
-// yanında olduğu için alt metni boş.
+// sayfa kapağı bir kez indirir ve önbellekten kullanır. Dekoratif; yazının adı
+// kartta ve sayfada zaten yazılı olduğu için alt metni boş.
 export function PostCover({
   post,
   priority = false,
