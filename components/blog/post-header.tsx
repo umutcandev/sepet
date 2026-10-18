@@ -1,15 +1,16 @@
 import Link from "next/link"
 
 import { AuthorAvatarGroup, AuthorNameLinks } from "@/components/blog/author-meta"
+import { PostCover } from "@/components/blog/post-cover"
 import { Badge } from "@/components/ui/badge"
 import type { Post } from "@/lib/blog"
 import { getAuthor } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
 import { formatPostDate, formatPostDateShort } from "@/lib/blog/format"
 
-// Yazı başlığı bloğu: kategori rozeti + tarih, başlık, açıklama, yazar
-// avatar-group + X profiline giden ad linkleri. Yazar adının yanında rolü
-// (soluk) ve onun yanında okuma süresi gösterilir.
+// Yazı başlığı bloğu: kategori rozeti + tarih, başlık, üretilen kapak,
+// açıklama, yazar avatar-group + X profiline giden ad linkleri. Yazar adının
+// yanında rolü (soluk) ve onun yanında okuma süresi gösterilir.
 export function PostHeader({ post }: { post: Post }) {
   const category = getCategory(post.category)
   // Rol yalnız tek yazarlı yazıda gösterilir; eş-yazarda roller karışmasın diye
@@ -33,6 +34,8 @@ export function PostHeader({ post }: { post: Post }) {
       <h1 className="text-3xl font-semibold tracking-tight text-balance text-foreground md:text-4xl">
         {post.title}
       </h1>
+
+      <PostCover post={post} priority className="my-1" />
 
       <p className="text-base leading-relaxed text-muted-foreground">
         {post.description}
