@@ -1,0 +1,474 @@
+---
+title: Blog Kapaklarını Kodla Çizmek
+description: Render'ın op-art kapaklarından esinlenip her yazıya kendi kapağını çizen bir motor yazdık. Slug girer, iki renkli bir desen çıkar.
+publishedAt: 2026-10-18T10:00:00+03:00
+authors:
+  - umutcan
+category: teknik
+coverVariant: 1
+tags:
+  - tasarım
+  - svg
+  - üretken sanat
+  - mühendislik günlüğü
+---
+
+Bu blogun kartlarında başından beri görsel yoktu. Tarih, kategori, başlık ve
+yazar vardı. Kartlar okunaklıydı ama birbirine benziyordu ve liste uzadıkça
+aradığın yazıyı gözle bulmak zorlaşıyordu.
+
+Bize yazının konusunu anlatan bir görsel gerekmiyordu. Kartları birbirinden
+ayıran ve hepsi aynı elden çıkmış gibi duran bir görsel gerekiyordu. Bilinen iki
+yol bunu vermedi. Stok fotoğraf konuyu anlatmaya çalışıyor ama önbellek
+sürümlemesi ya da bel sağlığı üzerine bir yazıda ya alakasız ya da klişe
+kalıyor. Her yazıya ayrı bir illüstrasyon çizdirmek ise hem yavaş hem de
+tutarsız. On yazı sonra blog on farklı elden çıkmış gibi görünüyor.
+
+Başka bir yolu [Render'ın blogundaki](https://render.com/blog) kapaklar gösterdi.
+İki renk, ince bir çerçeve ve tek bir kural. Çizgiler bir yerde kalınlaşıp bir
+yerde inceliyor, dama karoları merkeze doğru sıkışıyor, dalgalar sütundan sütuna
+yön değiştiriyor. Uzaktan bakınca sakin bir yüzey, yaklaşınca titreşen bir desen.
+Hiçbiri yazının konusunu anlatmaya çalışmıyor ama hepsi aynı aileden olduğunu
+söylüyor. Aradığımız şey tam olarak buydu.
+
+Aklımıza şu geldi. Bu bir üslupsa kurallara dökülebilir. Kurallara
+dökülebiliyorsa her yazı için ayrı ve otomatik üretilebilir.
+
+## Önce bakmayı öğrendik
+
+Render'ın 5 kapağının ekran görüntüsünü kodla ölçtük. Görüntüler 1296×864 pikseldi ve çerçeve 4 kenarda da tam 48 pikseldi, yani kısa kenarın 1/18'i. Kenar yumuşatması dışında her görselde yalnızca iki renk
+vardı. Çoğunda ikisi aynı tonun koyu ve açık hâliydi. Mavide ise açık renk
+camgöbeğine doğru kaymıştı, ton açısında yaklaşık 26°.
+
+Renkleri algıya göre kurulmuş OKLCH renk uzayında ölçtük. Açıklık koyu zeminde
+0,24 ile 0,31, açık renkte 0,80 ile 0,91 arasındaydı. İki rengin kontrast oranı
+8,3:1 ile 11,5:1 arasında değişiyordu. Açık rengin çerçeve içindeki payı ise
+hep yarıya yakındı, %47 ile %57 arasında. Bu sayılar ileride motorun
+sınırları olacaktı.
+
+Bu 5 kapak aynı iskeleti paylaşıyordu. Renk ailesi dışında asıl değişen, deseni
+hangi kuralın yönettiğiydi. Birinde dikey çubukların kalınlığı merkeze doğru
+basamak basamak artıyordu. Bir başkasında kalınlık satırdan satıra doğrusal
+artıyor, komşu sütunda tersine dönüyordu. Üçüncüsünde dama karolarının genişliği
+merkeze yaklaştıkça küçülüyordu. Dördüncüsünde kalınlık bir sinüs dalgasına
+bağlıydı ve komşu sütun ters fazda çiziliyordu. Sonuncusunda her çizgi bir
+noktada kalından inceye geçiyor, geçiş noktası köşegen boyunca kayıyordu.
+
+İlk sürümümüz beşinin de benzerini çizebildi. Ama üçü için o kapağa özel bir
+kural yazmamız gerekmişti ve bir görüntüyü yalnızca onun için yazılmış bir
+kuralla yeniden çizmek pek bir şey kanıtlamaz. Asıl işaret öbür ikisiydi.
+Doğrusal artan ve sinüsle değişen çizgiler, motorun genel parçalarıyla, yani bir
+alan fonksiyonu ve bir çizgi ızgarasıyla çıktı. Üslubun birkaç kurala
+indirgenebildiğini bu ikisi gösterdi.
+
+Sonra referanslara özgü ne varsa motordan çıkardık. Amacımız Render'ın
+kapaklarını kopyalamak değildi. Dilbilgisini öğrenip kendi cümlelerimizi kurmak
+istiyorduk. Özel yazdığımız 3 kural koddan tamamen silindi, öbür 2 deseni veren birleşim
+de bilerek kapatıldı. Motor bugün o 5 deseni birebir üretmiyor. Parçalar
+tesadüfen yan yana gelince uzak akrabaları çıkabiliyor ama hiçbir kural onları
+hedeflemiyor. Elindeki 11 motifi de bilinen tekniklerden kendimiz kurduk.
+
+## Tek bir fikir, çok sayıda desen
+
+Motiflerin yaklaşık yarısının merkezinde basit bir fikir var, alan fonksiyonu.
+Bu fonksiyon tuvalin her noktasına sıfır ile bir arasında bir değer veriyor.
+Çizgiler ve noktalar bu değeri okuyup kalınlaşıyor ya da inceliyor, pikseller
+yanıyor ya da sönük kalıyor. Aşağıda solda bir kapak, sağda o kapağın altındaki
+alan duruyor. Haritada açık yerler kalın çizgi demek.
+
+![Solda 3 kollu bir spiral çizen yatay çizgilerden oluşan mercan rengi kapak, sağda aynı kapağın iki rengi arasında yumuşak geçişli spiral alan](/blog/media/kapak-motoru/alan-ve-harita.webp)
+
+Gözün desen sandığı şey, bu haritanın çizgilerle örneklenmiş hâli. Alanı
+değiştirince desen değişiyor, çizgi ızgarası aynı kalıyor. Motorda radyal,
+baklava, yastık, dalgacık, spiral, eyer, yumurta kolisi, dalga ve rampa olmak üzere 9 alan var. Çizgi alanı, nokta ızgarası, piksel tarama, halkalar ve
+dokuma bu alanları okuyor. Rampa ve dalga çizgi motifine kapalı, çünkü
+referanslardaki 2 deseni tam da bu birleşim veriyordu.
+
+Alanın üstünde 2 ayar daha var. Birincisi basamak. Alan bazen 3 ile 6 arasında bir düzeye indiriliyor ve kalınlık yumuşak değil, basamak basamak
+değişiyor. İkincisi hücreler. Tuval bazen birkaç hücreye bölünüyor ve her ikinci
+hücrede alan ters çevriliyor, aynalanıyor ya da fazı kaydırılıyor. Tek bir alan
+bu sayede kendi içinde bir ritim kazanıyor.
+
+<Slider label="Alan fonksiyonuyla çizilen kapaklar">
+  <Slide src="/blog/media/kapak-motoru/alan-1.svg" alt="Açık yeşil zeminde merkezden dışa iç içe elipsler oluşturan koyu zeytin yeşili yatay çizgiler">Dalgacık alanı. Suya düşen taşın halkaları gibi merkezden dışa yayılıyor. Bu kapak açık zeminli, roller yer değiştirmiş ve desen koyu mürekkeple çizilmiş.</Slide>
+  <Slide src="/blog/media/kapak-motoru/alan-2.svg" alt="Koyu petrol zeminde açık mavi yatay çizgilerin 2 sıra halinde dolu ve boş daireler oluşturduğu desen">Yumurta kolisi alanı. 2 dalganın çarpımı tümsek ve çukurları sıra sıra diziyor. Alan 3 basamağa indirildiği için kalınlık yumuşak değil, basamak basamak değişiyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/alan-3.svg" alt="Koyu camgöbeği zeminde 3 hücreye bölünmüş yatay çizgiler, ortadaki hücre ters çevrilmiş ve açık renkle dolu">Radyal alan, 3 hücre ve 6 basamak. Ortadaki hücre ters çevrildiği için komşular arasında bir ritim kuruluyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/alan-4.svg" alt="Koyu kahve zeminde boyu ve açısı değişen açık renkli kare noktalardan oluşan desen">Yumurta kolisi alanı nokta ızgarasında. Karelerin boyu alanı izliyor. Kareler sol üstten sağ alta doğru çeyrek tur döndüğü için ortada baklava gibi duruyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/alan-5.svg" alt="Koyu kahve zeminde 4 hücreye bölünmüş kehribar rengi baklava noktalar, dolu ve boş daireler dönüşümlü">Baklava noktalar, radyal alan ve 4 hücre. Her ikinci hücre ters çevrilmiş. Baklavalar yarım satır kaydırmalı bir ızgarada durduğu için köşelerinden birbirine değebiliyor.</Slide>
+</Slider>
+
+## Alandan çıkmayan desenler
+
+Bazı desenler bir alandan değil, bir yerleşim kuralından doğuyor.
+
+Truchet karolarının en bilineni bir kare ve onun iki karşı köşesinden çizilen
+çeyrek yaylar. Karo döndürülünce yaylar öbür iki köşeye geçiyor. Hangi karonun
+döneceğini bir kural seçiyor. Kural rastgele olunca yaylar birbirine bağlanıp
+kıvrılan yollar çiziyor. Kural tuvalin çeyreklerine göre olunca aynı karo ortada
+açan bir çiçeğe dönüşüyor. Bunların yanında dama, sıra ve dalga kuralları da
+var. Karo da yalnızca yaydan ibaret değil, üçgen ve köşegen taramalı karolar da
+seçilebiliyor.
+
+Kutupsal desenlerde ızgara açı ve yarıçaptan kuruluyor. Dilimler ve halkalar aynı
+SVG yoluna (path) yazılıyor ve evenodd dolgu kuralı ikisinin çakıştığı yerleri
+boşaltıyor. Ortaya bir dart tahtası çıkıyor. Bu kesişim için ayrıca hesap
+yapmıyoruz, tarayıcı dolguyu çizerken kendisi yapıyor. Moiré da aynı yoldan
+çalışıyor. İki düzenli deseni aynı yola yazınca farkları kendi desenini çiziyor.
+Dilimleri logaritmik bir eğriyle bükünce dart tahtası girdaba dönüyor.
+
+<Slider label="Kuraldan doğan desenler">
+  <Slide src="/blog/media/kapak-motoru/karo-1.svg" alt="Açık yeşil zeminde koyu yaylardan oluşan, ortada çiçeklenen simetrik Truchet deseni">Truchet yayları, çeyrek kuralı. Her çeyrek kendi yönünde döndüğü için desen ortada çiçekleniyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/karo-2.svg" alt="Koyu zeminde birbirine bağlanan çift bantlı açık camgöbeği yaylardan oluşan kıvrımlı yollar">Aynı karo, rastgele kural ve 2 bant. Yaylar birbirine bağlanıp kıvrılan yollar çiziyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/karo-3.svg" alt="Bordo ve mercan rengi üçgen karolardan oluşan, ortada iç içe baklavalar beliren desen">Üçgen karolar, çeyrek kuralı. İç içe baklavalar kendiliğinden beliriyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/karo-4.svg" alt="Koyu kahve zeminde merkezi solda duran, dışa doğru büyüyen kehribar ve kahve karolardan oluşan dart tahtası">Dart tahtası, 30 dilim. Dilimler ve geometrik büyüyen halkalar aynı yolda, çakıştıkları yer boşalıyor. Merkez tuvalin soluna kaymış.</Slide>
+  <Slide src="/blog/media/kapak-motoru/karo-5.svg" alt="Lacivert zeminde merkezdeki küçük bir gözden dışa dönen açık mavi spiral kollar">Spiral kollar. Kollar merkezde piksel altına inmesin diye inceldikleri yerde kesiliyor ve ortaya küçük bir göz konuyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/karo-6.svg" alt="Koyu zeminde merkezi sağa kaymış bir noktadan yayılan, genişliği dalgalanan sarı ışınlar">Güneş ışını, 46 dilim. Dilimlerin genişliği çevre boyunca bir nabızla değişiyor.</Slide>
+</Slider>
+
+## Eşikten geçen yüzeyler
+
+Üçüncü grup pürüzsüz bir yüzeyi iki tona indiriyor.
+
+Topoğrafya motifi tuvale birkaç tepe ve çukur yerleştiriyor, altına da hafif
+dalgalı bir zemin seriyor. Yüzeyin eş yükselti çizgilerini marching squares
+yöntemiyle, yani ızgaranın her karesinde çizginin hangi kenarlardan geçtiğine
+bakarak çıkarıyor. Ham çizgiler kırık çıkıyor. Chaikin köşe kesmesi onları
+yumuşatıyor, Ramer-Douglas-Peucker sadeleştirmesi de düz giden noktaları atıp
+kıvrımı koruyor. Çizgi kalınlığını elle seçmiyoruz. Toplam eğri boyunu ölçüp
+kaplama hedefini tutturan kalınlığı hesaplıyoruz. Boyu kendi kalınlığının
+birkaç katına varmayan eğriler kart boyutunda nokta kümesi gibi durduğu için
+çizilmiyor.
+
+Dalgalı zemin başta isteğe bağlıydı. Motif seçimini kategoriden bağımsız
+yaptığımızda topoğrafya daha sık çıkmaya başladı ve dalgasız örneklerde
+tepelerden uzak bölgelerin düz kaldığını, oraya hiç çizgi düşmediğini gördük.
+Dalgalı zemini zorunlu yaptık. 300 topoğrafya kapağında en zayıf kapağın
+kaplaması %10'dan %28'e, en zayıf %5'lik dilimin sınırı %28'den %42'ye çıktı. Kalan açığı aşağıda anlatacağımız kod incelemesi
+kapattı.
+
+Piksel tarama alan fonksiyonlarını Bayer eşik matrisinden geçiriyor. Eski
+bilgisayar grafiklerinden tanıdık bir yöntem. Her hücre, alanın değeri matristeki
+eşiği aşıyorsa yanıyor. Yumuşak bir geçiş düzenli bir piksel dokusuyla anlatılmış
+oluyor. Piksel her zaman kare değil, yatay bir tire ya da artı da olabiliyor.
+
+<Slider label="Eşikten geçen yüzeyler">
+  <Slide src="/blog/media/kapak-motoru/esik-1.svg" alt="Koyu petrol zeminde yer yer sıklaşıp bantlara dönüşen açık mavi eş yükselti çizgileri">Topoğrafya, 5 çukur, 1 tepe ve 26 yükselti seviyesi. Eğrilerin sıklaştığı yerler yüzeyin dikleştiği yerler.</Slide>
+  <Slide src="/blog/media/kapak-motoru/esik-2.svg" alt="Koyu bordo zeminde 1 çukur ve 3 tepenin etrafında dolanan mercan rengi eş yükselti çizgileri">1 çukur, 3 tepe ve 32 seviye. Her 4. eğri 2 kat kalın, topoğrafik haritalardaki ana eş yükselti çizgileri gibi.</Slide>
+  <Slide src="/blog/media/kapak-motoru/esik-3.svg" alt="Açık lila zeminde seyrek ve kalın mor eş yükselti çizgileri">Açık zeminde aynı motif. Eğriler seyrek olduğu için motor çizgiyi kalınlaştırıyor ve kaplama yine yarıya yakın kalıyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/esik-4.svg" alt="Lacivert zeminde açık mavi kare piksellerden oluşan tek kollu spiral">Piksel tarama, tek kollu spiral alan ve 4×4 Bayer matrisi.</Slide>
+  <Slide src="/blog/media/kapak-motoru/esik-5.svg" alt="Koyu kahve zeminde açık piksellerden oluşan, ortada çarpı gibi kesişen eyer biçimli desen">Eyer alanı 2×2 matrisle. Matris küçüldükçe geçişler sertleşiyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/esik-6.svg" alt="Koyu zeminde yer yer uzun şeritlere birleşen yatay kehribar rengi tirelerden oluşan desen">Tireli piksel tarama. Yan yana yanan tireler birleşip uzun şeritler oluşturuyor, aralarında köşegen boşluklar kalıyor.</Slide>
+</Slider>
+
+## 11 aile
+
+Motorun bugünkü 11 motif ailesi aşağıda. Her ailenin kendi içinde modları ve
+seçenekleri var.
+
+| Motif | Ne yapıyor |
+| --- | --- |
+| Çizgi alanı | Paralel çizgilerin kalınlığı bir alanı izliyor |
+| Nokta ızgarası | Noktaların boyu bir alanı izliyor, kare, artı ve çubuklar bazen tuval boyunca dönüyor |
+| Piksel tarama | Bir alan Bayer matrisiyle iki tona iniyor |
+| Halkalar | İç içe daire, kare ya da baklava, kalınlık bir alanı izliyor |
+| Dalga çizgileri | Çizgiler bir profil boyunca kayıyor, eğimde inceliyor |
+| Topoğrafya | Tepe ve çukurlardan kurulan bir yüzeyin eş yükselti çizgileri |
+| Truchet karoları | Çeyrek yay, üçgen ya da köşegen karo, yönünü bir kural seçiyor |
+| Kutupsal | Dilim ve halkalardan dart tahtası, girdap, spiral kol ve güneş ışını |
+| Moiré | İki düzenli desen üst üste, farkları kendi desenini çiziyor |
+| Yama | Tuval bölünüyor, parçalar kendi açısıyla taranıyor ya da düz bırakılıyor |
+| Dokuma | Kare karolar çubuklarla ya da balıksırtı taramayla örülüyor |
+
+Buraya kadar görmediğimiz ailelerden birkaç örnek.
+
+<Slider label="Diğer ailelerden örnekler">
+  <Slide src="/blog/media/kapak-motoru/aile-1.svg" alt="Bordo zeminde 3×2 dizilmiş pembe hedef halkaları">Halkalar, hedef ızgarası. 3×2 hücre var ve kalınlık deseni hücreden hücreye biraz kayıyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/aile-2.svg" alt="Çivit zeminde merkezi sola kaymış iç içe kareler, sağ tarafta dikey çizgilere dönüşüyor">Tünel. Kare halkaların merkezi her halkada biraz kayıyor. Dışa taşan halkalar çerçeveye çarpınca sağda dikey çizgilere dönüşüyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/aile-3.svg" alt="Açık yeşil zeminde soldan sağa genliği büyüyen zikzak çizen dikey koyu çizgiler">Zikzak profilli dalga çizgileri. Genlik soldan sağa büyüyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/aile-4.svg" alt="Koyu petrol zeminde 2 halka sisteminin girişiminden doğan, dama tahtasını andıran açık mavi desen">Moiré. Merkezleri birbirine yakın 2 halka sistemi üst üste binince aralarında dama tahtasını andıran kendi desenleri beliriyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/aile-5.svg" alt="Koyu zeminde yatay ve dikey taranmış dikdörtgen parçalar, biri düz dolu, biri boş">Yama. Tuval 4 kademeye kadar bölünüyor ve her parça yatay ya da dikey taranıyor. Bazı parçalar bilerek düz dolu ya da boş kalıyor. Tarama bantları Sutherland-Hodgman kırpmasıyla parçanın sınırına oturtuluyor.</Slide>
+  <Slide src="/blog/media/kapak-motoru/aile-6.svg" alt="Koyu yeşil zeminde açık yeşil balıksırtı dokuma">Balıksırtı dokuma. Çubuk kalınlığı bir dalga alanıyla değişiyor.</Slide>
+</Slider>
+
+## Renk
+
+Her kategorinin 5 ana tonu var. Teknik yazılar mor, lacivert, çivit, petrol ve
+mürdümden birini alıyor. Sağlık yazıları yaprak, nane, çam, zeytin ve okyanustan,
+kesişim yazıları limon, kehribar, mercan, gül ve tarçından seçiyor. Ton
+seçildikten sonra iki renk o tondan türetiliyor. Zemin koyu ve doygun, desen açık
+ve yumuşak.
+
+Renkleri RGB'de değil OKLCH'de kuruyoruz. OKLCH'de açıklık algıya göre ölçüldüğü
+için sarı ile mor aynı açıklık değerinde gözümüze de yaklaşık aynı açıklıkta
+görünüyor. HSL gibi RGB tabanlı modellerde böyle bir eşitlik yok, aynı açıklık
+değeriyle üretilen sarı parlarken mor kararıyor.
+
+Referanslardaki mavi kaymayı da genelleştirdik. Mor dışındaki bütün tonlarda
+açık renk ton açısında biraz kayıyor. En belirgini lacivertte, yaklaşık 28°.
+
+Kontrastın alt sınırı 7:1, WCAG'nin metin için koyduğu en sıkı eşik. Açık renk
+bu oran tutana kadar adım adım açılıyor, yetmezse koyu renk koyulaşıyor.
+Kapakların yaklaşık %22'si açık zeminle, yine yaklaşık %22'si doygunluğu
+kırılmış tonlarla çıkıyor. Açık zeminde roller yer değiştiriyor ve desen koyu
+mürekkeple çiziliyor.
+
+## Rastgele ama hep aynı
+
+Kapakların rastgele görünmesini istiyoruz ama gerçekten rastgele olmalarını
+istemiyoruz. Aynı yazı her derlemede aynı kapağı almalı. Bu yüzden motor zar
+atmıyor, tohumu yazının kendisinden türetiyor. Kategori, slug ve varyant numarası
+tek bir dizgede birleşiyor, 32 bitlik bir sayıya özetleniyor ve bu sayı küçük bir
+sözde rastgele sayı üretecini başlatıyor.
+
+```ts
+const a = render(design("bir-yazi", "teknik"))
+const b = render(design("bir-yazi", "teknik"))
+assert.equal(a, b)
+```
+
+Bu,
+[motorun testlerindeki](https://github.com/umutcandev/sepet/blob/master/lib/blog/cover/covergen.test.ts)
+ilk kontrol. Aynı dosyadaki öbür testler her kategori ve her motif için, kapak
+ve paylaşım görseli boyutları dahil 3 boyutta SVG'yi baştan sona tarıyor. İzin
+verilmeyen bir öğe, kapanmamış bir etiket, koordinatlarda geçersiz bir sayı ya da
+boş bir desen testi düşürüyor. Kontrast ise her kategoride ve her zemin tipinde
+2000 rastgele palet üzerinde ölçülüyor.
+
+Kategori desene doğrudan karışmıyor, yalnızca renk ailesini seçiyor. Her kategoride 11 aileden her biri eşit olasılıkla çıkıyor. Bir sağlık yazısı da
+piksel tarama alabiliyor, bir teknik yazı da topoğrafya. Yine de kategori tohumun
+parçası olduğu için kategorisi değişen bir yazının kapağı baştan değişiyor.
+
+Bir ayrıntı önemli. Palet, motif seçimi ve parametreler aynı üreteçten değil,
+ondan çatallanan ayrı akışlardan sayı çekiyor. Böylece palete yeni bir ayar
+eklediğimizde motif seçimi ve desenler yerinde kalıyor. Bir yazıya `coverMotif`
+ile belli bir motif zorlandığında da o motifin parametreleri, motif kendiliğinden
+seçilseydi alacağı değerlerle aynı kalıyor. Tek akışta paletteki küçük bir ekleme
+sonraki bütün sayıları kaydırır ve her kapağın deseni değişirdi.
+
+Peki kapak beğenilmezse? Yazının frontmatter'ına `coverVariant` alanını ekleyip
+bir sayı yazmak yetiyor. Slug ve kategori aynı kalıyor, tohum değişiyor. Bu yazı
+için motorun ilk 6 önerisine baktık ve 1 numaralı varyantı seçtik.
+
+<Slider label="Bu yazı için motorun önerdiği ilk 6 kapak">
+  <Slide src="/blog/media/kapak-motoru/varyant-0.svg" alt="Mürdüm zeminde yatay sinüs dalgaları çizen pembe çizgiler">Varyant 0. Sinüs profilli dalga çizgileri.</Slide>
+  <Slide src="/blog/media/kapak-motoru/varyant-1.svg" alt="Açık mavi zeminde lacivert çift bantlı çeyrek yaylardan oluşan Truchet deseni">Varyant 1. Truchet yayları, dalga kuralı ve 2 bant, açık zemin. Bu yazının kapağı.</Slide>
+  <Slide src="/blog/media/kapak-motoru/varyant-2.svg" alt="Mürdüm zeminde ortası koyulaşan dikey pembe çizgiler">Varyant 2. Dikey çizgiler, eyer alanı.</Slide>
+  <Slide src="/blog/media/kapak-motoru/varyant-3.svg" alt="Çivit zeminde yatay sinüs dalgaları çizen açık mavi çizgiler">Varyant 3. Yine sinüs dalgası, bu kez çivit.</Slide>
+  <Slide src="/blog/media/kapak-motoru/varyant-4.svg" alt="Çivit zeminde üst ve alt yarısı birbirine göre kaymış dikey çizgi deseni">Varyant 4. Dikey çizgiler, dalgacık alanı ve 2 hücre. Alttaki hücrenin fazı kaydırılmış.</Slide>
+  <Slide src="/blog/media/kapak-motoru/varyant-5.svg" alt="Çivit zeminde merkezi biraz sola kaymış bir noktadan yayılan açık mavi ışınlar">Varyant 5. Güneş ışını.</Slide>
+</Slider>
+
+## Görsel ağırlık
+
+Rastgele parametrelerin en büyük riski, bazı kapakların neredeyse boş,
+bazılarının neredeyse dolu çıkması. Listede yan yana durduklarında göz hemen ağır
+olana gidiyor. Bu yüzden motiflerin çoğunda desen renginin çerçeve içindeki payı
+için bir hedef seçiyoruz.
+
+Çizgi, halka, yama ve kare pikselli taramada hedef %46 ile %57 arasından
+seçiliyor, referanslarda ölçtüğümüz aralıkla neredeyse aynı. Dokumada aralık %46 ile %54, topoğrafyada %44 ile %54. Nokta ızgaralarında hedefi bilerek
+biraz düşük tuttuk, %38 ile %48 arasında. Noktaların çizgilerden biraz daha
+hafif durması gözümüze daha iyi geldi. Yaylı Truchet karolarında yay genişliği,
+kaplamayı %42 ile %50 arasına getirecek şekilde doğrudan geometriden
+hesaplanıyor. Tire ve artı pikseller hücrenin ancak bir kısmını doldurduğu için
+orada hücrelerin %62 ile %82'si yakılıyor. Dalga, moiré ve kutupsal
+motiflerde hedef yok. Orada çizgi kalınlığı ya da dilim doluluğu yarıya yakın,
+dar bir aralıktan seçiliyor.
+
+Alan kullanan motiflerde hedefi tutturmak için alanın ton eğrisini
+değiştiriyoruz. Alanı bir üsse yükseltince ortalaması değişiyor ve doğru üssü
+ikiye bölme yöntemiyle arıyoruz.
+
+```ts
+for (let i = 0; i < 18; i++) {
+  const mid = (lo + hi) / 2
+  sh.gamma = Math.exp(mid)
+  if (meanOf(sh) > target) lo = mid
+  else hi = mid
+}
+```
+
+Buradaki ortalama soyut bir integral değil. `meanOf` alanı tam olarak çizimin
+okuduğu noktalarda ölçüyor. Çizgi motifinde bu bir hücre ızgarası, dokumada karo
+merkezleri, nokta ızgarasında her noktanın kendi yeri.
+
+Bazı alanlarda üs yetmiyor. Alanın büyük kısmı tam sıfır ya da tam bir olduğunda
+üs o bölgeleri hiç değiştirmiyor. O zaman kalan farkı alanı yukarı ya da aşağı
+iten ikinci bir düzeltmeyle kapatıyoruz ve onu da ikiye bölmeyle arıyoruz.
+Basamaklı alanlar ayrıca dikkat istiyor. Orada ortalama yumuşak değil, sıçrayarak
+değişiyor ve ikiye bölme sıçramanın iki yanında durup kalıyor. Arama bitince iki
+yanı da ölçüp hedefe yakın olanı seçiyoruz.
+
+## Ölçerek karar vermek
+
+Kapakların dengeli çıktığına birkaç örneğe bakarak karar vermek,
+[ürün eşleştirme yazısında](/blog/eslestirme-kurallarini-olcerek-degistirmek)
+anlattığımız hatanın aynısı olurdu. Elle bakılan örnek son değiştirilen şeyi
+doğrular. Bu yüzden kategori başına 120 tohum, toplam 360 kapak ürettik ve her
+birini tarayıcıda piksele çevirip saydık.
+
+| Ölçüt | Sonuç |
+| --- | --- |
+| Kaplama, en düşük | %35 |
+| Kaplama, 5. yüzdelik | %41 |
+| Kaplama, medyan | %50 |
+| Kaplama, 95. yüzdelik | %56 |
+| Kaplama, en yüksek | %60 |
+| %38 ile %62 bandının dışında kalan | 4/360 |
+| En düşük kontrast | 7,6:1 |
+| Görülen farklı alt aile | 137 |
+| SVG boyutu, medyan | 17,7 KB |
+| SVG boyutu, en ağır | 151 KB |
+| Sıkıştırılmış boyut (gzip), medyan | 5,0 KB |
+| Üretim süresi, medyan (tarayıcıda) | 2,3 ms |
+
+Alt aile sayarken motif, mod, karo kuralı ve alan gibi gözle görülür seçimlerin
+farklı birleşimlerini ayrı saydık. 137, bu 360 kapakta karşımıza çıkan birleşim
+sayısı, motorun üretebileceği bütün birleşimler değil.
+
+En düşük kaplamaların çoğu nokta ızgarasından geliyor, yani hedefi bilerek düşük
+tuttuğumuz yerden. Onları artı pikselli taramalar ve dalga çizgileri izliyor. En
+düşük tek kapak ise %35 ile bir güneş ışını, hedefi olmayan bir motif.
+
+Çeşitliliği de ölçmek istedik. Her kapağı 48×32 bloktan oluşan kaba bir ize
+indirdik, renkleri yok saydık ve her kapağı kendisine en çok benzeyen komşusuyla
+karşılaştırdık. Tipik bir kapağın en yakın komşusuyla farkı 0,19 çıktı. 360
+kapağın 11'inde bu fark 0,05'in altına düştü. Bunların 9'unda iki taraftan biri dalga kapağıydı, kalan 2'si de birbirine benzeyen iki dokumaydı. En yakın
+çift, iki ayrı kategoriden gelen iki dalga kapağıydı ve farkları tipik farkın 1/12'si kadardı.
+
+Bu çifti kart boyutunda yan yana koyunca ise ikisi rahatça ayırt ediliyor. Biri
+koyu zeminde zikzak, öbürü açık zeminde sinüs profilli. Yakınlığı abartan şey
+ölçümün kendisi, çünkü kaba iz ince ve düzenli dokuların hepsini aynı griye
+indiriyor. Vardığımız yargı da bu yüzden iki parçalı. Dalga ailesi dışında
+birbirinin kopyası gibi duran kapak çıkmıyor. Dalgalarda ise bu ölçüm soruyu
+cevaplayamıyor.
+
+## Dışarıdan bir göz
+
+Yazının ilk taslağı bittiğinde taslağı, bu işi daha önce hiç görmemiş bağımsız
+bir inceleme ajanına verdik ve ondan mantık hatası aramasını istedik. Bulguların
+bir kısmı yazıdaydı. Daha önemlisi, bir kısmı doğrudan kodu işaret ediyordu. Bunun
+üzerine kodu da ayrı bir incelemeden geçirdik. Bu inceleme 1650 kapak üretip
+ölçtü ve bizim ölçümümüzün kaçırdığı yerleri buldu.
+
+En çarpıcı iki bulgu dengelemedeydi. Halka motifinde iç daire, halkaya kalınlık
+hissi versin diye bazen bir yana kaydırılıyordu. Dengeleme bu kaymayı hiç
+görmüyordu. Kayma halkalar arasındaki boşluktan büyük olunca iç daire bir önceki
+halkayı kesiyor, evenodd kuralı da kesişimi siliyordu. Hedefi %51 olan bir kapak %18 kaplamayla çıkıyordu. Dokumada ise dengeleme alanın ortalamasını
+bütün tuval üzerinden alıyordu. Oysa balıksırtı dokuma alanı yalnızca 6 ile 12 sütun karonun merkezinde okuyor. Alan 3 basamaklı olunca bu fark, kaplamanın %83'e çıkması demekti.
+
+<Slider label="Kod incelemesinden önce ve sonra">
+  <Slide src="/blog/media/kapak-motoru/inceleme-halka-once.svg" alt="Açık zeminde tuvalin sol kenarından yayılan, kıl inceliğinde koyu halka yayları">Halka, düzeltmeden önce. İç daire kayınca halkalar kıl inceliğine iniyor. Kaplama %17,9.</Slide>
+  <Slide src="/blog/media/kapak-motoru/inceleme-halka-sonra.svg" alt="Açık zeminde tuvalin sol kenarından yayılan, kalınlığı dengeli koyu halka yayları">Aynı tohum, düzeltmeden sonra. Merkez tuvalin kenarında olduğu için kayma artık hiç açılmıyor. Kaplama %50,4.</Slide>
+  <Slide src="/blog/media/kapak-motoru/inceleme-dokuma-once.svg" alt="Koyu zeminde neredeyse tamamen açık camgöbeği renge boğulmuş balıksırtı dokuma">Dokuma, düzeltmeden önce. Desen neredeyse düz renge dönüyor. Kaplama %82,8.</Slide>
+  <Slide src="/blog/media/kapak-motoru/inceleme-dokuma-sonra.svg" alt="Koyu zeminde açık ve koyu karoların dengeli dağıldığı camgöbeği balıksırtı dokuma">Aynı tohum, düzeltmeden sonra. Dengeleme karo merkezlerinde ölçüldüğü için açık ve koyu karolar dengeleniyor. Kaplama %46,5.</Slide>
+</Slider>
+
+Kayma artık yalnızca tuvalin ortasındaki tek daireli halkalarda açılıyor ve
+halkalar arasındaki boşlukla sınırlı. Dengeleme her motifte alanı çizimin
+gerçekten okuduğu noktalarda ölçüyor ve basamaklı alanlarda sıçramanın iki
+yanına bakıyor. Yukarıda anlattığımız hâl bu düzeltmelerden sonraki hâl.
+
+İnceleme başka açıklar da buldu. Topoğrafyada çizgi kalınlığının bir tavanı var.
+Eğriler kısa kalınca kalınlık tavana dayanıyor ve hedef tutmuyordu. Artık böyle
+durumlarda motor seviye sayısını artırıyor ve 180 topoğrafya kapağının en düşüğü %39. Baklava noktalar ile tire ve artı pikseller ise yanlış alan formülleri
+yüzünden hedefe hiç ulaşamıyordu. Baklavalar yarım satır kaydırmalı bir ızgaraya
+geçti, öbür şekillerin alanı gerçek geometriden hesaplanıyor. Sonuç toplu
+ölçümde de görünüyor. 360 kapaklık ölçümde %38 ile %62 bandının dışında kalan kapak sayısı 29'dan 4'e indi. En düşük kaplama %24'ten %35'e, 5. yüzdelik %35'ten %41'e çıktı.
+
+Bir bulgu da sayfa ağırlığındaydı. İlk sürümde SVG doğrudan sayfanın içine
+yazılıyordu ve React sayfayı canlandırmak için aynı içeriği bir kez daha
+taşıyordu, yani her kapak sayfaya 2 kez giriyordu. Üretim derlemesinde liste
+sayfası 360,6 KB tutuyordu ve bunun yarısından fazlası kapaktı. Kapaklar artık
+derleme sırasında ayrı bir dosya olarak üretiliyor. Adreste içeriğin özeti olduğu
+için tarayıcı dosyayı bir yıl boyunca önbellekte tutabiliyor, kapak değişirse
+adres de değişiyor. Liste sayfası 360,6 KB'tan 160 KB'a, sıkıştırılmış hâliyle
+84,3 KB'tan 26 KB'a indi. Bir yazı sayfası 466 KB'tan 178 KB'a düştü. Paylaşım
+görseli de her istekte 100 ile 160 milisaniye harcayarak yeniden çiziliyordu.
+Artık o da derleme sırasında bir kez üretiliyor.
+
+Testler de sitenin gerçekten kullandığı durumları kanıtlamıyordu. Motorun
+varsayılan 3:2 boyutunda çalışıyorlardı ve desen rengi her SVG'de yazıldığı
+için boş bir desen bile testten geçerdi. Bugünkü testleri yukarıda anlattık.
+Üstüne yeni bir koruma ekledik. Yayındaki her yazının kapağının özeti bir
+[snapshot dosyasında](https://github.com/umutcandev/sepet/blob/master/lib/blog/cover/covers.snapshot.json)
+duruyor. Motordaki bir değişiklik yayındaki bir kapağı değiştirirse test
+kırılıyor ve değişikliği ancak bilerek kabul edebiliyoruz.
+
+## Paylaşım görseli
+
+Kapak 4 yerde görünüyor. Liste sayfasındaki sade kartlarda, her yazının
+altındaki ilgili yazı kartlarında, her yazının metninin başında ve yazı
+paylaşıldığında çıkan 1200×630 piksellik görselde. Öne çıkan büyük kartlar
+bilerek kapaksız. Paylaşım görselinde kapak aynı tohumdan bu boyutta yeniden
+çiziliyor. Motif ve renkler aynı kalıyor, yalnızca yerleşim yeni boyuta uyuyor.
+
+Paylaşım görselinde kuralımız katıydı ve mevcut yerleşim değişmeyecekti. Logo,
+kategori, başlık, yazar ve site adresi eski yerlerinde duruyor. Eski sıcak renkli
+zeminin yerini kapağın alması dışında değişen iki şey var. Öğelerin rengi marka
+kahvesi yerine kapağın kendi iki rengi oldu, yani her yazıda farklı. Desen
+öğelere değmesin diye de her öğenin arkasına zemin renginde bir açıklık koyduk.
+Bu açıklığın biçimine 3 denemede vardık.
+
+<Slider label="Paylaşım görselinin 3 aşaması" ratio="1200/630">
+  <Slide src="/blog/media/kapak-motoru/paylasim-asama-1.webp" alt="Lacivert moiré desenli paylaşım görselinde öğelerin arkasındaki açıklıkların tuval kenarından içeri açıldığı ilk deneme">İlk deneme. Her açıklık en yakın kenardan içeri açılıyordu. Öğeler rahattı ama desen kenarlarda kesiliyordu.</Slide>
+  <Slide src="/blog/media/kapak-motoru/paylasim-asama-2.webp" alt="Aynı paylaşım görselinde bütün öğelerin yüzen yuvarlak adalar üzerinde durduğu ikinci deneme">İkinci deneme. Bütün öğeler yüzen adalara geçti ve desen çerçeveye kadar bütün göründü. Logonun hap biçimli adası ise fazla yumuşak kaldı.</Slide>
+  <Slide src="/blog/media/kapak-motoru/paylasim-asama-3.webp" alt="Aynı paylaşım görselinde başlığın soldan açıldığı, öbür öğelerin adalarda durduğu bugünkü hâl">Bugünkü hâli. Yalnızca başlık soldan açılıyor, öbür öğeler ada olarak kalıyor. Logonun adasının köşeleri 28 piksel yuvarlatılmış.</Slide>
+</Slider>
+
+Aynı yerleşim her yazıda kendi renklerini alıyor.
+
+<Slider label="Diğer 7 yazının paylaşım görselleri" ratio="1200/630">
+  <Slide src="/blog/media/kapak-motoru/paylasim-blog-kapaklarini-kodla-cizmek.webp" alt="Bu yazının açık mavi zeminli, lacivert Truchet yaylı paylaşım görseli">Bu yazı</Slide>
+  <Slide src="/blog/media/kapak-motoru/paylasim-bir-listenin-en-uygun-sepete-yolculugu.webp" alt="Bir Listenin En Uygun Sepete Yolculuğu yazısının çivit zeminli bez ayağı dokuma desenli paylaşım görseli">Bir Listenin En Uygun Sepete Yolculuğu</Slide>
+  <Slide src="/blog/media/kapak-motoru/paylasim-agir-alisveris-posetini-tasirken-bel-omuz-sagligi.webp" alt="Ağır Alışveriş Poşetini Taşırken Bel ve Omuz Sağlığı yazısının çam yeşili moiré halkalı paylaşım görseli">Ağır Alışveriş Poşetini Taşırken Bel ve Omuz Sağlığı</Slide>
+  <Slide src="/blog/media/kapak-motoru/paylasim-butce-dostu-protein-dengeli-haftalik-sepet.webp" alt="Bütçe Dostu Protein yazısının gül rengi halka tünelli paylaşım görseli">Bütçe Dostu Protein</Slide>
+  <Slide src="/blog/media/kapak-motoru/paylasim-eslestirme-kurallarini-olcerek-degistirmek.webp" alt="Ürün Eşleştirme Kurallarını Tahminle Değil Ölçerek Değiştirmek yazısının petrol mavisi yama desenli paylaşım görseli">Ürün Eşleştirme Kurallarını Tahminle Değil Ölçerek Değiştirmek</Slide>
+  <Slide src="/blog/media/kapak-motoru/paylasim-protein-tozu-mu-gercek-gida-mi.webp" alt="Protein Tozu mu, Gerçek Gıda mı yazısının zeytin yeşili dalga desenli paylaşım görseli">Protein Tozu mu, Gerçek Gıda mı</Slide>
+  <Slide src="/blog/media/kapak-motoru/paylasim-tarif-fotografindan-dengeli-sepete.webp" alt="Tarif Fotoğrafından Dengeli Sepete yazısının mercan rengi moiré çizgili paylaşım görseli">Tarif Fotoğrafından Dengeli Sepete</Slide>
+</Slider>
+
+## TypeScript ve SVG
+
+Motor, bağımlılığı olmayan bir TypeScript modülü. Renk, alan, geometri ve çizim
+ayrı dosyalarda, her motif de kendi dosyasında duruyor. Sitenin geri kalanıyla
+aynı dilde yazıldığı için ikinci bir çalışma ortamı gerekmiyor. Kapak derleme
+sırasında sunucuda çiziliyor, paylaşım görseli de aynı fonksiyondan besleniyor.
+
+Motor 2 adımda çalışıyor. `design` bütün rastgele kararları verip düz bir JSON
+tarifi çıkarıyor, `render` bu tarifi SVG'ye çeviriyor. Tarif saklanabilir, elle
+düzenlenebilir ve tekrar çizilebilir. Çıktının SVG olması da kapağı her boyutta
+keskin tutuyor.
+
+## Bilinen sınırlar
+
+**Motor değişince kapaklar da değişiyor.** Kapak yazının slug'ından ve motorun o
+günkü kodundan çıkıyor. Kapakları 3:2'den 16:9'a geçirdiğimizde bütün
+kapakların deseni yeni genişliğe göre yeniden yerleşti. Kod incelemesinden
+sonraki düzeltmeler de 8 yazının 3'ünde kapağın ayrıntısını değiştirdi.
+Motif ve renk aynı kaldı ama desen yeniden dengelendi. Elle seçilen varyant da
+bundan korunmuyor, bu yazının 1 numaralı kapağı dahil. Snapshot testi böyle bir
+değişikliği gözden kaçırmamızı engelliyor ama eski kapağı geri getirmiyor. Bir
+kapağı motordan bağımsız sabitlemek için ya motorun eski sürümlerini saklamamız
+ya da her kapağın tarifini yazının yanında tutmamız gerekecek.
+
+**Bazı kapaklar ağır.** Medyan kapak sıkıştırılmış hâliyle 5 KB. En ağır uç
+değerler dalga ve girdap motiflerinden geliyor, 129 ile 151 KB arasında,
+sıkıştırınca 44 ile 52 KB. Medyanda en ağır aile ise nokta ızgarası, yaklaşık 45
+KB. Kapaklar artık ayrı dosya olduğu için sayfayı büyütmüyor ve tarayıcı
+önbelleğinde kalıyor ama ilk ziyarette bu boyut yine iniyor. Koordinatları tam
+piksele yuvarlamak dosyaları ham hâliyle yaklaşık %27 küçültürdü. Bunu henüz yapmadık.
+
+**Benzerlik ölçümümüz ince dokulara kör.** Kaba iz, dalga gibi sık desenleri
+aynı griye indiriyor ve çeşitliliği olduğundan az gösteriyor. Kart boyutunda
+ölçen bir yöntemimiz henüz yok, en yakın çiftlere hâlâ gözle bakıyoruz.
+
+**Güzelliği ölçmüyoruz.** Kaplama, kontrast ve çeşitlilik ölçülüyor ama bir
+kapağın güzel olup olmadığını hiçbir sayı söylemiyor. O karar hâlâ gözde ve
+varyant numarası bu yüzden var.
+
+Başta tek istediğimiz, kartların birbirinden ayrılmasıydı. Sonunda elimizde her
+yazıya kendi kapağını çizen, motor değişmedikçe aynı yazıya hep aynı kapağı
+veren ve beğenilmeyen bir kapağı tek bir sayıyla değiştirmeye izin veren bir
+motor var. Render'ın kapaklarından öğrendiğimiz şey belli bir desen değil, bir
+yöntemdi. İki renk, bir çerçeve ve tek bir kural.

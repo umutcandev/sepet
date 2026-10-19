@@ -38,7 +38,7 @@ export function getNumberedTocItems(toc: TocEntry[]): NumberedTocEntry[] {
 // İçeriğin gerçek kaydırma kabını bul. AppShell içeriği `window` yerine
 // overflow-y-auto bir div'de kaydırır; scroll-spy ve smooth-scroll'un doğru
 // çalışması için bu kabı yakalamamız gerekir.
-function getScrollParent(node: HTMLElement | null): HTMLElement | Window {
+export function getScrollParent(node: HTMLElement | null): HTMLElement | Window {
   let current = node?.parentElement ?? null
   while (current) {
     const overflowY = getComputedStyle(current).overflowY

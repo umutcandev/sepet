@@ -6,6 +6,7 @@ import Link from "next/link"
 import { RiFileCopyLine } from "@remixicon/react"
 
 import { CopiedIconSwap, copyText } from "@/components/blog/article-actions"
+import { Slide, Slider } from "@/components/blog/mdx-slider"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -326,6 +327,8 @@ const components = {
   table: MdxTable,
   th: MdxTh,
   td: MdxTd,
+  Slider,
+  Slide,
   Callout,
 } as unknown as MdxComponents
 
