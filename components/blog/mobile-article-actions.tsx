@@ -103,10 +103,15 @@ function ShareMenu({ pageUrl, title }: { pageUrl: string; title: string }) {
   )
 }
 
-// Öğe yukarı kaydırılıp görünümden çıktı mı. Mobilde belge, 48rem–64rem
-// arasında <main> kayıyor; scroll olayı kaptan kaba bubble etmediği için
-// document'te capture ile dinleniyor.
-function useScrolledPast(ref: React.RefObject<HTMLElement | null>) {
+// Öğe yukarı kaydırılıp görünümden çıktı mı; ayrıca sayfanın ne kadarı
+// kaydırıldı. Mobilde belge, 48rem–64rem arasında <main> kayıyor; scroll olayı
+// kaptan kaba bubble etmediği için document'te capture ile dinleniyor.
+// İlerleme her karede değiştiği için state'e değil doğrudan halkanın
+// stroke-dashoffset'ine yazılıyor; React yalnız görünürlük değişince çizer.
+function useScrollState(
+  ref: React.RefObject<HTMLElement | null>,
+  ringRef: React.RefObject<SVGCircleElement | null>
+) {
   const [past, setPast] = React.useState(false)
 
   React.useEffect(() => {
@@ -119,11 +124,20 @@ function useScrolledPast(ref: React.RefObject<HTMLElement | null>) {
       // lg ve üstünde öğe gizli (display: none); ölçülecek bir şey yok.
       if (el.offsetParent === null) return setPast(false)
       const scroller = getScrollParent(el)
-      const top =
+      const box =
         scroller === window
-          ? 0
-          : (scroller as HTMLElement).getBoundingClientRect().top
+          ? (document.scrollingElement ?? document.documentElement)
+          : (scroller as HTMLElement)
+      const top = scroller === window ? 0 : box.getBoundingClientRect().top
       setPast(el.getBoundingClientRect().bottom <= top)
+
+      const ring = ringRef.current
+      if (ring) {
+        const span = box.scrollHeight - box.clientHeight
+        const progress =
+          span > 0 ? Math.min(1, Math.max(0, box.scrollTop / span)) : 0
+        ring.style.strokeDashoffset = String(1 - progress)
+      }
     }
     const onScroll = () => {
       if (frame) return
@@ -141,7 +155,7 @@ function useScrolledPast(ref: React.RefObject<HTMLElement | null>) {
       document.removeEventListener("scroll", onScroll, { capture: true })
       window.removeEventListener("resize", onScroll)
     }
-  }, [ref])
+  }, [ref, ringRef])
 
   return past
 }
@@ -149,8 +163,9 @@ function useScrolledPast(ref: React.RefObject<HTMLElement | null>) {
 // Mobil/tablet'te (lg altı) yazar satırının en sağındaki Kopyala ve Paylaş
 // düğmeleri. Masaüstünde aynı eylemler kenar çubuğunda olduğu için gizli.
 //
-// Düğmeler yukarı kaydırılıp görünümden çıkınca sağ altta küçük bir "başa
-// dön" düğmesi belirir.
+// Düğmeler yukarı kaydırılıp görünümden çıkınca sağ altta küçük, yuvarlak bir
+// "başa dön" düğmesi belirir; çevresindeki halka sayfanın ne kadarının
+// kaydırıldığını gösterir.
 export function MobileArticleActions({
   markdown,
   markdownUrl,
@@ -165,7 +180,8 @@ export function MobileArticleActions({
   className?: string
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
-  const scrolledPast = useScrolledPast(ref)
+  const ringRef = React.useRef<SVGCircleElement>(null)
+  const scrolledPast = useScrollState(ref, ringRef)
 
   const scrollToTop = () => {
     getScrollParent(ref.current).scrollTo({ top: 0, behavior: "smooth" })
@@ -181,10 +197,13 @@ export function MobileArticleActions({
         <ShareMenu pageUrl={pageUrl} title={title} />
       </div>
 
-      {/* Ana renkte (default varyant = primary), sayfanın tek yüzen öğesi. */}
+      {/* Ana renkte (default varyant = primary), sayfanın tek yüzen öğesi.
+          Halka düğmenin içinde: soluk iz tam daire, üstündeki çizgi tepeden
+          saat yönünde kaydırma oranı kadar dolar (pathLength=1, dashoffset =
+          1 − oran). */}
       <Button
         variant="default"
-        size="icon-sm"
+        size="icon-lg"
         hitArea
         onClick={scrollToTop}
         inert={!scrolledPast}
@@ -197,7 +216,34 @@ export function MobileArticleActions({
             : "pointer-events-none translate-y-2 opacity-0"
         )}
       >
-        <RiArrowUpLine className="size-3.5" />
+        <svg
+          aria-hidden
+          viewBox="0 0 36 36"
+          className="pointer-events-none absolute inset-0 size-full -rotate-90"
+        >
+          <circle
+            cx="18"
+            cy="18"
+            r="14.5"
+            fill="none"
+            strokeWidth="2"
+            className="stroke-primary-foreground/25"
+          />
+          <circle
+            ref={ringRef}
+            cx="18"
+            cy="18"
+            r="14.5"
+            fill="none"
+            strokeWidth="2"
+            strokeLinecap="round"
+            pathLength={1}
+            strokeDasharray="1"
+            strokeDashoffset="1"
+            className="stroke-primary-foreground"
+          />
+        </svg>
+        <RiArrowUpLine className="size-4" />
       </Button>
     </>
   )
