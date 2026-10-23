@@ -37,6 +37,7 @@ import {
   passkeyOptionsLimiter,
   passkeyRegisterLimiter,
 } from "@/lib/security/rate-limit"
+import { withUserLock } from "@/lib/security/user-lock"
 
 export type ActionResult = { ok: true } | { ok: false; error: string }
 
@@ -336,49 +337,87 @@ export async function deletePasskeyAction(input: {
     return { ok: false, error: SUDO_REQUIRED, code: "sudo_required" }
   }
 
-  // Son giriş yöntemi silinemez: şifre ya da bağlı sosyal hesap yoksa ve bu son
-  // geçiş anahtarıysa hesap kilitlenirdi.
-  const [[u], [linked], [keys]] = await Promise.all([
-    db
-      .select({ email: users.email, passwordHash: users.passwordHash })
-      .from(users)
-      .where(eq(users.id, uid))
-      .limit(1),
-    db.select({ n: count() }).from(accounts).where(eq(accounts.userId, uid)),
-    db.select({ n: count() }).from(passkeys).where(eq(passkeys.userId, uid)),
-  ])
-  if (!u) return { ok: false, error: "Oturum bulunamadı." }
-  if (!u.passwordHash && (linked?.n ?? 0) === 0 && (keys?.n ?? 0) <= 1) {
-    return {
-      ok: false,
-      error:
-        "Bu, hesabına girmenin tek yolu. Silmeden önce başka bir giriş yöntemi ekle.",
+  // Kontrol → silme aralığı, bağlı hesap kaldırmayla AYNI kullanıcı kilidi
+  // altında (bkz. lib/security/user-lock.ts "login-method"): paralel
+  // isteklerle son giriş yöntemi kuralı delinemez.
+  return withUserLock(
+    uid,
+    "login-method",
+    async (): Promise<
+      ActionResult | { ok: false; error: string; code: "sudo_required" }
+    > => {
+      // Son giriş yöntemi silinemez: şifre ya da bağlı sosyal hesap yoksa ve bu son
+      // geçiş anahtarıysa hesap kilitlenirdi.
+      const [[u], [linked], [keys]] = await Promise.all([
+        db
+          .select({ email: users.email, passwordHash: users.passwordHash })
+          .from(users)
+          .where(eq(users.id, uid))
+          .limit(1),
+        db
+          .select({ n: count() })
+          .from(accounts)
+          .where(eq(accounts.userId, uid)),
+        db
+          .select({ n: count() })
+          .from(passkeys)
+          .where(eq(passkeys.userId, uid)),
+      ])
+      if (!u) return { ok: false, error: "Oturum bulunamadı." }
+      if (!u.passwordHash && (linked?.n ?? 0) === 0 && (keys?.n ?? 0) <= 1) {
+        return {
+          ok: false,
+          error:
+            "Bu, hesabına girmenin tek yolu. Silmeden önce başka bir giriş yöntemi ekle.",
+        }
+      }
+
+      // Bu anahtarla açılmış oturumlar da kapanır (60 sn içinde, bkz. jwt
+      // callback): tanınmayan bir anahtarı silmek, onunla girmiş birini dışarıda
+      // bırakmalı. Kapatma, user_session.passkeyId'nin ON DELETE CASCADE'iyle
+      // silmeyle AYNI ifadede olur (bkz. lib/db/schema.ts): ayrı bir iptal
+      // UPDATE'i arada açılan oturumu kaçırıyordu. Silme işlemini yapan bu cihaz
+      // (sudo'lu) HARİÇ: onun oturumu silmeden önce anahtardan ayrılır.
+      //
+      // Önceki iptal UPDATE'i de duruyor: CASCADE migration'ı (drizzle/0021)
+      // henüz uygulanmamış bir veritabanında bile var olan oturumlar kapansın.
+      const revoke = [
+        eq(userSessions.userId, uid),
+        eq(userSessions.passkeyId, id),
+        isNull(userSessions.revokedAt),
+      ]
+      if (session.sid) revoke.push(ne(userSessions.id, session.sid))
+      await db
+        .update(userSessions)
+        .set({ revokedAt: new Date() })
+        .where(and(...revoke))
+
+      if (session.sid) {
+        await db
+          .update(userSessions)
+          .set({ passkeyId: null })
+          .where(
+            and(
+              eq(userSessions.id, session.sid),
+              eq(userSessions.userId, uid),
+              eq(userSessions.passkeyId, id)
+            )
+          )
+      }
+
+      const [row] = await db
+        .delete(passkeys)
+        .where(and(eq(passkeys.id, id), eq(passkeys.userId, uid)))
+        .returning({ name: passkeys.name })
+      if (!row) return { ok: false, error: "Geçiş anahtarı bulunamadı." }
+
+      if (u.email) {
+        void sendMail({
+          to: u.email,
+          ...passkeyRemovedEmail({ name: row.name }),
+        })
+      }
+      return { ok: true }
     }
-  }
-
-  // Bu anahtarla açılmış oturumlar da kapanır (60 sn içinde, bkz. jwt
-  // callback): tanınmayan bir anahtarı silmek, onunla girmiş birini dışarıda
-  // bırakmalı. Silme işlemini yapan bu cihaz (sudo'lu) HARİÇ. Satır silinince
-  // passkeyId null'a düştüğü için silmeden ÖNCE.
-  const revoke = [
-    eq(userSessions.userId, uid),
-    eq(userSessions.passkeyId, id),
-    isNull(userSessions.revokedAt),
-  ]
-  if (session.sid) revoke.push(ne(userSessions.id, session.sid))
-  await db
-    .update(userSessions)
-    .set({ revokedAt: new Date() })
-    .where(and(...revoke))
-
-  const [row] = await db
-    .delete(passkeys)
-    .where(and(eq(passkeys.id, id), eq(passkeys.userId, uid)))
-    .returning({ name: passkeys.name })
-  if (!row) return { ok: false, error: "Geçiş anahtarı bulunamadı." }
-
-  if (u.email) {
-    void sendMail({ to: u.email, ...passkeyRemovedEmail({ name: row.name }) })
-  }
-  return { ok: true }
+  )
 }

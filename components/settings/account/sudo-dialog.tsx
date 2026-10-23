@@ -89,6 +89,29 @@ function SudoForm({
     return false
   }
 
+  const errorNode = error ? <FormError>{error}</FormError> : null
+  const others = available.filter((m) => m !== method)
+  const switcher =
+    others.length > 0 ? (
+      <div className="flex flex-col items-start gap-1.5 sm:mr-auto sm:self-center">
+        {others.map((m) => (
+          <Button
+            key={m}
+            variant="link-muted"
+            size="inline"
+            className="text-xs"
+            disabled={busy}
+            onClick={() => {
+              setError("")
+              setMethod(m)
+            }}
+          >
+            {SWITCH_LABEL[m]}
+          </Button>
+        ))}
+      </div>
+    ) : null
+
   return (
     <>
       <DialogHeader>
@@ -99,62 +122,70 @@ function SudoForm({
         </DialogDescription>
       </DialogHeader>
 
-      <div className="flex flex-col gap-3 py-2">
+      {/* Gövde alt boşluk almaz: her yöntemin DialogFooter'ı pencerenin en
+          altına oturan şerittir (-mb-4). Hata mesajı şeridin ÜSTÜNDE, yöntem
+          değiştirme bağlantıları şeridin içinde solda durur; eskiden ikisi de
+          şeridin ALTINA düşüyor, şerit pencerenin ortasında kalıyordu. */}
+      <div className="flex flex-col gap-3 pt-2">
         {method === "passkey" ? (
-          <PasskeyMethod busy={busy} setBusy={setBusy} submit={submit} />
+          <PasskeyMethod
+            busy={busy}
+            setBusy={setBusy}
+            submit={submit}
+            error={errorNode}
+            switcher={switcher}
+          />
         ) : method === "password" ? (
-          <PasswordMethod busy={busy} submit={submit} />
+          <PasswordMethod
+            busy={busy}
+            submit={submit}
+            error={errorNode}
+            switcher={switcher}
+          />
         ) : method === "totp" ? (
           <CodeMethod
             busy={busy}
             hint="Doğrulama uygulamandaki 6 haneli kodu gir."
             submit={(code) => submit({ method: "totp", code })}
+            error={errorNode}
+            switcher={switcher}
           />
         ) : method === "email" ? (
-          <EmailMethod busy={busy} setError={setError} submit={submit} />
+          <EmailMethod
+            busy={busy}
+            setError={setError}
+            submit={submit}
+            error={errorNode}
+            switcher={switcher}
+          />
         ) : (
-          <p className="text-sm text-muted-foreground">
-            Hesabında doğrulama için kullanılabilecek bir yöntem bulunamadı.
-          </p>
+          <>
+            <p className="text-sm text-muted-foreground">
+              Hesabında doğrulama için kullanılabilecek bir yöntem bulunamadı.
+            </p>
+            {errorNode}
+          </>
         )}
-
-        {error ? <FormError>{error}</FormError> : null}
-
-        {available.length > 1 ? (
-          <div className="flex flex-col items-start gap-1.5 pt-1">
-            {available
-              .filter((m) => m !== method)
-              .map((m) => (
-                <Button
-                  key={m}
-                  variant="link-muted"
-                  size="inline"
-                  className="text-xs"
-                  disabled={busy}
-                  onClick={() => {
-                    setError("")
-                    setMethod(m)
-                  }}
-                >
-                  {SWITCH_LABEL[m]}
-                </Button>
-              ))}
-          </div>
-        ) : null}
       </div>
     </>
   )
 }
 
+// Yöntemlerin ortak yuvaları: hata gövdede (footer'dan önce), yöntem
+// değiştirme bağlantıları footer'ın solunda.
+type Slots = { error: React.ReactNode; switcher: React.ReactNode }
+
 function PasskeyMethod({
   busy,
   setBusy,
   submit,
+  error,
+  switcher,
 }: {
   busy: boolean
   setBusy: (v: boolean) => void
   submit: (input: SudoInput) => Promise<boolean>
-}) {
+} & Slots) {
   // Seçenekler önceden çekilir: tıklamada await olmadan tören başlar (Safari
   // user-gesture kuralı). Her denemeden sonra challenge yenilenir.
   const [options, setOptions] =
@@ -216,7 +247,9 @@ function PasskeyMethod({
         Bu hesaba kayıtlı bir geçiş anahtarıyla doğrula.
       </p>
       {loadError ? <FormError>{loadError}</FormError> : null}
+      {error}
       <DialogFooter>
+        {switcher}
         <Button variant="default" disabled={busy || !options} onClick={verify}>
           {busy || (!options && !loadError) ? <Spinner /> : null}
           Geçiş anahtarıyla doğrula
@@ -229,10 +262,12 @@ function PasskeyMethod({
 function PasswordMethod({
   busy,
   submit,
+  error,
+  switcher,
 }: {
   busy: boolean
   submit: (input: SudoInput) => Promise<boolean>
-}) {
+} & Slots) {
   const [password, setPassword] = React.useState("")
   return (
     <form
@@ -253,7 +288,9 @@ function PasswordMethod({
           onChange={(e) => setPassword(e.target.value)}
         />
       </Field>
+      {error}
       <DialogFooter>
+        {switcher}
         <Button variant="default" type="submit" disabled={busy || !password}>
           {busy ? <Spinner /> : null}
           Doğrula
@@ -267,11 +304,16 @@ function CodeMethod({
   busy,
   hint,
   submit,
+  error,
+  switcher,
+  extra,
 }: {
   busy: boolean
   hint: string
   submit: (code: string) => Promise<boolean>
-}) {
+  /** Footer'dan önce gösterilecek ek öğe (ör. "Kodu tekrar gönder"). */
+  extra?: React.ReactNode
+} & Slots) {
   const [code, setCode] = React.useState("")
   async function send(value = code) {
     if (value.length !== 6 || busy) return
@@ -286,7 +328,10 @@ function CodeMethod({
         onComplete={(v) => void send(v)}
         disabled={busy}
       />
+      {extra}
+      {error}
       <DialogFooter>
+        {switcher}
         <Button
           variant="default"
           disabled={busy || code.length !== 6}
@@ -304,11 +349,13 @@ function EmailMethod({
   busy,
   setError,
   submit,
+  error,
+  switcher,
 }: {
   busy: boolean
   setError: (message: string) => void
   submit: (input: SudoInput) => Promise<boolean>
-}) {
+} & Slots) {
   const [sent, setSent] = React.useState(false)
   const [sending, setSending] = React.useState(false)
 
@@ -333,7 +380,9 @@ function EmailMethod({
           Hesabının bir şifresi olmadığı için e-postana bir doğrulama kodu
           gönderelim.
         </p>
+        {error}
         <DialogFooter>
+          {switcher}
           <Button variant="default" disabled={sending} onClick={sendCode}>
             {sending ? <Spinner /> : null}
             Kod gönder
@@ -344,21 +393,23 @@ function EmailMethod({
   }
 
   return (
-    <>
-      <CodeMethod
-        busy={busy}
-        hint="E-postana gelen 6 haneli kodu gir."
-        submit={(code) => submit({ method: "email", code })}
-      />
-      <Button
-        variant="link-muted"
-        size="inline"
-        className="self-start text-xs"
-        disabled={sending || busy}
-        onClick={sendCode}
-      >
-        Kodu tekrar gönder
-      </Button>
-    </>
+    <CodeMethod
+      busy={busy}
+      hint="E-postana gelen 6 haneli kodu gir."
+      submit={(code) => submit({ method: "email", code })}
+      error={error}
+      switcher={switcher}
+      extra={
+        <Button
+          variant="link-muted"
+          size="inline"
+          className="self-start text-xs"
+          disabled={sending || busy}
+          onClick={sendCode}
+        >
+          Kodu tekrar gönder
+        </Button>
+      }
+    />
   )
 }

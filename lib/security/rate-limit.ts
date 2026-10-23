@@ -198,6 +198,18 @@ export const twoFactorUserLimiter = new Ratelimit({
   analytics: true,
 })
 
+// Kod tahmini için GÜNLÜK tavan. Dakikalık limiterlar ve DB'deki kod başına
+// deneme tavanı (attempts) yeni kod/pending istenerek sıfırlanabiliyor; uzun
+// vadede 6 haneli bir kodun (TOTP, e-posta kodu) tahmin edilme olasılığını
+// sınırlayan budur. Anahtar: `2fa:<userId>`, `reauth:<userId>`,
+// `signup:<email>`. Meşru kullanıcı günde bunun çok altında kalır.
+export const codeGuessDailyLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(30, "1 d"),
+  prefix: "rl:auth:code:daily",
+  analytics: true,
+})
+
 // Şifre değiştirme/belirleme. Anahtar: userId.
 export const passwordChangeLimiter = new Ratelimit({
   redis,

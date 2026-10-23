@@ -9,6 +9,8 @@ import { basketItemMatchFields, basketSummaryFields } from "@/lib/data/baskets"
 import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
+import { withUserLock } from "@/lib/security/user-lock"
+import { MAX_APPROVAL_ITEMS } from "@/lib/assistant/approval-limits"
 import { type BasketSort, DEFAULT_BASKET_SORT } from "@/lib/basket-sort"
 import { OptimizationSummarySchema } from "@/lib/ai/schemas"
 import type {
@@ -112,6 +114,11 @@ export async function saveBasket(
   if (!session?.user?.id) throw new Error("unauthorized")
 
   const userId = session.user.id
+  // Kalemler istemciden geliyor; onay kartlarının tavanıyla aynı sınır (bkz.
+  // lib/assistant/approval-limits.ts) — kayıt başına sınırsız satır yazılmasın.
+  if (!Array.isArray(input.items) || input.items.length > MAX_APPROVAL_ITEMS) {
+    throw new Error("too_many_items")
+  }
   // Başkasının sohbetine bağlanamaz; sahiplik tutmazsa kayıt sohbetsiz yapılır.
   const conversationId = await ownedConversationId(input.conversationId, userId)
   const sourceToolCallId = conversationId ? input.sourceToolCallId ?? null : null
@@ -134,28 +141,10 @@ export async function saveBasket(
   }
 
   // Depolama kotası: kayıt öncesi sert tavan (kullanıcının açık "Kaydet"
-  // aksiyonu; sohbetlere kota yoktur).
-  //
-  // Eşzamanlılık notu: count→insert statement-düzeyinde atomik değil, ama
-  // pratikte güvenli. Gerçek çift-gönderim üç katmanda engelli: (1) UI "Kaydet"i
-  // kaydederken/kaydedince kilitler, (2) yukarıdaki dedup aynı (sohbet, tool-call)
-  // için var olan id'yi döner, (3) basket_conv_tool_idx unique index'i aynı
-  // kartın iki satırını DB'de imkânsız kılar. Geriye yalnızca "aynı anda iki
-  // FARKLI sepet" yarışı kalır — ardışık insan tıklamasıyla ulaşılamaz ve en kötü
-  // 1 fazla satır demektir (AI/maliyet/güvenlik etkisi yok). neon-http
-  // transaction desteklemediğinden daha sıkı serileştirme, jsonb/numeric'i ham
-  // SQL'de elle kodlayıp çalışan kayıt yolunu riske atmayı gerektirirdi — bu
-  // denge için gereksiz.
+  // aksiyonu; sohbetlere kota yoktur). Sayım ile insert aşağıda kullanıcı
+  // başına kilit altında yapılır (bkz. lib/security/user-lock.ts): action'ı
+  // paralel çağırarak sınır aşılamaz.
   const basketLimit = planLimit(await getUserPlan(userId), "savedBaskets")
-  if (basketLimit !== null) {
-    const [row] = await db
-      .select({ value: count() })
-      .from(baskets)
-      .where(eq(baskets.userId, userId))
-    if ((row?.value ?? 0) >= basketLimit) {
-      return { ok: false, reason: "storage_limit_reached" }
-    }
-  }
 
   const trimmedName = input.name?.trim()
   const name = trimmedName && trimmedName.length > 0 ? trimmedName : autoBasketName()
@@ -166,17 +155,36 @@ export async function saveBasket(
   // sonrası sessiz bir bomba bırakmaz.
   const summary = OptimizationSummarySchema.parse(input.summary)
 
-  const [inserted] = await db
-    .insert(baskets)
-    .values({
-      userId,
-      conversationId,
-      sourceToolCallId,
-      name,
-      ...basketSummaryFields(summary),
-    })
-    .returning({ id: baskets.id })
+  const insertRow = async () => {
+    if (basketLimit !== null) {
+      const [row] = await db
+        .select({ value: count() })
+        .from(baskets)
+        .where(eq(baskets.userId, userId))
+      if ((row?.value ?? 0) >= basketLimit) return "limit" as const
+    }
+    const [row] = await db
+      .insert(baskets)
+      .values({
+        userId,
+        conversationId,
+        sourceToolCallId,
+        name,
+        ...basketSummaryFields(summary),
+      })
+      .returning({ id: baskets.id })
+    return row
+  }
+  // Kilit yalnız tavanlı planda: sınırsız planda (Pro) yarışın aşacağı bir
+  // sınır yok, kayıt Redis'e bağımlı kalmasın.
+  const inserted =
+    basketLimit === null
+      ? await insertRow()
+      : await withUserLock(userId, "basket", insertRow)
 
+  if (inserted === "limit") {
+    return { ok: false, reason: "storage_limit_reached" }
+  }
   if (!inserted) throw new Error("insert_failed")
 
   if (input.items.length > 0) {

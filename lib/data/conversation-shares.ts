@@ -218,8 +218,13 @@ export const getSharedConversation = cache(
       .limit(1)
     if (!row) return null
 
+    // "Resimleri gizle" açıksa tanınmayan görsellerin açıklaması da düşer
+    // (bkz. redactUnknownImageDescriptions). Okurken uygulanır: seçenek
+    // paylaşım sonrasında da değiştirilebiliyor.
     const messages = sanitizeMessagesForShare(
-      Array.isArray(row.messages) ? row.messages : []
+      Array.isArray(row.messages) ? row.messages : [],
+      undefined,
+      { hideImageDescriptions: row.hideImages }
     )
     if (!hasVisibleParts(messages)) return null
 

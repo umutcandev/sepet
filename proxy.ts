@@ -117,8 +117,17 @@ export default async function proxy(req: NextRequest, ev: NextFetchEvent) {
   }
   const res = NextResponse.next()
   applySecurityHeaders(res.headers)
+  // Şifre sıfırlama / e-posta doğrulama sayfaları tek kullanımlık token'ı
+  // URL'de taşır. Varsayılan politika aynı origin'e (RSC, /api/me,
+  // /_next/image istekleri) tam URL'yi Referer olarak gönderir; token o
+  // isteklerle loglara düşmesin.
+  if (TOKEN_PAGE_PATHS.has(req.nextUrl.pathname)) {
+    res.headers.set("Referrer-Policy", "no-referrer")
+  }
   return res
 }
+
+const TOKEN_PAGE_PATHS = new Set(["/sifre-sifirla", "/dogrula"])
 
 const SHARE_PATH = "/paylasim/"
 const SHARE_IMAGE_PATH = /^\/paylasim\/[^/]+\/gorsel\//
@@ -166,8 +175,15 @@ function shareTooManyResponse(reset: number) {
   )
 }
 
+// Görsel uzantısı istisnası YALNIZ public/ altındaki statik klasörler için
+// (/blog altında dinamik rotalar da var: yalnız blog/media ve blog/authors
+// statik; kapak.svg kendi sıkı CSP'sini yazan bir rota).
+// Eskiden her yolu kapsıyordu: `/api/products/x.png` gibi dinamik bir rota
+// proxy'ye hiç uğramadan çalışıyor, hız limitini ve güvenlik başlıklarını
+// atlıyordu. public/'e yeni bir klasör eklenirse buraya da eklenmeli
+// (eklenmezse yalnızca proxy'den geçer; güvenli taraf).
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|webp|ico|gif)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|(?:brand|github|market-logos|onboarding|static|blog/media|blog/authors)/.*\\.(?:svg|png|jpg|jpeg|webp|ico|gif)$|blog/[^/]+/kapak\\.svg$).*)",
   ],
 }

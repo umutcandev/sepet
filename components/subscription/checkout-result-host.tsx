@@ -14,24 +14,11 @@ export function CheckoutResultHost() {
     const result = params.get("abonelik")
     if (!result) return
 
-    if (result === "basarili") {
-      toast.success("Pro aboneliğin alındı!", {
-        description:
-          "Yeni limitlerin birkaç saniye içinde etkinleşir. Teşekkürler!",
-      })
-    } else if (result === "hata") {
-      toast.error("Ödeme tamamlanamadı", {
-        description: "Bir şeyler ters gitti. Lütfen tekrar dene.",
-      })
-    } else if (result === "portal-yok") {
-      toast.info("Yönetilecek abonelik bulunamadı", {
-        description: "Henüz Polar üzerinden alınmış bir aboneliğin yok.",
-      })
-    } else if (result === "portal-hata") {
-      toast.error("Abonelik portalı açılamadı", {
-        description: "Lütfen birazdan tekrar dene.",
-      })
-    }
+    // Bir sonraki tick'e ertelenir: bu effect, layout'ta sonra gelen
+    // <Toaster>'ın abone olduğu effect'ten ÖNCE çalışıyor; sonner o anda
+    // dinleyicisi olmayan toast'u düşürüyordu (ödeme dönüşü bildirimi hiç
+    // görünmüyordu).
+    window.setTimeout(() => showResult(result), 0)
 
     const url = new URL(window.location.href)
     url.searchParams.delete("abonelik")
@@ -39,4 +26,25 @@ export function CheckoutResultHost() {
   }, [])
 
   return null
+}
+
+function showResult(result: string) {
+  if (result === "basarili") {
+    toast.success("Pro aboneliğin alındı!", {
+      description:
+        "Yeni limitlerin birkaç saniye içinde etkinleşir. Teşekkürler!",
+    })
+  } else if (result === "hata") {
+    toast.error("Ödeme tamamlanamadı", {
+      description: "Bir şeyler ters gitti. Lütfen tekrar dene.",
+    })
+  } else if (result === "portal-yok") {
+    toast.info("Yönetilecek abonelik bulunamadı", {
+      description: "Henüz Polar üzerinden alınmış bir aboneliğin yok.",
+    })
+  } else if (result === "portal-hata") {
+    toast.error("Abonelik portalı açılamadı", {
+      description: "Lütfen birazdan tekrar dene.",
+    })
+  }
 }

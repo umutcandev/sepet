@@ -6,6 +6,7 @@ import { describe, test } from "node:test"
 import { computeOptimization } from "@/lib/ai/optimize"
 import type { MatchResult } from "@/lib/ai/schemas"
 import {
+  HIDDEN_IMAGE_DESCRIPTION_TEXT,
   IMAGE_OMITTED_PART_TYPE,
   SHARED_IMAGE_PART_TYPE,
   SHARED_TEXT_MAX,
@@ -531,6 +532,53 @@ describe("paylaşılan görseller", () => {
     }
     const [m] = sanitizeMessagesForShare([forged], () => 0)
     assert.deepEqual(m.parts.map((p) => p.type), [IMAGE_OMITTED_PART_TYPE])
+  })
+})
+
+describe("Resimleri gizle", () => {
+  const REASON = "Görselde bir kimlik kartı var, market fişi değil."
+  const unknownTurn = {
+    role: "assistant",
+    parts: [
+      {
+        type: "tool-analyzeImage",
+        toolCallId: "img-9",
+        state: "output-available",
+        input: { imageUrl: RECEIPT_URL },
+        output: {
+          analysis: {
+            kind: "unknown",
+            receipt: null,
+            food: null,
+            unknownReason: REASON,
+          },
+          receiptImageUrl: RECEIPT_URL,
+          receiptImageR2Key: RECEIPT_KEY,
+        },
+      },
+      { type: "text", text: REASON },
+      { type: "text", text: "Başka bir şey ister misin?" },
+    ],
+  }
+
+  test("tanınmayan görselin açıklaması düşer", () => {
+    const [m] = sanitizeMessagesForShare([unknownTurn], undefined, {
+      hideImageDescriptions: true,
+    })
+    const json = JSON.stringify(m)
+    assert.ok(!json.includes(REASON))
+    assert.deepEqual(
+      m.parts.filter((p) => p.type === "text"),
+      [
+        { type: "text", text: HIDDEN_IMAGE_DESCRIPTION_TEXT },
+        { type: "text", text: "Başka bir şey ister misin?" },
+      ]
+    )
+  })
+
+  test("seçenek kapalıyken açıklama kalır", () => {
+    const [m] = sanitizeMessagesForShare([unknownTurn])
+    assert.ok(JSON.stringify(m).includes(REASON))
   })
 })
 

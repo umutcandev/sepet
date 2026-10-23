@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import {
   APICallError,
+  NoObjectGeneratedError,
   createUIMessageStream,
   createUIMessageStreamResponse,
   type UIMessage,
@@ -12,6 +13,11 @@ import { z } from "zod"
 import { auth } from "@/auth"
 import { isOwnedReceiptUrl } from "@/lib/storage/r2"
 import { UNIT_VALUES } from "@/lib/ai/schemas"
+import {
+  MAX_APPROVAL_ITEMS,
+  MAX_ITEM_NAME,
+  MAX_SEARCH_QUERY,
+} from "@/lib/assistant/approval-limits"
 import type { AiCallOptions } from "@/lib/ai/models"
 import {
   generateChatTitle,
@@ -50,7 +56,7 @@ import {
   approvalKind,
   statusAfterStop,
 } from "@/lib/assistant/turn-state"
-import { isAbortError } from "@/lib/ai/telemetry"
+import { isAbortError, logError } from "@/lib/ai/telemetry"
 import { getUserLocationContext } from "@/lib/auth/location"
 import type { LocationContext } from "@/lib/marketfiyati/client"
 import type { BasketDraft, ImageAnalysis, ParsedItem } from "@/lib/ai/schemas"
@@ -74,6 +80,16 @@ const FALLBACK_TEXT =
 
 const MODEL_BUSY_TEXT =
   "Yapay zeka servisi şu an yoğun (geçici bir durum). Birkaç dakika sonra tekrar dener misin?"
+
+/**
+ * Kota iadesi alan hata mı. İptal almaz (bkz. refundReservation). Model
+ * çıktısının şemaya uymaması / kesilmesi (NoObjectGeneratedError) de almaz:
+ * çağrı tamamlanmış, token faturalanmıştır. İade edilseydi bu hatayı
+ * güvenilir biçimde tetikleyebilen bir girdi pahalı çağrıyı bedavaya çevirirdi.
+ */
+function isRefundableError(err: unknown): boolean {
+  return !isAbortError(err) && !NoObjectGeneratedError.isInstance(err)
+}
 
 /**
  * Google Gemini "yüksek talep" hatası (503 / UNAVAILABLE) — model geçici
@@ -126,37 +142,53 @@ type BasketApprovalPayload = {
 const finiteNum = z.number().refine(Number.isFinite, "sonlu sayı olmalı")
 const unitSchema = z.enum(UNIT_VALUES)
 
+// Boyut tavanları (bkz. lib/assistant/approval-limits.ts). Kalem sayısı
+// aşılırsa istek reddedilir; metin alanları sessizce kırpılır (kartlardaki
+// bir giriş alanı sınırı kaçırsa bile onay reddedilmesin). Kalem metinlerinin
+// prompt'a güvenli basılması lib/ai/prompts.ts'te.
+const cappedText = (max: number) =>
+  z.string().transform((s) => s.slice(0, max))
+// Serbest metin turu: tek mesaj parse modeline olduğu gibi gider.
+const MAX_INPUT_TEXT = 4000
+
 const basketApprovalPayloadSchema = z.object({
-  items: z.array(
-    z.object({
-      rawName: z.string(),
-      searchQuery: z.string(),
-      quantity: finiteNum.refine((n) => n >= 0, "negatif olamaz"),
-      unit: unitSchema,
-      // Eşleştirme modeline giden tercih notu. Prompt'a tek satır olarak
-      // basıldığından uzunluğu sınırlı.
-      note: z.string().max(200).nullish(),
-    }),
-  ),
+  items: z
+    .array(
+      z.object({
+        rawName: cappedText(MAX_ITEM_NAME),
+        searchQuery: cappedText(MAX_SEARCH_QUERY),
+        quantity: finiteNum.refine((n) => n >= 0, "negatif olamaz"),
+        unit: unitSchema,
+        // Eşleştirme modeline giden tercih notu. Prompt'a tek satır olarak
+        // basıldığından uzunluğu sınırlı.
+        note: z.string().max(200).nullish(),
+      }),
+    )
+    .max(MAX_APPROVAL_ITEMS),
 })
 
 const receiptApprovalPayloadSchema = z.object({
-  receiptImageUrl: z.string(),
-  receiptImageR2Key: z.string(),
-  marketName: z.string().nullable(),
-  purchaseDate: z.string().nullable(),
+  receiptImageUrl: z.string().max(2048),
+  receiptImageR2Key: z.string().max(512),
+  marketName: cappedText(MAX_ITEM_NAME).nullable(),
+  purchaseDate: z.string().max(64).nullable(),
   totalAmount: finiteNum.nullable(),
-  items: z.array(
-    z.object({
-      rawName: z.string(),
-      searchQuery: z.string(),
-      quantity: finiteNum.refine((n) => n >= 0, "negatif olamaz"),
-      unit: unitSchema,
-      unitPrice: finiteNum.nullable(),
-      totalPrice: finiteNum.nullable(),
-    }),
-  ),
+  items: z
+    .array(
+      z.object({
+        rawName: cappedText(MAX_ITEM_NAME),
+        searchQuery: cappedText(MAX_SEARCH_QUERY),
+        quantity: finiteNum.refine((n) => n >= 0, "negatif olamaz"),
+        unit: unitSchema,
+        unitPrice: finiteNum.nullable(),
+        totalPrice: finiteNum.nullable(),
+      }),
+    )
+    .max(MAX_APPROVAL_ITEMS),
 })
+
+const CONVERSATION_ID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 function detectLastUserMode(messages: UIMessage[]): LastUserMode {
   for (let i = messages.length - 1; i >= 0; i--) {
@@ -255,11 +287,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid_image_url" }, { status: 400 })
   }
 
-  // Onay payload'larını hesaba/kayda almadan önce runtime'da doğrula.
+  // Onay payload'larını hesaba/kayda almadan önce runtime'da doğrula. Bundan
+  // sonra ham payload değil, doğrulanmış (yalnız bilinen alanlar) hali
+  // kullanılır.
   if (mode.kind === "receiptApproval") {
-    if (!receiptApprovalPayloadSchema.safeParse(mode.payload).success) {
+    const parsed = receiptApprovalPayloadSchema.safeParse(mode.payload)
+    if (!parsed.success) {
       return NextResponse.json({ error: "invalid_payload" }, { status: 400 })
     }
+    mode.payload = parsed.data
     // Onay turunda sunucu görseli fetch etmez, ama aynı URL tool çıktısıyla
     // istemciye geri döner ve oradan saveReceipt'e gider. Sahiplik burada da
     // zorlanır ki iki uçtan biri atlanamasın.
@@ -267,11 +303,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "invalid_image_url" }, { status: 400 })
     }
   }
+  if (mode.kind === "basketApproval") {
+    const parsed = basketApprovalPayloadSchema.safeParse(mode.payload)
+    if (!parsed.success) {
+      return NextResponse.json({ error: "invalid_payload" }, { status: 400 })
+    }
+    mode.payload = parsed.data
+  }
+  if (mode.kind === "text" && mode.text.length > MAX_INPUT_TEXT) {
+    return NextResponse.json({ error: "input_too_long" }, { status: 400 })
+  }
   if (
-    mode.kind === "basketApproval" &&
-    !basketApprovalPayloadSchema.safeParse(mode.payload).success
+    payload.conversationId !== undefined &&
+    (typeof payload.conversationId !== "string" ||
+      !CONVERSATION_ID_RE.test(payload.conversationId))
   ) {
-    return NextResponse.json({ error: "invalid_payload" }, { status: 400 })
+    return NextResponse.json(
+      { error: "conversation_not_found" },
+      { status: 404 },
+    )
   }
 
   const lastUserMessage = findLastUserMessage(messages)
@@ -367,7 +417,7 @@ export async function POST(req: Request) {
       },
     ])
   } catch (err) {
-    console.error("[assistant/chat] user message persist failed", err)
+    logError("[assistant/chat] user message persist failed", err)
   }
 
   // İstek iptal sinyali — kullanıcı sekmeyi kapatınca / stream abort olunca
@@ -383,11 +433,13 @@ export async function POST(req: Request) {
    * döngüsü kotayı hiç tüketmeden sınırsız AI maliyeti üretirdi (kota bu
    * uçtaki tek maliyet tavanı olduğu için bu delik kritikti).
    *
-   * Model 503/429 ve parse istisnaları iade ALIR — orada kullanıcı bir çıktı
-   * almadı ve hatanın sahibi biziz.
+   * Model 503/429 ve bizim taraftaki istisnalar iade ALIR — orada kullanıcı bir
+   * çıktı almadı ve hatanın sahibi biziz. Model çıktısının parse edilememesi
+   * (NoObjectGeneratedError) almaz: token yanmıştır (bkz. isRefundableError).
    */
   const refundReservation = async (err?: unknown) => {
-    if (requestSignal?.aborted || isAbortError(err)) return
+    if (requestSignal?.aborted || (err !== undefined && !isRefundableError(err)))
+      return
     await refundQuota(userId, meteredMetric, reservation.period).catch(() => {})
   }
 
@@ -428,7 +480,7 @@ export async function POST(req: Request) {
         try {
           await setConversationTitle(newConversationId, userId, title)
         } catch (err) {
-          console.error("[assistant/chat] title persist failed", err)
+          logError("[assistant/chat] title persist failed", err)
         }
         writer.write(dataPart("conversation-title", { id: newConversationId, title }))
       }
@@ -442,7 +494,7 @@ export async function POST(req: Request) {
             await emitTitleIfNew(title)
           } catch (err) {
             if (!isAbortError(err)) {
-              console.error("[assistant/chat] title generation failed", err)
+              logError("[assistant/chat] title generation failed", err)
             }
           }
         })()
@@ -473,6 +525,7 @@ export async function POST(req: Request) {
             previousItems,
             carried,
             loc,
+            userId,
             onImageKind: handleImageKind,
             signal: requestSignal,
           }),
@@ -506,7 +559,7 @@ export async function POST(req: Request) {
             { role: "assistant", parts },
           ])
         } catch (err) {
-          console.error("[assistant/chat] assistant message persist failed", err)
+          logError("[assistant/chat] assistant message persist failed", err)
         }
       }
 
@@ -521,14 +574,14 @@ export async function POST(req: Request) {
       try {
         await setConversationStatus(newConversationId, userId, status)
       } catch (err) {
-        console.error("[assistant/chat] status persist failed", err)
+        logError("[assistant/chat] status persist failed", err)
       }
       writer.write(dataPart("conversation-status", { id: newConversationId, status }))
 
       writer.write({ type: "finish" })
     },
     onError: (error) => {
-      console.error("[assistant/chat] stream error", error)
+      logError("[assistant/chat] stream error", error)
       return "Asistan şu an cevap veremiyor. Lütfen biraz sonra tekrar deneyin."
     },
   })
@@ -723,6 +776,7 @@ async function runAssistantTurn({
   previousItems,
   carried,
   loc,
+  userId,
   onImageKind,
   signal,
 }: {
@@ -735,6 +789,8 @@ async function runAssistantTurn({
   /** Kullanıcının önceki turlarda elle seçtiği ürünler; sepet onayında. */
   carried: ReadonlyMap<string, CarriedSelection>
   loc: LocationContext
+  /** Kullanıcıya özel match-cache kapsamı (bkz. lookupProducts). */
+  userId: string
   onImageKind?: (
     kind: ImageAnalysis["kind"],
     analysis?: ImageAnalysis,
@@ -760,7 +816,7 @@ async function runAssistantTurn({
       parseReasoning = result.reasoning
     } catch (err) {
       if (signal?.aborted) return STOPPED_TURN
-      console.error("[assistant/chat] image analysis failed", err)
+      logError("[assistant/chat] image analysis failed", err)
       writer.write(
         toolOutputError(
           analyzeCallId,
@@ -774,7 +830,7 @@ async function runAssistantTurn({
       // (kullanıcı sekmeyi kapattı / stream'i kesti) hardError DEĞİLDİR: model
       // çağrısı gitti, token yandı — iade edilirse kota maliyet tavanı olmaktan
       // çıkar.
-      return { awaiting: false, hardError: !isAbortError(err) }
+      return { awaiting: false, hardError: isRefundableError(err) }
     }
     if (signal?.aborted) return STOPPED_TURN
 
@@ -851,7 +907,13 @@ async function runAssistantTurn({
 
     // lookupProducts iptalde patlamaz (eşleştirme LLM'i düşerse ilk adaya
     // geri döner); durdurulduysa sonucu burada bırak.
-    const { matches } = await lookupProducts(parsedItems, loc, aiOpts)
+    const { matches } = await lookupProducts(
+      parsedItems,
+      loc,
+      aiOpts,
+      undefined,
+      userId,
+    )
     if (signal?.aborted) return STOPPED_TURN
 
     writer.write(toolOutputAvailable(lookupCallId, { matches }))
@@ -914,6 +976,7 @@ async function runAssistantTurn({
       loc,
       aiOpts,
       carried,
+      userId,
     )
     if (signal?.aborted) return STOPPED_TURN // bkz. fiş onayındaki aynı kontrol
 
@@ -957,7 +1020,7 @@ async function runAssistantTurn({
     parseReasoning = result.reasoning
   } catch (err) {
     if (signal?.aborted) return STOPPED_TURN
-    console.error("[assistant/chat] parse failed", err)
+    logError("[assistant/chat] parse failed", err)
     const busy = isModelOverloaded(err)
     writer.write(
       toolOutputError(
@@ -968,7 +1031,7 @@ async function runAssistantTurn({
     await emitText(writer, busy ? MODEL_BUSY_TEXT : FALLBACK_TEXT)
     // Çıktı üretilmeden düşen AI hatası → kota slotu iade edilir. İptal
     // hardError DEĞİLDİR (bkz. receiptImage kolundaki aynı gerekçe).
-    return { awaiting: false, hardError: !isAbortError(err) }
+    return { awaiting: false, hardError: isRefundableError(err) }
   }
   if (signal?.aborted) return STOPPED_TURN
 

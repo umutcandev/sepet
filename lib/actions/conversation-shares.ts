@@ -12,6 +12,7 @@ import {
 } from "@/lib/data/conversation-shares"
 import { shareActionLimiter, shareReadLimiter } from "@/lib/security/rate-limit"
 import { isUuid } from "@/lib/utils"
+import { logError } from "@/lib/ai/telemetry"
 
 // Paylaşım uçları. Kimlik yalnızca oturumdan gelir; her sorgu `userId` ile
 // kapsanır, yani başkasının sohbeti ne paylaşılabilir ne de paylaşımı
@@ -233,7 +234,7 @@ export async function shareConversation(input: {
     }
   } catch (err) {
     // Kopya alınırken sohbet silindiyse FK ihlali; ya da geçici DB hatası.
-    console.error("[shareConversation] failed", err)
+    logError("[shareConversation] failed", err)
     return { ok: false, error: "failed" }
   }
 }

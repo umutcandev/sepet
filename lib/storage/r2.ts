@@ -93,6 +93,29 @@ export function validateUpload(input: { contentType: string; size: number }): {
   return { ok: true }
 }
 
+const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
+
+/**
+ * Baytların kendi imzasına göre görsel türü (adına ve bildirilen türe
+ * bakılmaz). JPEG / PNG / WebP dışında null.
+ *
+ * Yükleme uçları eskiden yalnız tarayıcının bildirdiği Content-Type'a
+ * bakıyordu; depoya PNG adı altında bir SVG, HTML ya da TIFF yazılabiliyor ve
+ * public CDN'den o türle servis ediliyordu. Artık imza tutmayan dosya
+ * reddedilir ve nesne bildirilen değil, imzadan çıkan türle yazılır.
+ */
+export function sniffImageType(
+  b: Uint8Array,
+): "image/jpeg" | "image/png" | "image/webp" | null {
+  if (b.byteLength < 12) return null
+  if (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return "image/jpeg"
+  if (PNG_SIGNATURE.every((v, i) => b[i] === v)) return "image/png"
+  const ascii = (from: number, to: number) =>
+    String.fromCharCode(...b.subarray(from, to))
+  if (ascii(0, 4) === "RIFF" && ascii(8, 12) === "WEBP") return "image/webp"
+  return null
+}
+
 // Ham ya da %2e kodlu `..` segmenti ön ekin dışına çıkabilir; reddedilir.
 const TRAVERSAL = /(^|[/\\])(\.|%2e){2}([/\\?#]|$)/i
 // Kontrol karakterleri de: URL ayrıştırıcı sekme ve satır sonunu sessizce

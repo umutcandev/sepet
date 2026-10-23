@@ -30,6 +30,7 @@ import {
 } from "@/lib/email/templates"
 import { getClientIp, checkLimit } from "@/lib/security/action-rate-limit"
 import {
+  codeGuessDailyLimiter,
   twoFactorLimiter,
   passwordChangeLimiter,
   emailSendLimiter,
@@ -123,8 +124,12 @@ export async function beginTotpSetupAction(input: {
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
   const uid = session.user.id
 
-  const limit = await checkLimit(passwordChangeLimiter, uid)
-  if (!limit.ok) return limit
+  for (const check of [
+    await checkLimit(passwordChangeLimiter, uid),
+    await checkLimit(codeGuessDailyLimiter, `reauth:${uid}`),
+  ]) {
+    if (!check.ok) return check
+  }
 
   const [u] = await db
     .select({
@@ -225,8 +230,12 @@ export async function confirmTotpSetupAction(input: {
   const code = typeof input?.code === "string" ? input.code.trim() : ""
   if (!/^\d{6}$/.test(code)) return { ok: false, error: "6 haneli kodu gir." }
 
-  const limit = await checkLimit(twoFactorLimiter, `setup:${uid}`)
-  if (!limit.ok) return limit
+  for (const check of [
+    await checkLimit(twoFactorLimiter, `setup:${uid}`),
+    await checkLimit(codeGuessDailyLimiter, `reauth:${uid}`),
+  ]) {
+    if (!check.ok) return check
+  }
 
   const [u] = await db
     .select({
@@ -318,8 +327,12 @@ async function requireReauth(input: {
   if (!session?.user?.id) return { ok: false, error: "Oturum bulunamadı." }
   const uid = session.user.id
 
-  const limit = await checkLimit(passwordChangeLimiter, uid)
-  if (!limit.ok) return limit
+  for (const check of [
+    await checkLimit(passwordChangeLimiter, uid),
+    await checkLimit(codeGuessDailyLimiter, `reauth:${uid}`),
+  ]) {
+    if (!check.ok) return check
+  }
 
   const [u] = await db
     .select({

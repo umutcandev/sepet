@@ -4,11 +4,18 @@ import { z } from "zod"
 
 import { auth } from "@/auth"
 import { geminiFlashLite } from "@/lib/ai/models"
+import { logError } from "@/lib/ai/telemetry"
 
 export const runtime = "nodejs"
 export const maxDuration = 30
 
-const MAX_AUDIO_BYTES = 3 * 1024 * 1024 // 3 MB
+// İstemci kaydı 30 sn'de keser (voice-input.tsx MAX_RECORDING_MS); 30 sn ses
+// opus/webm'de ~250 KB, iOS mp4/aac'de ~500 KB. Tavan bunun rahat üstünde ama
+// eskisi (3 MB ≈ 12-25 dk) bu uca kotasız uzun ses göndermeye izin veriyordu.
+const MAX_AUDIO_BYTES = 1024 * 1024 // 1 MB
+// 30 sn konuşma birkaç yüz token; sınırsız çıktı, sesli prompt injection'la
+// ucu serbest metin üreticisine çevirmeye izin verirdi.
+const MAX_OUTPUT_TOKENS = 512
 const ALLOWED_MEDIA_TYPES = new Set([
   "audio/webm",
   "audio/webm;codecs=opus",
@@ -78,7 +85,7 @@ export async function POST(req: Request) {
   }
   if (audioBuffer.byteLength > MAX_AUDIO_BYTES) {
     return NextResponse.json(
-      { error: "too_large", message: "Ses dosyası 3MB'dan büyük olamaz." },
+      { error: "too_large", message: "Ses kaydı çok uzun." },
       { status: 413 },
     )
   }
@@ -87,6 +94,9 @@ export async function POST(req: Request) {
   try {
     const result = await generateText({
       model: geminiFlashLite,
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
+      // İstemci iptal ederse model çağrısı da kesilsin.
+      abortSignal: req.signal,
       system: SYSTEM_PROMPT,
       messages: [
         {
@@ -113,7 +123,7 @@ export async function POST(req: Request) {
         { status: 503 },
       )
     }
-    console.error("[transcribe] failed", err)
+    logError("[transcribe] failed", err)
     return NextResponse.json(
       { error: "transcribe_failed", message: "Ses yazıya çevrilemedi." },
       { status: 500 },

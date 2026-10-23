@@ -26,7 +26,9 @@ export async function GET(request: Request) {
   const url = new URL(request.url)
   const q = url.searchParams.get("q")?.trim() ?? ""
   const page = parsePage(url.searchParams.get("page"))
-  if (q.length < 2) {
+  // Üst sınır candidates rotasıyla aynı: sorgu Redis anahtarına ve upstream
+  // anahtar kelimesine olduğu gibi gider.
+  if (q.length < 2 || q.length > 100) {
     return NextResponse.json({
       hits: [],
       cached: false,
@@ -41,7 +43,12 @@ export async function GET(request: Request) {
     const result = await searchProducts(q, loc, { page, size: MF_PAGE_SIZE })
     return NextResponse.json(result)
   } catch (err) {
-    const status = err instanceof MarketfiyatiError ? err.status : 500
+    // Ağ hatasında MarketfiyatiError.status 0 olur; geçersiz bir HTTP
+    // durumu NextResponse'u RangeError'la düşürürdü.
+    const status =
+      err instanceof MarketfiyatiError && err.status >= 400 && err.status <= 599
+        ? err.status
+        : 502
     // İç hata detayını client'a sızdırma — yalnız sunucu loguna yaz.
     console.error("[products/search] failed", err)
     return NextResponse.json({ error: "search_failed" }, { status })

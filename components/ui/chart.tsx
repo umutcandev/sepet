@@ -81,9 +81,16 @@ function ChartContainer({
   )
 }
 
+// <style> içine ham basılır (dangerouslySetInnerHTML): anahtar ve renk veriden
+// gelebilir (ör. market adı). `</style>` ya da `;}` taşıyan bir değer bloğu
+// kapatıp HTML/CSS enjekte edebilirdi → yalnız güvenli CSS tanımlayıcısı olan
+// anahtarlar ve kural sınırı içermeyen renkler yazılır.
+const SAFE_CSS_KEY = /^[A-Za-z0-9_-]+$/
+const UNSAFE_CSS_VALUE = /[<>{};\\]/
+
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
-    ([, config]) => config.theme ?? config.color
+    ([key, config]) => SAFE_CSS_KEY.test(key) && (config.theme ?? config.color)
   )
 
   if (!colorConfig.length) {
@@ -102,7 +109,9 @@ ${colorConfig
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ??
       itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
+    return color && !UNSAFE_CSS_VALUE.test(color)
+      ? `  --color-${key}: ${color};`
+      : null
   })
   .join("\n")}
 }

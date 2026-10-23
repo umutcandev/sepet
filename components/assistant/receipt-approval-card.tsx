@@ -22,6 +22,10 @@ import { stripQuantityTokens } from "@/lib/ai/normalize"
 import { MarketLogo } from "@/components/market-logo"
 import { formatTLOrDash } from "@/lib/format"
 import { cn } from "@/lib/utils"
+import {
+  MAX_APPROVAL_ITEMS,
+  MAX_ITEM_NAME,
+} from "@/lib/assistant/approval-limits"
 
 type EditableItem = ReceiptOCRItem & { _id: string }
 
@@ -225,6 +229,7 @@ export function ReceiptApprovalCard({
                           })
                         }
                         aria-label="Ürün adı"
+                        maxLength={MAX_ITEM_NAME}
                         className="h-8 text-sm"
                       />
                     )}
@@ -374,6 +379,8 @@ export function ReceiptApprovalCard({
             variant="outline"
             size="sm"
             onClick={addItem}
+            // Sunucunun kalem tavanı (bkz. lib/assistant/approval-limits.ts).
+            disabled={items.length >= MAX_APPROVAL_ITEMS}
           >
             <RiAddLine data-icon="inline-start" />
             Yeni kalem

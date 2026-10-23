@@ -505,8 +505,16 @@ ${items
     // Not kullanıcı metni: tek satıra indir ve kısalt ki kalem bloğunun
     // biçimini (aday satırları) bozamasın.
     const note = it.note?.replace(/\s+/g, " ").trim().slice(0, 120)
+    // Kalem adı da kullanıcı metni (onay payload'ı istemciden gelir): tırnağı
+    // ve satır sonunu düşür ki tırnaklı ad bloğundan taşıp komşu kalemlere
+    // talimat gibi okunamasın.
+    const rawName = it.rawName
+      .replace(/["\u0000-\u001f\u007f]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 200)
     return (
-      `[${it.itemIndex}] "${it.rawName}" — istenen miktar: ${it.quantity} ${it.unit}\n` +
+      `[${it.itemIndex}] "${rawName}" — istenen miktar: ${it.quantity} ${it.unit}\n` +
       (note ? `KULLANICI NOTU: ${note}\n` : "") +
       (policy ? `POLİTİKA (Sepet kararı): ${policy}\n` : "") +
       it.candidates

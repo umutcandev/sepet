@@ -1,6 +1,7 @@
 "use server"
 
-import { and, count, eq, isNull, ne } from "drizzle-orm"
+import { after } from "next/server"
+import { and, count, eq, isNull, ne, sql } from "drizzle-orm"
 import { z } from "zod"
 
 import { auth } from "@/auth"
@@ -81,39 +82,46 @@ export async function forgotPasswordAction(input: {
     if (!check.ok) return check
   }
 
-  const [user] = await db
-    .select({ id: users.id, passwordHash: users.passwordHash })
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1)
+  // Hesap durumuna göre iş miktarı değişiyor (şifreli: DELETE + INSERT,
+  // sosyal: sağlayıcı sorgusu, yok: hiçbiri). Yanıt bu işi beklese süre
+  // farkından e-postanın kayıtlı olup olmadığı ve türü okunabilirdi → tamamı
+  // yanıttan SONRA çalışır (after; Vercel bitmesini bekler).
+  after(async () => {
+    const [user] = await db
+      .select({ id: users.id, passwordHash: users.passwordHash })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1)
 
-  const loginUrl = absoluteUrl("/")
+    const loginUrl = absoluteUrl("/")
 
-  if (user && user.passwordHash) {
-    // Sıfırlama yalnız link (token) ile; code artık maile konmaz, sadece
-    // codeHash notNull kısıtını doldurmak için üretilir.
-    const code = generateCode()
-    const token = generateToken()
-    const expiresAt = new Date(Date.now() + RESET_TTL_MS)
-    // Tek aktif satır: öncekileri sil, yenisini ekle.
-    await db.delete(passwordReset).where(eq(passwordReset.userId, user.id))
-    await db.insert(passwordReset).values({
-      userId: user.id,
-      codeHash: hashSecret(code),
-      tokenHash: hashSecret(token),
-      expiresAt,
-    })
-    const url = absoluteUrl(`/sifre-sifirla?token=${encodeURIComponent(token)}`)
-    void sendMail({ to: email, ...passwordResetEmail({ url }) })
-  } else if (user) {
-    // Sosyal giriş (şifresi yok): sıfırlama değil, yönlendirme bilgisi. Hangi
-    // sağlayıcıyla girdiğini yazabilmek için accounts'tan okunur.
-    const label = providerLabel(await getLinkedProvider(user.id))
-    void sendMail({
-      to: email,
-      ...socialSignInEmail({ loginUrl, providerLabel: label }),
-    })
-  }
+    if (user && user.passwordHash) {
+      // Sıfırlama yalnız link (token) ile; code artık maile konmaz, sadece
+      // codeHash notNull kısıtını doldurmak için üretilir.
+      const code = generateCode()
+      const token = generateToken()
+      const expiresAt = new Date(Date.now() + RESET_TTL_MS)
+      // Tek aktif satır: öncekileri sil, yenisini ekle.
+      await db.delete(passwordReset).where(eq(passwordReset.userId, user.id))
+      await db.insert(passwordReset).values({
+        userId: user.id,
+        codeHash: hashSecret(code),
+        tokenHash: hashSecret(token),
+        expiresAt,
+      })
+      const url = absoluteUrl(`/sifre-sifirla?token=${encodeURIComponent(token)}`)
+      void sendMail({ to: email, ...passwordResetEmail({ url }) })
+    } else if (user) {
+      // Sosyal giriş (şifresi yok): sıfırlama değil, yönlendirme bilgisi. Hangi
+      // sağlayıcıyla girdiğini yazabilmek için accounts'tan okunur.
+      const label = providerLabel(await getLinkedProvider(user.id))
+      void sendMail({
+        to: email,
+        ...socialSignInEmail({ loginUrl, providerLabel: label }),
+      })
+    }
+  })
+
   // Kullanıcı yoksa hiçbir şey; her durumda:
   return { ok: true }
 }
@@ -142,19 +150,19 @@ export async function resetPasswordAction(input: {
     if (!check.ok) return check
   }
 
+  // Tek kullanım atomik: satır okunurken tüketilir (DELETE … RETURNING). Önce
+  // okuyup sonra silmek, aynı token'la eşzamanlı iki isteğin ikisinin de
+  // geçmesine izin veriyordu.
   const [row] = await db
-    .select({
-      id: passwordReset.id,
+    .delete(passwordReset)
+    .where(eq(passwordReset.tokenHash, hashSecret(token)))
+    .returning({
       userId: passwordReset.userId,
       expiresAt: passwordReset.expiresAt,
     })
-    .from(passwordReset)
-    .where(eq(passwordReset.tokenHash, hashSecret(token)))
-    .limit(1)
 
   if (!row) return { ok: false, error: "Bağlantı geçersiz ya da süresi dolmuş." }
   if (row.expiresAt.getTime() < Date.now()) {
-    await db.delete(passwordReset).where(eq(passwordReset.id, row.id))
     return { ok: false, error: "Bağlantının süresi doldu. Yeni bağlantı iste." }
   }
   return applyReset(row.userId, newPassword)
@@ -179,7 +187,13 @@ async function applyReset(
   const passwordHash = await hashPassword(newPassword)
   await db
     .update(users)
-    .set({ passwordHash, passwordUpdatedAt: new Date() })
+    .set({
+      passwordHash,
+      passwordUpdatedAt: new Date(),
+      // Bağlantı hesabın posta kutusuna gitti ve kullanıldı: e-posta sahipliği
+      // kanıtlandı (bkz. lib/auth/oauth-link.ts isUnverifiedLinkTarget).
+      emailVerified: sql`COALESCE(${users.emailVerified}, now())`,
+    })
     .where(eq(users.id, userId))
 
   if (hadPassword) {
@@ -283,6 +297,8 @@ export async function changePasswordAction(input: {
     .update(userSessions)
     .set({ revokedAt: new Date() })
     .where(and(...conditions))
+  // Değişiklikten önce istenmiş bir sıfırlama bağlantısı hâlâ geçerli olmasın.
+  await db.delete(passwordReset).where(eq(passwordReset.userId, uid))
 
   if (u.email) void sendMail({ to: u.email, ...passwordChangedEmail() })
   return { ok: true, passkeys: await countPasskeys(uid) }

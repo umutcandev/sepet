@@ -45,7 +45,12 @@ export async function GET(request: Request) {
     }))
     return NextResponse.json({ products })
   } catch (err) {
-    const status = err instanceof MarketfiyatiError ? err.status : 500
+    // Ağ hatasında MarketfiyatiError.status 0 olur; geçersiz bir HTTP
+    // durumu NextResponse'u RangeError'la düşürürdü.
+    const status =
+      err instanceof MarketfiyatiError && err.status >= 400 && err.status <= 599
+        ? err.status
+        : 502
     // İç hata detayını client'a sızdırma — yalnız sunucu loguna yaz.
     console.error("[products/candidates] failed", err)
     return NextResponse.json({ error: "search_failed" }, { status })
