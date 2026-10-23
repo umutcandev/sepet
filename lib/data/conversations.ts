@@ -79,6 +79,25 @@ export async function setConversationStatus(
   revalidatePath("/asistan", "layout")
 }
 
+// Postgres jsonb \u0000 kabul etmez: metinde bir NUL karakteri tüm insert'i
+// düşürür, mesaj sessizce kaydedilmezdi (kota slotu yine de harcanmış olurdu).
+function stripNul(value: unknown): unknown {
+  if (typeof value === "string") return value.replace(/\u0000/g, "")
+  if (Array.isArray(value)) return value.map(stripNul)
+  if (value !== null && typeof value === "object") {
+    // Yalnız düz nesneler (JSON'dan gelen part'lar); Date vb. olduğu gibi kalır.
+    const proto = Object.getPrototypeOf(value)
+    if (proto !== Object.prototype && proto !== null) return value
+    return Object.fromEntries(
+      Object.entries(value).map(([k, v]) => [
+        k.replace(/\u0000/g, ""),
+        stripNul(v),
+      ]),
+    )
+  }
+  return value
+}
+
 export async function appendMessages(
   conversationId: string,
   userId: string,
@@ -112,8 +131,8 @@ export async function appendMessages(
   const rows = msgs.map((m) => ({
     conversationId,
     role: m.role,
-    parts: m.parts as object,
-    metadata: (m.metadata ?? null) as object | null,
+    parts: stripNul(m.parts) as object,
+    metadata: stripNul(m.metadata ?? null) as object | null,
     sequence: next++,
   }))
 

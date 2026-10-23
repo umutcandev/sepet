@@ -20,8 +20,9 @@ import {
   AI_MAX_RETRIES,
   type AiCallOptions,
 } from "./models"
-import { devLog, isAbortError, withLlmCall } from "./telemetry"
+import { devLog, isAbortError, logError, withLlmCall } from "./telemetry"
 import { userThought } from "./user-thought"
+import { MAX_APPROVAL_ITEMS } from "@/lib/assistant/approval-limits"
 import {
   CHAT_TITLE_PROMPT,
   IMAGE_ANALYSIS_PROMPT,
@@ -205,7 +206,27 @@ export async function analyzeImage(
         ? `dish=${object.food?.dishName}`
         : `reason=${object.unknownReason}`,
   )
-  return { analysis: object, reasoning }
+  return { analysis: capAnalysisItems(object), reasoning }
+}
+
+// Model çok uzun bir fiş/liste çıkarırsa onay payload'ı sunucunun kalem
+// tavanını aşar ve onay reddedilirdi (bkz. lib/assistant/approval-limits.ts).
+function capAnalysisItems(analysis: ImageAnalysis): ImageAnalysis {
+  return {
+    ...analysis,
+    receipt: analysis.receipt
+      ? {
+          ...analysis.receipt,
+          items: analysis.receipt.items.slice(0, MAX_APPROVAL_ITEMS),
+        }
+      : analysis.receipt,
+    food: analysis.food
+      ? {
+          ...analysis.food,
+          items: analysis.food.items.slice(0, MAX_APPROVAL_ITEMS),
+        }
+      : analysis.food,
+  }
 }
 
 export async function generateChatTitle(
@@ -271,7 +292,10 @@ export async function parseShoppingList(
     "[parseShoppingList] detail:",
     object.items.map((i) => `${i.name} → "${i.searchQuery}"`).join(" | "),
   )
-  return { draft: object, reasoning }
+  return {
+    draft: { ...object, items: object.items.slice(0, MAX_APPROVAL_ITEMS) },
+    reasoning,
+  }
 }
 
 type HitList = Candidate[]
@@ -333,6 +357,21 @@ function matchCacheKey(item: ParsedItem, hits: HitList): string {
       .sort(),
   })
   return `mf:match:${MATCH_PROMPT_VERSION}:${createHash("sha1").update(payload).digest("hex")}`
+}
+
+/**
+ * Bir kullanıcıya özel match-cache anahtarı. Birden fazla kalem aynı LLM
+ * çağrısına girdiğinde her kalemin seçimi, aynı prompt'taki DİĞER kalemlerin
+ * metninden etkilenebilir (kalem adları istemciden gelir). Böyle bir seçim
+ * ortak anahtara yazılsaydı, aynı kalemi soran başka kullanıcılara da
+ * TTL boyunca servis edilirdi: bir kullanıcı yanına koyduğu yönlendirici bir
+ * kalemle herkes için "süt"ün eşleşmesini değiştirebilirdi. Bu yüzden ortak
+ * anahtara yalnız tek kalemlik çağrıların seçimi yazılır; çok kalemli
+ * çağrınınki yalnız o kullanıcının kendi anahtarına (aynı kullanıcının sonraki
+ * turları yine cache'ten okur).
+ */
+function scopedMatchCacheKey(sharedKey: string, scope: string): string {
+  return `${sharedKey}:u:${scope}`
 }
 
 /**
@@ -423,6 +462,8 @@ export async function lookupProducts(
   loc: LocationContext = MF_DEFAULT_LOCATION,
   opts: AiCallOptions = {},
   carried: ReadonlyMap<string, CarriedSelection> = new Map(),
+  /** Kullanıcıya özel match-cache kapsamı (userId), bkz. scopedMatchCacheKey. */
+  cacheScope?: string,
 ): Promise<{ matches: MatchResult[] }> {
   // Faz 1 — her kalem için aday ürünleri getir.
   const outcomes = await Promise.all(
@@ -484,11 +525,24 @@ export async function lookupProducts(
 
   if (withHits.length > 0) {
     const cacheKeys = withHits.map((e) => matchCacheKey(e.item, e.hits))
+    const scopedKeys = cacheScope
+      ? cacheKeys.map((k) => scopedMatchCacheKey(k, cacheScope))
+      : []
+    // Kullanıcının kendi seçimi ortak seçimden önce gelir.
     let cached: (ItemSelection | null)[] = []
     try {
-      cached = await redis.mget<(ItemSelection | null)[]>(...cacheKeys)
+      const values = await redis.mget<(ItemSelection | null)[]>(
+        ...scopedKeys,
+        ...cacheKeys,
+      )
+      cached = cacheKeys.map(
+        (_, i) =>
+          (scopedKeys.length > 0 ? values[i] : null) ??
+          values[scopedKeys.length + i] ??
+          null,
+      )
     } catch (err) {
-      console.error("[lookupProducts] match cache read failed", err)
+      logError("[lookupProducts] match cache read failed", err)
       cached = []
     }
 
@@ -522,7 +576,7 @@ export async function lookupProducts(
           opts,
         )
       } catch (err) {
-        console.error(
+        logError(
           "[lookupProducts] match selection failed, falling back to hits[0]",
           err,
         )
@@ -537,8 +591,18 @@ export async function lookupProducts(
         // LLM başarısız ya da seçim yok → hits[0]'a geri düş (cache'leme).
         const resolved = resolveSelection(sel, entry.hits)
         pick.set(entry.index, resolved)
-        if (sel) {
-          toCache.push({ key: cacheKeys[miss.withHitsIdx], value: resolved })
+        if (!sel) return
+        // Tek kalemlik çağrı: seçimi yalnız o kalemin kendi metni belirledi →
+        // ortak anahtara yazılabilir. Çok kalemli çağrı: yalnız kullanıcıya
+        // özel anahtara (kapsam yoksa hiç yazılmaz).
+        const sharedKey = cacheKeys[miss.withHitsIdx]
+        if (misses.length === 1) {
+          toCache.push({ key: sharedKey, value: resolved })
+        } else if (cacheScope) {
+          toCache.push({
+            key: scopedMatchCacheKey(sharedKey, cacheScope),
+            value: resolved,
+          })
         }
       })
 
@@ -551,7 +615,7 @@ export async function lookupProducts(
           }
           await p.exec()
         } catch (err) {
-          console.error("[lookupProducts] match cache write failed", err)
+          logError("[lookupProducts] match cache write failed", err)
         }
       }
     }
@@ -623,7 +687,7 @@ export async function suggestQueries(
     proposals = new Map(object.suggestions.map((s) => [s.itemIndex, s.queries]))
   } catch (err) {
     if (!isAbortError(err)) {
-      console.error("[suggestQueries] suggestion failed", err)
+      logError("[suggestQueries] suggestion failed", err)
     }
     return matches
   }

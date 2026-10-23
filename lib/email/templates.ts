@@ -254,6 +254,44 @@ export function passkeyRemovedEmail(args: { name: string }): Email {
   }
 }
 
+// ─── Bildirim: sosyal hesap bağlandı (Ayarlar > Bağlı hesaplar) ───
+export function accountLinkedEmail(args: { providerLabel: string }): Email {
+  const heading = `${args.providerLabel} hesabı bağlandı`
+  const body =
+    p(`Sepet hesabına bir ${esc(args.providerLabel)} hesabı bağlandı. Artık bu ${esc(args.providerLabel)} hesabıyla da giriş yapılabilir.`) +
+    p("Bunu sen yapmadıysan hemen Ayarlar > Hesap > Bağlı hesaplar bölümünden bağlantıyı kaldır, şifreni değiştir ve tüm cihazlardan çıkış yap.")
+  const text = textBlock([
+    heading,
+    "",
+    `Sepet hesabına bir ${args.providerLabel} hesabı bağlandı. Artık bu hesapla da giriş yapılabilir.`,
+    "Bunu sen yapmadıysan hemen Ayarlar > Hesap > Bağlı hesaplar bölümünden bağlantıyı kaldır, şifreni değiştir ve tüm cihazlardan çıkış yap.",
+  ])
+  return {
+    subject: `Sepet hesabına ${args.providerLabel} hesabı bağlandı`,
+    html: layout({ heading, body, preview: `Hesabına bir ${args.providerLabel} hesabı bağlandı.` }),
+    text,
+  }
+}
+
+// ─── Bildirim: sosyal hesap bağlantısı kaldırıldı ───
+export function accountUnlinkedEmail(args: { providerLabel: string }): Email {
+  const heading = `${args.providerLabel} bağlantısı kaldırıldı`
+  const body =
+    p(`Sepet hesabından ${esc(args.providerLabel)} bağlantısı kaldırıldı. Bu ${esc(args.providerLabel)} hesabıyla artık giriş yapılamaz; diğer cihazlardaki oturumların da kapatıldı.`) +
+    p("Bunu sen yapmadıysan hemen şifreni değiştir ve tüm cihazlardan çıkış yap.")
+  const text = textBlock([
+    heading,
+    "",
+    `Sepet hesabından ${args.providerLabel} bağlantısı kaldırıldı. Bu hesapla artık giriş yapılamaz; diğer cihazlardaki oturumların da kapatıldı.`,
+    "Bunu sen yapmadıysan hemen şifreni değiştir ve tüm cihazlardan çıkış yap.",
+  ])
+  return {
+    subject: `Sepet hesabından ${args.providerLabel} bağlantısı kaldırıldı`,
+    html: layout({ heading, body, preview: `Hesabından ${args.providerLabel} bağlantısı kaldırıldı.` }),
+    text,
+  }
+}
+
 // ─── Bildirim: şifre değişti ───
 export function passwordChangedEmail(): Email {
   const heading = "Şifren değişti"

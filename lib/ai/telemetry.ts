@@ -31,6 +31,32 @@ export function devLog(...args: unknown[]): void {
 }
 
 /**
+ * Üretim loguna güvenli hata kaydı. Hata nesnesinin kendisi kullanıcı içeriği
+ * taşıyabilir: NoObjectGeneratedError.text modelin ham çıktısını (alışveriş
+ * listesi, fiş satırları), APICallError.requestBodyValues prompt'u ve sohbet
+ * geçmişini (sesli girişte base64 sesi), DrizzleQueryError mesajı sorgu
+ * parametrelerini (mesaj gövdesi) içerir. `console.error(label, err)` bunların
+ * hepsini log toplayıcısına basıyordu. Üretimde yalnız tür adı, HTTP durumu ve
+ * cause türü yazılır; geliştirmede hatanın tamamı.
+ */
+export function logError(label: string, err: unknown): void {
+  if (IS_DEV) {
+    console.error(label, err)
+    return
+  }
+  if (!(err instanceof Error)) {
+    console.error(label, { type: typeof err })
+    return
+  }
+  const status = (err as { statusCode?: unknown }).statusCode
+  console.error(label, {
+    name: err.name,
+    ...(typeof status === "number" ? { status } : {}),
+    ...(err.cause instanceof Error ? { cause: err.cause.name } : {}),
+  })
+}
+
+/**
  * İstek iptali (kullanıcı stream'i kesti / sekmeyi kapattı) ya da timeout.
  * Node'da `DOMException` de `Error`'dan türediği için `AbortController.abort()`
  * ile fırlatılan hata bu kontrole takılır.

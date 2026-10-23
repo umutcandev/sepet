@@ -42,6 +42,7 @@ export function getCategory(id: CategoryId): Category {
   return CATEGORIES[id]
 }
 
+// `in` prototip zincirine bakar ("constructor", "__proto__" de geçerdi).
 export function isCategoryId(value: string): value is CategoryId {
-  return value in CATEGORIES
+  return Object.hasOwn(CATEGORIES, value)
 }

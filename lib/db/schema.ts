@@ -67,6 +67,11 @@ export const users = pgTable("user", {
   subscriptionCancelAtPeriodEnd: boolean("subscriptionCancelAtPeriodEnd")
     .notNull()
     .default(false),
+  // Son uygulanan abonelik event'inin Polar `modifiedAt`'i. Polar event
+  // sırasını garanti etmez; aynı aboneliğin daha eski bir anlık görüntüsü
+  // (gecikmiş/yeniden denenen teslimat) bundan eskiyse atlanır (bkz.
+  // app/api/webhooks/polar).
+  subscriptionModifiedAt: timestamp("subscriptionModifiedAt", { mode: "date" }),
   // ─── Hesap arşivleme (yumuşak silme) ───
   // "Hesabımı sil" verileri anında silmez; archivedAt'i set eder ve oturumları
   // kapatır. 14 gün içinde tekrar giriş yapılmazsa cron (purge-archived) satırı
@@ -144,10 +149,16 @@ export const userSessions = pgTable(
       .notNull()
       .defaultNow(),
     revokedAt: timestamp("revokedAt", { mode: "date" }),
-    // Oturum bir geçiş anahtarıyla açıldıysa o anahtar: anahtar silinince bu
-    // oturumlar da kapatılır (bkz. deletePasskeyAction). Diğer yöntemlerde null.
+    // Oturum bir geçiş anahtarıyla açıldıysa o anahtar; diğer yöntemlerde null.
+    // Anahtar silinince bu oturum satırları da SİLİNİR → jwt callback satırı
+    // bulamayıp token'ı geçersiz kılar (bkz. deletePasskeyAction). CASCADE
+    // bilinçli: "set null" iken iptal (UPDATE) ile silme (DELETE) iki ayrı
+    // ifadeydi; arada aynı anahtarla açılan oturumun passkeyId'si null'a düşüp
+    // iptalden kaçıyordu. FK kilidi sayesinde eşzamanlı bir oturum kaydı ya
+    // silmeden önce yazılıp onunla birlikte silinir ya da FK hatasıyla düşer
+    // (o durumda giriş de başarısız olur, bkz. auth.ts jwt callback).
     passkeyId: text("passkeyId").references(() => passkeys.id, {
-      onDelete: "set null",
+      onDelete: "cascade",
     }),
   },
   (t) => [index("user_session_user_idx").on(t.userId)],
@@ -171,11 +182,12 @@ export const verificationTokens = pgTable(
 // (email_verified zorunlu) → allowDangerousEmailAccountLinking güvenli.
 //
 // TEK İSTİSNA Facebook: Graph /me e-posta doğrulama bilgisi vermiyor, dolayısıyla
-// bir Facebook satırının e-postası kanıtlanmış SAYILMAZ. Bu yüzden (a) Facebook'ta
-// otomatik hesap bağlama kapalı, (b) Facebook'la açılmış şifresiz bir satır
-// credentials kaydını ememez — bkz. lib/auth/providers.ts → UNPROVEN_EMAIL_PROVIDERS
-// ve lib/actions/credentials-auth.ts → completeSignup. İkisi birlikte ön-kayıt /
-// hesap devralma senaryosunu kapatır.
+// bir Facebook satırının e-postası kanıtlanmış SAYILMAZ. Kanıt `user.emailVerified`
+// alanında kalıcı tutulur (Facebook ile açılan satırda null kalır). Bu yüzden (a)
+// Facebook'ta otomatik hesap bağlama kapalı, (b) Google kanıtsız satıra kendiliğinden
+// bağlanmaz (lib/auth/oauth-link.ts → isUnverifiedLinkTarget), (c) kanıtsız şifresiz
+// bir satır credentials kaydını ememez (lib/actions/credentials-auth.ts →
+// completeSignup). Birlikte ön-kayıt / hesap devralma senaryosunu kapatırlar.
 //
 // purpose "totp_setup" (şifresiz hesapta 2FA kurulumu için yeniden
 // doğrulama) ve "reauth" (şifresiz hesapta hassas işlem öncesi yeniden

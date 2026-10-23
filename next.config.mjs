@@ -50,11 +50,13 @@ const nextConfig = {
   // paketleme bozulur.
   serverExternalPackages: ["@node-rs/argon2", "nodemailer"],
   images: {
+    // Yalnız next/image'ın gerçekten optimize ettiği kaynaklar. Profil
+    // fotoğrafları (Google lh3, Facebook fbcdn/lookaside) düz <img> ile
+    // (AvatarImage) gösteriliyor, optimizer'dan geçmiyor; burada durmaları
+    // /_next/image'ı herhangi bir fbcdn alt alanındaki her görseli işleyen
+    // açık bir proxy'ye çeviriyordu (görsel optimizasyon maliyeti). CSP
+    // img-src onları <img> için listelemeye devam ediyor.
     remotePatterns: [
-      { protocol: "https", hostname: "lh3.googleusercontent.com" },
-      // Facebook profil fotoğrafı CDN'leri (Graph /me?fields=picture)
-      { protocol: "https", hostname: "platform-lookaside.fbsbx.com" },
-      { protocol: "https", hostname: "**.fbcdn.net" },
       // marketfiyati ürün görselleri CDN'i
       { protocol: "https", hostname: "cdn.marketfiyati.org.tr" },
     ],
@@ -74,15 +76,21 @@ const nextConfig = {
           },
         ],
       },
-      {
-        source: "/:path*.(png|jpg|jpeg|webp|avif|svg|ico|woff|woff2|ttf)",
+      // Uzun önbellek yalnız public/ altındaki statik dosyalara. Eskiden her
+      // görsel uzantılı yolu kapsıyordu; `/api/products/x.png` gibi dinamik
+      // bir yanıt da 1 yıllık `immutable` alıyordu.
+      ...[
+        "/:dir(brand|github|market-logos|onboarding|static)/:path*",
+        "/blog/:dir(media|authors)/:path*",
+      ].map((source) => ({
+        source,
         headers: [
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
           },
         ],
-      },
+      })),
     ]
   },
 }

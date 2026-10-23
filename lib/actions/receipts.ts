@@ -24,6 +24,8 @@ import {
 import { escapeLike, isUuid } from "@/lib/utils"
 import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
+import { withUserLock } from "@/lib/security/user-lock"
+import { MAX_APPROVAL_ITEMS } from "@/lib/assistant/approval-limits"
 import { type ReceiptSort, DEFAULT_RECEIPT_SORT } from "@/lib/receipt-sort"
 import { OCR_MODEL_NAME } from "@/lib/ai/models"
 import { OptimizationSummarySchema } from "@/lib/ai/schemas"
@@ -113,6 +115,11 @@ export async function saveReceipt(input: {
   if (!session?.user?.id) throw new Error("unauthorized")
 
   const userId = session.user.id
+  // Kalemler istemciden geliyor; onay kartlarının tavanıyla aynı sınır (bkz.
+  // lib/assistant/approval-limits.ts) — kayıt başına sınırsız satır yazılmasın.
+  if (!Array.isArray(input.items) || input.items.length > MAX_APPROVAL_ITEMS) {
+    throw new Error("too_many_items")
+  }
   const conversationId = await ownedConversationId(input.conversationId, userId)
   const sourceToolCallId = conversationId ? input.sourceToolCallId ?? null : null
 
@@ -150,27 +157,9 @@ export async function saveReceipt(input: {
 
   // Depolama kotası: kayıt öncesi sert tavan (kullanıcının açık "Kaydet"
   // aksiyonu). Görsel analizi kotası ayrıdır ve asistan turunda sayılır.
-  //
-  // Eşzamanlılık notu: count→insert statement-düzeyinde atomik değil, ama
-  // pratikte güvenli. Çift-gönderim üç katmanda engelli: (1) UI "Kaydet"i
-  // kaydederken/kaydedince kilitler, (2) yukarıdaki dedup aynı (sohbet,
-  // tool-call) için var olan id'yi döner, (3) receipt_conv_tool_idx unique
-  // index'i aynı kartın iki satırını DB'de imkânsız kılar. Geriye yalnızca
-  // "aynı anda iki FARKLI fiş" yarışı kalır — ardışık insan tıklamasıyla
-  // ulaşılamaz, en kötü 1 fazla satır (AI/maliyet/güvenlik etkisi yok).
-  // neon-http transaction desteklemediğinden daha sıkı serileştirme,
-  // jsonb/numeric'i ham SQL'de elle kodlayıp çalışan kayıt yolunu riske atmayı
-  // gerektirir — bu denge için gereksiz. Bkz. saveBasket aynı gerekçe.
+  // Sayım ile insert aşağıda kullanıcı başına kilit altında yapılır (bkz.
+  // lib/security/user-lock.ts): action'ı paralel çağırarak sınır aşılamaz.
   const receiptLimit = planLimit(await getUserPlan(userId), "savedReceipts")
-  if (receiptLimit !== null) {
-    const [row] = await db
-      .select({ value: count() })
-      .from(receipts)
-      .where(eq(receipts.userId, userId))
-    if ((row?.value ?? 0) >= receiptLimit) {
-      return { ok: false, reason: "storage_limit_reached" }
-    }
-  }
 
   // Yazarken doğrula — bkz. saveBasket'teki aynı gerekçe.
   const summary = OptimizationSummarySchema.parse(input.summary)
@@ -197,28 +186,47 @@ export async function saveReceipt(input: {
   const isStale = !!input.comparison.staleness?.isStale
   const persistedSavings = isStale ? 0 : input.comparison.totalSavingsTL
 
-  const [inserted] = await db
-    .insert(receipts)
-    .values({
-      userId,
-      conversationId,
-      sourceToolCallId,
-      name,
-      marketName: input.marketName,
-      purchaseDate: input.purchaseDate
-        ? new Date(input.purchaseDate)
-        : null,
-      totalAmount: totalAmount != null ? totalAmount.toFixed(2) : null,
-      imageUrl: input.imageUrl,
-      imageR2Key: input.imageR2Key,
-      ocrModel: OCR_MODEL_NAME,
-      bestSingleMarket: bestSingle?.market ?? null,
-      bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
-      potentialSavingsTL: persistedSavings.toFixed(2),
-      summaryJson: summary,
-    })
-    .returning({ id: receipts.id })
+  const insertRow = async () => {
+    if (receiptLimit !== null) {
+      const [row] = await db
+        .select({ value: count() })
+        .from(receipts)
+        .where(eq(receipts.userId, userId))
+      if ((row?.value ?? 0) >= receiptLimit) return "limit" as const
+    }
+    const [row] = await db
+      .insert(receipts)
+      .values({
+        userId,
+        conversationId,
+        sourceToolCallId,
+        name,
+        marketName: input.marketName,
+        purchaseDate: input.purchaseDate
+          ? new Date(input.purchaseDate)
+          : null,
+        totalAmount: totalAmount != null ? totalAmount.toFixed(2) : null,
+        imageUrl: input.imageUrl,
+        imageR2Key: input.imageR2Key,
+        ocrModel: OCR_MODEL_NAME,
+        bestSingleMarket: bestSingle?.market ?? null,
+        bestSingleTotal: bestSingle ? bestSingle.total.toFixed(2) : null,
+        potentialSavingsTL: persistedSavings.toFixed(2),
+        summaryJson: summary,
+      })
+      .returning({ id: receipts.id })
+    return row
+  }
+  // Kilit yalnız tavanlı planda: sınırsız planda (Pro) yarışın aşacağı bir
+  // sınır yok, kayıt Redis'e bağımlı kalmasın.
+  const inserted =
+    receiptLimit === null
+      ? await insertRow()
+      : await withUserLock(userId, "receipt", insertRow)
 
+  if (inserted === "limit") {
+    return { ok: false, reason: "storage_limit_reached" }
+  }
   if (!inserted) throw new Error("insert_failed")
 
   if (input.items.length > 0) {

@@ -16,6 +16,7 @@ import {
   Message,
   MessageContent,
   MessageResponse,
+  ModelResponse,
 } from "@/components/ai-elements/message"
 import {
   type PromptInputMessage,
@@ -719,7 +720,11 @@ export function AssistantChat({
                       const key = `${m.id}-${i}`
                       switch (part.type) {
                         case "text":
-                          return (
+                          // Asistan metni modelden gelir → dar markdown
+                          // (bağlantı/görsel yok, bkz. ModelResponse).
+                          return m.role === "assistant" ? (
+                            <ModelResponse key={key}>{part.text}</ModelResponse>
+                          ) : (
                             <MessageResponse key={key}>
                               {part.text}
                             </MessageResponse>

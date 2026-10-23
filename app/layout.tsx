@@ -10,6 +10,7 @@ import { LocationHost } from "@/components/location/location-host"
 import { OnboardingHost } from "@/components/onboarding/onboarding-host"
 import { PasskeyPromptHost } from "@/components/passkeys/passkey-prompt"
 import { CheckoutResultHost } from "@/components/subscription/checkout-result-host"
+import { AccountLinkResultHost } from "@/components/settings/account/account-link-result-host"
 import { SessionProvider } from "@/components/providers/session-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
@@ -123,6 +124,7 @@ export default function RootLayout({
               <PasskeyPromptHost />
               <LocationHost />
               <CheckoutResultHost />
+              <AccountLinkResultHost />
               <Toaster position="top-right" richColors />
             </SessionProvider>
           </TooltipProvider>

@@ -182,13 +182,12 @@ type LoadedPage = { details: ProductDetail[]; total: number | null; cached: bool
 
 /** Tek sayfa: önce Redis, miss'te API. Sayfa bazlı cache paylaşımlıdır. */
 async function loadPage(
-  rawQuery: string,
-  q: string,
+  query: string,
   loc: LocationContext,
   page: number,
   size: number,
 ): Promise<LoadedPage> {
-  const key = SEARCH_KEY(q, loc, page, size)
+  const key = SEARCH_KEY(query, loc, page, size)
   const cachedPage = await redis.get<CachedSearchPage>(key)
   if (cachedPage && cachedPage.ids.length > 0) {
     const cachedDetails = await readProducts(cachedPage.ids, loc)
@@ -198,7 +197,7 @@ async function loadPage(
     }
   }
 
-  const { details, total } = await fetchAndCacheSearch(rawQuery, loc, page, size)
+  const { details, total } = await fetchAndCacheSearch(query, loc, page, size)
   await redis.set<CachedSearchPage>(
     key,
     { ids: details.map((d) => d.productId), total },
@@ -245,9 +244,17 @@ export async function searchProductDetails(
     return { details, cached: false, total: details.length, page, hasMore: false }
   }
 
+  // Cache anahtarı upstream'e GİDEN sorgunun kendisi olmalı. Anahtar büyük/küçük
+  // harf katlanmış `q` iken upstream ham sorguyu alıyordu: farklı sonuç veren
+  // bir yazım ("SIRMA" ↔ "sırma") aynı anahtara düşüp o konum hücresindeki
+  // herkese başka bir sorgunun sonuçlarını servis ettirebiliyordu.
+  const upstreamQuery = rawQuery.trim().replace(/\s+/g, " ")
+
   // Sayfalar paralel çekilir; client'ın MAX_CONCURRENT tavanı WAF'ı korur.
   const loaded = await Promise.all(
-    Array.from({ length: pageCount }, (_, i) => loadPage(rawQuery, q, loc, page + i, size)),
+    Array.from({ length: pageCount }, (_, i) =>
+      loadPage(upstreamQuery, loc, page + i, size),
+    ),
   )
 
   const details = mergeUniqueById(loaded.map((p) => p.details))

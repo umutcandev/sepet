@@ -411,6 +411,30 @@ export const MessageResponse = memo(
 
 MessageResponse.displayName = "MessageResponse";
 
+/* Modelin yazdığı metin (asistan cevabı, "Düşündüm" notu) için dar markdown.
+   Modelin girdisi kullanıcının tam kontrolünde değil: yüklenen bir görseldeki
+   yazı (dolaylı prompt injection) modele, asistanın sesiyle tıklanabilir bir
+   bağlantı ya da dış adresli bir görsel yazdırabilirdi. Bağlantı ve görsel
+   çizilmez (bağlantı yazısı düz metin kalır, çıplak adresler de otomatik
+   bağlantıya dönmez); ham HTML'den gelen <a>/<img> de aynı süzgece takılır.
+   Diyagram (mermaid) ve formül eklentileri kapalı: mermaid etiketlerdeki
+   <a href>'i kendi SVG'sine yazıyor ve o SVG doğrudan DOM'a basıldığı için
+   yukarıdaki süzgeci hiç görmüyor. Asistanın kendi ürettiği metinlerde bağlantı
+   ya da diyagram yok; paylaşılan sayfa aynı kuralı uyguluyor
+   (shared-conversation). */
+const MODEL_TEXT_DISALLOWED = ["a", "img"];
+const modelTextPlugins = { cjk, code };
+
+export const ModelResponse = (props: MessageResponseProps) => (
+  <MessageResponse
+    disallowedElements={MODEL_TEXT_DISALLOWED}
+    unwrapDisallowed
+    skipHtml
+    {...props}
+    plugins={modelTextPlugins}
+  />
+);
+
 export type MessageToolbarProps = ComponentProps<"div">;
 
 export const MessageToolbar = ({

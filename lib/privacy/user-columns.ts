@@ -23,6 +23,7 @@ export const EXPORTED_USER_COLUMNS = {
   subscriptionCurrentPeriodStart: users.subscriptionCurrentPeriodStart,
   subscriptionCurrentPeriodEnd: users.subscriptionCurrentPeriodEnd,
   subscriptionCancelAtPeriodEnd: users.subscriptionCancelAtPeriodEnd,
+  subscriptionModifiedAt: users.subscriptionModifiedAt,
   archivedAt: users.archivedAt,
   passwordUpdatedAt: users.passwordUpdatedAt,
   totpEnabled: users.totpEnabled,

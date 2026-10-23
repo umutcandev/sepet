@@ -5,6 +5,7 @@ import { z } from "zod"
 
 import { auth, signOut } from "@/auth"
 import { db, users, userSessions } from "@/lib/db"
+import { hasSudo } from "@/lib/auth/sudo"
 import { deleteAvatarByUrl, isOwnedAvatarUrl } from "@/lib/storage/r2"
 
 const nameSchema = z
@@ -96,10 +97,19 @@ export async function resetAvatar(): Promise<{ ok: boolean }> {
  * (purge-archived) kalıcı siler; giriş yapılırsa jwt callback archivedAt'i
  * null'lar (geri açılır).
  */
-export async function archiveAccount(): Promise<void> {
+export async function archiveAccount(): Promise<
+  { ok: false; code: "sudo_required" } | void
+> {
   const session = await auth()
   if (!session?.user?.id) return
   const uid = session.user.id
+
+  // Hesap silme yeniden doğrulama ister (bkz. lib/auth/sudo.ts): yalnız bir
+  // oturum çerezi, tüm oturumları kapatıp 14 günlük silme sürecini başlatmaya
+  // yetmemeli — sahibi o süre içinde fark etmezse veriler kalıcı gider.
+  if (!(await hasSudo(uid, session.sid))) {
+    return { ok: false, code: "sudo_required" }
+  }
 
   await db.update(users).set({ archivedAt: new Date() }).where(eq(users.id, uid))
   await db

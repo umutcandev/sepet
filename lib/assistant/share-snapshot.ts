@@ -380,9 +380,53 @@ export type StoredMessageLike = {
   metadata?: unknown
 }
 
+// "Resimleri gizle" açıkken tanınmayan görselin açıklaması yerine yazılan
+// metin (bkz. redactUnknownImageDescriptions).
+export const HIDDEN_IMAGE_DESCRIPTION_TEXT =
+  "Görseli tanıyamadım; açıklaması paylaşılmadı."
+
+/**
+ * "Resimleri gizle" yalnız görsel dosyasını gizliyordu. Görsel ne fiş ne yemek
+ * olarak tanınmadığında model ne gördüğünü serbest metinle anlatıyor
+ * (unknownReason, ör. "görselde bir kimlik kartı var"); bu cümle hem
+ * analyzeImage çıktısında hem de asistanın aynı turdaki metninde aynen
+ * duruyordu. Yanlışlıkla yüklenen bir kimlik/kart fotoğrafının içeriği böylece
+ * görsel gizliyken de sayfaya çıkardı. Bu tür açıklamalar burada düşer.
+ * Fiş satırları ve yemek malzemeleri sohbetin konusu olduğu için kalır.
+ */
+function redactUnknownImageDescriptions(parts: SharedPart[]): SharedPart[] {
+  const reasons = new Set<string>()
+  const redacted = parts.map((part) => {
+    if (
+      part.type !== "tool-analyzeImage" ||
+      part.state !== "output-available"
+    ) {
+      return part
+    }
+    const analysis = part.output.analysis
+    if (analysis.kind !== "unknown") return part
+    const reason = analysis.unknownReason?.trim()
+    if (reason) reasons.add(reason)
+    return {
+      ...part,
+      output: {
+        ...part.output,
+        analysis: { ...analysis, unknownReason: null },
+      },
+    } as SharedPart
+  })
+  if (reasons.size === 0) return redacted
+  return redacted.map((part) =>
+    part.type === "text" && reasons.has(part.text.trim())
+      ? { type: "text", text: HIDDEN_IMAGE_DESCRIPTION_TEXT }
+      : part
+  )
+}
+
 export function sanitizeMessagesForShare(
   rows: readonly StoredMessageLike[],
-  collectImage?: ImageRefCollector
+  collectImage?: ImageRefCollector,
+  options: { hideImageDescriptions?: boolean } = {}
 ): SharedMessage[] {
   const out: SharedMessage[] = []
   for (const row of rows) {
@@ -407,7 +451,10 @@ export function sanitizeMessagesForShare(
       // Kayıttaki uuid değil: sayfada yalnızca React anahtarı olarak lazım.
       id: `m${out.length}`,
       role,
-      parts,
+      parts:
+        role === "assistant" && options.hideImageDescriptions
+          ? redactUnknownImageDescriptions(parts)
+          : parts,
       ...(metadata ? { metadata } : {}),
     })
   }

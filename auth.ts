@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import Facebook from "next-auth/providers/facebook"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
+import type { Adapter } from "next-auth/adapters"
 import { eq, sql } from "drizzle-orm"
 import {
   db,
@@ -26,10 +27,23 @@ import {
 import { verifyAssertion } from "@/lib/auth/webauthn"
 import { grantSudo } from "@/lib/auth/sudo"
 import {
+  authorizeInSessionLink,
   beginLinkTwoFactor,
   completeLinkTwoFactor,
+  isUnverifiedLinkTarget,
+  takeLinkedSession,
 } from "@/lib/auth/oauth-link"
+import { clearSessionCookies, hasSessionCookie } from "@/lib/auth/session-cookie"
 import {
+  allowLink,
+  assertLinkAllowed,
+  markUserCreated,
+} from "@/lib/auth/link-guard"
+import { isOAuthProviderId, OAUTH_PROVIDER_LABELS } from "@/lib/auth/providers"
+import { sendMail } from "@/lib/email/mailer"
+import { accountLinkedEmail } from "@/lib/email/templates"
+import {
+  codeGuessDailyLimiter,
   credentialsLoginLimiter,
   passkeyLoginLimiter,
   twoFactorUserLimiter,
@@ -169,6 +183,13 @@ async function authorizeTwoFactor(
   if (!(await twoFactorUserLimiter.limit(pending.userId)).success) {
     throw new RateLimitedError()
   }
+  // Günlük tahmin tavanı (bkz. codeGuessDailyLimiter). Yalnız YANLIŞ kodlar
+  // sayılır (aşağıda): başarılı girişler meşru kullanıcının günlük hakkını
+  // yemesin. Burada yalnız okunur.
+  const dailyKey = `2fa:${pending.userId}`
+  if ((await codeGuessDailyLimiter.getRemaining(dailyKey)).remaining <= 0) {
+    throw new RateLimitedError()
+  }
 
   const [u] = await db
     .select({
@@ -199,7 +220,10 @@ async function authorizeTwoFactor(
     if (await consumeRecoveryCode(u.id, recoveryCode)) verified = true
   }
 
-  if (!verified) throw new TwoFactorInvalidError()
+  if (!verified) {
+    await codeGuessDailyLimiter.limit(dailyKey)
+    throw new TwoFactorInvalidError()
+  }
 
   // Tek-kullanım commit: pending sil. Boş dönerse paralel istek kazanmıştır.
   const [consumed] = await db
@@ -246,14 +270,38 @@ function providerImage(
   return null
 }
 
+const baseAdapter = DrizzleAdapter(db, {
+  usersTable: users,
+  accountsTable: accounts,
+  sessionsTable: sessions,
+  verificationTokensTable: verificationTokens,
+})
+
+// linkAccount yalnız signIn callback'in izin verdiği hedefe ya da bu istekte
+// yaratılan kullanıcıya bağlar (bkz. lib/auth/link-guard.ts).
+const adapter: Adapter = {
+  ...baseAdapter,
+  async createUser(data) {
+    const created = await baseAdapter.createUser!(data)
+    markUserCreated(created.id)
+    return created
+  },
+  async linkAccount(account) {
+    await assertLinkAllowed(account, async (userId) => {
+      const [row] = await db
+        .select({ email: users.email })
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1)
+      return row?.email ?? null
+    })
+    await baseAdapter.linkAccount!(account)
+  },
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
-  adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  }),
+  adapter,
   session: { strategy: "jwt" },
   // Auth hataları NextAuth'un varsayılan (İngilizce) sayfalarına değil ana
   // sayfaya döner; LoginDialogHost ?error= kodunu Türkçe mesaja çevirip modalı
@@ -271,7 +319,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // listesi [Google] aynen kalır; middleware provider çalıştırmaz). Google
   // allowDangerousEmailAccountLinking GÜVENLİDİR çünkü: (a) credentials kullanıcısı
   // e-posta doğrulanmadan asla oluşmaz, (b) Google profilleri yalnız email_verified
-  // === true ile kabul edilir (aşağıdaki signIn callback). İki taraf da e-posta
+  // === true ile kabul edilir (aşağıdaki signIn callback), (c) e-postası
+  // kanıtlanmamış (users.emailVerified null; ör. Facebook ile açılmış) satıra
+  // bağlama signIn callback'te reddedilir (isUnverifiedLinkTarget). Kalan
+  // hedeflerde iki taraf da e-posta
   // sahipliğini kanıtladığından aynı users satırına bağlanma güvenli. TOTP'si açık
   // bir hesaba ilk bağlamada ayrıca 2FA kodu istenir (signIn callback).
   providers: [
@@ -398,12 +449,54 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // Google hesapları yalnız e-posta doğrulanmışsa kabul edilir (güvenli otomatik
     // bağlamanın önkoşulu). Credentials ve diğer akışlar için engel yok.
     async signIn({ user, account, profile }) {
+      if (account?.provider === "google" && profile?.email_verified !== true) {
+        return false
+      }
+      // ─── Oturum açıkken OAuth girişi = hesap bağlama ───
+      // Auth.js oturum çerezini kendisi çözer ve bağlı olmayan hesabı o
+      // kullanıcıya bağlar; bizim iptal ve sudo kontrollerimizi bilmez. Bağlama
+      // yalnız Ayarlar'dan başlatılmış, sudo'lu bir niyetle geçer (bkz.
+      // lib/auth/oauth-link.ts authorizeInSessionLink). Çerez geçersizse
+      // (iptal edilmiş oturum) silinir ve hiçbir şey bağlanmaz; kullanıcı
+      // tekrar denediğinde normal (oturumsuz) girişe düşer.
+      if (
+        (account?.provider === "google" || account?.provider === "facebook") &&
+        (await hasSessionCookie())
+      ) {
+        const current = await auth()
+        if (!current?.user?.id || !current.sid) {
+          await clearSessionCookies()
+          return "/?hesap-baglama=oturum"
+        }
+        const decision = await authorizeInSessionLink({
+          userId: current.user.id,
+          sid: current.sid,
+          provider: account.provider,
+          providerAccountId: account.providerAccountId,
+        })
+        if (decision === true) {
+          allowLink(account.provider, account.providerAccountId, {
+            userId: current.user.id,
+          })
+        }
+        return decision
+      }
       if (account?.provider === "google") {
-        if (profile?.email_verified !== true) return false
         // TOTP'li mevcut bir hesaba İLK bağlama: Auth.js bağlamadan önce 2FA
         // adımına yönlendir; kod doğrulanınca bağlanır (lib/auth/oauth-link.ts).
         // Token adres çubuğundan LoginDialogHost'ta hemen silinir.
         if (account.type === "oidc" || account.type === "oauth") {
+          // E-postası kanıtlanmamış bir hesaba (ör. Facebook ile açılmış)
+          // otomatik bağlama yok (bkz. isUnverifiedLinkTarget).
+          if (
+            await isUnverifiedLinkTarget({
+              email: user?.email,
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+            })
+          ) {
+            return "/?error=OAuthAccountNotLinked"
+          }
           const pendingToken = await beginLinkTwoFactor({
             email: user?.email,
             provider: account.provider,
@@ -411,6 +504,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             type: account.type,
           })
           if (pendingToken) return `/?2fa=${encodeURIComponent(pendingToken)}`
+          // Auth.js bu hesabı e-posta eşleşmesiyle mevcut bir satıra
+          // bağlayacaksa hedef yalnız bu adresin sahibi olabilir (bkz.
+          // lib/auth/link-guard.ts). Yeni kullanıcı yaratılırsa izin
+          // kullanılmaz, kendiliğinden düşer.
+          if (user?.email) {
+            allowLink(account.provider, account.providerAccountId, {
+              email: user.email,
+            })
+          }
         }
         return true
       }
@@ -440,42 +542,89 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user?.id) {
         token.id = user.id
         const uid = user.id
+        // Ayarlar'dan hesap bağlama (bkz. signIn callback): kullanıcı zaten bu
+        // cihazda oturumlu. Yeni oturum kaydı açılmaz, mevcut kayıt sürer;
+        // profil fotoğrafı da yeni bağlanan sağlayıcınınkiyle ezilmez.
+        let linked: Awaited<ReturnType<typeof takeLinkedSession>> = null
+        try {
+          linked = await takeLinkedSession(uid, account)
+        } catch {
+          linked = null
+        }
+        if (linked) {
+          token.sid = linked.sid
+          token.sidCheckedAt = Date.now()
+          // Kalıcı yeni bir giriş yolu eklendi: hesap sahibine bildir
+          // (geçiş anahtarı eklemedeki bildirimin karşılığı). Zaten bağlı bir
+          // hesapla yeniden doğrulamada bildirim yok.
+          const provider = account?.provider
+          if (
+            linked.newLink &&
+            user.email &&
+            provider &&
+            isOAuthProviderId(provider)
+          ) {
+            void sendMail({
+              to: user.email,
+              ...accountLinkedEmail({
+                providerLabel: OAUTH_PROVIDER_LABELS[provider],
+              }),
+            })
+          }
+          return token
+        }
         // Aynı UPDATE'e biner: ek round-trip yok. Fotoğraf okunamazsa alan
         // set'e hiç girmez, mevcut değer korunur.
         const image = providerImage(account?.provider, profile)
+        // E-posta kanıtı (bkz. lib/auth/oauth-link.ts isUnverifiedLinkTarget):
+        // Google'ın doğruladığı adres bu satırın adresiyle aynıysa satırın
+        // e-postası kanıtlanmıştır. Farklı adresli bir Google hesabı (Ayarlar'dan
+        // bağlanmış olabilir) satırın adresi için kanıt değildir.
+        const proven =
+          account?.provider === "google" &&
+          profile?.email_verified === true &&
+          typeof profile.email === "string" &&
+          typeof user.email === "string" &&
+          normalizeEmail(profile.email) === normalizeEmail(user.email)
         try {
           await db
             .update(users)
-            .set({ archivedAt: null, ...(image ? { image } : {}) })
+            .set({
+              archivedAt: null,
+              ...(image ? { image } : {}),
+              ...(proven
+                ? { emailVerified: sql`COALESCE(${users.emailVerified}, now())` }
+                : {}),
+            })
             .where(eq(users.id, uid))
         } catch {
           // Arşiv iptali / avatar tazeleme başarısız olsa da girişi engelleme.
         }
-        try {
-          const info = await readRequestDeviceInfo()
-          const [row] = await db
-            .insert(userSessions)
-            .values({
-              userId: uid,
-              userAgent: info.userAgent,
-              deviceLabel: info.deviceLabel,
-              ip: info.ip,
-              locationLabel: info.locationLabel,
-              passkeyId: user.passkeyId ?? null,
-            })
-            .returning({ id: userSessions.id })
-          if (row) {
-            token.sid = row.id
-            token.sidCheckedAt = Date.now()
-          }
-        } catch {
-          // Oturum kaydı oluşmazsa cihaz listede görünmez ama giriş tamamlanır.
-        }
+        // Oturum kaydı ŞART: iptal (uzaktan çıkış, şifre değişikliği, anahtar
+        // silme) bu satır üzerinden zorlanır. Kayıt yazılamazsa giriş
+        // başarısız olur; sid'siz bir token hiçbir yoldan iptal edilemezdi.
+        // Tipik neden: geçiş anahtarı silinirken aynı anahtarla giriş (FK
+        // ihlali) ya da geçici DB hatası — kullanıcı yeniden dener.
+        const info = await readRequestDeviceInfo()
+        const [row] = await db
+          .insert(userSessions)
+          .values({
+            userId: uid,
+            userAgent: info.userAgent,
+            deviceLabel: info.deviceLabel,
+            ip: info.ip,
+            locationLabel: info.locationLabel,
+            passkeyId: user.passkeyId ?? null,
+          })
+          .returning({ id: userSessions.id })
+        if (!row) throw new Error("user_session insert returned no row")
+        token.sid = row.id
+        token.sidCheckedAt = Date.now()
         // Taze giriş = yeni yapılmış bir kimlik doğrulaması: bu oturuma sudo
         // penceresi açılır (bkz. lib/auth/sudo.ts). Giriş sonrası geçiş anahtarı
         // önerisi böylece şifreyi ikinci kez sormadan anahtar oluşturabilir.
         try {
-          await grantSudo(uid, token.sid as string | undefined)
+          await grantSudo(uid, row.id)
         } catch {
           // Redis erişilemezse hassas işlemde yeniden doğrulama istenir, o kadar.
         }
@@ -489,25 +638,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // (token alanları bu v5 beta'sında {} olarak gelir; mevcut `token.id as
       // string` kalıbına uyup cast ediyoruz.)
       const sid = token.sid as string | undefined
-      if (sid) {
-        const now = Date.now()
-        const last = (token.sidCheckedAt as number | undefined) ?? 0
-        if (now - last >= SID_CHECK_INTERVAL_MS) {
-          try {
-            const [row] = await db
-              .select({ revokedAt: userSessions.revokedAt })
-              .from(userSessions)
-              .where(eq(userSessions.id, sid))
-              .limit(1)
-            if (!row || row.revokedAt) return null
-            await db
-              .update(userSessions)
-              .set({ lastSeenAt: new Date() })
-              .where(eq(userSessions.id, sid))
-            token.sidCheckedAt = now
-          } catch {
-            // DB hatasında oturumu düşürme; bir sonraki turda yeniden denenir.
-          }
+      // sid'siz token iptal edilemez → geçersiz say (bkz. ilk giriş dalı).
+      if (!sid) return null
+      const now = Date.now()
+      const last = (token.sidCheckedAt as number | undefined) ?? 0
+      if (now - last >= SID_CHECK_INTERVAL_MS) {
+        try {
+          const [row] = await db
+            .select({ revokedAt: userSessions.revokedAt })
+            .from(userSessions)
+            .where(eq(userSessions.id, sid))
+            .limit(1)
+          if (!row || row.revokedAt) return null
+          await db
+            .update(userSessions)
+            .set({ lastSeenAt: new Date() })
+            .where(eq(userSessions.id, sid))
+          token.sidCheckedAt = now
+        } catch {
+          // DB hatasında oturumu düşürme; bir sonraki turda yeniden denenir.
         }
       }
       return token
