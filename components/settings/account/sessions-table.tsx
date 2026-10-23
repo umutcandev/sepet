@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { RiMoreLine } from "@remixicon/react"
+import {
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiMoreLine,
+} from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -41,6 +45,10 @@ function fmt(iso: string): string {
   return dtFmt.format(new Date(iso))
 }
 
+// Sayfa başına oturum. Oturumlar ancak kapatılınca listeden düşüyor; uzun
+// süredir kullanılan bir hesapta liste uzar ve Ayarlar penceresini doldururdu.
+const PAGE_SIZE = 5
+
 // Aktif cihaz oturumları. Mount'ta listSessions ile yüklenir; masaüstünde tablo,
 // mobilde kart listesi gösterir. Satır eylem menüsündeki üç-nokta (no-icon
 // kuralının istisnası) ile bir oturum uzaktan kapatılabilir.
@@ -50,6 +58,7 @@ export function SessionsTable() {
     "loading",
   )
   const [busyId, setBusyId] = React.useState<string | null>(null)
+  const [page, setPage] = React.useState(0)
 
   React.useEffect(() => {
     let active = true
@@ -91,14 +100,133 @@ export function SessionsTable() {
     )
   }
 
+  // Oturum kapatılıp son sayfa boşalırsa bir önceki sayfaya düş.
+  const pageCount = Math.ceil(rows.length / PAGE_SIZE)
+  const current = Math.min(page, pageCount - 1)
+  const start = current * PAGE_SIZE
+  const pageRows = rows.slice(start, start + PAGE_SIZE)
+
   return (
-    // Tek tablo (mobil dahil). Table'ın iç kabı overflow-x-auto olduğu için
-    // taşmada yatay kaydırılır; ince, yuvarlak scrollbar tüm Ayarlar modalıyla
-    // ortak `cn-scrollbar-thin-table` yardımcısından gelir (bkz. globals.css).
-    // Dış çerçeve, koyu başlık şeridi ve sıra sıra değişen satır zemini: satır
-    // çok olduğunda göz aynı satırda kalsın, liste değil tablo okunsun.
-    // Dark'ta `--border` `--muted` ile aynı renk: çerçeve ve zebra satırlar
-    // birbirine karışmasın diye çerçeve bir basamak açık (`--accent`).
+    <SessionsFrame
+      footer={
+        pageCount > 1 ? (
+          <nav
+            aria-label="Oturum sayfaları"
+            className="flex flex-1 items-center justify-between gap-3"
+          >
+            <span className="tabular-nums">
+              {start + 1}–{start + pageRows.length} / {rows.length} oturum
+            </span>
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                hitArea
+                aria-label="Önceki sayfa"
+                disabled={current === 0}
+                onClick={() => setPage(current - 1)}
+              >
+                <RiArrowLeftSLine className="size-4" />
+              </Button>
+              <span className="min-w-10 text-center tabular-nums">
+                {current + 1} / {pageCount}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                hitArea
+                aria-label="Sonraki sayfa"
+                disabled={current >= pageCount - 1}
+                onClick={() => setPage(current + 1)}
+              >
+                <RiArrowRightSLine className="size-4" />
+              </Button>
+            </div>
+          </nav>
+        ) : null
+      }
+    >
+      <TableBody>
+        {pageRows.map((r) => (
+          <TableRow
+            key={r.id}
+            className="group table-zebra hover:bg-transparent"
+          >
+            <TableCell className="font-medium">
+              {/* İşaret adın solunda, diğer satırların adlarıyla aynı
+                  hizada; yalnız bu satırın adı sağa kayar. */}
+              <span className="flex items-center gap-1.5">
+                {r.isCurrent ? <CurrentDeviceMark /> : null}
+                {r.deviceLabel}
+              </span>
+            </TableCell>
+            <TableCell className="text-muted-foreground">
+              {r.locationLabel}
+            </TableCell>
+            <TableCell className="text-muted-foreground">
+              {fmt(r.createdAt)}
+            </TableCell>
+            <TableCell className="text-muted-foreground">
+              {fmt(r.lastSeenAt)}
+            </TableCell>
+            <TableCell className="text-right">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    aria-label="Oturum eylemleri"
+                    disabled={busyId === r.id}
+                    // Mobilde her zaman görünür; masaüstünde hover/açıkken belirir.
+                    hitArea
+                    className="sm:opacity-0 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
+                  >
+                    <RiMoreLine />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="min-w-40">
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onSelect={(e) => {
+                      e.preventDefault()
+                      void revoke(r.id)
+                    }}
+                  >
+                    Oturumu kapat
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </SessionsFrame>
+  )
+}
+
+/**
+ * Tablonun çerçevesi ve başlığı; gerçek liste ile yükleme iskeleti aynısını
+ * kullanır, veri gelince tablo yer değiştirmez.
+ *
+ * Tek tablo (mobil dahil). Table'ın iç kabı overflow-x-auto olduğu için
+ * taşmada yatay kaydırılır; ince, yuvarlak scrollbar tüm Ayarlar modalıyla
+ * ortak `cn-scrollbar-thin-table` yardımcısından gelir (bkz. globals.css).
+ * Dış çerçeve, koyu başlık şeridi ve sıra sıra değişen satır zemini: satır
+ * çok olduğunda göz aynı satırda kalsın, liste değil tablo okunsun.
+ * Dark'ta `--border` `--muted` ile aynı renk: çerçeve ve zebra satırlar
+ * birbirine karışmasın diye çerçeve bir basamak açık (`--accent`).
+ *
+ * `footer` başlıkla aynı zeminde bir alt şerit; tablonun dışında durur ki
+ * tablo yatay kaydırılırken sayfalama yerinde kalsın.
+ */
+function SessionsFrame({
+  children,
+  footer,
+}: {
+  children: React.ReactNode
+  footer?: React.ReactNode
+}) {
+  return (
     <div className="cn-scrollbar-thin-table overflow-hidden rounded-lg border dark:border-accent">
       <Table className="[&_td]:px-3 [&_th]:px-3">
         <TableHeader>
@@ -110,61 +238,13 @@ export function SessionsTable() {
             <TableHead className="w-10" />
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {rows.map((r) => (
-            <TableRow
-              key={r.id}
-              className="group table-zebra hover:bg-transparent"
-            >
-              <TableCell className="font-medium">
-                {/* İşaret adın solunda, diğer satırların adlarıyla aynı
-                    hizada; yalnız bu satırın adı sağa kayar. */}
-                <span className="flex items-center gap-1.5">
-                  {r.isCurrent ? <CurrentDeviceMark /> : null}
-                  {r.deviceLabel}
-                </span>
-              </TableCell>
-              <TableCell className="text-muted-foreground">
-                {r.locationLabel}
-              </TableCell>
-              <TableCell className="text-muted-foreground">
-                {fmt(r.createdAt)}
-              </TableCell>
-              <TableCell className="text-muted-foreground">
-                {fmt(r.lastSeenAt)}
-              </TableCell>
-              <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      aria-label="Oturum eylemleri"
-                      disabled={busyId === r.id}
-                      // Mobilde her zaman görünür; masaüstünde hover/açıkken belirir.
-                      hitArea
-                      className="sm:opacity-0 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
-                    >
-                      <RiMoreLine />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="min-w-40">
-                    <DropdownMenuItem
-                      variant="destructive"
-                      onSelect={(e) => {
-                        e.preventDefault()
-                        void revoke(r.id)
-                      }}
-                    >
-                      Oturumu kapat
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+        {children}
       </Table>
+      {footer ? (
+        <div className="table-head-fill flex h-8 items-center border-t px-3 text-xs text-muted-foreground">
+          {footer}
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -220,14 +300,30 @@ function CurrentDeviceMark() {
 }
 
 function SessionsSkeleton() {
+  // Gerçek tabloyla aynı çerçeve ve satır yüksekliği; hücre içerikleri iskelet.
   return (
-    <div className="flex flex-col gap-3 py-1">
-      {[0, 1, 2].map((r) => (
-        <div key={r} className="flex items-center justify-between gap-3">
-          <Skeleton className="h-4 w-40" />
-          <Skeleton className="h-4 w-24" />
-        </div>
-      ))}
-    </div>
+    <SessionsFrame>
+      <TableBody>
+        {[0, 1, 2].map((r) => (
+          <TableRow key={r} className="table-zebra hover:bg-transparent">
+            <TableCell>
+              <Skeleton className="h-4 w-28" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-20" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-24" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-24" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="ml-auto size-6" />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </SessionsFrame>
   )
 }

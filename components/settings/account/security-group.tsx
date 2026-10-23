@@ -3,11 +3,16 @@
 import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
-import { Skeleton } from "@/components/ui/skeleton"
 import { getSecurityStateAction } from "@/lib/actions/password"
 import { providerLabel, type OAuthProviderId } from "@/lib/auth/providers"
 
-import { SettingGroup, SettingRow } from "../settings-row"
+import {
+  SettingActionSkeleton,
+  SettingBadgeSkeleton,
+  SettingDescriptionSkeleton,
+  SettingGroup,
+  SettingRow,
+} from "../settings-row"
 import { PasswordDialog } from "./password-dialog"
 import { TwoFactorDialog } from "./two-factor-dialog"
 
@@ -57,11 +62,9 @@ export function SecurityGroup() {
   // bağlanışında) sorulur; bağlı sosyal hesapla giriş sağlayıcının kendi
   // doğrulamasına bırakılır. Şifresiz hesapta kod girişte hiç sorulmaz, yalnız
   // hassas işlemlerde istenir — kullanıcı korunduğunu sanmasın.
-  const twoFactorDescription = loading
-    ? "Hesabın için ek güvenlik katmanı ekle"
-    : hasPassword
-      ? "E-posta ve şifreyle girişte ek doğrulama kodu ister"
-      : `${label ? `${label} ile` : "Sosyal"} girişte sorulmaz, hassas işlemlerde kod ister`
+  const twoFactorDescription = hasPassword
+    ? "E-posta ve şifreyle girişte ek doğrulama kodu ister"
+    : `${label ? `${label} ile` : "Sosyal"} girişte sorulmaz, hassas işlemlerde kod ister`
 
   return (
     <SettingGroup title="Güvenlik">
@@ -69,11 +72,17 @@ export function SecurityGroup() {
         title="Şifre"
         target="sifre"
         description={
-          hasPassword ? "Hesap şifreni değiştir" : setPasswordDescription
+          loading ? (
+            <SettingDescriptionSkeleton className="w-40" />
+          ) : hasPassword ? (
+            "Hesap şifreni değiştir"
+          ) : (
+            setPasswordDescription
+          )
         }
       >
         {loading ? (
-          <Skeleton className="h-7 w-28" />
+          <SettingActionSkeleton className="w-28" />
         ) : (
           <PasswordDialog hasPassword={hasPassword} onChanged={refresh} />
         )}
@@ -81,17 +90,25 @@ export function SecurityGroup() {
       <SettingRow
         title="İki adımlı doğrulama"
         titleAccessory={
-          loading ? null : (
+          loading ? (
+            <SettingBadgeSkeleton />
+          ) : (
             <Badge variant={twoFactorEnabled ? "default" : "secondary"}>
               {twoFactorEnabled ? "Açık" : "Kapalı"}
             </Badge>
           )
         }
         target="iki-adimli-dogrulama"
-        description={twoFactorDescription}
+        description={
+          loading ? (
+            <SettingDescriptionSkeleton className="w-64" />
+          ) : (
+            twoFactorDescription
+          )
+        }
       >
         {loading ? (
-          <Skeleton className="h-7 w-28" />
+          <SettingActionSkeleton className="w-28" />
         ) : (
           <TwoFactorDialog
             enabled={twoFactorEnabled}

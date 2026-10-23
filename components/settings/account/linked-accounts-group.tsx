@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/sonner"
 import {
   getLinkedAccountsAction,
@@ -32,7 +31,13 @@ import {
   type OAuthProviderId,
 } from "@/lib/auth/providers"
 
-import { SettingGroup, SettingRow } from "../settings-row"
+import {
+  SettingActionSkeleton,
+  SettingBadgeSkeleton,
+  SettingDescriptionSkeleton,
+  SettingGroup,
+  SettingRow,
+} from "../settings-row"
 import { SudoDialog } from "./sudo-dialog"
 
 const LINK_ACTIONS: Record<OAuthProviderId, () => Promise<LinkResult>> = {
@@ -132,20 +137,26 @@ export function LinkedAccountsGroup() {
             title={label}
             target={provider === "google" ? "bagli-hesaplar" : undefined}
             titleAccessory={
-              loading ? null : (
+              loading ? (
+                <SettingBadgeSkeleton />
+              ) : (
                 <Badge variant={linked ? "default" : "secondary"}>
                   {linked ? "Bağlı" : "Bağlı değil"}
                 </Badge>
               )
             }
             description={
-              linked
-                ? `${label} ile giriş yapabilirsin`
-                : `Hesabına ${label} ile giriş ekle`
+              loading ? (
+                <SettingDescriptionSkeleton className="w-40" />
+              ) : linked ? (
+                `${label} ile giriş yapabilirsin`
+              ) : (
+                `Hesabına ${label} ile giriş ekle`
+              )
             }
           >
             {loading ? (
-              <Skeleton className="h-7 w-20" />
+              <SettingActionSkeleton className="w-16" />
             ) : linked ? (
               <Button
                 variant="outline"
