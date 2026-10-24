@@ -63,7 +63,11 @@ export default async function ReceiptDetailPage({
   if (!detail) notFound()
   const { receipt, conversation } = detail
   // Bkz. sepet detayı: görseli boş kalan kalemler eşleşen üründen tamamlanır.
-  const items = await withResolvedItemImages(detail.items, "receipt")
+  const items = await withResolvedItemImages(
+    detail.items,
+    "receipt",
+    session.user.id,
+  )
   // Görsel alanından önce kaydedilmiş özetlerin dökümü, kalemlerin eşleşen
   // ürün görselleriyle tamamlanır (bkz. ProductImageFallback).
   const itemImages = Object.fromEntries(

@@ -26,6 +26,7 @@ import { getUserPlan } from "@/lib/usage/usage"
 import { planLimit } from "@/lib/usage/limits"
 import { withUserLock } from "@/lib/security/user-lock"
 import { MAX_APPROVAL_ITEMS } from "@/lib/assistant/approval-limits"
+import { isProductId } from "@/lib/marketfiyati/product-id"
 import { type ReceiptSort, DEFAULT_RECEIPT_SORT } from "@/lib/receipt-sort"
 import { OCR_MODEL_NAME } from "@/lib/ai/models"
 import { OptimizationSummarySchema } from "@/lib/ai/schemas"
@@ -292,7 +293,10 @@ export async function saveReceipt(input: {
                 : null,
           receiptTotalPrice:
             lineTotal != null ? lineTotal.toFixed(2) : null,
-          matchedProductId: comp?.matchedProductId ?? null,
+          // Kimlik istemciden gelir: biçimsiz kimlik saklanmaz (bkz. item-images).
+          matchedProductId: isProductId(comp?.matchedProductId)
+            ? comp?.matchedProductId
+            : null,
           matchedName: comp?.matchedName ?? null,
           matchedBrand: enrichment?.brand ?? null,
           matchedImageUrl: enrichment?.imageUrl ?? null,

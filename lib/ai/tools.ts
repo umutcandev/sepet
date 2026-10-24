@@ -36,7 +36,7 @@ import {
   queryGeneralizations,
   searchAlias,
 } from "./normalize"
-import { POLICY_VERSION } from "./match-policy"
+import { POLICY_VERSION, policyFor } from "./match-policy"
 import {
   MF_MATCH_PAGES,
   MF_PAGE_SIZE,
@@ -344,6 +344,12 @@ export const MATCH_PROMPT_VERSION = createHash("sha1")
  * Not anahtarın parçası: kullanıcı "konserve olmasın" diye itiraz ettiğinde
  * kalemin geri kalanı aynı kalıyor. Not anahtarda olmasaydı düzeltme turu
  * itiraz edilen seçimi cache'ten aynen geri getirirdi.
+ *
+ * Kaleme uygulanan politika metni de anahtarın parçası: politika satırı
+ * searchQuery'den seçilir (selectMatches) ve searchQuery onay akışlarında
+ * istemciden gelir. Yalnız ham ad anahtarda olsaydı, sonuç vermeyen bir sorguyla
+ * aynı aday havuzuna düşen (genelleştirme/ham ad yedeği) ama politikasız
+ * yapılmış bir seçim, aynı kalemi doğru sorguyla isteyen herkese servis edilirdi.
  */
 function matchCacheKey(item: ParsedItem, hits: HitList): string {
   const payload = JSON.stringify({
@@ -351,6 +357,7 @@ function matchCacheKey(item: ParsedItem, hits: HitList): string {
     quantity: item.quantity,
     unit: item.unit,
     note: item.note?.trim().toLocaleLowerCase("tr-TR") || null,
+    policy: policyFor(searchAlias(item.searchQuery) ?? item.searchQuery),
     candidates: hits
       .slice(0, MAX_CANDIDATES)
       .map((h) => h.productId)

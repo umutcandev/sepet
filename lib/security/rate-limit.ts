@@ -142,11 +142,24 @@ export const shareImageLimiter = new Ratelimit({
 // throttle katmanıdır.
 
 // Şifreyle giriş. Aynı limiter iki ayrı anahtarla çağrılır: IP (loginAction) ve
-// e-posta (authorize; doğrudan /api/auth/callback/credentials POST'unu da kapsar).
+// e-posta+IP (authorize; doğrudan /api/auth/callback/credentials POST'unu da
+// kapsar). E-posta tek başına anahtar değil: öyle olsaydı adresi bilen herkes
+// kovayı doldurup sahibinin doğru şifresini de reddettirebilirdi.
 export const credentialsLoginLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(10, "1 m"),
   prefix: "rl:auth:login",
+  analytics: true,
+})
+
+// Hesap başına başarısız şifre tavanı (dağıtık tahmine karşı). Yalnız yanlış
+// denemeler sayılır. Dolduğunda bu hesaba daha önce giriş yapılmamış IP'lerden
+// gelen denemeler şifreye bakılmadan reddedilir; sahibin bilinen IP'si açık
+// kalır (bkz. auth.ts authorize).
+export const credentialsAccountLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(30, "15 m"),
+  prefix: "rl:auth:login:account",
   analytics: true,
 })
 

@@ -4,7 +4,7 @@ import Google from "next-auth/providers/google"
 import Facebook from "next-auth/providers/facebook"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import type { Adapter } from "next-auth/adapters"
-import { eq, sql } from "drizzle-orm"
+import { and, eq, sql } from "drizzle-orm"
 import {
   db,
   users,
@@ -44,10 +44,24 @@ import { sendMail } from "@/lib/email/mailer"
 import { accountLinkedEmail } from "@/lib/email/templates"
 import {
   codeGuessDailyLimiter,
+  credentialsAccountLimiter,
   credentialsLoginLimiter,
   passkeyLoginLimiter,
   twoFactorUserLimiter,
 } from "@/lib/security/rate-limit"
+import { getClientIp } from "@/lib/security/action-rate-limit"
+
+// Bu hesaba bu IP'den daha önce giriş yapılmış mı (kapatılmış oturumlar dahil).
+// Başarısız deneme tavanı dolunca sahibi bilinen IP'sinden girebilsin diye.
+async function seenFromIp(userId: string, ip: string): Promise<boolean> {
+  if (!ip || ip === "anon") return false
+  const [row] = await db
+    .select({ id: userSessions.id })
+    .from(userSessions)
+    .where(and(eq(userSessions.userId, userId), eq(userSessions.ip, ip)))
+    .limit(1)
+  return Boolean(row)
+}
 
 // Revoke kontrolü her istekte değil, en fazla bu aralıkla bir kez DB'ye gider.
 const SID_CHECK_INTERVAL_MS = 60_000
@@ -235,7 +249,17 @@ async function authorizeTwoFactor(
   // 2FA, Google'ın bu hesaba ilk bağlanışı için istendiyse bağlantı şimdi
   // kurulur (bkz. lib/auth/oauth-link.ts).
   try {
-    await completeLinkTwoFactor(pending.id, u.id)
+    const linked = await completeLinkTwoFactor(pending.id, u.id)
+    // Kalıcı yeni bir giriş yolu eklendi: hesap sahibine bildir (Ayarlar'dan
+    // bağlamadaki bildirimin karşılığı).
+    if (linked && u.email && isOAuthProviderId(linked.provider)) {
+      void sendMail({
+        to: u.email,
+        ...accountLinkedEmail({
+          providerLabel: OAUTH_PROVIDER_LABELS[linked.provider],
+        }),
+      })
+    }
   } catch {
     // Bağlanamasa da giriş tamamlanır; sonraki Google girişinde kod yeniden sorulur.
   }
@@ -395,9 +419,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new InvalidCredentialsError()
         }
 
-        if (!(await credentialsLoginLimiter.limit(`email:${email}`)).success) {
+        const ip = await getClientIp()
+        if (
+          !(await credentialsLoginLimiter.limit(`email:${email}:ip:${ip}`))
+            .success
+        ) {
           throw new RateLimitedError()
         }
+        const accountKey = `email:${email}`
+        const accountOpen =
+          (await credentialsAccountLimiter.getRemaining(accountKey)).remaining > 0
 
         const [user] = await db
           .select({
@@ -412,15 +443,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           .where(eq(users.email, email))
           .limit(1)
 
+        // Hesabın başarısız deneme tavanı dolmuş: yalnız bu hesaba daha önce
+        // giriş yapılmış bir IP'den devam edilebilir. Şifreye bakılmaz ki tavan
+        // dolduktan sonra yeni IP'lerden tahmin sürdürülemesin; yanıt kullanıcı
+        // olsun olmasın aynı (enumeration yok).
+        if (!accountOpen && !(user && (await seenFromIp(user.id, ip)))) {
+          await verifyPassword(await dummyHash(), password)
+          throw new RateLimitedError()
+        }
+
         // Kullanıcı yok VEYA şifresi yok (sosyal giriş): sabit-süreli dummy verify
         // sonra jenerik hata (enumeration yok, timing yok).
         if (!user || !user.passwordHash) {
           await verifyPassword(await dummyHash(), password)
+          await credentialsAccountLimiter.limit(accountKey)
           throw new InvalidCredentialsError()
         }
 
         const ok = await verifyPassword(user.passwordHash, password)
-        if (!ok) throw new InvalidCredentialsError()
+        if (!ok) {
+          await credentialsAccountLimiter.limit(accountKey)
+          throw new InvalidCredentialsError()
+        }
 
         // 2FA'lı hesap şifre-only şekille ASLA giremez — /api/auth/callback/credentials'a
         // doğrudan POST edilse bile. loginAction 2FA'yı pending_login ile yürütür.

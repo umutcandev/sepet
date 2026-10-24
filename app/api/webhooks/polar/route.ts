@@ -96,6 +96,11 @@ async function syncSubscription(sub: SubscriptionLike): Promise<void> {
   // yanlışlıkla free'ye düşürebilir. Kayıtta FARKLI bir abonelik dururken yalnızca
   // taze-aktif bir event (yeni aboneliğin devralması) güncelleyebilir; diğer her
   // şey (revoked/canceled/past_due...) eski aboneliğe ait sayılıp atlanır.
+  // Her event aboneliğin o anki tam görüntüsünü taşır ve `modifiedAt` ile
+  // sıralanabilir. Hiç değişmemiş bir abonelikte Polar modifiedAt'i null
+  // gönderebilir; o durumda görüntünün zamanı oluşturulma anıdır.
+  const incomingModifiedAt = sub.modifiedAt ?? sub.createdAt ?? null
+
   const isNewSubscription =
     Boolean(row.polarSubscriptionId) && row.polarSubscriptionId !== sub.id
   if (isNewSubscription && !FRESH_ACTIVE_STATUSES.has(sub.status)) {
@@ -106,14 +111,27 @@ async function syncSubscription(sub: SubscriptionLike): Promise<void> {
     })
     return
   }
+  // Farklı aboneliğin taze-aktif görüntüsü de kayıttakinden ESKİ olamaz: biten
+  // bir aboneliğin geç teslim edilen (yeniden denenen) "active" event'i yeni
+  // aboneliğin yerine geçerse, yeni aboneliğin iptal/past_due event'leri
+  // "eski aboneliğe ait" sayılıp atlanır ve plan ödemesiz Pro'da kalırdı.
+  if (
+    isNewSubscription &&
+    row.subscriptionModifiedAt &&
+    incomingModifiedAt &&
+    incomingModifiedAt.getTime() < row.subscriptionModifiedAt.getTime()
+  ) {
+    console.warn("[polar] başka aboneliğin eski görüntüsü atlandı", {
+      incomingSubscriptionId: sub.id,
+      storedSubscriptionId: row.polarSubscriptionId,
+      status: sub.status,
+    })
+    return
+  }
 
-  // AYNI aboneliğin gecikmeli event'i: her event aboneliğin o anki tam
-  // görüntüsünü taşır ve `modifiedAt` ile sıralanabilir. Kayıttakinden eski
-  // bir görüntü (yeniden denenen/geç teslim edilen) hiçbir alanı ezmez — durum
-  // kadar cancelAtPeriodEnd, dönem tarihleri gibi alanlar da geri gidebilirdi.
-  // Hiç değişmemiş bir abonelikte Polar modifiedAt'i null gönderebilir; o
-  // durumda görüntünün zamanı oluşturulma anıdır.
-  const incomingModifiedAt = sub.modifiedAt ?? sub.createdAt ?? null
+  // AYNI aboneliğin gecikmeli event'i: kayıttakinden eski bir görüntü
+  // (yeniden denenen/geç teslim edilen) hiçbir alanı ezmez — durum kadar
+  // cancelAtPeriodEnd, dönem tarihleri gibi alanlar da geri gidebilirdi.
   if (
     row.polarSubscriptionId === sub.id &&
     row.subscriptionModifiedAt &&

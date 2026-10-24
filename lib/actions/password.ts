@@ -5,7 +5,14 @@ import { and, count, eq, isNull, ne, sql } from "drizzle-orm"
 import { z } from "zod"
 
 import { auth } from "@/auth"
-import { db, users, passwordReset, userSessions, passkeys } from "@/lib/db"
+import {
+  db,
+  users,
+  accounts,
+  passwordReset,
+  userSessions,
+  passkeys,
+} from "@/lib/db"
 import {
   normalizeEmail,
   generateCode,
@@ -21,6 +28,7 @@ import {
   passwordResetEmail,
   passwordChangedEmail,
   passwordSetEmail,
+  passwordSetUnverifiedEmail,
   setPasswordLinkEmail,
   socialSignInEmail,
 } from "@/lib/email/templates"
@@ -37,12 +45,19 @@ import {
 const RESET_TTL_MS = 15 * 60 * 1000
 
 export type ActionResult = { ok: true } | { ok: false; error: string }
-// Sıfırlama/belirleme sonucu: sessionsRevoked yalnız var olan bir şifre
-// DEĞİŞTİĞİNDE true olur (ilk kez şifre belirleyen sosyal giriş kullanıcısının
+// Sıfırlama/belirleme sonucu: sessionsRevoked var olan bir şifre DEĞİŞTİĞİNDE
+// ya da e-postası kanıtlanmamış hesap ilk kez kanıtlandığında true olur (ilk kez
+// şifre belirleyen, e-postası zaten kanıtlı sosyal giriş kullanıcısının
 // oturumları düşürülmez); başarı ekranı metnini bu belirler. passkeys: o
-// durumda kayıtlı geçiş anahtarı sayısı (bkz. countPasskeys).
+// durumda kayıtlı geçiş anahtarı sayısı (bkz. countPasskeys). identitiesReset:
+// kanıtsız dönemde eklenmiş giriş yolları kaldırıldı (bkz. applyReset).
 export type ResetResult =
-  | { ok: true; sessionsRevoked: boolean; passkeys: number }
+  | {
+      ok: true
+      sessionsRevoked: boolean
+      passkeys: number
+      identitiesReset: boolean
+    }
   | { ok: false; error: string }
 
 // Şifre değişikliği geçiş anahtarlarını SİLMEZ (kullanıcı kendi anahtarlarını
@@ -172,17 +187,31 @@ export async function resetPasswordAction(input: {
 // DEĞİŞİYORSA (olası ele geçirme senaryosu) tüm cihaz oturumları da düşürülür
 // (60 sn içinde); şifresiz hesaba İLK şifre belirlemede eski şifre olmadığı
 // için oturumlar korunur ve daha yumuşak bir bildirim gider.
+//
+// İstisna: e-postası henüz KANITLANMAMIŞ satır (ör. Facebook ile açılmış;
+// Facebook'un döndürdüğü adres sahiplik kanıtı değil). Bağlantı posta kutusuna
+// gitti ve kullanıldı: şifreyi koyan kişi adresin sahibidir, ama satırı açan ve
+// kanıtsız dönemde ona giriş yolu ekleyen kişi başkası olabilir (adresi iddia
+// edip satırı önden açan saldırgan, bağlantıyı da kendisi istettirir). Sahip bu
+// satırı devralırken o dönemden kalan her şey düşürülür: tüm oturumlar, OAuth
+// bağlantıları ve geçiş anahtarları. Gerçek sahip bunları Ayarlar'dan yeniden
+// bağlayabilir.
 async function applyReset(
   userId: string,
   newPassword: string,
 ): Promise<ResetResult> {
   const [before] = await db
-    .select({ email: users.email, passwordHash: users.passwordHash })
+    .select({
+      email: users.email,
+      passwordHash: users.passwordHash,
+      emailVerified: users.emailVerified,
+    })
     .from(users)
     .where(eq(users.id, userId))
     .limit(1)
   if (!before) return { ok: false, error: "Bağlantı geçersiz ya da süresi dolmuş." }
   const hadPassword = before.passwordHash != null
+  const firstProof = before.emailVerified == null
 
   const passwordHash = await hashPassword(newPassword)
   await db
@@ -196,7 +225,7 @@ async function applyReset(
     })
     .where(eq(users.id, userId))
 
-  if (hadPassword) {
+  if (hadPassword || firstProof) {
     await db
       .update(userSessions)
       .set({ revokedAt: new Date() })
@@ -204,19 +233,28 @@ async function applyReset(
         and(eq(userSessions.userId, userId), isNull(userSessions.revokedAt)),
       )
   }
+  if (firstProof) {
+    await db.delete(accounts).where(eq(accounts.userId, userId))
+    await db.delete(passkeys).where(eq(passkeys.userId, userId))
+  }
 
   await db.delete(passwordReset).where(eq(passwordReset.userId, userId))
 
   if (before.email) {
     void sendMail({
       to: before.email,
-      ...(hadPassword ? passwordChangedEmail() : passwordSetEmail()),
+      ...(firstProof
+        ? passwordSetUnverifiedEmail()
+        : hadPassword
+          ? passwordChangedEmail()
+          : passwordSetEmail()),
     })
   }
   return {
     ok: true,
-    sessionsRevoked: hadPassword,
-    passkeys: hadPassword ? await countPasskeys(userId) : 0,
+    sessionsRevoked: hadPassword || firstProof,
+    passkeys: hadPassword && !firstProof ? await countPasskeys(userId) : 0,
+    identitiesReset: firstProof,
   }
 }
 

@@ -162,6 +162,26 @@ export function passwordSetEmail(): Email {
   }
 }
 
+// E-postası kanıtlanmamış hesaba (ör. Facebook ile açılmış) posta kutusundan
+// gelen bağlantıyla ilk şifre: hesap e-postanın sahibine devredildi, kanıtsız
+// dönemden kalan giriş yolları kaldırıldı (bkz. lib/actions/password.ts applyReset).
+export function passwordSetUnverifiedEmail(): Email {
+  const heading = "Hesabına şifre belirlendi"
+  const lead =
+    "Sepet hesabına az önce bu e-posta adresine gönderilen bağlantıyla bir şifre belirlendi. Hesap daha önce e-posta adresi doğrulanmadan açılmıştı."
+  const secured =
+    "Güvenliğin için tüm cihazlarda oturum kapatıldı; hesaba önceden bağlanmış sosyal giriş hesapları (ör. Facebook) ve geçiş anahtarları kaldırıldı. Bunlar sana aitse giriş yaptıktan sonra Ayarlar > Hesap bölümünden yeniden ekleyebilirsin."
+  const notYou =
+    "Bunu sen yapmadıysan hemen giriş ekranındaki şifre sıfırlama adımıyla yeni bir şifre belirle."
+  const body = p(lead) + p(secured) + p(notYou)
+  const text = textBlock([heading, "", lead, secured, notYou])
+  return {
+    subject: "Sepet hesabına şifre belirlendi",
+    html: layout({ heading, body, preview: "Hesabına bir şifre belirlendi." }),
+    text,
+  }
+}
+
 // ─── Şifresiz (sosyal giriş) hesapta 2FA kurulumu için yeniden doğrulama kodu ───
 export function totpSetupCodeEmail(args: { code: string }): Email {
   const heading = "İki adımlı doğrulama kurulum kodun"

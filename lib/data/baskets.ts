@@ -2,6 +2,7 @@ import "server-only"
 import { and, asc, eq, isNotNull } from "drizzle-orm"
 import { db, baskets, basketItems, conversations } from "@/lib/db"
 import { isUuid } from "@/lib/utils"
+import { isProductId } from "@/lib/marketfiyati/product-id"
 import type { MatchResult, OptimizationSummary } from "@/lib/ai/schemas"
 
 // Server-only data access. These take an already-authenticated userId from the
@@ -93,13 +94,15 @@ export async function getBasketDetail(id: string, userId: string) {
  */
 export function basketItemMatchFields(match: MatchResult | null) {
   const best = match?.bestMatch ?? null
+  const productId = best?.productId
   const minPrice = best?.minPrice ?? null
   const marketWithMin =
     best && match
       ? match.marketPrices.find((mp) => mp.price === minPrice) ?? null
       : null
   return {
-    matchedProductId: best?.productId ?? null,
+    // Kimlik istemciden gelir: biçimsiz kimlik saklanmaz (bkz. item-images).
+    matchedProductId: isProductId(productId) ? productId : null,
     matchedName: best?.name ?? null,
     matchedBrand: best?.brand ?? null,
     matchedImageUrl: best?.imageUrl ?? null,

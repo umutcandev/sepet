@@ -76,6 +76,8 @@ const verifyCodeSchema = z.object({
 
 // Bekleyen kayıt aynı e-postayla tekrar başlatılınca şifre hash'i ezilir. Doğrulayan
 // kişinin şifresi tutmazsa hesap, ezen tarafın şifresiyle açılmasın diye reddedilir.
+const SIGNUP_CODE_FAILED =
+  "Kod hatalı ya da süresi dolmuş. Tekrar dene ya da yeni kod iste."
 const SIGNUP_SUPERSEDED =
   "Bu e-posta için sonradan başka bir kayıt isteği yapılmış. Güvenliğin için kaydı yeniden başlat."
 
@@ -292,7 +294,8 @@ export async function loginAction(input: {
   const email = normalizeEmail(parsed.data.email)
   const ip = await getClientIp()
 
-  // IP ekseni burada; e-posta ekseni authorize'da (doğrudan callback POST'u da kapsar).
+  // IP ekseni burada; e-posta+IP ve hesap eksenleri authorize'da (doğrudan callback
+  // POST'unu da kapsar).
   const lIp = await checkLimit(credentialsLoginLimiter, `ip:${ip}`)
   if (!lIp.ok) return lIp
 
@@ -392,18 +395,22 @@ async function consumeSignupByCode(
       payload: emailVerification.payload,
     })
 
-  if (!row) return { ok: false, error: "Kod geçersiz ya da süresi dolmuş. Baştan dene." }
+  // Kodu bilmeyen biri için bütün başarısız sonuçlar AYNI mesajı alır: bekleyen
+  // kayıt satırı yalnız kayıtlı olmayan e-postada oluşur (registerAction), yani
+  // "satır yok" ile "kod yanlış"ı ayırmak e-postanın kayıtlı olup olmadığını
+  // ele verirdi.
+  if (!row) return { ok: false, error: SIGNUP_CODE_FAILED }
 
   if (row.attempts > MAX_ATTEMPTS) {
     await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
-    return { ok: false, error: "Çok fazla yanlış deneme. Yeni kod iste." }
+    return { ok: false, error: SIGNUP_CODE_FAILED }
   }
   if (row.expiresAt.getTime() < Date.now()) {
     await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
-    return { ok: false, error: "Kodun süresi doldu. Yeni kod iste." }
+    return { ok: false, error: SIGNUP_CODE_FAILED }
   }
   if (!safeEqual(hashSecret(code), row.codeHash)) {
-    return { ok: false, error: "Kod hatalı. Tekrar dene." }
+    return { ok: false, error: SIGNUP_CODE_FAILED }
   }
   // Kod doğru ama şifre tutmuyor: satır başka bir kayıt isteğiyle ezilmiş.
   const passwordHash = row.payload?.passwordHash

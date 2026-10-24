@@ -39,6 +39,30 @@ let cacheBytes = 0
 // Aynı görsele aynı anda gelen istekler tek bir kodlamayı bekler.
 const inflight = new Map<string, Promise<Buffer | null>>()
 
+// Çözme maliyeti dosya boyutuyla değil piksel sayısıyla ölçeklenir ve bu rota
+// anonim erişilebilir. Farklı görsellerin eşzamanlı çözümü süreç başına
+// sınırlanır: sharp işi libuv iş parçacığı havuzunda (varsayılan 4) çalışır ve
+// havuzu dolduran kodlamalar aynı süreçteki diğer isteklerin dosya/ağ/kripto
+// işlerini bekletirdi. Fazlası sırayla bekler.
+const MAX_CONCURRENT_DECODES = 2
+let activeDecodes = 0
+const decodeQueue: Array<() => void> = []
+
+async function withDecodeSlot<T>(fn: () => Promise<T>): Promise<T> {
+  if (activeDecodes >= MAX_CONCURRENT_DECODES) {
+    await new Promise<void>((resolve) => decodeQueue.push(resolve))
+  } else {
+    activeDecodes++
+  }
+  try {
+    return await fn()
+  } finally {
+    const next = decodeQueue.shift()
+    if (next) next()
+    else activeDecodes--
+  }
+}
+
 function forget(key: string) {
   const hit = cache.get(key)
   if (!hit) return
@@ -109,16 +133,18 @@ async function load(key: string): Promise<Buffer | null | undefined> {
   }
 
   try {
-    return await sharp(source, { limitInputPixels: 50_000_000 })
-      .rotate()
-      .resize({
-        width: MAX_EDGE,
-        height: MAX_EDGE,
-        fit: "inside",
-        withoutEnlargement: true,
-      })
-      .webp({ quality: 82 })
-      .toBuffer()
+    return await withDecodeSlot(() =>
+      sharp(source, { limitInputPixels: 50_000_000 })
+        .rotate()
+        .resize({
+          width: MAX_EDGE,
+          height: MAX_EDGE,
+          fit: "inside",
+          withoutEnlargement: true,
+        })
+        .webp({ quality: 82 })
+        .toBuffer()
+    )
   } catch {
     return null
   }

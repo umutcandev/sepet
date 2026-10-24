@@ -150,6 +150,13 @@ const cappedText = (max: number) =>
   z.string().transform((s) => s.slice(0, max))
 // Serbest metin turu: tek mesaj parse modeline olduğu gibi gider.
 const MAX_INPUT_TEXT = 4000
+// Son kullanıcı mesajı (parts + metadata) AI çağrısından önce, olduğu gibi
+// kaydedilir; kota yalnız tur başarılı olursa düşer (başarısız turda iade).
+// Boyut burada sınırlanır ki istek gövdesi kadar büyük satırlar paylaşılan
+// veritabanına bedavaya yazılamasın. Metin/görsel turu en fazla MAX_INPUT_TEXT
+// karakter metin + bir dosya parçası taşır; onay turlarının tavanı en büyük
+// meşru payload'ın (100 kalem) rahatça üstünde.
+const MAX_USER_MESSAGE_CHARS = { input: 16_000, approval: 128_000 }
 
 const basketApprovalPayloadSchema = z.object({
   items: z
@@ -310,7 +317,10 @@ export async function POST(req: Request) {
     }
     mode.payload = parsed.data
   }
-  if (mode.kind === "text" && mode.text.length > MAX_INPUT_TEXT) {
+  if (
+    (mode.kind === "text" || mode.kind === "receiptImage") &&
+    mode.text.length > MAX_INPUT_TEXT
+  ) {
     return NextResponse.json({ error: "input_too_long" }, { status: 400 })
   }
   if (
@@ -327,6 +337,17 @@ export async function POST(req: Request) {
   const lastUserMessage = findLastUserMessage(messages)
   if (!lastUserMessage) {
     return NextResponse.json({ error: "no_user_message" }, { status: 400 })
+  }
+  if (
+    JSON.stringify({
+      parts: lastUserMessage.parts,
+      metadata: (lastUserMessage as { metadata?: unknown }).metadata,
+    }).length >
+    (mode.kind === "text" || mode.kind === "receiptImage"
+      ? MAX_USER_MESSAGE_CHARS.input
+      : MAX_USER_MESSAGE_CHARS.approval)
+  ) {
+    return NextResponse.json({ error: "input_too_long" }, { status: 413 })
   }
   // Metin turunun hafızası: son mesajdan önceki konuşma (bkz.
   // buildConversationContext). Yalnızca metin turunda modele gider.

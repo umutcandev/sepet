@@ -1,10 +1,12 @@
 import "server-only"
 
 import { and, eq } from "drizzle-orm"
+import { cookies } from "next/headers"
 import type { AdapterAccountType } from "next-auth/adapters"
 
 import { db, users, accounts } from "@/lib/db"
 import { redis } from "@/lib/redis"
+import { generateToken, hashSecret, safeEqual } from "@/lib/auth/codes"
 import { createPendingLogin, PENDING_TTL_MS } from "@/lib/auth/pending-login"
 import { hasSudo } from "@/lib/auth/sudo"
 
@@ -19,13 +21,25 @@ import { hasSudo } from "@/lib/auth/sudo"
 // pending_login + bekleyen bağlama kaydı yazılır, kullanıcı mevcut 2FA adımına
 // gider (aynı deneme sınırı ve hız limitleri). Kod doğrulanınca hesap bağlanır;
 // sonraki Google girişleri bağlı hesap olarak TOTP'siz devam eder.
+//
+// 2FA adımının token'ı URL'de taşınır (/?2fa=…) ve herhangi bir tarayıcıda
+// açılabilir. Bağlama bu yüzden Google akışını tamamlayan TARAYICIYA da
+// bağlanır: signIn callback httpOnly bir nonce çerezi yazar, kaydı onun
+// hash'iyle saklar; kod başka bir tarayıcıda girilirse (ör. saldırganın
+// ilettiği bağlantıyı açan hesap sahibi) hesap sahibi kendi oturumunu açar ama
+// saldırganın Google hesabı BAĞLANMAZ.
 
 type PendingLink = {
   u: string
   provider: string
   providerAccountId: string
   type: AdapterAccountType
+  /** Bağlamayı başlatan tarayıcının nonce çerezinin hash'i. */
+  n: string
 }
+
+const LINK_NONCE_COOKIE =
+  process.env.NODE_ENV === "production" ? "__Host-sepet-link" : "sepet-link"
 
 const linkKey = (pendingId: string) => `oauth-link:${pendingId}`
 
@@ -110,6 +124,7 @@ export async function beginLinkTwoFactor(input: {
   if (!u?.totpEnabled) return null
 
   const pending = await createPendingLogin(u.id)
+  const nonce = generateToken()
   await redis.set<PendingLink>(
     linkKey(pending.id),
     {
@@ -117,9 +132,18 @@ export async function beginLinkTwoFactor(input: {
       provider: input.provider,
       providerAccountId: input.providerAccountId,
       type: input.type,
+      n: hashSecret(nonce),
     },
     { ex: Math.ceil(PENDING_TTL_MS / 1000) }
   )
+  const jar = await cookies()
+  jar.set(LINK_NONCE_COOKIE, nonce, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: Math.ceil(PENDING_TTL_MS / 1000),
+  })
   return pending.token
 }
 
@@ -128,10 +152,24 @@ export async function beginLinkTwoFactor(input: {
  * bağla. Sağlayıcı token'ları saklanmaz (uygulama kullanmıyor); bağlantı yalnız
  * kimlik eşlemesi. Hesap bu arada başka kullanıcıya bağlandıysa dokunulmaz.
  */
-export async function completeLinkTwoFactor(pendingId: string, userId: string) {
+export async function completeLinkTwoFactor(
+  pendingId: string,
+  userId: string
+): Promise<{ provider: string } | null> {
   const link = await redis.getdel<PendingLink>(linkKey(pendingId))
-  if (!link || link.u !== userId) return
-  await db
+  if (!link || link.u !== userId) return null
+  const jar = await cookies()
+  const nonce = jar.get(LINK_NONCE_COOKIE)?.value
+  jar.set(LINK_NONCE_COOKIE, "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 0,
+  })
+  // Kod, Google akışını tamamlayan tarayıcıda girilmedi: bağlama yok.
+  if (!nonce || !link.n || !safeEqual(hashSecret(nonce), link.n)) return null
+  const inserted = await db
     .insert(accounts)
     .values({
       userId,
@@ -140,6 +178,8 @@ export async function completeLinkTwoFactor(pendingId: string, userId: string) {
       providerAccountId: link.providerAccountId,
     })
     .onConflictDoNothing()
+    .returning({ provider: accounts.provider })
+  return inserted.length > 0 ? { provider: link.provider } : null
 }
 
 // ─── Oturum açıkken hesap bağlama (Ayarlar > Bağlı hesaplar) ───
