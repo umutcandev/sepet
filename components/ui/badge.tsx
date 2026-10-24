@@ -25,10 +25,13 @@ const badgeVariants = cva(
         // beslendiği `--surface-base` globals.css'te tanımlı (destructive ile
         // aynı kalıp: görünen yüzey varyantın ADI değil, alfalı dolgunun
         // zeminle karışmış hâli).
+        // Yazı 800 tonunda: 700 bu dolgu üstünde amber'de 4,35:1 ile 4,5:1'in
+        // altında, emerald'da 4,51:1 ile sınırdaydı; kart içi 10px rozetler bu
+        // varyantları kullanıyor. 800 ile ikisi de ~6:1.
         success:
-          "surface-raised-chip bg-emerald-500/15 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300",
+          "surface-raised-chip bg-emerald-500/15 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300",
         warning:
-          "surface-raised-chip bg-amber-500/15 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300",
+          "surface-raised-chip bg-amber-500/15 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300",
       },
     },
     defaultVariants: {
