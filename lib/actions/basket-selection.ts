@@ -25,6 +25,7 @@ import {
 import { updateSavedBasketSelection } from "@/lib/data/baskets"
 import { productLimiter } from "@/lib/security/rate-limit"
 import { checkLimit } from "@/lib/security/action-rate-limit"
+import { logError } from "@/lib/ai/telemetry"
 
 const productId = z.string().regex(/^[A-Za-z0-9_-]{1,32}$/)
 
@@ -134,7 +135,7 @@ export async function updateBasketItemSelection(
       await Promise.all(
         missing.map((id) =>
           getProductById(id, loc).catch((err: unknown) => {
-            console.error("[basket-selection] product fetch failed", err)
+            logError("[basket-selection] product fetch failed", err)
             return null
           })
         )
@@ -205,7 +206,7 @@ export async function updateBasketItemSelection(
         summary,
       })
     } catch (err) {
-      console.error("[basket-selection] saved basket update failed", err)
+      logError("[basket-selection] saved basket update failed", err)
       savedBasketFailed = true
     }
     if (savedBasketId) {
@@ -225,7 +226,7 @@ export async function updateBasketItemSelection(
       savedBasketFailed,
     }
   } catch (err) {
-    console.error("[basket-selection] update failed", err)
+    logError("[basket-selection] update failed", err)
     return { ok: false, error: "failed" }
   }
 }

@@ -14,6 +14,9 @@ export function sanitizeCallback(callbackUrl: string | undefined | null): string
   // window.location.assign'da "//evil.com"a (saldırgan origin'i) dönüşür. Ters
   // bölü içeren hiçbir callback kabul edilmez.
   if (callbackUrl.includes("\\")) return "/"
+  // URL ayrıştırıcısı sekme/satır sonunu siler: "/\t/evil.com" de "//evil.com"
+  // olurdu. Kontrol karakteri içeren callback kabul edilmez.
+  if (/[\u0000-\u001f\u007f]/.test(callbackUrl)) return "/"
   if (!ALLOWED_CALLBACK_PREFIXES.some((p) => callbackUrl.startsWith(p))) {
     return "/"
   }

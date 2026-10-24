@@ -20,13 +20,15 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
   const [confirm, setConfirm] = React.useState("")
   const [busy, setBusy] = React.useState(false)
   const [error, setError] = React.useState("")
-  // null = form aşamasında; dolu = başarı ekranı. sessionsRevoked yalnız var
-  // olan şifre değiştiğinde true olur (ilk belirlemede cihazlardan çıkış yok),
-  // başarı alt metni buna göre seçilir. passkeys > 0 ise geçiş anahtarlarının
-  // silinmediği uyarısı gösterilir.
+  // null = form aşamasında; dolu = başarı ekranı. sessionsRevoked var olan
+  // şifre değiştiğinde (ya da e-postası kanıtlanmamış hesap devralındığında)
+  // true olur, başarı alt metni buna göre seçilir. passkeys > 0 ise geçiş
+  // anahtarlarının silinmediği uyarısı gösterilir. identitiesReset: kanıtsız
+  // dönemden kalan giriş yolları kaldırıldı (bkz. applyReset).
   const [done, setDone] = React.useState<{
     sessionsRevoked: boolean
     passkeys: number
+    identitiesReset: boolean
   } | null>(null)
 
   async function submit(e: React.FormEvent) {
@@ -41,7 +43,11 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
     const res = await resetPasswordAction({ token, newPassword: password })
     setBusy(false)
     if (res.ok) {
-      setDone({ sessionsRevoked: res.sessionsRevoked, passkeys: res.passkeys })
+      setDone({
+        sessionsRevoked: res.sessionsRevoked,
+        passkeys: res.passkeys,
+        identitiesReset: res.identitiesReset,
+      })
     } else {
       setError(res.error)
     }
@@ -82,13 +88,29 @@ export function ResetPasswordCard({ token }: { token: string | null }) {
                 <RiCheckLine className="h-5 w-5" />
               </span>
             }
-            title={done.sessionsRevoked ? "Şifren güncellendi" : "Şifren belirlendi"}
+            title={
+              done.sessionsRevoked && !done.identitiesReset
+                ? "Şifren güncellendi"
+                : "Şifren belirlendi"
+            }
             subtitle={
               done.sessionsRevoked
                 ? "Diğer tüm cihazlar çıkış yaptı. Yeni şifrenle giriş yapabilirsin."
                 : "Artık e-postan ve şifrenle de giriş yapabilirsin."
             }
           >
+            {done.identitiesReset ? (
+              <Alert className="mb-4">
+                <RiAlertLine />
+                <AlertTitle>Önceki giriş yolları kaldırıldı</AlertTitle>
+                <AlertDescription>
+                  Bu hesap e-posta adresi doğrulanmadan açılmıştı. Güvenliğin
+                  için bağlı sosyal giriş hesapları (ör. Facebook) ve geçiş
+                  anahtarları kaldırıldı. Sana aitlerse giriş yaptıktan sonra
+                  Ayarlar &gt; Hesap bölümünden yeniden ekleyebilirsin.
+                </AlertDescription>
+              </Alert>
+            ) : null}
             {done.passkeys > 0 ? (
               <Alert className="mb-4">
                 <RiAlertLine />

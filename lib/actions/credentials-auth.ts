@@ -1,11 +1,11 @@
 "use server"
 
-import { and, eq, inArray, sql } from "drizzle-orm"
+import { after } from "next/server"
+import { and, eq, sql } from "drizzle-orm"
 import { z } from "zod"
 
 import { signIn } from "@/auth"
-import { db, users, accounts, emailVerification } from "@/lib/db"
-import { UNPROVEN_EMAIL_PROVIDERS } from "@/lib/auth/providers"
+import { db, users, emailVerification } from "@/lib/db"
 import {
   normalizeEmail,
   generateCode,
@@ -32,6 +32,7 @@ import {
   emailSendLimiter,
   emailSendIpLimiter,
   codeVerifyLimiter,
+  codeGuessDailyLimiter,
   credentialsLoginLimiter,
   twoFactorLimiter,
 } from "@/lib/security/rate-limit"
@@ -75,6 +76,8 @@ const verifyCodeSchema = z.object({
 
 // Bekleyen kayıt aynı e-postayla tekrar başlatılınca şifre hash'i ezilir. Doğrulayan
 // kişinin şifresi tutmazsa hesap, ezen tarafın şifresiyle açılmasın diye reddedilir.
+const SIGNUP_CODE_FAILED =
+  "Kod hatalı ya da süresi dolmuş. Tekrar dene ya da yeni kod iste."
 const SIGNUP_SUPERSEDED =
   "Bu e-posta için sonradan başka bir kayıt isteği yapılmış. Güvenliğin için kaydı yeniden başlat."
 
@@ -105,51 +108,56 @@ export async function registerAction(input: {
   // enumeration yok). Ardından varlık kontrolü.
   const passwordHash = await hashPassword(parsed.data.password)
 
-  const [existing] = await db
-    .select({ id: users.id })
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1)
+  // Var olan / yeni e-posta dalları farklı miktarda DB işi yapıyor (yeni:
+  // doğrulama satırı upsert'i). Yanıt bunu beklese süre farkı kaydı ele
+  // verirdi → bu kısım yanıttan SONRA çalışır (after; Vercel bitmesini bekler).
+  after(async () => {
+    const [existing] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1)
 
-  // Zaten kayıtlı: durumu forma AÇMA (yine { ok: true }); bilgi e-postası yalnız
-  // posta kutusu sahibine gider.
-  if (existing) {
-    const loginUrl = absoluteUrl("/")
-    void sendMail({ to: email, ...accountExistsEmail({ loginUrl }) })
-    return { ok: true }
-  }
+    // Zaten kayıtlı: durumu forma AÇMA (yine { ok: true }); bilgi e-postası yalnız
+    // posta kutusu sahibine gider.
+    if (existing) {
+      const loginUrl = absoluteUrl("/")
+      void sendMail({ to: email, ...accountExistsEmail({ loginUrl }) })
+      return
+    }
 
-  const code = generateCode()
-  const token = generateToken()
-  const codeHash = hashSecret(code)
-  const tokenHash = hashSecret(token)
-  const expiresAt = new Date(Date.now() + SIGNUP_TTL_MS)
+    const code = generateCode()
+    const token = generateToken()
+    const codeHash = hashSecret(code)
+    const tokenHash = hashSecret(token)
+    const expiresAt = new Date(Date.now() + SIGNUP_TTL_MS)
 
-  // Önceki (email, "signup") satırını ez. Unique (email, purpose) index'i var.
-  await db
-    .insert(emailVerification)
-    .values({
-      email,
-      purpose: "signup",
-      codeHash,
-      tokenHash,
-      payload: { passwordHash },
-      expiresAt,
-    })
-    .onConflictDoUpdate({
-      target: [emailVerification.email, emailVerification.purpose],
-      set: {
+    // Önceki (email, "signup") satırını ez. Unique (email, purpose) index'i var.
+    await db
+      .insert(emailVerification)
+      .values({
+        email,
+        purpose: "signup",
         codeHash,
         tokenHash,
         payload: { passwordHash },
-        attempts: 0,
         expiresAt,
-        createdAt: new Date(),
-      },
-    })
+      })
+      .onConflictDoUpdate({
+        target: [emailVerification.email, emailVerification.purpose],
+        set: {
+          codeHash,
+          tokenHash,
+          payload: { passwordHash },
+          attempts: 0,
+          expiresAt,
+          createdAt: new Date(),
+        },
+      })
 
-  const url = absoluteUrl(`/dogrula?token=${encodeURIComponent(token)}`)
-  void sendMail({ to: email, ...verificationEmail({ code, url }) })
+    const url = absoluteUrl(`/dogrula?token=${encodeURIComponent(token)}`)
+    void sendMail({ to: email, ...verificationEmail({ code, url }) })
+  })
   return { ok: true }
 }
 
@@ -164,8 +172,12 @@ export async function verifySignupAction(input: {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Geçersiz kod." }
   }
   const email = normalizeEmail(parsed.data.email)
-  const limit = await checkLimit(codeVerifyLimiter, `signup:${email}`)
-  if (!limit.ok) return limit
+  for (const check of [
+    await checkLimit(codeVerifyLimiter, `signup:${email}`),
+    await checkLimit(codeGuessDailyLimiter, `signup:${email}`),
+  ]) {
+    if (!check.ok) return check
+  }
   return consumeSignupByCode(email, parsed.data.code, parsed.data.password)
 }
 
@@ -282,7 +294,8 @@ export async function loginAction(input: {
   const email = normalizeEmail(parsed.data.email)
   const ip = await getClientIp()
 
-  // IP ekseni burada; e-posta ekseni authorize'da (doğrudan callback POST'u da kapsar).
+  // IP ekseni burada; e-posta+IP ve hesap eksenleri authorize'da (doğrudan callback
+  // POST'unu da kapsar).
   const lIp = await checkLimit(credentialsLoginLimiter, `ip:${ip}`)
   if (!lIp.ok) return lIp
 
@@ -382,18 +395,22 @@ async function consumeSignupByCode(
       payload: emailVerification.payload,
     })
 
-  if (!row) return { ok: false, error: "Kod geçersiz ya da süresi dolmuş. Baştan dene." }
+  // Kodu bilmeyen biri için bütün başarısız sonuçlar AYNI mesajı alır: bekleyen
+  // kayıt satırı yalnız kayıtlı olmayan e-postada oluşur (registerAction), yani
+  // "satır yok" ile "kod yanlış"ı ayırmak e-postanın kayıtlı olup olmadığını
+  // ele verirdi.
+  if (!row) return { ok: false, error: SIGNUP_CODE_FAILED }
 
   if (row.attempts > MAX_ATTEMPTS) {
     await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
-    return { ok: false, error: "Çok fazla yanlış deneme. Yeni kod iste." }
+    return { ok: false, error: SIGNUP_CODE_FAILED }
   }
   if (row.expiresAt.getTime() < Date.now()) {
     await db.delete(emailVerification).where(eq(emailVerification.id, row.id))
-    return { ok: false, error: "Kodun süresi doldu. Yeni kod iste." }
+    return { ok: false, error: SIGNUP_CODE_FAILED }
   }
   if (!safeEqual(hashSecret(code), row.codeHash)) {
-    return { ok: false, error: "Kod hatalı. Tekrar dene." }
+    return { ok: false, error: SIGNUP_CODE_FAILED }
   }
   // Kod doğru ama şifre tutmuyor: satır başka bir kayıt isteğiyle ezilmiş.
   const passwordHash = row.payload?.passwordHash
@@ -446,14 +463,18 @@ async function finalizeSignup(
 // şifresi olan mevcut satır no-op (setWhere false → false döner, çağıran kullanıcıya
 // söyler).
 //
-// Birleştirme yalnız mevcut satırın e-postası KANITLIYSA güvenli. Google bunu
-// email_verified ile kanıtlıyor, Facebook kanıtlayamıyor (bkz.
-// UNPROVEN_EMAIL_PROVIDERS). Kanıtlanmamış bir sağlayıcıyla açılmış satır
-// birleştirmeden muaf tutulmazsa şu senaryo açılır: saldırgan kurbanın adresini
-// taşıyan bir Facebook hesabıyla önden `users` satırını yaratır, kurban sonra
-// e-posta+şifre ile kaydolur, kayıt o satırın içine akar ve iki taraf aynı hesabı
-// paylaşır (klasik ön-kayıt / hesap devralma). NOT EXISTS koşulu bunu, ayrı bir
-// SELECT'e gerek kalmadan tek ifadede ve yarışa kapalı biçimde engeller.
+// Birleştirme yalnız mevcut satırın e-postası KANITLIYSA güvenli. Kanıt
+// `users.emailVerified`'da kalıcı tutulur (bkz. lib/auth/oauth-link.ts
+// isUnverifiedLinkTarget): Auth.js OAuth ile oluşturduğu satırda null bırakır;
+// doğrulanmış ve e-postası eşleşen bir Google girişi ya da posta kutusuna giden
+// bağlantıyla şifre belirleme onu doldurur. Kanıtsız satır birleştirmeden muaf
+// tutulmazsa şu senaryo açılır: saldırgan kurbanın adresini taşıyan bir Facebook
+// hesabıyla önden `users` satırını yaratır, kurban sonra e-posta+şifre ile
+// kaydolur, kayıt o satırın içine akar ve iki taraf aynı hesabı paylaşır (klasik
+// ön-kayıt / hesap devralma). Eskiden "satırda Facebook hesabı var mı" diye
+// bakılıyordu; saldırgan başka bir giriş yolu ekleyip Facebook'u kaldırınca iz
+// siliniyordu. setWhere bunu, ayrı bir SELECT'e gerek kalmadan tek ifadede ve
+// yarışa kapalı biçimde engeller.
 async function completeSignup(
   email: string,
   passwordHash: string,
@@ -467,11 +488,7 @@ async function completeSignup(
         passwordHash,
         emailVerified: sql`COALESCE(${users.emailVerified}, now())`,
       },
-      setWhere: sql`${users.passwordHash} IS NULL AND NOT EXISTS (
-        SELECT 1 FROM ${accounts}
-        WHERE ${accounts.userId} = ${users.id}
-          AND ${inArray(accounts.provider, [...UNPROVEN_EMAIL_PROVIDERS])}
-      )`,
+      setWhere: sql`${users.passwordHash} IS NULL AND ${users.emailVerified} IS NOT NULL`,
     })
     .returning({ id: users.id })
   return Boolean(row)

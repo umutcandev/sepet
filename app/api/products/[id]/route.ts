@@ -20,8 +20,15 @@ export async function GET(
   }
 
   const { id } = await params
-  const value = decodeURIComponent(id).trim()
-  if (!value) {
+  // Biçimsiz bir `%` dizisi decodeURIComponent'ı fırlatır; try dışında
+  // kalsaydı yakalanmamış 500 dönerdi.
+  let value: string
+  try {
+    value = decodeURIComponent(id).trim()
+  } catch {
+    return NextResponse.json({ error: "invalid_id" }, { status: 400 })
+  }
+  if (!value || value.length > 200) {
     return NextResponse.json({ error: "invalid_id" }, { status: 400 })
   }
 
@@ -37,7 +44,12 @@ export async function GET(
     }
     return NextResponse.json({ detail })
   } catch (err) {
-    const status = err instanceof MarketfiyatiError ? err.status : 500
+    // Ağ hatasında MarketfiyatiError.status 0 olur; geçersiz bir HTTP
+    // durumu NextResponse'u RangeError'la düşürürdü.
+    const status =
+      err instanceof MarketfiyatiError && err.status >= 400 && err.status <= 599
+        ? err.status
+        : 502
     // İç hata detayını client'a sızdırma — yalnız sunucu loguna yaz.
     console.error("[products/[id]] failed", err)
     return NextResponse.json({ error: "lookup_failed" }, { status })

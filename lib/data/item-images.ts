@@ -5,6 +5,8 @@ import { eq, inArray } from "drizzle-orm"
 
 import { db, basketItems, receiptItems } from "@/lib/db"
 import { getProductById } from "@/lib/marketfiyati/cache"
+import { isProductId } from "@/lib/marketfiyati/product-id"
+import { productLimiter } from "@/lib/security/rate-limit"
 import { getUserLocationContext } from "@/lib/auth/location"
 import type { LocationContext } from "@/lib/marketfiyati/client"
 
@@ -52,28 +54,45 @@ type Target = "basket" | "receipt"
 export async function withResolvedItemImages<T extends ImageFillable>(
   items: T[],
   target: Target,
+  userId: string,
 ): Promise<T[]> {
   const pending = items.filter(
     (it) => it.matchedProductId && it.matchedImageUrl == null,
   )
   if (pending.length === 0) return items
 
+  // Kimlik istemciden kaydedilmiş olabilir (saveBasket/saveReceipt eski
+  // kayıtları): biçime uymayan kimlik upstream'e gönderilmez, satır kalıcı
+  // olarak "görseli yok" işaretlenir ki her açılışta yeniden aday olmasın.
+  const resolved = new Map<string, string>()
+  for (const it of pending) {
+    const id = it.matchedProductId as string
+    if (!isProductId(id)) resolved.set(id, NO_IMAGE)
+  }
+
   // Aynı ürün birden çok kalemde geçebilir → ürün başına tek sorgu.
   const productIds = [
     ...new Set(pending.map((it) => it.matchedProductId as string)),
-  ].slice(0, MAX_LOOKUPS)
+  ]
+    .filter(isProductId)
+    .slice(0, MAX_LOOKUPS)
 
-  let loc: LocationContext
-  try {
-    loc = await getUserLocationContext()
-  } catch (err) {
-    console.error("[item-images] location resolve failed", err)
-    return items
+  let loc: LocationContext | null = null
+  if (productIds.length > 0) {
+    try {
+      loc = await getUserLocationContext()
+    } catch (err) {
+      console.error("[item-images] location resolve failed", err)
+    }
   }
 
-  const resolved = new Map<string, string>()
   await Promise.all(
     productIds.map(async (productId) => {
+      if (!loc) return
+      // Ürün aramalarıyla aynı kullanıcı bütçesi (/api/products, ürün
+      // değiştirme): sayfa yenilemek limitsiz upstream sorgusu üretemesin.
+      // Bütçe bitince kalan kalemler sonraki açılışa kalır.
+      if (!(await productLimiter.limit(`user:${userId}`)).success) return
       try {
         const detail = await getProductById(productId, loc)
         // Ürün bulunamadıysa da NO_IMAGE yazılır: eşleşen ürün kataloğdan

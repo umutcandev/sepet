@@ -10,6 +10,7 @@ import { PanelHeader, SettingGroup, SettingRow } from "../settings-row"
 import { SessionsTable } from "../account/sessions-table"
 import { SecurityGroup } from "../account/security-group"
 import { PasskeysGroup } from "../account/passkeys-group"
+import { LinkedAccountsGroup } from "../account/linked-accounts-group"
 import { DeleteAccountDialog } from "../account/delete-account-dialog"
 
 // Hesap: tüm cihazlardan çıkış + hesap arşivleme, ardından aktif oturumlar tablosu.
@@ -58,6 +59,8 @@ export function AccountPanel() {
       <SecurityGroup />
 
       <PasskeysGroup />
+
+      <LinkedAccountsGroup />
 
       <SettingGroup title="Aktif oturumlar">
         <SessionsTable />

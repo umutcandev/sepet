@@ -17,6 +17,8 @@ type SubscriptionLike = {
   currentPeriodStart: Date | null
   currentPeriodEnd: Date | null
   cancelAtPeriodEnd: boolean
+  createdAt?: Date | null
+  modifiedAt?: Date | null
   customer?: { externalId?: string | null } | null
 }
 
@@ -34,6 +36,17 @@ const ACTIVE_STATUSES = new Set(["active", "trialing", "past_due"])
 // satırı güncelleyebilir; past_due bilinçli olarak dışarıda — o sadece mevcut
 // aboneliğin (aynı subId) geçici durumudur, yeni bir aboneliği temsil etmez.
 const FRESH_ACTIVE_STATUSES = new Set(["active", "trialing"])
+
+// Abonelik bitti; aynı abonelik bu durumlardan çıkamaz.
+const TERMINAL_STATUSES = new Set(["canceled", "incomplete_expired"])
+// Aktivasyon öncesi durumlar; aktifleşmiş bir abonelik bunlara dönmez.
+const PRE_ACTIVE_STATUSES = new Set(["incomplete"])
+
+function isStaleTransition(stored: string, incoming: string): boolean {
+  if (TERMINAL_STATUSES.has(stored)) return !TERMINAL_STATUSES.has(incoming)
+  if (ACTIVE_STATUSES.has(stored)) return PRE_ACTIVE_STATUSES.has(incoming)
+  return false
+}
 
 // Tek senkron noktası: gelen tüm subscription event'leri buraya akar ve users
 // satırını Polar'ın bildirdiği son duruma eşitler. `plan` tek doğruluk
@@ -55,7 +68,12 @@ async function syncSubscription(sub: SubscriptionLike): Promise<void> {
     : eq(users.polarCustomerId, sub.customerId)
 
   const [row] = await db
-    .select({ id: users.id, polarSubscriptionId: users.polarSubscriptionId })
+    .select({
+      id: users.id,
+      polarSubscriptionId: users.polarSubscriptionId,
+      subscriptionStatus: users.subscriptionStatus,
+      subscriptionModifiedAt: users.subscriptionModifiedAt,
+    })
     .from(users)
     .where(whereUser)
     .limit(1)
@@ -78,12 +96,70 @@ async function syncSubscription(sub: SubscriptionLike): Promise<void> {
   // yanlışlıkla free'ye düşürebilir. Kayıtta FARKLI bir abonelik dururken yalnızca
   // taze-aktif bir event (yeni aboneliğin devralması) güncelleyebilir; diğer her
   // şey (revoked/canceled/past_due...) eski aboneliğe ait sayılıp atlanır.
+  // Her event aboneliğin o anki tam görüntüsünü taşır ve `modifiedAt` ile
+  // sıralanabilir. Hiç değişmemiş bir abonelikte Polar modifiedAt'i null
+  // gönderebilir; o durumda görüntünün zamanı oluşturulma anıdır.
+  const incomingModifiedAt = sub.modifiedAt ?? sub.createdAt ?? null
+
   const isNewSubscription =
     Boolean(row.polarSubscriptionId) && row.polarSubscriptionId !== sub.id
   if (isNewSubscription && !FRESH_ACTIVE_STATUSES.has(sub.status)) {
     console.warn("[polar] eski aboneliğe ait gecikmeli event atlandı", {
       incomingSubscriptionId: sub.id,
       storedSubscriptionId: row.polarSubscriptionId,
+      status: sub.status,
+    })
+    return
+  }
+  // Farklı aboneliğin taze-aktif görüntüsü de kayıttakinden ESKİ olamaz: biten
+  // bir aboneliğin geç teslim edilen (yeniden denenen) "active" event'i yeni
+  // aboneliğin yerine geçerse, yeni aboneliğin iptal/past_due event'leri
+  // "eski aboneliğe ait" sayılıp atlanır ve plan ödemesiz Pro'da kalırdı.
+  if (
+    isNewSubscription &&
+    row.subscriptionModifiedAt &&
+    incomingModifiedAt &&
+    incomingModifiedAt.getTime() < row.subscriptionModifiedAt.getTime()
+  ) {
+    console.warn("[polar] başka aboneliğin eski görüntüsü atlandı", {
+      incomingSubscriptionId: sub.id,
+      storedSubscriptionId: row.polarSubscriptionId,
+      status: sub.status,
+    })
+    return
+  }
+
+  // AYNI aboneliğin gecikmeli event'i: kayıttakinden eski bir görüntü
+  // (yeniden denenen/geç teslim edilen) hiçbir alanı ezmez — durum kadar
+  // cancelAtPeriodEnd, dönem tarihleri gibi alanlar da geri gidebilirdi.
+  if (
+    row.polarSubscriptionId === sub.id &&
+    row.subscriptionModifiedAt &&
+    incomingModifiedAt &&
+    incomingModifiedAt.getTime() < row.subscriptionModifiedAt.getTime()
+  ) {
+    console.warn("[polar] aynı aboneliğin eski bir event'i atlandı", {
+      subscriptionId: sub.id,
+      status: sub.status,
+    })
+    return
+  }
+
+  // modifiedAt yoksa (ya da ilk kayıtsa) yaşam döngüsü kuralı yedek koruma:
+  // AYNI aboneliğin gecikmeli event'i de sırayı bozabilir: Polar iade/iptal
+  // sonrası yeniden denenen eski bir "active", "canceled"dan sonra gelirse
+  // satır Pro'ya döner ve abonelik artık event üretmediği için öyle kalırdı.
+  // Tersine, aktivasyon öncesi geç kalmış bir "incomplete" ödeyen kullanıcıyı
+  // düşürürdü. Abonelik yaşam döngüsü tek yönlü: terminal durumdan geri, aktif
+  // durumdan aktivasyon öncesine dönüş yok → bu geçişler atlanır.
+  if (
+    row.polarSubscriptionId === sub.id &&
+    row.subscriptionStatus &&
+    isStaleTransition(row.subscriptionStatus, sub.status)
+  ) {
+    console.warn("[polar] aynı aboneliğin gecikmeli event'i atlandı", {
+      subscriptionId: sub.id,
+      storedStatus: row.subscriptionStatus,
       status: sub.status,
     })
     return
@@ -100,6 +176,11 @@ async function syncSubscription(sub: SubscriptionLike): Promise<void> {
       subscriptionCurrentPeriodStart: sub.currentPeriodStart ?? null,
       subscriptionCurrentPeriodEnd: sub.currentPeriodEnd ?? null,
       subscriptionCancelAtPeriodEnd: sub.cancelAtPeriodEnd,
+      // Zamanı bilinmeyen bir görüntü kayıttaki zamanı silmesin: sonraki
+      // event'lerin sıralaması ona dayanıyor.
+      ...(incomingModifiedAt
+        ? { subscriptionModifiedAt: incomingModifiedAt }
+        : {}),
     })
     .where(eq(users.id, row.id))
 }

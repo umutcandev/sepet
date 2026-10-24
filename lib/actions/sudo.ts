@@ -1,10 +1,10 @@
 "use server"
 
-import { and, eq, sql } from "drizzle-orm"
+import { and, count, eq, sql } from "drizzle-orm"
 import type { PublicKeyCredentialRequestOptionsJSON } from "@simplewebauthn/server"
 
 import { auth } from "@/auth"
-import { db, users, emailVerification } from "@/lib/db"
+import { db, users, emailVerification, passkeys } from "@/lib/db"
 import { verifyPassword } from "@/lib/auth/password"
 import {
   normalizeEmail,
@@ -14,12 +14,18 @@ import {
   safeEqual,
 } from "@/lib/auth/codes"
 import { decryptSecret, verifyTotp, claimTotpStep } from "@/lib/auth/totp"
-import { createReauthOptions, verifyAssertion } from "@/lib/auth/webauthn"
-import { grantSudo } from "@/lib/auth/sudo"
+import {
+  createReauthOptions,
+  getRelyingParty,
+  verifyAssertion,
+} from "@/lib/auth/webauthn"
+import { grantSudo, hasSudo } from "@/lib/auth/sudo"
 import { sendMail } from "@/lib/email/mailer"
 import { reauthCodeEmail } from "@/lib/email/templates"
+import type { ReauthMethods } from "@/lib/actions/passkeys"
 import { getClientIp, checkLimit } from "@/lib/security/action-rate-limit"
 import {
+  codeGuessDailyLimiter,
   passwordChangeLimiter,
   emailSendLimiter,
   emailSendIpLimiter,
@@ -44,6 +50,43 @@ export type SudoInput =
   | { method: "password"; password: string }
   | { method: "totp"; code: string }
   | { method: "email"; code: string }
+
+// ─── Bu oturumun sudo durumu + kullanılabilir yeniden doğrulama yöntemleri ───
+// Geçiş anahtarı paneli dışındaki hassas işlemler (hesap silme) SudoDialog'u
+// açmadan önce bunu okur. Yöntem kümesi getPasskeyStateAction'dakiyle aynı.
+export async function getSudoStateAction(): Promise<{
+  sudo: boolean
+  methods: ReauthMethods
+} | null> {
+  const session = await auth()
+  if (!session?.user?.id) return null
+  const uid = session.user.id
+  const [[u], [keys], sudo] = await Promise.all([
+    db
+      .select({
+        email: users.email,
+        passwordHash: users.passwordHash,
+        totpEnabled: users.totpEnabled,
+      })
+      .from(users)
+      .where(eq(users.id, uid))
+      .limit(1),
+    db.select({ n: count() }).from(passkeys).where(eq(passkeys.userId, uid)),
+    hasSudo(uid, session.sid),
+  ])
+  if (!u) return null
+  return {
+    sudo,
+    methods: {
+      // WebAuthn yapılandırılmamış ortamda anahtar doğrulaması yapılamaz
+      // (getPasskeyStateAction ile aynı koşul).
+      passkey: getRelyingParty() !== null && (keys?.n ?? 0) > 0,
+      password: u.passwordHash != null,
+      totp: u.totpEnabled,
+      email: u.passwordHash == null && u.email != null,
+    },
+  }
+}
 
 // ─── Şifresiz hesap: e-postaya doğrulama kodu gönder ───
 export async function requestSudoEmailCodeAction(): Promise<ActionResult> {
@@ -132,8 +175,12 @@ export async function confirmSudoAction(
 
   // Şifre değiştirme ve 2FA kapatmayla AYNI kova (anahtar uid): çalınmış bir
   // oturum burada şifre/TOTP tahmini için ayrı bir hak kazanmaz.
-  const limit = await checkLimit(passwordChangeLimiter, uid)
-  if (!limit.ok) return limit
+  for (const check of [
+    await checkLimit(passwordChangeLimiter, uid),
+    await checkLimit(codeGuessDailyLimiter, `reauth:${uid}`),
+  ]) {
+    if (!check.ok) return check
+  }
 
   const [u] = await db
     .select({

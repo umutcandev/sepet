@@ -191,6 +191,8 @@ export function AssistantPrompt({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             aria-label="Asistana mesajın"
+            // Sunucu (api/assistant/chat MAX_INPUT_TEXT) bundan uzununu reddeder.
+            maxLength={4000}
             // Tek metin: sunucu HTML'i ilk kareden doğru metinle gelir, ekran
             // genişliğine göre değişip geç görünmez. 320px telefonda da tek
             // satıra sığacak uzunlukta tutulmalı.

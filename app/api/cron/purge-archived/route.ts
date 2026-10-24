@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto"
 import { NextResponse } from "next/server"
 import { and, eq, inArray, isNotNull, lt, or, sql } from "drizzle-orm"
 
@@ -170,7 +171,10 @@ export async function GET(req: Request) {
   if (!secret) {
     return NextResponse.json({ error: "not_configured" }, { status: 500 })
   }
-  if (req.headers.get("authorization") !== `Bearer ${secret}`) {
+  // Sabit zamanlı karşılaştırma: yanıt süresi sırrın önekini ele vermesin.
+  const given = Buffer.from(req.headers.get("authorization") ?? "")
+  const expected = Buffer.from(`Bearer ${secret}`)
+  if (given.length !== expected.length || !timingSafeEqual(given, expected)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 })
   }
 

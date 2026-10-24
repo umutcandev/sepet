@@ -41,6 +41,10 @@ import { UNIT_VALUES } from "@/lib/ai/schemas"
 import { stripQuantityTokens } from "@/lib/ai/normalize"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
+import {
+  MAX_APPROVAL_ITEMS,
+  MAX_ITEM_NAME,
+} from "@/lib/assistant/approval-limits"
 
 type EditableItem = {
   _id: string
@@ -267,6 +271,7 @@ export function BasketApprovalCard({
                                 })
                               }
                               aria-label="Ürün adı"
+                              maxLength={MAX_ITEM_NAME}
                               className="h-8 text-sm"
                             />
                           </ButtonGroup>
@@ -372,6 +377,8 @@ export function BasketApprovalCard({
             variant="outline"
             size="sm"
             onClick={addItem}
+            // Sunucunun kalem tavanı (bkz. lib/assistant/approval-limits.ts).
+            disabled={items.length >= MAX_APPROVAL_ITEMS}
           >
             <RiAddLine data-icon="inline-start" />
             Yeni kalem

@@ -12,7 +12,7 @@ import {
 import { Squircle } from "@/components/ui/squircle"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/sonner"
-import { MessageResponse } from "@/components/ai-elements/message"
+import { ModelResponse } from "@/components/ai-elements/message"
 import { CopiedIconSwap } from "@/components/blog/article-actions"
 import { useMounted } from "@/hooks/use-mounted"
 import { copyText } from "@/lib/copy"
@@ -152,7 +152,7 @@ export function ReasoningBlock({ text, streaming }: ReasoningBlockProps) {
       </button>
       {open && (
         <div className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground [&_code]:px-1 [&_code]:py-0 [&_code]:text-[0.95em] [&_code]:font-normal [&_li]:my-0.5 [&_li]:pl-1 [&_ol]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-1 [&_pre]:p-2 [&_pre]:text-xs [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-5">
-          <MessageResponse>{text}</MessageResponse>
+          <ModelResponse>{text}</ModelResponse>
         </div>
       )}
     </div>

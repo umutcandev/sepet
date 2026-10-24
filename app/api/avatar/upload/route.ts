@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
-import { uploadAvatarDirect, validateUpload } from "@/lib/storage/r2"
+import {
+  sniffImageType,
+  uploadAvatarDirect,
+  validateUpload,
+} from "@/lib/storage/r2"
 
 export const runtime = "nodejs"
 
@@ -36,12 +40,25 @@ export async function POST(req: Request) {
       { status: check.status },
     )
   }
+  // Bildirilen tür tek başına yetmez: dosyanın kendi imzası JPEG/PNG/WebP
+  // olmalı. Nesne imzadan çıkan türle yazılır.
+  const bytes = new Uint8Array(body)
+  const sniffedType = sniffImageType(bytes)
+  if (!sniffedType) {
+    return NextResponse.json(
+      {
+        error: "invalid_upload",
+        message: "Sadece JPEG / PNG / WebP fotoğraf kabul ediliyor.",
+      },
+      { status: 415 },
+    )
+  }
 
   try {
     const out = await uploadAvatarDirect({
       userId: session.user.id,
-      contentType,
-      body: new Uint8Array(body),
+      contentType: sniffedType,
+      body: bytes,
     })
     return NextResponse.json(out)
   } catch (err) {

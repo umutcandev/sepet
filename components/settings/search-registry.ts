@@ -114,6 +114,13 @@ const HESAP_SETTINGS: SettingEntry[] = [
     icon: RiFingerprintLine,
   },
   {
+    target: "bagli-hesaplar",
+    title: "Bağlı hesaplar",
+    keywords:
+      "bagli hesap google facebook sosyal giris baglan ekle hesap baglama",
+    icon: RiLinksLine,
+  },
+  {
     target: "oturumlar",
     title: "Aktif oturumlar",
     keywords: "oturum cihaz session aktif giris",

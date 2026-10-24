@@ -162,6 +162,26 @@ export function passwordSetEmail(): Email {
   }
 }
 
+// E-postası kanıtlanmamış hesaba (ör. Facebook ile açılmış) posta kutusundan
+// gelen bağlantıyla ilk şifre: hesap e-postanın sahibine devredildi, kanıtsız
+// dönemden kalan giriş yolları kaldırıldı (bkz. lib/actions/password.ts applyReset).
+export function passwordSetUnverifiedEmail(): Email {
+  const heading = "Hesabına şifre belirlendi"
+  const lead =
+    "Sepet hesabına az önce bu e-posta adresine gönderilen bağlantıyla bir şifre belirlendi. Hesap daha önce e-posta adresi doğrulanmadan açılmıştı."
+  const secured =
+    "Güvenliğin için tüm cihazlarda oturum kapatıldı; hesaba önceden bağlanmış sosyal giriş hesapları (ör. Facebook) ve geçiş anahtarları kaldırıldı. Bunlar sana aitse giriş yaptıktan sonra Ayarlar > Hesap bölümünden yeniden ekleyebilirsin."
+  const notYou =
+    "Bunu sen yapmadıysan hemen giriş ekranındaki şifre sıfırlama adımıyla yeni bir şifre belirle."
+  const body = p(lead) + p(secured) + p(notYou)
+  const text = textBlock([heading, "", lead, secured, notYou])
+  return {
+    subject: "Sepet hesabına şifre belirlendi",
+    html: layout({ heading, body, preview: "Hesabına bir şifre belirlendi." }),
+    text,
+  }
+}
+
 // ─── Şifresiz (sosyal giriş) hesapta 2FA kurulumu için yeniden doğrulama kodu ───
 export function totpSetupCodeEmail(args: { code: string }): Email {
   const heading = "İki adımlı doğrulama kurulum kodun"
@@ -250,6 +270,44 @@ export function passkeyRemovedEmail(args: { name: string }): Email {
   return {
     subject: "Sepet geçiş anahtarı silindi",
     html: layout({ heading, body, preview: "Hesabından bir geçiş anahtarı silindi." }),
+    text,
+  }
+}
+
+// ─── Bildirim: sosyal hesap bağlandı (Ayarlar > Bağlı hesaplar) ───
+export function accountLinkedEmail(args: { providerLabel: string }): Email {
+  const heading = `${args.providerLabel} hesabı bağlandı`
+  const body =
+    p(`Sepet hesabına bir ${esc(args.providerLabel)} hesabı bağlandı. Artık bu ${esc(args.providerLabel)} hesabıyla da giriş yapılabilir.`) +
+    p("Bunu sen yapmadıysan hemen Ayarlar > Hesap > Bağlı hesaplar bölümünden bağlantıyı kaldır, şifreni değiştir ve tüm cihazlardan çıkış yap.")
+  const text = textBlock([
+    heading,
+    "",
+    `Sepet hesabına bir ${args.providerLabel} hesabı bağlandı. Artık bu hesapla da giriş yapılabilir.`,
+    "Bunu sen yapmadıysan hemen Ayarlar > Hesap > Bağlı hesaplar bölümünden bağlantıyı kaldır, şifreni değiştir ve tüm cihazlardan çıkış yap.",
+  ])
+  return {
+    subject: `Sepet hesabına ${args.providerLabel} hesabı bağlandı`,
+    html: layout({ heading, body, preview: `Hesabına bir ${args.providerLabel} hesabı bağlandı.` }),
+    text,
+  }
+}
+
+// ─── Bildirim: sosyal hesap bağlantısı kaldırıldı ───
+export function accountUnlinkedEmail(args: { providerLabel: string }): Email {
+  const heading = `${args.providerLabel} bağlantısı kaldırıldı`
+  const body =
+    p(`Sepet hesabından ${esc(args.providerLabel)} bağlantısı kaldırıldı. Bu ${esc(args.providerLabel)} hesabıyla artık giriş yapılamaz; diğer cihazlardaki oturumların da kapatıldı.`) +
+    p("Bunu sen yapmadıysan hemen şifreni değiştir ve tüm cihazlardan çıkış yap.")
+  const text = textBlock([
+    heading,
+    "",
+    `Sepet hesabından ${args.providerLabel} bağlantısı kaldırıldı. Bu hesapla artık giriş yapılamaz; diğer cihazlardaki oturumların da kapatıldı.`,
+    "Bunu sen yapmadıysan hemen şifreni değiştir ve tüm cihazlardan çıkış yap.",
+  ])
+  return {
+    subject: `Sepet hesabından ${args.providerLabel} bağlantısı kaldırıldı`,
+    html: layout({ heading, body, preview: `Hesabından ${args.providerLabel} bağlantısı kaldırıldı.` }),
     text,
   }
 }

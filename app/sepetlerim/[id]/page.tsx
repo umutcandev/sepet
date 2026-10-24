@@ -50,7 +50,11 @@ export default async function BasketDetailPage({
   const { basket, conversation } = detail
   // Görseli olmayan kalemler eşleşen üründen tamamlanır — `matchedImageUrl`
   // sütunu sonradan eklendiğinden eski kayıtların tamamı boşta kalmıştı.
-  const items = await withResolvedItemImages(detail.items, "basket")
+  const items = await withResolvedItemImages(
+    detail.items,
+    "basket",
+    session.user.id,
+  )
   // Görsel alanından önce kaydedilmiş özetlerin dökümü, kalemlerin eşleşen
   // ürün görselleriyle tamamlanır (bkz. ProductImageFallback).
   const itemImages = Object.fromEntries(

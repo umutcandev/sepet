@@ -64,7 +64,7 @@ export type ProductImageFallback = Record<string, string>
  */
 export type EditAllocation = (entry: MarketAllocation) => void
 
-function AllocationThumb({ url }: { url: string | null }) {
+export function AllocationThumb({ url }: { url: string | null }) {
   // Market CDN'i görsele 404 dönebiliyor (bkz. record-item-list Thumb); kırık
   // resim ikonu yerine kutu yer-tutucuya düşer.
   const [failed, setFailed] = useState(false)
@@ -216,7 +216,7 @@ function AllocationBreakdown({
  * Kart içi küçük rozet ("Farklı boyut", indirim yüzdesi): 16px yükseklik, 10px
  * yazı. Varsayılan rozet (20px) satırda üçüncü bir satır kadar yer tutuyordu.
  */
-const COMPACT_BADGE =
+export const COMPACT_BADGE =
   "h-4 gap-0.5 rounded-[5px] px-1 text-[0.625rem] leading-none has-data-[icon=inline-start]:pl-0.5 [&>svg]:size-2.5!"
 
 /**
@@ -247,7 +247,7 @@ const PEEK_DELAY_MS = 700
 /** İpucunda dökümün aralandığı yükseklik: ilk satırın yaklaşık yarısı. */
 const PEEK_HEIGHT = 44
 
-const EXPAND: Transition = { duration: 0.32, ease: EASE_OUT_EXPO }
+export const EXPAND: Transition = { duration: 0.32, ease: EASE_OUT_EXPO }
 const PEEK: Transition = {
   duration: 1.6,
   times: [0, 0.3, 0.65, 1],

@@ -1,5 +1,8 @@
 import * as React from "react"
 
+import { Skeleton } from "@/components/ui/skeleton"
+import { cn } from "@/lib/utils"
+
 // Panel başlığı: bölümün adı + kısa açıklama. `target`, arama kaydının
 // data-search-target'ı ile eşleşir.
 export function PanelHeader({
@@ -79,4 +82,25 @@ export function SettingRow({
       <div className="shrink-0">{children}</div>
     </div>
   )
+}
+
+// Veri yüklenirken satırın değişecek parçalarının yerini tutan iskeletler.
+// Ölçüleri son hâlle aynı (açıklama satırı text-xs → 16px satır, rozet h-5,
+// küçük buton h-7): veri gelince satırlar yer değiştirmez, kaymaz.
+export function SettingDescriptionSkeleton({
+  className,
+}: {
+  className?: string
+}) {
+  return (
+    <Skeleton className={cn("inline-block h-3 w-44 align-middle", className)} />
+  )
+}
+
+export function SettingBadgeSkeleton() {
+  return <Skeleton className="h-5 w-12 rounded-md" />
+}
+
+export function SettingActionSkeleton({ className }: { className?: string }) {
+  return <Skeleton className={cn("h-7 w-20", className)} />
 }
