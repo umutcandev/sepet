@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils"
 // MDX içinde kaydırılabilir görsel bloğu. Yazı kaynağında yalnız etiket var:
 //
 //   <Slider label="Motif örnekleri">
-//     <Slide src="/blog/media/x.svg" alt="…">Alt yazı</Slide>
+//     <Slide src="https://cdn.trysepet.com/blog/<klasör>/x.svg" alt="…">Alt yazı</Slide>
 //   </Slider>
 //
 // Her slayt kendi alt yazısını taşır; denetimler (önceki/sonraki, sıra) bloğun

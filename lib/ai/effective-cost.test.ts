@@ -6,6 +6,7 @@ import {
   effectiveLineCost,
   hasBaseMismatch,
   hasSizeMismatch,
+  packageSizeOf,
   sizeFit,
 } from "./effective-cost"
 import type { MarketPrice } from "@/lib/marketfiyati/types"
@@ -34,6 +35,27 @@ describe("effectiveLineCost", () => {
 
   test("toplam 2 ondalığa yuvarlanır", () => {
     assert.equal(effectiveLineCost(price({ price: 10.005 })).total, 10.01)
+  })
+})
+
+describe("packageSizeOf", () => {
+  test("fiş satırının adındaki paket boyutunu okur", () => {
+    assert.deepEqual(packageSizeOf("UNO EKMEK 500 G"), { quantity: 0.5, unit: "kg" })
+    assert.deepEqual(packageSizeOf("ULUDAG GAZOZ 1LT"), { quantity: 1, unit: "l" })
+    assert.deepEqual(packageSizeOf("PEPSI 2.5 LT"), { quantity: 2.5, unit: "l" })
+  })
+
+  test("boyut yoksa ya da çoklu paketse null", () => {
+    assert.equal(packageSizeOf("KÖY YUMURTASI 10'LU"), null)
+    assert.equal(packageSizeOf("KIZILAY MADEN SUYU 6X200 ML"), null)
+  })
+
+  test("fişteki 500 G, aynı boyuttaki adayla Farklı Boyut sayılmaz", () => {
+    // Eski "1 g" okuması (quantity=1, unit=g) her 500 g'lık adayı işaretliyordu.
+    const req = packageSizeOf("PINAR BEYAZ PEYNIR 500G")!
+    const fit = sizeFit(req.quantity, req.unit, { name: "Pınar Beyaz Peynir 500 Gr", markets: [price()] }, false)
+    assert.equal(fit.mismatch, false)
+    assert.equal(sizeFit(1, "g", { name: "Pınar Beyaz Peynir 500 Gr", markets: [price()] }, false).mismatch, true)
   })
 })
 

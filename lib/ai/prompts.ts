@@ -306,10 +306,12 @@ KARAR KURALI: Şüphedeysen unknown'a düş — yanlış yemek/fiş tahmin etmek
 
 HER ÜRÜN İÇİN:
 - rawName: Fişte yazdığı haliyle (büyük harf normalmiş — olduğu gibi bırak ya da Title Case'e çevir, ör. "ETI CIN 270G").
-- quantity: Adet/miktar. SADECE açıkça adet belirten ifade varsa o sayı ("2 X", "2 ADET", "x3"). Aksi halde 1.
+- quantity: Satırda kaç paket/adet alındığı. SADECE açıkça adet belirten ifade varsa o sayı ("2 X", "2 ADET", "x3"). Aksi halde 1.
+  · Ürün adındaki ambalaj boyutu ("500G", "1LT", "270G") ADET DEĞİLDİR: quantity'ye ya da unit'e yazma, rawName'de kalır.
+  · İstisna, TARTILI ürün: satırda tartı miktarı varsa ("DOMATES 1,250 KG x 39,90") quantity o miktardır, unit "kg".
   · DİKKAT — KDV oranını ADET SANMA: Fiş satırlarında ürünün yanında "%1", "%8", "%10", "%18", "%20" gibi yüzdeler veya KDV harf kodu (A / B / C / D) bulunur. Bunlar KDV oranıdır, ADET DEĞİLDİR. Yüzde işaretli ya da tek harflik kodları asla quantity'ye yazma.
   · TUTARLILIK KONTROLÜ: "unitPrice × quantity ≈ totalPrice" olmalı. Tutmuyorsa adedi yanlış okudun demektir — quantity=1 al ve unitPrice = totalPrice yap.
-- unit: "adet" | "kg" | "g" | "l" | "ml" | "paket". Belirsizse "adet".
+- unit: Paketli üründe HER ZAMAN "adet". Yalnız tartılı üründe "kg".
 - unitPrice: Birim fiyat TL (sayı). Yoksa null.
 - totalPrice: Bu kalemin toplam tutarı TL. Yoksa null.
 - searchQuery: Türkiye market arama API'sine gönderilecek normalize Türkçe sorgu. KURALLAR:
@@ -320,13 +322,14 @@ HER ÜRÜN İÇİN:
   · 2-3 kelime ideal.
 
 ÖRNEKLER:
-- "ETI CIN 270G" → rawName="ETI CIN 270G", quantity=1, unit="paket", searchQuery="eti cin"
+- "ETI CIN 270G" → rawName="ETI CIN 270G", quantity=1, unit="adet", searchQuery="eti cin"
 - "EKMEK 250G x2" → rawName="EKMEK 250G", quantity=2, unit="adet", searchQuery="ekmek"
-- "ULUDAG GAZOZ 1LT" → rawName="ULUDAG GAZOZ 1LT", quantity=1, unit="l", searchQuery="uludağ gazoz"
-- "ICIM SUT 1LT 2X" → rawName="ICIM SUT 1LT", quantity=2, unit="l", searchQuery="içim süt"
-- "BEYAZ PEYNIR 500G" → rawName="BEYAZ PEYNIR 500G", quantity=500, unit="g", searchQuery="beyaz peynir"
-- "PEPSI 2.5 LT  %10  81,00" → rawName="PEPSI 2.5 LT", quantity=1, unit="l", unitPrice=81.00, totalPrice=81.00, searchQuery="pepsi" (%10 KDV oranıdır, adet değil)
-- "COCA COLA 1L  C  18,50" → rawName="COCA COLA 1L", quantity=1, unit="l", unitPrice=18.50, totalPrice=18.50, searchQuery="coca cola" (C harfi KDV kodudur, adet değil)
+- "ULUDAG GAZOZ 1LT" → rawName="ULUDAG GAZOZ 1LT", quantity=1, unit="adet", searchQuery="uludağ gazoz"
+- "ICIM SUT 1LT 2X" → rawName="ICIM SUT 1LT", quantity=2, unit="adet", searchQuery="içim süt"
+- "BEYAZ PEYNIR 500G" → rawName="BEYAZ PEYNIR 500G", quantity=1, unit="adet", searchQuery="beyaz peynir" (500G ambalaj boyutudur, adet değil)
+- "PEPSI 2.5 LT  %10  81,00" → rawName="PEPSI 2.5 LT", quantity=1, unit="adet", unitPrice=81.00, totalPrice=81.00, searchQuery="pepsi" (%10 KDV oranıdır, adet değil)
+- "COCA COLA 1L  C  18,50" → rawName="COCA COLA 1L", quantity=1, unit="adet", unitPrice=18.50, totalPrice=18.50, searchQuery="coca cola" (C harfi KDV kodudur, adet değil)
+- "DOMATES 1,250 KG x 39,90  49,88" → rawName="DOMATES", quantity=1.25, unit="kg", unitPrice=39.90, totalPrice=49.88, searchQuery="domates" (tartılı ürün)
 
 EMİN OL: Sadece ürün olduğu net olan satırları çıkar. Şüphede atla.
 

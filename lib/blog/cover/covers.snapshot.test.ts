@@ -34,7 +34,8 @@ const SNAPSHOT = fileURLToPath(
 type Fingerprint = { cover: string; og: string }
 
 function frontmatter(source: string, key: string): string | undefined {
-  const head = /^---\n([\s\S]*?)\n---/.exec(source)?.[1] ?? ""
+  // Windows'ta autocrlf dosyaları CRLF açıyor.
+  const head = /^---\r?\n([\s\S]*?)\r?\n---/.exec(source)?.[1] ?? ""
   return new RegExp(`^${key}:\\s*(.+?)\\s*$`, "m").exec(head)?.[1]
 }
 

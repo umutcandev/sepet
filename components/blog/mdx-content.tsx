@@ -7,6 +7,7 @@ import { RiFileCopyLine } from "@remixicon/react"
 
 import { CopiedIconSwap, copyText } from "@/components/blog/article-actions"
 import { Slide, Slider } from "@/components/blog/mdx-slider"
+import { XPost } from "@/components/blog/mdx-x-post"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -330,6 +331,7 @@ const components = {
   Slider,
   Slide,
   Callout,
+  XPost,
 } as unknown as MdxComponents
 
 export function MdxContent({ code }: { code: string }) {

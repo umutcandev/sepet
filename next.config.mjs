@@ -81,7 +81,7 @@ const nextConfig = {
       // bir yanıt da 1 yıllık `immutable` alıyordu.
       ...[
         "/:dir(brand|github|market-logos|onboarding|static)/:path*",
-        "/blog/:dir(media|authors)/:path*",
+        "/blog/authors/:path*",
       ].map((source) => ({
         source,
         headers: [

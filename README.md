@@ -10,6 +10,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?logo=shadcnui&logoColor=white)](https://ui.shadcn.com)
 [![Vercel AI SDK](https://img.shields.io/badge/Vercel_AI_SDK-6-000000?logo=vercel&logoColor=white)](https://sdk.vercel.ai)
+[![Claude](https://img.shields.io/badge/Claude_Haiku_5.5-D97757?logo=claude&logoColor=white)](https://www.anthropic.com/claude)
 [![Google Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev)
 [![NextAuth.js](https://img.shields.io/badge/Auth.js-5-000000?logo=auth0&logoColor=white)](https://authjs.dev)
 [![Drizzle ORM](https://img.shields.io/badge/Drizzle_ORM-0.45-C5F74F?logo=drizzle&logoColor=black)](https://orm.drizzle.team)
@@ -36,9 +37,19 @@ Yüklenen fişler, aynı sepetin bugünkü en iyi fiyatıyla karşılaştırıla
 
 ## Teknoloji Yığını
 
-Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS 4 ve shadcn/ui üzerine kuruludur.
-
-Yapay zekâ katmanı Vercel AI SDK ile Google Gemini 2.5 Flash Lite modelini kullanır. Veri tarafında Neon Postgres (Drizzle ORM), Upstash Redis ve Cloudflare R2 bulunur. Kimlik doğrulama NextAuth.js v5, abonelik Polar, dağıtım Vercel üzerindedir. Market fiyatları marketfiyati.org.tr üzerinden alınır.
+| Alan | Kullanılan |
+|---|---|
+| Uygulama | Next.js 16 (App Router, Turbopack), React 19, TypeScript |
+| Arayüz | Tailwind CSS 4, shadcn/ui |
+| Yapay zekâ | Vercel AI SDK 6, Claude Haiku 5.5 (yedek: Gemini 2.5 Flash) |
+| Sesli giriş | Gemini 2.5 Flash Lite |
+| Veritabanı | Neon Postgres, Drizzle ORM |
+| Önbellek | Upstash Redis |
+| Görsel depolama | Cloudflare R2 |
+| Kimlik doğrulama | NextAuth.js v5 |
+| Abonelik | Polar |
+| Fiyat verileri | marketfiyati.org.tr |
+| Dağıtım | Vercel |
 
 ---
 

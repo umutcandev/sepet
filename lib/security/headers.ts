@@ -14,7 +14,8 @@ const CSP = [
   "font-src 'self' data:",
   // nominatim.openstreetmap.org: pin oturunca reverse geocode (ücretsiz, anahtarsız).
   "connect-src 'self' https://accounts.google.com https://*.upstash.io https://nominatim.openstreetmap.org",
-  "frame-src https://accounts.google.com",
+  // platform.twitter.com: blogdaki X gönderisi iframe'i (components/blog/mdx-x-post.tsx).
+  "frame-src https://accounts.google.com https://platform.twitter.com",
   "frame-ancestors 'none'",
   // Sosyal giriş butonları gerçek form POST'u (JS kapalıyken de çalışır) ve
   // cross-origin redirect ile biter; form-action redirect zinciri boyunca

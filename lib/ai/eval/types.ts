@@ -193,6 +193,6 @@ export type EvalReport = {
   batchSize: number
   cases: AggregatedCase[]
   summary: { all: SplitSummary; train: SplitSummary; holdout: SplitSummary }
-  tokens: { input: number; output: number } | null
+  tokens: { input: number; output: number; ms?: number; calls?: number } | null
   baseline: BaselineDiff | null
 }

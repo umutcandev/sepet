@@ -195,14 +195,14 @@ function shareTooManyResponse(reset: number) {
 }
 
 // Görsel uzantısı istisnası YALNIZ public/ altındaki statik klasörler için
-// (/blog altında dinamik rotalar da var: yalnız blog/media ve blog/authors
-// statik; kapak.svg kendi sıkı CSP'sini yazan bir rota).
+// (/blog altında dinamik rotalar da var: yalnız blog/authors statik; kapak.svg
+// kendi sıkı CSP'sini yazan bir rota).
 // Eskiden her yolu kapsıyordu: `/api/products/x.png` gibi dinamik bir rota
 // proxy'ye hiç uğramadan çalışıyor, hız limitini ve güvenlik başlıklarını
 // atlıyordu. public/'e yeni bir klasör eklenirse buraya da eklenmeli
 // (eklenmezse yalnızca proxy'den geçer; güvenli taraf).
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|(?:brand|github|market-logos|onboarding|static|blog/media|blog/authors)/.*\\.(?:svg|png|jpg|jpeg|webp|ico|gif)$|blog/[^/]+/kapak\\.svg$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|(?:brand|github|market-logos|onboarding|static|blog/authors)/.*\\.(?:svg|png|jpg|jpeg|webp|ico|gif)$|blog/[^/]+/kapak\\.svg$).*)",
   ],
 }

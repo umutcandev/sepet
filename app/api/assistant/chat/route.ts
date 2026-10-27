@@ -26,6 +26,7 @@ import {
   lookupProducts,
   suggestQueries,
 } from "@/lib/ai/tools"
+import { packageSizeOf } from "@/lib/ai/effective-cost"
 import {
   textStart,
   textDelta,
@@ -73,7 +74,9 @@ import { reserveQuota, refundQuota } from "@/lib/usage/usage"
 import type { MeteredMetric } from "@/lib/usage/limits"
 
 export const runtime = "nodejs"
-export const maxDuration = 60
+// Haiku eşleştirme parçası ~35 sn; uzun listede arama ve Flash yedeğiyle 60 sn
+// yetmeyebiliyor. Hobby + Fluid compute tavanı 300 sn.
+export const maxDuration = 120
 
 const FALLBACK_TEXT =
   "Ne almak ya da pişirmek istediğini söylersen hemen bakarım. Örneğin: 2 ekmek, 1 lt süt, 500 g beyaz peynir."
@@ -917,8 +920,9 @@ async function runAssistantTurn({
     const parsedItems: ParsedItem[] = p.items.map((it) => ({
       name: it.rawName,
       searchQuery: it.searchQuery,
-      quantity: it.quantity,
-      unit: it.unit,
+      // Fişte quantity adettir (karşılaştırma onu kullanır); eşleştirme aynı
+      // boyuttaki ürünü seçsin diye boyut satırın adından okunur.
+      ...(packageSizeOf(it.rawName) ?? { quantity: it.quantity, unit: it.unit }),
     }))
 
     const lookupCallId = nanoid()

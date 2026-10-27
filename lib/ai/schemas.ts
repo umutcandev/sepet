@@ -247,11 +247,11 @@ export const ReceiptOCRItemSchema = z.object({
     .describe("Fişte yazdığı haliyle ürün adı, ör. 'EKMEK 250G' veya 'BEYAZ PEYNIR 500G'."),
   quantity: z
     .number()
-    .describe("Adet/miktar. Fişte yazmıyorsa 1.")
+    .describe("Kaç paket/adet alındığı; ambalaj boyutu (500G, 1LT) değil. Tartılı üründe kg miktarı. Yazmıyorsa 1.")
     .default(1),
   unit: z
     .enum(UNIT_VALUES)
-    .describe("Birim. Belirsizse 'adet'.")
+    .describe("Paketli üründe 'adet', tartılı üründe 'kg'.")
     .default("adet"),
   unitPrice: z
     .number()
