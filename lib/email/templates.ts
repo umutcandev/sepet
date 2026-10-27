@@ -11,7 +11,7 @@ const BORDER = "rgba(109,69,48,0.12)"
 const INK = "#3f342a"
 const HEADING = "#241a12"
 const FONT =
-  "'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+  "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
 
 function esc(value: string): string {
   return value

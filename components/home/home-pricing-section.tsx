@@ -83,10 +83,10 @@ const COL_DIVIDER = "border-l border-border"
 // satırda kalırlar (Button base'indeki `whitespace-nowrap`) — bu yüzden içlerine
 // fiyat KOYULMAZ, o başlıktaki plan hücresinde durur.
 const ACTION_BUTTON = "w-full gap-1 px-1.5 text-xs sm:px-2.5 sm:text-[0.8rem]"
-// Pro başlığındaki fiyat — değer hücreleriyle aynı mono ritim. Rozete yapışık
+// Pro başlığındaki fiyat — değer hücreleriyle aynı rakam ritmi. Rozete yapışık
 // durur ki ad + fiyat tek bir blok gibi okunsun.
 const HEADER_PRICE =
-  "relative mt-0.5 block font-mono text-xs tabular-nums text-foreground"
+  "relative mt-0.5 block text-xs tabular-nums text-foreground"
 
 export function HomePricingSection() {
   const [interval, setInterval] = React.useState<Interval>("month")
@@ -334,7 +334,7 @@ function ValueCell({ value }: { value: Cell }) {
           <span className="sr-only">Sınırsız</span>
         </>
       ) : (
-        <span className="font-mono text-muted-foreground tabular-nums">
+        <span className="text-muted-foreground tabular-nums">
           {value}
         </span>
       )}

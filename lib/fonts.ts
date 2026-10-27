@@ -1,13 +1,12 @@
 import localFont from "next/font/local"
 
-// Geist ve Geist Mono self-host edilir (bkz. fonts/README.md). Daha önce
+// Inter ve Geist Mono self-host edilir (bkz. fonts/README.md). Daha önce
 // `next/font/google` + `subsets: ["latin"]` kullanılıyordu; Google'ın `latin`
 // unicode-range'i `ğ Ğ ş Ş İ` içermez (onlar `latin-ext`), yani Türkçe bir
-// sitede tam da Türkçe harfler sistem fontundan çiziliyordu. Repodaki dosyalar
-// alt kümelenmemiş tam karakter setidir, o yüzden burada subset kavramı yok.
+// sitede tam da Türkçe harfler sistem fontundan çiziliyordu.
 
 // next/font üretilen @font-face'in aile adını DEĞİŞKEN ADINDAN türetir, yani
-// hesaplanmış `font-family` burada `geistSans` / `geistMono` olarak görünür.
+// hesaplanmış `font-family` burada `interSans` / `geistMono` olarak görünür.
 // Adları bu yüzden fonta göre seçildi; devtools'ta ne olduğu okunabilsin.
 
 // Değişken (variable) yüzler: site 400–700 arasını birlikte kullanıyor, tek
@@ -15,8 +14,8 @@ import localFont from "next/font/local"
 // ürettiği `--font-*` değerine yazılır; metrik-uyumlu ara yüz (size-adjust'lı
 // Arial türevi) next/font tarafından bunun önüne eklenir → font yüklenene dek
 // layout kayması (CLS) sınırlı kalır.
-export const geistSans = localFont({
-  src: "../fonts/Geist-Variable.woff2",
+export const interSans = localFont({
+  src: "../fonts/Inter-Variable.woff2",
   weight: "100 900",
   style: "normal",
   variable: "--font-sans",
@@ -34,9 +33,9 @@ export const geistSans = localFont({
 })
 
 // Vitrin (display) yüzü: yalnızca ana sayfanın iki büyük cümlesinde kullanılır
-// (hero başlığı ve kapanış çağrısı). Gövde/arayüz metni Geist'te kalır —
+// (hero başlığı ve kapanış çağrısı). Gövde/arayüz metni Inter'de kalır —
 // `--font-heading` DEĞİŞTİRİLMEDİ, ona bağlı `cn-font-heading` bir düzine
-// kart/dialog başlığında duruyor ve onların Geist kalması gerekiyor.
+// kart/dialog başlığında duruyor ve onların Inter kalması gerekiyor.
 //
 // Şimdilik yalnız 400 kayıtlı. 600 dosyası `fonts/` içinde duruyor ama BİLİNÇLİ
 // olarak buraya eklenmedi: next/font bir ailedeki tüm dosyaları preload eder,

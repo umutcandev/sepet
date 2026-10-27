@@ -3,6 +3,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { ArticleActions } from "@/components/blog/article-actions"
+import { ArticleHeaderBar } from "@/components/blog/article-header-bar"
 import { ArticleToc } from "@/components/blog/article-toc"
 import { JsonLd } from "@/components/blog/json-ld"
 import { MdxContent } from "@/components/blog/mdx-content"
@@ -24,8 +25,10 @@ import { getAuthor } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
 import { formatPostDate } from "@/lib/blog/format"
 import { blogPostingLd, breadcrumbLd } from "@/lib/blog/jsonld"
+import { POST_ARTICLE, POST_CONTAINER, POST_GRID } from "@/lib/blog/layout"
 import { postToMarkdown } from "@/lib/blog/markdown"
 import { absoluteUrl } from "@/lib/site"
+import { cn } from "@/lib/utils"
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }))
@@ -80,99 +83,108 @@ export default async function BlogPostPage({
   const markdown = postToMarkdown(post)
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-6 md:py-10">
-      <JsonLd
-        data={[
-          blogPostingLd(post),
-          breadcrumbLd([
-            { name: "Ana sayfa", url: "/" },
-            { name: "Blog", url: "/blog" },
-            { name: category.label, url: `/blog?kategori=${category.slug}` },
-            { name: post.title, url: post.permalink },
-          ]),
-        ]}
+    <>
+      {/* Kabın dışında: alt fade'i <main>'in tam genişliğinde sticky. */}
+      <ArticleHeaderBar
+        title={post.title}
+        category={category.label}
+        date={formatPostDate(post.publishedAt)}
+        dateTime={post.publishedAt}
       />
+      <div className={cn(POST_CONTAINER, "py-6 md:py-10")}>
+        <JsonLd
+          data={[
+            blogPostingLd(post),
+            breadcrumbLd([
+              { name: "Ana sayfa", url: "/" },
+              { name: "Blog", url: "/blog" },
+              { name: category.label, url: `/blog?kategori=${category.slug}` },
+              { name: post.title, url: post.permalink },
+            ]),
+          ]}
+        />
 
-      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-12 xl:gap-16">
-        <article className="min-w-0 max-w-2xl">
-          {/* Üst satır: solda Blog › kategori, sağda tarih; ikisi de büyük harf.
+        <div className={POST_GRID}>
+          <article className={POST_ARTICLE}>
+            {/* Üst satır: solda Blog › kategori, sağda tarih; ikisi de büyük harf.
               Yazının adı zaten hemen altındaki başlıkta. */}
-          <div className="mb-6 flex items-center justify-between gap-4 text-xs font-medium tracking-wider uppercase">
-            <Breadcrumb>
-              <BreadcrumbList className="flex-nowrap text-xs">
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link href="/blog">Blog</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink
-                    asChild
-                    className="text-primary hover:text-primary/80"
-                  >
-                    <Link href={`/blog?kategori=${category.slug}`}>
-                      {category.label}
-                    </Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-            <time
-              dateTime={post.publishedAt}
-              className="shrink-0 text-muted-foreground"
-            >
-              {formatPostDate(post.publishedAt)}
-            </time>
-          </div>
+            <div className="mb-6 flex items-center justify-between gap-4 text-xs font-medium tracking-wider uppercase">
+              <Breadcrumb>
+                <BreadcrumbList className="flex-nowrap text-xs">
+                  <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                      <Link href="/blog">Blog</Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink
+                      asChild
+                      className="text-primary hover:text-primary/80"
+                    >
+                      <Link href={`/blog?kategori=${category.slug}`}>
+                        {category.label}
+                      </Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+              <time
+                dateTime={post.publishedAt}
+                className="shrink-0 text-muted-foreground"
+              >
+                {formatPostDate(post.publishedAt)}
+              </time>
+            </div>
 
-          {/* Mobilde Kopyala ve Paylaş yazar satırının sağında; masaüstünde
+            {/* Mobilde Kopyala ve Paylaş yazar satırının sağında; masaüstünde
               kenar çubuğu kullanıldığı için gizli (lg:hidden bileşen içinde). */}
-          <PostHeader
-            post={post}
-            actions={
-              <MobileArticleActions
+            <PostHeader
+              post={post}
+              actions={
+                <MobileArticleActions
+                  markdown={markdown}
+                  markdownUrl={markdownUrl}
+                  pageUrl={pageUrl}
+                  title={post.title}
+                />
+              }
+            />
+
+            <Separator className="my-8" />
+
+            {/* Kapak içeriğin başında, ayraçtan hemen sonra. Sayfanın en büyük
+              görseli olduğu için hemen yüklenir. */}
+            <PostCover post={post} priority className="mb-8" />
+
+            {/* Mobilde içindekiler metnin başında bir blok; masaüstünde kenar
+              çubuğunda (lg:hidden bileşen içinde). */}
+            <ArticleToc toc={post.toc} className="mb-8" />
+
+            <div data-post-body className="prose max-w-none">
+              <MdxContent code={post.content} />
+            </div>
+
+            {related.length > 0 ? (
+              <div className="mt-16">
+                <RelatedPosts posts={related} />
+              </div>
+            ) : null}
+          </article>
+
+          <aside className="hidden lg:block">
+            <div className="sticky top-6 flex flex-col gap-6">
+              <TableOfContents toc={post.toc} />
+              <ArticleActions
                 markdown={markdown}
                 markdownUrl={markdownUrl}
                 pageUrl={pageUrl}
                 title={post.title}
               />
-            }
-          />
-
-          <Separator className="my-8" />
-
-          {/* Kapak içeriğin başında, ayraçtan hemen sonra. Sayfanın en büyük
-              görseli olduğu için hemen yüklenir. */}
-          <PostCover post={post} priority className="mb-8" />
-
-          {/* Mobilde içindekiler metnin başında bir blok; masaüstünde kenar
-              çubuğunda (lg:hidden bileşen içinde). */}
-          <ArticleToc toc={post.toc} className="mb-8" />
-
-          <div className="prose max-w-none">
-            <MdxContent code={post.content} />
-          </div>
-
-          {related.length > 0 ? (
-            <div className="mt-16">
-              <RelatedPosts posts={related} />
             </div>
-          ) : null}
-        </article>
-
-        <aside className="hidden lg:block">
-          <div className="sticky top-6 flex flex-col gap-6">
-            <TableOfContents toc={post.toc} />
-            <ArticleActions
-              markdown={markdown}
-              markdownUrl={markdownUrl}
-              pageUrl={pageUrl}
-              title={post.title}
-            />
-          </div>
-        </aside>
+          </aside>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

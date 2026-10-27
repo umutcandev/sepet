@@ -94,7 +94,7 @@ export function MarketSplitDonut({ data, totalLabel, emptyHint }: Props) {
                           {market}
                         </span>
                       </div>
-                      <span className="shrink-0 font-mono font-medium tabular-nums">
+                      <span className="shrink-0 font-medium tabular-nums">
                         {formatTL(Number(value))}{" "}
                         <span className="text-muted-foreground">
                           · %{Math.round(pct)}

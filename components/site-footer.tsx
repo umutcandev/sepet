@@ -167,6 +167,9 @@ export function SiteFooter({ className }: { className?: string }) {
               <FooterListLink href="mailto:support@trysepet.com" external>
                 Destek
               </FooterListLink>
+              <FooterListLink href={`${GITHUB_URL}/discussions`} external>
+                Tartışma
+              </FooterListLink>
             </FooterColumn>
           </div>
         </div>

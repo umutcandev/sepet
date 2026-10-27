@@ -313,7 +313,7 @@ function SetupTwoFactor({
             }}
           >
             Elle giriş anahtarı:{" "}
-            <span className="font-mono tracking-wider">{setup.secretB32}</span>
+            <span className="tracking-wider">{setup.secretB32}</span>
           </Button>
         ) : null}
       </div>
@@ -486,7 +486,7 @@ function RecoveryCodes({
         {codes.map((c) => (
           <span
             key={c}
-            className="rounded-md bg-muted px-3 py-2 text-center font-mono text-sm tracking-wider"
+            className="rounded-md bg-muted px-3 py-2 text-center text-sm tracking-wider"
           >
             {c}
           </span>

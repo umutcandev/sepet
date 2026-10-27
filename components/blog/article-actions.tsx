@@ -105,7 +105,7 @@ function SocialShare({ url, title }: { url: string; title: string }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-xs font-medium tracking-wide text-muted-foreground">
+      <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
         Paylaş
       </p>
       {/* Görünen kutular 28px kalıyor; dokunma hedefi pseudo-element ile 40px'e

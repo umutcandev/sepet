@@ -491,7 +491,7 @@ function ProductCard({
         )}
         <Badge
           variant="default"
-          className="h-5 px-2 font-mono text-[0.6875rem] font-normal tabular-nums"
+          className="h-5 px-2 text-[0.6875rem] font-normal tabular-nums"
         >
           {formatTLOrDash(hit.averagePrice)}
         </Badge>

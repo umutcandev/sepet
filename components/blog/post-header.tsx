@@ -19,7 +19,9 @@ export function PostHeader({
     <header className="flex flex-col gap-5">
       {/* Ana sayfa başlıklarıyla aynı vitrin yüzü (Cooper). Ailede yalnız 400
           kayıtlı (font-normal); sıkılık cn-font-display'in kendisinden gelir. */}
-      <h1 className="cn-font-display text-3xl font-normal text-balance text-foreground md:text-4xl">
+      <h1
+        data-post-title
+        className="cn-font-display text-3xl font-normal text-balance text-foreground md:text-4xl">
         {post.title}
       </h1>
 

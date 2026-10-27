@@ -25,7 +25,7 @@ export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }))
 }
 
-type FontData = { name: "Geist"; data: ArrayBuffer; weight: 400 | 600; style: "normal" }
+type FontData = { name: "Inter"; data: ArrayBuffer; weight: 400 | 600; style: "normal" }
 
 // Satori woff2 çözemez (yalnız ttf/otf/woff), o yüzden burada `fonts/`
 // altındaki statik TTF'ler kullanılır — tarayıcıya giden variable woff2'ler
@@ -36,8 +36,8 @@ type FontData = { name: "Geist"; data: ArrayBuffer; weight: 400 | 600; style: "n
 // Yol değişkenle (`../_fonts/${file}`) kurulduğunda Turbopack tek bir varlığa
 // bağlıyor ve 400 ile 600 aynı dosyaya çözülüyordu; SemiBold girdisi ölüydü.
 // Bu yüzden iki URL de ayrı ayrı, modül düzeyinde yazılı.
-const GEIST_REGULAR = new URL("../../../fonts/Geist-Regular.ttf", import.meta.url)
-const GEIST_SEMIBOLD = new URL("../../../fonts/Geist-SemiBold.ttf", import.meta.url)
+const INTER_REGULAR = new URL("../../../fonts/Inter-Regular.ttf", import.meta.url)
+const INTER_SEMIBOLD = new URL("../../../fonts/Inter-SemiBold.ttf", import.meta.url)
 
 // Çözülen değer `file:///…/.next/server/assets/…` biçimindedir ve Node'un
 // fetch'i `file:` şemasını desteklemez — eski kod tam da bu yüzden her istekte
@@ -62,19 +62,19 @@ async function readFontFile(url: URL): Promise<ArrayBuffer | null> {
 // içerik istekler arasında değişmez.
 let fontsPromise: Promise<FontData[]> | null = null
 
-function loadGeist(): Promise<FontData[]> {
+function loadInter(): Promise<FontData[]> {
   fontsPromise ??= Promise.all([
-    readFontFile(GEIST_REGULAR),
-    readFontFile(GEIST_SEMIBOLD),
+    readFontFile(INTER_REGULAR),
+    readFontFile(INTER_SEMIBOLD),
   ]).then(([regular, semibold]) => {
     const loaded: FontData[] = []
-    if (regular) loaded.push({ name: "Geist", data: regular, weight: 400, style: "normal" })
-    if (semibold) loaded.push({ name: "Geist", data: semibold, weight: 600, style: "normal" })
+    if (regular) loaded.push({ name: "Inter", data: regular, weight: 400, style: "normal" })
+    if (semibold) loaded.push({ name: "Inter", data: semibold, weight: 600, style: "normal" })
     if (loaded.length < 2) {
       // Yedeğe sessizce düşmek eski kusurun ta kendisiydi. Font olmadan
       // ImageResponse sistem yüzüyle çizer; en azından log'a düşsün.
       console.warn(
-        `[opengraph-image] Geist TTF okunamadı (${loaded.length}/2); OG görseli sistem fontuna düşecek.`,
+        `[opengraph-image] Inter TTF okunamadı (${loaded.length}/2); OG görseli sistem fontuna düşecek.`,
       )
     }
     return loaded
@@ -212,7 +212,7 @@ export default async function Image({
   const art = `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`
 
   const [fonts, avatars] = await Promise.all([
-    loadGeist(),
+    loadInter(),
     Promise.all(
       post.authors.map(async (id) => ({
         name: getAuthor(id).name,
@@ -233,7 +233,7 @@ export default async function Image({
           padding: `${PAD_Y}px ${PAD_X}px`,
           background: paper,
           color: ink,
-          fontFamily: fonts.length ? "Geist" : undefined,
+          fontFamily: fonts.length ? "Inter" : undefined,
           position: "relative",
         }}
       >

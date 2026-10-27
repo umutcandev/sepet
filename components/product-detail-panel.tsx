@@ -161,7 +161,7 @@ export function ProductDetailPanel({ productId }: Props) {
                           <div className="flex items-center justify-end gap-1">
                             <Badge
                               variant={tier}
-                              className="h-5 px-2 font-mono text-[0.6875rem] font-medium tabular-nums"
+                              className="h-5 px-2 text-[0.6875rem] font-medium tabular-nums"
                             >
                               {formatTL(m.price)}
                             </Badge>

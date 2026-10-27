@@ -134,7 +134,7 @@ export function TableOfContents({ toc }: { toc: TocEntry[] }) {
 
   return (
     <nav aria-label="İçindekiler" className="flex flex-col gap-3">
-      <p className="text-xs font-medium tracking-wide text-muted-foreground">
+      <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
         İçindekiler
       </p>
       <ul className="flex flex-col border-l border-border">
