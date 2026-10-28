@@ -150,7 +150,7 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
         {/* Başlık solda, sözleşmeler menüsü sağda — Ücretsiz görünümdeki
             (toggle ↔ menü) hizalamanın Pro karşılığı. */}
         <div className="flex flex-wrap items-center justify-between gap-x-2.5 gap-y-3">
-          <span className="cn-font-heading text-md font-semibold leading-none">
+          <span className="cn-font-heading text-md font-medium leading-none">
             Plan detayları
           </span>
           <ContractsMenu />
@@ -166,7 +166,7 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
               <tbody>
                 <tr>
                   <td className="px-4 py-1.5 text-foreground">Plan</td>
-                  <td className="px-4 py-1.5 text-right font-semibold text-primary">
+                  <td className="px-4 py-1.5 text-right font-medium text-primary">
                     Pro
                   </td>
                 </tr>
@@ -247,14 +247,14 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
 
       {/* Ücretsiz↔Pro karşılaştırması; Pro sütunu hafif bir zeminle vurgulanır */}
       <div className="flex flex-col gap-3">
-        <h3 className="text-sm font-semibold">Plan avantajların</h3>
+        <h3 className="text-sm font-medium">Plan avantajların</h3>
         <div className="overflow-hidden rounded-lg border border-border">
           <table className="w-full border-separate border-spacing-0 text-sm">
             <thead>
               <tr className="text-xs font-medium text-muted-foreground">
                 <th className="px-4 py-1.5 text-left font-medium">Özellik</th>
                 <th className="px-4 py-1.5 text-center font-medium">Ücretsiz</th>
-                <th className="bg-primary/[0.07] px-4 py-1.5 text-center font-semibold text-primary">
+                <th className="bg-primary/[0.07] px-4 py-1.5 text-center font-medium text-primary">
                   Pro
                 </th>
               </tr>

@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button"
 import { BrandContextMenu } from "@/components/brand/brand-context-menu"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
+import { HeaderSlotProvider } from "@/components/header-slot"
 import { HeaderUserMenu } from "@/components/header-user-menu"
 import {
   SidebarInset,
@@ -181,6 +182,7 @@ export function AppShell({ blogPosts, children }: Props) {
   // altındaki içerikle tutarlı; scroll durursa renk de durur.
   const scrollRef = React.useRef<HTMLElement>(null)
   const headerRef = React.useRef<HTMLDivElement>(null)
+  const [headerSlot, setHeaderSlot] = React.useState<HTMLDivElement | null>(null)
   // Değer MotionValue'da tutulur: her scroll karesinde React re-render'ı
   // tetiklemeden doğrudan style'a yazılır.
   const darkness = useMotionValue(0)
@@ -442,6 +444,12 @@ export function AppShell({ blogPosts, children }: Props) {
             // renkleri de birlikte akar; yoksa palet sert keser.
             className="relative flex h-16 items-center gap-2 transition-colors duration-300 [&_*]:transition-colors [&_*]:duration-300"
           >
+            {/* HeaderSlot hedefi. Kaydırma çubuğu payı <main>'inkiyle aynı,
+                böylece içerik ızgarası alttaki sayfayla birebir hizalanır. */}
+            <div
+              ref={setHeaderSlot}
+              className="cn-scrollbar-thin pointer-events-none absolute inset-0 overflow-hidden [scrollbar-gutter:stable]"
+            />
             <div className="flex shrink-0 items-center gap-2 px-4">
               <SidebarToggleButton />
               <Separator
@@ -628,7 +636,7 @@ export function AppShell({ blogPosts, children }: Props) {
               />
             </div>
           ) : null}
-          {children}
+          <HeaderSlotProvider value={headerSlot}>{children}</HeaderSlotProvider>
         </main>
       </SidebarInset>
     </SidebarProvider>

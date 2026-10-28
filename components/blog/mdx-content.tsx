@@ -7,6 +7,7 @@ import { RiFileCopyLine } from "@remixicon/react"
 
 import { CopiedIconSwap, copyText } from "@/components/blog/article-actions"
 import { Slide, Slider } from "@/components/blog/mdx-slider"
+import { XPost } from "@/components/blog/mdx-x-post"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -280,7 +281,7 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
               oluyordu. Etiketler zaten doğru yazımlarıyla tutuluyor. */}
           <span
             className={cn(
-              "shrink-0 font-mono text-[0.6875rem] leading-none font-medium tracking-wide text-muted-foreground",
+              "shrink-0 text-[0.6875rem] leading-none font-medium tracking-wide text-muted-foreground",
               title && "text-[0.625rem]",
             )}
           >
@@ -330,6 +331,7 @@ const components = {
   Slider,
   Slide,
   Callout,
+  XPost,
 } as unknown as MdxComponents
 
 export function MdxContent({ code }: { code: string }) {

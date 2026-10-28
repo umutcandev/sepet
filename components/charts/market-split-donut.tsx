@@ -94,7 +94,7 @@ export function MarketSplitDonut({ data, totalLabel, emptyHint }: Props) {
                           {market}
                         </span>
                       </div>
-                      <span className="shrink-0 font-mono font-medium tabular-nums">
+                      <span className="shrink-0 font-medium tabular-nums">
                         {formatTL(Number(value))}{" "}
                         <span className="text-muted-foreground">
                           · %{Math.round(pct)}
@@ -142,7 +142,7 @@ export function MarketSplitDonut({ data, totalLabel, emptyHint }: Props) {
                     <tspan
                       x={viewBox.cx}
                       dy="1.5em"
-                      className="fill-foreground text-sm font-semibold tabular-nums sm:text-base"
+                      className="fill-foreground text-sm font-medium tabular-nums sm:text-base"
                     >
                       {formatTL(total)}
                     </tspan>

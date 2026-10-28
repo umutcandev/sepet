@@ -65,6 +65,17 @@ function parseSizeFromText(text: string): { base: Base; amount: number } | null 
   }
 }
 
+/**
+ * Fiş satırındaki paket boyutu ("UNO EKMEK 500 G" → 0,5 kg). Fişte quantity
+ * adettir; eşleştirme aynı boyuttaki ürünü bu boyutla seçer. Çoklu pakette
+ * ("6X200 ML") yazan boyut tek birimin boyutu olduğu için null.
+ */
+export function packageSizeOf(name: string): Pick<ParsedItem, "quantity" | "unit"> | null {
+  if (/\d\s*[x×*]\s*\d/i.test(name)) return null
+  const size = parseSizeFromText(name)
+  return size ? { quantity: size.amount, unit: size.base } : null
+}
+
 export type LineCost = {
   // Her zaman 1. İstenen miktar (adet/gramaj) kalemin FİYATINI ETKİLEMEZ;
   // yalnızca doğru ürünü eşleştirmek için kullanılır. Şema/UI uyumu için korunur.

@@ -12,12 +12,15 @@ import {
   type ParsedItem,
 } from "./schemas"
 import {
-  geminiFlash,
-  geminiFlashLite,
   GEMINI_FLASH,
   GEMINI_FLASH_LITE,
   FLASH_THINKING_BUDGET,
   AI_MAX_RETRIES,
+  CLAUDE_HAIKU,
+  MATCH_MODEL,
+  VISION_MODEL,
+  modelSettings,
+  resolveModel,
   type AiCallOptions,
 } from "./models"
 import { devLog, isAbortError, logError, withLlmCall } from "./telemetry"
@@ -145,6 +148,26 @@ function thoughtLog(raw: string, shown: string | null): string {
   return raw.trim() ? "dropped" : "none"
 }
 
+/**
+ * Haiku düşerse (süresi dolmuş anahtar, Anthropic kesintisi) çağrıyı Gemini'yle
+ * bir kez daha dener; yoksa hata sessizce kaliteyi düşürürdü (eşleştirmede hits[0]).
+ */
+async function withFallback<T>(
+  label: string,
+  modelId: string,
+  fallbackId: string,
+  signal: AbortSignal | undefined,
+  run: (modelId: string) => Promise<T>,
+): Promise<T> {
+  try {
+    return await run(modelId)
+  } catch (err) {
+    if (signal?.aborted || isAbortError(err) || modelId === fallbackId) throw err
+    logError(`[${label}] ${modelId} failed, falling back to ${fallbackId}`, err)
+    return run(fallbackId)
+  }
+}
+
 export type ImageAnalysisWithReasoning = {
   analysis: ImageAnalysis
   reasoning: string | null
@@ -154,35 +177,31 @@ export async function analyzeImage(
   imageUrl: string,
   opts: AiCallOptions = {},
 ): Promise<ImageAnalysisWithReasoning> {
-  const { object: output } = await withLlmCall(
+  const { object: output } = await withFallback(
     "analyzeImage",
+    VISION_MODEL,
     GEMINI_FLASH,
-    () =>
-      generateObject({
-        model: geminiFlash,
-        schema: ImageAnalysisOutputSchema,
-        temperature: 0.1,
-        abortSignal: opts.signal,
-        maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
-        messages: [
-          {
-            role: "user",
-            content: [
-              { type: "text", text: IMAGE_ANALYSIS_PROMPT },
-              { type: "image", image: new URL(imageUrl) },
-            ],
-          },
-        ],
-        // flash'ta düşünme varsayılan olarak AÇIK ve sınırsıza yakın;
-        // bütçesiz bırakmak çıktı token'ını kat kat artırır. Düşünce özeti
-        // (includeThoughts) istenmez: İngilizce geliyor ve iç işleyişi
-        // anlatıyor. Kullanıcı "Düşündüm"de modelin `thought` notunu okur.
-        providerOptions: {
-          google: {
-            thinkingConfig: { thinkingBudget: 1024 },
-          },
-        },
-      }),
+    opts.signal,
+    (modelId) =>
+      withLlmCall("analyzeImage", modelId, () =>
+        generateObject({
+          model: resolveModel(modelId),
+          schema: ImageAnalysisOutputSchema,
+          abortSignal: opts.signal,
+          maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+          messages: [
+            {
+              role: "user",
+              content: [
+                { type: "text", text: IMAGE_ANALYSIS_PROMPT },
+                { type: "image", image: new URL(imageUrl) },
+              ],
+            },
+          ],
+          // Düşünce özeti istenmez; kullanıcı "Düşündüm"de modelin `thought` notunu okur.
+          ...modelSettings(modelId, { temperature: 0.1, thinkingBudget: 1024 }),
+        }),
+      ),
   )
   const { thought, ...object } = output
   const reasoning = userThought(thought)
@@ -233,15 +252,23 @@ export async function generateChatTitle(
   userText: string,
   opts: AiCallOptions = {},
 ): Promise<string> {
-  const { object } = await withLlmCall("generateChatTitle", GEMINI_FLASH_LITE, () =>
-    generateObject({
-      model: geminiFlashLite,
-      schema: ChatTitleSchema,
-      temperature: 0.2,
-      abortSignal: opts.signal,
-      maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
-      prompt: CHAT_TITLE_PROMPT(userText),
-    }),
+  const { object } = await withFallback(
+    "generateChatTitle",
+    CLAUDE_HAIKU,
+    GEMINI_FLASH_LITE,
+    opts.signal,
+    (modelId) =>
+      withLlmCall("generateChatTitle", modelId, () =>
+        generateObject({
+          model: resolveModel(modelId),
+          schema: ChatTitleSchema,
+          abortSignal: opts.signal,
+          maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+          prompt: CHAT_TITLE_PROMPT(userText),
+          // Başlık düşünme gerektirmiyor; kapalıyken daha hızlı.
+          ...modelSettings(modelId, { temperature: 0.2, thinkingBudget: 0 }),
+        }),
+      ),
   )
   return object.title.trim().replace(/\s+/g, " ").slice(0, 100)
 }
@@ -261,24 +288,23 @@ export async function parseShoppingList(
   opts: AiCallOptions = {},
   history = "",
 ): Promise<BasketDraftWithReasoning> {
-  const { object: output } = await withLlmCall(
+  const { object: output } = await withFallback(
     "parseShoppingList",
+    CLAUDE_HAIKU,
     GEMINI_FLASH_LITE,
-    () =>
-      generateObject({
-        model: geminiFlashLite,
-        schema: BasketDraftOutputSchema,
-        temperature: 0.1,
-        abortSignal: opts.signal,
-        maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
-        prompt: PARSE_PROMPT(rawText, history),
-        // Düşünce özeti istenmez, bkz. analyzeImage.
-        providerOptions: {
-          google: {
-            thinkingConfig: { thinkingBudget: 512 },
-          },
-        },
-      }),
+    opts.signal,
+    (modelId) =>
+      withLlmCall("parseShoppingList", modelId, () =>
+        generateObject({
+          model: resolveModel(modelId),
+          schema: BasketDraftOutputSchema,
+          abortSignal: opts.signal,
+          maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+          prompt: PARSE_PROMPT(rawText, history),
+          // Düşünce özeti istenmez, bkz. analyzeImage.
+          ...modelSettings(modelId, { temperature: 0.1, thinkingBudget: 512 }),
+        }),
+      ),
   )
   const { thought, ...object } = output
   const reasoning = userThought(thought)
@@ -318,6 +344,14 @@ type HitList = Candidate[]
 const MAX_CANDIDATES = MF_MATCH_PAGES * MF_PAGE_SIZE
 
 /**
+ * Bir eşleştirme çağrısındaki en fazla kalem; fazlası paralel çağrılara bölünür.
+ * Haiku 8 kalemde ~34 sn sürüyor ve süre kalem sayısıyla artıyor, yani tek
+ * çağrıda uzun bir liste route'un maxDuration'ını aşardı. Golden set de 8'erli
+ * koşuyor (scripts/eval-match.ts), ölçülen şekil üretimdekiyle aynı.
+ */
+export const MATCH_BATCH_SIZE = 8
+
+/**
  * MATCH_PROMPT'un içeriğinden türetilen kısa sürüm damgası. Eskiden cache anahtarı
  * prompt'a bağlı DEĞİLDİ; prompt kuralı değişince elle `v4` gibi bir sürüm bump'ı
  * yapmak ŞARTTI — unutulursa eski (yanlış) seçimler TTL boyunca servis ediliyordu.
@@ -350,9 +384,12 @@ export const MATCH_PROMPT_VERSION = createHash("sha1")
  * istemciden gelir. Yalnız ham ad anahtarda olsaydı, sonuç vermeyen bir sorguyla
  * aynı aday havuzuna düşen (genelleştirme/ham ad yedeği) ama politikasız
  * yapılmış bir seçim, aynı kalemi doğru sorguyla isteyen herkese servis edilirdi.
+ *
+ * Model de anahtarda: model değişince eskisinin seçimleri TTL boyunca servis edilmez.
  */
 function matchCacheKey(item: ParsedItem, hits: HitList): string {
   const payload = JSON.stringify({
+    model: MATCH_MODEL,
     rawName: item.name.trim().toLocaleLowerCase("tr-TR"),
     quantity: item.quantity,
     unit: item.unit,
@@ -383,8 +420,8 @@ function scopedMatchCacheKey(sharedKey: string, scope: string): string {
 
 /**
  * Adayı olan kalemleri tek bir LLM çağrısında doğru ürüne eşler. Dönüş:
- * promptIndex → seçim. Çağrı hata verirse istisna fırlatır; çağıran taraf
- * hits[0] davranışına geri düşer.
+ * promptIndex → seçim. Haiku düşerse Flash'la dener; o da düşerse istisna
+ * fırlatır ve çağıran taraf hits[0] davranışına geri düşer.
  *
  * export: golden eval koşucusunun seam'i (lib/ai/eval). Cache mantığı çağıran
  * lookupProducts'ta olduğundan burası cache dışıdır — eval LLM'i ölçer.
@@ -410,26 +447,26 @@ export async function selectMatches(
     })),
   }))
 
-  const { object } = await withLlmCall(
-    "selectMatches",
-    opts.modelId ?? GEMINI_FLASH,
-    () =>
+  const run = (modelId: string) =>
+    withLlmCall("selectMatches", modelId, () =>
       generateObject({
-        model: opts.model ?? geminiFlash,
+        model: opts.model ?? resolveModel(modelId),
         schema: MatchSelectionSchema,
-        temperature: 0.1,
         abortSignal: opts.signal,
         maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
         prompt: MATCH_PROMPT(promptItems),
-        providerOptions: {
-          google: {
-            thinkingConfig: {
-              thinkingBudget: opts.thinkingBudget ?? FLASH_THINKING_BUDGET,
-            },
-          },
-        },
+        ...modelSettings(modelId, {
+          temperature: 0.1,
+          thinkingBudget: opts.thinkingBudget ?? FLASH_THINKING_BUDGET,
+          effort: opts.effort,
+        }),
       }),
-  )
+    )
+  const modelId = opts.modelId ?? MATCH_MODEL
+  // Eval modeli açıkça verir; yedeğe düşmek ölçtüğü modeli gizlerdi.
+  const { object } = opts.model
+    ? await run(modelId)
+    : await withFallback("selectMatches", modelId, GEMINI_FLASH, opts.signal, run)
 
   const map = new Map<number, MatchSelection["selections"][number]>()
   for (const sel of object.selections) map.set(sel.itemIndex, sel)
@@ -519,7 +556,7 @@ export async function lookupProducts(
   }
 
   // Faz 2 — adayı olan kalemleri doğru ürüne eşle. Önce match-cache'e bak;
-  // yalnızca cache miss olan kalemleri tek bir LLM çağrısına gönder.
+  // yalnızca cache miss olan kalemleri MATCH_BATCH_SIZE'lık paralel LLM çağrılarına gönder.
   const withHits: Array<{ index: number; item: ParsedItem; hits: HitList }> = []
   outcomes.forEach((outcome, index) => {
     if (outcome.kind === "hit" && !pick.has(index)) {
@@ -569,49 +606,56 @@ export async function lookupProducts(
     )
 
     if (misses.length > 0) {
-      let selections: Map<number, MatchSelection["selections"][number]> | null =
-        null
-      try {
-        selections = await selectMatches(
-          misses.map(({ item, hits }) => ({
-            // Politika satırı adayları getiren sorguya aittir: "yağ" için
-            // yazılmış politika "yağ" havuzunu anlatır, takma adla gelen
-            // ayçiçek yağı havuzunu değil.
-            item: { ...item, searchQuery: searchAlias(item.searchQuery) ?? item.searchQuery },
-            hits,
-          })),
-          opts,
-        )
-      } catch (err) {
-        logError(
-          "[lookupProducts] match selection failed, falling back to hits[0]",
-          err,
-        )
-        selections = null
-      }
-
-      // promptIndex (misses sırası) → orijinal item index'ine geri eşle.
       const toCache: Array<{ key: string; value: ItemSelection }> = []
-      misses.forEach((miss, promptIndex) => {
-        const sel = selections?.get(promptIndex)
-        const entry = withHits[miss.withHitsIdx]
-        // LLM başarısız ya da seçim yok → hits[0]'a geri düş (cache'leme).
-        const resolved = resolveSelection(sel, entry.hits)
-        pick.set(entry.index, resolved)
-        if (!sel) return
-        // Tek kalemlik çağrı: seçimi yalnız o kalemin kendi metni belirledi →
-        // ortak anahtara yazılabilir. Çok kalemli çağrı: yalnız kullanıcıya
-        // özel anahtara (kapsam yoksa hiç yazılmaz).
-        const sharedKey = cacheKeys[miss.withHitsIdx]
-        if (misses.length === 1) {
-          toCache.push({ key: sharedKey, value: resolved })
-        } else if (cacheScope) {
-          toCache.push({
-            key: scopedMatchCacheKey(sharedKey, cacheScope),
-            value: resolved,
+      const parts = Array.from(
+        { length: Math.ceil(misses.length / MATCH_BATCH_SIZE) },
+        (_, i) => misses.slice(i * MATCH_BATCH_SIZE, (i + 1) * MATCH_BATCH_SIZE),
+      )
+      await Promise.all(
+        parts.map(async (part) => {
+          let selections: Map<number, MatchSelection["selections"][number]> | null =
+            null
+          try {
+            selections = await selectMatches(
+              part.map(({ item, hits }) => ({
+                // Politika satırı adayları getiren sorguya aittir: "yağ" için
+                // yazılmış politika "yağ" havuzunu anlatır, takma adla gelen
+                // ayçiçek yağı havuzunu değil.
+                item: { ...item, searchQuery: searchAlias(item.searchQuery) ?? item.searchQuery },
+                hits,
+              })),
+              opts,
+            )
+          } catch (err) {
+            logError(
+              "[lookupProducts] match selection failed, falling back to hits[0]",
+              err,
+            )
+          }
+
+          // promptIndex (parça sırası) → orijinal item index'ine geri eşle.
+          part.forEach((miss, promptIndex) => {
+            const sel = selections?.get(promptIndex)
+            const entry = withHits[miss.withHitsIdx]
+            // LLM başarısız ya da seçim yok → hits[0]'a geri düş (cache'leme).
+            const resolved = resolveSelection(sel, entry.hits)
+            pick.set(entry.index, resolved)
+            if (!sel) return
+            // Tek kalemlik çağrı: seçimi yalnız o kalemin kendi metni belirledi →
+            // ortak anahtara yazılabilir. Çok kalemli çağrı: yalnız kullanıcıya
+            // özel anahtara (kapsam yoksa hiç yazılmaz).
+            const sharedKey = cacheKeys[miss.withHitsIdx]
+            if (part.length === 1) {
+              toCache.push({ key: sharedKey, value: resolved })
+            } else if (cacheScope) {
+              toCache.push({
+                key: scopedMatchCacheKey(sharedKey, cacheScope),
+                value: resolved,
+              })
+            }
           })
-        }
-      })
+        }),
+      )
 
       // Yalnızca LLM'in gerçekten cevapladığı seçimleri cache'le.
       if (toCache.length > 0) {
@@ -675,21 +719,29 @@ export async function suggestQueries(
 
   let proposals: Map<number, string[]>
   try {
-    const { object } = await withLlmCall("suggestQueries", GEMINI_FLASH_LITE, () =>
-      generateObject({
-        model: geminiFlashLite,
-        schema: QuerySuggestionSchema,
-        temperature: 0.2,
-        abortSignal: opts.signal,
-        maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
-        prompt: QUERY_SUGGESTION_PROMPT(
-          targets.map(({ m }, itemIndex) => ({
-            itemIndex,
-            rawName: m.rawName,
-            searchQuery: m.searchQuery,
-          })),
+    const { object } = await withFallback(
+      "suggestQueries",
+      CLAUDE_HAIKU,
+      GEMINI_FLASH_LITE,
+      opts.signal,
+      (modelId) =>
+        withLlmCall("suggestQueries", modelId, () =>
+          generateObject({
+            model: resolveModel(modelId),
+            schema: QuerySuggestionSchema,
+            abortSignal: opts.signal,
+            maxRetries: opts.maxRetries ?? AI_MAX_RETRIES,
+            prompt: QUERY_SUGGESTION_PROMPT(
+              targets.map(({ m }, itemIndex) => ({
+                itemIndex,
+                rawName: m.rawName,
+                searchQuery: m.searchQuery,
+              })),
+            ),
+            // Öneriler aramayla doğrulanıyor; düşünme beklemeye değmez.
+            ...modelSettings(modelId, { temperature: 0.2, thinkingBudget: 0 }),
+          }),
         ),
-      }),
     )
     proposals = new Map(object.suggestions.map((s) => [s.itemIndex, s.queries]))
   } catch (err) {

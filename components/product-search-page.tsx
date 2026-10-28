@@ -259,7 +259,7 @@ export function ProductSearchPage({
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
       <div className="mb-6 flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight text-balance">Ürün Ara</h1>
+        <h1 className="text-2xl font-medium tracking-tight text-balance">Ürün Ara</h1>
         <p className="text-sm text-muted-foreground">
           Ürün adı ya da barkod ile BİM, A101, Migros, Şok,
           CarrefourSA ve Tarım Kredi marketlerinde güncel fiyatları karşılaştır.
@@ -491,7 +491,7 @@ function ProductCard({
         )}
         <Badge
           variant="default"
-          className="h-5 px-2 font-mono text-[0.6875rem] font-normal tabular-nums"
+          className="h-5 px-2 text-[0.6875rem] font-normal tabular-nums"
         >
           {formatTLOrDash(hit.averagePrice)}
         </Badge>

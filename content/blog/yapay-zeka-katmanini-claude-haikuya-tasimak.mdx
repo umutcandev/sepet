@@ -1,0 +1,183 @@
+---
+title: Yapay Zekâ Katmanını Gemini'den Claude Haiku'ya Ölçerek Taşımak
+description: Sepet, Claude Startups programına kabul edildi. Geçişi golden set'le ölçtük; Claude Haiku 5.5 geçen vakayı 20'den 40'a çıkardı, maliyeti yarıya indirdi, bedeli süre oldu.
+publishedAt: 2026-10-27T10:00:00+03:00
+authors:
+  - umutcan
+category: teknik
+tags:
+  - llm
+  - değerlendirme
+  - claude
+  - mühendislik günlüğü
+---
+
+Sepet, Anthropic'in girişimlere yönelik
+[Claude Startups programına](https://claude.com/programs/startups) kabul edildi.
+Program, Ekim başında daha fazla girişimciye açıldığını duyurmuştu.
+
+<XPost url="https://x.com/claudeai/status/2107513494493179954" />
+
+Program bize Claude API kredisi verdi ve doğal soru hemen geldi. Yapay zekâ
+katmanını Claude'a taşımalı mıyız?
+
+Kredi var diye model değiştirmek, kural ekleyip birkaç örneğe elle bakmakla aynı
+hatadır. İyi görünür ama neyi bozduğunu bilmezsin. Bu yüzden önce
+[önceki yazıda](/blog/eslestirme-kurallarini-olcerek-degistirmek) anlattığımız
+golden set'le ölçtük, sonra karar verdik. Bu yazı o ölçümü, çıkan sonucu ve
+geçişin bize neye mal olduğunu anlatıyor.
+
+## Hangi çağrılar vardı?
+
+Sepet'te bir kullanıcı turu birkaç ayrı dil modeli çağrısından geçiyor. Geçişten
+önce hepsi Google Gemini'nin iki modelinde çalışıyordu.
+
+| Çağrı | Ne yapıyor | Önceki model |
+| --- | --- | --- |
+| Liste ayrıştırma | "2 ekmek, 1 lt süt" metnini kalemlere böler | Gemini 2.5 Flash Lite |
+| Ürün eşleştirme | Her kalem için market adaylarından doğru ürünleri seçer | Gemini 2.5 Flash |
+| Fotoğraf analizi | Fiş ya da yemek fotoğrafını kalemlere çevirir | Gemini 2.5 Flash |
+| Arama önerisi | Bulunamayan kalem için alternatif terim önerir | Gemini 2.5 Flash Lite |
+| Sohbet başlığı | Sohbete kısa bir ad verir | Gemini 2.5 Flash Lite |
+| Sesli giriş | Ses kaydını metne çevirir | Gemini 2.5 Flash Lite |
+
+Ölçülebilir olan tek çağrı ürün eşleştirme, çünkü golden set onun için kuruldu.
+Aynı zamanda en pahalısı ve sepetin kalitesini en çok belirleyeni de o. Kararı
+orada verdik.
+
+## Önce eski rakamın eskidiğini gördük
+
+Golden set'in baseline'ı 28/82 idi. İlk iş Haiku'yu koşturup bu rakamla
+karşılaştırmak olacaktı, ama baseline dosyasında kayıtlı prompt sürümü
+bugünkünden farklıydı. O tarihten beri eşleştirme kurallarında birkaç değişiklik
+yapmışız.
+
+Farklı prompt'larla alınmış iki rakamı karşılaştırmak, modeli değil prompt'u
+ölçmek olurdu. Bu yüzden Gemini Flash'ı güncel prompt'la yeniden koşturduk.
+Sonuç 20/82 çıktı. Yani karşılaştırma 28'e değil 20'ye karşı yapılmalıydı.
+
+Bu, golden set'in kendi küçük dersi. Baseline bir dosyada duruyor diye geçerli
+değildir; ölçtüğü prompt'la birlikte eskir. Eval koşucusu her raporda prompt
+sürümünü basıyor, ama ona bakmayı hatırlamak yine bize kalıyordu.
+
+## Sonuçlar
+
+Aynı 82 vaka, aynı adaylar, aynı prompt ve 8 kalemlik gruplar. Haiku 5.5'i üç
+düşünme seviyesinde (effort) ve bir de düşünme kapalıyken koşturduk.
+
+| Model | Geçen vaka | Holdout | Yanlış kabul edilen ürün | Kaçırılan ürün | 8 kalemlik çağrı | Koşu maliyeti |
+| --- | --- | --- | --- | --- | --- | --- |
+| Gemini 2.5 Flash | 20/82 | 2/22 | 98 | 1001 | ~19 sn | $0,159 |
+| Haiku 5.5, düşünme kapalı | 11/82 | 2/22 | 144 | 1158 | ~8 sn | $0,040 |
+| Haiku 5.5, low | 40/82 | 6/22 | 44 | 156 | ~34 sn | $0,081 |
+| Haiku 5.5, medium | 41/82 | 7/22 | 49 | 142 | ~43 sn | $0,095 |
+| Haiku 5.5, high | 47/82 | 7/22 | 51 | 130 | ~55-60 sn | $0,121 |
+
+Geçen vaka sayısı ikiye katlandı, ama asıl hikâye kaçırma sütununda.
+
+Önceki yazıda iki hata türünü ayırmıştık. Yanlış kabul görünür ve güven kırar.
+Kaçırma sessizdir ve para kaybettirir, çünkü doğru bir ürün elendiğinde aday
+havuzu daralır ve optimizasyon daha pahalı bir seçeneğe düşer. Flash 82 vakada
+1001 uygun ürünü eliyordu. Haiku low'da bu sayı 156. Sepet'in asıl vaadi olan
+tek ve iki market birleştirmesi tam olarak bu adaylara dayanıyor; fazladan
+kabul edilen her doğru ürün, optimizasyona bir seçenek daha demek.
+
+Yanlış kabul de 98'den 44'e indi. Yani bu sefer iki ölçüt arasında takas yok,
+ikisi birden iyileşti. Önceki yazıda koyduğumuz kurala göre bu, tartışmasız bir
+net kazanç.
+
+## Neden low?
+
+Tabloya ilk bakışta high en iyisi gibi görünüyor, 47/82. Ama farkın nereden
+geldiğine bakınca tablo değişiyor. High'ın kazancı neredeyse tamamen train
+tarafında. Holdout'ta low 6/22, medium ve high 7/22. Yani prompt'a politikası
+girmeyen, genellemeyi ölçen vakalarda üç seviye arasında anlamlı bir fark yok.
+22 vakalık bir örneklemde tek vakalık fark gürültüden ayırt edilemez.
+
+Buna karşılık süre net biçimde artıyor. Low 8 kalemi yaklaşık 34 saniyede
+eşliyor, high 55 saniyenin üstüne çıkıyor. Kullanıcının beklediği bir adımda
+genellemede kazanç göstermeyen bir ayar için süreyi ikiye katlamanın anlamı yok.
+Low'u seçtik.
+
+Düşünme kapalı satırı da ayrıca öğretici. Haiku düşünmeden 8 saniyede cevap
+veriyor ama 11/82'ye, Flash'ın bile altına düşüyor. Bu iş, bir ürün adını
+okuyup "bu sade yoğurt mu, meyveli mi, koli mi" diye karar vermeyi gerektiriyor
+ve o karar düşünmeden verilemiyor.
+
+## Türkçe metin daha fazla token tutuyor
+
+Tabloda görünmeyen bir ayrıntı var. Aynı prompt Flash'ta 199 bin girdi token'ı
+tutarken Haiku'da 325 bin tuttu, yaklaşık yüzde 63 fazla. Claude'un tokenizer'ı
+Türkçe metni Gemini'ninkinden daha küçük parçalara bölüyor.
+
+Buna rağmen koşu maliyeti yarıya indi, çünkü Haiku 5.5'in token başına fiyatı
+çok daha düşük. Ama başka bir model değerlendiren herkes için not düşmeye
+değer. Token başına fiyatı karşılaştırmak yetmez; aynı metnin kaç token
+tuttuğunu da kendi verinizle ölçmeniz gerekir.
+
+## Bedeli süre oldu
+
+Haiku daha doğru ama daha yavaş. 8 kalemlik bir eşleştirme Flash'ta yaklaşık 19
+saniye sürerken Haiku'da 34 saniye sürüyor. Süre kalem sayısıyla birlikte de
+artıyor.
+
+Bu bizim için gerçek bir risk oluşturuyordu. Eşleştirme, cache'te olmayan bütün
+kalemleri tek bir çağrıda gönderiyordu ve sohbet fonksiyonunun Vercel'de 60
+saniyelik bir süre sınırı vardı. 20 kalemlik bir liste ya da uzun bir fiş, market
+aramalarıyla birlikte bu sınırı aşabilir ve kullanıcının turu yarıda kesilirdi.
+
+Çözüm, kalemleri 8'erli gruplara bölüp
+[paralel göndermek](https://github.com/umutcandev/sepet/blob/master/lib/ai/tools.ts)
+oldu. Gruplar aynı anda çalıştığı için toplam süre liste uzunluğundan bağımsız
+kalıyor, kabaca tek bir grubun süresi kadar. Grup boyutu bilerek 8 seçildi.
+Golden set de 8'erli gruplarla koşuyor, yani ölçtüğümüz şekil ile production'da
+çalışan şekil aynı. Üstüne süre sınırını da 120 saniyeye çıkardık.
+
+## Geri kalan çağrılar
+
+Eşleştirme sonucu net olunca diğer çağrıları da taşıdık. Fotoğraf analizi ve
+liste ayrıştırma Haiku'ya, düşünme açık olarak geçti. Sohbet başlığı ve arama
+önerisinde düşünmeyi kapattık, çünkü ikisinde de karar verilecek zor bir şey
+yok ve kapalıyken daha hızlılar.
+
+Liste ayrıştırma her mesajın ilk adımı olduğu için önce süresine baktık.
+
+| Girdi | Flash Lite | Haiku 5.5 |
+| --- | --- | --- |
+| "bu akşam menemen yapacağım" | 3,5 sn | 3,0 sn |
+| 8 kalemlik liste | 2,8 sn | 4,0 sn |
+| 40 kalemlik liste | 5,4 sn | 7,5 sn |
+
+Çıkan kalemler iki modelde aynıydı, tek bir istisnayla. "2 coca cola 1 lt"
+girdisini Flash Lite 2 litre olarak okurken Haiku doğru biçimde 2 adet okudu.
+
+Bir de ilk çağrıda bir sürpriz yaşadık. Haiku, bir çıktı şemasıyla ilk kez
+karşılaştığında yaklaşık 8 saniye fazladan harcadı; menemen ilk denemede 11,9
+saniye sürdü. Aynı şemayla gelen sonraki çağrılarda bu ek süre görünmedi.
+Şemanın ilk kullanımda hazırlanıp sonra önbellekte tutulduğunu düşünüyoruz, ama
+bunu ayrıca doğrulamadık.
+
+Taşınamayan tek çağrı sesli giriş oldu. Claude API girdi olarak metin, görsel ve
+doküman kabul ediyor, ses kabul etmiyor. Ses kaydını metne çevirme işi Gemini
+Flash Lite'ta kalıyor. Maliyeti zaten çok düşük, 30 saniyelik bir kayıt bir sentin
+çok altında tutuyor.
+
+## Haiku düşerse ne oluyor?
+
+Yeni bir sağlayıcı yeni bir hata türü de getiriyor. Anahtarın süresi dolabilir,
+servis kesintiye girebilir. Eski kodda eşleştirme çağrısı hata verdiğinde her
+kalem için arama sonuçlarındaki ilk ürün seçiliyordu. Kullanıcı hata görmüyor ama
+sepet sessizce kötüleşiyordu. Kaçırma gibi, görünmeyen bir hata.
+
+Bu yüzden her Haiku çağrısına bir
+[yedek model](https://github.com/umutcandev/sepet/blob/master/lib/ai/models.ts)
+ekledik. Haiku hata verirse aynı çağrı eski Gemini modeliyle bir kez daha
+deneniyor ve hata loglanıyor. Yedeği test etmek için anahtarı bilerek bozduk;
+hem fotoğraf analizi hem eşleştirme hatayı kaydedip Gemini'yle sonuç verdi.
+
+Eval koşucusunda ise yedek kapalı. Ölçülen modelin düştüğü yerde başka bir
+modelin cevap vermesi, ölçümü sessizce bozardı.
+
+Bu yazıdaki bütün ölçümler toplamda yarım dolar civarında tuttu. Karşılığında
+"Claude'a geçelim mi" sorusu bir kanaat değil, bir tablo oldu. Bu sefer tablo
+geçmemiz gerektiğini söyledi.

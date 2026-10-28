@@ -371,22 +371,24 @@ export function LoginForm({ callbackUrl, pendingToken: linkToken }: Props) {
           hissi. Masaüstü (dialog kartı): mevcut ortalanmış düzen aynen. */}
       <div className="flex w-full max-w-[402px] flex-col items-start px-6 pt-16 pb-6 text-left md:items-center md:pt-12 md:text-center">
         <Image
-          src="/brand/sepet-square-dark.webp"
+          src="/brand/dark-icon-sepet.svg"
           alt="Sepet"
           width={256}
           height={256}
-          className="h-12 w-12 rounded-xl md:h-16 md:w-16 dark:hidden"
+          priority
+          className="h-12 w-12 md:h-16 md:w-16 dark:hidden"
         />
         <Image
-          src="/brand/sepet-square-light.webp"
+          src="/brand/light-icon-sepet.svg"
           alt=""
           aria-hidden
           width={256}
           height={256}
-          className="hidden h-12 w-12 rounded-xl md:h-16 md:w-16 dark:block"
+          priority
+          className="hidden h-12 w-12 md:h-16 md:w-16 dark:block"
         />
 
-        <h1 className="mt-6 text-[1.75rem] leading-tight font-semibold tracking-[-0.02em] text-foreground md:mt-5 md:text-[1.375rem]">
+        <h1 className="mt-6 text-[1.75rem] leading-tight font-medium tracking-[-0.02em] text-foreground md:mt-5 md:text-[1.375rem]">
           {title}
         </h1>
         <p className="mt-2 max-w-[320px] text-sm leading-[1.4] tracking-[-0.01em] text-muted-foreground md:max-w-[300px]">

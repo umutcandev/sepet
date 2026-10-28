@@ -74,7 +74,7 @@ export function HomeCtaSection() {
     <section className="relative z-20 bg-[var(--home-base)]">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-5 px-4 py-12 text-foreground sm:py-16">
         {/* Vitrin yüzü (Cooper) — hero başlığıyla eşleşir; `cn-font-heading`
-            değil, o kart/dialog başlıklarının Geist'i. Ağırlık `font-normal`:
+            değil, o kart/dialog başlıklarının Inter'i. Ağırlık `font-normal`:
             ailede yalnız 400 kayıtlı, `font-semibold` tarayıcıya sahte bold
             çizdirirdi (bkz. lib/fonts.ts). */}
         <h2

@@ -140,7 +140,7 @@ export default async function SharedConversationPage({ params }: Props) {
       <footer className="mt-14 grid gap-4">
         <Card className="flex flex-col items-start gap-3 p-5 sm:flex-row sm:items-center">
           <div className="grid flex-1 gap-1">
-            <span className="text-base font-semibold">
+            <span className="text-base font-medium">
               Sen de en ucuz sepeti bul
             </span>
             <span className="text-sm text-muted-foreground">
@@ -173,7 +173,7 @@ function AuthorBadge({ name }: { name: string | null }) {
   return (
     <span
       aria-hidden="true"
-      className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-[0.6875rem] font-semibold text-foreground"
+      className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-[0.6875rem] font-medium text-foreground"
     >
       {name ? (
         name.charAt(0).toLocaleUpperCase("tr-TR")

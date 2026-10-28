@@ -1,18 +1,29 @@
 Sitenin self-host edilen bütün font dosyaları bu klasörde durur; hepsi
-`lib/fonts.ts` üzerinden `next/font/local` ile tanımlanır. İki aile var:
-arayüzün tamamını taşıyan **Geist** ve yalnız ana sayfanın iki büyük cümlesinde
-kullanılan vitrin yüzü **Cooper**.
+`lib/fonts.ts` üzerinden `next/font/local` ile tanımlanır. Üç aile var:
+arayüzün tamamını taşıyan **Inter**, kod/rakam için **Geist Mono** ve yalnız ana
+sayfanın iki büyük cümlesinde kullanılan vitrin yüzü **Cooper**.
 
-# Geist / Geist Mono (self-hosted)
+# Inter (self-hosted)
+
+Kaynak: [rsms/inter](https://github.com/rsms/inter) `v4.1` release'i
+(`Inter-4.1.zip`). Sürüm 4.001. Lisans: SIL OFL 1.1 (`LICENSE-Inter.txt`).
+
+Dosyalar release'teki haliyle, alt kümelenmeden kullanılır: tam karakter seti
+(2852 kod noktası), bütün OpenType özellikleri (ss/cv alternatifleri dâhil) ve
+iki eksen (`wght` 100–900, `opsz` 14–32). `Inter-Variable.woff2` =
+`web/InterVariable.woff2`, `Inter-Regular.ttf` = `extras/ttf/Inter-Regular.ttf`.
+`Inter-Medium.ttf` release'te statik olarak yok: `Inter-Variable.woff2`'den
+fontTools ile `wght=500, opsz=14` örneklenerek üretildi
+(`fontTools.varLib.instancer`).
+
+# Geist Mono (self-hosted)
 
 Kaynak: [vercel/geist-font](https://github.com/vercel/geist-font) —
-`fonts/Geist` ve `fonts/GeistMono`. Buradaki dosyalar Vercel'in aynı repodan
-yayınladığı `geist@1.7.2` dağıtımından alınmıştır (`dist/fonts/geist-sans`,
-`dist/fonts/geist-mono`).
+`fonts/GeistMono`, `geist@1.7.2` dağıtımından (`dist/fonts/geist-mono`).
+Sürüm 1.700. Lisans: SIL OFL 1.1 (`LICENSE-Geist.txt`).
 
-Sürümler: Geist 1.800, Geist Mono 1.700. Lisans: SIL OFL 1.1 (`LICENSE.txt`).
-Lisans, fontlar yeniden dağıtıldığında telif ve lisans metninin de birlikte
-taşınmasını şart koşar; `LICENSE.txt` bu yüzden burada duruyor.
+OFL, fontlar yeniden dağıtıldığında telif ve lisans metninin de birlikte
+taşınmasını şart koşar; iki lisans dosyası bu yüzden burada duruyor.
 
 ## Neden self-host
 
@@ -23,21 +34,20 @@ Türkçe bir sitede tam da Türkçe harfler sistem fontundan çiziliyordu (aynı
 kusur Mono'da da vardı, kod bloklarındaki Türkçe yorumlar karışık fontla
 render oluyordu).
 
-Self-host edilen dosyalar alt kümelenmemiştir: her ikisi de tam karakter
-setini taşır (Geist 728, Geist Mono 889 kod noktası), Türkçe harflerin hepsi
-içeride. Böylece subset seçimi diye bir karar noktası kalmıyor.
+Self-host edilen dosyalar alt kümelenmemiştir: ikisi de tam karakter setini
+taşır (Inter 2852, Geist Mono 889 kod noktası), Türkçe harflerin hepsi içeride.
+Böylece subset seçimi diye bir karar noktası kalmıyor.
 
-> Not: `₺` (U+20BA) **ne Geist'te ne de Geist Mono'da** yok; her iki ailede de
-> sistem yedeğine düşer. Bkz. `components/subscription/plan-cards.tsx`.
+> Not: `₺` (U+20BA) Inter'de var, Geist Mono'da yok (orada sistem yedeğine düşer).
 
 ## Dosyalar
 
 | Dosya | Kullanım |
 | --- | --- |
-| `Geist-Variable.woff2` | Tarayıcı — `lib/fonts.ts`, `--font-sans` (wght 100–900) |
+| `Inter-Variable.woff2` | Tarayıcı — `lib/fonts.ts`, `--font-sans` (dosya wght 100–900, kayıtlı aralık 400–500; opsz 14–32) |
 | `GeistMono-Variable.woff2` | Tarayıcı — `lib/fonts.ts`, `--font-mono` (wght 100–900) |
-| `Geist-Regular.ttf` | `app/blog/[slug]/opengraph-image.tsx` (weight 400) |
-| `Geist-SemiBold.ttf` | `app/blog/[slug]/opengraph-image.tsx` (weight 600) |
+| `Inter-Regular.ttf` | `app/blog/[slug]/opengraph-image.tsx` (weight 400) |
+| `Inter-Medium.ttf` | `app/blog/[slug]/opengraph-image.tsx` (weight 500) |
 
 Tarayıcı tarafı yalnız woff2: 2016'dan beri evrensel destekli, en küçük çıktı.
 `woff`/`otf`/`ttf` tarayıcı için gereksiz ağırlık olurdu. OG tarafında ise TTF
@@ -47,10 +57,10 @@ Değişken (variable) sürümler tercih edildi: site 400/500/600/700 ağırlıkl
 birlikte kullanıyor, tek değişken dosya dört statik dosyadan hafif kalıyor.
 
 İtalik yüzler bilinçli olarak alınmadı. `next/font/local` bir ailedeki tüm
-dosyaları preload eder; italik variable woff2 her sayfaya ~70 KB ekler ve şu an
-içerikte hiç italik kullanımı yok. Gerçek italik gerekirse
-`Geist-Italic[wght].woff2` / `GeistMono-Italic[wght].woff2` aynı kaynaktan
-eklenip `lib/fonts.ts`'te `style: "italic"` girdisi olarak tanımlanabilir.
+dosyaları preload eder; italik variable woff2 her sayfaya ~70–380 KB ekler ve
+şu an içerikte hiç italik kullanımı yok. Gerçek italik gerekirse
+`InterVariable-Italic.woff2` / `GeistMono-Italic[wght].woff2` eklenip `lib/fonts.ts`'te `style: "italic"`
+girdisi olarak tanımlanabilir.
 
 # Cooper (vitrin yüzü)
 
@@ -58,8 +68,8 @@ Dosyaların taşıdığı ad `Cooper Lt BT` (Bitstream'in Cooper Light kesimi; n
 tablosundaki sürüm damgaları 1992–93). Ağırlık sınıfları dosya adlarıyla
 uyumlu: `Cooper-400.woff2` → `usWeightClass 400`, `Cooper-600.woff2` → 600.
 
-> Dosyaların içinde lisans (name ID 13/14) ya da üretici alanı YOK. Geist'in
-> aksine bu aile için repoda dayanak bir lisans metni yok; Cooper Light ticari
+> Dosyaların içinde lisans (name ID 13/14) ya da üretici alanı YOK. Inter ve
+> Geist Mono'nun aksine bu aile için repoda dayanak bir lisans metni yok; Cooper Light ticari
 > bir kesim, dağıtım hakkı ayrıca doğrulanmalı. Gerekirse lisanslı bir kopya
 > veya açık lisanslı bir muadille (ör. Cooper Hewitt değil — o gotik; benzer
 > yumuşak serif için Bitter/Zilla Slab) değiştirilir.
@@ -89,7 +99,7 @@ tek satıra sığmayıp ikiye düşebiliyor ve rotasyonda kabın boyu oynuyor. �
 
 **`--font-heading` ile karıştırma:** o hâlâ `--font-sans`a eşit ve
 `cn-font-heading` üzerinden bir düzine kart/dialog başlığını besliyor; onlar
-Geist kalmalı.
+Inter kalmalı.
 
 ## Ağırlık: şimdilik yalnız 400
 
@@ -112,8 +122,8 @@ ağırlık var, tarayıcı sahte (sentetik) bold çizer. İki başlık da bu yü
 ## Karakter kümesi
 
 257 kod noktası: `U+0020-007E`, `U+00A0-00FF` ve Türkçe için gereken
-`Ğ ğ İ ı Ş ş` dâhil seçili Latin Extended-A. Yani Geist'te olduğu gibi burada da
+`Ğ ğ İ ı Ş ş` dâhil seçili Latin Extended-A. Yani Inter'de olduğu gibi burada da
 Türkçe harfler sistem fontuna düşmez, kesme işareti (`'` ve `’`) de içeride.
 
 Buna karşılık kapsam Latin-1 civarıyla sınırlı — bu bir başlık yüzü, arayüzün
-genelinde kullanmaya uygun değil. `₺` (U+20BA) burada da yok (Geist'te de yoktu).
+genelinde kullanmaya uygun değil. `₺` (U+20BA) burada yok.

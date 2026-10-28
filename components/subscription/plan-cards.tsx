@@ -147,7 +147,7 @@ export function BillingToggle({
           {iv === "year" && (
             <span
               className={cn(
-                "rounded-full bg-muted-foreground/10 px-1 py-px font-mono leading-none font-medium text-muted-foreground transition-colors group-aria-checked/segment:bg-primary/15 group-aria-checked/segment:text-primary",
+                "rounded-full bg-muted-foreground/10 px-1 py-px leading-none font-medium text-muted-foreground transition-colors group-aria-checked/segment:bg-primary/15 group-aria-checked/segment:text-primary",
                 sm ? "text-[0.5rem]" : "text-[0.625rem]"
               )}
             >
@@ -173,13 +173,13 @@ export function FreeCard({
     <div className="flex h-full flex-col gap-5 rounded-[calc(var(--radius)*1.8)] border border-border bg-muted/30 p-5">
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="cn-font-heading text-lg leading-none font-semibold">
+          <span className="cn-font-heading text-lg leading-none font-medium">
             Ücretsiz
           </span>
           {badge}
         </div>
         <div className="flex items-end gap-1.5">
-          <span className="font-mono text-3xl font-semibold tracking-tight">
+          <span className="text-3xl font-medium tracking-tight">
             <Amount value={0} />
           </span>
           <span className="pb-1 text-sm text-muted-foreground">/ ay</span>
@@ -206,7 +206,7 @@ export function ProCard({
     <GradientCard>
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="cn-font-heading text-lg leading-none font-semibold">
+          <span className="cn-font-heading text-lg leading-none font-medium">
             Pro
           </span>
           {badge}
@@ -224,13 +224,8 @@ export function ProCard({
   )
 }
 
-// ₺ (U+20BA) simgesinin ortak stili. Simge NE Geist'te NE Geist Mono'da var;
-// her iki ailede de sistem yedeğine düşüyor. Yani buradaki `font-sans`
-// Geist'in ₺'sini seçmiyor — mono yedeği yerine sans yedeğinin çizmesini
-// sağlıyor, çevresindeki metinle tutarlı duran da o. Rakamlardan hafifçe
-// ayrılır ve bir tık küçülür; em cinsinden olduğu için hangi punto ile
-// kullanılırsa kullanılsın oran korunur.
-const LIRA = "ml-0.5 font-sans text-[0.8em]"
+// ₺ rakamlardan hafifçe ayrılır ve em cinsinden küçülür ki her puntoda oran korunsun.
+const LIRA = "ml-0.5 text-[0.8em]"
 
 // Fiyat tutarı. Simge tr-TR yazımındaki gibi tutarın sonunda durur (990₺).
 export function Amount({ value }: { value: number }) {
@@ -290,7 +285,7 @@ function ProPrice({ interval }: { interval: Interval }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2 }}
         >
-          <span className="font-mono text-sm font-medium text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground">
             <Amount value={YEARLY_LIST} />
           </span>
           <motion.span
@@ -309,7 +304,7 @@ function ProPrice({ interval }: { interval: Interval }) {
       <div className="flex items-end gap-1.5">
         <AnimatedAmount
           value={price}
-          className="font-mono text-3xl font-semibold tracking-tight"
+          className="text-3xl font-medium tracking-tight"
         />
         <span className="pb-1 text-sm text-muted-foreground">
           {interval === "month" ? "/ ay" : "/ yıl"}

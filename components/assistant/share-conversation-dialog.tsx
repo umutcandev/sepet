@@ -606,7 +606,7 @@ function SharePreview({
   return (
     <div className="flex items-center gap-3 rounded-xl border bg-muted/30 p-3">
       <div className="grid min-w-0 flex-1 gap-0.5">
-        <span className="line-clamp-2 text-sm font-semibold">{title}</span>
+        <span className="line-clamp-2 text-sm font-medium">{title}</span>
         <span className="truncate text-xs text-muted-foreground">
           {author ?? "Anonim"}
         </span>

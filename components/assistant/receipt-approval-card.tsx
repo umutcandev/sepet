@@ -358,12 +358,12 @@ export function ReceiptApprovalCard({
                       {purchaseDate || "tarih belirsiz"}
                     </span>
                   )}
-                  <span className="ml-auto text-xs font-semibold">
+                  <span className="ml-auto text-xs font-medium">
                     FİŞ TOPLAMI
                   </span>
                 </div>
               </TableCell>
-              <TableCell className="text-right text-sm font-semibold text-foreground tabular-nums">
+              <TableCell className="text-right text-sm font-medium text-foreground tabular-nums">
                 {formatTLOrDash(ocr.totalAmount ?? totalReceipt)}
               </TableCell>
               {!readOnly && <TableCell className="max-sm:hidden" />}

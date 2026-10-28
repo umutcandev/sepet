@@ -48,7 +48,7 @@ function FooterColumn({
   // `<nav>` landmark'ı gezinme değerini koruyor, taslağı kirletmiyor.
   return (
     <nav aria-label={title} className="min-w-0">
-      <p className="mb-4 text-sm font-semibold tracking-tight text-balance text-foreground">
+      <p className="mb-4 text-sm font-medium tracking-tight text-balance text-foreground">
         {title}
       </p>
       <ul className="flex flex-col gap-3">{children}</ul>
@@ -166,6 +166,9 @@ export function SiteFooter({ className }: { className?: string }) {
               </FooterListLink>
               <FooterListLink href="mailto:support@trysepet.com" external>
                 Destek
+              </FooterListLink>
+              <FooterListLink href={`${GITHUB_URL}/discussions`} external>
+                Tartışma
               </FooterListLink>
             </FooterColumn>
           </div>

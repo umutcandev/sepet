@@ -6,6 +6,7 @@
  *   pnpm eval:match --repeat=3          kararsızlığı ortaya çıkarır
  *   pnpm eval:match --filter=peynir     sadece eşleşen id'ler
  *   pnpm eval:match --model=google/gemini-2.5-flash
+ *   pnpm eval:match --model=anthropic/claude-haiku-5-5 --effort=low
  *   pnpm eval:match --json              makine okunur rapor
  *   pnpm eval:match --update-baseline   ELLE — temiz koşudan sonra
  *   pnpm eval:match --freeze-last       son koşuyu API'ye gitmeden baseline yap
@@ -19,7 +20,6 @@
 import { readFile, rm, writeFile } from "node:fs/promises"
 import { existsSync } from "node:fs"
 import { join } from "node:path"
-import { gateway } from "ai"
 
 import {
   aggregateRuns,
@@ -36,9 +36,9 @@ import type {
   GoldenCase,
   SelectionOutput,
 } from "@/lib/ai/eval/types"
-import { GEMINI_FLASH } from "@/lib/ai/models"
+import { MATCH_MODEL, resolveModel, type ClaudeEffort } from "@/lib/ai/models"
 import type { ParsedItem } from "@/lib/ai/schemas"
-import { MATCH_PROMPT_VERSION, selectMatches } from "@/lib/ai/tools"
+import { MATCH_BATCH_SIZE, MATCH_PROMPT_VERSION, selectMatches } from "@/lib/ai/tools"
 import type { ProductDetail } from "@/lib/marketfiyati/types"
 
 const EVAL_DIR = join(process.cwd(), "lib/ai/eval")
@@ -47,10 +47,10 @@ const BASELINE_FILE = join(EVAL_DIR, "baseline.json")
 const CKPT_FILE = join(EVAL_DIR, ".run-checkpoint.json")
 
 /**
- * K4 — üretimdeki tipik sepete yakın batch; prompt uzunluğu kaliteyi etkiler.
+ * Üretimdeki parça boyutu; prompt uzunluğu kaliteyi etkiler.
  * --batch=N ile geçilebilir: batch boyutunun kaliteye etkisini ölçmek için.
  */
-const DEFAULT_BATCH_SIZE = 8
+const DEFAULT_BATCH_SIZE = MATCH_BATCH_SIZE
 /**
  * Bilinen modellerin M token başına fiyatı. --model ile listede olmayan bir
  * model koşulursa TUTAR BASILMAZ: yanlış fiyatla hesaplanmış bir rakam,
@@ -59,6 +59,7 @@ const DEFAULT_BATCH_SIZE = 8
 const PRICE_PER_M: Record<string, { input: number; output: number }> = {
   "google/gemini-2.5-flash-lite": { input: 0.1, output: 0.4 },
   "google/gemini-2.5-flash": { input: 0.3, output: 2.5 },
+  "anthropic/claude-haiku-5-5": { input: 0.1, output: 0.5 },
 }
 
 /**
@@ -87,10 +88,11 @@ const value = (name: string) =>
 const repeat = Math.max(1, Number(value("repeat") ?? 1))
 // Varsayılan ÜRETİM modeli. Koşucu modeli her zaman açıkça geçirir; aksi
 // halde üretim varsayılanı değiştiğinde rapor yanlış model adı basar.
-const modelId = value("model") ?? GEMINI_FLASH
+const modelId = value("model") ?? MATCH_MODEL
 const filter = value("filter")
 const BATCH_SIZE = Math.max(1, Number(value("batch") ?? DEFAULT_BATCH_SIZE))
 const thinking = value("thinking") === undefined ? undefined : Number(value("thinking"))
+const effort = value("effort") as ClaudeEffort | undefined
 
 /**
  * Golden adayını selectMatches'in beklediği ProductDetail'e genişletir. Prompt
@@ -117,16 +119,18 @@ const toItem = (c: GoldenCase): ParsedItem => ({
   searchQuery: c.input.rawName,
 })
 
-/** withLlmCall'ın `[ai] ... in=N out=N` satırını yakalar — üretim kodu değişmez. */
+/** withLlmCall'ın `[ai] ... ms=N status=ok in=N out=N` satırını yakalar — üretim kodu değişmez. */
 function captureTokens() {
-  const totals = { input: 0, output: 0 }
+  const totals = { input: 0, output: 0, ms: 0, calls: 0 }
   const original = console.log
   console.log = (...a: unknown[]) => {
     const line = a.map(String).join(" ")
-    const m = line.match(/^\[ai\] selectMatches .* in=(\d+) out=(\d+)/)
+    const m = line.match(/^\[ai\] selectMatches .* ms=(\d+) status=ok in=(\d+) out=(\d+)/)
     if (m) {
-      totals.input += Number(m[1])
-      totals.output += Number(m[2])
+      totals.ms += Number(m[1])
+      totals.calls++
+      totals.input += Number(m[2])
+      totals.output += Number(m[3])
       return
     }
     if (line.startsWith("[ai]") || line.startsWith("[lookupProducts]")) return
@@ -188,7 +192,8 @@ async function runBatch(batch: GoldenCase[], label: string): Promise<CaseResult[
       selectMatches(batch.map((c) => ({ item: toItem(c), hits: c.candidates.map(toDetail) })), {
         maxRetries: 0,
         ...(thinking === undefined ? {} : { thinkingBudget: thinking }),
-        model: gateway(modelId),
+        ...(effort === undefined ? {} : { effort }),
+        model: resolveModel(modelId),
         modelId,
       }),
     label,
@@ -294,7 +299,8 @@ async function main() {
   )
 
   console.log(
-    `Sepet — match golden set · ${cases.length} vaka · ${batches.length} grup · ${modelId}`,
+    `Sepet — match golden set · ${cases.length} vaka · ${batches.length} grup · ${modelId}` +
+      (effort ? ` · effort=${effort}` : ""),
   )
   console.log(`prompt: MATCH_PROMPT_VERSION=${MATCH_PROMPT_VERSION}`)
   // §17 fixture çürümesi: ürünler raftan kalkar. Tuzak SINIFI kalıcı olduğu
@@ -314,7 +320,7 @@ async function main() {
   // sürüyor; yarıda düşen koşunun parasını ve süresini ikinci kez ödememek
   // için kaldığı yerden devam eder. Anahtar prompt sürümünü içerir: prompt
   // değişince eski checkpoint otomatik geçersiz olur.
-  const ckptKey = `${MATCH_PROMPT_VERSION}:${modelId}:${repeat}:${BATCH_SIZE}:${cases.length}:${filter ?? ""}`
+  const ckptKey = `${MATCH_PROMPT_VERSION}:${modelId}:${thinking ?? ""}:${effort ?? ""}:${repeat}:${BATCH_SIZE}:${cases.length}:${filter ?? ""}`
   type Checkpoint = { key: string; doneBatches: string[]; runs: Record<string, CaseResult[]> }
   let ckpt: Checkpoint = { key: ckptKey, doneBatches: [], runs: {} }
   if (existsSync(CKPT_FILE) && !flag("fresh")) {
@@ -340,7 +346,7 @@ async function main() {
           "  Onaylıyorsan --yes ekle. Daha ucuz seçenekler:\n" +
           "    --repeat=1        turu üçte bire indirir\n" +
           "    --filter=a,b,c    yalnız ilgili vakaları koşar\n" +
-          "    --model çıkar     flash-lite ~7 kat ucuz",
+          "    --thinking=0      Claude'da düşünmeyi kapatır (kalite düşer)",
       )
       process.exitCode = 1
       return
@@ -448,7 +454,8 @@ async function main() {
       : " · tutar yok (bu modelin fiyatı tabloda değil)"
     console.log(
       `\n  Token: ${(totals.input / 1000).toFixed(1)}K girdi · ` +
-        `${(totals.output / 1000).toFixed(1)}K çıktı${cost}`,
+        `${(totals.output / 1000).toFixed(1)}K çıktı${cost}` +
+        (totals.calls > 0 ? ` · ort. ${(totals.ms / totals.calls / 1000).toFixed(1)} sn/çağrı` : ""),
     )
   }
 

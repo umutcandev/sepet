@@ -1,12 +1,12 @@
 {
-  "createdAt": "2026-09-21T19:33:49.857Z",
-  "promptVersion": "48b7aa246927",
-  "model": "google/gemini-2.5-flash",
+  "createdAt": "2026-10-26T18:59:53.485Z",
+  "promptVersion": "1ecda3a1414d",
+  "model": "anthropic/claude-haiku-5-5",
   "cases": [
     {
       "id": "ayran-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "badem-01",
@@ -26,7 +26,7 @@
     {
       "id": "barbunya-01",
       "split": "holdout",
-      "passed": false
+      "passed": true
     },
     {
       "id": "biber-01",
@@ -36,7 +36,7 @@
     {
       "id": "bulasik-deterjani-01",
       "split": "train",
-      "passed": true
+      "passed": false
     },
     {
       "id": "bulgur-01",
@@ -61,7 +61,7 @@
     {
       "id": "deterjan-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "domates-01",
@@ -76,7 +76,7 @@
     {
       "id": "et-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "fasulye-01",
@@ -91,7 +91,7 @@
     {
       "id": "galeta-unu-01",
       "split": "holdout",
-      "passed": false
+      "passed": true
     },
     {
       "id": "havuc-01",
@@ -146,12 +146,12 @@
     {
       "id": "kiyma-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "kola-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "kori-01",
@@ -191,12 +191,12 @@
     {
       "id": "makarna-01",
       "split": "train",
-      "passed": true
+      "passed": false
     },
     {
       "id": "mayonez-01",
       "split": "holdout",
-      "passed": false
+      "passed": true
     },
     {
       "id": "mercimek-01",
@@ -216,7 +216,7 @@
     {
       "id": "nohut-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "noodle-01",
@@ -231,7 +231,7 @@
     {
       "id": "pastirma-01",
       "split": "holdout",
-      "passed": true
+      "passed": false
     },
     {
       "id": "patates-01",
@@ -266,12 +266,12 @@
     {
       "id": "pirinc-01",
       "split": "train",
-      "passed": true
+      "passed": false
     },
     {
       "id": "pul-biber-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "sabun-01",
@@ -291,7 +291,7 @@
     {
       "id": "salca-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "sampuan-01",
@@ -301,7 +301,7 @@
     {
       "id": "sarimsak-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "sehriye-01",
@@ -311,12 +311,12 @@
     {
       "id": "seker-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "sirke-01",
       "split": "holdout",
-      "passed": true
+      "passed": false
     },
     {
       "id": "soda-01",
@@ -331,12 +331,12 @@
     {
       "id": "soya-sosu-01",
       "split": "train",
-      "passed": true
+      "passed": false
     },
     {
       "id": "su-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "sucuk-01",
@@ -351,12 +351,12 @@
     {
       "id": "tahin-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "tavuk-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "tereyagi-01",
@@ -371,7 +371,7 @@
     {
       "id": "tuvalet-kagidi-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "tuz-01",
@@ -381,7 +381,7 @@
     {
       "id": "un-01",
       "split": "train",
-      "passed": false
+      "passed": true
     },
     {
       "id": "yag-01",
@@ -406,12 +406,12 @@
     {
       "id": "zeytin-01",
       "split": "train",
-      "passed": true
+      "passed": false
     },
     {
       "id": "zeytinyagi-01",
       "split": "train",
-      "passed": false
+      "passed": true
     }
   ]
 }

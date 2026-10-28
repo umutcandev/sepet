@@ -394,7 +394,7 @@ function PickerBody({
         {pool.status === "ready" &&
           sections.map((s) => (
             <section key={s.key} className="pb-2">
-              <h3 className="px-2 pt-2 pb-1 text-[0.6875rem] font-semibold tracking-wide text-muted-foreground uppercase">
+              <h3 className="px-2 pt-2 pb-1 text-[0.6875rem] font-medium tracking-wide text-muted-foreground uppercase">
                 {s.title}{" "}
                 <span className="font-normal tabular-nums">
                   ({s.items.length})
@@ -530,7 +530,7 @@ function CandidateRow({
                 // İç içe yarıçap: logo 20px'lik daire, çevresinde 2px dolgu →
                 // dış yarıçap 10 + 2 = 12px, yani 24px yükseklikte tam hap.
                 "inline-flex items-center gap-1 rounded-full bg-muted/70 p-0.5 pr-2 text-[0.6875rem] tabular-nums",
-                i === 0 && "font-semibold"
+                i === 0 && "font-medium"
               )}
             >
               <MarketLogo name={m.market} size="xs" />
@@ -660,7 +660,7 @@ function PreviewLine({
   // gelir. İki satırlı tutar sütunu her satıra 10px boşluk ekliyordu.
   return (
     <div className="flex flex-col gap-1.5" aria-live="polite">
-      <span className="mb-0.5 text-[0.6875rem] font-semibold tracking-wide text-muted-foreground uppercase">
+      <span className="mb-0.5 text-[0.6875rem] font-medium tracking-wide text-muted-foreground uppercase">
         Sepet önizlemesi
       </span>
       {plans.map((p) => (
@@ -696,7 +696,7 @@ function PreviewLine({
                 <span className="sr-only">yeni </span>
               </>
             )}
-            <span className="text-sm font-semibold">{formatTL(p.total)}</span>
+            <span className="text-sm font-medium">{formatTL(p.total)}</span>
           </span>
         </div>
       ))}

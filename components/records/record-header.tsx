@@ -27,7 +27,7 @@ export function RecordHeader({
   return (
     <header className="mb-5 space-y-2">
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-        <h1 className="min-w-[12rem] flex-1 text-xl font-semibold break-words sm:text-2xl">
+        <h1 className="min-w-[12rem] flex-1 text-xl font-medium break-words sm:text-2xl">
           {title}
         </h1>
         {actions ? <div className="shrink-0">{actions}</div> : null}

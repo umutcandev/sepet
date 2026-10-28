@@ -26,7 +26,7 @@
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
   /* Vitrin yüzü (Cooper) — `font-display` utility'sini üretir. `--font-heading`
-       ile karıştırma: o, kart/dialog başlıklarının Geist'i. Bu yalnız ana
+       ile karıştırma: o, kart/dialog başlıklarının Inter'i. Bu yalnız ana
        sayfanın iki büyük cümlesi için, bkz. lib/fonts.ts. */
   --font-display: var(--font-display);
   /* `font-mono` bugüne dek kazara ayaktaydı: tema tarafında tanımlı değildi,
@@ -251,7 +251,8 @@
   --home-base: #1b0e08;
   --home-base-clear: rgba(27, 14, 8, 0);
   --home-panel: #221a14;
-  --home-tile: #2d2218;
+  /* Panelin kendi tonundan açılır: #2D2218 aynı açıklıkta ama daha doygundu. */
+  --home-tile: color-mix(in oklab, var(--home-panel) 94%, var(--foreground));
 }
 
 /* shadow-plugin'in hairline'ı varsayılan olarak nötrdür (siyah %5 / beyaz %18).
@@ -471,6 +472,53 @@
   }
 }
 
+/* Ağırlık kuralı: Inter'de yalnız iki ağırlık var. Gövde metni Regular (400);
+   başlıklar ve vurgu (strong/b, tablo başlığı) Medium (500).
+
+   Üç katmanda uygulanır:
+   1. Tailwind ağırlık token'ları: kalın uçlar 500'e, ince uçlar 400'e
+      eşitlenir. Kaynak kodda `font-semibold`/`font-bold` kalmadı, ama
+      Tailwind'in taradığı üçüncü parti kod (streamdown: asistan mesajlarındaki
+      başlık, `**kalın**`, tablo başlığı ve bağlantı onay penceresi) hâlâ
+      `font-semibold` yazıyor. Token düzeyinde kapatmak onları ve ileride
+      eklenecek her sınıfı aynı yerden yakalar.
+   2. Tarayıcının kendi kalınlaştırdığı öğeler (`bolder`) ve prose eklentisinin
+      600/700/800/900'leri aşağıda 500'e çekilir. Cooper başlıkları
+      `font-normal` taşıdığı için (utility > base) etkilenmez.
+   3. `font-synthesis-weight: none`: Inter 400–500 aralığıyla kayıtlı
+      (lib/fonts.ts). Bir yer yine de ≥600 isterse tarayıcı eldeki 500 yüzünü
+      kendisi kalınlaştırırdı (sahte bold); bu kapatılınca 500 olduğu gibi
+      çizilir. */
+@theme {
+  --font-weight-thin: 400;
+  --font-weight-extralight: 400;
+  --font-weight-light: 400;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 500;
+  --font-weight-extrabold: 500;
+  --font-weight-black: 500;
+}
+@layer base {
+  html {
+    font-synthesis-weight: none;
+  }
+  b,
+  strong,
+  th,
+  optgroup,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500;
+  }
+}
+.prose :where(h1, h2, h3, h4, h5, h6, strong, b, th, dt, a) {
+  font-weight: 500;
+}
+
 /* Blog `prose`'unu mevcut palete bağla: token'lar light/dark'ta zaten flip
    ettiği için ayrı `prose-invert` gerekmez, renk her iki temada da uyumlu.
    Gövde metni okunabilir ama başlıklardan soluk: foreground'un yumuşatılmış
@@ -631,11 +679,18 @@
   padding: 0.15em 0.35em;
   font-family: var(--font-mono);
   font-size: 0.875em;
-  font-weight: 450;
+  font-weight: 400;
 }
 .prose :not(pre) > code::before,
 .prose :not(pre) > code::after {
   content: none;
+}
+
+/* Mono yalnız kodda: streamdown'ın dil etiketi, mermaid ve link onayı sans. */
+[data-streamdown="code-block-header"] .font-mono,
+[data-streamdown="mermaid-block"] .font-mono,
+[data-streamdown="link-safety-modal"] .font-mono {
+  font-family: var(--font-sans);
 }
 
 /* Başlık çapaları — başlık metni LİNK DEĞİL. Anchor başlığın önüne eklenir;

@@ -19,7 +19,7 @@ export function RecordNotFoundState({
       <div className="mx-auto mb-4 flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground">
         <RiSearchLine className="size-5" />
       </div>
-      <h1 className="text-lg font-semibold">{title}</h1>
+      <h1 className="text-lg font-medium">{title}</h1>
       <p className="mt-2 text-sm text-muted-foreground">{description}</p>
       <div className="mt-5 flex items-center justify-center gap-2">
         <Button variant="default" asChild>

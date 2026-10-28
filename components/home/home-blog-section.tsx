@@ -1,20 +1,18 @@
-import { Squircle } from "@/components/ui/squircle"
 import Link from "next/link"
-import { RiArrowRightLine } from "@remixicon/react"
+import { RiArrowRightLine, RiArrowRightSLine } from "@remixicon/react"
 
-import { AuthorAvatarGroup } from "@/components/blog/author-meta"
+import { PostCover } from "@/components/blog/post-cover"
 import { HomeFeaturesSection } from "@/components/home/home-features-section"
 import { HomeMarketsSection } from "@/components/home/home-markets-section"
 import { getLatestPosts } from "@/lib/blog"
-import { formatAuthorNames } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
-import { formatPostDateMedium } from "@/lib/blog/format"
+import { formatPostDateShort } from "@/lib/blog/format"
 import { Button } from "@/components/ui/button"
 import { PressFx } from "@/components/motion/press-fx"
 
-// Ana sayfa "son 4 yazı" bölümü (plan §7.3). getLatestPosts ile beslenir.
+// Ana sayfa "son 3 yazı" bölümü (plan §7.3). getLatestPosts ile beslenir.
 export function HomeBlogSection() {
-  const posts = getLatestPosts(4)
+  const posts = getLatestPosts(3)
   if (posts.length === 0) return null
 
   // Zemin = hero fade'inin dip rengi (--home-base), gerçek temaya bağlı:
@@ -75,9 +73,9 @@ export function HomeBlogSection() {
 
       {/* pb: altında footer var; sayfa dibi boşluğunu footer'ın kendi padding'i
           tamamlıyor, bu yüzden burada eskisinden dar. */}
-      <div className="mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
+      <div className="@container/blog mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
         <div className="mb-5 flex items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
+          <h2 className="text-2xl font-medium tracking-tight text-balance text-foreground">
             Blog Gönderileri
           </h2>
           <PressFx className="shrink-0">
@@ -98,79 +96,37 @@ export function HomeBlogSection() {
           </PressFx>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {posts.map((post) => {
-            const category = getCategory(post.category)
-            return (
-              <div key={post.slug} className="h-full">
-                {/* Yüzey (kenar + zemin) içerideki `Squircle`de duruyor:
-                    clip-path elemanın KENDİ odak halkasını da sildiği için
-                    `Link` kırpılmadan dışarıda kalıyor, klavye odağı onun
-                    üzerinde çizilir. `grid` + `h-full` şart — `effects`
-                    açıkken Lisse SVG katmanını barındıran bir sarmalayıcı div
-                    doğuruyor; tek satırlık grid onu esnetmezse içerideki
-                    `h-full` çözülemez ve kartlar eşit boyda durmaz.
-
-                    `grid-cols-[minmax(0,1fr)]` ŞART. Örtük kolon `auto`dur ve
-                    boyu sarmalayıcının min-content'ine göre belirlenir; o da
-                    aşağıdaki `truncate` (white-space: nowrap) yüzünden KESİLMEMİŞ
-                    yazar adının genişliği. İki yazarlı kartlarda 252px çıkıyor,
-                    239px'lik kolonu 13px aşıyor ve 12px'lik gap'i yiyip komşu
-                    kartın üstüne biniyordu. `min-w-0` bunu çözmez: layout'ta
-                    küçülmeye izin verir, intrinsic ölçümdeki min-content
-                    katkısını düşürmez. minmax(0,1fr) track'i kaba kilitler.
-
-                    Dinlenme kenarı SVG'ye taşındığı için eski
-                    `hover:border-foreground/20` artık boyanmıyor; hover geri
-                    bildirimi zemin tonuna alındı.
-
-                    YÜZEY REÇETESİ FEATURE KARTLARIYLA AYNI: `smooth-shadow-ring-sm`,
-                    ayrıca `border` YOK — halka zaten gölgenin içinde. Eskiden
-                    `border border-border` idi ve gölgesizdi: hemen üstlerindeki
-                    üç feature kartı gölgeliyken dört blog kartı düz duruyordu,
-                    üstelik kenar rengi de başkaydı (opak `--border`a karşı
-                    halkanın hairline'ı). `bg-clip-padding` da gitti, CSS
-                    kenarı kalmayınca padding-box ile border-box aynı şey.
-
-                    Radius farkı (xl'e karşı feature'ların 2xl'i) KALIYOR: kart
-                    küçüldükçe köşe de küçülür, bu drift değil ölçek. */}
-                <Link
-                  href={post.permalink}
-                  className="group grid h-full grid-cols-[minmax(0,1fr)] rounded-xl"
-                >
-                  <Squircle
-                    radius="xl"
-                    effects
-                    className="flex h-full flex-col bg-card p-4 smooth-shadow-ring-sm transition-colors group-hover:bg-muted/40 [&_[data-slot=avatar]]:ring-card"
-                  >
-                    <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-muted-foreground">
-                      <time dateTime={post.publishedAt}>
-                        {formatPostDateMedium(post.publishedAt)}
-                      </time>
-                      <span aria-hidden>·</span>
-                      <span>{category.label}</span>
-                    </div>
-
-                    <h3 className="mt-1 grow text-base font-medium tracking-tight text-pretty text-foreground transition-colors group-hover:text-primary">
-                      {post.title}
-                    </h3>
-
-                    {/* Sarmalamıyoruz: dar kartta "Nur Salan ve Umutcan Kaya"
-                        sığmayınca avatarlar tek başına bir satırda kalıp
-                        isimden kopuyordu. Tek satır + `truncate`, taşan adı
-                        üç noktayla kesiyor; avatar grubu flex'in
-                        `min-width:auto` tabanı sayesinde daralmıyor. */}
-                    <div className="mt-8 flex items-center gap-2">
-                      <AuthorAvatarGroup authors={post.authors} size="xs" />
-                      <span className="min-w-0 truncate text-sm text-muted-foreground">
-                        {formatAuthorNames(post.authors)}
-                      </span>
-                    </div>
-                  </Squircle>
-                </Link>
+        <div className="grid grid-cols-1 gap-x-5 gap-y-8 @2xl/blog:grid-cols-3">
+          {posts.map((post) => (
+            <Link
+              key={post.slug}
+              href={post.permalink}
+              className="group flex flex-col rounded-lg"
+            >
+              <PostCover
+                post={post}
+                className="border border-hairline transition-opacity group-hover:opacity-90"
+              />
+              <div className="mt-4 flex items-center gap-2 text-[0.8125rem]">
+                <span className="font-medium text-foreground">
+                  {getCategory(post.category).label}
+                </span>
+                <span aria-hidden className="text-muted-foreground">
+                  ·
+                </span>
+                <time dateTime={post.publishedAt} className="text-foreground/80">
+                  {formatPostDateShort(post.publishedAt)}
+                </time>
               </div>
-            )
-          })}
+              <h3 className="mt-1.5 text-base font-medium tracking-tight text-pretty text-foreground">
+                {post.title}
+                <RiArrowRightSLine
+                  aria-hidden
+                  className="ml-1 inline size-4 align-[-0.2em] text-muted-foreground transition-transform group-hover:translate-x-0.5"
+                />
+              </h3>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

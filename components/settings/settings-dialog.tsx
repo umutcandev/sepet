@@ -343,7 +343,7 @@ function ComingSoonPanel({ tab }: { tab: TabKey }) {
   return (
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-1.5">
-        <h2 className="cn-font-heading text-md font-semibold">{title}</h2>
+        <h2 className="cn-font-heading text-md font-medium">{title}</h2>
       </header>
 
       <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-muted/30 px-6 py-12 text-center">

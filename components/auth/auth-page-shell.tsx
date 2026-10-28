@@ -7,19 +7,21 @@ export function AuthPageShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-[70dvh] w-full items-center justify-center px-4 py-12">
       <div className="flex w-full max-w-[402px] flex-col items-center rounded-xl bg-background px-6 pt-10 pb-8 text-center smooth-shadow-ring-lg">
         <Image
-          src="/brand/sepet-square-dark.webp"
+          src="/brand/dark-icon-sepet.svg"
           alt="Sepet"
           width={256}
           height={256}
-          className="h-16 w-16 rounded-xl dark:hidden"
+          priority
+          className="h-16 w-16 dark:hidden"
         />
         <Image
-          src="/brand/sepet-square-light.webp"
+          src="/brand/light-icon-sepet.svg"
           alt=""
           aria-hidden
           width={256}
           height={256}
-          className="hidden h-16 w-16 rounded-xl dark:block"
+          priority
+          className="hidden h-16 w-16 dark:block"
         />
         {children}
       </div>

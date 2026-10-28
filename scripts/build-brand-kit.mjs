@@ -67,6 +67,8 @@ const kitFiles = [
   "sepet-logo-light.svg",
   "sepet-square-dark.webp",
   "sepet-square-light.webp",
+  "dark-icon-sepet.svg",
+  "light-icon-sepet.svg",
   "opengraph-image.png",
 ]
 
@@ -83,6 +85,7 @@ try {
       "sepet-dark.svg / sepet-logo-dark.svg   → koyu mürekkep, AÇIK zeminde kullanın",
       "sepet-light.svg / sepet-logo-light.svg → açık mürekkep, KOYU zeminde kullanın",
       "sepet-square-*.webp                    → kare kullanımlar (avatar, uygulama simgesi)",
+      "*-icon-sepet.svg                       → kare simgenin vektör hali (dark: koyu, light: açık zemin rengi)",
       "opengraph-image.png                    → paylaşım görseli",
       "",
       "Logoyu germeyin, döndürmeyin, renklerini değiştirmeyin.",

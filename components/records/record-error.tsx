@@ -34,7 +34,7 @@ export function RecordErrorState({
       <div className="mx-auto mb-4 flex size-11 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400">
         <RiAlertLine className="size-5" />
       </div>
-      <h1 className="text-lg font-semibold">{title}</h1>
+      <h1 className="text-lg font-medium">{title}</h1>
       <p className="mt-2 text-sm text-muted-foreground">
         Kayıt açılırken beklenmedik bir şey oldu. Tekrar deneyin.
       </p>
