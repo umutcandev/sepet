@@ -5,6 +5,6 @@
 
 Yapay zekâ destekli akıllı alışveriş asistanı.
 
-[trysepet.com](https://www.trysepet.com) · [support@trysepet.com](mailto:support@trysepet.com)
+[trysepet.com](https://www.trysepet.com) · [GitHub](https://github.com/umutcandev/sepet)
 
 </div>
