@@ -75,7 +75,7 @@ export function HomeBlogSection() {
           tamamlıyor, bu yüzden burada eskisinden dar. */}
       <div className="@container/blog mx-auto w-full max-w-5xl px-4 pt-12 pb-14 text-foreground md:pt-16">
         <div className="mb-5 flex items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
+          <h2 className="text-2xl font-medium tracking-tight text-balance text-foreground">
             Blog Gönderileri
           </h2>
           <PressFx className="shrink-0">

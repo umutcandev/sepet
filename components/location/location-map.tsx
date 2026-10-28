@@ -57,7 +57,7 @@ function depotIcon(L: typeof LeafletNs, market: string): LeafletNs.DivIcon {
   const logo = getMarketLogo(market)
   const inner = logo
     ? `<img src="${escapeHtml(logo)}" alt="${escapeHtml(market)}" style="width:100%;height:100%;object-fit:contain;" />`
-    : `<span style="font-size:11px;font-weight:600;color:#6D4530;">${escapeHtml(getMarketInitial(market))}</span>`
+    : `<span style="font-size:11px;font-weight:500;color:#6D4530;">${escapeHtml(getMarketInitial(market))}</span>`
   const html =
     `<div title="${escapeHtml(market)}" style="width:26px;height:26px;border-radius:9999px;` +
     "background:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);" +

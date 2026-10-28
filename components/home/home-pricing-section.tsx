@@ -105,7 +105,7 @@ export function HomePricingSection() {
             `flex-wrap` + `ms-auto`: çok dar ekranda taşmak yerine alt satıra
             sarar ve orada da sağa yaslı kalır. */}
         <div className="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-          <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
+          <h2 className="text-2xl font-medium tracking-tight text-balance text-foreground">
             Fiyatlandırma
           </h2>
           <div className="ms-auto shrink-0 sm:hidden">
@@ -155,7 +155,7 @@ export function HomePricingSection() {
                       className="bg-muted/30 px-2 py-2 text-left sm:px-4"
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="cn-font-heading text-base font-semibold">
+                        <span className="cn-font-heading text-base font-medium">
                           Özellikler
                         </span>
                         <div className="hidden shrink-0 sm:block">

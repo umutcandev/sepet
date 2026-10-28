@@ -112,13 +112,13 @@ export function ReceiptComparisonCard({
         <div className="grid gap-1.5">
           <dl className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-1 text-xs">
             <dt className="text-muted-foreground">Fişteki fiyatlar</dt>
-            <dd className="text-end font-semibold tabular-nums">
+            <dd className="text-end font-medium tabular-nums">
               {formatTLOrDash(comparison.totalReceiptAmount)}
             </dd>
             <dt className="text-muted-foreground">
               {isStale ? "Bugünkü en iyi fiyatlar" : "En iyi fiyatlar"}
             </dt>
-            <dd className="text-end font-semibold tabular-nums">
+            <dd className="text-end font-medium tabular-nums">
               {formatTLOrDash(comparison.totalBestAmount)}
             </dd>
           </dl>
@@ -231,7 +231,7 @@ function ComparisonRow({
             <span className="text-[0.6875rem] leading-4 text-muted-foreground">
               Fişte
             </span>
-            <span className="text-sm font-semibold tabular-nums">
+            <span className="text-sm font-medium tabular-nums">
               {formatTLOrDash(item.receiptUnitPrice)}
             </span>
           </div>
@@ -293,7 +293,7 @@ function BestOffer({
     <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs">
       <MarketLogo name={item.bestMarket} size="xs" />
       <span className="text-muted-foreground">{item.bestMarket}</span>
-      <span className="font-semibold tabular-nums">
+      <span className="font-medium tabular-nums">
         {formatTLOrDash(item.bestPrice)}
       </span>
       {/* Boyut farkında tasarruf hesaplanmaz (savingsTL boş); eski fişte
@@ -353,7 +353,7 @@ function RowDetails({
                     {opt.productName}
                   </MarqueeText>
                 </div>
-                <span className="shrink-0 text-xs font-semibold tabular-nums">
+                <span className="shrink-0 text-xs font-medium tabular-nums">
                   {formatTL(opt.packagePrice)}
                 </span>
               </li>

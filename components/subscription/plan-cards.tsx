@@ -173,13 +173,13 @@ export function FreeCard({
     <div className="flex h-full flex-col gap-5 rounded-[calc(var(--radius)*1.8)] border border-border bg-muted/30 p-5">
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="cn-font-heading text-lg leading-none font-semibold">
+          <span className="cn-font-heading text-lg leading-none font-medium">
             Ücretsiz
           </span>
           {badge}
         </div>
         <div className="flex items-end gap-1.5">
-          <span className="text-3xl font-semibold tracking-tight">
+          <span className="text-3xl font-medium tracking-tight">
             <Amount value={0} />
           </span>
           <span className="pb-1 text-sm text-muted-foreground">/ ay</span>
@@ -206,7 +206,7 @@ export function ProCard({
     <GradientCard>
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="cn-font-heading text-lg leading-none font-semibold">
+          <span className="cn-font-heading text-lg leading-none font-medium">
             Pro
           </span>
           {badge}
@@ -304,7 +304,7 @@ function ProPrice({ interval }: { interval: Interval }) {
       <div className="flex items-end gap-1.5">
         <AnimatedAmount
           value={price}
-          className="text-3xl font-semibold tracking-tight"
+          className="text-3xl font-medium tracking-tight"
         />
         <span className="pb-1 text-sm text-muted-foreground">
           {interval === "month" ? "/ ay" : "/ yıl"}

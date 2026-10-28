@@ -16,7 +16,7 @@ export function PanelHeader({
 }) {
   return (
     <header data-search-target={target} className="flex flex-col gap-1.5">
-      <h2 className="cn-font-heading text-lg font-semibold sm:text-xl">
+      <h2 className="cn-font-heading text-lg font-medium sm:text-xl">
         {title}
       </h2>
       {description ? (
@@ -37,7 +37,7 @@ export function SettingGroup({
   return (
     <section className="flex flex-col gap-2">
       {title ? (
-        <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+        <h3 className="text-sm font-medium text-foreground">{title}</h3>
       ) : null}
       {/* Satır ayraçları, her satırın ince alt
           kenarıyla yapılır (bağımsız <Separator/> yerine divide-y) → tüm

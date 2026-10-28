@@ -98,7 +98,7 @@ export function ProductDetailPanel({ productId }: Props) {
           <DetailThumb url={detail.imageUrl} />
           <div className="flex min-w-0 flex-1 flex-col gap-1.5">
             <div className="space-y-0.5">
-              <ResponsiveDialogTitle className="line-clamp-2 text-[0.9375rem] font-semibold leading-snug">
+              <ResponsiveDialogTitle className="line-clamp-2 text-[0.9375rem] font-medium leading-snug">
                 {detail.name}
               </ResponsiveDialogTitle>
               {subtitle && (

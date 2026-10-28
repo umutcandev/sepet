@@ -198,7 +198,7 @@ function TilesArt() {
             x={PICKED.w / 2}
             y={59}
             textAnchor="middle"
-            className="fill-foreground text-xs font-semibold tabular-nums"
+            className="fill-foreground text-xs font-medium tabular-nums"
           >
             113,25 TL
           </text>
@@ -229,7 +229,7 @@ export function HomeFeaturesSection() {
   return (
     <div className="@container/features mx-auto w-full max-w-5xl px-4 pt-10 text-foreground md:pt-14">
       <div className="mb-5 flex items-center justify-between gap-4">
-        <h2 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
+        <h2 className="text-2xl font-medium tracking-tight text-balance text-foreground">
           Asistanla Tanışın
         </h2>
         <PressFx className="shrink-0">
@@ -273,7 +273,7 @@ export function HomeFeaturesSection() {
                   aria-hidden
                   className="absolute -top-10 -right-12 bottom-0 left-0 -z-10 bg-card mask-t-from-55% mask-r-from-60%"
                 />
-                <h3 className="text-lg font-semibold tracking-tight text-balance text-foreground">
+                <h3 className="text-lg font-medium tracking-tight text-balance text-foreground">
                   {feature.title}
                 </h3>
                 <p className="mt-1 text-sm leading-6 text-pretty text-muted-foreground">

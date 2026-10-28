@@ -208,7 +208,7 @@ function Content({
   return (
     <div className="flex w-full flex-col items-center">
       {icon}
-      <h1 className="mt-5 text-[1.375rem] leading-tight font-semibold tracking-[-0.02em] text-foreground">
+      <h1 className="mt-5 text-[1.375rem] leading-tight font-medium tracking-[-0.02em] text-foreground">
         {title}
       </h1>
       <p className="mt-2 max-w-[300px] text-sm leading-[1.4] tracking-[-0.01em] text-muted-foreground">

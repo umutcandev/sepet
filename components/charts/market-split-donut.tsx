@@ -142,7 +142,7 @@ export function MarketSplitDonut({ data, totalLabel, emptyHint }: Props) {
                     <tspan
                       x={viewBox.cx}
                       dy="1.5em"
-                      className="fill-foreground text-sm font-semibold tabular-nums sm:text-base"
+                      className="fill-foreground text-sm font-medium tabular-nums sm:text-base"
                     >
                       {formatTL(total)}
                     </tspan>

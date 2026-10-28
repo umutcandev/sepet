@@ -11,7 +11,10 @@ Kaynak: [rsms/inter](https://github.com/rsms/inter) `v4.1` release'i
 Dosyalar release'teki haliyle, alt kümelenmeden kullanılır: tam karakter seti
 (2852 kod noktası), bütün OpenType özellikleri (ss/cv alternatifleri dâhil) ve
 iki eksen (`wght` 100–900, `opsz` 14–32). `Inter-Variable.woff2` =
-`web/InterVariable.woff2`, TTF'ler = `extras/ttf/Inter-{Regular,SemiBold}.ttf`.
+`web/InterVariable.woff2`, `Inter-Regular.ttf` = `extras/ttf/Inter-Regular.ttf`.
+`Inter-Medium.ttf` release'te statik olarak yok: `Inter-Variable.woff2`'den
+fontTools ile `wght=500, opsz=14` örneklenerek üretildi
+(`fontTools.varLib.instancer`).
 
 # Geist Mono (self-hosted)
 
@@ -41,10 +44,10 @@ Böylece subset seçimi diye bir karar noktası kalmıyor.
 
 | Dosya | Kullanım |
 | --- | --- |
-| `Inter-Variable.woff2` | Tarayıcı — `lib/fonts.ts`, `--font-sans` (wght 100–900, opsz 14–32) |
+| `Inter-Variable.woff2` | Tarayıcı — `lib/fonts.ts`, `--font-sans` (dosya wght 100–900, kayıtlı aralık 400–500; opsz 14–32) |
 | `GeistMono-Variable.woff2` | Tarayıcı — `lib/fonts.ts`, `--font-mono` (wght 100–900) |
 | `Inter-Regular.ttf` | `app/blog/[slug]/opengraph-image.tsx` (weight 400) |
-| `Inter-SemiBold.ttf` | `app/blog/[slug]/opengraph-image.tsx` (weight 600) |
+| `Inter-Medium.ttf` | `app/blog/[slug]/opengraph-image.tsx` (weight 500) |
 
 Tarayıcı tarafı yalnız woff2: 2016'dan beri evrensel destekli, en küçük çıktı.
 `woff`/`otf`/`ttf` tarayıcı için gereksiz ağırlık olurdu. OG tarafında ise TTF

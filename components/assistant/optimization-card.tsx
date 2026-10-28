@@ -125,7 +125,7 @@ function AllocationBreakdown({
                         kalemde aynı balon tekrar ediyordu. */}
                     <div className="flex items-center gap-1.5">
                       <MarketLogo name={g.market} size="sm" />
-                      <span className="text-sm font-semibold">{g.market}</span>
+                      <span className="text-sm font-medium">{g.market}</span>
                       <DepotInfo
                         depotName={g.entries.map((e) => e.depotName)}
                         market={g.market}
@@ -184,7 +184,7 @@ function AllocationBreakdown({
                               Farklı boyut
                             </Badge>
                           )}
-                          <span className="col-start-3 row-start-1 justify-self-end text-xs font-semibold tabular-nums">
+                          <span className="col-start-3 row-start-1 justify-self-end text-xs font-medium tabular-nums">
                             {formatTL(e.lineTotal)}
                           </span>
                           {onEdit && (
@@ -405,7 +405,7 @@ function OptionRow({
               <span id={labelId}>{label}</span>
             </MarqueeText>
             <div className="flex min-w-0 items-center gap-1.5">
-              <MarqueeText className="text-base font-semibold">
+              <MarqueeText className="text-base font-medium">
                 <span id={titleId}>{title}</span>
               </MarqueeText>
               {titleInfo || notice ? (
@@ -418,7 +418,7 @@ function OptionRow({
           </div>
           {/* Tutar ve tasarruf tek kolonda: tasarruf toplamın açıklaması. */}
           <div className="flex shrink-0 flex-col items-end">
-            <span id={totalId} className="text-xl font-bold tabular-nums">
+            <span id={totalId} className="text-xl font-medium tabular-nums">
               {formatTL(total)}
             </span>
             {totalNote}

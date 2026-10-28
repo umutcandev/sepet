@@ -87,7 +87,7 @@ export function SubscriptionFaq({ className }: { className?: string }) {
       data-search-target="sss"
       className={cn("flex flex-col gap-3", className)}
     >
-      <h3 className="text-sm font-semibold text-balance">Sıkça sorulan sorular</h3>
+      <h3 className="text-sm font-medium text-balance">Sıkça sorulan sorular</h3>
       <SubscriptionFaqList />
     </section>
   )

@@ -80,7 +80,7 @@ export default function NotFound() {
       <div className="mb-4 flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground">
         <RiSearchLine className="size-5" />
       </div>
-      <h1 className="text-2xl font-semibold tracking-tight text-balance text-foreground">
+      <h1 className="text-2xl font-medium tracking-tight text-balance text-foreground">
         Sayfa bulunamadı
       </h1>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">

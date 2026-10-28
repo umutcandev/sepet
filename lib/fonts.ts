@@ -9,14 +9,16 @@ import localFont from "next/font/local"
 // hesaplanmış `font-family` burada `interSans` / `geistMono` olarak görünür.
 // Adları bu yüzden fonta göre seçildi; devtools'ta ne olduğu okunabilsin.
 
-// Değişken (variable) yüzler: site 400–700 arasını birlikte kullanıyor, tek
-// dosya ayrı statik ağırlıklardan hafif. `fallback` listesi next/font'un
-// ürettiği `--font-*` değerine yazılır; metrik-uyumlu ara yüz (size-adjust'lı
-// Arial türevi) next/font tarafından bunun önüne eklenir → font yüklenene dek
-// layout kayması (CLS) sınırlı kalır.
+// Değişken (variable) yüzler: tek dosya ayrı statik ağırlıklardan hafif.
+// Inter'in aralığı bilerek 400–500: arayüzde yalnız Regular (gövde) ve Medium
+// (başlık/vurgu) var. Daha kalın bir ağırlık istenirse 500 yüzü seçilir;
+// sahte bold `font-synthesis-weight: none` ile kapalı (app/globals.css).
+// `fallback` listesi next/font'un ürettiği `--font-*` değerine yazılır;
+// metrik-uyumlu ara yüz (size-adjust'lı Arial türevi) next/font tarafından
+// bunun önüne eklenir → font yüklenene dek layout kayması (CLS) sınırlı kalır.
 export const interSans = localFont({
   src: "../fonts/Inter-Variable.woff2",
-  weight: "100 900",
+  weight: "400 500",
   style: "normal",
   variable: "--font-sans",
   display: "swap",

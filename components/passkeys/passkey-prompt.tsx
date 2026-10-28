@@ -240,7 +240,7 @@ export function PasskeyPromptDialog({
                 <RiFingerprintLine className="size-7" />
               )}
             </span>
-            <ResponsiveDialogTitle className="mt-4 text-lg font-semibold tracking-[-0.01em]">
+            <ResponsiveDialogTitle className="mt-4 text-lg font-medium tracking-[-0.01em]">
               {done ? "Geçiş anahtarın hazır" : "Şifresiz giriş yap"}
             </ResponsiveDialogTitle>
             <ResponsiveDialogDescription className="mt-1.5 max-w-[300px] text-sm leading-[1.45]">

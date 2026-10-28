@@ -388,7 +388,7 @@ export function LoginForm({ callbackUrl, pendingToken: linkToken }: Props) {
           className="hidden h-12 w-12 md:h-16 md:w-16 dark:block"
         />
 
-        <h1 className="mt-6 text-[1.75rem] leading-tight font-semibold tracking-[-0.02em] text-foreground md:mt-5 md:text-[1.375rem]">
+        <h1 className="mt-6 text-[1.75rem] leading-tight font-medium tracking-[-0.02em] text-foreground md:mt-5 md:text-[1.375rem]">
           {title}
         </h1>
         <p className="mt-2 max-w-[320px] text-sm leading-[1.4] tracking-[-0.01em] text-muted-foreground md:max-w-[300px]">
