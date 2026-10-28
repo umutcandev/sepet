@@ -11,7 +11,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Squircle } from "@/components/ui/squircle";
 import { cn } from "@/lib/utils";
 import { cjk } from "@streamdown/cjk";
 import { code } from "@streamdown/code";
@@ -35,26 +34,15 @@ export type MessageProps = HTMLAttributes<HTMLDivElement> & {
   from: UIMessage["role"];
 };
 
-/**
- * Rolü `MessageContent`e taşır. Balon biçimi bugüne dek yalnız `.is-user`
- * grup sınıfından geliyordu; squircle'ı uygulayabilmek için rolün JS
- * tarafında da bilinmesi gerekiyor (clip-path bir CSS sınıfı değil).
- */
-const MessageFromContext = createContext<UIMessage["role"] | undefined>(
-  undefined
-);
-
 export const Message = ({ className, from, ...props }: MessageProps) => (
-  <MessageFromContext.Provider value={from}>
-    <div
-      className={cn(
-        "group flex w-full max-w-[95%] flex-col gap-2",
-        from === "user" ? "is-user ml-auto justify-end" : "is-assistant",
-        className
-      )}
-      {...props}
-    />
-  </MessageFromContext.Provider>
+  <div
+    className={cn(
+      "group flex w-full max-w-[95%] flex-col gap-2",
+      from === "user" ? "is-user ml-auto justify-end" : "is-assistant",
+      className
+    )}
+    {...props}
+  />
 );
 
 export type MessageContentProps = HTMLAttributes<HTMLDivElement>;
@@ -63,65 +51,40 @@ export const MessageContent = ({
   children,
   className,
   ...props
-}: MessageContentProps) => {
-  const from = useContext(MessageFromContext);
-  const classes = cn(
-    // `is-user:dark` KALDIRILDI: `is-user` diye bir varyant tanımlı değil,
-    // Tailwind adayı sessizce düşürüyordu. Balonun paleti zaten aşağıdaki
-    // `bg-secondary` + `text-foreground` ile açıkça yazılı.
-    "flex w-fit min-w-0 max-w-full flex-col gap-2 overflow-hidden text-sm",
-    "group-[.is-user]:ml-auto group-[.is-user]:rounded-lg group-[.is-user]:bg-secondary group-[.is-user]:px-3 group-[.is-user]:py-1.5 group-[.is-user]:text-foreground",
-    // Kenar: kartların, mozaiğin ve input'un taşıdığı `--hairline`ın ta kendisi.
-    //
-    // HALKA İÇERİDE (`inset-ring`), dışarıda değil. `smooth-shadow-ring-*` ve
-    // `surface-raised-*`in temas gölgesi DIŞ katmanlar; Lisse balonu clip-path
-    // ile kestiği için ikisi de hiç boyanmaz (bkz. aşağıdaki not). Inset halka
-    // kutunun içinde durur, kırpmadan sağ çıkar ve `effects` açmayı gerektirmez.
-    //
-    // `surface-raised-chip` denendi, GÖRÜNMÜYOR: rim `--surface-base`den
-    // türerken iki kez zayıflıyor (rim-alpha %55 × chip'in %22'si) ve
-    // `--secondary` zaten zemine çok yakın — ölçtük, light'ta 1 gece 2 seviye.
-    "group-[.is-user]:inset-ring group-[.is-user]:inset-ring-hairline",
-    // Asistan içeriği sütunu doldurur: metin için fark etmez (balonu yok),
-    // ama kartlar içerikleri kadar genişlediğinde aynı sohbette 411, 463 ve
-    // 703px'lik kartlar alt alta diziliyordu.
-    "group-[.is-assistant]:w-full group-[.is-assistant]:text-foreground",
-    className
-  );
-
-  // Squircle YALNIZ kullanıcı balonuna. Asistan mesajının görünür bir yüzeyi
-  // yok (saydam akıyor), dolayısıyla kesecek bir köşe de yok; clip-path orada
-  // yalnız kod bloğu / mermaid taşmalarını kırpma riski getirirdi.
-  //
-  // `effects` KAPALI, ve kenarın inset olmasının sebebi bu. Lisse `effects`
-  // açıkken CSS border/box-shadow'u söküp SVG'ye taşıyor (dış halka ancak öyle
-  // görünürdü) ama karşılığında HER BALONA bir sarmalayıcı div ekliyor ve tema
-  // değişiminde remount istiyor (bkz. squircle.tsx). Uzun bir sohbette bu hem
-  // DOM'u şişirir hem de balonun `ml-auto` hizasını sarmalayıcıya taşırdı.
-  //
-  // Inset halka bu bedeli ödemeden aynı çizgiyi veriyor: clip-path elemanın
-  // boyamasını kırpıyor, ama halka kutunun İÇİNDE. Squircle yolu yuvarlak
-  // dikdörtgenin içinde kaldığı için köşede sapma bu radius'ta yarım pikselin
-  // altında.
-  //
-  // `group-[.is-user]:rounded-lg` BİLEREK duruyor: hidrasyondan önce clip-path
-  // yok, köşeyi o veriyor. CSS border-radius'u clip-path ile kesiştirdiği ve
-  // squircle yuvarlak dikdörtgenin İÇİNDE kaldığı için sonuç yine squircle —
-  // sınıfı silmek yalnız ilk boyamada kare köşe kazandırırdı.
-  if (from === "user") {
-    return (
-      <Squircle className={classes} radius="lg" {...props}>
-        {children}
-      </Squircle>
-    );
-  }
-
-  return (
-    <div className={classes} {...props}>
-      {children}
-    </div>
-  );
-};
+}: MessageContentProps) => (
+  <div
+    className={cn(
+      // `is-user:dark` KALDIRILDI: `is-user` diye bir varyant tanımlı değil,
+      // Tailwind adayı sessizce düşürüyordu. Balonun paleti zaten aşağıdaki
+      // `bg-secondary` + `text-foreground` ile açıkça yazılı.
+      "flex w-fit min-w-0 max-w-full flex-col gap-2 text-sm",
+      "group-[.is-user]:ml-auto group-[.is-user]:overflow-hidden group-[.is-user]:rounded-lg group-[.is-user]:bg-secondary group-[.is-user]:px-3 group-[.is-user]:py-1.5 group-[.is-user]:text-foreground",
+      // Kenar: kartlarla aynı `smooth-shadow-ring-sm` (halkası `--border`).
+      //
+      // Squircle YOK, bilinçli. Lisse köşeyi clip-path ile kesiyor ve bu,
+      // elemanın kendi box-shadow'unu da siliyor; dış halka ancak `effects` ile
+      // (her balona SVG + sarmalayıcı div, tema değişiminde remount) görünürdü.
+      // Eğri bu yarıçapta (10px) `border-radius`tan yarım pikselin altında
+      // sapıyor (bkz. squircle.tsx), dokunmatikte zaten düz `border-radius`.
+      // Eskiden bu yüzden halka içerideydi (`inset-ring`) ve gölge yoktu.
+      "group-[.is-user]:smooth-shadow-ring-sm",
+      // Asistan içeriği sütunu doldurur: metin için fark etmez (balonu yok),
+      // ama kartlar içerikleri kadar genişlediğinde aynı sohbette 411, 463 ve
+      // 703px'lik kartlar alt alta diziliyordu.
+      //
+      // KIRPMAZ (`overflow-hidden` yalnız balonda). Kartlar bu kutunun iki
+      // yanına yaslanıyor; kırpsaydı dış halkaları ve gölgeleri sağdan, soldan
+      // ve alttan düz kesilirdi. Geniş içerik kendi kabında kayar (Streamdown
+      // kod bloğu ve tablosu `overflow-x-auto`); bölünemeyen uzun bir sözcük
+      // (URL) için `break-words`.
+      "group-[.is-assistant]:w-full group-[.is-assistant]:break-words group-[.is-assistant]:text-foreground",
+      className
+    )}
+    {...props}
+  >
+    {children}
+  </div>
+);
 
 export type MessageActionsProps = ComponentProps<"div">;
 
@@ -392,12 +355,30 @@ const markdownTypography =
   "[&_ol]:list-outside [&_ol]:list-decimal [&_ol]:pl-5 " +
   "[&_li]:py-0.5 [&_li]:pl-1 [&_li]:marker:text-muted-foreground"
 
+/* Streamdown'ın tablo, kod ve mermaid kutuları: iki katlı çerçeve (dışta
+   `bg-sidebar` tepsi, içte `bg-background` ekran), ikisi de düz `border`.
+   Katmanlar korunuyor, kenarlar uygulamanın geri kalanıyla aynı
+   `smooth-shadow-ring-*`e geçiyor: tepsi kartlarla aynı `-sm`, içindeki ekran
+   iç içe yüzeylerin `-xs`i. `border-0` şart, yoksa halkanın yanına ikinci bir
+   çizgi düşer. Seçiciler `data-streamdown` öznitelikleriyle (kütüphanenin
+   kararlı kancası), içteki iki kutunun özniteliği olmadığı için yapıyla;
+   (0,2,0) özgüllük kütüphanenin düz utility'lerini ezer. Streamdown
+   güncellenince bu yapının durduğunu kontrol et. */
+const markdownSurfaces =
+  "[&_[data-streamdown=table-wrapper]]:border-0 [&_[data-streamdown=table-wrapper]]:smooth-shadow-ring-sm " +
+  "[&_[data-streamdown=table-wrapper]>div:has(>table)]:border-0 [&_[data-streamdown=table-wrapper]>div:has(>table)]:smooth-shadow-ring-xs " +
+  "[&_[data-streamdown=code-block]]:border-0 [&_[data-streamdown=code-block]]:smooth-shadow-ring-sm " +
+  "[&_[data-streamdown=code-block-body]]:border-0 [&_[data-streamdown=code-block-body]]:smooth-shadow-ring-xs " +
+  "[&_[data-streamdown=mermaid-block]]:border-0 [&_[data-streamdown=mermaid-block]]:smooth-shadow-ring-sm " +
+  "[&_[data-streamdown=mermaid-block]>.bg-background]:border-0 [&_[data-streamdown=mermaid-block]>.bg-background]:smooth-shadow-ring-xs"
+
 export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (
     <Streamdown
       className={cn(
         "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         markdownTypography,
+        markdownSurfaces,
         className
       )}
       plugins={streamdownPlugins}

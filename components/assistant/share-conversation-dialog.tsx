@@ -429,7 +429,7 @@ function SharePanel({
             onValueChange={(v) => void handleAccessChange(v as Access)}
             aria-label="Kimler erişebilir"
             disabled={busy !== null}
-            className="divide-y overflow-hidden rounded-xl border"
+            className="divide-y overflow-hidden rounded-xl smooth-shadow-ring-xs"
           >
             <AccessOption
               value="private"
@@ -611,7 +611,7 @@ function SharePreview({
           {author ?? "Anonim"}
         </span>
       </div>
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border bg-background text-muted-foreground">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-background text-muted-foreground smooth-shadow-ring-xs">
         <RiChat3Line aria-hidden="true" className="size-5" />
       </div>
     </div>

@@ -377,7 +377,7 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
       </div>
 
       {isEmpty ? (
-        <div className="flex flex-col items-center gap-3 rounded-2xl border bg-card px-6 py-12 text-center">
+        <div className="flex flex-col items-center gap-3 rounded-2xl bg-card px-6 py-12 text-center smooth-shadow-ring-sm">
           <div className="rounded-full bg-secondary p-3 text-primary">
             <RiShoppingBasketLine className="size-5" />
           </div>

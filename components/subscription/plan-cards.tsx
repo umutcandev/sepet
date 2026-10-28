@@ -170,7 +170,7 @@ export function FreeCard({
   action?: React.ReactNode
 }) {
   return (
-    <div className="flex h-full flex-col gap-5 rounded-[calc(var(--radius)*1.8)] border border-border bg-muted/30 p-5">
+    <div className="flex h-full flex-col gap-5 rounded-[calc(var(--radius)*1.8)] bg-muted/30 p-5 smooth-shadow-ring-xs">
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <span className="cn-font-heading text-lg leading-none font-medium">

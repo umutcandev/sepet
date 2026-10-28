@@ -11,21 +11,24 @@ import { cn } from "@/lib/utils"
  * `rounded-xl border bg-card` (on beş kopya), bu dosyada ise hiç kullanılmayan
  * üçüncü bir dış gölgeli sürüm.
  *
- * Kenar düz CSS `border`, dış gölge yok. Kart çoğu yerde `overflow-hidden`
- * bir sütunun içinde duruyor (sohbet sütunu, mesaj içeriği); dış halka ve
- * gölge orada sağdan/soldan/alttan düz kesiliyordu. Border kutunun içinde
- * kalır, hiçbir yerde kırpılmaz.
+ * Kenar `smooth-shadow-ring-sm`: ana sayfadaki özellik ve fiyatlandırma
+ * kartlarıyla AYNI reçete. Halka gölgenin son katmanı, rengi `--border`
+ * (globals.css, `--smooth-ring-color`), yani içteki satır/başlık çizgileriyle
+ * aynı renk. Ayrıca `border` VERME, halka zaten içinde; ikisi çift kenar çizer.
  *
- * Eskiden `inset-ring` (gölgeyle çizilen halka) idi. Telefonda (2,625x) halka
- * kenar yumuşatmasıyla ~3 cihaz pikseline yayılırken kartın içindeki satır ve
- * başlık çizgileri (`border`) 2 piksele oturuyordu: dış kenar, içteki
- * çizgilerden belirgin kalın görünüyordu. Hepsi aynı ilkel olunca her
- * yoğunlukta aynı kalınlıkta çizilir. Renk `--border`, içteki çizgilerle aynı.
+ * Eskiden düz `border` idi, gerekçesi kırpılmaydı: kart `overflow-hidden` bir
+ * sütunun (sohbet sütunu, mesaj içeriği) kenarına yaslandığında dış halka ve
+ * gölge düz kesiliyordu. Bu artık kabın işi: sohbet kaydırma kabı yanlarda
+ * gölge payı bırakıyor, asistan mesaj içeriği kırpmıyor (bkz.
+ * ai-elements/conversation.tsx ve message.tsx). Kartı başka bir kırpan kabın
+ * kenarına koyuyorsan orada da pay bırak.
  *
  * Squircle (clip-path) KULLANILMAZ. Kullanılan eğri bu yarıçapta
  * `border-radius`tan piksel altı sapıyor (bkz. squircle.tsx), ama clip-path
- * kartın kendi odak çerçevesini (ör. liste kartının `outline`ı) siliyor.
- * Görünür bir squircle istenirse değişiklik yalnız burada yapılır.
+ * kartın kendi odak çerçevesini (ör. liste kartının `outline`ı) siliyor ve
+ * gölgeyi göstermek için `effects` (kart başına SVG + sarmalayıcı div)
+ * gerektiriyor. Dokunmatik cihazlarda Squircle zaten düz `border-radius`;
+ * ana sayfa kartları telefonda bugün de tam olarak bu CSS ile çiziliyor.
  */
 function Card({
   className,
@@ -38,7 +41,7 @@ function Card({
     <Comp
       data-slot="card"
       className={cn(
-        "overflow-hidden rounded-xl border bg-card text-card-foreground",
+        "overflow-hidden rounded-xl bg-card text-card-foreground smooth-shadow-ring-sm",
         className
       )}
       {...props}

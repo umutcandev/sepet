@@ -449,9 +449,12 @@ function ProductCard({
       type="button"
       onClick={onSelect}
       className={cn(
-        "group flex flex-col gap-2 rounded-2xl border border-border/60 bg-card p-2.5 text-left",
-        "transition-colors hover:border-border hover:bg-muted/20",
-        "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+        // Kenar kartlarla aynı `smooth-shadow-ring-sm`; hover'da halka koyulur.
+        "group flex flex-col gap-2 rounded-2xl bg-card p-2.5 text-left smooth-shadow-ring-sm",
+        "transition-[background-color,box-shadow] hover:bg-muted/20 hover:smooth-ring-foreground/20",
+        // Odak `ring-*` DEĞİL outline: `ring-*` de box-shadow yazar ve odakta
+        // kartın gölgesini bütünüyle silerdi.
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
       )}
     >
       <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10">
@@ -502,7 +505,7 @@ function ProductCard({
 
 function SkeletonCard() {
   return (
-    <div className="flex flex-col gap-2 rounded-2xl border border-border/60 bg-card p-2.5">
+    <div className="flex flex-col gap-2 rounded-2xl bg-card p-2.5 smooth-shadow-ring-sm">
       <Skeleton className="aspect-square w-full rounded-lg" />
       <div className="space-y-1.5">
         <Skeleton className="h-3 w-full" />

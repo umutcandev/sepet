@@ -635,8 +635,13 @@ export function AssistantChat({
           </div>
         </div>
       ) : (
-        <Conversation className="mx-auto w-full max-w-3xl">
-          <ConversationContent className="px-0">
+        /* Kaydırma kabı sütundan iki yana 12px taşar, içerik o 12px'i iç
+           boşluk olarak geri alır: metin eskisiyle aynı yerde durur, ama
+           kartların ve balonların `smooth-shadow-ring-*` halkası ile gölgesi
+           kabın kenarında kesilmez (kaydırma kabı yatayda da kırpar). Dış
+           kapsayıcının `px-4`ü bu taşmayı karşılıyor. */
+        <Conversation className="-mx-3">
+          <ConversationContent className="mx-auto w-full max-w-[calc(var(--container-3xl)+1.5rem)] px-3">
             {showSeedOptimistic && pendingSeed && (
               <>
                 <Message from="user" key="__seed_user">

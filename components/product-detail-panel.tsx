@@ -117,7 +117,7 @@ export function ProductDetailPanel({ productId }: Props) {
             Bu ürün için henüz market fiyat verisi yok.
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-border/60">
+          <div className="overflow-hidden rounded-lg smooth-shadow-ring-xs">
             <div className="max-h-[55vh] overflow-y-auto md:max-h-[420px]">
               <Table className="table-fixed">
                 <TableBody>
@@ -126,7 +126,7 @@ export function ProductDetailPanel({ productId }: Props) {
                     return (
                       <TableRow
                         key={`${m.market}-${idx}`}
-                        className="border-border/60 last:border-b-0 hover:bg-muted/30"
+                        className="last:border-b-0 hover:bg-muted/30"
                       >
                         <TableCell className="overflow-hidden px-3 py-2.5 align-middle">
                           <div className="flex items-center gap-2">
@@ -229,8 +229,8 @@ function DetailSkeleton() {
         </div>
       </ResponsiveDialogHeader>
       <ResponsiveDialogBody>
-        <div className="overflow-hidden rounded-lg border border-border/60">
-          <div className="divide-y divide-border/60">
+        <div className="overflow-hidden rounded-lg smooth-shadow-ring-xs">
+          <div className="divide-y">
             {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}

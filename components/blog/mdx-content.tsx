@@ -65,14 +65,16 @@ function MdxImage({
   )
 }
 
-// Tablo ve kod bloğu aynı kabukta: düz `rounded-2xl` + tek piksellik
-// `border-border`, gölge yok. Squircle KULLANILMIYOR: `effects` kenarı SVG'ye
-// taşıyınca halka köşelerde inceliyor, kazancı ise bu yarıçapta çeyrek pikselin
-// altında (bkz. squircle.tsx'teki sapma notu). `border-separate` ayraçların
-// hücre hücre verilebilmesi için.
+// Tablo ve kod bloğu aynı kabukta: düz `rounded-2xl` + `smooth-shadow-ring-sm`,
+// yani sitenin geri kalan kartlarıyla aynı kenar (halka `--border`, içteki
+// ayraçlarla aynı renk). Ayrıca `border` yok, halka gölgenin içinde.
+// Squircle KULLANILMIYOR: `effects` kenarı SVG'ye taşıyınca halka köşelerde
+// inceliyor, kazancı ise bu yarıçapta çeyrek pikselin altında (bkz.
+// squircle.tsx'teki sapma notu). `border-separate` ayraçların hücre hücre
+// verilebilmesi için.
 function MdxTable({ className, ...props }: React.ComponentProps<"table">) {
   return (
-    <div className="not-prose my-6 overflow-hidden rounded-2xl border border-border bg-card">
+    <div className="not-prose my-6 overflow-hidden rounded-2xl bg-card smooth-shadow-ring-sm">
       <div className="overflow-x-auto">
         <table
           className={cn(
@@ -268,7 +270,7 @@ function Pre({ children, ...props }: React.ComponentProps<"pre">) {
   return (
     <div
       data-slot="code-block"
-      className="not-prose overflow-hidden rounded-2xl border border-border bg-(--code-surface)"
+      className="not-prose overflow-hidden rounded-2xl bg-(--code-surface) smooth-shadow-ring-sm"
       style={{ "--code-gutter-digits": String(digits) } as React.CSSProperties}
     >
       <div className="flex items-center justify-between gap-2 border-b border-border bg-(--code-chrome) py-1.5 pr-1.5 pl-3">

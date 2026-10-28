@@ -210,13 +210,22 @@
   --accent: #3d2d1f;
   --accent-foreground: #f5e8da;
   --destructive: #e07259;
-  --border: #2d2218;
+  /* Ayraçlar (kart satırları, başlık/alt çizgileri, `Separator`, tablo
+     satırları) ve gölgeli halka bu tokeni okur. Değer, light'taki ölçüyle
+     EŞLEŞECEK yerde: --card üstünde ΔL* ≈ 10 (light'ta --border --card
+     üstünde 10,1). Eski #2D2218 burada 4,2'de kalıyordu, yani gecede her ayraç
+     gündüzdekinin yarısından soluk, saç teli gibi okunuyordu; kart altlığında
+     (muted/30) 2,9'a, prompt'un içinde 0'a iniyordu. `--input` bilinçli olarak
+     eski değerde: alanların kenarı kendi `surface-inset` ışık modeliyle
+     ayarlı, bu ayraç düzeltmesinin konusu değil. */
+  --border: #3b2e23;
   --input: #2d2218;
-  /* Token'ın var olma sebebi dark. --border (#2D2218) burada
-       --muted/--secondary/--input ile BİREBİR aynı renk: `bg-muted` taşıyan her
-       yüzeyin kenarı gecede tamamen kayboluyor (logo kutuları, hero rozeti,
-       chip'ler — üçü de bunu tema başına elle yazılmış ayrı border
-       renkleriyle yamıyordu).
+  /* Token'ın var olma sebebi dark. --border eskiden (#2D2218) burada
+       --muted/--secondary/--input ile BİREBİR aynı renkti: `bg-muted` taşıyan
+       her yüzeyin kenarı gecede tamamen kayboluyordu (logo kutuları, hero
+       rozeti, chip'ler — üçü de bunu tema başına elle yazılmış ayrı border
+       renkleriyle yamıyordu). --border artık ayraç ölçüsüne göre ayarlı
+       (yukarıda); bu token o yüzeylerin kendi, daha sessiz kenarı olarak kalıyor.
 
        DEĞER ALFA, VE ÇOK DÜŞÜK. Buraya bir ara sabit bir #3A2E23 konmuştu:
        çakışmayı çözüyordu ama --card üstünde 24 seviyelik bir fark bırakıp
@@ -276,8 +285,10 @@
    `--hairline` DEĞİL, bilinçli. O token CSS `border` içindir ve elemanın KENDİ
    zemininin üstünde çözülür; halka ise DIŞ katmandır, arkasındaki sayfanın
    üstüne boyanır. Aynı sayıyı iki yere koymak ikisini eşitlemez, ayırır.
-   Ölçüldüğünde bu ikisi zaten aynı yere düşüyor: dark'ta halka --card'ın
-   yanında rgb(45,34,24), border rgb(47,38,32).
+   Light'ta ikisi aynı yere düşüyor. Dark'ta halka artık bir kademe güçlü
+   (--border #3B2E23, `--hairline` --card üstünde ~rgb(47,38,32)): gecede
+   ayraçlar ve kart kenarları light'taki ölçüye çekildi, `--hairline`ın
+   sessiz yüzeyleri (mozaik, chip'ler) bilinçli olarak eski yerinde.
 
    Seçici kümesi plugin'inkiyle BİREBİR aynı olmalı: ikisi de eşit özgüllükte
    (0,1,0) ve plugin daha önce import edildiği için kaynak sırasıyla buradaki
@@ -564,7 +575,10 @@
   /* Satır numaraları yardımcı bir işaret: kodun önüne geçmesin diye yorum
      renginin altında, ama ≥3:1 kontrastta tutulur. */
   --code-gutter: #957e6a;
-  --code-rule: color-mix(in oklab, var(--border) 70%, var(--code-surface));
+  /* Gutter çizgisi diğer ayraçlarla aynı ton. Eskiden --border'ın %70'iydi ve
+     kod alanında ΔL* ≈ 4,8'de, yani kartlardaki satır çizgilerinin (≈10)
+     yarısında kalıp saç teli gibi okunuyordu. */
+  --code-rule: var(--border);
   --code-highlight: color-mix(
     in oklab,
     var(--primary) 10%,

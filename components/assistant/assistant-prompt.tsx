@@ -249,7 +249,7 @@ export function AssistantPrompt({
               }}
               className="order-last w-full overflow-hidden"
             >
-              <div className="flex items-center gap-2 border-t border-border/60 bg-foreground/[0.035] px-3 py-1.5 dark:bg-foreground/[0.04]">
+              <div className="flex items-center gap-2 border-t border-border bg-foreground/[0.035] px-3 py-1.5 dark:bg-foreground/[0.04]">
                 {announcement}
               </div>
             </motion.div>

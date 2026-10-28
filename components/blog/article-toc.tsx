@@ -41,7 +41,7 @@ export function ArticleToc({
     <nav
       aria-label="İçindekiler"
       className={cn(
-        "overflow-hidden rounded-2xl border border-border bg-muted/45 lg:hidden",
+        "overflow-hidden rounded-2xl bg-muted/45 smooth-shadow-ring-sm lg:hidden",
         className
       )}
     >

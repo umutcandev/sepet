@@ -161,7 +161,7 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
             Etiket solda (muted), değer sağda. İlk satırda üst ayraç olmaz;
             aralık ve tarih yalnızca Polar'dan biliniyorsa eklenir. */}
         <div className="flex flex-col gap-2.5">
-          <div className="overflow-hidden rounded-lg border border-border">
+          <div className="overflow-hidden rounded-lg smooth-shadow-ring-xs">
             <table className="w-full table-fixed border-separate border-spacing-0 text-sm">
               <tbody>
                 <tr>
@@ -248,7 +248,7 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
       {/* Ücretsiz↔Pro karşılaştırması; Pro sütunu hafif bir zeminle vurgulanır */}
       <div className="flex flex-col gap-3">
         <h3 className="text-sm font-medium">Plan avantajların</h3>
-        <div className="overflow-hidden rounded-lg border border-border">
+        <div className="overflow-hidden rounded-lg smooth-shadow-ring-xs">
           <table className="w-full border-separate border-spacing-0 text-sm">
             <thead>
               <tr className="text-xs font-medium text-muted-foreground">

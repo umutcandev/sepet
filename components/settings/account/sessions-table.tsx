@@ -227,7 +227,7 @@ function SessionsFrame({
   footer?: React.ReactNode
 }) {
   return (
-    <div className="cn-scrollbar-thin-table overflow-hidden rounded-lg border dark:border-accent">
+    <div className="cn-scrollbar-thin-table overflow-hidden rounded-lg smooth-shadow-ring-xs">
       <Table className="[&_td]:px-3 [&_th]:px-3">
         <TableHeader>
           <TableRow className="table-head-fill text-xs hover:bg-transparent [&_th]:h-7 [&_th]:font-medium [&_th]:text-muted-foreground">

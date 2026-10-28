@@ -547,7 +547,7 @@ function PageHeader({
   aside?: React.ReactNode
 }) {
   return (
-    <div className="shrink-0 border-b border-foreground/5 p-1">
+    <div className="shrink-0 border-b border-border p-1">
       <DropdownMenuItem
         onSelect={(e) => {
           e.preventDefault()
@@ -593,7 +593,7 @@ function PageBody({
 /** Sayfanın altındaki açıklama şeridi (ana sayfa özeti, mesafe notu). */
 function PageFooter({ children }: { children: React.ReactNode }) {
   return (
-    <p className="shrink-0 border-t border-foreground/5 px-2.5 py-2 text-xs/relaxed text-pretty text-muted-foreground">
+    <p className="shrink-0 border-t border-border px-2.5 py-2 text-xs/relaxed text-pretty text-muted-foreground">
       {children}
     </p>
   )
@@ -853,7 +853,7 @@ function LocationPage({
           )}
         </div>
       </PageBody>
-      <div className="shrink-0 border-t border-foreground/5 p-1">
+      <div className="shrink-0 border-t border-border p-1">
         <DropdownMenuItem
           onSelect={() => locationDialog.open()}
           className="text-xs text-muted-foreground"
