@@ -22,15 +22,17 @@ function initials(name: string): string {
 export function AuthorAvatarGroup({
   authors,
   size = "sm",
+  className,
 }: {
   authors: readonly AuthorId[]
   size?: "xs" | "sm" | "default" | "lg"
+  className?: string
 }) {
   const list = getAuthors(authors)
   return (
     <AvatarGroup>
       {list.map((author) => (
-        <Avatar key={author.name} size={size}>
+        <Avatar key={author.name} size={size} className={className}>
           {author.avatar ? (
             <AvatarImage src={author.avatar} alt={author.name} />
           ) : null}
