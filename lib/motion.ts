@@ -30,6 +30,9 @@ export const EASE_OUT_SOFT: [number, number, number, number] = [
   0.22, 1, 0.36, 1,
 ]
 
+/** Bir noktadan diğerine giden göstergeler (içindekiler rayı): yavaş kalkar, yavaş iner. */
+export const EASE_IN_OUT: [number, number, number, number] = [0.76, 0, 0.24, 1]
+
 /**
  * Kayan pencere / liste öğesi giriş-çıkışı. Hızlı ve net; zıplamaz.
  * (hero-market-badge, home-cta-section)

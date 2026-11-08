@@ -1,14 +1,10 @@
 import Link from "next/link"
 import { RiArrowRightLine } from "@remixicon/react"
 
-import { AuthorAvatarGroup } from "@/components/blog/author-meta"
-import { PostCover } from "@/components/blog/post-cover"
+import { CompactPostCard } from "@/components/blog/compact-post-card"
 import { HomeFeaturesSection } from "@/components/home/home-features-section"
 import { HomeMarketsSection } from "@/components/home/home-markets-section"
 import { getLatestPosts } from "@/lib/blog"
-import { formatAuthorNames } from "@/lib/blog/authors"
-import { getCategory } from "@/lib/blog/categories"
-import { formatPostDateDayMonth } from "@/lib/blog/format"
 import { Button } from "@/components/ui/button"
 import { PressFx } from "@/components/motion/press-fx"
 
@@ -100,45 +96,7 @@ export function HomeBlogSection() {
 
         <div className="grid grid-cols-1 gap-x-5 gap-y-10 @2xl/blog:grid-cols-3">
           {posts.map((post) => (
-            <Link
-              key={post.slug}
-              href={post.permalink}
-              className="group flex h-full flex-col rounded-lg"
-            >
-              <PostCover
-                post={post}
-                className="border border-hairline transition-opacity group-hover:opacity-90"
-              />
-              <h3 className="mt-4 text-lg/6 font-medium tracking-tight text-pretty text-foreground transition-colors group-hover:text-foreground/70">
-                {post.title}
-              </h3>
-              {/* mt-auto: başlıklar farklı satır sayısında olsa da ayraçlar aynı hizada. */}
-              <div className="mt-auto pt-4">
-                <div className="flex items-center justify-between gap-3 border-t border-hairline pt-3 text-xs">
-                  <div className="flex shrink-0 items-center gap-2">
-                    <span className="rounded-sm bg-muted px-1.5 py-0.5 font-medium text-foreground">
-                      {getCategory(post.category).label}
-                    </span>
-                    <time
-                      dateTime={post.publishedAt}
-                      className="text-muted-foreground"
-                    >
-                      {formatPostDateDayMonth(post.publishedAt)}
-                    </time>
-                  </div>
-                  <div className="flex min-w-0 items-center gap-1.5">
-                    <AuthorAvatarGroup
-                      authors={post.authors}
-                      size="xs"
-                      className="data-[size=xs]:size-4"
-                    />
-                    <span className="truncate font-medium text-foreground/80">
-                      {formatAuthorNames(post.authors)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <CompactPostCard key={post.slug} post={post} />
           ))}
         </div>
       </div>

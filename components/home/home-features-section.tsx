@@ -313,13 +313,13 @@ function BubblesArt() {
 const FEATURES = [
   {
     title: "Tarifini yaz",
-    description: "Yemeğini yaz ya da fişini yükle.",
+    description: "Yemeğini yaz, tarifini listele ya da fişini yükle.",
     art: <ChatArt />,
     textWidth: "@md:max-w-[13rem]",
   },
   {
     title: "Sepetini oluştur",
-    description: "Doğru ürünü eşleştirir, en hesaplı sepeti oluştururuz.",
+    description: "Doğru ürünü eşleştir, en hesaplı sepetini oluştur.",
     art: <BubblesArt />,
     textWidth: "@md:max-w-[17rem]",
   },

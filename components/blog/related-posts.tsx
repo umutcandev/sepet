@@ -1,4 +1,4 @@
-import { PostCard } from "@/components/blog/post-card"
+import { CompactPostCard } from "@/components/blog/compact-post-card"
 import type { Post } from "@/lib/blog"
 
 export function RelatedPosts({ posts }: { posts: Post[] }) {
@@ -8,9 +8,9 @@ export function RelatedPosts({ posts }: { posts: Post[] }) {
       <h2 className="mb-5 text-sm font-medium tracking-wide text-muted-foreground uppercase">
         İlgili yazılar
       </h2>
-      <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2">
         {posts.map((post) => (
-          <PostCard key={post.slug} post={post} />
+          <CompactPostCard key={post.slug} post={post} />
         ))}
       </div>
     </section>

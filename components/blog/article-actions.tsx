@@ -20,6 +20,8 @@ import { toast } from "@/components/ui/sonner"
 import { copyText } from "@/lib/copy"
 
 import { IconSwap } from "@/components/motion/icon-swap"
+import { useRotation } from "@/components/motion/rolling-text"
+import { TypewriterText } from "@/components/motion/typewriter-text"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -176,6 +178,17 @@ export function ActionItemContent({
   )
 }
 
+// Düğmede sırayla dönen etiketler; menüdeki seçenekleri tanıtır.
+const COPY_LABELS = [
+  { key: "copy", text: "Makaleyi kopyala", icon: RiFileCopyLine },
+  { key: "chatgpt", text: "ChatGPT ile yorumla", icon: RiOpenaiFill },
+  { key: "claude", text: "Claude ile yorumla", icon: RiClaudeFill },
+  { key: "gemini", text: "Gemini ile yorumla", icon: RiGeminiFill },
+  { key: "markdown", text: "Markdown'ı görüntüle", icon: RiFileTextLine },
+]
+const COPY_TEXTS = COPY_LABELS.map((label) => label.text)
+const COPY_LABEL_INTERVAL = 3200
+
 // "Makaleyi kopyala" bölünmüş düğmesi. Sözleşmeler menüsüyle (ContractsMenu) aynı
 // kalıpta çalışır: tüm düğme açılır menüyü tetikler. İlk öğe makaleyi LLM'ler için
 // Markdown olarak panoya kopyalar; diğerleri düz metni açar ya da asistanlara verir.
@@ -188,27 +201,42 @@ function CopyArticleMenu({
   markdownUrl: string
   title: string
 }) {
+  const [open, setOpen] = React.useState(false)
+  const [index] = useRotation(COPY_LABELS.length, !open, COPY_LABEL_INTERVAL)
+  const { key, icon: Icon } = COPY_LABELS[index]
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-full justify-between gap-0 px-0">
-          <span className="flex items-center gap-1.5 pr-2 pl-2.5">
-            <RiFileCopyLine className="size-3.5" />
-            Makaleyi Kopyala
-          </span>
-          <span className="flex items-center self-stretch border-l border-border px-1.5">
-            <RiArrowDownSLine className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
-          </span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-72">
-        <CopyArticleMenuItems
-          markdown={markdown}
-          markdownUrl={markdownUrl}
-          title={title}
-        />
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex flex-col gap-3">
+      <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+        KOPYALA
+      </p>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            aria-label="Makaleyi kopyala veya bir asistanla aç"
+            className="w-fit gap-0 px-0"
+          >
+            <span className="flex items-center gap-1.5 pr-2 pl-2.5">
+              <IconSwap swapKey={key}>
+                <Icon className="size-3.5" />
+              </IconSwap>
+              <TypewriterText texts={COPY_TEXTS} index={index} />
+            </span>
+            <span className="flex items-center self-stretch border-l border-border px-1.5">
+              <RiArrowDownSLine className="size-3.5 transition-transform group-aria-expanded/button:rotate-180" />
+            </span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-72">
+          <CopyArticleMenuItems
+            markdown={markdown}
+            markdownUrl={markdownUrl}
+            title={title}
+          />
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   )
 }
 
