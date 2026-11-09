@@ -198,7 +198,10 @@ export function HomeHero() {
       <link rel="preload" as="image" href="/market-logos/bim.webp" />
       <link rel="preload" as="image" href="/market-logos/tarim-kredi.webp" />
       <link rel="preload" as="image" href="/market-logos/carrefoursa.webp" />
-      <div className="relative flex min-h-[calc(var(--hero-vh,100svh)-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16 md:min-h-[var(--hero-vh,100svh)]">
+      <div
+        data-home-hero
+        className="relative flex min-h-[calc(var(--hero-vh,100svh)-4rem)] flex-col items-center justify-center overflow-hidden px-4 pb-16 md:min-h-[var(--hero-vh,100svh)]"
+      >
         {/* ZEMİN BURADA DEĞİL. Hero'nun arkasındaki Warp shader'ı app-shell'de,
             header ile <main>'in ALTINDA duran bir katman (HomeHeroBackdrop).
 

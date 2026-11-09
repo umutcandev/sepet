@@ -222,6 +222,10 @@ export function AppShell({ blogPosts, children }: Props) {
     setHeroOffscreen(v < -HOME_HERO_OFFSCREEN_MARGIN)
   })
 
+  // Independent of the scroll ramp above, which never completes when the blog
+  // section (and its markers) is not rendered.
+  const [heroInView, setHeroInView] = React.useState(true)
+
   /* HEADER PALETİ ARTIK SCROLL'A BAĞLI DEĞİL.
 
      Burada bir zamanlar `paletteDark` vardı: ana sayfanın alt bandı her iki
@@ -287,6 +291,7 @@ export function AppShell({ blogPosts, children }: Props) {
     // bir şeridin altından geçer.
     const target = root.querySelector("[data-home-dark-start]")
     const opaque = root.querySelector("[data-home-opaque-start]")
+    const hero = root.querySelector("[data-home-hero]")
     const desktop = window.matchMedia(DESKTOP_QUERY)
     const html = document.documentElement
 
@@ -337,9 +342,15 @@ export function AppShell({ blogPosts, children }: Props) {
     const resizeObserver = new ResizeObserver(schedule)
     resizeObserver.observe(root)
     if (target) resizeObserver.observe(target)
+    const heroObserver = new IntersectionObserver(([entry]) => {
+      if (entry) setHeroInView(entry.isIntersecting)
+    })
+    if (hero) heroObserver.observe(hero)
 
     return () => {
       if (frame) cancelAnimationFrame(frame)
+      heroObserver.disconnect()
+      setHeroInView(true)
       window.removeEventListener("scroll", schedule)
       root.removeEventListener("scroll", schedule)
       desktop.removeEventListener("change", schedule)
@@ -397,7 +408,10 @@ export function AppShell({ blogPosts, children }: Props) {
             kayar: belgenin parçası olduğundan Safari onu alttaki araç
             çubuğunun arkasında da çiziyor (sabit bir katmanı çizmezdi). */}
         {isHome ? (
-          <HomeHeroBackdrop covered={heroCovered} offscreen={heroOffscreen} />
+          <HomeHeroBackdrop
+            covered={heroCovered || !heroInView}
+            offscreen={heroOffscreen}
+          />
         ) : null}
         {/* Zemin rengi DIŞ sarmalayıcıda: `dark` sınıfı --home-base'i de gece
             değerine kilitlerdi, oysa bu renk gerçek temaya bağlı olmalı. `dark`

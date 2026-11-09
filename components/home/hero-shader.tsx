@@ -71,8 +71,17 @@ const HANDOFF_MS = 600
 // maxPixelCount = alan × cap². Telefonda native 3x ~2.96M fragment demekti;
 // 1.5 ile ~0.74M. Sinyal `pointer: coarse` (pil/tile GPU), genişlik değil.
 const RENDER_SCALE_CAP_COARSE = 1.5
-const RENDER_SCALE_CAP_FINE = 2
+const RENDER_SCALE_CAP_FINE = 1.25
 const ABSOLUTE_MAX_PIXEL_COUNT = 1920 * 1080 * 2
+// The library defaults to 2, which renders DPR-1 screens at twice their native
+// resolution before maxPixelCount applies.
+const MIN_PIXEL_RATIO = 1
+
+// Trailing delay for committing a new hero size. The sidebar animates the
+// hero's width every frame; each commit re-renders and makes the library
+// reallocate the canvas again, so only the settled size is committed. The
+// canvas CSS size follows the element meanwhile, only its pixel budget lags.
+const RESIZE_SETTLE_MS = 150
 
 // Fullscreen dörtgen: kenar yok (MSAA gereksiz), derinlik/stencil kullanılmıyor.
 const WEBGL_CONTEXT = {
@@ -126,15 +135,30 @@ export function HomeHeroBackdrop({
       )
 
     const rect = el.getBoundingClientRect()
-    if (rect.height) commit(rect.width, rect.height)
+    let measured = rect.height > 0
+    if (measured) commit(rect.width, rect.height)
 
+    let settleTimer: ReturnType<typeof setTimeout> | undefined
     const resizeObserver = new ResizeObserver(([entry]) => {
       const box = entry?.contentRect
-      if (box?.height) commit(box.width, box.height)
+      if (!box?.height) return
+      if (!measured) {
+        measured = true
+        commit(box.width, box.height)
+        return
+      }
+      clearTimeout(settleTimer)
+      settleTimer = setTimeout(
+        () => commit(box.width, box.height),
+        RESIZE_SETTLE_MS
+      )
     })
     resizeObserver.observe(el)
 
-    return () => resizeObserver.disconnect()
+    return () => {
+      resizeObserver.disconnect()
+      clearTimeout(settleTimer)
+    }
   }, [])
 
   const themeReady = theme !== null
@@ -232,6 +256,7 @@ export function HomeHeroBackdrop({
             colors={[...palette.colors]}
             // speed=0 rAF döngüsünü tamamen iptal ediyor (zaman korunur).
             speed={reduceMotion || covered || offscreen ? 0 : SPEED}
+            minPixelRatio={MIN_PIXEL_RATIO}
             maxPixelCount={maxPixelCount}
             webGlContextAttributes={WEBGL_CONTEXT}
             style={{ width: "100%", height: "100%" }}
