@@ -6,6 +6,7 @@ import {
   hasApprovalCard,
   hasStoppedMarker,
   resolveApprovalCard,
+  resolveApprovalCards,
   statusAfterStop,
   type MessageLike,
   type PartLike,
@@ -157,6 +158,85 @@ describe("resolveApprovalCard", () => {
       isStopped: byMarker,
     })
     assert.equal(r.locked, true)
+  })
+})
+
+describe("resolveApprovalCards", () => {
+  const system = (): MessageLike => ({
+    id: `s${seq++}`,
+    role: "system",
+    parts: [],
+  })
+  const matchesPerMessage = (
+    messages: MessageLike[],
+    opts: { busy: boolean; isStopped: (m: MessageLike) => boolean }
+  ) => {
+    const all = resolveApprovalCards(messages, opts)
+    assert.equal(all.length, messages.length)
+    messages.forEach((m, i) => {
+      assert.deepEqual(
+        all[i],
+        m.role === "assistant" ? resolveApprovalCard(messages, i, opts) : null
+      )
+    })
+  }
+
+  test("approval followed by a turn result", () => {
+    const messages = [
+      user(),
+      assistant(parseCard),
+      approval(),
+      assistant(summary),
+      user(),
+      assistant(parseCard),
+    ]
+    matchesPerMessage(messages, { busy: false, isStopped: byMarker })
+    matchesPerMessage(messages, { busy: true, isStopped: byMarker })
+  })
+
+  test("turns stopped by marker and by id", () => {
+    const cut = assistant(pendingLookup)
+    const ids = new Set([cut.id])
+    const messages = [
+      user(),
+      assistant(parseCard),
+      approval(),
+      assistant(stopped),
+      approval(),
+      cut,
+      approval(),
+      assistant(pendingLookup, stopped, summary),
+    ]
+    matchesPerMessage(messages, {
+      busy: false,
+      isStopped: (m) => ids.has(m.id) || byMarker(m),
+    })
+  })
+
+  test("busy last approval turn", () => {
+    const messages = [user(), assistant(parseCard), approval()]
+    matchesPerMessage(messages, { busy: true, isStopped: byMarker })
+    matchesPerMessage([...messages, assistant(pendingLookup)], {
+      busy: true,
+      isStopped: byMarker,
+    })
+  })
+
+  test("system and user messages mixed in", () => {
+    const messages = [
+      system(),
+      user(),
+      assistant(parseCard),
+      system(),
+      approval(),
+      assistant(stopped),
+      user(),
+      assistant(parseCard),
+      approval(),
+      system(),
+    ]
+    matchesPerMessage(messages, { busy: false, isStopped: byMarker })
+    matchesPerMessage(messages, { busy: true, isStopped: byMarker })
   })
 })
 

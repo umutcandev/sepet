@@ -119,3 +119,47 @@ export function resolveApprovalCard(
   // sürüyorsa kilitli.
   return { locked: approval !== null && opts.busy, approval }
 }
+
+export type ApprovalCardState = {
+  locked: boolean
+  approval: MessageLike | null
+}
+
+/**
+ * `resolveApprovalCard` for every message at once: one backward pass instead
+ * of a forward scan per message. Entries for non-assistant messages are null.
+ */
+export function resolveApprovalCards(
+  messages: readonly MessageLike[],
+  opts: { busy: boolean; isStopped: (message: MessageLike) => boolean }
+): Array<ApprovalCardState | null> {
+  const out: Array<ApprovalCardState | null> = new Array(messages.length).fill(
+    null
+  )
+  // Outcome of a forward scan that starts right after the current index:
+  // whether it stopped on a message (card locked) and the last approval
+  // message it passed before stopping.
+  let stoppedEarly = false
+  let approval: MessageLike | null = null
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const m = messages[i]
+    if (m.role === "assistant") {
+      out[i] = {
+        locked: stoppedEarly || (approval !== null && opts.busy),
+        approval,
+      }
+    }
+    if (m.role === "user") {
+      if (!approvalKind(m)) {
+        stoppedEarly = true
+        approval = null
+      } else {
+        approval = approval ?? m
+      }
+    } else if (!(opts.isStopped(m) && !hasTurnResult(m.parts))) {
+      stoppedEarly = true
+      approval = null
+    }
+  }
+  return out
+}

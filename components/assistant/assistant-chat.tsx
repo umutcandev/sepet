@@ -16,7 +16,6 @@ import {
   Message,
   MessageContent,
   MessageResponse,
-  ModelResponse,
 } from "@/components/ai-elements/message"
 import {
   type PromptInputMessage,
@@ -28,53 +27,25 @@ import { useRequireLocation } from "@/lib/hooks/use-require-location"
 import { useCurrentUser } from "@/components/providers/session-provider"
 import { assistantTitle } from "@/lib/stores/assistant-title"
 import { assistantConversations } from "@/lib/stores/assistant-conversations"
-import type {
-  BasketDraft,
-  ImageAnalysis,
-  MatchResult,
-  OptimizationSummary,
-  ReceiptOCR,
-} from "@/lib/ai/schemas"
-import { UnmatchedProductList } from "./unmatched-product-list"
-import { OptimizationCard } from "./optimization-card"
-import {
-  ReceiptApprovalCard,
-  type ApprovalSubmit,
-} from "./receipt-approval-card"
-import {
-  ReceiptComparisonCard,
-  type ReceiptComparisonPayload,
-} from "./receipt-comparison-card"
-import {
-  BasketApprovalCard,
-  type BasketApprovalSubmit,
-} from "./basket-approval-card"
-import { BasketSummary } from "./basket-summary"
-import type { BasketContextPayload } from "./basket-save-footer"
+import type { MatchResult } from "@/lib/ai/schemas"
+import type { ApprovalSubmit } from "./receipt-approval-card"
+import type { BasketApprovalSubmit } from "./basket-approval-card"
 import {
   applySelectionToParts,
   type SelectionUpdate,
 } from "@/lib/assistant/selection-update"
-import {
-  MessageFooter,
-  ReasoningBlock,
-  StoppedMarker,
-  matchImageFallback,
-  orderAssistantParts,
-  renderToolPart,
-} from "./message-parts"
+import { AssistantMessageRow } from "./assistant-message-row"
 import { Marker, MarkerContent } from "@/components/ui/marker"
 import {
   STOPPED_PART_TYPE,
   approvalKind,
   hasStoppedMarker,
-  resolveApprovalCard,
+  resolveApprovalCards,
   statusAfterStop,
   type MessageLike,
 } from "@/lib/assistant/turn-state"
 import { PressFx } from "@/components/motion/press-fx"
 import { stripQuantityTokens } from "@/lib/ai/normalize"
-import { messageToMarkdown } from "@/lib/assistant/message-markdown"
 
 const SEED_KEY = "assistant:seed"
 const FILE_KEY = "assistant:file"
@@ -84,18 +55,6 @@ const SUGGESTIONS = [
   "Nohutlu pilav yapmak istiyorum",
   "Limonata için malzemeler",
 ]
-
-type ParseReceiptOutput = {
-  ocr: ReceiptOCR
-  receiptImageUrl: string
-  receiptImageR2Key: string | null
-}
-
-type AnalyzeImageOutput = {
-  analysis: ImageAnalysis
-  receiptImageUrl: string
-  receiptImageR2Key: string | null
-}
 
 type AssistantChatProps = {
   conversationId?: string
@@ -166,6 +125,7 @@ export function AssistantChat({
   const { messages, sendMessage, setMessages, status, stop, error } = useChat({
     transport,
     messages: chatSeed,
+    experimental_throttle: 50,
     onData: (dataPart) => {
       if (
         dataPart.type === "data-conversation-id" &&
@@ -275,7 +235,7 @@ export function AssistantChat({
       }
     },
   })
-  const [input, setInput] = React.useState(initialInput ?? "")
+  const promptRef = React.useRef<ChatPromptHandle>(null)
   const sentSeedRef = React.useRef(false)
 
   // Ana sayfadan gelen seed'i synchronously oku ki ilk render'da hemen
@@ -442,7 +402,7 @@ export function AssistantChat({
   // derleyicisi `guard()`'a ref okuyan callback geçişini false-positive olarak
   // bayraklıyor (transport useMemo'sunda da aynı kalıp var).
   /* eslint-disable react-hooks/refs */
-  const handleSubmit = guard(
+  const submit = guard(
     locationGuard(async (message: PromptInputMessage) => {
       if (isBusy) return
       const text = message.text?.trim() ?? ""
@@ -465,22 +425,31 @@ export function AssistantChat({
             },
           ],
         })
-        setInput("")
+        promptRef.current?.setInput("")
         return
       }
 
       if (!text) return
       markPendingTitleIfNew()
       sendMessage({ text })
-      setInput("")
+      promptRef.current?.setInput("")
     }),
   )
 
   const handleSuggestionClick = guard((text: string) => {
     if (isBusy) return
-    setInput(text)
+    promptRef.current?.setInput(text)
   })
   /* eslint-enable react-hooks/refs */
+  // Stable identity for the memoized prompt; always runs the latest handler.
+  const submitRef = React.useRef(submit)
+  React.useLayoutEffect(() => {
+    submitRef.current = submit
+  })
+  const handleSubmit = React.useCallback(
+    (message: PromptInputMessage) => submitRef.current(message),
+    [],
+  )
 
   const handleApprove = React.useCallback(
     (a: ApprovalSubmit) => {
@@ -581,21 +550,35 @@ export function AssistantChat({
   // İlk chunk gelmeden durdurulan turda asistan mesajı hiç oluşmaz. Sunucu o
   // turu yalnızca durdurma işaretini taşıyan bir mesaj olarak kaydeder; aynısı
   // burada da eklenir ki canlı görünüm ile yeniden yüklenen sohbet aynı olsun.
+  // Placeholders are built per stop, not per streamed chunk, so their rows
+  // keep the same message object and skip re-rendering.
+  const stoppedPlaceholders = React.useMemo(() => {
+    const out = new Map<string, UIMessage>()
+    for (const id of stoppedIds) {
+      out.set(id, {
+        id: `${id}-stopped`,
+        role: "assistant",
+        parts: [{ type: STOPPED_PART_TYPE, data: {} }],
+      } satisfies UIMessage)
+    }
+    return out
+  }, [stoppedIds])
   const thread = React.useMemo(
     () =>
-      messages.flatMap((m) =>
-        m.role === "user" && stoppedIds.has(m.id)
-          ? [
-              m,
-              {
-                id: `${m.id}-stopped`,
-                role: "assistant",
-                parts: [{ type: STOPPED_PART_TYPE, data: {} }],
-              } satisfies UIMessage,
-            ]
-          : [m],
-      ),
-    [messages, stoppedIds],
+      messages.flatMap((m) => {
+        const placeholder =
+          m.role === "user" ? stoppedPlaceholders.get(m.id) : undefined
+        return placeholder ? [m, placeholder] : [m]
+      }),
+    [messages, stoppedPlaceholders],
+  )
+  const approvalCards = React.useMemo(
+    () =>
+      resolveApprovalCards(thread, {
+        busy: isBusy,
+        isStopped: isStoppedMessage,
+      }),
+    [thread, isBusy, isStoppedMessage],
   )
 
   return (
@@ -677,18 +660,8 @@ export function AssistantChat({
               // gösterir. Stop'tan (ya da hatadan) sonra çıktısı hiç gelmeyecek
               // bir tool çağrısı sonsuza dek "Hallediyorum…" diye dönüyordu ve
               // durdurma işe yaramamış gibi görünüyordu.
-              const isStreamingMsg =
-                isBusy &&
-                m.role === "assistant" &&
-                msgIdx === thread.length - 1
-              const stopped = isStoppedMessage(m)
-              const card =
-                m.role === "assistant"
-                  ? resolveApprovalCard(thread, msgIdx, {
-                      busy: isBusy,
-                      isStopped: isStoppedMessage,
-                    })
-                  : null
+              const isLast = msgIdx === thread.length - 1
+              const card = approvalCards[msgIdx]
               const approvalMeta = card?.approval?.metadata as
                 | { kind?: string; payload?: { items?: BasketApprovalSubmit["items"] } }
                 | undefined
@@ -697,273 +670,25 @@ export function AssistantChat({
                 Array.isArray(approvalMeta.payload?.items)
                   ? approvalMeta.payload.items
                   : undefined
-              // Aktif (henüz "done" olmayan) bir reasoning part'ı varsa
-              // pending tool part'larının yükleniyor etiketi ("Hallediyorum…"
-              // vb.) bastırılır — aynı anda iki "düşünme" animasyonu (örn.
-              // "Hallediyorum" + "Düşünüyorum") görmemek için. Reasoning
-              // "done" olur olmaz tool kendi etiketini gösterir.
-              const hasActiveReasoning =
-                isStreamingMsg &&
-                m.parts.some(
-                  (p) =>
-                    p.type === "reasoning" &&
-                    (p as { state?: string }).state !== "done",
-                )
-              const suppressToolLoader = !isStreamingMsg || hasActiveReasoning
-              const orderedParts =
-                m.role === "assistant" ? orderAssistantParts(m.parts) : m.parts
-              // Fiş turunda karşılaştırma kartı her satırı (eşleşmeyenler
-              // dahil, "eşleşme yok") zaten listeliyor; ayrı bir
-              // Eşleştirilemeyen Ürünler kartı aynı bilgiyi tekrarlardı.
-              const hasReceiptComparison = m.parts.some(
-                (p) => p.type === "tool-receiptComparison",
-              )
               return (
-                <Message from={m.role} key={m.id}>
-                  <MessageContent>
-                    {orderedParts.map((part, i) => {
-                      const key = `${m.id}-${i}`
-                      switch (part.type) {
-                        case "text":
-                          // Asistan metni modelden gelir → dar markdown
-                          // (bağlantı/görsel yok, bkz. ModelResponse).
-                          return m.role === "assistant" ? (
-                            <ModelResponse key={key}>{part.text}</ModelResponse>
-                          ) : (
-                            <MessageResponse key={key}>
-                              {part.text}
-                            </MessageResponse>
-                          )
-                        case "reasoning": {
-                          const p = part as {
-                            type: "reasoning"
-                            text?: string
-                            state?: "streaming" | "done"
-                          }
-                          const text = p.text?.trim()
-                          if (!text) return null
-                          return (
-                            <ReasoningBlock
-                              key={key}
-                              text={text}
-                              streaming={isStreamingMsg && p.state !== "done"}
-                            />
-                          )
-                        }
-                        case "tool-parseShoppingList":
-                          return renderToolPart(
-                            key,
-                            part,
-                            "Hallediyorum…",
-                            (out) => {
-                              const draft = out as BasketDraft
-                              if (draft.items.length === 0) return null
-                              return (
-                                <BasketApprovalCard
-                                  data={draft}
-                                  alreadyApproved={card?.locked}
-                                  approvedItems={approvedBasketItems}
-                                  onApprove={handleBasketApprove}
-                                />
-                              )
-                            },
-                            suppressToolLoader,
-                          )
-                        case "tool-basketContext":
-                          // Kaydet artık Sepet Özeti kartının alt şeridinde
-                          // (bkz. tool-summarizeOptimization kolu).
-                          return null
-                        case "tool-lookupProducts":
-                          return renderToolPart(
-                            key,
-                            part,
-                            "Ürünleri aratıyorum…",
-                            (out) =>
-                              hasReceiptComparison ? null : (
-                                <UnmatchedProductList
-                                  matches={
-                                    (out as { matches: MatchResult[] }).matches
-                                  }
-                                  // Yeniden arama yalnızca son turda: eski bir
-                                  // kartta tıklamak sohbetin ortasına geçmiş
-                                  // bir sepetin yeni sonucunu düşürürdü.
-                                  onRetry={
-                                    msgIdx === thread.length - 1
-                                      ? handleRetryUnmatched
-                                      : undefined
-                                  }
-                                  disabled={isBusy}
-                                />
-                              ),
-                            suppressToolLoader,
-                          )
-                        case "tool-summarizeOptimization": {
-                          // Sepet onayı turunda özet, kayıt bağlamıyla birlikte
-                          // tek kart: Kaydet ve ürün değiştirme onun üstünde.
-                          // Fiş turunda bağlam yok; düz özet kartı.
-                          const context = m.parts.find(
-                            (p) =>
-                              p.type === "tool-basketContext" &&
-                              (p as { state?: string }).state ===
-                                "output-available",
-                          ) as
-                            | { toolCallId?: string; output?: unknown }
-                            | undefined
-                          const contextCallId = context?.toolCallId ?? null
-                          return renderToolPart(
-                            key,
-                            part,
-                            "En ucuz market kombinasyonunu hesaplıyorum…",
-                            (out) =>
-                              context?.output ? (
-                                <BasketSummary
-                                  data={context.output as BasketContextPayload}
-                                  toolCallId={contextCallId}
-                                  conversationId={conversationId ?? null}
-                                  initialSavedId={
-                                    contextCallId && initialSavedBaskets
-                                      ? (initialSavedBaskets[contextCallId] ??
-                                        null)
-                                      : null
-                                  }
-                                  // Ürün değiştirme yalnızca son turda: eski
-                                  // bir kartı değiştirmek sohbetin ortasındaki
-                                  // geçmiş bir sepeti sessizce değiştirirdi.
-                                  editable={
-                                    !isBusy && msgIdx === thread.length - 1
-                                  }
-                                  imageFallback={matchImageFallback(m.parts)}
-                                  onUpdated={handleSelectionApplied}
-                                />
-                              ) : (
-                                <OptimizationCard
-                                  summary={out as OptimizationSummary}
-                                  imageFallback={matchImageFallback(m.parts)}
-                                />
-                              ),
-                            suppressToolLoader,
-                          )
-                        }
-                        case "tool-parseReceipt":
-                          return renderToolPart(
-                            key,
-                            part,
-                            "Fişini okuyorum…",
-                            (out) => (
-                              <ReceiptApprovalCard
-                                data={out as ParseReceiptOutput}
-                                alreadyApproved={card?.locked}
-                                onApprove={handleApprove}
-                              />
-                            ),
-                            suppressToolLoader,
-                          )
-                        case "tool-analyzeImage":
-                          return renderToolPart(
-                            key,
-                            part,
-                            "Görseli inceliyorum…",
-                            (out) => {
-                              const { analysis, receiptImageUrl, receiptImageR2Key } =
-                                out as AnalyzeImageOutput
-                              if (analysis.kind === "receipt" && analysis.receipt) {
-                                return (
-                                  <ReceiptApprovalCard
-                                    data={{
-                                      ocr: analysis.receipt,
-                                      receiptImageUrl,
-                                      receiptImageR2Key,
-                                    }}
-                                    alreadyApproved={card?.locked}
-                                    onApprove={handleApprove}
-                                  />
-                                )
-                              }
-                              if (analysis.kind === "food" && analysis.food) {
-                                return (
-                                  <BasketApprovalCard
-                                    data={{ items: analysis.food.items }}
-                                    alreadyApproved={card?.locked}
-                                    approvedItems={approvedBasketItems}
-                                    onApprove={handleBasketApprove}
-                                  />
-                                )
-                              }
-                              // kind === "unknown" → kart yok; metin yanıtı yeter.
-                              return null
-                            },
-                            suppressToolLoader,
-                          )
-                        case "tool-receiptComparison": {
-                          const toolCallId =
-                            (part as { toolCallId?: string }).toolCallId ?? null
-                          const savedId =
-                            toolCallId && initialSavedReceipts
-                              ? initialSavedReceipts[toolCallId] ?? null
-                              : null
-                          return renderToolPart(
-                            key,
-                            part,
-                            "Fiş karşılaştırmasını hazırlıyorum…",
-                            (out) => (
-                              <ReceiptComparisonCard
-                                data={out as ReceiptComparisonPayload}
-                                conversationId={conversationId ?? null}
-                                toolCallId={toolCallId}
-                                initialSavedId={savedId}
-                              />
-                            ),
-                            suppressToolLoader,
-                          )
-                        }
-                        case "file": {
-                          const filePart = part as {
-                            type: "file"
-                            mediaType?: string
-                            url?: string
-                            filename?: string
-                          }
-                          if (
-                            !filePart.url ||
-                            !filePart.mediaType?.startsWith("image/")
-                          ) {
-                            return null
-                          }
-                          return (
-                            <div
-                              key={key}
-                              className="max-w-[280px] overflow-hidden rounded-lg outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
-                            >
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={filePart.url}
-                                alt={filePart.filename ?? "Yüklenen görsel"}
-                                className="block h-auto w-full"
-                              />
-                            </div>
-                          )
-                        }
-                        default:
-                          return null
-                      }
-                    })}
-                    {m.role === "assistant" && stopped && <StoppedMarker />}
-                  </MessageContent>
-                  {times[m.id] ? (
-                    <MessageFooter
-                      at={times[m.id]}
-                      align={m.role === "user" ? "end" : "start"}
-                      // Kart neyi gösteriyorsa kopya da onu yazar: kilitli
-                      // onay kartında onaylanan kalemler.
-                      getMarkdown={() =>
-                        messageToMarkdown(m, {
-                          locked: card?.locked,
-                          approvedItems: approvedBasketItems,
-                        })
-                      }
-                    />
-                  ) : null}
-                </Message>
+                <AssistantMessageRow
+                  key={m.id}
+                  message={m}
+                  isStreaming={isBusy && m.role === "assistant" && isLast}
+                  isLast={isLast}
+                  busy={isBusy}
+                  stopped={isStoppedMessage(m)}
+                  locked={card?.locked}
+                  approvedBasketItems={approvedBasketItems}
+                  time={times[m.id]}
+                  conversationId={conversationId ?? null}
+                  initialSavedBaskets={initialSavedBaskets}
+                  initialSavedReceipts={initialSavedReceipts}
+                  onApprove={handleApprove}
+                  onBasketApprove={handleBasketApprove}
+                  onRetryUnmatched={handleRetryUnmatched}
+                  onSelectionApplied={handleSelectionApplied}
+                />
               )
             })}
 
@@ -1006,9 +731,9 @@ export function AssistantChat({
         </Conversation>
       )}
 
-      <AssistantPrompt
-        input={input}
-        setInput={setInput}
+      <ChatPrompt
+        handleRef={promptRef}
+        initialInput={initialInput}
         onSubmit={handleSubmit}
         className="mx-auto w-full max-w-3xl"
         status={showSeedOptimistic ? "submitted" : status}
@@ -1017,6 +742,27 @@ export function AssistantChat({
     </div>
   )
 }
+
+type ChatPromptHandle = { setInput: (value: string) => void }
+
+type ChatPromptProps = Omit<
+  React.ComponentProps<typeof AssistantPrompt>,
+  "input" | "setInput"
+> & {
+  handleRef: React.Ref<ChatPromptHandle>
+  initialInput?: string
+}
+
+// Owns the draft text so typing re-renders only the prompt, not the thread.
+const ChatPrompt = React.memo(function ChatPrompt({
+  handleRef,
+  initialInput,
+  ...props
+}: ChatPromptProps) {
+  const [input, setInput] = React.useState(initialInput ?? "")
+  React.useImperativeHandle(handleRef, () => ({ setInput }), [])
+  return <AssistantPrompt input={input} setInput={setInput} {...props} />
+})
 
 /** "börek yufkası" → "Börek yufkası" (Türkçe i/İ kuralına uyar). */
 function capitalizeTr(s: string): string {
