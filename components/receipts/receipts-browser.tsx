@@ -73,6 +73,86 @@ function useDebounced<T>(value: T, delay: number): T {
   return debounced
 }
 
+const ReceiptRow = React.memo(function ReceiptRow({
+  receipt: r,
+  selecting,
+  selected,
+  onToggleSelect,
+  onEnterSelect,
+  onRequestDelete,
+}: {
+  receipt: ReceiptListItem
+  selecting: boolean
+  selected: boolean
+  onToggleSelect: (id: string) => void
+  onEnterSelect: (id: string) => void
+  onRequestDelete: (receipt: ReceiptListItem) => void
+}) {
+  const isStale = isReceiptStaleByDate(r.purchaseDate)
+  const savings =
+    !isStale && r.potentialSavingsTL ? Number(r.potentialSavingsTL) : 0
+  const label = receiptLabel(r)
+  return (
+    <RecordListCard
+      href={`/fis-gecmisi/${r.id}`}
+      title={label}
+      selecting={selecting}
+      selected={selected}
+      selectLabel={`${label} seç`}
+      onToggleSelect={() => onToggleSelect(r.id)}
+      primary={
+        <>
+          {savings > 0 ? (
+            <span className="text-xs font-medium text-emerald-700 tabular-nums dark:text-emerald-300">
+              <span className="sr-only">tasarruf edebilirdin </span>
+              {formatTL(savings)}
+            </span>
+          ) : null}
+          <span className="text-sm font-medium tabular-nums">
+            {r.totalAmount ? formatTL(Number(r.totalAmount)) : "—"}
+          </span>
+        </>
+      }
+      meta={
+        <>
+          <MarketCell
+            name={r.marketName}
+            size="sm"
+            clickable={false}
+            className="min-w-0"
+          />
+          {r.bestSingleMarket ? (
+            <>
+              <RecordListDot />
+              <span className="flex min-w-0 items-center gap-1.5">
+                <MarketCell
+                  name={r.bestSingleMarket}
+                  size="sm"
+                  clickable={false}
+                  className="min-w-0"
+                />
+                {r.bestSingleTotal ? (
+                  <span className="shrink-0 tabular-nums">
+                    {formatTL(Number(r.bestSingleTotal))}
+                  </span>
+                ) : null}
+              </span>
+            </>
+          ) : null}
+        </>
+      }
+      metaTrailing={formatDateShort(r.purchaseDate ?? r.createdAt)}
+      actions={
+        <RecordRowActions
+          label="Fiş eylemleri"
+          onSelect={() => onEnterSelect(r.id)}
+          onDelete={() => onRequestDelete(r)}
+        />
+      }
+    />
+  )
+})
+
 type Props = {
   initial: ReceiptListItem[]
   initialHasMore: boolean
@@ -498,80 +578,17 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                   tek esneyen öğe. Fişte alt bant iki market taşır — fişteki
                   market ve bugünkü en ucuz alternatif. */}
               <ul className="space-y-2">
-                {displayed.map((r) => {
-                  const isStale = isReceiptStaleByDate(r.purchaseDate)
-                  const savings =
-                    !isStale && r.potentialSavingsTL
-                      ? Number(r.potentialSavingsTL)
-                      : 0
-                  const label = receiptLabel(r)
-                  return (
-                    <RecordListCard
-                      key={r.id}
-                      href={`/fis-gecmisi/${r.id}`}
-                      title={label}
-                      selecting={selecting}
-                      selected={selected.has(r.id)}
-                      selectLabel={`${label} seç`}
-                      onToggleSelect={() => toggleSelect(r.id)}
-                      primary={
-                        <>
-                          {savings > 0 ? (
-                            <span className="text-xs font-medium text-emerald-700 tabular-nums dark:text-emerald-300">
-                              <span className="sr-only">
-                                tasarruf edebilirdin{" "}
-                              </span>
-                              {formatTL(savings)}
-                            </span>
-                          ) : null}
-                          <span className="text-sm font-medium tabular-nums">
-                            {r.totalAmount
-                              ? formatTL(Number(r.totalAmount))
-                              : "—"}
-                          </span>
-                        </>
-                      }
-                      meta={
-                        <>
-                          <MarketCell
-                            name={r.marketName}
-                            size="sm"
-                            clickable={false}
-                            className="min-w-0"
-                          />
-                          {r.bestSingleMarket ? (
-                            <>
-                              <RecordListDot />
-                              <span className="flex min-w-0 items-center gap-1.5">
-                                <MarketCell
-                                  name={r.bestSingleMarket}
-                                  size="sm"
-                                  clickable={false}
-                                  className="min-w-0"
-                                />
-                                {r.bestSingleTotal ? (
-                                  <span className="shrink-0 tabular-nums">
-                                    {formatTL(Number(r.bestSingleTotal))}
-                                  </span>
-                                ) : null}
-                              </span>
-                            </>
-                          ) : null}
-                        </>
-                      }
-                      metaTrailing={formatDateShort(
-                        r.purchaseDate ?? r.createdAt,
-                      )}
-                      actions={
-                        <RecordRowActions
-                          label="Fiş eylemleri"
-                          onSelect={() => enterSelect(r.id)}
-                          onDelete={() => setSingleDeleteTarget(r)}
-                        />
-                      }
-                    />
-                  )
-                })}
+                {displayed.map((r) => (
+                  <ReceiptRow
+                    key={r.id}
+                    receipt={r}
+                    selecting={selecting}
+                    selected={selected.has(r.id)}
+                    onToggleSelect={toggleSelect}
+                    onEnterSelect={enterSelect}
+                    onRequestDelete={setSingleDeleteTarget}
+                  />
+                ))}
               </ul>
               {/* Infinite scroll sentinel */}
               {hasMore && !isSearchActive ? (

@@ -81,6 +81,7 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
   const mapRef = React.useRef<LeafletNs.Map | null>(null)
   const markerRef = React.useRef<LeafletNs.Marker | null>(null)
   const LRef = React.useRef<typeof LeafletNs | null>(null)
+  const depotMarkersRef = React.useRef(new Map<string, LeafletNs.Marker>())
   // Harita + Leaflet hazır olunca true → depo marker effect'i bunu bekleyip çalışır.
   const [ready, setReady] = React.useState(false)
   const [locating, setLocating] = React.useState(false)
@@ -184,19 +185,32 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
   }, [center.lat, center.lng, ready])
 
   // ─── Listedeki şubeleri logolu nokta olarak işaretle ───
-  // `ready` bağımlılığı sayesinde harita asenkron kurulduğunda effect yeniden
-  // çalışır; depo listesi (mesafe/filtre) değişince marker'lar yeniden kurulur.
+  // Re-runs once the async map setup finishes (`ready`). When the depot list
+  // changes, only added/removed markers are touched; unchanged ones stay put.
   React.useEffect(() => {
     const map = mapRef.current
     const L = LRef.current
     if (!ready || !map || !L) return
-    const markers = depots.map((d) =>
-      L.marker([d.lat, d.lng], {
-        icon: depotIcon(L, d.market),
-        interactive: false,
-        keyboard: false,
-      }).addTo(map),
-    )
+    const live = depotMarkersRef.current
+    const nextKeys = new Set<string>()
+    for (const d of depots) {
+      const key = `${d.id}|${d.market}|${d.lat}|${d.lng}`
+      nextKeys.add(key)
+      if (live.has(key)) continue
+      live.set(
+        key,
+        L.marker([d.lat, d.lng], {
+          icon: depotIcon(L, d.market),
+          interactive: false,
+          keyboard: false,
+        }).addTo(map),
+      )
+    }
+    for (const [key, marker] of live) {
+      if (nextKeys.has(key)) continue
+      marker.remove()
+      live.delete(key)
+    }
 
     // Konuma sıkı zoom yerine: kullanıcı pini + tüm işaretli marketleri tek
     // görünüme sığdır. Şube yoksa center-sync'in konuma zoom'u devrede kalır.
@@ -206,11 +220,16 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
       for (const d of depots) bounds.extend([d.lat, d.lng])
       map.fitBounds(bounds, { padding: [5, 5] })
     }
-
-    return () => {
-      for (const m of markers) m.remove()
-    }
   }, [depots, ready])
+
+  // Drop all depot markers when the map is torn down (or rebuilt).
+  React.useEffect(() => {
+    const live = depotMarkersRef.current
+    return () => {
+      for (const marker of live.values()) marker.remove()
+      live.clear()
+    }
+  }, [ready])
 
   // Konum butonu: tarayıcı konumunu alıp merkezi oraya taşı (onMove → parent
   // center'ı günceller, harita flyTo ile gider). MapTiler GeolocateControl'ün yeri.

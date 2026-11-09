@@ -199,6 +199,8 @@ export function ProductSearchPage({
   // eslint-disable-next-line react-hooks/refs -- guard wrappers run at event time, not render
   const submitSearch = guard(locationGuard(() => runSearchWith(q)))
   const openScanner = guard(locationGuard(() => setScannerOpen(true)))
+  // Stable identity so memoized ProductCards skip re-rendering on keystrokes.
+  const selectProduct = React.useMemo(() => guard(setSelectedId), [guard])
 
   // URL'den gelen sorguyu bir kez kendiliğinden çalıştır.
   //
@@ -320,7 +322,7 @@ export function ProductSearchPage({
 
       <ResultArea
         result={view}
-        onSelect={guard(setSelectedId)}
+        onSelect={selectProduct}
         onLoadMore={loadMore}
       />
 
@@ -411,11 +413,7 @@ function ResultArea({
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {result.hits.map((hit) => (
-          <ProductCard
-            key={hit.productId}
-            hit={hit}
-            onSelect={() => onSelect(hit.productId)}
-          />
+          <ProductCard key={hit.productId} hit={hit} onSelect={onSelect} />
         ))}
       </div>
 
@@ -437,17 +435,17 @@ function ResultArea({
   )
 }
 
-function ProductCard({
+const ProductCard = React.memo(function ProductCard({
   hit,
   onSelect,
 }: {
   hit: ProductHit
-  onSelect: () => void
+  onSelect: (productId: string) => void
 }) {
   return (
     <button
       type="button"
-      onClick={onSelect}
+      onClick={() => onSelect(hit.productId)}
       className={cn(
         // Kenar kartlarla aynı `smooth-shadow-ring-sm`; hover'da halka koyulur.
         "group flex flex-col gap-2 rounded-2xl bg-card p-2.5 text-left smooth-shadow-ring-sm",
@@ -501,7 +499,7 @@ function ProductCard({
       </div>
     </button>
   )
-}
+})
 
 function SkeletonCard() {
   return (

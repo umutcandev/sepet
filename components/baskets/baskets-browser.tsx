@@ -61,6 +61,66 @@ function useDebounced<T>(value: T, delay: number): T {
   return debounced
 }
 
+const BasketRow = React.memo(function BasketRow({
+  basket: b,
+  selecting,
+  selected,
+  onToggleSelect,
+  onEnterSelect,
+  onRequestDelete,
+}: {
+  basket: BasketListItem
+  selecting: boolean
+  selected: boolean
+  onToggleSelect: (id: string) => void
+  onEnterSelect: (id: string) => void
+  onRequestDelete: (basket: BasketListItem) => void
+}) {
+  const twoMarket = b.twoMarketSavingsTL ? Number(b.twoMarketSavingsTL) : 0
+  return (
+    <RecordListCard
+      href={`/sepetlerim/${b.id}`}
+      title={b.name}
+      selecting={selecting}
+      selected={selected}
+      selectLabel={`${b.name} seç`}
+      onToggleSelect={() => onToggleSelect(b.id)}
+      primary={
+        <>
+          {twoMarket > 0 ? (
+            // Plain text rather than a badge: emphasis comes from color, and
+            // the figure reads on the same line as the total beside it.
+            // See the same decision in record-item-list.tsx.
+            <span className="text-xs font-medium text-emerald-700 tabular-nums dark:text-emerald-300">
+              <span className="sr-only">iki market tasarrufu </span>
+              {formatTL(twoMarket)}
+            </span>
+          ) : null}
+          <span className="text-sm font-medium tabular-nums">
+            {b.bestSingleTotal ? formatTL(Number(b.bestSingleTotal)) : "—"}
+          </span>
+        </>
+      }
+      meta={
+        <MarketCell
+          name={b.bestSingleMarket}
+          size="sm"
+          clickable={false}
+          className="min-w-0"
+        />
+      }
+      metaTrailing={formatDateShort(b.createdAt)}
+      actions={
+        <RecordRowActions
+          label="Sepet eylemleri"
+          onSelect={() => onEnterSelect(b.id)}
+          onDelete={() => onRequestDelete(b)}
+        />
+      }
+    />
+  )
+})
+
 type Props = {
   initial: BasketListItem[]
   initialHasMore: boolean
@@ -489,58 +549,17 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                   bakım yüzeyi. Kartın kendi içinde tek esneyen öğesi olduğu için
                   telefonda da masaüstünde de aynı işaretleme yetiyor. */}
               <ul className="space-y-2">
-                {displayed.map((b) => {
-                  const twoMarket = b.twoMarketSavingsTL
-                    ? Number(b.twoMarketSavingsTL)
-                    : 0
-                  return (
-                    <RecordListCard
-                      key={b.id}
-                      href={`/sepetlerim/${b.id}`}
-                      title={b.name}
-                      selecting={selecting}
-                      selected={selected.has(b.id)}
-                      selectLabel={`${b.name} seç`}
-                      onToggleSelect={() => toggleSelect(b.id)}
-                      primary={
-                        <>
-                          {twoMarket > 0 ? (
-                            // Rozet değil düz metin — vurgu renkten gelsin,
-                            // sayı yanındaki tutarla aynı şeritte okunsun.
-                            // Bkz. record-item-list.tsx'teki aynı karar.
-                            <span className="text-xs font-medium text-emerald-700 tabular-nums dark:text-emerald-300">
-                              <span className="sr-only">
-                                iki market tasarrufu{" "}
-                              </span>
-                              {formatTL(twoMarket)}
-                            </span>
-                          ) : null}
-                          <span className="text-sm font-medium tabular-nums">
-                            {b.bestSingleTotal
-                              ? formatTL(Number(b.bestSingleTotal))
-                              : "—"}
-                          </span>
-                        </>
-                      }
-                      meta={
-                        <MarketCell
-                          name={b.bestSingleMarket}
-                          size="sm"
-                          clickable={false}
-                          className="min-w-0"
-                        />
-                      }
-                      metaTrailing={formatDateShort(b.createdAt)}
-                      actions={
-                        <RecordRowActions
-                          label="Sepet eylemleri"
-                          onSelect={() => enterSelect(b.id)}
-                          onDelete={() => setSingleDeleteTarget(b)}
-                        />
-                      }
-                    />
-                  )
-                })}
+                {displayed.map((b) => (
+                  <BasketRow
+                    key={b.id}
+                    basket={b}
+                    selecting={selecting}
+                    selected={selected.has(b.id)}
+                    onToggleSelect={toggleSelect}
+                    onEnterSelect={enterSelect}
+                    onRequestDelete={setSingleDeleteTarget}
+                  />
+                ))}
               </ul>
               {/* Infinite scroll sentinel */}
               {hasMore && !isSearchActive ? (

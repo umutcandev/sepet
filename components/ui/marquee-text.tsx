@@ -50,6 +50,27 @@ export function MarqueeText({
     return () => ro.disconnect()
   }, [])
 
+  // Pause the infinite animation while offscreen (long chat histories keep
+  // many of these mounted). Toggles a data attribute directly: no re-render.
+  const animated = overflow > 0
+  React.useEffect(() => {
+    const outer = outerRef.current
+    if (!animated || !outer || typeof IntersectionObserver === "undefined") {
+      return
+    }
+    const io = new IntersectionObserver((entries) => {
+      const last = entries[entries.length - 1]
+      if (!last) return
+      if (last.isIntersecting) delete outer.dataset.paused
+      else outer.dataset.paused = ""
+    })
+    io.observe(outer)
+    return () => {
+      io.disconnect()
+      delete outer.dataset.paused
+    }
+  }, [animated])
+
   const shift = overflow > 0 ? overflow + FADE_PX : 0
   // Gidiş ve dönüş toplam sürenin %25'er'i (globals.css `marquee-pingpong`),
   // kalan %50 uçlarda bekleme.

@@ -1638,6 +1638,10 @@
   animation: marquee-pingpong var(--marquee-duration) ease-in-out infinite;
 }
 
+.marquee-text[data-paused] > span {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-text {
     text-overflow: ellipsis;
