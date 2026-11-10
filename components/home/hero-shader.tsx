@@ -71,8 +71,10 @@ const HANDOFF_MS = 600
 // maxPixelCount = alan × cap². Telefonda native 3x ~2.96M fragment demekti;
 // 1.5 ile ~0.74M. Sinyal `pointer: coarse` (pil/tile GPU), genişlik değil.
 const RENDER_SCALE_CAP_COARSE = 1.5
-const RENDER_SCALE_CAP_FINE = 2
+const RENDER_SCALE_CAP_FINE = 1.25
 const ABSOLUTE_MAX_PIXEL_COUNT = 1920 * 1080 * 2
+// Kütüphane varsayılanı 2: 1x ekranı iki katı çözünürlükte çizer.
+const MIN_PIXEL_RATIO = 1
 
 // Fullscreen dörtgen: kenar yok (MSAA gereksiz), derinlik/stencil kullanılmıyor.
 const WEBGL_CONTEXT = {
@@ -232,6 +234,7 @@ export function HomeHeroBackdrop({
             colors={[...palette.colors]}
             // speed=0 rAF döngüsünü tamamen iptal ediyor (zaman korunur).
             speed={reduceMotion || covered || offscreen ? 0 : SPEED}
+            minPixelRatio={MIN_PIXEL_RATIO}
             maxPixelCount={maxPixelCount}
             webGlContextAttributes={WEBGL_CONTEXT}
             style={{ width: "100%", height: "100%" }}
