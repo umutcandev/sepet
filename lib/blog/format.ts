@@ -11,6 +11,11 @@ export function formatPostDateShort(iso: string): string {
   return format(new Date(iso), "d MMM", { locale: tr })
 }
 
+/** "24 Haziran" — ana sayfa blog kartları için yılsız tam ay. */
+export function formatPostDateDayMonth(iso: string): string {
+  return format(new Date(iso), "d MMMM", { locale: tr })
+}
+
 /** "24 Haz 2026" — arama sonucu satırı için orta biçim (yıl dâhil). */
 export function formatPostDateMedium(iso: string): string {
   return format(new Date(iso), "d MMM yyyy", { locale: tr })

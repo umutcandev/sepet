@@ -1,12 +1,10 @@
 import Link from "next/link"
-import { RiArrowRightLine, RiArrowRightSLine } from "@remixicon/react"
+import { RiArrowRightLine } from "@remixicon/react"
 
-import { PostCover } from "@/components/blog/post-cover"
+import { CompactPostCard } from "@/components/blog/compact-post-card"
 import { HomeFeaturesSection } from "@/components/home/home-features-section"
 import { HomeMarketsSection } from "@/components/home/home-markets-section"
 import { getLatestPosts } from "@/lib/blog"
-import { getCategory } from "@/lib/blog/categories"
-import { formatPostDateShort } from "@/lib/blog/format"
 import { Button } from "@/components/ui/button"
 import { PressFx } from "@/components/motion/press-fx"
 
@@ -96,36 +94,9 @@ export function HomeBlogSection() {
           </PressFx>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-5 gap-y-8 @2xl/blog:grid-cols-3">
+        <div className="grid grid-cols-1 gap-x-5 gap-y-10 @2xl/blog:grid-cols-3">
           {posts.map((post) => (
-            <Link
-              key={post.slug}
-              href={post.permalink}
-              className="group flex flex-col rounded-lg"
-            >
-              <PostCover
-                post={post}
-                className="border border-hairline transition-opacity group-hover:opacity-90"
-              />
-              <div className="mt-4 flex items-center gap-2 text-[0.8125rem]">
-                <span className="font-medium text-foreground">
-                  {getCategory(post.category).label}
-                </span>
-                <span aria-hidden className="text-muted-foreground">
-                  ·
-                </span>
-                <time dateTime={post.publishedAt} className="text-foreground/80">
-                  {formatPostDateShort(post.publishedAt)}
-                </time>
-              </div>
-              <h3 className="mt-1.5 text-base font-medium tracking-tight text-pretty text-foreground">
-                {post.title}
-                <RiArrowRightSLine
-                  aria-hidden
-                  className="ml-1 inline size-4 align-[-0.2em] text-muted-foreground transition-transform group-hover:translate-x-0.5"
-                />
-              </h3>
-            </Link>
+            <CompactPostCard key={post.slug} post={post} />
           ))}
         </div>
       </div>

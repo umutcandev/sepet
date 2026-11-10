@@ -8,10 +8,8 @@ import { getCategory } from "@/lib/blog/categories"
 import { formatPostDateShort } from "@/lib/blog/format"
 import { cn } from "@/lib/utils"
 
-// Index grid + ilgili yazılar kartı (Vercel blog grid kartı esinli): üretilen
-// kapak, tarih + kategori, başlık, altta yazar avatar-group + ad(lar). Kapak
-// yalnız bu çıplak kartta; yüzeyli öne çıkan kart (FeaturedPostCard) ve ana
-// sayfa kartları kapaksız kalır. Kartın tamamı linktir;
+// Index grid kartı (Vercel blog grid kartı esinli): üretilen kapak, tarih +
+// kategori, başlık, altta yazar avatar-group + ad(lar). Kartın tamamı linktir;
 // yazar adları burada düz metindir (iç içe <a> olmasın diye X linkleri yalnız
 // yazı başlığında ve yazar kutusunda).
 export function PostCard({

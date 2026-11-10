@@ -3,7 +3,6 @@
 import * as React from "react"
 import { RiCheckboxCircleFill } from "@remixicon/react"
 import {
-  AnimatePresence,
   motion,
   useMotionValue,
   useMotionValueEvent,
@@ -12,6 +11,11 @@ import {
 
 import { HeaderSlot } from "@/components/header-slot"
 import { IconSwap } from "@/components/motion/icon-swap"
+import {
+  RollingText,
+  useRotation,
+  type RollingItem,
+} from "@/components/motion/rolling-text"
 import { POST_ARTICLE, POST_CONTAINER, POST_GRID } from "@/lib/blog/layout"
 import { EASE_OUT_SOFT } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -21,93 +25,19 @@ const MARQUEE_DELAY = 2 // sn
 const MARQUEE_SPEED = 32 // px/sn
 const META_INTERVAL = 8000
 const DONE_AT = 0.98
-const ROLL_FADE = 6
 
-type MetaItem = { key: string; text: string; dateTime?: string }
-
-const ROLL = {
-  below: { y: "110%" },
-  center: { y: 0 },
-  above: { y: "-110%" },
-}
-const ROLL_REDUCED = {
-  below: { opacity: 0 },
-  center: { opacity: 1 },
-  above: { opacity: 0 },
-}
-const STAGGER = {
-  below: {},
-  center: { transition: { staggerChildren: 0.025 } },
-  above: { transition: { staggerChildren: 0.025 } },
-}
-
-// Slot makinesi: harfler sırayla alttan gelir, eskiler üste çıkar; tıklayınca da döner.
-function RollingMeta({ items, play }: { items: MetaItem[]; play: boolean }) {
-  const [index, setIndex] = React.useState(0)
-  const reduceMotion = useReducedMotion()
-  const count = items.length
-
-  // index bağımlılığı: tıklama da sayacı sıfırlar.
-  React.useEffect(() => {
-    if (!play) return
-    const id = window.setTimeout(
-      () => setIndex((i) => (i + 1) % count),
-      META_INTERVAL
-    )
-    return () => window.clearTimeout(id)
-  }, [play, index, count])
-
-  const active = items[index]
-  const Label = active.dateTime ? motion.time : motion.span
+// Kategori/tarih sırayla döner; tıklayınca da döner.
+function RollingMeta({ items, play }: { items: RollingItem[]; play: boolean }) {
+  const [index, next] = useRotation(items.length, play, META_INTERVAL)
 
   return (
     <button
       type="button"
-      onClick={() => setIndex((i) => (i + 1) % count)}
-      aria-label={`${active.text}, sonrakini göster`}
+      onClick={next}
+      aria-label={`${items[index].text}, sonrakini göster`}
       className="pointer-events-auto shrink-0 cursor-pointer rounded-sm text-xs font-medium tracking-wider text-muted-foreground uppercase hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
     >
-      <span
-        style={{
-          paddingBlock: ROLL_FADE,
-          maskImage: `linear-gradient(to bottom, transparent, #000 ${ROLL_FADE}px, #000 calc(100% - ${ROLL_FADE}px), transparent)`,
-        }}
-        className="grid justify-items-end overflow-hidden"
-      >
-        {/* Genişlik en uzun etikette sabit kalsın diye görünmez ölçüler. */}
-        {items.map((item) => (
-          <span
-            key={item.key}
-            aria-hidden
-            className="invisible col-start-1 row-start-1"
-          >
-            {item.text}
-          </span>
-        ))}
-        <AnimatePresence initial={false}>
-          <Label
-            key={active.key}
-            dateTime={active.dateTime}
-            aria-hidden
-            className="col-start-1 row-start-1 flex"
-            variants={STAGGER}
-            initial="below"
-            animate="center"
-            exit="above"
-          >
-            {Array.from(active.text).map((char, i) => (
-              <motion.span
-                key={i}
-                variants={reduceMotion ? ROLL_REDUCED : ROLL}
-                transition={{ duration: 0.55, ease: EASE_OUT_SOFT }}
-                className="inline-block whitespace-pre"
-              >
-                {char}
-              </motion.span>
-            ))}
-          </Label>
-        </AnimatePresence>
-      </span>
+      <RollingText items={items} index={index} className="justify-items-end" />
     </button>
   )
 }

@@ -5,7 +5,11 @@
 // Yeni bir sayfaya eklerken bu bileşeni import et; kopya footer dosyası açma.
 import Image from "next/image"
 import Link from "next/link"
-import { RiGithubFill, RiTwitterXFill } from "@remixicon/react"
+import {
+  RiGithubFill,
+  RiLinkedinBoxFill,
+  RiTwitterXFill,
+} from "@remixicon/react"
 
 import { FooterLink } from "@/components/site-footer-link"
 import { ThemeToggleInline } from "@/components/theme-toggle"
@@ -16,6 +20,8 @@ import { cn } from "@/lib/utils"
 
 const STATUS_URL = "https://status.trysepet.com/"
 const GITHUB_URL = "https://github.com/umutcandev/sepet"
+const GITHUB_ORG_URL = "https://github.com/trysepetcom"
+const LINKEDIN_URL = "https://www.linkedin.com/company/trysepetcom/"
 
 const productLinks = [
   { label: "Asistan", href: "/asistan" },
@@ -33,7 +39,8 @@ const legalLinks = [
 
 const socials = [
   { label: "X", href: SITE_X, icon: RiTwitterXFill },
-  { label: "GitHub", href: GITHUB_URL, icon: RiGithubFill },
+  { label: "LinkedIn", href: LINKEDIN_URL, icon: RiLinkedinBoxFill },
+  { label: "GitHub", href: GITHUB_ORG_URL, icon: RiGithubFill },
 ]
 
 function FooterColumn({
