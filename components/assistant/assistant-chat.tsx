@@ -166,6 +166,8 @@ export function AssistantChat({
   const { messages, sendMessage, setMessages, status, stop, error } = useChat({
     transport,
     messages: chatSeed,
+    // Akan chunk'ları 50ms'de bir topla; her chunk tüm sohbeti çizmesin.
+    experimental_throttle: 50,
     onData: (dataPart) => {
       if (
         dataPart.type === "data-conversation-id" &&

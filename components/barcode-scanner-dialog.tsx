@@ -52,6 +52,10 @@ type Status = "starting" | "scanning" | "error"
 
 const FORMATS = ["ean_13", "ean_8", "upc_a", "upc_e", "code_128"] as const
 
+// WASM decode ana thread'de: kareler seyreltilip küçültülür, önizleme tam çözünürlük.
+const DETECT_INTERVAL_MS = 100
+const MAX_DETECT_WIDTH = 1280
+
 function ScannerSession({
   onDetected,
   onRetry,
@@ -116,11 +120,42 @@ function ScannerSession({
         await videoEl.play()
         setStatus("scanning")
 
+        const canvas = document.createElement("canvas")
+        let ctx: CanvasRenderingContext2D | null = null
+        try {
+          ctx = canvas.getContext("2d", { willReadFrequently: true })
+        } catch {
+          ctx = null
+        }
+        let lastDetectAt = 0
+
+        // Canvas yoksa ya da hata verirse video'nun kendisine düşer.
+        const grabFrame = (): ImageData | HTMLVideoElement => {
+          const { videoWidth, videoHeight } = videoEl
+          if (!ctx || !videoWidth || !videoHeight) return videoEl
+          const scale = Math.min(1, MAX_DETECT_WIDTH / videoWidth)
+          const w = Math.round(videoWidth * scale)
+          const h = Math.round(videoHeight * scale)
+          if (canvas.width !== w || canvas.height !== h) {
+            canvas.width = w
+            canvas.height = h
+          }
+          try {
+            ctx.drawImage(videoEl, 0, 0, w, h)
+            return ctx.getImageData(0, 0, w, h)
+          } catch {
+            return videoEl
+          }
+        }
+
         const scan = async () => {
           if (cancelled || !videoEl) return
-          if (videoEl.readyState >= 2) {
+          if (
+            videoEl.readyState >= 2 &&
+            performance.now() - lastDetectAt >= DETECT_INTERVAL_MS
+          ) {
             try {
-              const results = await detector.detect(videoEl)
+              const results = await detector.detect(grabFrame())
               if (cancelled) return
               const hit = results.find((r) => r.rawValue?.trim())
               if (hit) {
@@ -129,6 +164,8 @@ function ScannerSession({
               }
             } catch {
               /* tek kare hatası — döngü devam etsin */
+            } finally {
+              lastDetectAt = performance.now()
             }
           }
           if (cancelled) return
