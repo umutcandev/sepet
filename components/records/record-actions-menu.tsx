@@ -2,11 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import {
-  RiArrowDownSLine,
-  RiDeleteBinLine,
-  RiLoader4Line,
-} from "@remixicon/react"
+import { RiDeleteBinLine, RiLoader4Line, RiMoreFill } from "@remixicon/react"
 
 import {
   AlertDialog,
@@ -36,16 +32,8 @@ export type RecordActionLink = {
 }
 
 /**
- * Kayıt detay sayfalarının tek aksiyon girişi.
- *
- * Aksiyonlar üç ayrı yere dağılmıştı: sol üstte geri bağlantısı, sağ üstte
- * ghost bir "sil", başlığın yanında sohbet ve yenileme butonları. Üç farklı
- * hizada üç farklı ağırlık; dar ekranda hepsi başlığın payına giriyordu.
- * Hepsi tek bir "İşlem Yap" menüsünde toplandı — sayfanın sağ üstünde tek,
- * dar ve sabit genişlikli bir hedef.
- *
- * Silme onayı menünün İÇİNDEN açılır: `onSelect` engellenmezse Radix menüyü
- * kapatırken diyaloğu da beraberinde götürür.
+ * Kayıt detay aksiyonları: mobilde tek ⋯ menüsü, md+ yan yana kompakt butonlar.
+ * Silme onayı menünün içinden açıldığı için `onSelect` engellenir.
  */
 export function RecordActionsMenu({
   links,
@@ -67,8 +55,7 @@ export function RecordActionsMenu({
   async function handleDelete() {
     setBusy(true)
     const ok = await onDelete()
-    // Başarılıysa sayfa değişiyor; bileşeni eski haline döndürmenin anlamı yok
-    // ve "Siliniyor…" yazısının geri dönmesi yanlış sinyal verir.
+    // Başarılıysa sayfa değişiyor; "Siliniyor…" geri dönmemeli.
     if (!ok) {
       setBusy(false)
       setConfirmOpen(false)
@@ -77,11 +64,41 @@ export function RecordActionsMenu({
 
   return (
     <>
+      <div className="hidden items-center gap-1.5 md:flex">
+        {links.map((link) => (
+          <Button
+            key={link.href}
+            asChild
+            variant="outline"
+            size="sm"
+            title={link.hint ?? undefined}
+          >
+            <Link href={link.href}>
+              {link.icon}
+              {link.label}
+            </Link>
+          </Button>
+        ))}
+        <Button
+          variant="outline"
+          size="sm"
+          className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+          onClick={() => setConfirmOpen(true)}
+        >
+          <RiDeleteBinLine />
+          {deleteLabel}
+        </Button>
+      </div>
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm">
-            İşlem Yapın
-            <RiArrowDownSLine className="ml-1.5 size-3.5 text-muted-foreground" />
+          <Button
+            variant="outline"
+            size="icon-sm"
+            className="md:hidden"
+            aria-label="İşlem yapın"
+          >
+            <RiMoreFill className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-56">

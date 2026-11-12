@@ -1,21 +1,17 @@
 // Site geneli alt bilgi — tek kaynak. Paper'daki footer taslağının yapısı:
-// solda marka + tanıtım + sosyal ikonlar, sağda dört bağlantı sütunu, altta
-// telif satırı ile durum rozeti + tema anahtarı. Ölçüler blog sayfalarıyla aynı
+// solda marka + tanıtım + asistan butonları, sağda dört bağlantı sütunu, altta
+// telif + sosyal bağlantılar ile durum butonu + tema anahtarı. Ölçüler blog sayfalarıyla aynı
 // kabı (max-w-5xl px-4) kullanır ki sütunlar yazı gridiyle aynı hizaya otursun.
 // Yeni bir sayfaya eklerken bu bileşeni import et; kopya footer dosyası açma.
 import Image from "next/image"
 import Link from "next/link"
-import {
-  RiGithubFill,
-  RiLinkedinBoxFill,
-  RiTwitterXFill,
-} from "@remixicon/react"
 
-import { FooterLink } from "@/components/site-footer-link"
+import { HackathonBadge } from "@/components/hackathon-badge"
+import { FooterAssistantLinks, FooterLink } from "@/components/site-footer-link"
 import { ThemeToggleInline } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { CATEGORY_LIST } from "@/lib/blog/categories"
-import { SITE_X } from "@/lib/site"
+import { SITE_X, absoluteUrl } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 const STATUS_URL = "https://status.trysepet.com/"
@@ -38,10 +34,12 @@ const legalLinks = [
 ]
 
 const socials = [
-  { label: "X", href: SITE_X, icon: RiTwitterXFill },
-  { label: "LinkedIn", href: LINKEDIN_URL, icon: RiLinkedinBoxFill },
-  { label: "GitHub", href: GITHUB_ORG_URL, icon: RiGithubFill },
+  { label: "X", href: SITE_X },
+  { label: "LinkedIn", href: LINKEDIN_URL },
+  { label: "GitHub", href: GITHUB_ORG_URL },
 ]
+
+const assistantPrompt = `Sepet (${absoluteUrl("/")}) nedir, ne işe yarar, nasıl çalışır ve fiyatı ne kadar? Önce ${absoluteUrl("/llms.txt")} adresini, fiyatlar için de ana sayfayı oku ve bana özetle.`
 
 function FooterColumn({
   title,
@@ -55,7 +53,7 @@ function FooterColumn({
   // `<nav>` landmark'ı gezinme değerini koruyor, taslağı kirletmiyor.
   return (
     <nav aria-label={title} className="min-w-0">
-      <p className="mb-4 text-sm font-medium tracking-tight text-balance text-foreground">
+      <p className="mb-4 text-xs font-medium tracking-wider text-balance text-foreground uppercase">
         {title}
       </p>
       <ul className="flex flex-col gap-3">{children}</ul>
@@ -93,43 +91,32 @@ export function SiteFooter({ className }: { className?: string }) {
         <div className="flex flex-col gap-10 md:flex-row md:justify-between md:gap-10 lg:gap-12">
           {/* Marka sütunu */}
           <div className="flex flex-col gap-6 md:max-w-[17rem]">
-            <Link href="/" className="inline-flex w-fit items-center">
-              <Image
-                src="/brand/sepet-dark.svg"
-                alt="Sepet"
-                width={846}
-                height={178}
-                className="h-6 w-auto dark:hidden"
-              />
-              <Image
-                src="/brand/sepet-light.svg"
-                alt=""
-                aria-hidden
-                width={846}
-                height={178}
-                className="hidden h-6 w-auto dark:block"
-              />
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/" className="inline-flex w-fit items-center">
+                <Image
+                  src="/brand/sepet-dark.svg"
+                  alt="Sepet"
+                  width={846}
+                  height={178}
+                  className="h-6 w-auto dark:hidden"
+                />
+                <Image
+                  src="/brand/sepet-light.svg"
+                  alt=""
+                  aria-hidden
+                  width={846}
+                  height={178}
+                  className="hidden h-6 w-auto dark:block"
+                />
+              </Link>
+              <span aria-hidden className="h-4 w-px bg-border" />
+              <HackathonBadge />
+            </div>
             <p className="text-sm leading-relaxed text-muted-foreground">
               Alışveriş listeni yaz, marketlerdeki en uygun fiyatları
               karşılaştır ve en ucuz sepeti saniyeler içinde oluştur.
             </p>
-            <div className="flex items-center gap-2">
-              {socials.map(({ label, href, icon: Icon }) => (
-                <Button
-                  key={label}
-                  asChild
-                  variant="outline"
-                  size="icon"
-                  aria-label={label}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <a href={href} target="_blank" rel="noopener noreferrer">
-                    <Icon className="size-4" />
-                  </a>
-                </Button>
-              ))}
-            </div>
+            <FooterAssistantLinks prompt={assistantPrompt} />
           </div>
 
           {/* Bağlantı sütunları — mobilde iki, sm'de dört. md'de marka sütunu
@@ -181,20 +168,36 @@ export function SiteFooter({ className }: { className?: string }) {
           </div>
         </div>
 
-        {/* Alt şerit: solda telif, sağda aynı yükseklikteki iki kontrol.
-            Durum artık rozet değil outline BUTON (size xs, h-6): sosyal
-            butonlarla aynı yüzey ve nötr metin, sadece daha kompakt ölçekte.
-            Canlı sinyalini primary tonu değil yalnız yeşil nokta taşır. */}
-        <div className="mt-10 flex flex-col gap-4 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs font-medium text-muted-foreground">
-            © {year}, Tüm hakları saklıdır.
+        {/* Mobil (grid): sosyal + tema üst satırda, telif altta.
+            md+ (flex): telif, sosyal, sağda durum + tema. */}
+        <div className="mt-10 grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-5 sm:mt-14 md:flex md:gap-6">
+          <p className="col-span-2 row-start-2 text-xs font-medium tracking-wider text-muted-foreground uppercase">
+            © {year} Sepet. Tüm hakları saklıdır.
           </p>
-          <div className="flex flex-wrap items-center gap-2">
+          {/* lang="en": tr uppercase "LinkedIn"i "LİNKEDİN" yapıyordu. */}
+          <nav
+            aria-label="Sosyal medya"
+            lang="en"
+            className="row-start-1 flex items-center gap-5 font-medium tracking-wider uppercase"
+          >
+            {socials.map(({ label, href }) => (
+              <FooterLink
+                key={label}
+                href={href}
+                external
+                className="relative text-xs after:absolute after:-inset-x-2.5 after:-inset-y-3"
+              >
+                {label}
+              </FooterLink>
+            ))}
+          </nav>
+          <div className="row-start-1 flex items-center gap-2 md:ml-auto">
+            {/* Mobilde gizli: Destek sütunundaki "Sistem Durumu" ile aynı yer. */}
             <Button
               asChild
               variant="outline"
               size="xs"
-              className="gap-1.5 text-muted-foreground hover:text-foreground"
+              className="hidden gap-1.5 text-muted-foreground hover:text-foreground md:inline-flex"
             >
               <a href={STATUS_URL} target="_blank" rel="noopener noreferrer">
                 {/* Canlı sinyali: sabit nokta + üzerinde dışa açılan halka.
