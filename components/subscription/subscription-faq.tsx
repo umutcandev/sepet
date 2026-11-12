@@ -12,62 +12,74 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { LEGAL_SUPPORT_EMAIL } from "@/components/legal/legal-content"
-import { planLimit } from "@/lib/usage/limits"
+import { planLimit, type UsageMetric } from "@/lib/usage/limits"
 import { cn } from "@/lib/utils"
 
-// Her madde koddaki davranış ve Polar yapılandırmasıyla doğrulanabilir:
-// fiyatlar Polar ürünlerinden (₺99 aylık / ₺990 yıllık, TRY), limitler
-// lib/usage/limits.ts'ten, iptal/ödeme akışı app/api/webhooks/polar'dan
-// (past_due → erişim sürer, revoked → free), portal app/api/portal'dan, aylık
-// sıfırlama ise lib/usage/period.ts'ten gelir. Destek e-postası tek kaynak
-// olarak legal-content'teki LEGAL_SUPPORT_EMAIL'den alınır. `a` zengin içerik
-// (mailto bağlantısı) taşıyabilsin diye ReactNode'dur.
+// Cevaplar koddaki davranışa bağlı: limitler lib/usage/limits.ts, sıfırlama
+// lib/usage/period.ts, iptal/ödeme akışı app/api/webhooks/polar.
+// Sayılar dinamik olduğu için yanlarına ek getirilmez (10'dan/60'a uyumu kırılır).
+const free = (m: UsageMetric) => planLimit("free", m)
+
 export const FAQ_ITEMS: { q: string; a: React.ReactNode }[] = [
   {
-    q: "Pro'ya geçince neler değişir?",
-    a: `Aylık asistan mesajların ${planLimit("free", "textMessages")}'den ${planLimit("pro", "textMessages")}'e, görsel analizlerin ${planLimit("free", "imageAnalyses")}'dan ${planLimit("pro", "imageAnalyses")}'ye çıkar. Sepet ve fiş kaydetme ise sınırsız olur.`,
+    q: "Sepet ücretli mi?",
+    a: `Hayır, Sepet'i ücretsiz kullanabilirsin. Ücretsiz planda ayda ${free("textMessages")} asistan mesajı ve ${free("imageAnalyses")} görsel analizi hakkın olur, ${free("savedBaskets")} sepet ve ${free("savedReceipts")} fiş kaydedebilirsin. Pro'ya geçerek bu hakları artırabilirsin.`,
   },
   {
-    q: "Ödeme veya abonelikte sorun yaşarsam ne yapmalıyım?",
+    q: "Ödemede ya da abonelikte sorun yaşarsam ne yapmalıyım?",
     a: (
       <>
-        Tahsilat, yenilenme veya plan durumuyla ilgili bir sorun yaşarsan{" "}
+        Tahsilat, yenileme ya da plan durumuyla ilgili bir sorunda{" "}
         <a
           href={`mailto:${LEGAL_SUPPORT_EMAIL}`}
           className="font-medium text-foreground underline underline-offset-2"
         >
           {LEGAL_SUPPORT_EMAIL}
         </a>{" "}
-        adresine yazabilirsin; en kısa sürede yardımcı oluruz. Fatura ve ödeme
-        geçmişine ayrıca Polar müşteri portalından ulaşabilirsin.
+        adresine yaz, en kısa sürede yardımcı olalım. Faturalarına ve ödeme
+        geçmişine Polar müşteri portalından da ulaşabilirsin.
       </>
     ),
   },
   {
     q: "Ödeme bilgilerim güvende mi?",
-    a: "Evet. Ödeme adımı tamamen Polar'ın güvenli ödeme sayfasında tamamlanır; kart bilgilerin Sepet sunucularında saklanmaz ya da işlenmez. Sepet yalnızca plan durumunu ve yenilenme tarihini saklar.",
+    a: "Evet. Ödeme Polar'ın güvenli ödeme sayfasında tamamlanır, kart bilgilerin Sepet sunucularına hiç ulaşmaz. Sepet yalnızca plan durumunu ve yenileme tarihini saklar.",
   },
   {
-    q: "Aboneliğimi nasıl yönetir veya iptal ederim?",
-    a: "Abonelik sekmesindeki “Aboneliği yönet” düğmesi seni Polar müşteri portalına götürür; iptal, plan değişikliği ve fatura geçmişi oradan yönetilir. Portal yalnızca ödemeden geçmiş hesaplar için açılır.",
+    q: "Aboneliğimi nasıl yönetir ya da iptal ederim?",
+    a: "Ayarlar'daki Abonelik bölümünde “Aboneliği yönet” düğmesi seni Polar müşteri portalına götürür. İptal, plan değişikliği ve fatura geçmişi orada. Portal yalnızca daha önce Pro'ya geçmiş hesaplarda açılır.",
   },
   {
     q: "İptal edersem Pro hemen kapanır mı?",
-    a: "Hayır. İptalde aboneliğin, içinde bulunduğun faturalandırma döneminin sonuna kadar açık kalır; o tarihe kadar tüm Pro avantajların sürer, ardından otomatik olarak Ücretsiz plana dönersin. Dönem bitmeden fikrini değiştirirsen iptali geri alabilirsin.",
+    a: "Hayır. İptal ettiğinde Pro, içinde bulunduğun fatura döneminin sonuna kadar açık kalır. O tarihte hesabın kendiliğinden Ücretsiz plana döner. Dönem bitmeden fikrini değiştirirsen iptali geri alabilirsin.",
   },
   {
-    q: "Mevcut planımın ödemesi başarısız olursa ne olur?",
-    a: "Bir tahsilat başarısız olursa aboneliğin “Gecikti” durumuna geçer ama Pro erişimin hemen kesilmez; Polar ödemeyi yeniden dener. Tüm denemeler başarısız olursa abonelik iptal edilir ve Ücretsiz plana geri dönersin.",
+    q: "Ödemem başarısız olursa ne olur?",
+    a: "Tahsilat başarısız olunca aboneliğin “Gecikti” durumuna geçer ama Pro erişimin hemen kesilmez, Polar ödemeyi yeniden dener. Denemelerin hepsi başarısız olursa abonelik iptal edilir ve Ücretsiz plana dönersin.",
   },
   {
-    q: "Kullanım limitlerim ne zaman yenilenir?",
-    a: "Aylık sayaçların (asistan mesajları ve görsel analizleri) her ayın ilk günü otomatik olarak sıfırlanır; ayrı bir işlem gerekmez. Kayıtlı sepet ve fiş sayıların ise anlık toplamdır, ay başında sıfırlanmaz.",
+    q: "Kullanım haklarım ne zaman yenilenir?",
+    a: "Pro'da asistan mesajı ve görsel analizi sayaçların her ay, abonelik yenileme gününde sıfırlanır. Yıllık planda da sayaç aylık işler. Ücretsiz planda sıfırlama her ayın ilk günü olur. Kayıtlı sepet ve fiş sayın anlık toplamdır, sıfırlanmaz.",
   },
 ]
 
-export function SubscriptionFaqList({ className }: { className?: string }) {
+export function SubscriptionFaqList({
+  className,
+  value,
+  onValueChange,
+}: {
+  className?: string
+  value?: string
+  onValueChange?: (value: string) => void
+}) {
   return (
-    <Accordion type="single" collapsible className={className}>
+    <Accordion
+      type="single"
+      collapsible
+      className={className}
+      value={value}
+      onValueChange={onValueChange}
+    >
       {FAQ_ITEMS.map((item) => (
         <AccordionItem key={item.q} value={item.q}>
           <AccordionTrigger className="font-normal">{item.q}</AccordionTrigger>

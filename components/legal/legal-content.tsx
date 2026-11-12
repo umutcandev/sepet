@@ -5,12 +5,13 @@ import {
   MONTHLY_PRICE,
   YEARLY_PRICE,
 } from "@/components/subscription/plan-cards"
+import { SiteFooter } from "@/components/site-footer"
 import { limitText, planLimit } from "@/lib/usage/limits"
 
 export const LEGAL_LAST_UPDATED = "26 Temmuz 2026"
-// Ödeme sözleşmeleri (Mesafeli Satış + İptal & İade) Polar entegrasyonuyla
-// birlikte yayınlandı; Gizlilik/Kullanım metinlerinden ayrı bir tarih taşırlar.
-export const LEGAL_PAYMENTS_LAST_UPDATED = "25 Haziran 2026"
+// Ödeme sözleşmeleri Gizlilik/Kullanım'dan ve birbirinden ayrı tarih taşır.
+export const LEGAL_DISTANCE_SALES_LAST_UPDATED = "12 Kasım 2026"
+export const LEGAL_REFUND_LAST_UPDATED = "25 Haziran 2026"
 export const LEGAL_SUPPORT_EMAIL = "support@trysepet.com"
 export const LEGAL_PRIVACY_EMAIL = "privacy@trysepet.com"
 
@@ -26,25 +27,20 @@ export function LegalPageShell({
   children: React.ReactNode
 }) {
   return (
-    <div className="mx-auto w-full max-w-2xl px-6 py-12 md:py-16">
-      <div className="mb-8">
-        <h1 className="text-2xl font-medium tracking-tight text-balance text-foreground">
-          {title}
-        </h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">
-          Son güncelleme: {lastUpdated}
-        </p>
+    <>
+      <div className="mx-auto w-full max-w-2xl flex-1 px-6 py-12 md:py-16">
+        <div className="mb-8">
+          <h1 className="text-2xl font-medium tracking-tight text-balance text-foreground">
+            {title}
+          </h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Son güncelleme: {lastUpdated}
+          </p>
+        </div>
+        {children}
       </div>
-      {children}
-      <div className="mt-12 border-t border-border pt-6 text-xs text-muted-foreground">
-        <Link
-          href="/"
-          className="underline underline-offset-2 transition-colors hover:text-foreground"
-        >
-          Ana sayfaya dön
-        </Link>
-      </div>
-    </div>
+      <SiteFooter />
+    </>
   )
 }
 
@@ -240,7 +236,7 @@ export function DistanceSalesContent() {
           <span className="text-foreground">Sepet</span> (trysepet.com,
           “Hizmet Sağlayıcı”) ile diğer tarafta Pro aboneliği satın alan
           kullanıcı (“Abone”) arasındadır. Ödemenin tahsilatı ve faturalandırma,
-          aşağıda 4. maddede açıklandığı üzere{" "}
+          aşağıda 5. maddede açıklandığı üzere{" "}
           <span className="text-foreground">Polar Software Inc.</span> tarafından
           Kayıtlı Satıcı (Merchant of Record) sıfatıyla gerçekleştirilir.
         </p>
@@ -262,8 +258,26 @@ export function DistanceSalesContent() {
           ile sınırlıdır ve sayaçları her ayın ilk günü (UTC) sıfırlanır.
         </p>
       </section>
+      {/* FAIR_USE_HREF bu kimliğe bağlanır (fair-use-mark.tsx). */}
+      <section id="adil-kullanim" className="scroll-mt-24 space-y-2">
+        <h2 className="font-medium text-foreground">3. Adil Kullanım</h2>
+        <p>
+          Pro planında “sınırsız” olarak belirtilen sepet ve fiş kaydı, kişisel
+          alışveriş kullanımında sayısal bir üst sınır uygulanmadığı anlamına
+          gelir. Kayıtların bot veya betik gibi otomatik araçlarla toplu olarak
+          oluşturulması, hesabın birden fazla kişi tarafından kullanılması ya da
+          hizmetin altyapıya olağan dışı yük bindirecek şekilde kullanılması
+          adil kullanım sayılmaz.
+        </p>
+        <p>
+          Bu durumlarda Sepet, hizmetin güvenliğini ve diğer kullanıcıların
+          erişimini korumak için ilgili hesapta yeni kayıt oluşturmayı geçici
+          olarak kısıtlayabilir ve durumu e-posta ile bildirir. Kısıtlama mevcut
+          kayıtlarını silmez.
+        </p>
+      </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">3. Ücret ve Süre</h2>
+        <h2 className="font-medium text-foreground">4. Ücret ve Süre</h2>
         <p>
           Pro aboneliği aylık ₺{MONTHLY_PRICE} veya yıllık ₺{YEARLY_PRICE} (Türk
           Lirası) olarak sunulur.
@@ -276,7 +290,7 @@ export function DistanceSalesContent() {
       </section>
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">
-          4. Ödeme ve Faturalandırma
+          5. Ödeme ve Faturalandırma
         </h2>
         <p>
           Ödeme adımı tamamen Polar’ın barındırdığı güvenli ödeme sayfasında
@@ -289,7 +303,7 @@ export function DistanceSalesContent() {
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">5. Hizmetin İfası</h2>
+        <h2 className="font-medium text-foreground">6. Hizmetin İfası</h2>
         <p>
           Ödemen Polar tarafından onaylandığı anda hesabın otomatik olarak Pro’ya
           yükseltilir ve tüm Pro avantajların derhal açılır. Hizmet dijital
@@ -297,7 +311,7 @@ export function DistanceSalesContent() {
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">6. Cayma Hakkı</h2>
+        <h2 className="font-medium text-foreground">7. Cayma Hakkı</h2>
         <p>
           Pro aboneliği, anında ifa edilen dijital hizmet niteliğindedir ve
           ödeme sonrası erişimin derhal açılır. Bu nedenle Mesafeli Sözleşmeler
@@ -314,7 +328,7 @@ export function DistanceSalesContent() {
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">7. İptal ve Yenileme</h2>
+        <h2 className="font-medium text-foreground">8. İptal ve Yenileme</h2>
         <p>
           Aboneliğini, Abonelik ekranındaki “Aboneliği yönet” düğmesiyle açılan
           Polar müşteri portalından dilediğin an iptal edebilirsin. İptalde
@@ -326,7 +340,7 @@ export function DistanceSalesContent() {
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">8. Sorumluluk</h2>
+        <h2 className="font-medium text-foreground">9. Sorumluluk</h2>
         <p>
           Sepet, fiyat karşılaştırma ve yapay zeka destekli alışveriş özellikleri
           sunar; market fiyatları üçüncü taraf kaynaklardan derlenir ve nihai
@@ -336,7 +350,7 @@ export function DistanceSalesContent() {
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">9. İletişim</h2>
+        <h2 className="font-medium text-foreground">10. İletişim</h2>
         <p>
           Aboneliğin ve bu sözleşmeyle ilgili sorularını{" "}
           <a

@@ -110,7 +110,8 @@ export function TableOfContents({ toc }: { toc: TocEntry[] }) {
         return
       }
 
-      let current = headings[0].id
+      // İlk başlığa varılmadıysa hiçbiri aktif değil.
+      let current = ""
       for (const heading of headings) {
         const top = heading.getBoundingClientRect().top - containerTop
         if (top <= SCROLL_OFFSET) current = heading.id
@@ -120,6 +121,12 @@ export function TableOfContents({ toc }: { toc: TocEntry[] }) {
     }
 
     const onScroll = () => {
+      // Kilit kaydırma sürdükçe uzar; sabit süre uzun mesafede erken açılıyordu.
+      if (lockRef.current) {
+        window.clearTimeout(unlockTimerRef.current)
+        unlockTimerRef.current = window.setTimeout(unlock, 150)
+        return
+      }
       if (frame) return
       frame = requestAnimationFrame(compute)
     }
@@ -148,31 +155,87 @@ export function TableOfContents({ toc }: { toc: TocEntry[] }) {
     if (!el) return
     event.preventDefault()
     lockRef.current = true
-    // scrollend gelmezse (zaten yerinde, ya da desteklemeyen tarayıcı) yedek.
+    // Kaydırma hiç başlamazsa (zaten yerinde) yedek.
     window.clearTimeout(unlockTimerRef.current)
     unlockTimerRef.current = window.setTimeout(() => {
       lockRef.current = false
-    }, 1000)
+    }, 300)
     setActiveId(id)
     el.scrollIntoView({ behavior: "smooth", block: "start" })
     window.history.replaceState(null, "", `#${id}`)
   }
 
+  const activeIndex = items.findIndex((item) => item.url === `#${activeId}`)
+
+  // Liste kenar çubuğuna sığmazsa kendi içinde kayar; aktif başlık ortalanır,
+  // taşan kenar SSS'teki gibi overlay fade ile söner (mask Chrome'da titretiyor).
+  const scrollRef = React.useRef<HTMLDivElement>(null)
+  const centeredRef = React.useRef(false)
+  const reduceMotion = useReducedMotion()
+  const [fade, setFade] = React.useState({ top: false, bottom: false })
+
+  const updateFade = React.useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const top = el.scrollTop > 1
+    const bottom = el.scrollTop + el.clientHeight < el.scrollHeight - 1
+    setFade((f) => (f.top === top && f.bottom === bottom ? f : { top, bottom }))
+  }, [])
+
+  React.useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    updateFade()
+    const observer = new ResizeObserver(updateFade)
+    observer.observe(el)
+    if (el.firstElementChild) observer.observe(el.firstElementChild)
+    return () => observer.disconnect()
+  }, [updateFade, items])
+
+  React.useEffect(() => {
+    const el = scrollRef.current
+    const row = el?.querySelectorAll("li")[Math.max(0, activeIndex)]
+    if (!el || !row || el.scrollHeight <= el.clientHeight) return
+    const rowTop =
+      row.getBoundingClientRect().top - el.getBoundingClientRect().top + el.scrollTop
+    el.scrollTo({
+      top: rowTop - (el.clientHeight - row.offsetHeight) / 2,
+      behavior: centeredRef.current && !reduceMotion ? "smooth" : "instant",
+    })
+    centeredRef.current = true
+  }, [activeIndex, reduceMotion])
+
   if (items.length < 2) return null
 
   return (
-    <nav aria-label="İçindekiler" className="flex flex-col gap-3">
-      <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+    <nav aria-label="İçindekiler" className="flex min-h-0 flex-col gap-3">
+      <p className="shrink-0 text-xs font-medium tracking-wider text-muted-foreground uppercase">
         İçindekiler
       </p>
-      <TocSteps
-        items={items}
-        activeIndex={Math.max(0, items.findIndex((item) => item.url === `#${activeId}`))}
-        onItemClick={handleClick}
-      />
+      <div className="relative flex min-h-0 flex-col">
+        {/* -ml-1 pl-1: aktif düğümün halkası sol kenarda kırpılmasın. */}
+        <div
+          ref={scrollRef}
+          onScroll={updateFade}
+          className="-ml-1 min-h-0 overflow-y-auto pl-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <TocSteps items={items} activeIndex={activeIndex} onItemClick={handleClick} />
+        </div>
+        <div
+          aria-hidden
+          className={cn(FADE, "top-0 bg-gradient-to-b", !fade.top && "opacity-0")}
+        />
+        <div
+          aria-hidden
+          className={cn(FADE, "bottom-0 bg-gradient-to-t", !fade.bottom && "opacity-0")}
+        />
+      </div>
     </nav>
   )
 }
+
+const FADE =
+  "pointer-events-none absolute inset-x-0 z-20 h-12 from-background to-transparent transition-opacity duration-300 ease-out-soft"
 
 type Rail = { top: number; height: number }
 
@@ -236,17 +299,19 @@ function TocSteps({
     return () => observer.disconnect()
   }, [items])
 
+  // activeIndex -1: ilk başlığa henüz varılmadı, hiçbir düğüm dolmaz.
+  const none = activeIndex < 0
   const sync = React.useCallback(
     (p: number) => {
       fillY.set(railToY(layout.rails, p))
-      setReached(layout.targets.filter((target) => target <= p + 0.5).length)
+      setReached(none ? 0 : layout.targets.filter((target) => target <= p + 0.5).length)
     },
-    [layout, fillY]
+    [layout, fillY, none]
   )
   useMotionValueEvent(progress, "change", sync)
 
   React.useLayoutEffect(() => {
-    const target = layout.targets[activeIndex]
+    const target = none ? layout.targets[0] : layout.targets[activeIndex]
     if (target == null) return
     if (!startedRef.current || reduceMotion) {
       startedRef.current = true
@@ -261,7 +326,7 @@ function TocSteps({
       ease: EASE_IN_OUT,
     })
     return () => controls.stop()
-  }, [activeIndex, layout, reduceMotion, progress, sync])
+  }, [activeIndex, none, layout, reduceMotion, progress, sync])
 
   const last = items.length - 1
 

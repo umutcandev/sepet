@@ -173,13 +173,16 @@ export default async function BlogPostPage({
           </article>
 
           <aside className="hidden lg:block">
-            <div className="sticky top-6 flex flex-col gap-6">
+            {/* Yükseklik ekranla sınırlı (4rem header + üst/alt 1.5rem): uzun
+              içindekiler kendi içinde kayar, eylemler hep görünür. */}
+            <div className="sticky top-6 flex max-h-[calc(100dvh-7rem)] flex-col gap-6">
               <TableOfContents toc={post.toc} />
               <ArticleActions
                 markdown={markdown}
                 markdownUrl={markdownUrl}
                 pageUrl={pageUrl}
                 title={post.title}
+                className="shrink-0"
               />
             </div>
           </aside>

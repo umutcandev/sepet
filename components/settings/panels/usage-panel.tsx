@@ -3,6 +3,7 @@
 import * as React from "react"
 import { RiRefreshLine } from "@remixicon/react"
 
+import { FairUseMark } from "@/components/subscription/fair-use-mark"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -238,7 +239,14 @@ function UsageMeter({
             isFull ? "text-destructive" : "text-muted-foreground",
           )}
         >
-          {unlimited ? "Sınırsız" : `${used} / ${safeLimit}`}
+          {unlimited ? (
+            <>
+              Sınırsız
+              <FairUseMark newTab />
+            </>
+          ) : (
+            `${used} / ${safeLimit}`
+          )}
         </span>
       </div>
     </div>

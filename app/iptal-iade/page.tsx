@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import {
   LegalPageShell,
   RefundPolicyContent,
-  LEGAL_PAYMENTS_LAST_UPDATED,
+  LEGAL_REFUND_LAST_UPDATED,
 } from "@/components/legal/legal-content"
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export default function IptalIadePage() {
   return (
     <LegalPageShell
       title="İptal ve İade Politikası"
-      lastUpdated={LEGAL_PAYMENTS_LAST_UPDATED}
+      lastUpdated={LEGAL_REFUND_LAST_UPDATED}
     >
       <RefundPolicyContent />
     </LegalPageShell>

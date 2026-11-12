@@ -38,7 +38,7 @@ function planLines(): string[] {
   const { free, pro } = PLAN_LIMITS
   return [
     `- **Ücretsiz**: ayda ${limitText(free.textMessages)} asistan mesajı, ${limitText(free.imageAnalyses)} görsel analizi; ${limitText(free.savedBaskets)} kayıtlı sepet, ${limitText(free.savedReceipts)} kayıtlı fiş.`,
-    `- **Pro** (ücretli abonelik): ayda ${limitText(pro.textMessages)} asistan mesajı, ${limitText(pro.imageAnalyses)} görsel analizi; ${limitText(pro.savedBaskets)} sepet ve fiş kaydı. Güncel fiyatlar ana sayfadaki plan tablosundadır.`,
+    `- **Pro** (ücretli abonelik): ayda ${limitText(pro.textMessages)} asistan mesajı, ${limitText(pro.imageAnalyses)} görsel analizi; ${limitText(pro.savedBaskets)} sepet ve fiş kaydı${pro.savedBaskets === null ? " (adil kullanım koşuluyla, bkz. Mesafeli Satış Sözleşmesi)" : ""}. Güncel fiyat ana sayfadaki Pro kartındadır.`,
   ]
 }
 
