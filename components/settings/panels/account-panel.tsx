@@ -62,7 +62,7 @@ export function AccountPanel() {
 
       <LinkedAccountsGroup />
 
-      <SettingGroup title="Aktif oturumlar">
+      <SettingGroup title="Aktif oturumlar" target="oturumlar">
         <SessionsTable />
       </SettingGroup>
     </div>

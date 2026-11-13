@@ -2,7 +2,12 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { RiDeleteBinLine, RiLoader4Line, RiMoreFill } from "@remixicon/react"
+import {
+  RiDeleteBinLine,
+  RiLoader4Line,
+  RiMoreFill,
+  RiShareBoxLine,
+} from "@remixicon/react"
 
 import {
   AlertDialog,
@@ -41,6 +46,7 @@ export function RecordActionsMenu({
   deleteTitle,
   deleteDescription,
   onDelete,
+  onShare,
 }: {
   links: RecordActionLink[]
   deleteLabel: string
@@ -48,6 +54,8 @@ export function RecordActionsMenu({
   deleteDescription: string
   /** `true` = silindi (yönlendirme başlıyor), `false` = başarısız. */
   onDelete: () => Promise<boolean>
+  /** Paylaşım penceresini açar. */
+  onShare?: () => void
 }) {
   const [confirmOpen, setConfirmOpen] = React.useState(false)
   const [busy, setBusy] = React.useState(false)
@@ -79,6 +87,17 @@ export function RecordActionsMenu({
             </Link>
           </Button>
         ))}
+        {onShare ? (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onShare}
+            aria-haspopup="dialog"
+          >
+            <RiShareBoxLine />
+            Paylaş
+          </Button>
+        ) : null}
         <Button
           variant="outline"
           size="sm"
@@ -117,7 +136,13 @@ export function RecordActionsMenu({
               </Link>
             </DropdownMenuItem>
           ))}
-          {links.length > 0 ? <DropdownMenuSeparator /> : null}
+          {onShare ? (
+            <DropdownMenuItem onSelect={onShare}>
+              <RiShareBoxLine className="size-4" />
+              Paylaş
+            </DropdownMenuItem>
+          ) : null}
+          {links.length > 0 || onShare ? <DropdownMenuSeparator /> : null}
           <DropdownMenuItem
             variant="destructive"
             onSelect={(e) => {

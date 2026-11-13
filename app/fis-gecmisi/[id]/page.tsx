@@ -2,41 +2,12 @@ import { notFound, redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { getReceiptDetailCached } from "@/lib/data/records"
 import { withResolvedItemImages } from "@/lib/data/item-images"
-import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
-import { parseSummary } from "@/lib/basket-plan"
-import { formatDate, formatTL } from "@/lib/format"
+import { recordShareStatus } from "@/lib/data/record-shares"
 import { priceFreshness } from "@/lib/price-freshness"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { MarketCell } from "@/components/market-cell"
-import { OptimizationCard } from "@/components/assistant/optimization-card"
-import {
-  MarketSplitDonut,
-  type MarketDatum,
-} from "@/components/charts/market-split-donut"
+import { receiptRecordData, receiptTitle } from "@/lib/records/record-data"
+import { ReceiptRecordBody } from "@/components/records/receipt-record-body"
 import { RecordHeader } from "@/components/records/record-header"
-import {
-  RecordInfoList,
-  RecordInfoNote,
-  RecordInfoRow,
-} from "@/components/records/record-info-list"
-import {
-  RecordItemList,
-  type RecordItemView,
-} from "@/components/records/record-item-list"
-import { ReceiptImage } from "@/components/records/receipt-image"
 import { ReceiptActionsMenu } from "./actions-menu"
-
-function receiptTitle(receipt: {
-  name: string | null
-  marketName: string | null
-  purchaseDate: Date | null
-  createdAt: Date
-}): string {
-  if (receipt.name?.trim()) return receipt.name.trim()
-  const date = receipt.purchaseDate ?? receipt.createdAt
-  return `${receipt.marketName ?? "Fiş"} · ${formatDate(date)}`
-}
 
 export async function generateMetadata({
   params,
@@ -63,204 +34,36 @@ export default async function ReceiptDetailPage({
   if (!detail) notFound()
   const { receipt, conversation } = detail
   // Bkz. sepet detayı: görseli boş kalan kalemler eşleşen üründen tamamlanır.
-  const items = await withResolvedItemImages(
-    detail.items,
-    "receipt",
-    session.user.id,
-  )
-  // Görsel alanından önce kaydedilmiş özetlerin dökümü, kalemlerin eşleşen
-  // ürün görselleriyle tamamlanır (bkz. ProductImageFallback).
-  const itemImages = Object.fromEntries(
-    items.flatMap((it) =>
-      it.matchedProductId && it.matchedImageUrl
-        ? [[it.matchedProductId, it.matchedImageUrl]]
-        : [],
-    ),
-  )
-
-  const isStale = isReceiptStaleByDate(receipt.purchaseDate)
-  const totalSavings =
-    !isStale && receipt.potentialSavingsTL
-      ? Number(receipt.potentialSavingsTL)
-      : 0
-
-  const summary = parseSummary(receipt.summaryJson)
-
-  // Fişte "yeniden hesaplat" diye bir aksiyon yok (OCR karşılaştırması tekrar
-  // kurulamaz), o yüzden fiyat yaşı tarihin yanında sessiz bir not olarak durur.
+  const [items, shareStatus] = await Promise.all([
+    withResolvedItemImages(detail.items, "receipt", session.user.id),
+    recordShareStatus("receipt", receipt.id, session.user.id),
+  ])
+  const title = receiptTitle(receipt)
+  // Fişte "yeniden hesaplat" yok; fiyat yaşı tarihin yanında sessiz bir not.
   const freshness = priceFreshness(receipt.createdAt)
-
-  const itemViews: RecordItemView[] = items.map((it) => ({
-    id: it.id,
-    rawName: it.rawName,
-    quantity: Number(it.quantity),
-    unit: it.unit,
-    matchedName:
-      it.matchedName && it.matchedName !== it.rawName ? it.matchedName : null,
-    matchedBrand: it.matchedBrand,
-    matchedImageUrl: it.matchedImageUrl,
-    matchedProductId: it.matchedProductId,
-    searchQuery: it.searchQuery,
-    matched:
-      it.lookupStatus != null
-        ? it.lookupStatus === "ok"
-        : it.matchedProductId != null,
-    // Fişte kalem satırının fiyatı gerçekten o kaleme ait (fişten okundu) —
-    // sepetteki plan belirsizliği burada yok. Tutar TEK PAKET fiyatı: satırın
-    // iki tarafı da (fişteki paket fiyatı / en iyi paket fiyatı) aynı tabanda
-    // olsun diye, `packs` bu yüzden daima 1 (bkz. ReceiptComparison).
-    plan: it.bestMarket
-      ? {
-          market: it.bestMarket,
-          unitPrice: it.bestPrice ? Number(it.bestPrice) : 0,
-          packs: 1,
-          lineTotal: it.bestPrice ? Number(it.bestPrice) : 0,
-          depotName: null,
-          sizeMismatch: false,
-        }
-      : null,
-    receiptUnitPrice: it.receiptUnitPrice
-      ? Number(it.receiptUnitPrice)
-      : null,
-    savings: !isStale && it.savingsTL ? Number(it.savingsTL) : null,
-  }))
-
-  const matchedCount = itemViews.filter((it) => it.matched).length
-  const allMatched = matchedCount === itemViews.length
-
-  // Dağılım da kalem satırlarıyla AYNI tabanda: tek paket fiyatı. Burası
-  // `bestPrice × quantity` topluyordu, yani aynı sayfada satırda ₺30 yazan
-  // kalem grafikte ₺90 sayılıyordu; satırın kendisi kendiyle çelişiyordu.
-  const marketSplitMap = new Map<string, number>()
-  for (const it of items) {
-    if (!it.bestMarket || !it.bestPrice) continue
-    const line = Number(it.bestPrice)
-    if (!Number.isFinite(line) || line <= 0) continue
-    marketSplitMap.set(
-      it.bestMarket,
-      (marketSplitMap.get(it.bestMarket) ?? 0) + line,
-    )
-  }
-  const marketSplit: MarketDatum[] = Array.from(marketSplitMap.entries()).map(
-    ([market, value]) => ({ market, value }),
-  )
-  const showSplit = marketSplit.length >= 2
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
       <RecordHeader
-        title={receiptTitle(receipt)}
+        title={title}
         createdAt={receipt.createdAt}
         meta={
           freshness ? <span>Fiyatlar {freshness.ageLabel} alındı</span> : null
         }
         actions={
-          <ReceiptActionsMenu id={receipt.id} conversation={conversation} />
+          <ReceiptActionsMenu
+            id={receipt.id}
+            title={title}
+            conversation={conversation}
+            shareStatus={shareStatus}
+            hasImage={!!receipt.imageR2Key}
+          />
         }
       />
-
-      {/* Bento: dar sol kolon görsel + sepet özeti, geniş sağ kolon fiş bilgisi
-          + dağılım, altta tam genişlik kalem listesi. İki kolon da iki kart
-          taşır — tek kartlı bir kolon yanındaki uzun kolonun hizasında koca bir
-          boşluk bırakıyordu.
-          Mobil: `order` ile kalemler önce (asıl sonuç onlar), sonra görsel
-          (katlanmış bir başlığa iner) ve özet, en sonda bilgi + dağılım. */}
-      <div className="grid gap-5 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
-        <div className="order-2 min-w-0 space-y-5 md:order-1">
-          <ReceiptImage url={receipt.imageUrl} />
-
-          {summary && (
-            <OptimizationCard summary={summary} imageFallback={itemImages} />
-          )}
-        </div>
-
-        <div className="order-3 min-w-0 space-y-5 md:order-2">
-          <RecordInfoList
-            title="Fiş Bilgisi"
-            headerRight={
-              !isStale && totalSavings > 0 ? (
-                <Badge variant="success" className="tabular-nums">
-                  {formatTL(totalSavings)}
-                  <span className="sr-only"> tasarruf edebilirdin</span>
-                </Badge>
-              ) : null
-            }
-          >
-            <RecordInfoRow label="Market">
-              <div className="flex justify-end">
-                <MarketCell name={receipt.marketName} size="sm" />
-              </div>
-            </RecordInfoRow>
-            <RecordInfoRow label="Tarih">
-              <span className="tabular-nums">
-                {formatDate(receipt.purchaseDate ?? receipt.createdAt)}
-              </span>
-            </RecordInfoRow>
-            <RecordInfoRow label="Kalem">
-              <span className="tabular-nums">
-                {allMatched
-                  ? items.length
-                  : `${matchedCount}/${items.length} eşleşti`}
-              </span>
-            </RecordInfoRow>
-            <RecordInfoRow label="Fiş Tutarı">
-              <span className="tabular-nums">
-                {receipt.totalAmount
-                  ? formatTL(Number(receipt.totalAmount))
-                  : "—"}
-              </span>
-            </RecordInfoRow>
-            {receipt.bestSingleMarket && (
-              <RecordInfoRow label="En İyi Market">
-                <div className="flex flex-wrap items-center justify-end gap-x-2">
-                  <MarketCell name={receipt.bestSingleMarket} size="sm" />
-                  {receipt.bestSingleTotal && (
-                    <span className="tabular-nums text-muted-foreground">
-                      {formatTL(Number(receipt.bestSingleTotal))}
-                    </span>
-                  )}
-                </div>
-              </RecordInfoRow>
-            )}
-            {isStale && (
-              <RecordInfoNote className="bg-muted/40">
-                Bu fiş 6 aydan eski olduğundan bugünkü piyasayla kıyaslanmıyor.
-              </RecordInfoNote>
-            )}
-          </RecordInfoList>
-
-          {showSplit && (
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  Marketlere Göre Dağılım
-                </CardTitle>
-              </CardHeader>
-              <div className="p-4">
-                <MarketSplitDonut
-                  data={marketSplit}
-                  totalLabel="En iyi alternatif"
-                  emptyHint="Dağılım için yeterli market yok."
-                />
-              </div>
-            </Card>
-          )}
-        </div>
-
-        <div className="order-1 min-w-0 md:order-3 md:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Fişteki Kalemler</CardTitle>
-              <Badge variant="secondary">
-                {allMatched
-                  ? items.length
-                  : `${matchedCount}/${items.length} eşleşti`}
-              </Badge>
-            </CardHeader>
-            <RecordItemList items={itemViews} emptyHint="Bu fişte kalem yok." />
-          </Card>
-        </div>
-      </div>
+      <ReceiptRecordBody
+        data={receiptRecordData(receipt, items)}
+        imageUrl={receipt.imageUrl}
+      />
     </div>
   )
 }

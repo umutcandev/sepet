@@ -40,6 +40,7 @@ import {
   RecordListDot,
 } from "@/components/records/record-list-card"
 import { RecordRowActions } from "@/components/records/record-row-actions"
+import { ShareRecordDialog } from "@/components/records/share-record-dialog"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
 import {
@@ -109,6 +110,11 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
     React.useState<ReceiptListItem | null>(null)
   const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState(false)
   const [deletePending, setDeletePending] = React.useState(false)
+  // Paylaş: kapanış animasyonu boyunca hedef yerinde kalsın diye açıklık ayrı.
+  const [shareTarget, setShareTarget] = React.useState<ReceiptListItem | null>(
+    null
+  )
+  const [shareOpen, setShareOpen] = React.useState(false)
 
   const displayed = searchResults ?? items
   const isSearchActive = debouncedQuery.trim().length > 0
@@ -566,6 +572,10 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
                         <RecordRowActions
                           label="Fiş eylemleri"
                           onSelect={() => enterSelect(r.id)}
+                          onShare={() => {
+                            setShareTarget(r)
+                            setShareOpen(true)
+                          }}
                           onDelete={() => setSingleDeleteTarget(r)}
                         />
                       }
@@ -585,6 +595,17 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
           )}
         </>
       )}
+
+      {shareTarget ? (
+        <ShareRecordDialog
+          open={shareOpen}
+          onOpenChange={setShareOpen}
+          kind="receipt"
+          recordId={shareTarget.id}
+          title={receiptLabel(shareTarget)}
+          hasImage={shareTarget.hasImage}
+        />
+      ) : null}
 
       {/* Tekil silme onayı */}
       <AlertDialog

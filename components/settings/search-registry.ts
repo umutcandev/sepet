@@ -139,7 +139,7 @@ const GIZLILIK_SETTINGS: SettingEntry[] = [
     target: "paylasilan-baglantilar",
     title: "Paylaşılan bağlantılar",
     keywords:
-      "paylas paylasim paylasilan baglanti link herkese acik sohbet anonim kaldir",
+      "paylas paylasim paylasilan baglanti link herkese acik sohbet sepet fis anonim kaldir",
     icon: RiLinksLine,
   },
   {

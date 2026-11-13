@@ -1,8 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { AnimatePresence, motion, useReducedMotion } from "motion/react"
-import { RiEqualizerLine, RiSearchLine } from "@remixicon/react"
+import { flushSync } from "react-dom"
+import {
+  AnimatePresence,
+  animate,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+} from "motion/react"
+import { RiCloseLine, RiSearchLine } from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -11,13 +18,12 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { SPRING_PILL } from "@/lib/motion"
+import { EASE_OUT_SOFT, SPRING_PILL } from "@/lib/motion"
+import { cn } from "@/lib/utils"
 
 import {
   NAV_ITEMS,
   SEARCH_ENTRIES,
-  TAB_LABEL,
   normalize,
   type SearchEntry,
   type TabKey,
@@ -44,13 +50,7 @@ function HighlightedLabel({ text, query }: { text: string; query: string }) {
   )
 }
 
-/**
- * Sekme listesi. Aktif sekmenin zemini sekmeler arasında kayar; fareyle
- * gezinirken daha soluk ikinci bir zemin imleci izler (eski Vercel
- * sekmeleri). İkisi de segmented control'deki gibi `layoutId` ile kayar:
- * ölçü yok, mobildeki yatay kaydırmada ve diyaloğun açılış ölçeğinde de
- * doğru yerde kalır. layoutId global bir isim uzayı, kimlikler bileşene özel.
- */
+// Yatay sekmeler; aktif zemin layoutId ile kayar, hover yalnızca yazı rengi.
 function SettingsNavList({
   tab,
   onSelect,
@@ -59,64 +59,29 @@ function SettingsNavList({
   onSelect: (tab: TabKey) => void
 }) {
   const activeId = React.useId()
-  const hoverId = React.useId()
-  const [hovered, setHovered] = React.useState<TabKey | null>(null)
   const reduceMotion = useReducedMotion()
-  const slide = reduceMotion ? { duration: 0 } : SPRING_PILL
 
   return (
-    <ul
-      onPointerLeave={() => setHovered(null)}
-      className="flex gap-1 overflow-x-auto [scrollbar-width:none] sm:flex-col sm:gap-0.5 sm:overflow-x-visible [&::-webkit-scrollbar]:hidden"
-    >
+    <ul className="flex min-w-0 flex-1 [scrollbar-width:none] gap-1 overflow-x-auto [&::-webkit-scrollbar]:hidden">
       {NAV_ITEMS.map((item) => {
         const isActive = tab === item.key
-        const Icon = item.icon
         return (
-          <li key={item.key} className="shrink-0 sm:w-full">
+          <li key={item.key} className="shrink-0">
             <Button
               variant="nav"
               onClick={() => onSelect(item.key)}
-              onPointerEnter={(e) => {
-                // Dokunmada hover yok; parmağın altında zemin kalmasın.
-                if (e.pointerType === "mouse") setHovered(item.key)
-              }}
               aria-current={isActive ? "page" : undefined}
-              // Zemin kayan öğede; butonun kendi zemini saydam.
-              className="w-full hover:bg-transparent aria-[current=page]:bg-transparent"
+              className="hover:bg-transparent aria-[current=page]:bg-transparent"
             >
-              {/* Zemin yeni sekmenin içinde doğar ve eski yerinden kayar;
-                  ağaç sırasıyla boyansaydı yolundaki sekmelerin yazısını
-                  örterdi. Yazılar z-10, zeminler z-0: kayan zemin her sekmenin
-                  altından geçer. */}
-              <AnimatePresence initial={false}>
-                {hovered === item.key && (
-                  <motion.span
-                    layoutId={hoverId}
-                    aria-hidden
-                    className="absolute inset-0 z-0 rounded-[inherit] bg-accent/50"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      ...slide,
-                      opacity: { duration: reduceMotion ? 0 : 0.15 },
-                    }}
-                  />
-                )}
-              </AnimatePresence>
               {isActive && (
                 <motion.span
                   layoutId={activeId}
                   aria-hidden
                   className="absolute inset-0 z-0 rounded-[inherit] bg-accent"
-                  transition={slide}
+                  transition={reduceMotion ? { duration: 0 } : SPRING_PILL}
                 />
               )}
-              <Icon className="relative z-10 hidden sm:block" />
-              <span className="relative z-10 truncate sm:flex-1">
-                {item.label}
-              </span>
+              <span className="relative z-10">{item.label}</span>
             </Button>
           </li>
         )
@@ -167,9 +132,10 @@ export function SettingsDialog({
       let attempts = 0
       const run = () => {
         const el = contentRef.current?.querySelector<HTMLElement>(
-          `[data-search-target="${target}"]`,
+          `[data-search-target="${target}"]`
         )
-        if (el) {
+        // Gizli panellerdeki eşleşmeyi atla; sekme geçişi render olana kadar bekle.
+        if (el && el.getClientRects().length > 0) {
           clearHighlight()
           el.scrollIntoView({ behavior: "smooth", block: "center" })
           el.classList.add("settings-search-highlight")
@@ -185,28 +151,94 @@ export function SettingsDialog({
       }
       run()
     },
-    [clearHighlight],
+    [clearHighlight]
+  )
+
+  const [searchOpen, setSearchOpen] = React.useState(false)
+  const searchOpenRef = React.useRef(false)
+  const closedWidth = React.useRef(0)
+  const searchWidth = useMotionValue<number | string>(0)
+  const searchRowRef = React.useRef<HTMLDivElement>(null)
+  const searchButtonRef = React.useRef<HTMLButtonElement>(null)
+  const searchInputRef = React.useRef<HTMLInputElement>(null)
+  const dialogRef = React.useRef<HTMLDivElement>(null)
+  const reduceMotion = useReducedMotion()
+
+  // Kapalı genişlik = yer tutucu "Ara"nın genişliği; animasyonsuz yazılır.
+  const spacerRef = React.useCallback(
+    (el: HTMLSpanElement | null) => {
+      if (!el) return
+      const measure = () => {
+        closedWidth.current = el.offsetWidth
+        if (!searchOpenRef.current) searchWidth.set(el.offsetWidth)
+      }
+      measure()
+      const ro = new ResizeObserver(measure)
+      ro.observe(el)
+      return () => ro.disconnect()
+    },
+    [searchWidth]
+  )
+
+  const animateWidth = React.useCallback(
+    (to: number, duration: number) =>
+      animate(
+        searchWidth,
+        to,
+        reduceMotion ? { duration: 0 } : { type: "spring", bounce: 0, duration }
+      ),
+    [searchWidth, reduceMotion]
+  )
+
+  const openSearch = React.useCallback(() => {
+    searchOpenRef.current = true
+    // iOS klavyeyi yalnızca dokunma anındaki senkron focus'ta açar.
+    flushSync(() => setSearchOpen(true))
+    searchInputRef.current?.focus()
+    const rowWidth = searchRowRef.current?.offsetWidth ?? 0
+    // Bitince %100'e geç: açıkken diyalog boyutu değişse de satırı doldursun.
+    animateWidth(rowWidth, 0.4).then(() => {
+      if (searchOpenRef.current) searchWidth.set("100%")
+    })
+  }, [animateWidth, searchWidth])
+
+  const closeSearch = React.useCallback(
+    (refocus: boolean) => {
+      if (!searchOpenRef.current) return
+      searchOpenRef.current = false
+      if (typeof searchWidth.get() === "string") {
+        searchWidth.set(searchRowRef.current?.offsetWidth ?? 0)
+      }
+      animateWidth(closedWidth.current, 0.3)
+      setQuery("")
+      if (!refocus) return setSearchOpen(false)
+      flushSync(() => setSearchOpen(false))
+      searchButtonRef.current?.focus()
+    },
+    [animateWidth, searchWidth]
   )
 
   const handleSelect = React.useCallback(
     (entry: SearchEntry) => {
       setTab(entry.tab)
-      setQuery("")
+      closeSearch(false)
       if (entry.target) focusTarget(entry.target)
     },
-    [focusTarget],
+    [focusTarget, closeSearch]
   )
 
-  // Dialog kapanınca aramayı ve vurguyu sıfırla.
   const handleOpenChange = React.useCallback(
     (next: boolean) => {
       if (!next) {
         setQuery("")
+        setSearchOpen(false)
+        searchOpenRef.current = false
+        searchWidth.set(closedWidth.current)
         clearHighlight()
       }
       onOpenChange(next)
     },
-    [onOpenChange, clearHighlight],
+    [onOpenChange, clearHighlight, searchWidth]
   )
 
   // Unmount'ta bekleyen vurgu timer'ını temizle.
@@ -217,141 +249,213 @@ export function SettingsDialog({
     const q = normalize(trimmed)
     if (!q) return []
     return SEARCH_ENTRIES.filter(
-      (e) => normalize(e.title).includes(q) || normalize(e.keywords).includes(q),
+      (e) => normalize(e.title).includes(q) || normalize(e.keywords).includes(q)
     )
   }, [trimmed])
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="w-[calc(100%-2rem)] gap-0 overflow-hidden p-0 sm:max-w-4xl">
-        <DialogTitle className="sr-only">Ayarlar</DialogTitle>
+      <DialogContent
+        ref={dialogRef}
+        // Açılışta odak arama butonuna değil, diyaloğun kendisine gitsin.
+        onOpenAutoFocus={(e) => {
+          e.preventDefault()
+          dialogRef.current?.focus()
+        }}
+        className="w-[calc(100%-2rem)] gap-0 overflow-hidden p-0 sm:max-w-lg"
+      >
         <DialogDescription className="sr-only">
           Hesap ve kullanım ayarları
         </DialogDescription>
 
-        <div className="flex h-[min(680px,78svh)] min-h-0 min-w-0 flex-col sm:h-[min(680px,88svh)] sm:flex-row">
-          {/* Gezinme — mobilde üstte yatay menü, masaüstünde solda dikey kenar */}
-          <nav className="relative flex shrink-0 flex-col gap-3.5 border-b bg-muted/30 px-4 pt-4 pb-2.5 sm:w-52 sm:gap-2 sm:border-r sm:border-b-0 sm:px-3 sm:pt-3 sm:pb-3">
-            {/* Mobil başlık — masaüstü dikey menüsünde gerekmez */}
-            <div
-              aria-hidden
-              className="cn-font-heading pr-10 text-base font-medium leading-none sm:hidden"
-            >
-              Ayarlar
+        <div className="flex h-[min(680px,78svh)] min-h-0 min-w-0 flex-col sm:h-[min(680px,88svh)]">
+          <nav className="flex shrink-0 flex-col gap-1 border-b bg-muted/30 px-5 pb-2.5 sm:px-6">
+            {/* h-11: kapat butonuyla (top-2, size-7) aynı eksende */}
+            <div className="flex h-11 items-center pr-8">
+              <DialogTitle>Ayarlar</DialogTitle>
             </div>
-            {/* Arama yalnızca masaüstünde gösterilir */}
-            <div className="relative hidden px-0.5 pt-0.5 sm:block">
-              <RiSearchLine className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Escape" && query) {
-                    // Aramayı temizle ama dialog'u kapatma.
-                    e.preventDefault()
-                    e.stopPropagation()
-                    setQuery("")
-                  }
-                }}
-                placeholder="Ayarlarda ara"
-                aria-label="Ayarlarda ara"
-                className="h-8 pl-8 text-sm [&::-webkit-search-cancel-button]:appearance-none"
-              />
-            </div>
-            <div className="hidden px-2 pt-1 text-[0.6875rem] font-medium tracking-wide text-muted-foreground/70 sm:block">
-              Ayarlar
-            </div>
-            <SettingsNavList tab={tab} onSelect={setTab} />
 
-            {trimmed && (
-              <div className="absolute top-12 left-1.5 z-30 w-[min(18rem,calc(100vw-4rem))] overflow-hidden rounded-xl bg-popover smooth-shadow-ring-lg">
-                {results.length === 0 ? (
-                  <div className="px-3 py-6 text-center text-xs text-muted-foreground">
-                    “{trimmed}” için sonuç bulunamadı
-                  </div>
-                ) : (
-                  <ul className="cn-scrollbar-thin max-h-72 overflow-y-auto p-1.5">
-                    {results.map((r) => {
-                      const Icon = r.icon
-                      return (
-                        <li key={r.key}>
-                          <Button
-                            variant="item"
-                            size="auto"
-                            onClick={() => handleSelect(r)}
-                          >
-                            <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
-                              <Icon className="size-4" />
-                            </span>
-                            <span className="flex min-w-0 flex-col">
-                              <span className="truncate text-sm">
-                                <HighlightedLabel
-                                  text={r.title}
-                                  query={trimmed}
-                                />
-                              </span>
-                              <span className="truncate text-xs text-muted-foreground">
-                                {r.subtitle}
-                              </span>
-                            </span>
-                          </Button>
-                        </li>
-                      )
-                    })}
-                  </ul>
+            <div ref={searchRowRef} className="relative flex items-center">
+              {/* Kapalı aramanın yer tutucusu; sekmeler bunun yanından başlar */}
+              <span
+                ref={spacerRef}
+                aria-hidden
+                className="invisible inline-flex h-8 shrink-0 items-center gap-1.5 px-2.5 text-sm font-medium"
+              >
+                <RiSearchLine className="size-4" />
+                Ara
+              </span>
+              <motion.div
+                inert={searchOpen}
+                className="flex min-w-0 flex-1 items-center"
+                animate={{ opacity: searchOpen ? 0 : 1 }}
+                transition={{ duration: reduceMotion ? 0 : 0.15 }}
+              >
+                <span
+                  aria-hidden
+                  className="mx-2 h-4 w-px shrink-0 bg-border"
+                />
+                <SettingsNavList tab={tab} onSelect={setTab} />
+              </motion.div>
+
+              {/* Tek yüzey: kapalıyken "Ara" butonu, açılınca genişleyip input olur */}
+              <motion.div
+                className={cn(
+                  "absolute inset-y-0 left-0 z-20 overflow-hidden rounded-lg bg-(--surface-base) text-sm surface-raised transition-[background-color,box-shadow] duration-150 [--surface-base:var(--surface-outline)] has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/50 has-[:focus-visible]:[--surface-edge:var(--ring)]",
+                  !searchOpen &&
+                    "hover:[--surface-base:var(--surface-outline-hover)]"
                 )}
-              </div>
-            )}
+                style={{ width: searchWidth }}
+              >
+                <RiSearchLine className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2" />
+                <motion.span
+                  aria-hidden
+                  className="pointer-events-none absolute top-1/2 left-8 -translate-y-1/2 font-medium"
+                  animate={{ opacity: searchOpen ? 0 : 1 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.1 }}
+                >
+                  Ara
+                </motion.span>
+                {!searchOpen && (
+                  <button
+                    ref={searchButtonRef}
+                    type="button"
+                    onClick={openSearch}
+                    aria-label="Ayarlarda ara"
+                    className="absolute inset-0 cursor-pointer outline-none"
+                  />
+                )}
+                <motion.div
+                  inert={!searchOpen}
+                  className="absolute inset-0"
+                  initial={false}
+                  animate={{ opacity: searchOpen ? 1 : 0 }}
+                  transition={{
+                    duration: reduceMotion ? 0 : 0.15,
+                    delay: searchOpen && !reduceMotion ? 0.05 : 0,
+                  }}
+                >
+                  <input
+                    ref={searchInputRef}
+                    type="search"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onBlur={() => {
+                      if (!query) closeSearch(false)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && results[0]) {
+                        e.preventDefault()
+                        handleSelect(results[0])
+                        return
+                      }
+                      if (e.key !== "Escape") return
+                      // Önce aramayı kapat, dialog'u değil.
+                      e.preventDefault()
+                      e.stopPropagation()
+                      if (query) setQuery("")
+                      else closeSearch(true)
+                    }}
+                    placeholder="Ayarlarda ara"
+                    aria-label="Ayarlarda ara"
+                    // text-base mobilde: iOS 16px altında odakta zoom yapar.
+                    className="size-full bg-transparent pr-9 pl-8 text-base outline-none placeholder:text-muted-foreground md:text-sm [&::-webkit-search-cancel-button]:appearance-none"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    onClick={() => closeSearch(true)}
+                    aria-label="Aramayı kapat"
+                    className="absolute top-1/2 right-1.5 -translate-y-1/2"
+                  >
+                    <RiCloseLine />
+                  </Button>
+                </motion.div>
+              </motion.div>
+
+              <AnimatePresence>
+                {searchOpen && trimmed && (
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      y: reduceMotion ? 0 : -4,
+                      scale: reduceMotion ? 1 : 0.98,
+                    }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15, ease: EASE_OUT_SOFT }}
+                    className="absolute top-full left-0 z-30 mt-1.5 w-full origin-top-left overflow-hidden rounded-xl bg-popover smooth-shadow-ring-lg sm:w-96"
+                  >
+                    {results.length === 0 ? (
+                      <div className="px-3 py-6 text-center text-xs text-muted-foreground">
+                        “{trimmed}” için sonuç bulunamadı
+                      </div>
+                    ) : (
+                      <ul className="cn-scrollbar-thin max-h-72 overflow-y-auto p-1.5">
+                        {results.map((r) => {
+                          const Icon = r.icon
+                          return (
+                            <li key={r.key}>
+                              <Button
+                                variant="item"
+                                size="auto"
+                                onClick={() => handleSelect(r)}
+                              >
+                                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                                  <Icon className="size-4" />
+                                </span>
+                                <span className="flex min-w-0 flex-col">
+                                  <span className="truncate text-sm">
+                                    <HighlightedLabel
+                                      text={r.title}
+                                      query={trimmed}
+                                    />
+                                  </span>
+                                  <span className="truncate text-xs text-muted-foreground">
+                                    {r.subtitle}
+                                  </span>
+                                </span>
+                              </Button>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </nav>
 
-          {/* İçerik */}
+          {/* overscroll-contain: kaydırma alttaki sayfaya geçmesin */}
           <div
             ref={contentRef}
-            // overscroll-contain: sona gelen kaydırma alttaki sayfaya geçip
-            // onu (ve bulanıklık olmasa da birleştirmeyi) oynatmasın.
             className="cn-scrollbar-thin min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain"
           >
-            <div className="px-5 pt-6 pb-8 sm:px-7 sm:pt-10">
-              {tab === "genel" ? (
-                <GeneralPanel />
-              ) : tab === "hesap" ? (
-                <AccountPanel />
-              ) : tab === "gizlilik" ? (
-                <PrivacyPanel />
-              ) : tab === "abonelik" ? (
-                <SubscriptionPanel />
-              ) : tab === "kullanim" ? (
-                <UsagePanel onUpgrade={() => setTab("abonelik")} />
-              ) : (
-                <ComingSoonPanel tab={tab} />
-              )}
-            </div>
+            {/* Tüm paneller açılışta mount olur: veriler hemen yüklenir, sekme geçişinde skeleton çıkmaz */}
+            {(
+              [
+                ["genel", <GeneralPanel key="genel" />],
+                ["hesap", <AccountPanel key="hesap" />],
+                ["gizlilik", <PrivacyPanel key="gizlilik" />],
+                ["abonelik", <SubscriptionPanel key="abonelik" />],
+                [
+                  "kullanim",
+                  <UsagePanel key="kullanim" onUpgrade={() => setTab("abonelik")} />,
+                ],
+              ] as const
+            ).map(([key, panel]) => (
+              <div
+                key={key}
+                hidden={tab !== key}
+                className="px-5 pt-6 pb-8 sm:px-6 sm:pt-8"
+              >
+                {panel}
+              </div>
+            ))}
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
-
-// İşlevi henüz hazır olmayan sekmeler (Gizlilik, Abonelik) için yer tutucu.
-function ComingSoonPanel({ tab }: { tab: TabKey }) {
-  const item = NAV_ITEMS.find((n) => n.key === tab)
-  const Icon = item?.icon ?? RiEqualizerLine
-  const title = TAB_LABEL[tab]
-
-  return (
-    <div className="flex flex-col gap-8">
-      <header className="flex flex-col gap-1.5">
-        <h2 className="cn-font-heading text-md font-medium">{title}</h2>
-      </header>
-
-      <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-muted/30 px-6 py-12 text-center">
-        <span className="flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground">
-          <Icon className="size-5" />
-        </span>
-        <span className="text-sm font-medium">Yakında</span>
-      </div>
-    </div>
   )
 }
