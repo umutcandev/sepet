@@ -3,6 +3,7 @@ import { Suspense } from "react"
 
 import "./globals.css"
 import { AppShell } from "@/components/app-shell"
+import { InlineScript } from "@/components/inline-script"
 import { JsonLd } from "@/components/blog/json-ld"
 import { siteGraphLd } from "@/lib/blog/jsonld"
 import { LoginDialogHost } from "@/components/auth/login-dialog-host"
@@ -103,7 +104,7 @@ export default function RootLayout({
             iki varyantı da render eder; globals.css'teki [data-session-*]
             kuralları yanlış olanı gizler → statik sayfada oturum flicker'ı
             yaşanmaz. Kaynak: lib/auth/session-snapshot.ts */}
-        <script dangerouslySetInnerHTML={{ __html: SESSION_HINT_SCRIPT }} />
+        <InlineScript html={SESSION_HINT_SCRIPT} />
         {/* Site geneli kök JSON-LD: Organization + WebSite tek @graph içinde. */}
         <JsonLd data={siteGraphLd()} />
         <ThemeProvider

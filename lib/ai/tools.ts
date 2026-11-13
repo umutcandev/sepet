@@ -501,6 +501,12 @@ async function fetchExtraCandidates(
   )
 }
 
+export type LookupProgress = {
+  phase: "search" | "match"
+  done: number
+  total: number
+}
+
 export async function lookupProducts(
   items: ParsedItem[],
   loc: LocationContext = MF_DEFAULT_LOCATION,
@@ -508,10 +514,16 @@ export async function lookupProducts(
   carried: ReadonlyMap<string, CarriedSelection> = new Map(),
   /** Kullanıcıya özel match-cache kapsamı (userId), bkz. scopedMatchCacheKey. */
   cacheScope?: string,
+  onProgress?: (p: LookupProgress) => void,
 ): Promise<{ matches: MatchResult[] }> {
   // Faz 1 — her kalem için aday ürünleri getir.
+  let searched = 0
   const outcomes = await Promise.all(
-    items.map((item) => findFirstHit(item.searchQuery, item.name, loc)),
+    items.map((item) =>
+      findFirstHit(item.searchQuery, item.name, loc).finally(() =>
+        onProgress?.({ phase: "search", done: ++searched, total: items.length }),
+      ),
+    ),
   )
 
   // index (orijinal item sırası) → optimizasyona girecek seçim.
@@ -611,6 +623,8 @@ export async function lookupProducts(
         { length: Math.ceil(misses.length / MATCH_BATCH_SIZE) },
         (_, i) => misses.slice(i * MATCH_BATCH_SIZE, (i + 1) * MATCH_BATCH_SIZE),
       )
+      let matched = 0
+      onProgress?.({ phase: "match", done: 0, total: misses.length })
       await Promise.all(
         parts.map(async (part) => {
           let selections: Map<number, MatchSelection["selections"][number]> | null =
@@ -654,6 +668,8 @@ export async function lookupProducts(
               })
             }
           })
+          matched += part.length
+          onProgress?.({ phase: "match", done: matched, total: misses.length })
         }),
       )
 

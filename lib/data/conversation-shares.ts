@@ -77,6 +77,18 @@ export function shareAuthorName(
   return name?.trim() || null
 }
 
+/** Bu kullanıcının paylaşılan sayfada görünecek adı (pencere önizler). */
+export async function shareAuthorNameFor(
+  userId: string
+): Promise<string | null> {
+  const [row] = await db
+    .select({ name: users.name })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1)
+  return shareAuthorName(row?.name)
+}
+
 export type ShareSnapshot = {
   title: string
   messages: SharedMessage[]

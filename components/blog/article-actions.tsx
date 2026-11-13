@@ -9,6 +9,7 @@ import {
   RiFileCopyLine,
   RiFileTextLine,
   RiGeminiFill,
+  RiGrokAiFill,
   RiLinkedinFill,
   RiLinksLine,
   RiOpenaiFill,
@@ -17,6 +18,7 @@ import {
   type RemixiconComponentType,
 } from "@remixicon/react"
 import { toast } from "@/components/ui/sonner"
+import { getAssistantLinks, type AssistantLink } from "@/lib/ai-assistants"
 import { copyText } from "@/lib/copy"
 
 import { IconSwap } from "@/components/motion/icon-swap"
@@ -79,18 +81,11 @@ export function getShareTargets(url: string, title: string): ShareTarget[] {
   ]
 }
 
-// Asistanlara makaleyi okutan derin bağlantılar. Temiz metni okuyabilmeleri için
-// sayfa yerine Markdown URL'ini veriyoruz. Gemini'nin kendi deep-link'i prompt
-// almadığı için Google'ın AI Modu kullanılıyor: `udm=50` sonucu normal arama
-// yerine AI Modu'na yönlendiren anahtar, `aep=1` ise giriş noktası işareti.
-export function getAssistantUrls(title: string, markdownUrl: string) {
-  const prompt = `"${title}" başlıklı bu makaleyi oku, ardından hakkında sorularımı yanıtla:\n${markdownUrl}`
-  const q = encodeURIComponent(prompt)
-  return {
-    chatGptUrl: `https://chatgpt.com/?q=${q}`,
-    claudeUrl: `https://claude.ai/new?q=${q}`,
-    geminiUrl: `https://www.google.com/search?udm=50&aep=1&q=${q}`,
-  }
+// Temiz metni okuyabilmeleri için sayfa yerine Markdown URL'i veriliyor.
+function getArticleAssistantLinks(title: string, markdownUrl: string) {
+  return getAssistantLinks(
+    `"${title}" başlıklı bu makaleyi oku, ardından hakkında sorularımı yanıtla:\n${markdownUrl}`
+  )
 }
 
 function SocialShare({ url, title }: { url: string; title: string }) {
@@ -184,6 +179,7 @@ const COPY_LABELS = [
   { key: "chatgpt", text: "ChatGPT ile yorumla", icon: RiOpenaiFill },
   { key: "claude", text: "Claude ile yorumla", icon: RiClaudeFill },
   { key: "gemini", text: "Gemini ile yorumla", icon: RiGeminiFill },
+  { key: "grok", text: "Grok ile yorumla", icon: RiGrokAiFill },
   { key: "markdown", text: "Markdown'ı görüntüle", icon: RiFileTextLine },
 ]
 const COPY_TEXTS = COPY_LABELS.map((label) => label.text)
@@ -240,6 +236,14 @@ function CopyArticleMenu({
   )
 }
 
+// Bulunma eki ünlü uyumuna göre: ChatGPT'de, Claude'da, Grok'ta.
+const OPEN_SUFFIX: Record<AssistantLink["key"], string> = {
+  chatgpt: "de aç",
+  claude: "da aç",
+  gemini: "de aç",
+  grok: "ta aç",
+}
+
 // "Makaleyi kopyala" menüsünün öğeleri. Masaüstü split-button menüsü ile mobil
 // satırdaki açılır menü aynı listeyi paylaşsın diye ayrı tutuldu.
 export function CopyArticleMenuItems({
@@ -261,7 +265,7 @@ export function CopyArticleMenuItems({
     )
   }
 
-  const { chatGptUrl, claudeUrl, geminiUrl } = getAssistantUrls(title, markdownUrl)
+  const assistants = getArticleAssistantLinks(title, markdownUrl)
 
   return (
     <>
@@ -283,36 +287,18 @@ export function CopyArticleMenuItems({
         </a>
       </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem className="items-start gap-2 py-1.5" asChild>
-        <a href={chatGptUrl} target="_blank" rel="noopener noreferrer">
-          <ActionItemContent
-            icon={RiOpenaiFill}
-            title="ChatGPT'de aç"
-            description="Makale hakkında soru sor"
-            external
-          />
-        </a>
-      </DropdownMenuItem>
-      <DropdownMenuItem className="items-start gap-2 py-1.5" asChild>
-        <a href={claudeUrl} target="_blank" rel="noopener noreferrer">
-          <ActionItemContent
-            icon={RiClaudeFill}
-            title="Claude'da aç"
-            description="Makale hakkında soru sor"
-            external
-          />
-        </a>
-      </DropdownMenuItem>
-      <DropdownMenuItem className="items-start gap-2 py-1.5" asChild>
-        <a href={geminiUrl} target="_blank" rel="noopener noreferrer">
-          <ActionItemContent
-            icon={RiGeminiFill}
-            title="Gemini'de aç"
-            description="Makale hakkında soru sor"
-            external
-          />
-        </a>
-      </DropdownMenuItem>
+      {assistants.map((assistant) => (
+        <DropdownMenuItem key={assistant.key} className="items-start gap-2 py-1.5" asChild>
+          <a href={assistant.href} target="_blank" rel="noopener noreferrer">
+            <ActionItemContent
+              icon={assistant.icon}
+              title={`${assistant.name}'${OPEN_SUFFIX[assistant.key]}`}
+              description="Makale hakkında soru sor"
+              external
+            />
+          </a>
+        </DropdownMenuItem>
+      ))}
     </>
   )
 }

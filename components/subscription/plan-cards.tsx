@@ -17,7 +17,13 @@ import {
 } from "@remixicon/react"
 
 import { EASE_OUT_SOFT } from "@/lib/motion"
-import { limitCell, limitFeature, type Plan } from "@/lib/usage/limits"
+import { FairUseMark } from "@/components/subscription/fair-use-mark"
+import {
+  limitCell,
+  limitFeature,
+  planLimit,
+  type Plan,
+} from "@/lib/usage/limits"
 import { cn } from "@/lib/utils"
 import {
   SegmentedControl,
@@ -49,6 +55,8 @@ const priceFmt = new Intl.NumberFormat("tr-TR")
 type Feature = {
   icon: React.ComponentType<{ className?: string }>
   label: string
+  /** Sınırsız limitin yanına adil kullanım işareti (FairUseMark) konur. */
+  unlimited: boolean
 }
 
 const METRIC_ICONS = {
@@ -69,13 +77,19 @@ const featuresFor = (plan: Plan): Feature[] =>
   METRIC_ORDER.map((metric) => ({
     icon: METRIC_ICONS[metric],
     label: limitFeature(plan, metric),
+    unlimited: planLimit(plan, metric) === null,
   }))
 
 export const FREE_FEATURES: Feature[] = featuresFor("free")
 export const PRO_FEATURES: Feature[] = featuresFor("pro")
 
 // Pro kullanıcıya gösterilen Ücretsiz↔Pro karşılaştırma satırları.
-export const PLAN_COMPARISON: { feature: string; free: string; pro: string }[] =
+export const PLAN_COMPARISON: {
+  feature: string
+  free: string
+  pro: string
+  proUnlimited: boolean
+}[] =
   (
     [
       ["Asistan mesajları", "textMessages"],
@@ -87,6 +101,7 @@ export const PLAN_COMPARISON: { feature: string; free: string; pro: string }[] =
     feature,
     free: limitCell("free", metric),
     pro: limitCell("pro", metric),
+    proUnlimited: planLimit("pro", metric) === null,
   }))
 
 // ─── Sıcak gradyan kenar + parıltı sarmalayıcı (Pro vurgusu) ───
@@ -129,7 +144,7 @@ export function BillingToggle({
 }: {
   value: Interval
   onChange: (next: Interval) => void
-  /** "sm": dar alanlar için (ör. ana sayfa tablosunun başlık hücresi). */
+  /** "sm": dar alanlar için. */
   size?: "default" | "sm"
 }) {
   const sm = size === "sm"
@@ -145,12 +160,7 @@ export function BillingToggle({
         <SegmentedControlItem key={iv} value={iv}>
           {iv === "month" ? "Aylık" : "Yıllık"}
           {iv === "year" && (
-            <span
-              className={cn(
-                "rounded-full bg-muted-foreground/10 px-1 py-px leading-none font-medium text-muted-foreground transition-colors group-aria-checked/segment:bg-primary/15 group-aria-checked/segment:text-primary",
-                sm ? "text-[0.5rem]" : "text-[0.625rem]"
-              )}
-            >
+            <span className="rounded-full bg-muted-foreground/10 px-1 py-px text-[0.625rem] leading-none font-medium text-muted-foreground transition-colors group-aria-checked/segment:bg-primary/15 group-aria-checked/segment:text-primary">
               %17
             </span>
           )}
@@ -317,7 +327,7 @@ function ProPrice({ interval }: { interval: Interval }) {
 function FeatureList({ items, muted }: { items: Feature[]; muted?: boolean }) {
   return (
     <ul className="flex flex-col gap-2.5">
-      {items.map(({ icon: Icon, label }) => (
+      {items.map(({ icon: Icon, label, unlimited }) => (
         <li key={label} className="flex items-center gap-2.5 text-sm">
           <Icon
             className={cn(
@@ -327,6 +337,7 @@ function FeatureList({ items, muted }: { items: Feature[]; muted?: boolean }) {
           />
           <span className={muted ? "text-muted-foreground" : "text-foreground"}>
             {label}
+            {unlimited && <FairUseMark newTab />}
           </span>
         </li>
       ))}

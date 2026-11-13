@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import {
   DistanceSalesContent,
   LegalPageShell,
-  LEGAL_PAYMENTS_LAST_UPDATED,
+  LEGAL_DISTANCE_SALES_LAST_UPDATED,
 } from "@/components/legal/legal-content"
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export default function MesafeliSatisPage() {
   return (
     <LegalPageShell
       title="Mesafeli Satış Sözleşmesi"
-      lastUpdated={LEGAL_PAYMENTS_LAST_UPDATED}
+      lastUpdated={LEGAL_DISTANCE_SALES_LAST_UPDATED}
     >
       <DistanceSalesContent />
     </LegalPageShell>

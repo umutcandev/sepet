@@ -1,0 +1,115 @@
+{
+  "basket": {
+    "createdAt": "2026-11-01T10:00:00.000Z",
+    "items": [
+      {
+        "rawName": "süt",
+        "searchQuery": "süt",
+        "quantity": 2,
+        "unit": "l",
+        "matched": true
+      },
+      {
+        "rawName": "tam buğday ekmeği",
+        "searchQuery": "tam buğday ekmek",
+        "quantity": 1,
+        "unit": "adet",
+        "matched": false
+      }
+    ],
+    "twoMarketSavings": 4.5,
+    "summary": {
+      "singleMarket": {
+        "market": "Migros",
+        "total": 70,
+        "itemCount": 1,
+        "missingItemCount": 1,
+        "missingItemNames": ["tam buğday ekmeği"],
+        "isFullCoverage": false,
+        "allocation": [
+          {
+            "market": "Migros",
+            "rawName": "süt",
+            "productId": "P1",
+            "productName": "Süt 1 L",
+            "unitPrice": 35,
+            "quantity": 2,
+            "lineTotal": 70,
+            "sizeMismatch": false,
+            "depotName": null,
+            "imageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg",
+            "itemIndex": 0
+          }
+        ]
+      },
+      "twoMarketCombo": {
+        "markets": ["Migros", "A101"],
+        "total": 65.5,
+        "savingsTL": 4.5,
+        "savingsPct": 6.43,
+        "allocation": [
+          {
+            "market": "A101",
+            "rawName": "süt",
+            "productId": "P2",
+            "productName": "Süt 1 L Yarım Yağlı",
+            "unitPrice": 32.75,
+            "quantity": 2,
+            "lineTotal": 65.5,
+            "sizeMismatch": false,
+            "depotName": null,
+            "imageUrl": null
+          }
+        ]
+      },
+      "currency": "TRY",
+      "totalItems": 2
+    },
+    "itemImages": {
+      "P1": "https://cdn.marketfiyati.org.tr/p1.jpg"
+    }
+  },
+  "receipt": {
+    "createdAt": "2026-11-02T08:30:00.000Z",
+    "marketName": "Migros",
+    "purchaseDate": "2026-10-30T00:00:00.000Z",
+    "totalAmount": 112.4,
+    "bestSingleMarket": "A101",
+    "bestSingleTotal": 98.9,
+    "potentialSavings": 13.5,
+    "items": [
+      {
+        "rawName": "SUT 1LT",
+        "quantity": 1,
+        "unit": "adet",
+        "searchQuery": "süt",
+        "matchedName": "Süt 1 L",
+        "matchedBrand": "Marka",
+        "matchedImageUrl": "https://cdn.marketfiyati.org.tr/p1.jpg",
+        "matchedProductId": "P1",
+        "matched": true,
+        "bestMarket": "A101",
+        "bestPrice": 32.75,
+        "receiptUnitPrice": 35,
+        "savings": 2.25
+      },
+      {
+        "rawName": "POSET",
+        "quantity": 1,
+        "unit": "adet",
+        "searchQuery": null,
+        "matchedName": null,
+        "matchedBrand": null,
+        "matchedImageUrl": null,
+        "matchedProductId": null,
+        "matched": false,
+        "bestMarket": null,
+        "bestPrice": null,
+        "receiptUnitPrice": 0.25,
+        "savings": null
+      }
+    ],
+    "summary": null,
+    "itemImages": {}
+  }
+}

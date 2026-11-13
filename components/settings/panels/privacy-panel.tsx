@@ -33,7 +33,7 @@ export function PrivacyPanel() {
         <SettingRow
           title="Paylaşılan bağlantılar"
           target="paylasilan-baglantilar"
-          description="Herkese açık paylaştığın sohbetleri gör ve kaldır"
+          description="Herkese açık paylaştığın sohbet, sepet ve fişleri gör ve kaldır"
         >
           <SharedLinksDialog />
         </SettingRow>

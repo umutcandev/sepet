@@ -7,10 +7,7 @@ import { formatDateTime } from "@/lib/format"
  * kullanıcının verdiği ad ("İskender sepeti") en alttaki bilgi tablosunda,
  * üstelik sağdan kesik duruyordu. Ad artık sayfanın ilk şeyi.
  *
- * Aksiyonlar (sohbete git, fiyat yenile, sil) tek bir "İşlem Yap" menüsünde
- * toplandığı için `actions` tek ve dar bir hedef — başlığa yer bırakır. Yine de
- * `min-w-[12rem]`: kalan genişlik başlığa yetmezse aksiyon alt satıra iner,
- * başlık kelime ortasından kırılmaz.
+ * `min-w-[12rem]`: kalan genişlik başlığa yetmezse aksiyonlar alt satıra iner.
  */
 export function RecordHeader({
   title,

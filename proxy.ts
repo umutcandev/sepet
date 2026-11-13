@@ -149,10 +149,11 @@ export default async function proxy(req: NextRequest, ev: NextFetchEvent) {
 const TOKEN_PAGE_PATHS = new Set(["/sifre-sifirla", "/dogrula"])
 
 const SHARE_PATH = "/paylasim/"
-const SHARE_IMAGE_PATH = /^\/paylasim\/[^/]+\/gorsel\//
+// Sohbet görseli /paylasim/[token]/gorsel/[n], fiş görseli /paylasim/fis/[token]/gorsel.
+const SHARE_IMAGE_PATH = /^\/paylasim\/(?:fis\/)?[A-Za-z0-9_-]{22}\/gorsel(?:\/|$)/
 
-/* Paylaşılan sohbet sayfası. URL'nin kendisi erişim anahtarı (token), bu
-   yüzden:
+/* Paylaşılan sayfalar (sohbet, sepet, fiş). URL'nin kendisi erişim anahtarı
+   (token), bu yüzden:
    - Referrer-Policy no-referrer: sayfadan dışarı giden bir bağlantı ya da
      istek, Referer başlığında token'ı taşımasın (varsayılan politika aynı
      origin'e tam URL gönderir).

@@ -36,7 +36,7 @@ type ToolPartLike = {
 export function renderToolPart(
   key: string,
   part: ToolPartLike,
-  loadingLabel: string,
+  loadingLabel: React.ReactNode,
   renderResult: (output: unknown) => React.ReactNode,
   suppressLoader = false
 ) {
@@ -60,6 +60,10 @@ export function renderToolPart(
   }
   if (suppressLoader) {
     return null
+  }
+  // Metin değilse çağıran kendi yükleyicisini verdi (bkz. LookupProgressMarker).
+  if (typeof loadingLabel !== "string") {
+    return <React.Fragment key={key}>{loadingLabel}</React.Fragment>
   }
   return (
     <div key={key} className="py-0.5">

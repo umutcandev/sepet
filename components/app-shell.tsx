@@ -21,6 +21,7 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { AssistantHeaderActions } from "@/components/assistant/assistant-header-actions"
 import { ConversationTitleEditor } from "@/components/assistant/conversation-title-editor"
 import { ShareConversationButton } from "@/components/assistant/share-conversation-dialog"
+import { preloadShareIndex } from "@/lib/share/share-index"
 import { HomeHeroBackdrop } from "@/components/home/hero-shader"
 import type { BlogNavItem } from "@/components/blog/blog-posts-group"
 import { Button } from "@/components/ui/button"
@@ -161,7 +162,20 @@ export function AppShell({ blogPosts, children }: Props) {
   // hidrasyonu SessionProvider `/api/me` sonrası bir kez yapar.
   // displayUser: çözümlenmiş kullanıcı, yoksa localStorage snapshot'ı —
   // dönen ziyaretlerde avatar hidrasyonla birlikte anında görünür.
-  const { displayUser, pendingAuth } = useCurrentUser()
+  const { displayUser, pendingAuth, user } = useCurrentUser()
+  const userId = user?.id
+
+  // Paylaşım pencereleri beklemeden açılsın: tarayıcı boşta kalınca bir kez.
+  React.useEffect(() => {
+    if (!userId) return
+    // Safari'de requestIdleCallback yok.
+    if (typeof window.requestIdleCallback === "function") {
+      const handle = window.requestIdleCallback(() => void preloadShareIndex())
+      return () => window.cancelIdleCallback(handle)
+    }
+    const handle = window.setTimeout(() => void preloadShareIndex(), 1500)
+    return () => window.clearTimeout(handle)
+  }, [userId])
   const isAssistantRoute = pathname?.startsWith("/asistan") ?? false
   const isHome = pathname === "/"
   // Mobilde belge mi kayıyor (bkz. DESKTOP_QUERY notu). Rota sunucuda da belli,

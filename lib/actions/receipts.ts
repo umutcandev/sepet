@@ -51,9 +51,12 @@ export type ReceiptListItem = {
   bestSingleMarket: string | null
   bestSingleTotal: string | null
   potentialSavingsTL: string | null
+  /** Paylaşım penceresinde "Fiş görselini gizle" için. */
+  hasImage: boolean
 }
 
 const receiptListColumns = {
+  hasImage: sql<boolean>`${receipts.imageR2Key} is not null`,
   id: receipts.id,
   name: receipts.name,
   marketName: receipts.marketName,

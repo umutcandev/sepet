@@ -94,8 +94,8 @@ export const exportLimiter = new Ratelimit({
 
 // ─── Sohbet paylaşımı ───
 
-// Paylaşım oluşturma/güncelleme/kapatma, hesap başına. Her paylaşım sohbetin
-// tüm mesajlarını okuyup temizlenmiş bir kopyasını yazar; tavan normal
+// Paylaşım oluşturma/güncelleme/kapatma, hesap başına (sohbet, sepet ve fiş
+// ortak). Her paylaşım kaynağı okuyup temizlenmiş bir kopyasını yazar; tavan normal
 // kullanımın çok üstünde, yalnız döngüyle tetiklenen yazmaları keser.
 export const shareActionLimiter = new Ratelimit({
   redis,
@@ -104,17 +104,13 @@ export const shareActionLimiter = new Ratelimit({
   analytics: true,
 })
 
-// Paylaşım penceresinin açılışı (durum okuma), hesap başına. Kopyanın güncel
-// olup olmadığını anlamak için sohbetin tamamını okur; yazma limitinden ayrı
-// ve daha geniş, pencereyi açıp kapatmak hiç takılmasın.
-export const shareReadLimiter = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(60, "1 m"),
-  prefix: "rl:share:read",
-  analytics: true,
-})
+/** Paylaşım uçlarının hesap başı limiti; aşıldıysa true. */
+export async function shareLimited(userId: string): Promise<boolean> {
+  const { success } = await shareActionLimiter.limit(`user:${userId}`)
+  return !success
+}
 
-// Paylaşılan sayfa (/paylasim/[token]), IP başına. Token 128 bit olduğundan
+// Paylaşılan sayfalar (/paylasim/…), IP başına. Token 128 bit olduğundan
 // tahminle bulunamaz; bu tavan DB'yi toplu taramaya karşı korur. Cömert:
 // operatör NAT'ı arkasında çok sayıda telefon aynı IP'yi paylaşıyor.
 export const shareViewLimiter = new Ratelimit({
@@ -124,7 +120,7 @@ export const shareViewLimiter = new Ratelimit({
   analytics: true,
 })
 
-// Paylaşılan sohbetteki görseller (/paylasim/[token]/gorsel/n), IP başına.
+// Paylaşılan sohbet/fiş görselleri (/paylasim/…/gorsel), IP başına.
 // Sayfadan ayrı: bir sayfa 20 görsel çekebilir, sayfa limitini yemesin.
 // Görsel ucu yeniden kodlama yapar (CPU); tavan bunu toplu çağrıya karşı da
 // sınırlar.

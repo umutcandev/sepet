@@ -91,7 +91,7 @@ function DialogContent({
               size="icon-sm"
             >
               <RiCloseLine />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">Kapat</span>
             </Button>
           </DialogPrimitive.Close>
         )}
@@ -130,7 +130,7 @@ function DialogFooter({
       {children}
       {showCloseButton && (
         <DialogPrimitive.Close asChild>
-          <Button variant="outline">Close</Button>
+          <Button variant="outline">Kapat</Button>
         </DialogPrimitive.Close>
       )}
     </div>

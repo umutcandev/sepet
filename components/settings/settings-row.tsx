@@ -16,7 +16,7 @@ export function PanelHeader({
 }) {
   return (
     <header data-search-target={target} className="flex flex-col gap-1.5">
-      <h2 className="cn-font-heading text-lg font-medium sm:text-xl">
+      <h2 className="cn-font-heading text-base font-medium">
         {title}
       </h2>
       {description ? (
@@ -29,13 +29,15 @@ export function PanelHeader({
 // Bir panel içindeki adlandırılmış satır grubu (ör. "Profil", "Görünüm").
 export function SettingGroup({
   title,
+  target,
   children,
 }: {
   title?: string
+  target?: string
   children: React.ReactNode
 }) {
   return (
-    <section className="flex flex-col gap-2">
+    <section data-search-target={target} className="flex flex-col gap-2">
       {title ? (
         <h3 className="text-sm font-medium text-foreground">{title}</h3>
       ) : null}

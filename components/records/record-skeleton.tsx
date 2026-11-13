@@ -122,19 +122,13 @@ function DonutCardSkeleton() {
   )
 }
 
-/**
- * Başlık + tek "İşlem Yapın" menüsü. Geri bağlantısı ve dağınık aksiyon
- * butonları kalktığı için iskelet de tek satır — aksi halde yüklenince sayfa
- * bir satır boyu zıplardı (bkz. dosya başındaki not).
- */
+/** Başlık + aksiyonlar (mobilde ⋯, md+ buton dizisi). */
 function HeaderSkeleton() {
   return (
     <div className="mb-5 space-y-2">
       <div className="flex items-start justify-between gap-4">
-        {/* Başlık satırı h1'in satır yüksekliği kadar (mobilde 28, sm'de
-            32px); "İşlem Yapın" 28px. */}
         <Skeleton className="h-7 w-56 sm:h-8" />
-        <Skeleton className="h-7 w-28 shrink-0" />
+        <Skeleton className="h-7 w-7 shrink-0 md:w-64" />
       </div>
       {/* Tarih satırı 16px (text-xs); çubuk 14px, satır yüksekliği korunur. */}
       <div className="flex h-4 items-center">

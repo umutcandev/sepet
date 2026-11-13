@@ -27,6 +27,7 @@ import {
   ProCard,
   type Interval,
 } from "@/components/subscription/plan-cards"
+import { FairUseMark } from "@/components/subscription/fair-use-mark"
 import { SubscriptionFaq } from "@/components/subscription/subscription-faq"
 import { cn } from "@/lib/utils"
 import { PanelHeader } from "../settings-row"
@@ -270,6 +271,7 @@ function ProState({ sub }: { sub: SubscriptionInfo }) {
                   </td>
                   <td className="border-t border-border bg-primary/[0.07] px-4 py-1.5 text-center font-medium text-foreground tabular-nums">
                     {row.pro}
+                    {row.proUnlimited && <FairUseMark newTab />}
                   </td>
                 </tr>
               ))}

@@ -52,9 +52,12 @@ export type RecordItemView = {
 export function RecordItemList({
   items,
   emptyHint = "Bu kayıtta kalem yok.",
+  readOnly = false,
 }: {
   items: RecordItemView[]
   emptyHint?: string
+  /** Paylaşılan sayfa: ürün paneli ve arama bağlantısı oturum ister, gösterilmez. */
+  readOnly?: boolean
 }) {
   const [openProductId, setOpenProductId] = React.useState<string | null>(null)
 
@@ -70,7 +73,11 @@ export function RecordItemList({
     <>
       <ul className="divide-y">
         {items.map((it) => (
-          <RecordItemRow key={it.id} item={it} onOpen={setOpenProductId} />
+          <RecordItemRow
+            key={it.id}
+            item={it}
+            onOpen={readOnly ? null : setOpenProductId}
+          />
         ))}
       </ul>
 
@@ -93,7 +100,7 @@ function RecordItemRow({
   onOpen,
 }: {
   item: RecordItemView
-  onOpen: (productId: string) => void
+  onOpen: ((productId: string) => void) | null
 }) {
   const qtyLabel = `${formatQuantity(item.quantity)} ${item.unit}`
   const secondary = [item.matchedBrand, item.matchedName]
@@ -106,7 +113,7 @@ function RecordItemRow({
 
       <div className="min-w-0 flex-1 space-y-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          {item.matchedProductId ? (
+          {item.matchedProductId && onOpen ? (
             // Kalem adı artık canlı ürün panelini açıyor: fotoğraf, marka,
             // kategori, TÜM market fiyatları, şube bilgisi ve fiyat kademesi.
             // Panel donmuş snapshot'ı değil bugünkü fiyatı gösterir.
@@ -145,7 +152,7 @@ function RecordItemRow({
             <span className="text-amber-600 dark:text-amber-400">
               Eşleşme bulunamadı
             </span>
-            {item.searchQuery && (
+            {item.searchQuery && onOpen && (
               <Link
                 href={`/urun-ara?q=${encodeURIComponent(item.searchQuery)}`}
                 className="inline-flex items-center gap-1 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"

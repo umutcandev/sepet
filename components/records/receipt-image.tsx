@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { RiArrowDownSLine, RiFullscreenLine } from "@remixicon/react"
+import {
+  RiArrowDownSLine,
+  RiFullscreenLine,
+  RiImageLine,
+} from "@remixicon/react"
 
 import {
   Dialog,
@@ -11,7 +15,27 @@ import {
 } from "@/components/ui/dialog"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
 import { cn } from "@/lib/utils"
+
+/** Paylaşılan fişte görsel gizliyken görselin yeri. */
+export function ReceiptImageOmitted() {
+  return (
+    <Card>
+      <div className="flex min-h-12 items-center border-b px-4 py-2 text-sm font-medium">
+        Fiş Görseli
+      </div>
+      <div className="p-3">
+        <Marker>
+          <MarkerIcon>
+            <RiImageLine />
+          </MarkerIcon>
+          <MarkerContent>Fiş görseli gizlilik için paylaşılmadı</MarkerContent>
+        </Marker>
+      </div>
+    </Card>
+  )
+}
 
 /**
  * Fiş görseli.

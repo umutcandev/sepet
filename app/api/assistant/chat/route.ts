@@ -25,6 +25,7 @@ import {
   analyzeImage,
   lookupProducts,
   suggestQueries,
+  type LookupProgress,
 } from "@/lib/ai/tools"
 import { packageSizeOf } from "@/lib/ai/effective-cost"
 import {
@@ -938,6 +939,7 @@ async function runAssistantTurn({
       aiOpts,
       undefined,
       userId,
+      lookupProgress(writer, lookupCallId),
     )
     if (signal?.aborted) return STOPPED_TURN
 
@@ -1002,6 +1004,7 @@ async function runAssistantTurn({
       aiOpts,
       carried,
       userId,
+      lookupProgress(writer, lookupCallId),
     )
     if (signal?.aborted) return STOPPED_TURN // bkz. fiş onayındaki aynı kontrol
 
@@ -1086,6 +1089,15 @@ const REASONING_STREAM_BUDGET_MS = 1200
 function perStepDelay(gaps: number, baseMs: number, budgetMs: number): number {
   if (gaps <= 0) return 0
   return Math.min(baseMs, Math.floor(budgetMs / gaps))
+}
+
+// Geçici ilerleme olayı; akış kapanmışsa yazma hatası aramayı düşürmesin.
+function lookupProgress(writer: WriterLike, id: string) {
+  return (p: LookupProgress) => {
+    try {
+      writer.write(dataPart("lookup-progress", { id, ...p }))
+    } catch {}
+  }
 }
 
 async function emitText(writer: WriterLike, text: string) {
