@@ -79,7 +79,7 @@ export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
     <div className="flex flex-col gap-8">
       <header data-search-target="limits" className="flex flex-col gap-1.5">
         <div className="flex items-center gap-2.5">
-          <h2 className="cn-font-heading text-lg font-medium text-balance sm:text-xl">
+          <h2 className="cn-font-heading text-base font-medium text-balance">
             Kullanım Limitleri
           </h2>
           {/* Plan rozeti veri gelene kadar skeleton; aksi halde yüklenirken

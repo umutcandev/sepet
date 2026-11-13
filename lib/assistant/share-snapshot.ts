@@ -147,7 +147,7 @@ function isSharedToolType(type: string): type is SharedToolType {
 
 // ─── Konum izi bırakan alanlar ───
 
-function stripSummary(summary: OptimizationSummary): OptimizationSummary {
+export function stripSummary(summary: OptimizationSummary): OptimizationSummary {
   return {
     ...summary,
     singleMarket: {
@@ -280,9 +280,16 @@ function isImageRef(value: unknown): value is number {
   )
 }
 
+/** Keser ama vekil çiftini bölmez: yarım emoji jsonb'ye yazılamaz. */
+export function clipText(value: string, max: number, ellipsis = "…"): string {
+  if (value.length <= max) return value
+  const end = /[\uD800-\uDBFF]/.test(value.charAt(max - 1)) ? max - 1 : max
+  return value.slice(0, end) + ellipsis
+}
+
 function asText(value: unknown, max: number): string | null {
   if (typeof value !== "string") return null
-  const text = value.length > max ? value.slice(0, max) + "…" : value
+  const text = clipText(value, max)
   return text.trim() ? text : null
 }
 
@@ -461,7 +468,10 @@ export function sanitizeMessagesForShare(
   return out
 }
 
-export function sanitizeShareTitle(title: string): string {
-  const trimmed = title.trim().replace(/\s+/g, " ").slice(0, TITLE_MAX)
-  return trimmed || "Paylaşılan sohbet"
+export function sanitizeShareTitle(
+  title: string,
+  fallback = "Paylaşılan sohbet"
+): string {
+  const trimmed = clipText(title.trim().replace(/\s+/g, " "), TITLE_MAX, "")
+  return trimmed || fallback
 }

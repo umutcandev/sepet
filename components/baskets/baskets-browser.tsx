@@ -37,6 +37,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { MarketCell } from "@/components/market-cell"
 import { RecordListCard } from "@/components/records/record-list-card"
 import { RecordRowActions } from "@/components/records/record-row-actions"
+import { ShareRecordDialog } from "@/components/records/share-record-dialog"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   BASKET_SORTS,
@@ -97,6 +98,11 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
     React.useState<BasketListItem | null>(null)
   const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState(false)
   const [deletePending, setDeletePending] = React.useState(false)
+  // Paylaş: kapanış animasyonu boyunca hedef yerinde kalsın diye açıklık ayrı.
+  const [shareTarget, setShareTarget] = React.useState<BasketListItem | null>(
+    null
+  )
+  const [shareOpen, setShareOpen] = React.useState(false)
 
   const displayed = searchResults ?? items
   const isSearchActive = debouncedQuery.trim().length > 0
@@ -535,6 +541,10 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
                         <RecordRowActions
                           label="Sepet eylemleri"
                           onSelect={() => enterSelect(b.id)}
+                          onShare={() => {
+                            setShareTarget(b)
+                            setShareOpen(true)
+                          }}
                           onDelete={() => setSingleDeleteTarget(b)}
                         />
                       }
@@ -554,6 +564,16 @@ export function BasketsBrowser({ initial, initialHasMore }: Props) {
           )}
         </>
       )}
+
+      {shareTarget ? (
+        <ShareRecordDialog
+          open={shareOpen}
+          onOpenChange={setShareOpen}
+          kind="basket"
+          recordId={shareTarget.id}
+          title={shareTarget.name}
+        />
+      ) : null}
 
       {/* Tekil silme onayı */}
       <AlertDialog

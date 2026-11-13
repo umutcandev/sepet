@@ -1,6 +1,11 @@
 "use client"
 
-import { RiCheckboxLine, RiDeleteBinLine, RiMoreLine } from "@remixicon/react"
+import {
+  RiCheckboxLine,
+  RiDeleteBinLine,
+  RiMoreLine,
+  RiShareBoxLine,
+} from "@remixicon/react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -26,10 +31,12 @@ import {
 export function RecordRowActions({
   label,
   onSelect,
+  onShare,
   onDelete,
 }: {
   label: string
   onSelect: () => void
+  onShare: () => void
   onDelete: () => void
 }) {
   return (
@@ -54,6 +61,10 @@ export function RecordRowActions({
         >
           <RiCheckboxLine className="size-4" />
           Seç
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={onShare}>
+          <RiShareBoxLine className="size-4" />
+          Paylaş
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

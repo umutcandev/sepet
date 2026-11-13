@@ -1,52 +1,28 @@
 "use server"
 
-import { and, desc, eq, sql } from "drizzle-orm"
+import { and, eq, sql } from "drizzle-orm"
 import { z } from "zod"
 
 import { auth } from "@/auth"
-import { db, conversationShares, users } from "@/lib/db"
+import { db, conversationShares } from "@/lib/db"
 import {
   buildShareSnapshot,
   generateShareToken,
-  shareAuthorName,
+  shareAuthorNameFor,
 } from "@/lib/data/conversation-shares"
-import { shareActionLimiter, shareReadLimiter } from "@/lib/security/rate-limit"
+import { shareLimited as limited } from "@/lib/security/rate-limit"
 import { isUuid } from "@/lib/utils"
 import { logError } from "@/lib/ai/telemetry"
+import type {
+  ShareInfo,
+  ShareResult as Result,
+  ShareStatus,
+} from "@/lib/share/types"
 
 // Paylaşım uçları. Kimlik yalnızca oturumdan gelir; her sorgu `userId` ile
 // kapsanır, yani başkasının sohbeti ne paylaşılabilir ne de paylaşımı
 // görülebilir/kapatılabilir. Sahiplik hatası "not_found" döner (var olup
 // olmadığı sızmasın).
-
-export type ConversationShareInfo = {
-  token: string
-  anonymous: boolean
-  /** Görseller paylaşılan sayfada gizli mi. */
-  hideImages: boolean
-  /** Kopyanın alındığı an (ISO). */
-  sharedAt: string
-  /** Sohbet kopyadan sonra değişti mi (yeni mesaj, yeniden adlandırma, ürün değiştirme). */
-  stale: boolean
-}
-
-export type ConversationShareState = {
-  /** Anonim olmayan paylaşımda sayfada görünecek ad (pencere önizler). */
-  authorName: string | null
-  /** Sohbette paylaşılabilecek görsel var mı ("Resimleri gizle" yalnız o zaman). */
-  hasImages: boolean
-  share: ConversationShareInfo | null
-}
-
-export type ShareActionError =
-  | "unauthorized"
-  | "not_found"
-  | "empty"
-  | "too_large"
-  | "rate_limited"
-  | "failed"
-
-type Result<T> = ({ ok: true } & T) | { ok: false; error: ShareActionError }
 
 const shareInputSchema = z.object({
   conversationId: z.string().refine(isUuid),
@@ -59,34 +35,21 @@ const hideImagesInputSchema = z.object({
   hideImages: z.boolean(),
 })
 
-async function authorNameFor(userId: string): Promise<string | null> {
-  const [row] = await db
-    .select({ name: users.name })
-    .from(users)
-    .where(eq(users.id, userId))
-    .limit(1)
-  return shareAuthorName(row?.name)
+function ownedShare(conversationId: string, userId: string) {
+  return and(
+    eq(conversationShares.conversationId, conversationId),
+    eq(conversationShares.userId, userId)
+  )
 }
 
-async function limited(
-  userId: string,
-  limiter = shareActionLimiter
-): Promise<boolean> {
-  const { success } = await limiter.limit(`user:${userId}`)
-  return !success
-}
-
-/** Paylaşım penceresinin açılışı: sohbet paylaşılmış mı, kopya güncel mi. */
-export async function getConversationShareState(
+/** Pencerenin arkadan tazelenmesi: paylaşım satırı ve ad; limitsiz, iki nokta sorgu. */
+export async function getConversationShareStatus(
   conversationId: string
-): Promise<Result<{ state: ConversationShareState }>> {
+): Promise<Result<{ status: ShareStatus }>> {
   const session = await auth()
   const userId = session?.user?.id
   if (!userId) return { ok: false, error: "unauthorized" }
   if (!isUuid(conversationId)) return { ok: false, error: "not_found" }
-  if (await limited(userId, shareReadLimiter)) {
-    return { ok: false, error: "rate_limited" }
-  }
 
   const [[share], authorName] = await Promise.all([
     db
@@ -94,58 +57,20 @@ export async function getConversationShareState(
         token: conversationShares.token,
         anonymous: conversationShares.anonymous,
         hideImages: conversationShares.hideImages,
-        images: conversationShares.images,
-        updatedAt: conversationShares.updatedAt,
-        contentHash: conversationShares.contentHash,
       })
       .from(conversationShares)
-      .where(
-        and(
-          eq(conversationShares.conversationId, conversationId),
-          eq(conversationShares.userId, userId)
-        )
-      )
+      .where(ownedShare(conversationId, userId))
       .limit(1),
-    authorNameFor(userId),
+    shareAuthorNameFor(userId),
   ])
-
-  // Sohbetin şimdiki hâli: bu kullanıcının mı (değilse pencere "paylaş"
-  // sunmasın), görsel var mı, paylaşılmışsa kopya güncel mi.
-  const current = await buildShareSnapshot(conversationId, userId)
-  if (!current.ok && current.error === "not_found") {
-    return { ok: false, error: "not_found" }
-  }
-  const hasImages = current.ok && current.snapshot.images.length > 0
-
-  if (!share) {
-    return { ok: true, state: { authorName, hasImages, share: null } }
-  }
-
-  return {
-    ok: true,
-    state: {
-      authorName,
-      hasImages,
-      share: {
-        token: share.token,
-        anonymous: share.anonymous,
-        hideImages: share.hideImages,
-        sharedAt: share.updatedAt.toISOString(),
-        // Görsel numaraları gelmeden önce alınmış kopyada görsel listesi boş;
-        // sohbet değişmemiş olsa da güncellenmeden görseller gösterilemez.
-        stale:
-          current.ok &&
-          (current.snapshot.contentHash !== share.contentHash ||
-            (hasImages && share.images.length === 0)),
-      },
-    },
-  }
+  return { ok: true, status: { authorName, share: share ?? null } }
 }
 
 /**
  * Sohbeti "bağlantıya sahip herkes" ile paylaşır ya da var olan paylaşımın
  * kopyasını şimdiki hâliyle günceller. Var olan paylaşımda token değişmez:
- * daha önce gönderilen bağlantı yeni kopyayı gösterir.
+ * daha önce gönderilen bağlantı yeni kopyayı gösterir. Bağlantı her
+ * kopyalanışında çağrılır; içerik aynıysa tarih ilerlemez.
  */
 export async function shareConversation(input: {
   conversationId: string
@@ -153,7 +78,7 @@ export async function shareConversation(input: {
   hideImages?: boolean
 }): Promise<
   Result<{
-    state: ConversationShareState
+    share: ShareInfo
     /** Yeni bağlantı mı üretildi (yoksa var olanın kopyası mı güncellendi). */
     created: boolean
   }>
@@ -199,7 +124,7 @@ export async function shareConversation(input: {
           anonymous,
           images,
           hideImages: storedHideImages,
-          updatedAt: now,
+          updatedAt: sql`CASE WHEN ${conversationShares.contentHash} = excluded."contentHash" THEN ${conversationShares.updatedAt} ELSE excluded."updatedAt" END`,
         },
         // Savunma: sohbet bu kullanıcının olduğu için paylaşımı da onundur;
         // yine de başkasının satırı asla ezilmesin.
@@ -209,7 +134,6 @@ export async function shareConversation(input: {
         token: conversationShares.token,
         anonymous: conversationShares.anonymous,
         hideImages: conversationShares.hideImages,
-        updatedAt: conversationShares.updatedAt,
         // Postgres: INSERT edilen satırda xmax 0, ON CONFLICT ile
         // güncellenende değil. Pencere açıkken bağlantı başka yerden
         // (Ayarlar, başka sekme) kaldırıldıysa "güncellendi" demek yanlış olur.
@@ -217,21 +141,8 @@ export async function shareConversation(input: {
       })
     if (!row) return { ok: false, error: "not_found" }
 
-    return {
-      ok: true,
-      created: row.created,
-      state: {
-        authorName: await authorNameFor(userId),
-        hasImages: images.length > 0,
-        share: {
-          token: row.token,
-          anonymous: row.anonymous,
-          hideImages: row.hideImages,
-          sharedAt: row.updatedAt.toISOString(),
-          stale: false,
-        },
-      },
-    }
+    const { created, ...share } = row
+    return { ok: true, created, share }
   } catch (err) {
     // Kopya alınırken sohbet silindiyse FK ihlali; ya da geçici DB hatası.
     logError("[shareConversation] failed", err)
@@ -325,55 +236,4 @@ export async function unshareConversation(
     )
   // Zaten paylaşılmamışsa da sonuç aynı: bağlantı yok.
   return { ok: true }
-}
-
-export type SharedLinkItem = {
-  conversationId: string
-  title: string
-  token: string
-  anonymous: boolean
-  sharedAt: string
-}
-
-/** Ayarlar → Paylaşılan bağlantılar. */
-export async function listConversationShares(): Promise<SharedLinkItem[]> {
-  const session = await auth()
-  const userId = session?.user?.id
-  if (!userId) return []
-
-  const rows = await db
-    .select({
-      conversationId: conversationShares.conversationId,
-      title: conversationShares.title,
-      token: conversationShares.token,
-      anonymous: conversationShares.anonymous,
-      updatedAt: conversationShares.updatedAt,
-    })
-    .from(conversationShares)
-    .where(eq(conversationShares.userId, userId))
-    .orderBy(desc(conversationShares.updatedAt))
-    .limit(200)
-
-  return rows.map((r) => ({
-    conversationId: r.conversationId,
-    title: r.title,
-    token: r.token,
-    anonymous: r.anonymous,
-    sharedAt: r.updatedAt.toISOString(),
-  }))
-}
-
-/** Tüm paylaşımları kapatır. Silinen bağlantı sayısını döner. */
-export async function unshareAllConversations(): Promise<
-  Result<{ deleted: number }>
-> {
-  const session = await auth()
-  const userId = session?.user?.id
-  if (!userId) return { ok: false, error: "unauthorized" }
-
-  const rows = await db
-    .delete(conversationShares)
-    .where(eq(conversationShares.userId, userId))
-    .returning({ id: conversationShares.id })
-  return { ok: true, deleted: rows.length }
 }

@@ -1,4 +1,4 @@
-import { asc, eq, inArray } from "drizzle-orm"
+import { and, asc, eq, inArray } from "drizzle-orm"
 import { Zip, ZipDeflate, ZipPassThrough, strToU8 } from "fflate"
 
 import {
@@ -15,7 +15,10 @@ import {
   conversations,
   conversationMessages,
   conversationShares,
+  recordShares,
 } from "@/lib/db"
+import type { RecordShareKind } from "@/lib/records/record-data"
+import { sharePath } from "@/lib/share/paths"
 import { absoluteUrl } from "@/lib/site"
 import { getObjectBytes } from "@/lib/storage/r2"
 import { EXPORT_CATEGORIES, type ExportCategory } from "./categories"
@@ -224,11 +227,13 @@ export function buildUserExportStream(
               .where(inArray(basketItems.basketId, ids))
           : []
         const itemsByBasket = groupBy(itemRows, (it) => it.basketId)
+        const shares = await recordSharesFor(userId, "basket")
 
         addJson(
           `${ROOT}/sepetler.json`,
           basketRows.map((b) => ({
             ...b,
+            paylasim: shares.get(b.id) ?? null,
             urunler: itemsByBasket.get(b.id) ?? [],
           })),
         )
@@ -288,11 +293,13 @@ export function buildUserExportStream(
           }
         }
 
+        const shares = await recordSharesFor(userId, "receipt")
         addJson(
           `${ROOT}/fisler.json`,
           receiptRows.map(({ imageR2Key: _omit, ...r }) => ({
             ...r,
             gorselDosyasi: imagePathById.get(r.id) ?? null,
+            paylasim: shares.get(r.id) ?? null,
             urunler: itemsByReceipt.get(r.id) ?? [],
           })),
         )
@@ -382,6 +389,34 @@ export function buildUserExportStream(
   }
 
   return { stream, filename }
+}
+
+/** Sepet/fiş paylaşımları: bağlantı ve ayarları (kopya kaydın kendisinden türer). */
+async function recordSharesFor(userId: string, kind: RecordShareKind) {
+  const rows = await db
+    .select({
+      basketId: recordShares.basketId,
+      receiptId: recordShares.receiptId,
+      token: recordShares.token,
+      anonymous: recordShares.anonymous,
+      hideImages: recordShares.hideImages,
+      createdAt: recordShares.createdAt,
+      updatedAt: recordShares.updatedAt,
+    })
+    .from(recordShares)
+    .where(and(eq(recordShares.userId, userId), eq(recordShares.kind, kind)))
+  return new Map(
+    rows.map((r) => [
+      kind === "basket" ? r.basketId : r.receiptId,
+      {
+        baglanti: absoluteUrl(sharePath(kind, r.token)),
+        anonim: r.anonymous,
+        ...(kind === "receipt" ? { gorselGizli: r.hideImages } : {}),
+        olusturulma: r.createdAt,
+        sonGuncelleme: r.updatedAt,
+      },
+    ]),
+  )
 }
 
 function groupBy<T, K>(rows: T[], key: (row: T) => K): Map<K, T[]> {

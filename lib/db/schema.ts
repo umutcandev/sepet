@@ -11,11 +11,17 @@ import {
   primaryKey,
   uniqueIndex,
   index,
+  check,
 } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm"
 import type { AdapterAccountType } from "next-auth/adapters"
 import type { ConversationStatus } from "@/lib/assistant/conversation-status"
 import type { MatchResult, OptimizationSummary } from "@/lib/ai/schemas"
 import type { SharedMessage } from "@/lib/assistant/share-types"
+import type {
+  RecordShareKind,
+  SharedRecordSnapshot,
+} from "@/lib/records/record-data"
 
 export const users = pgTable("user", {
   id: text("id")
@@ -651,6 +657,48 @@ export const conversationShares = pgTable(
     uniqueIndex("conversation_share_token_idx").on(t.token),
     uniqueIndex("conversation_share_conversation_idx").on(t.conversationId),
     index("conversation_share_user_idx").on(t.userId, t.updatedAt.desc()),
+  ],
+)
+
+// ─── Paylaşılan sepet ve fişler (anlık görüntü) ───
+// conversation_share ile aynı kurallar. `imageKey` (fiş görseli) yalnız sunucuda.
+export const recordShares = pgTable(
+  "record_share",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    token: text("token").notNull(),
+    kind: text("kind").$type<RecordShareKind>().notNull(),
+    basketId: uuid("basketId").references(() => baskets.id, {
+      onDelete: "cascade",
+    }),
+    receiptId: uuid("receiptId").references(() => receipts.id, {
+      onDelete: "cascade",
+    }),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    snapshot: jsonb("snapshot").$type<SharedRecordSnapshot>().notNull(),
+    contentHash: text("contentHash").notNull(),
+    anonymous: boolean("anonymous").notNull().default(false),
+    imageKey: text("imageKey"),
+    hideImages: boolean("hideImages").notNull().default(true),
+    createdAt: timestamp("createdAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updatedAt", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("record_share_token_idx").on(t.token),
+    uniqueIndex("record_share_basket_idx").on(t.basketId),
+    uniqueIndex("record_share_receipt_idx").on(t.receiptId),
+    index("record_share_user_idx").on(t.userId, t.updatedAt.desc()),
+    check(
+      "record_share_target_check",
+      sql`(${t.kind} = 'basket' AND ${t.basketId} IS NOT NULL AND ${t.receiptId} IS NULL) OR (${t.kind} = 'receipt' AND ${t.receiptId} IS NOT NULL AND ${t.basketId} IS NULL)`,
+    ),
   ],
 )
 

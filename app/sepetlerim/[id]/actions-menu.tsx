@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { useRouter } from "next/navigation"
 import { RiQuestionAnswerLine, RiRefreshLine } from "@remixicon/react"
 
@@ -8,24 +9,31 @@ import {
   RecordActionsMenu,
   type RecordActionLink,
 } from "@/components/records/record-actions-menu"
+import { ShareRecordDialog } from "@/components/records/share-record-dialog"
 import { deleteBasket } from "@/lib/actions/baskets"
+import type { ShareStatus } from "@/lib/share/types"
 
 export function BasketActionsMenu({
   id,
+  title,
   conversation,
   refreshHref,
   freshnessLabel,
   isStale,
+  shareStatus,
 }: {
   id: string
+  title: string
   conversation: { id: string; title: string } | null
   /** Aynı kalemlerle asistanda yeniden hesaplatma adresi; kalem yoksa null. */
   refreshHref: string | null
   /** "bugün" · "7 gün önce" — priceFreshness().ageLabel */
   freshnessLabel: string | null
   isStale: boolean
+  shareStatus: ShareStatus
 }) {
   const router = useRouter()
+  const [shareOpen, setShareOpen] = React.useState(false)
 
   const links: RecordActionLink[] = []
   if (refreshHref) {
@@ -50,24 +58,35 @@ export function BasketActionsMenu({
   }
 
   return (
-    <RecordActionsMenu
-      links={links}
-      deleteLabel="Sepeti sil"
-      deleteTitle="Sepeti silmek istediğine emin misin?"
-      deleteDescription="Sepet ve içindeki kalemler kalıcı olarak silinecek. Bu işlem geri alınamaz."
-      onDelete={async () => {
-        try {
-          await deleteBasket(id)
-          toast.success("Sepet silindi.")
-          router.push("/sepetlerim")
-          router.refresh()
-          return true
-        } catch (err) {
-          console.error("[BasketActionsMenu] delete failed", err)
-          toast.error("Sepet silinemedi.")
-          return false
-        }
-      }}
-    />
+    <>
+      <RecordActionsMenu
+        links={links}
+        onShare={() => setShareOpen(true)}
+        deleteLabel="Sepeti sil"
+        deleteTitle="Sepeti silmek istediğine emin misin?"
+        deleteDescription="Sepet ve içindeki kalemler kalıcı olarak silinecek. Bu işlem geri alınamaz."
+        onDelete={async () => {
+          try {
+            await deleteBasket(id)
+            toast.success("Sepet silindi.")
+            router.push("/sepetlerim")
+            router.refresh()
+            return true
+          } catch (err) {
+            console.error("[BasketActionsMenu] delete failed", err)
+            toast.error("Sepet silinemedi.")
+            return false
+          }
+        }}
+      />
+      <ShareRecordDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        kind="basket"
+        recordId={id}
+        title={title}
+        initialStatus={shareStatus}
+      />
+    </>
   )
 }
