@@ -63,6 +63,7 @@ import {
   orderAssistantParts,
   renderToolPart,
 } from "./message-parts"
+import { LookupProgressMarker, setLookupProgress } from "./lookup-progress"
 import { Marker, MarkerContent } from "@/components/ui/marker"
 import {
   STOPPED_PART_TYPE,
@@ -169,6 +170,10 @@ export function AssistantChat({
     // Akan chunk'ları 50ms'de bir topla; her chunk tüm sohbeti çizmesin.
     experimental_throttle: 50,
     onData: (dataPart) => {
+      if (dataPart.type === "data-lookup-progress") {
+        setLookupProgress(dataPart.data as Parameters<typeof setLookupProgress>[0])
+        return
+      }
       if (
         dataPart.type === "data-conversation-id" &&
         dataPart.data &&
@@ -779,7 +784,11 @@ export function AssistantChat({
                           return renderToolPart(
                             key,
                             part,
-                            "Ürünleri aratıyorum…",
+                            <LookupProgressMarker
+                              toolCallId={
+                                (part as { toolCallId?: string }).toolCallId
+                              }
+                            />,
                             (out) =>
                               hasReceiptComparison ? null : (
                                 <UnmatchedProductList
