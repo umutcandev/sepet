@@ -154,7 +154,7 @@ export function ReceiptComparisonCard({
                 sourceToolCallId: toolCallId,
               })
             }
-            limitMessage="Fiş kaydetme limitin doldu. Eski bir fişi sil ya da Pro'ya geç."
+            limitMessage="Fiş kaydetme limitin doldu. Yer açmak için eski bir fişi sil."
             successMessage="Fişlerime kaydedildi."
             errorMessage="Fiş kaydedilemedi. Lütfen tekrar dene."
           />

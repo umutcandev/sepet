@@ -4,16 +4,35 @@ const scriptSrc = isDev
   ? "'self' 'unsafe-inline' 'unsafe-eval'"
   : "'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval'"
 
+// Fiş/avatar görsellerinin origin'i env'den gelir; adres değişince CSP kendiliğinden uyar.
+function storageOrigin(): string | null {
+  try {
+    return new URL(process.env.R2_PUBLIC_BASE_URL ?? "").origin
+  } catch {
+    return null
+  }
+}
+
+const imgSrc = [
+  "'self' data: blob:",
+  "https://lh3.googleusercontent.com",
+  // Facebook profil fotoğrafı CDN'leri.
+  "https://platform-lookaside.fbsbx.com https://*.fbcdn.net",
+  "https://cdn.marketfiyati.org.tr",
+  // Blog görselleri MDX'te doğrudan bu adresle geçer.
+  "https://cdn.trysepet.com",
+  storageOrigin(),
+  // Leaflet OSM raster döşemeleri.
+  "https://*.tile.openstreetmap.org",
+]
+
 const CSP = [
   "default-src 'self'",
   `script-src ${scriptSrc}`,
   "style-src 'self' 'unsafe-inline'",
-  // *.tile.openstreetmap.org: Leaflet OSM raster döşemeleri (<img> olarak yüklenir).
-  // platform-lookaside.fbsbx.com + *.fbcdn.net: Facebook profil fotoğrafı CDN'leri.
-  "img-src 'self' data: blob: https://lh3.googleusercontent.com https://platform-lookaside.fbsbx.com https://*.fbcdn.net https://cdn.marketfiyati.org.tr https://cdn.trysepet.com https://pub-35b1290eb3ac4f07b50824e8f7d12f48.r2.dev https://*.tile.openstreetmap.org",
+  `img-src ${[...new Set(imgSrc.filter(Boolean))].join(" ")}`,
   "font-src 'self' data:",
-  // nominatim.openstreetmap.org: pin oturunca reverse geocode (ücretsiz, anahtarsız).
-  "connect-src 'self' https://accounts.google.com https://*.upstash.io https://nominatim.openstreetmap.org",
+  "connect-src 'self' https://accounts.google.com https://*.upstash.io",
   // platform.twitter.com: blogdaki X gönderisi iframe'i (components/blog/mdx-x-post.tsx).
   "frame-src https://accounts.google.com https://platform.twitter.com",
   "frame-ancestors 'none'",

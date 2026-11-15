@@ -128,8 +128,12 @@ function PlainCorners({
 }) {
   const own = { ...rest, style: { borderRadius: `${radius}px`, ...style } }
   const element = asChild ? <Slot {...own} /> : <Tag {...own} />
+  // {null}: Lisse'in [gölge, eleman] çocuk dizisini taklit eder; useId ağaç yolu aynı kalır.
   return effects ? (
-    <div style={{ position: "relative" }}>{element}</div>
+    <div style={{ position: "relative" }}>
+      {null}
+      {element}
+    </div>
   ) : (
     element
   )

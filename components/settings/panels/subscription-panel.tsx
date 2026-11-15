@@ -27,7 +27,9 @@ import {
   ProCard,
   type Interval,
 } from "@/components/subscription/plan-cards"
+import { ClosedProButton } from "@/components/subscription/closed-pro-button"
 import { FairUseMark } from "@/components/subscription/fair-use-mark"
+import { SUBSCRIPTIONS_OPEN } from "@/lib/billing"
 import { SubscriptionFaq } from "@/components/subscription/subscription-faq"
 import { cn } from "@/lib/utils"
 import { PanelHeader } from "../settings-row"
@@ -308,12 +310,19 @@ function UpgradeState() {
           interval={interval}
           badge={<Badge variant="default">Önerilen</Badge>}
           action={
-            <Button variant="default" asChild size="default" className="w-full">
-              <a href={`/api/checkout?interval=${interval}`}>
+            SUBSCRIPTIONS_OPEN ? (
+              <Button variant="default" asChild size="default" className="w-full">
+                <a href={`/api/checkout?interval=${interval}`}>
+                  Pro&apos;ya Geç
+                  <RiArrowRightLine data-icon="inline-end" />
+                </a>
+              </Button>
+            ) : (
+              <ClosedProButton className="w-full">
                 Pro&apos;ya Geç
                 <RiArrowRightLine data-icon="inline-end" />
-              </a>
-            </Button>
+              </ClosedProButton>
+            )
           }
         />
       </div>

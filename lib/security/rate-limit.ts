@@ -25,6 +25,14 @@ export const locationLimiter = new Ratelimit({
   analytics: true,
 })
 
+// Nominatim kamu sunucusu uygulama başına saniyede en fazla 1 istek ister;
+// tüm kullanıcılar tek anahtarı paylaşır.
+export const nominatimLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.fixedWindow(1, "1 s"),
+  prefix: "rl:nominatim",
+})
+
 export const receiptUploadLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(20, "1 m"),

@@ -3,7 +3,6 @@ import {
   RiBankCardLine,
   RiBarChartLine,
   RiComputerLine,
-  RiCookieLine,
   RiDeleteBinLine,
   RiDownloadLine,
   RiEqualizerLine,
@@ -159,12 +158,6 @@ const GIZLILIK_SETTINGS: SettingEntry[] = [
     title: "Tüm fişleri sil",
     keywords: "fis fatura makbuz sil temizle toplu gorsel",
     icon: RiDeleteBinLine,
-  },
-  {
-    target: "analiz-cerezleri",
-    title: "Analiz çerezleri",
-    keywords: "cerez analiz analytics gizlilik izleme takip opt out",
-    icon: RiCookieLine,
   },
   {
     target: "gizlilik-politikasi",

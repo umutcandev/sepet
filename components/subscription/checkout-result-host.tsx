@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { toast } from "@/components/ui/sonner"
+import { SUBSCRIPTIONS_CLOSED_MESSAGE } from "@/lib/billing"
 
 // Polar checkout dönüşünü karşılar: successUrl `/?abonelik=basarili` (hata
 // durumunda `/?abonelik=hata`) ile döner. Bir kez toast gösterip query param'ı
@@ -38,6 +39,8 @@ function showResult(result: string) {
     toast.error("Ödeme tamamlanamadı", {
       description: "Bir şeyler ters gitti. Lütfen tekrar dene.",
     })
+  } else if (result === "kapali") {
+    toast.info(SUBSCRIPTIONS_CLOSED_MESSAGE)
   } else if (result === "portal-yok") {
     toast.info("Yönetilecek abonelik bulunamadı", {
       description: "Henüz Polar üzerinden alınmış bir aboneliğin yok.",

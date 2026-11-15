@@ -6,6 +6,7 @@ import { z } from "zod"
 import { auth, signOut } from "@/auth"
 import { db, users, userSessions } from "@/lib/db"
 import { hasSudo } from "@/lib/auth/sudo"
+import { cancelSubscriptionsAtPeriodEnd } from "@/lib/polar/account"
 import { deleteAvatarByUrl, isOwnedAvatarUrl } from "@/lib/storage/r2"
 
 const nameSchema = z
@@ -92,13 +93,13 @@ export async function resetAvatar(): Promise<{ ok: boolean }> {
 }
 
 /**
- * Hesabı arşivler (yumuşak silme): archivedAt'i set eder, tüm cihaz oturumlarını
- * kapatır ve oturumu sonlandırır. 14 gün içinde tekrar giriş yapılmazsa cron
- * (purge-archived) kalıcı siler; giriş yapılırsa jwt callback archivedAt'i
- * null'lar (geri açılır).
+ * Hesabı arşivler (yumuşak silme): Polar aboneliğini dönem sonunda iptale
+ * çeker, archivedAt'i set eder, tüm cihaz oturumlarını kapatır ve oturumu
+ * sonlandırır. 14 gün içinde tekrar giriş yapılmazsa cron (purge-archived)
+ * kalıcı siler; giriş yapılırsa jwt callback archivedAt'i null'lar (geri açılır).
  */
 export async function archiveAccount(): Promise<
-  { ok: false; code: "sudo_required" } | void
+  { ok: false; code: "sudo_required" | "billing_error" } | void
 > {
   const session = await auth()
   if (!session?.user?.id) return
@@ -109,6 +110,20 @@ export async function archiveAccount(): Promise<
   // yetmemeli — sahibi o süre içinde fark etmezse veriler kalıcı gider.
   if (!(await hasSudo(uid, session.sid))) {
     return { ok: false, code: "sudo_required" }
+  }
+
+  // Yenileme durdurulamazsa silme başlamaz: aksi halde giriş yapamayan
+  // kullanıcıdan çekim sürerdi.
+  const [row] = await db
+    .select({ polarCustomerId: users.polarCustomerId })
+    .from(users)
+    .where(eq(users.id, uid))
+    .limit(1)
+  try {
+    await cancelSubscriptionsAtPeriodEnd(uid, row?.polarCustomerId ?? null)
+  } catch (err) {
+    console.error("[archiveAccount] Polar aboneliği iptal edilemedi", err)
+    return { ok: false, code: "billing_error" }
   }
 
   await db.update(users).set({ archivedAt: new Date() }).where(eq(users.id, uid))

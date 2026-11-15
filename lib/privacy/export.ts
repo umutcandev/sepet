@@ -20,7 +20,15 @@ import {
 import type { RecordShareKind } from "@/lib/records/record-data"
 import { sharePath } from "@/lib/share/paths"
 import { absoluteUrl } from "@/lib/site"
-import { getObjectBytes } from "@/lib/storage/r2"
+import { getObjectBytes, sniffImageType } from "@/lib/storage/r2"
+import { stripImageMetadata } from "@/lib/storage/strip-metadata"
+
+// Temizlik öncesi yüklenen görsellerde EXIF kalabilir; açılamazsa ham bayt.
+async function withoutMetadata(bytes: Uint8Array): Promise<Uint8Array> {
+  const type = sniffImageType(bytes)
+  if (!type) return bytes
+  return stripImageMetadata(bytes, type).catch(() => bytes)
+}
 import { EXPORT_CATEGORIES, type ExportCategory } from "./categories"
 import { EXPORTED_USER_COLUMNS } from "./user-columns"
 
@@ -276,7 +284,7 @@ export function buildUserExportStream(
           if (cancelled) return
           const slice = keys.slice(i, i + IMAGE_CONCURRENCY)
           const results = await Promise.allSettled(
-            slice.map((key) => getObjectBytes(key)),
+            slice.map((key) => getObjectBytes(key).then(withoutMetadata)),
           )
           for (let j = 0; j < results.length; j++) {
             const res = results[j]

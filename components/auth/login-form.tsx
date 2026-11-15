@@ -849,7 +849,7 @@ export function LoginForm({ callbackUrl, pendingToken: linkToken }: Props) {
         {stage === "method" ? (
           <p className="mt-3.5 text-[0.6875rem] leading-[1.5] tracking-[-0.005em] text-muted-foreground/60">
             Devam ederek <TermsDialog /> ve <PrivacyDialog />
-            &apos;i kabul ediyorsun.
+            &apos;nı kabul ediyorsun.
           </p>
         ) : null}
       </div>

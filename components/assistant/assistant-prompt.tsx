@@ -20,6 +20,7 @@ import type { ChatStatus } from "ai"
 import { cn } from "@/lib/utils"
 import { VoiceInput } from "@/components/assistant/voice-input"
 import { PromptOptionsMenu } from "@/components/assistant/prompt-options-menu"
+import { LocationMissingBadge } from "@/components/location/location-missing-badge"
 import { Spinner } from "@/components/ui/spinner"
 import {
   Attachment,
@@ -203,6 +204,7 @@ export function AssistantPrompt({
         <PromptInputFooter>
           <PromptInputTools>
             <PromptOptionsMenu />
+            <LocationMissingBadge />
           </PromptInputTools>
           <div className="ml-auto flex items-center gap-1">
             <VoiceInput

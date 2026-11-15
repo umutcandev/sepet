@@ -8,12 +8,14 @@ import {
 import { SiteFooter } from "@/components/site-footer"
 import { limitText, planLimit } from "@/lib/usage/limits"
 
-export const LEGAL_LAST_UPDATED = "26 Temmuz 2026"
+export const LEGAL_LAST_UPDATED = "15 Kasım 2026"
 // Ödeme sözleşmeleri Gizlilik/Kullanım'dan ve birbirinden ayrı tarih taşır.
-export const LEGAL_DISTANCE_SALES_LAST_UPDATED = "12 Kasım 2026"
+export const LEGAL_DISTANCE_SALES_LAST_UPDATED = "15 Kasım 2026"
 export const LEGAL_REFUND_LAST_UPDATED = "25 Haziran 2026"
 export const LEGAL_SUPPORT_EMAIL = "support@trysepet.com"
 export const LEGAL_PRIVACY_EMAIL = "privacy@trysepet.com"
+
+const fmt = (n: number) => n.toLocaleString("tr-TR")
 
 export function LegalPageShell({
   title,
@@ -122,74 +124,172 @@ export function PrivacyContent() {
     <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">1. Topladığımız Veriler</h2>
-        <p>
-          Google ya da Facebook ile giriş yaptığında adın, e-posta adresin ve
-          profil fotoğrafın bize aktarılır. E-posta ile kayıt olduğunda yalnızca
-          e-posta adresin alınır. Bunun dışında oluşturduğun alışveriş
-          listeleri, sohbet geçmişlerin ve yüklediğin fiş fotoğrafları hizmet
-          sağlamak için saklanır.
-        </p>
+        <ul className="list-disc space-y-1.5 pl-5">
+          <li>
+            Google ya da Facebook ile girdiğinde adını, e-posta adresini ve
+            profil fotoğrafını alırız. E-postayla kayıt olduğunda e-posta
+            adresini ve şifrenin geri çevrilemeyen özetini saklarız. İki adımlı
+            doğrulama anahtarın şifrelenerek saklanır, geçiş anahtarlarından da
+            yalnızca açık anahtar tutulur.
+          </li>
+          <li>
+            Her girişte IP adresini, tarayıcı ve cihaz bilgini, IP adresinden
+            çıkan yaklaşık şehri kaydederiz. Bu kayıtlar sayesinde açık
+            oturumlarını görüp uzaktan kapatabilir, tanımadığın girişleri fark
+            edebilirsin.
+          </li>
+          <li>
+            Fiyat karşılaştırması için seçtiğin noktayı, arama yarıçapını,
+            market şubelerini ve konumun okunabilir adını (örneğin “Kadıköy,
+            İstanbul”) saklarız. Konumunu yalnızca sen seçince ya da cihaz
+            konumunu paylaşmayı onaylayınca alırız.
+          </li>
+          <li>
+            Sohbet geçmişlerin, kaydettiğin sepet ve fişler, yüklediğin
+            fotoğraflar ve aylık kullanım sayaçların hesabında durur.
+            Fotoğraflardaki konum, cihaz ve saat bilgisi (EXIF) yüklenirken
+            silinir.
+          </li>
+          <li>
+            Sesli girişte kaydın yalnızca yazıya çevrilir. Ses dosyasını
+            saklamayız, geriye gönderdiğin mesajın metni kalır.
+          </li>
+          <li>
+            Pro aboneliğin varsa planını, abonelik durumunu, dönem tarihlerini
+            ve Polar müşteri numaranı tutarız. Kart bilgilerin Sepet&apos;e hiç
+            ulaşmaz.
+          </li>
+        </ul>
       </section>
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">
           2. Verileri Nasıl Kullanırız
         </h2>
         <p>
-          Verilerini hesabını tanımlamak, kişisel öneriler sunmak, yapay zeka
-          asistanını çalıştırmak ve hizmet kalitesini geliştirmek için
-          kullanırız. Verilerini reklam amacıyla üçüncü taraflara satmıyoruz.
+          Verilerini hesabını tanımlayıp korumak, yakınındaki market fiyatlarını
+          getirmek, yapay zeka asistanını çalıştırmak ve hizmeti geliştirmek
+          için kullanırız. Verilerini satmayız, reklam ya da analiz amacıyla
+          takip yapmayız.
         </p>
       </section>
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">3. Yapay Zeka İşleme</h2>
         <p>
-          Asistan mesajların ve fiş görüntülerin, yanıt üretmek için yapay zeka
-          sağlayıcılarımıza iletilir. Bu sağlayıcılar verileri model eğitimi için
-          kullanmaz.
+          Asistana yazdığın mesajları, yüklediğin fotoğrafları ve sesli
+          kayıtlarını yanıt üretmek için yapay zeka sağlayıcılarına iletiriz.
+          Ürün eşleştirmeyi ve görsel analizini Anthropic&apos;in Claude modeli
+          yapar. Sesli girişi Vercel AI Gateway üzerinden Google&apos;ın Gemini
+          modeli yazıya çevirir. Claude&apos;a ulaşılamadığında yedek olarak yine
+          Gemini kullanılır. Bu sağlayıcılar API üzerinden gelen verileri kendi
+          modellerini eğitmek için kullanmaz. Yapay zeka hata yapabilir, bu
+          yüzden ürün eşleşmelerini ve fiyatları kontrol etmeni öneririz.
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">4. Çerezler</h2>
+        <h2 className="font-medium text-foreground">4. Konum ve Harita</h2>
         <p>
-          Oturumunu açık tutmak ve tercihlerini hatırlamak için zorunlu çerezler
-          kullanırız. İsteğe bağlı analiz çerezlerini ayarlardan kapatabilirsin.
+          Fiyatları getirmek için seçtiğin noktayı ve yarıçapı, Ticaret
+          Bakanlığı ile TÜBİTAK&apos;ın Market Fiyatı servisine sunucularımız
+          üzerinden iletiriz. Konumunun okunabilir adını bulmak için noktayı
+          yine sunucularımızdan OpenStreetMap Nominatim servisine göndeririz. IP
+          adresin bu iki servise ulaşmaz. Konum seçerken gördüğün harita ise
+          doğrudan OpenStreetMap sunucularından yüklenir ve tarayıcın bu sırada
+          OpenStreetMap&apos;e bağlanır.
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">5. Haklarınız</h2>
+        <h2 className="font-medium text-foreground">
+          5. Hizmet Sağlayıcılar
+        </h2>
         <p>
-          KVKK ve GDPR kapsamında verilerine erişme, düzeltme, silme ve
-          taşınabilirlik haklarına sahipsin. Talebini iletmek için bizimle
-          iletişime geçebilirsin.
+          Hizmeti çalıştırırken verilerin altyapı sağlayıcılarımızda işlenir.
+          Barındırmayı Vercel, veritabanını Neon, önbellek ve hız sınırını
+          Upstash, görsel depolamayı Cloudflare R2, ödeme ve faturalandırmayı
+          Polar üstlenir. Doğrulama ve güvenlik e-postaları bir e-posta gönderim
+          hizmetiyle gider. Bu sağlayıcıların bir kısmının sunucuları yurt
+          dışındadır. Onlara yalnızca hizmeti sunmak için gereken veriyi
+          aktarırız.
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">6. Saklama Süresi</h2>
+        <h2 className="font-medium text-foreground">
+          6. Görseller ve Paylaşılan Bağlantılar
+        </h2>
         <p>
-          Hesabını sildiğinde tüm kişisel verilerin 30 gün içinde kalıcı olarak
-          silinir; yasal yükümlülükler nedeniyle bazı kayıtlar anonimleştirilerek
-          saklanabilir.
+          Yüklediğin görseller tahmin edilemeyen rastgele adreslerde durur. Bir
+          görselin adresini başkasıyla paylaşırsan o adresi bilen herkes görseli
+          açabilir. Paylaştığın sohbet, sepet ve fişler de bağlantıyı bilen
+          herkese açıktır. Adının görünüp görünmeyeceğini paylaşırken seçersin
+          ve paylaşılan görsellerin meta verisi silinir. Paylaşımı istediğin an
+          Ayarlar › Gizlilik bölümünden kapatabilirsin.
         </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">7. Çerezler</h2>
+        <p>
+          Oturumunu açık tutmak, hesabını korumak ve tema gibi tercihlerini
+          hatırlamak için yalnızca zorunlu çerezleri ve tarayıcı depolamasını
+          kullanırız. Analiz ya da reklam çerezi kullanmayız. Bazı blog
+          yazılarında sosyal medya gönderisi ya da video gibi üçüncü taraf
+          içerikler bulunabilir. Bu içerikler ilgili platformun sunucularından
+          yüklenir ve o platformun gizlilik politikasına tabidir.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">8. Haklarınız</h2>
+        <p>
+          KVKK ve GDPR kapsamında verilerine erişme, onları düzeltme, sildirme
+          ve taşıma hakkın var. Verilerinin bir kopyasını Ayarlar › Gizlilik ›
+          Verilerini dışa aktar adımından indirebilirsin. Diğer talepler için
+          bize yazman yeterli.
+        </p>
+      </section>
+      <section className="space-y-2">
+        <h2 className="font-medium text-foreground">9. Saklama Süreleri</h2>
+        <ul className="list-disc space-y-1.5 pl-5">
+          <li>
+            Hesabını sildiğinde 14 günlük bekleme süresi başlar. Süre dolunca
+            hesabın ve ona bağlı tüm veriler kalıcı olarak silinir (10. madde).
+          </li>
+          <li>
+            Oturum kayıtları, oturum kapandıktan ya da son kullanılmasından 90
+            gün sonra silinir.
+          </li>
+          <li>
+            Yüklenip hiçbir sohbette ya da fişte kullanılmayan görseller 7 gün
+            sonra silinir.
+          </li>
+          <li>
+            Tek kullanımlık doğrulama kodları ve bağlantıları süresi dolunca
+            silinir.
+          </li>
+          <li>
+            Ödeme ve fatura kayıtlarını vergi mevzuatı gereği Polar saklar.
+            Hesabın silindiğinde bu kayıtlardaki kişisel bilgilerin
+            anonimleştirilir.
+          </li>
+        </ul>
       </section>
       <section id="veri-silme" className="scroll-mt-24 space-y-2">
-        <h2 className="font-medium text-foreground">7. Veri Silme Talebi</h2>
+        <h2 className="font-medium text-foreground">10. Veri Silme Talebi</h2>
         <p>
-          Verilerini silmek için hesabını uygulama içinden kendin
-          kapatabilirsin: Ayarlar &gt; Hesap &gt; Hesabı sil adımını izle ve
-          onayla.
+          Hesabını uygulama içinden kendin kapatabilirsin. Bunun için Ayarlar ›
+          Hesap › Hesabımı sil adımını izleyip onaylaman yeterli.
         </p>
         <p>
-          Hesabın kapatıldığı anda tüm cihazlardaki oturumların sonlandırılır ve
-          hesabın erişime kapatılır. Fikrini değiştirirsen 14 gün içinde tekrar
-          giriş yaparak hesabını geri açabilirsin. Bu süre sonunda hesabın ve
-          ona bağlı alışveriş listeleri, sohbet geçmişleri ve fiş görselleri
-          otomatik olarak kalıcı biçimde silinir.
+          Hesabını kapattığın anda tüm cihazlardaki oturumların sonlanır ve
+          hesabına erişim kapanır. Etkin bir Pro aboneliğin varsa yenilenmeyecek
+          şekilde iptal edilir. Fikrini değiştirirsen 14 gün içinde yeniden
+          giriş yaparak hesabını geri açabilirsin. Süre dolunca hesabın, sohbet
+          geçmişlerin, sepet ve fişlerin, görsellerin ve oturum kayıtların
+          kendiliğinden ve kalıcı olarak silinir. Polar&apos;daki müşteri kaydın
+          da silinir, kalan abonelik sona erer.
         </p>
         <p>
           Facebook ile giriş yaptıysan Sepet&apos;in Facebook hesabına
           erişimini Facebook &gt; Ayarlar ve Gizlilik &gt; Ayarlar &gt;
           Uygulamalar ve Web Siteleri bölümünden de kaldırabilirsin. Bu işlem
-          bağlantıyı koparır; Sepet hesabındaki verilerin silinmesi için
+          bağlantıyı koparır. Sepet hesabındaki verilerin silinmesi için
           yukarıdaki hesap silme adımını da uygulaman gerekir.
         </p>
         <p>
@@ -200,11 +300,11 @@ export function PrivacyContent() {
           >
             {LEGAL_PRIVACY_EMAIL}
           </a>{" "}
-          adresine yazabilirsin; talebini 30 gün içinde sonuçlandırırız.
+          adresine yazabilirsin. Talebini 30 gün içinde sonuçlandırırız.
         </p>
       </section>
       <section className="space-y-2">
-        <h2 className="font-medium text-foreground">8. İletişim</h2>
+        <h2 className="font-medium text-foreground">11. İletişim</h2>
         <p>
           Gizlilikle ilgili sorularını{" "}
           <a
@@ -270,19 +370,31 @@ export function DistanceSalesContent() {
           adil kullanım sayılmaz.
         </p>
         <p>
-          Bu durumlarda Sepet, hizmetin güvenliğini ve diğer kullanıcıların
-          erişimini korumak için ilgili hesapta yeni kayıt oluşturmayı geçici
-          olarak kısıtlayabilir ve durumu e-posta ile bildirir. Kısıtlama mevcut
+          Sepet, hizmetin güvenliğini ve diğer kullanıcıların erişimini korumak
+          için otomatik hız sınırları uygular. Bu sınıra takılan bir isteği kısa
+          bir süre sonra yeniden deneyebilirsin. Açık bir kötüye kullanımda
+          hesabı geçici olarak askıya alma hakkımız saklıdır. Böyle bir durumla
+          karşılaşırsan{" "}
+          <a
+            href={`mailto:${LEGAL_SUPPORT_EMAIL}`}
+            className="text-foreground underline underline-offset-2"
+          >
+            {LEGAL_SUPPORT_EMAIL}
+          </a>{" "}
+          adresine yazarak inceleme isteyebilirsin. Kısıtlama mevcut
           kayıtlarını silmez.
         </p>
       </section>
       <section className="space-y-2">
         <h2 className="font-medium text-foreground">4. Ücret ve Süre</h2>
         <p>
-          Pro aboneliği aylık ₺{MONTHLY_PRICE} veya yıllık ₺{YEARLY_PRICE} (Türk
-          Lirası) olarak sunulur.
-          Geçerli vergiler konumuna göre Polar tarafından ödeme sayfasında
-          hesaplanır ve ödeyeceğin nihai tutar orada gösterilir. Abonelik,
+          Pro aboneliği aylık ₺{fmt(MONTHLY_PRICE)} veya yıllık ₺
+          {fmt(YEARLY_PRICE)} (Türk Lirası) olarak sunulur. Fiyatlara KDV
+          dahildir ve Türkiye&apos;den ödemede tutarın üstüne vergi eklenmez.
+          Türkiye dışından ödersen Polar bulunduğun ülkenin vergi kurallarını
+          uygular, ödeyeceğin nihai tutarı da onaydan önce ödeme sayfasında
+          gösterir. Yeni Pro aboneliği alımı şu an kapalıdır. Mevcut
+          abonelikler bu sözleşmeye göre sürer. Abonelik,
           seçilen faturalandırma döneminin (ay veya yıl) sonunda aynı ücretle
           otomatik olarak yenilenir ve sen iptal edene kadar bu şekilde devam
           eder. Fiyat değişikliklerini yürürlüğe girmeden önce sana bildiririz.

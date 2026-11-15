@@ -5,6 +5,7 @@ import {
   uploadReceiptDirect,
   validateUpload,
 } from "@/lib/storage/r2"
+import { stripImageMetadata } from "@/lib/storage/strip-metadata"
 
 export const runtime = "nodejs"
 
@@ -56,11 +57,21 @@ export async function POST(req: Request) {
     )
   }
 
+  let clean: Buffer
+  try {
+    clean = await stripImageMetadata(bytes, sniffedType)
+  } catch {
+    return NextResponse.json(
+      { error: "invalid_upload", message: "Görsel açılamadı." },
+      { status: 415 },
+    )
+  }
+
   try {
     const out = await uploadReceiptDirect({
       userId: session.user.id,
       contentType: sniffedType,
-      body: bytes,
+      body: clean,
     })
     return NextResponse.json(out)
   } catch (err) {

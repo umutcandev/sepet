@@ -32,19 +32,16 @@ import {
 
 export type Interval = "month" | "year"
 
-// Görüntülenen fiyatlar Polar'daki Pro ürünleriyle aynıdır. Tahsilat her zaman
-// Polar tarafından yapılır; bunlar yalnızca vitrin metnidir. Polar'da fiyat
-// değişirse BURASI DA DEĞİŞMELİ — iki kaynak var ve senkron tutmak elle.
-//
-// Fiyat KDV DAHİLDİR: 249 TL'nin 207,50'si net gelir, 41,50'si vergi (sipariş
-// kaydında doğrulandı: net_amount × 1,20 = total_amount). Üstüne Polar'ın
-// sabit ağırlıklı komisyonu biner (~$0,40 + %4). Fiyatı düşürmeden önce
-// lib/usage/limits.ts'teki AI maliyeti hesabına bak: 60 + 15 kotası aylık
-// ~$1,51 tutuyor ve bu, net gelirin yarısı civarında kalmalı.
+// Vitrin fiyatı. Tahsil edilen tutar Polar'daki ürünlerden gelir; Polar'da
+// fiyat değişirse burası elle güncellenmeli (abonelikler kapalıyken bilinçli
+// olarak ikinci kaynak bırakıldı). KDV dahil: net_amount × 1,20 = total_amount.
 export const MONTHLY_PRICE = 249
 export const YEARLY_PRICE = 2490
-// Aylık ödemeyle bir yılın liste karşılığı (12 × aylık) — yıllıkta üzeri çizilir.
+// Aylık ödemeyle bir yılın liste karşılığı; yıllıkta üzeri çizilir.
 const YEARLY_LIST = MONTHLY_PRICE * 12
+export const YEARLY_DISCOUNT_PCT = Math.round(
+  (1 - YEARLY_PRICE / YEARLY_LIST) * 100
+)
 
 const priceFmt = new Intl.NumberFormat("tr-TR")
 
@@ -161,7 +158,7 @@ export function BillingToggle({
           {iv === "month" ? "Aylık" : "Yıllık"}
           {iv === "year" && (
             <span className="rounded-full bg-muted-foreground/10 px-1 py-px text-[0.625rem] leading-none font-medium text-muted-foreground transition-colors group-aria-checked/segment:bg-primary/15 group-aria-checked/segment:text-primary">
-              %17
+              %{YEARLY_DISCOUNT_PCT}
             </span>
           )}
         </SegmentedControlItem>
@@ -237,7 +234,7 @@ export function ProCard({
 // ₺ rakamlardan hafifçe ayrılır ve em cinsinden küçülür ki her puntoda oran korunsun.
 const LIRA = "ml-0.5 text-[0.8em]"
 
-// Fiyat tutarı. Simge tr-TR yazımındaki gibi tutarın sonunda durur (990₺).
+// Fiyat tutarı. Simge tr-TR yazımındaki gibi tutarın sonunda durur (249₺).
 export function Amount({ value }: { value: number }) {
   return (
     <>
@@ -248,7 +245,7 @@ export function Amount({ value }: { value: number }) {
 }
 
 // Amount'ın animasyonlu hâli: tutar değiştiğinde NumberFlow rakamları odometre
-// gibi çevirir, basamak sayısı değişse de (99 ↔ 990) genişlik yumuşakça açılır.
+// gibi çevirir, basamak sayısı değişse de (249 ↔ 2.490) genişlik yumuşakça açılır.
 // Elle yazılmış blur/slide geçişlerinden daha okunur; NumberFlow ayrıca
 // prefers-reduced-motion'a kendisi saygı gösterir.
 //
@@ -278,10 +275,9 @@ export function AnimatedAmount({
   )
 }
 
-// Fiyat gösterimi. Büyük tutar iki aralık arasında NumberFlow ile döner
-// (99 ↔ 990). Yıllıkta ayrıca üstte liste fiyatı (1.188₺) belirir ve motion ile
-// üzerine bir çizgi çekilir — bu blok yalnızca yıllıkta render edildiği için
-// aralık her değiştiğinde animasyonu baştan oynar.
+// Fiyat gösterimi. Tutar iki aralık arasında NumberFlow ile döner. Yıllıkta
+// üstte liste fiyatı (12 × aylık) belirir ve üzerine çizgi çekilir; blok yalnız
+// yıllıkta render edildiği için animasyon her geçişte baştan oynar.
 function ProPrice({ interval }: { interval: Interval }) {
   const reduce = useReducedMotion()
   const price = interval === "month" ? MONTHLY_PRICE : YEARLY_PRICE
