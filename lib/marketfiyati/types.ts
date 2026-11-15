@@ -75,6 +75,7 @@ export type MarketPrice = {
   price: number
   priceModifiedAt: string | null
   depotName: string | null
+  depotCoords?: { lat: number; lng: number } | null
   // "60,00 ₺/Lt" gibi birim fiyat etiketi (varsa).
   unitPrice: string | null
   // Birim fiyatın baz birimine (L / kg / adet) normalize edilmiş SAYISAL değeri.
@@ -160,6 +161,10 @@ export function toProductDetail(
       price: d.price,
       priceModifiedAt: indexTimeToIso(d.indexTime),
       depotName: d.depotName ?? null,
+      depotCoords:
+        Number.isFinite(d.latitude) && Number.isFinite(d.longitude)
+          ? { lat: d.latitude as number, lng: d.longitude as number }
+          : null,
       unitPrice: d.unitPrice ?? null,
       unitPriceValue:
         basis && d.unitPriceValue != null

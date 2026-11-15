@@ -4,7 +4,6 @@ import * as React from "react"
 import Image from "next/image"
 import {
   RiArrowRightLine,
-  RiBox3Line,
   RiErrorWarningLine,
   RiLoader4Line,
   RiRefreshLine,
@@ -29,6 +28,7 @@ import {
   ResponsiveDialogTitle,
 } from "@/components/ui/responsive-dialog"
 import { MarketLogo, MarketLogoGroup } from "@/components/market-logo"
+import { NoImageLabel } from "@/components/no-image-label"
 import { formatTL } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { Candidate } from "@/lib/ai/match-result"
@@ -560,10 +560,7 @@ function Thumb({ url }: { url: string | null }) {
           onError={() => setFailed(true)}
         />
       ) : (
-        <RiBox3Line
-          aria-hidden="true"
-          className="size-5 text-muted-foreground"
-        />
+        <NoImageLabel className="text-[0.5625rem]" />
       )}
     </div>
   )

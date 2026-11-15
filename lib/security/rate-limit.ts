@@ -33,6 +33,21 @@ export const nominatimLimiter = new Ratelimit({
   prefix: "rl:nominatim",
 })
 
+// openrouteservice ücretsiz planı: dakikada 40, günde 2.000 rota. Tüm
+// kullanıcılar tek anahtarı paylaşır; tavanlar güvenli tarafta tutulur, çünkü
+// tekrarlı aşım hesabı kapattırabilir.
+export const orsMinuteLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(30, "1 m"),
+  prefix: "rl:ors:minute",
+})
+
+export const orsDailyLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.fixedWindow(1800, "1 d"),
+  prefix: "rl:ors:daily",
+})
+
 export const receiptUploadLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(20, "1 m"),

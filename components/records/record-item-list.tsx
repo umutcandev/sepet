@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { RiErrorWarningLine, RiImageLine, RiSearchLine } from "@remixicon/react"
+import { RiErrorWarningLine, RiSearchLine } from "@remixicon/react"
 
 import {
   ResponsiveDialog,
@@ -12,6 +12,7 @@ import {
 import { ProductDetailPanel } from "@/components/product-detail-panel"
 import { MarketCell } from "@/components/market-cell"
 import { DepotInfo } from "@/components/assistant/depot-info"
+import { NoImageLabel } from "@/components/no-image-label"
 import { formatTL } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
@@ -241,7 +242,7 @@ function Thumb({ url }: { url: string | null }) {
         )}
         aria-hidden
       >
-        <RiImageLine className="size-4" />
+        <NoImageLabel />
       </div>
     )
   }

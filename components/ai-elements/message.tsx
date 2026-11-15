@@ -78,6 +78,8 @@ export const MessageContent = ({
       // kod bloğu ve tablosu `overflow-x-auto`); bölünemeyen uzun bir sözcük
       // (URL) için `break-words`.
       "group-[.is-assistant]:w-full group-[.is-assistant]:break-words group-[.is-assistant]:text-foreground",
+      // Metnin ardından gelen kart 8 px'lik aralıkta metne yapışıyordu.
+      "[&>.message-prose+:not(.message-prose)]:mt-2",
       className
     )}
     {...props}
@@ -376,7 +378,7 @@ export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (
     <Streamdown
       className={cn(
-        "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
+        "message-prose size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         markdownTypography,
         markdownSurfaces,
         className

@@ -15,6 +15,7 @@ type MarketChoice = {
   productId: string
   productName: string
   depotName: string | null
+  depotCoords: MarketAllocation["depotCoords"]
   imageUrl: string | null
   // Bu markette alınan ürün istenen boyuttan farklı — allocation satırındaki
   // "Farklı Boyut" rozeti. Kalem marketten markete farklı ürüne çözüldüğü
@@ -48,6 +49,7 @@ function toItemPriceMaps(matches: MatchResult[]): ItemMarketPrice[] {
           productId: opt.productId,
           productName: opt.productName,
           depotName: opt.depotName,
+          depotCoords: opt.depotCoords ?? null,
           imageUrl: opt.imageUrl,
           // Seçenek başına işaretten önce kaydedilmiş kayıtlarda kalemin
           // işaretine düşülür.
@@ -113,6 +115,7 @@ function bestSingleMarket(items: ItemMarketPrice[]): {
         lineTotal: choice.cost,
         sizeMismatch: choice.sizeMismatch,
         depotName: choice.depotName,
+        depotCoords: choice.depotCoords,
         imageUrl: choice.imageUrl,
         itemIndex: item.itemIndex,
       })
@@ -197,6 +200,7 @@ function bestTwoMarketCombo(items: ItemMarketPrice[]): {
           lineTotal: choice.cost,
           sizeMismatch: choice.sizeMismatch,
           depotName: choice.depotName,
+          depotCoords: choice.depotCoords,
           imageUrl: choice.imageUrl,
           itemIndex: item.itemIndex,
         })

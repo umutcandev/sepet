@@ -24,35 +24,35 @@ export function buildSummaryText(
   const single = summary.singleMarket
   const combo = summary.twoMarketCombo
   const hasFullCombo = combo.markets.length === 2
+  const pair = joinTr(combo.markets)
 
-  let plan: string
+  const lines: string[] = []
   if (single.isFullCoverage) {
-    plan = `En ucuz tek market ${single.market}: ${matchedCount} kalemin tamamı ${formatTL(single.total)} TL.`
-    plan +=
-      hasFullCombo && combo.savingsTL > 0
-        ? ` Alışverişi ${joinTr(combo.markets)} arasında bölersen ${formatTL(combo.savingsTL)} TL (%${formatPct(combo.savingsPct)}) daha az ödersin.`
-        : " İki markete bölmek daha ucuza gelmiyor."
+    lines.push(
+      bullet("En ucuz tek market", `${single.market}, ${formatTL(single.total)} TL.`),
+      bullet(
+        "İki markete bölersen",
+        hasFullCombo && combo.savingsTL > 0
+          ? `${pair} ile ${formatTL(combo.total)} TL, yani ${formatTL(combo.savingsTL)} TL daha az.`
+          : "Daha ucuza gelmiyor."
+      )
+    )
   } else if (hasFullCombo) {
-    plan = `${matchedCount} kalemin tamamını tek bir market karşılamıyor; ${joinTr(combo.markets)} ikilisiyle sepetin tamamı ${formatTL(combo.total)} TL.`
+    lines.push(
+      bullet("Tek market", "Listenin tamamı hiçbir markette yok."),
+      bullet("İki markete bölersen", `${pair} ile listenin tamamı ${formatTL(combo.total)} TL.`)
+    )
   } else {
-    plan = `${matchedCount} kalemin tamamını karşılayan bir market ya da market ikilisi yok; en çok kalemi ${single.market} karşılıyor: ${single.itemCount}/${matchedCount} kalem, ${formatTL(single.total)} TL.`
+    lines.push(
+      bullet(
+        "Tek market",
+        `Listenin tamamı hiçbir markette yok. ${single.market}, ${matchedCount} kalemden ${single.itemCount} tanesini ${formatTL(single.total)} TL'ye karşılıyor.`
+      ),
+      bullet("İki markete bölersen", "Listenin tamamını karşılayan iki market de yok.")
+    )
   }
 
-  // "Eşleştirilemedi" edilgen ve tekil: Türkçede cansız çoğul özne tekil
-  // fiil alır, ürün adına ek getirmek de gerekmez ("reçelini" vb.).
-  // Eşleşme yoksa kart yeniden aratmayı sunuyor (bkz. UnmatchedProductList);
-  // servis hatasında yeni bir ad işe yaramayacağı için o cümle eklenmez.
-  const canRename = matches.some((m) => m.lookupStatus === "no_match")
-  const unmatchedPart = unmatched.length
-    ? ` ${joinTr(unmatched.map(capitalizeTr))} eşleştirilemedi, toplama dahil değil.` +
-      (canRename
-        ? " İstersen aşağıdan başka bir adla yeniden aratabilirsin."
-        : "")
-    : ""
-
-  // Rozetle aynı kaynak: Sepet Özeti'nde gösterilen dökümlerde farklı boyutlu
-  // satırı olan kalemler. Kalemin temsilcisine bakmak yetmiyor; ürün marketten
-  // markete değişiyor.
+  // Rozetle aynı kaynak: gösterilen dökümlerde farklı boyutlu satırı olan kalemler.
   const shown = [
     ...single.allocation,
     ...(hasFullCombo ? combo.allocation : []),
@@ -60,12 +60,34 @@ export function buildSummaryText(
   const mismatched = [
     ...new Set(shown.filter((a) => a.sizeMismatch).map((a) => a.rawName)),
   ]
-  const mismatchPart = mismatched.length
-    ? ` ${joinTr(mismatched.map(capitalizeTr))} için istediğin boyut her markette yok; o marketlerde en yakın boyutu aldım ve Sepet Özeti'nde farklı boyut olarak işaretledim.`
+  if (mismatched.length) {
+    lines.push(
+      bullet(
+        "Farklı boyut",
+        `${names(mismatched)} bazı marketlerde istediğin boyutta yok, yerine en yakın boyutu seçtim.`
+      )
+    )
+  }
+
+  if (unmatched.length) {
+    lines.push(
+      bullet("Eşleşmeyen", `${names(unmatched)} için fiyat bulamadım, toplama eklemedim.`)
+    )
+  }
+
+  // Servis hatasında yeni ad işe yaramaz; yeniden aratma yalnız no_match'te.
+  const canRename = matches.some((m) => m.lookupStatus === "no_match")
+  const tail = canRename
+    ? "\n\nİstersen bunları aşağıdan başka bir adla tekrar aratabilirsin."
     : ""
 
-  return `Sepet Özeti hazır. ${plan}${unmatchedPart}${mismatchPart}`
+  return `Sepet Özeti hazır.\n\n${lines.join("\n")}${tail}`
 }
+
+const bullet = (label: string, body: string) => `- **${label}:** ${body}`
+
+/** ["tavuk göğsü","kaşar"] → "Tavuk göğsü ve kaşar" */
+const names = (list: string[]) => capitalizeTr(joinTr(list))
 
 type DraftItem = {
   name: string
@@ -185,17 +207,6 @@ function formatTL(n: number): string {
   return n.toLocaleString("tr-TR", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  })
-}
-
-/**
- * Yüzde etiketi. Küçük oranlarda tek hane ondalık anlamlı, büyük oranlarda
- * gürültü; her iki durumda da ayırıcı Türkçe virgül olmalı ("%11,4" — "%11.4"
- * değil).
- */
-function formatPct(n: number): string {
-  return n.toLocaleString("tr-TR", {
-    maximumFractionDigits: n < 10 ? 1 : 0,
   })
 }
 
