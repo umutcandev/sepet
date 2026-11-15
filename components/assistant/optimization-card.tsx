@@ -509,10 +509,10 @@ export function OptimizationCard({
     if (!location || !summary) return null
     const home = { lat: location.lat, lng: location.lng }
     const { singleMarket, twoMarketCombo } = summary
-    const single = depotStops(singleMarket.allocation)
+    const single = depotStops(singleMarket.allocation, imageFallback)
     const combo =
       twoMarketCombo.markets.length === 2
-        ? depotStops(twoMarketCombo.allocation)
+        ? depotStops(twoMarketCombo.allocation, imageFallback)
         : null
     return {
       single: single && { home, stops: single },
@@ -522,7 +522,7 @@ export function OptimizationCard({
         compareStops: singleMarket.isFullCoverage ? single : null,
       },
     }
-  }, [location, summary])
+  }, [location, summary, imageFallback])
 
   // Hiçbir kalem eşleşmediyse gösterilecek bir plan yok; "— ₺0,00" satırı
   // asistanın "Sepet Özeti çıkaramadım" cümlesiyle çelişirdi.

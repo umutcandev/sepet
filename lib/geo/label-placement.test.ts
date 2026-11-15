@@ -14,7 +14,7 @@ describe("placeLabel", () => {
     assert.equal(segmentHitsRect(vertical[0], vertical[1], p.rect), false)
     // Orta yükseklikte, çizgiye yakın.
     assert.ok(Math.abs(p.rect.y + p.rect.h / 2 - 150) < 1)
-    assert.ok(p.rect.x - 200 >= 8 || 200 - (p.rect.x + p.rect.w) >= 8)
+    assert.ok(p.rect.x - 200 >= 6 || 200 - (p.rect.x + p.rect.w) >= 6)
   })
 
   test("sağ taraf doluysa sola geçer ve çizgiyi sağ kenara alır", () => {
@@ -36,6 +36,6 @@ describe("placeLabel", () => {
     const horizontal: Pt[] = [{ x: 20, y: 150 }, { x: 380, y: 150 }]
     const p = placeLabel({ path: horizontal, size: SIZE, segments: [horizontal], blocked: [], bounds: BOUNDS })
     assert.ok(p)
-    assert.ok(p.rect.y + p.rect.h <= 150 - 8 || p.rect.y >= 150 + 8)
+    assert.ok(p.rect.y + p.rect.h <= 150 - 6 || p.rect.y >= 150 + 6)
   })
 })

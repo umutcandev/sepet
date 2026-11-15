@@ -47,6 +47,13 @@ describe("depotStops", () => {
   test("koordinatı eksik satır varsa tahmin etmez", () => {
     assert.equal(depotStops([row(north(1)), row(null)]), null)
   })
+
+  test("şubeden alınan kalemlerin görsellerini toplar", () => {
+    const withImage = { ...row(north(1)), imageUrl: "a.webp" }
+    const fallback = { ...row(north(1)), productId: "q" }
+    const stops = depotStops([withImage, fallback, row(north(2))], { q: "q.webp" })
+    assert.deepEqual(stops?.map((s) => s.products), [["a.webp", "q.webp"], [null]])
+  })
 })
 
 describe("orderStops", () => {
@@ -84,5 +91,9 @@ describe("biçimlendirme", () => {
     assert.equal(compareDuration(14 * 60, 8 * 60), "Tek markete göre 6 dk daha uzun")
     assert.equal(compareDuration(8 * 60, 10 * 60), "Tek markete göre 2 dk daha kısa")
     assert.equal(compareDuration(600, 590), "Tek marketle neredeyse aynı süre")
+  })
+
+  test("saati aşan fark saat ve dakikayla yazılır", () => {
+    assert.equal(compareDuration(300 * 60, 73 * 60), "Tek markete göre 3 sa 47 dk daha uzun")
   })
 })

@@ -1,7 +1,8 @@
 import type { MarketAllocation } from "@/lib/ai/schemas"
 
 export type GeoPoint = { lat: number; lng: number }
-export type DepotStop = GeoPoint & { market: string }
+/** `products`: o şubeden alınan her kalemin görseli (yoksa null). */
+export type DepotStop = GeoPoint & { market: string; products: (string | null)[] }
 
 export type RouteMode = "car" | "walk"
 /** İki durak arası; `start`/`end` yolun `path` içindeki indeksleri. */
@@ -35,14 +36,18 @@ export function haversineKm(a: GeoPoint, b: GeoPoint): number {
 
 /** Dökümdeki farklı şubeler; koordinatı eksik satır varsa null (tahmin yok). */
 export function depotStops(
-  allocation: readonly MarketAllocation[]
+  allocation: readonly MarketAllocation[],
+  imageFallback?: Record<string, string>
 ): DepotStop[] | null {
   if (allocation.length === 0) return null
   const stops = new Map<string, DepotStop>()
   for (const a of allocation) {
     if (!a.depotCoords) return null
     const { lat, lng } = a.depotCoords
-    stops.set(`${lat}:${lng}`, { lat, lng, market: a.market })
+    const key = `${lat}:${lng}`
+    const stop = stops.get(key) ?? { lat, lng, market: a.market, products: [] }
+    stop.products.push(a.imageUrl ?? imageFallback?.[a.productId] ?? null)
+    stops.set(key, stop)
   }
   return [...stops.values()]
 }
@@ -109,7 +114,8 @@ export function formatDistance(meters: number): string {
 /** Kombinasyon rotasının tek markete göre süre farkı, sade cümleyle. */
 export function compareDuration(comboS: number, singleS: number): string {
   const diff = Math.round((comboS - singleS) / 60)
-  if (diff >= 1) return `Tek markete göre ${diff} dk daha uzun`
-  if (diff <= -1) return `Tek markete göre ${-diff} dk daha kısa`
+  const span = formatDuration(Math.abs(diff) * 60)
+  if (diff >= 1) return `Tek markete göre ${span} daha uzun`
+  if (diff <= -1) return `Tek markete göre ${span} daha kısa`
   return "Tek marketle neredeyse aynı süre"
 }

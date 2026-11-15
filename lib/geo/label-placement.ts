@@ -12,7 +12,7 @@ export type Placement = {
 }
 
 /** Kutuyla çizgi arasındaki boşluk. */
-const GAP = 8
+const GAP = 6
 // Orta noktaya yakın adaylar önce; "bacağın ortasında" görünsün.
 const FRACTIONS = [0.5, 0.42, 0.58, 0.34, 0.66, 0.26, 0.74, 0.2, 0.8]
 

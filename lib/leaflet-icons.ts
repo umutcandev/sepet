@@ -37,19 +37,59 @@ export function userDotIcon(L: typeof LeafletNs): LeafletNs.DivIcon {
   return L.divIcon({ html, className: "", iconSize: [0, 0], iconAnchor: [0, 0] })
 }
 
+const MAX_THUMBS = 3
+const BADGE_ITEM =
+  "flex h-4 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-[0_0_0_1.5px_#fff,0_1px_2px_rgb(0_0_0/0.3)] not-first:-ml-1"
+const EMPTY_THUMB = `${BADGE_ITEM} w-4 bg-neutral-200`
+
+// Logonun sağ üstünde o şubeden alınan ürünler; sığmayanlar "+N".
+function productBadge(products: (string | null)[]): string {
+  if (products.length === 0) return ""
+  const shown = [...products].sort((a, b) => Number(!a) - Number(!b)).slice(0, MAX_THUMBS)
+  const thumbs = shown
+    .map((src) =>
+      src
+        ? `<span data-thumb class="${BADGE_ITEM} w-4 bg-white"><img src="${escapeHtml(src)}" alt="" class="size-full object-contain" /></span>`
+        : `<span class="${EMPTY_THUMB}"></span>`,
+    )
+    .join("")
+  const rest = products.length - shown.length
+  const more = rest
+    ? `<span class="${BADGE_ITEM} min-w-4 bg-white px-[3px] font-sans text-[9px] leading-none font-semibold tabular-nums text-neutral-700">+${rest}</span>`
+    : ""
+  return `<div data-badge class="absolute -top-[7px] left-[15px] flex items-center">${thumbs}${more}</div>`
+}
+
+/** Yüklenemeyen ürün görseli boş daireye döner (CSP inline onerror'a izin vermez). */
+export function wireBrokenThumbs(root: HTMLElement | undefined) {
+  root?.querySelectorAll<HTMLImageElement>("[data-thumb] img").forEach((img) => {
+    const drop = () => {
+      if (img.parentElement) img.parentElement.className = EMPTY_THUMB
+      img.remove()
+    }
+    if (img.complete && img.naturalWidth === 0) drop()
+    else img.addEventListener("error", drop, { once: true })
+  })
+}
+
 // Şubeler için logolu (yoksa baş-harf) dairesel rozet — listedeki MarketLogo
 // ile aynı görsel dil. CSP altında inline onerror çalışmadığından fallback
 // registry'deki logo varlığına göre seçilir (kırık görsel yok).
-export function depotIcon(L: typeof LeafletNs, market: string): LeafletNs.DivIcon {
+export function depotIcon(
+  L: typeof LeafletNs,
+  market: string,
+  products: (string | null)[] = [],
+): LeafletNs.DivIcon {
   const logo = getMarketLogo(market)
   const inner = logo
     ? `<img src="${escapeHtml(logo)}" alt="${escapeHtml(market)}" style="width:100%;height:100%;object-fit:contain;" />`
     : `<span style="font-size:11px;font-weight:500;color:#6D4530;">${escapeHtml(getMarketInitial(market))}</span>`
   const html =
+    '<div style="position:relative;width:26px;height:26px;">' +
     `<div title="${escapeHtml(market)}" style="width:26px;height:26px;border-radius:9999px;` +
     "background:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);" +
     "overflow:hidden;display:flex;align-items:center;justify-content:center;line-height:1;\">" +
-    `${inner}</div>`
+    `${inner}</div>${productBadge(products)}</div>`
   return L.divIcon({
     html,
     className: "",
