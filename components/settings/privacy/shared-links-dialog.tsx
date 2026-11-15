@@ -386,8 +386,7 @@ export function SharedLinksDialog() {
           <DialogHeader>
             <DialogTitle>Paylaşılan bağlantılar</DialogTitle>
             <DialogDescription>
-              Bağlantısı olan herkesin görebildiği sohbet, sepet ve fişlerin.
-              Kaldırdığın bağlantı anında çalışmaz olur.
+              Bağlantıya sahip olan herkesin gördüğü sohbet, sepet ve fişlerin.
             </DialogDescription>
           </DialogHeader>
 

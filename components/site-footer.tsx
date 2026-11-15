@@ -8,7 +8,7 @@ import Link from "next/link"
 
 import { HackathonBadge } from "@/components/hackathon-badge"
 import { FooterAssistantLinks, FooterLink } from "@/components/site-footer-link"
-import { ThemeToggleInline } from "@/components/theme-toggle"
+import { ThemeSwitcher } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { CATEGORY_LIST } from "@/lib/blog/categories"
 import { SITE_X, absoluteUrl } from "@/lib/site"
@@ -209,7 +209,7 @@ export function SiteFooter({ className }: { className?: string }) {
                 Sistem Durumu
               </a>
             </Button>
-            <ThemeToggleInline />
+            <ThemeSwitcher variant="icon" />
           </div>
         </div>
       </div>

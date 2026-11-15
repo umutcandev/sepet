@@ -15,10 +15,12 @@ import {
   type Interval,
 } from "@/components/subscription/plan-cards"
 import { HomeFaq } from "@/components/home/home-faq"
+import { ClosedProButton } from "@/components/subscription/closed-pro-button"
 import { FairUseMark } from "@/components/subscription/fair-use-mark"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Squircle } from "@/components/ui/squircle"
+import { SUBSCRIPTIONS_OPEN } from "@/lib/billing"
 import { useRequireAuth } from "@/lib/hooks/use-require-auth"
 
 // Her iki planda da olan özellikler; Pro'nun farkı üstteki PRO_FEATURES.
@@ -77,14 +79,20 @@ export function HomePricingSection() {
                     </p>
                   </div>
 
-                  <Button variant="default" asChild className="w-full @lg:mt-auto">
-                    <a
-                      href={`/api/checkout?interval=${interval}`}
-                      onClick={requireAuth(() => undefined)}
-                    >
+                  {SUBSCRIPTIONS_OPEN ? (
+                    <Button variant="default" asChild className="w-full @lg:mt-auto">
+                      <a
+                        href={`/api/checkout?interval=${interval}`}
+                        onClick={requireAuth(() => undefined)}
+                      >
+                        Pro ile başla
+                      </a>
+                    </Button>
+                  ) : (
+                    <ClosedProButton className="w-full @lg:mt-auto">
                       Pro ile başla
-                    </a>
-                  </Button>
+                    </ClosedProButton>
+                  )}
                 </div>
 
                 {/* Kart SSS'ye gerilince artan boşluk iki grubun arasına düşer:

@@ -7,11 +7,10 @@ import { Button } from "@/components/ui/button"
 import { PanelHeader, SettingGroup, SettingRow } from "../settings-row"
 import { ExportDataDialog } from "../privacy/export-data-dialog"
 import { ClearDataDialog } from "../privacy/clear-data-dialog"
-import { AnalyticsToggle } from "../privacy/analytics-toggle"
 import { SharedLinksDialog } from "../privacy/shared-links-dialog"
 
-// Gizlilik: verilerini dışa aktar, paylaşılan bağlantılar, toplu sil, analiz
-// tercihi ve yasal kısayol.
+// Gizlilik: verilerini dışa aktar, paylaşılan bağlantılar, toplu sil ve yasal
+// kısayol.
 // GeneralPanel/AccountPanel ile aynı PanelHeader + SettingGroup + SettingRow
 // kalıbını kullanır.
 export function PrivacyPanel() {
@@ -19,7 +18,7 @@ export function PrivacyPanel() {
     <div className="flex flex-col gap-8">
       <PanelHeader
         title="Gizlilik"
-        description="Verilerini dışa aktar, sil ve gizlilik tercihlerini buradan yönet."
+        description="Verilerini dışa aktar, paylaşımlarını ve kayıtlarını buradan yönet."
       />
 
       <SettingGroup title="Verilerin">
@@ -60,16 +59,6 @@ export function PrivacyPanel() {
           description="Fişlerin ve görselleri kalıcı silinir"
         >
           <ClearDataDialog kind="receipts" />
-        </SettingRow>
-      </SettingGroup>
-
-      <SettingGroup title="Gizlilik tercihleri">
-        <SettingRow
-          title="Analiz çerezleri"
-          target="analiz-cerezleri"
-          description="Anonim kullanım analizine izin ver"
-        >
-          <AnalyticsToggle />
         </SettingRow>
       </SettingGroup>
 

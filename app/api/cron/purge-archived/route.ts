@@ -11,7 +11,9 @@ import {
   emailVerification,
   passwordReset,
   pendingLogin,
+  userSessions,
 } from "@/lib/db"
+import { deletePolarCustomer } from "@/lib/polar/account"
 import {
   deleteObjectsByKeys,
   deleteUserStorage,
@@ -22,8 +24,10 @@ import { redis } from "@/lib/redis"
 export const runtime = "nodejs"
 export const maxDuration = 60
 
+const DAY_MS = 24 * 60 * 60 * 1000
 // Arşivlenen hesaplar bu kadar gün sonra kalıcı silinir.
 const GRACE_DAYS = 14
+const SESSION_RETENTION_DAYS = 90
 
 // ─── Yetim fiş görseli temizliği ───
 // /api/receipts/upload görseli R2'ye yazar, ama kullanıcı hiç göndermeden
@@ -185,15 +189,30 @@ export async function GET(req: Request) {
   await db.delete(passwordReset).where(lt(passwordReset.expiresAt, now))
   await db.delete(pendingLogin).where(lt(pendingLogin.expiresAt, now))
 
-  const cutoff = new Date(Date.now() - GRACE_DAYS * 24 * 60 * 60 * 1000)
+  // Kapatılmış ya da JWT ömrünü (30 gün) çoktan aşmış oturum satırları. Süre,
+  // seenFromIp'in "bilinen IP" hafızası için tutulur; gizlilik metninde yazar.
+  const sessionCutoff = new Date(Date.now() - SESSION_RETENTION_DAYS * DAY_MS)
+  await db
+    .delete(userSessions)
+    .where(
+      or(
+        lt(userSessions.revokedAt, sessionCutoff),
+        lt(userSessions.lastSeenAt, sessionCutoff),
+      ),
+    )
+
+  const cutoff = new Date(Date.now() - GRACE_DAYS * DAY_MS)
   const rows = await db
-    .select({ id: users.id })
+    .select({ id: users.id, polarCustomerId: users.polarCustomerId })
     .from(users)
     .where(and(isNotNull(users.archivedAt), lt(users.archivedAt, cutoff)))
 
   let purged = 0
   for (const u of rows) {
     try {
+      // Polar başarısızsa kullanıcı silinmez, ertesi gün yeniden denenir:
+      // aksi halde Polar'daki kaydı eşleyecek kimlik kalmazdı.
+      await deletePolarCustomer(u.id, u.polarCustomerId)
       // Önce R2 nesneleri (avatar + fişler), sonra DB satırı; users silinince
       // accounts/session/user_session/receipts/baskets/conversations/usage
       // cascade ile temizlenir.

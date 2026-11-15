@@ -28,63 +28,51 @@ export function useThemeChoice() {
   return { current, setTheme: (next: ThemeValue) => setTheme(next) }
 }
 
-export function ThemeMenuItems() {
+/**
+ * Tek tema seçici. `text` (varsayılan): Ayarlar ve profil menüsü. `icon`:
+ * footer şeridi; ad her segmentin aria-label'ında. Footer'da şerit yarı saydam
+ * mürekkep, çünkü koyulaşan bandın üstünde düz `--muted` kayboluyordu.
+ */
+export function ThemeSwitcher({
+  variant = "text",
+  className,
+}: {
+  variant?: "text" | "icon"
+  className?: string
+}) {
   const { current, setTheme } = useThemeChoice()
-
-  return (
-    <>
-      <DropdownMenuLabel>Tema</DropdownMenuLabel>
-      {/* `pb` YOK: altındaki ayırıcı `my-1` ile zaten 4px taşıyor, dolgu
-          eklenince o bant üstteki ayırıcının iki katı kalınlıkta okunuyordu. */}
-      <div className="px-1">
-        <SegmentedControl
-          aria-label="Tema seçimi"
-          size="sm"
-          value={current}
-          onValueChange={setTheme}
-          className="w-full"
-        >
-          {THEME_OPTIONS.map(({ value, icon: Icon, label }) => (
-            <SegmentedControlItem key={value} value={value}>
-              <Icon />
-              {label}
-            </SegmentedControlItem>
-          ))}
-        </SegmentedControl>
-      </div>
-    </>
-  )
-}
-
-// Footer alt şeridi için yatay, yalnızca simgeli tema anahtarı. Menü içindeki
-// hâlin aynısı, sadece etiketsiz; adı her segmentin aria-label'ı söyler.
-//
-// Şerit `--muted` değil yarı saydam mürekkep: ana sayfada footer, üst ucu
-// `--muted`le aynı tonda başlayıp aşağı koyulaşan bandın üstünde duruyor; düz
-// `--muted` orada ya kayboluyor ya da banttan AÇIK kalıp oyuk yerine kabarık
-// okunuyordu. Mürekkep altındaki zemini koyultur (dark'ta açar), oyuk her
-// zeminde oyuk kalır.
-export function ThemeToggleInline({ className }: { className?: string }) {
-  const { current, setTheme } = useThemeChoice()
+  const iconOnly = variant === "icon"
 
   return (
     <SegmentedControl
       aria-label="Tema seçimi"
-      size="xs"
+      size={iconOnly ? "xs" : "sm"}
       value={current}
       onValueChange={setTheme}
-      className={cn("bg-foreground/6", className)}
+      className={cn(iconOnly && "bg-foreground/6", className)}
     >
       {THEME_OPTIONS.map(({ value, icon: Icon, label }) => (
         <SegmentedControlItem
           key={value}
           value={value}
-          aria-label={label}
-          className="aspect-square px-0"
+          aria-label={iconOnly ? label : undefined}
+          className={iconOnly ? "aspect-square px-0" : undefined}
         >
-          <Icon />
+          {iconOnly ? <Icon /> : label}
         </SegmentedControlItem>
       ))}
     </SegmentedControl>
+  )
+}
+
+export function ThemeMenuItems() {
+  return (
+    <>
+      <DropdownMenuLabel>Tema</DropdownMenuLabel>
+      {/* `pb` yok: alttaki ayırıcının `my-1`i boşluğu zaten veriyor. */}
+      <div className="px-1">
+        <ThemeSwitcher className="w-full" />
+      </div>
+    </>
   )
 }

@@ -99,7 +99,7 @@ export function BasketSaveFooter({
       })
       if (!res.ok) {
         toast.error(
-          "Sepet kaydetme limitin doldu. Eski bir sepeti sil ya da Pro'ya geç."
+          "Sepet kaydetme limitin doldu. Yer açmak için eski bir sepeti sil."
         )
         return
       }

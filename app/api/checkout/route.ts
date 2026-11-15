@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 
 import { auth } from "@/auth"
+import { SUBSCRIPTIONS_OPEN } from "@/lib/billing"
 import { polar, PRO_PRODUCT_IDS, type BillingInterval } from "@/lib/polar/client"
 
 // Pro aboneliği için Polar checkout oturumu açıp kullanıcıyı oraya yönlendirir.
@@ -10,9 +11,13 @@ import { polar, PRO_PRODUCT_IDS, type BillingInterval } from "@/lib/polar/client
 //
 // Kullanım: /api/checkout?interval=month  |  /api/checkout?interval=year
 export async function GET(req: NextRequest) {
+  const origin = req.nextUrl.origin
+  if (!SUBSCRIPTIONS_OPEN) {
+    return NextResponse.redirect(new URL("/?abonelik=kapali", origin))
+  }
+
   const session = await auth()
   const userId = session?.user?.id
-  const origin = req.nextUrl.origin
 
   if (!userId) {
     // Giriş yoksa ana sayfaya dön; login akışı orada tetiklenir.

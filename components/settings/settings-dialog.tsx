@@ -50,6 +50,10 @@ function HighlightedLabel({ text, query }: { text: string; query: string }) {
   )
 }
 
+const FADE = 24
+const FADE_MASK =
+  "linear-gradient(to right, transparent 0, #000 var(--fade-l, 0px), #000 calc(100% - var(--fade-r, 0px)), transparent 100%)"
+
 // Yatay sekmeler; aktif zemin layoutId ile kayar, hover yalnızca yazı rengi.
 function SettingsNavList({
   tab,
@@ -61,12 +65,52 @@ function SettingsNavList({
   const activeId = React.useId()
   const reduceMotion = useReducedMotion()
 
+  // Kenar fade'i kenara kalan mesafeyle büyür; taşma yoksa görünmez.
+  const scrollRef = React.useRef<HTMLUListElement | null>(null)
+  const centeredRef = React.useRef(false)
+  const listRef = React.useCallback((el: HTMLUListElement | null) => {
+    scrollRef.current = el
+    if (!el) return
+    const update = () => {
+      const max = el.scrollWidth - el.clientWidth
+      el.style.setProperty("--fade-l", `${Math.min(el.scrollLeft, FADE)}px`)
+      el.style.setProperty(
+        "--fade-r",
+        `${Math.min(Math.max(max - el.scrollLeft, 0), FADE)}px`
+      )
+    }
+    update()
+    el.addEventListener("scroll", update, { passive: true })
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => {
+      el.removeEventListener("scroll", update)
+      ro.disconnect()
+    }
+  }, [])
+
+  // Aktif sekmeyi ortala; açılışta anında, sonra yumuşak. offsetLeft açılış zoom'undan etkilenmez.
+  React.useEffect(() => {
+    const el = scrollRef.current
+    const item = el?.querySelector<HTMLElement>(`[data-tab="${tab}"]`)
+    if (!el || !item) return
+    el.scrollTo({
+      left: item.offsetLeft - (el.clientWidth - item.offsetWidth) / 2,
+      behavior: centeredRef.current && !reduceMotion ? "smooth" : "instant",
+    })
+    centeredRef.current = true
+  }, [tab, reduceMotion])
+
   return (
-    <ul className="flex min-w-0 flex-1 [scrollbar-width:none] gap-1 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+    <ul
+      ref={listRef}
+      style={{ maskImage: FADE_MASK, WebkitMaskImage: FADE_MASK }}
+      className="relative flex min-w-0 flex-1 [scrollbar-width:none] gap-1 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+    >
       {NAV_ITEMS.map((item) => {
         const isActive = tab === item.key
         return (
-          <li key={item.key} className="shrink-0">
+          <li key={item.key} data-tab={item.key} className="shrink-0">
             <Button
               variant="nav"
               onClick={() => onSelect(item.key)}

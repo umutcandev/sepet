@@ -3,12 +3,14 @@
 import * as React from "react"
 import { RiRefreshLine } from "@remixicon/react"
 
+import { ClosedProButton } from "@/components/subscription/closed-pro-button"
 import { FairUseMark } from "@/components/subscription/fair-use-mark"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
+import { SUBSCRIPTIONS_OPEN } from "@/lib/billing"
 import { getUsageSnapshot } from "@/lib/actions/usage"
 import type { UsageSnapshot } from "@/lib/usage/usage"
 
@@ -265,7 +267,11 @@ function ProUpsell({ onUpgrade }: { onUpgrade?: () => void }) {
             Hemen planını yükselt ve kullanım limitlerini artır. Pro plan ile daha yüksek kullanımların keyfini çıkar!
           </span>
         </div>
-        {onUpgrade && (
+        {!SUBSCRIPTIONS_OPEN ? (
+          <ClosedProButton size="sm" className="self-start">
+            Pro&apos;ya Geç
+          </ClosedProButton>
+        ) : onUpgrade ? (
           <Button
             variant="default"
             size="sm"
@@ -274,7 +280,7 @@ function ProUpsell({ onUpgrade }: { onUpgrade?: () => void }) {
           >
             Pro&apos;ya Geç
           </Button>
-        )}
+        ) : null}
       </div>
     </div>
   )
