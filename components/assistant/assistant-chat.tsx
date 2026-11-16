@@ -1,7 +1,7 @@
 "use client"
 
 import { Squircle } from "@/components/ui/squircle"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import * as React from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport, type UIMessage } from "ai"
@@ -1071,8 +1071,8 @@ function QuotaExceededCard({
       }).format(new Date(resetAt))
     : null
   return (
-    <Card className="mx-auto w-full max-w-3xl p-4">
-      <div className="flex items-start gap-3">
+    <Card className="mx-auto w-full max-w-3xl">
+      <CardContent className="flex items-start gap-3 p-4">
         <RiSparklingLine className="mt-0.5 size-5 shrink-0 text-foreground" />
         <div className="flex flex-col gap-1">
           <span className="text-sm font-medium">
@@ -1085,7 +1085,7 @@ function QuotaExceededCard({
             Daha fazlasına ihtiyacın varsa Pro yakında.
           </span>
         </div>
-      </div>
+      </CardContent>
     </Card>
   )
 }

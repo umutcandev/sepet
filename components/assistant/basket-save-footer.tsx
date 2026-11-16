@@ -121,7 +121,7 @@ export function BasketSaveFooter({
           <RiCheckLine className="size-3.5" aria-hidden="true" />
           Kaydedildi
         </span>
-        <Button type="button" size="sm" variant="outline" asChild>
+        <Button type="button" size="sm" variant="outline" className="h-6" asChild>
           <Link href={`/sepetlerim/${savedId}`}>
             <RiExternalLinkLine data-icon="inline-start" />
             Görüntüle
@@ -137,7 +137,8 @@ export function BasketSaveFooter({
         type="button"
         size="sm"
         variant="default"
-        className="ml-auto"
+        // h-6: şerit aynı kalır, buton altta/üstte 8px nefes alır (h-7'de 6px'e yapışıktı).
+        className="ml-auto h-6"
         onClick={openDialog}
       >
         Kaydet

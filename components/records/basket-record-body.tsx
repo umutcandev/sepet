@@ -2,7 +2,7 @@ import { marketTotals, recommendedPlan } from "@/lib/basket-plan"
 import { formatDate, formatDateTime, formatTL } from "@/lib/format"
 import type { BasketRecordData } from "@/lib/records/record-data"
 import { cn } from "@/lib/utils"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BasketApprovalCard } from "@/components/assistant/basket-approval-card"
 import { OptimizationCard } from "@/components/assistant/optimization-card"
 import { MarketSplitDonut } from "@/components/charts/market-split-donut"
@@ -95,13 +95,13 @@ export function BasketRecordBody({
                 {plan.kind === "combo" ? "2-Market Dağılımı" : "Market Dağılımı"}
               </CardTitle>
             </CardHeader>
-            <div className="p-4">
+            <CardContent className="p-4">
               <MarketSplitDonut
                 data={marketSplit}
                 totalLabel={`${plan.label} toplamı`}
                 emptyHint="Dağılım için yeterli market yok."
               />
-            </div>
+            </CardContent>
           </Card>
         )}
       </div>

@@ -13,7 +13,13 @@ import {
   RiArrowLeftRightLine,
   RiErrorWarningLine,
 } from "@remixicon/react"
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MarqueeText } from "@/components/ui/marquee-text"
 import { Button } from "@/components/ui/button"
@@ -605,7 +611,7 @@ export function OptimizationCard({
       <CardHeader>
         <CardTitle>Sepet Özeti</CardTitle>
       </CardHeader>
-      <div className="divide-y">
+      <CardContent className="divide-y">
         {comboFirst ? (
           <>
             {comboRow}
@@ -617,8 +623,9 @@ export function OptimizationCard({
             {comboRow}
           </>
         )}
-      </div>
-      {footer && <CardFooter>{footer}</CardFooter>}
+      </CardContent>
+      {/* Buton h-6: inen 4px dolguya eklenir (2+2), şerit h-7'deki 37px'inde kalır. */}
+      {footer && <CardFooter className="pt-2.25 pb-1">{footer}</CardFooter>}
     </Card>
   )
 }

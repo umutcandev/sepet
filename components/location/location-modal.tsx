@@ -580,7 +580,7 @@ export function LocationModal() {
                 className="h-9 pl-9 [&::-webkit-search-cancel-button]:hidden"
               />
             </div>
-            <div className="max-h-64 overflow-y-auto overscroll-contain rounded-lg border p-1">
+            <div className="max-h-64 overflow-y-auto overscroll-contain rounded-lg p-1 smooth-shadow-ring-xs">
               {filteredProvinces.length === 0 ? (
                 <p className="py-6 text-center text-sm text-muted-foreground">
                   İl bulunamadı

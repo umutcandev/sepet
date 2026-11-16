@@ -53,32 +53,11 @@ export const MessageContent = ({
   ...props
 }: MessageContentProps) => (
   <div
-    className={cn(
-      // `is-user:dark` KALDIRILDI: `is-user` diye bir varyant tanımlı değil,
-      // Tailwind adayı sessizce düşürüyordu. Balonun paleti zaten aşağıdaki
-      // `bg-secondary` + `text-foreground` ile açıkça yazılı.
+    className={cn(    
       "flex w-fit min-w-0 max-w-full flex-col gap-2 text-sm",
       "group-[.is-user]:ml-auto group-[.is-user]:overflow-hidden group-[.is-user]:rounded-lg group-[.is-user]:bg-secondary group-[.is-user]:px-3 group-[.is-user]:py-1.5 group-[.is-user]:text-foreground",
-      // Kenar: kartlarla aynı `smooth-shadow-ring-sm` (halkası `--border`).
-      //
-      // Squircle YOK, bilinçli. Lisse köşeyi clip-path ile kesiyor ve bu,
-      // elemanın kendi box-shadow'unu da siliyor; dış halka ancak `effects` ile
-      // (her balona SVG + sarmalayıcı div, tema değişiminde remount) görünürdü.
-      // Eğri bu yarıçapta (10px) `border-radius`tan yarım pikselin altında
-      // sapıyor (bkz. squircle.tsx), dokunmatikte zaten düz `border-radius`.
-      // Eskiden bu yüzden halka içerideydi (`inset-ring`) ve gölge yoktu.
       "group-[.is-user]:smooth-shadow-ring-sm",
-      // Asistan içeriği sütunu doldurur: metin için fark etmez (balonu yok),
-      // ama kartlar içerikleri kadar genişlediğinde aynı sohbette 411, 463 ve
-      // 703px'lik kartlar alt alta diziliyordu.
-      //
-      // KIRPMAZ (`overflow-hidden` yalnız balonda). Kartlar bu kutunun iki
-      // yanına yaslanıyor; kırpsaydı dış halkaları ve gölgeleri sağdan, soldan
-      // ve alttan düz kesilirdi. Geniş içerik kendi kabında kayar (Streamdown
-      // kod bloğu ve tablosu `overflow-x-auto`); bölünemeyen uzun bir sözcük
-      // (URL) için `break-words`.
       "group-[.is-assistant]:w-full group-[.is-assistant]:break-words group-[.is-assistant]:text-foreground",
-      // Metnin ardından gelen kart 8 px'lik aralıkta metne yapışıyordu.
       "[&>.message-prose+:not(.message-prose)]:mt-2",
       className
     )}
@@ -346,33 +325,17 @@ export type MessageResponseProps = ComponentProps<typeof Streamdown>;
 
 const streamdownPlugins = { cjk, code, math, mermaid };
 
-/* Streamdown'ın kendi liste tipografisi sohbet balonu için uygun değil:
-   `list-inside` madde işaretini metnin içine alır (girinti ve asılı hizalama
-   olmaz, saran satır işaretin altına kayar) ve `li_py-1` maddeler arasını
-   paragraf gibi açar. Aşağıdaki arbitrary variant'lar descendant seçici
-   ürettiği için (0,1,1) streamdown'ın düz utility'lerini (0,1,0) ezer.
-   Aynı ölçüler asistanın reasoning bloğunda da kullanılıyor. */
 const markdownTypography =
   "[&_ul]:list-outside [&_ul]:list-disc [&_ul]:pl-5 " +
   "[&_ol]:list-outside [&_ol]:list-decimal [&_ol]:pl-5 " +
   "[&_li]:py-0.5 [&_li]:pl-1 [&_li]:marker:text-muted-foreground"
-
-/* Streamdown'ın tablo, kod ve mermaid kutuları: iki katlı çerçeve (dışta
-   `bg-sidebar` tepsi, içte `bg-background` ekran), ikisi de düz `border`.
-   Katmanlar korunuyor, kenarlar uygulamanın geri kalanıyla aynı
-   `smooth-shadow-ring-*`e geçiyor: tepsi kartlarla aynı `-sm`, içindeki ekran
-   iç içe yüzeylerin `-xs`i. `border-0` şart, yoksa halkanın yanına ikinci bir
-   çizgi düşer. Seçiciler `data-streamdown` öznitelikleriyle (kütüphanenin
-   kararlı kancası), içteki iki kutunun özniteliği olmadığı için yapıyla;
-   (0,2,0) özgüllük kütüphanenin düz utility'lerini ezer. Streamdown
-   güncellenince bu yapının durduğunu kontrol et. */
 const markdownSurfaces =
-  "[&_[data-streamdown=table-wrapper]]:border-0 [&_[data-streamdown=table-wrapper]]:smooth-shadow-ring-sm " +
-  "[&_[data-streamdown=table-wrapper]>div:has(>table)]:border-0 [&_[data-streamdown=table-wrapper]>div:has(>table)]:smooth-shadow-ring-xs " +
-  "[&_[data-streamdown=code-block]]:border-0 [&_[data-streamdown=code-block]]:smooth-shadow-ring-sm " +
-  "[&_[data-streamdown=code-block-body]]:border-0 [&_[data-streamdown=code-block-body]]:smooth-shadow-ring-xs " +
-  "[&_[data-streamdown=mermaid-block]]:border-0 [&_[data-streamdown=mermaid-block]]:smooth-shadow-ring-sm " +
-  "[&_[data-streamdown=mermaid-block]>.bg-background]:border-0 [&_[data-streamdown=mermaid-block]>.bg-background]:smooth-shadow-ring-xs"
+  "[&_[data-streamdown=table-wrapper]]:border-0 [&_[data-streamdown=table-wrapper]]:smooth-shadow-ring-sm [&_[data-streamdown=table-wrapper]]:smooth-ring-card-edge " +
+  "[&_[data-streamdown=table-wrapper]>div:has(>table)]:border-0 [&_[data-streamdown=table-wrapper]>div:has(>table)]:smooth-shadow-ring-xs [&_[data-streamdown=table-wrapper]>div:has(>table)]:smooth-ring-card-divider [&_[data-streamdown=table-wrapper]>div:has(>table)]:[--border:var(--card-divider)] " +
+  "[&_[data-streamdown=code-block]]:border-0 [&_[data-streamdown=code-block]]:smooth-shadow-ring-sm [&_[data-streamdown=code-block]]:smooth-ring-card-edge " +
+  "[&_[data-streamdown=code-block-body]]:border-0 [&_[data-streamdown=code-block-body]]:smooth-shadow-ring-xs [&_[data-streamdown=code-block-body]]:smooth-ring-card-divider " +
+  "[&_[data-streamdown=mermaid-block]]:border-0 [&_[data-streamdown=mermaid-block]]:smooth-shadow-ring-sm [&_[data-streamdown=mermaid-block]]:smooth-ring-card-edge " +
+  "[&_[data-streamdown=mermaid-block]>.bg-background]:border-0 [&_[data-streamdown=mermaid-block]>.bg-background]:smooth-shadow-ring-xs [&_[data-streamdown=mermaid-block]>.bg-background]:smooth-ring-card-divider"
 
 export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (
@@ -394,17 +357,6 @@ export const MessageResponse = memo(
 
 MessageResponse.displayName = "MessageResponse";
 
-/* Modelin yazdığı metin (asistan cevabı, "Düşündüm" notu) için dar markdown.
-   Modelin girdisi kullanıcının tam kontrolünde değil: yüklenen bir görseldeki
-   yazı (dolaylı prompt injection) modele, asistanın sesiyle tıklanabilir bir
-   bağlantı ya da dış adresli bir görsel yazdırabilirdi. Bağlantı ve görsel
-   çizilmez (bağlantı yazısı düz metin kalır, çıplak adresler de otomatik
-   bağlantıya dönmez); ham HTML'den gelen <a>/<img> de aynı süzgece takılır.
-   Diyagram (mermaid) ve formül eklentileri kapalı: mermaid etiketlerdeki
-   <a href>'i kendi SVG'sine yazıyor ve o SVG doğrudan DOM'a basıldığı için
-   yukarıdaki süzgeci hiç görmüyor. Asistanın kendi ürettiği metinlerde bağlantı
-   ya da diyagram yok; paylaşılan sayfa aynı kuralı uyguluyor
-   (shared-conversation). */
 const MODEL_TEXT_DISALLOWED = ["a", "img"];
 const modelTextPlugins = { cjk, code };
 

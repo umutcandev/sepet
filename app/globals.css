@@ -83,6 +83,9 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-card-tray: var(--card-tray);
+  --color-card-edge: var(--card-edge);
+  --color-card-divider: var(--card-divider);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
   --radius-sm: calc(var(--radius) * 0.6);
@@ -102,6 +105,11 @@
   --foreground: #3d2418;
   --card: #fffbf5;
   --card-foreground: #3d2418;
+  /* Kart: tepsi iç yüzeyden (--card) bir ton koyu; kenar ve iç ayraç
+     --border'dan sessiz, ayraç kenardan da sessiz. */
+  --card-tray: color-mix(in oklab, var(--muted) 55%, var(--card));
+  --card-edge: color-mix(in oklab, var(--border) 75%, var(--background));
+  --card-divider: color-mix(in oklab, var(--border) 60%, var(--card));
   --popover: #fffbf5;
   --popover-foreground: #3d2418;
   --primary: #6d4530;
@@ -181,6 +189,9 @@
   --foreground: #f5e8da;
   --card: #221a14;
   --card-foreground: #f5e8da;
+  --card-tray: color-mix(in oklab, var(--card) 35%, var(--background));
+  --card-edge: color-mix(in oklab, var(--border) 55%, var(--background));
+  --card-divider: color-mix(in oklab, var(--border) 40%, var(--card));
   --popover: #221a14;
   --popover-foreground: #f5e8da;
   --primary: #d4a574;
@@ -1597,15 +1608,12 @@
 }
 /* Sıra sıra satır zemini hafif: satırı izlemeye yetecek kadar, keskin
    şeritler gibi görünmeyecek kadar (yarım ton keskin geliyordu). Yalnız
-   `.table-zebra` satırları sayılır (`of`). `.table-head-soft` aynı hafif tonda
-   başlık şeridi: satırları düz kalan tablolarda (Sepetindeki Kalemler). */
-.table-zebra:nth-child(even of .table-zebra),
-.table-head-soft {
+   `.table-zebra` satırları sayılır (`of`). */
+.table-zebra:nth-child(even of .table-zebra) {
   box-shadow: inset 0 0 0 9999px
     color-mix(in oklab, var(--muted) 30%, transparent);
 }
-.dark .table-zebra:nth-child(even of .table-zebra),
-.dark .table-head-soft {
+.dark .table-zebra:nth-child(even of .table-zebra) {
   box-shadow: inset 0 0 0 9999px
     color-mix(in oklab, var(--muted) 45%, transparent);
 }

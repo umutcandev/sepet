@@ -1,4 +1,4 @@
-import { Card, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 /**
@@ -22,22 +22,18 @@ function CardSkeleton({
   return (
     <Card>
       <CardHeaderSkeleton width={headerWidth} />
-      <div className="divide-y">
+      <CardContent className="divide-y">
         {Array.from({ length: rows }).map((_, i) => (
           <div key={i} className="flex min-h-10 items-center justify-between px-4 py-2">
             <Skeleton className="h-3.5 w-24" />
             <Skeleton className="h-3.5 w-20" />
           </div>
         ))}
-      </div>
+      </CardContent>
     </Card>
   )
 }
 
-/**
- * Kart başlığı — gerçek kartlarla aynı ritim (`min-h-12`, `py-2`). İskeletin
- * `py-3` kullandığı yerlerde yüklenince başlık 4px kayıyordu.
- */
 function CardHeaderSkeleton({
   width = "w-28",
   extra,
@@ -47,7 +43,7 @@ function CardHeaderSkeleton({
 }) {
   return (
     <CardHeader>
-      <Skeleton className={`h-4 ${width}`} />
+      <Skeleton className={`h-3.5 ${width}`} />
       {extra}
     </CardHeader>
   )
@@ -60,21 +56,23 @@ function ItemsCardSkeleton() {
         width="w-36"
         extra={<Skeleton className="h-5 w-10 rounded-md" />}
       />
-      <ul className="divide-y">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <li key={i} className="flex items-start gap-3 px-4 py-3">
-            <Skeleton className="size-10 shrink-0 rounded-md" />
-            <div className="flex-1 space-y-1.5">
-              <Skeleton className="h-4 w-2/5" />
-              <Skeleton className="h-3 w-3/5" />
-            </div>
-            <div className="space-y-1.5 text-right">
-              <Skeleton className="ml-auto h-3 w-14" />
-              <Skeleton className="ml-auto h-4 w-20" />
-            </div>
-          </li>
-        ))}
-      </ul>
+      <CardContent asChild>
+        <ul className="divide-y">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <li key={i} className="flex items-start gap-3 px-4 py-3">
+              <Skeleton className="size-10 shrink-0 rounded-md" />
+              <div className="flex-1 space-y-1.5">
+                <Skeleton className="h-4 w-2/5" />
+                <Skeleton className="h-3 w-3/5" />
+              </div>
+              <div className="space-y-1.5 text-right">
+                <Skeleton className="ml-auto h-3 w-14" />
+                <Skeleton className="ml-auto h-4 w-20" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
     </Card>
   )
 }
@@ -83,7 +81,7 @@ function SummaryCardSkeleton() {
   return (
     <Card>
       <CardHeaderSkeleton width="w-24" />
-      <div className="divide-y">
+      <CardContent className="divide-y">
         {Array.from({ length: 2 }).map((_, i) => (
           <div key={i} className="flex items-center gap-3 px-4 py-3">
             <Skeleton className="size-8 shrink-0 rounded-full" />
@@ -94,7 +92,7 @@ function SummaryCardSkeleton() {
             <Skeleton className="h-6 w-20" />
           </div>
         ))}
-      </div>
+      </CardContent>
     </Card>
   )
 }
@@ -104,7 +102,7 @@ function DonutCardSkeleton() {
   return (
     <Card>
       <CardHeaderSkeleton width="w-40" />
-      <div className="flex items-center gap-3 p-4 sm:gap-4">
+      <CardContent className="flex items-center gap-3 p-4 sm:gap-4">
         <Skeleton className="size-[140px] shrink-0 rounded-full sm:size-[168px]" />
         <div className="grid min-w-0 flex-1 gap-1">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -117,7 +115,7 @@ function DonutCardSkeleton() {
             </div>
           ))}
         </div>
-      </div>
+      </CardContent>
     </Card>
   )
 }
@@ -143,7 +141,7 @@ function BasketItemsTableSkeleton({ rows = 4 }: { rows?: number }) {
   return (
     <Card>
       <CardHeaderSkeleton width="w-36" />
-      <div className="divide-y">
+      <CardContent className="divide-y">
         <div className="flex h-10 items-center gap-4 px-4">
           <Skeleton className="h-2.5 w-10" />
           <Skeleton className="ml-auto h-2.5 w-9" />
@@ -156,7 +154,7 @@ function BasketItemsTableSkeleton({ rows = 4 }: { rows?: number }) {
             <Skeleton className="h-3 w-11" />
           </div>
         ))}
-      </div>
+      </CardContent>
     </Card>
   )
 }
@@ -210,7 +208,7 @@ function OpenSummaryCardSkeleton() {
   return (
     <Card>
       <CardHeaderSkeleton width="w-24" />
-      <div className="divide-y">
+      <CardContent className="divide-y">
         <div>
           {row("h-[64.5px]", false)}
           <div className="border-t bg-muted/30 px-2 py-1">
@@ -230,7 +228,7 @@ function OpenSummaryCardSkeleton() {
             <BreakdownItemSkeleton />
           </div>
         </div>
-      </div>
+      </CardContent>
     </Card>
   )
 }
@@ -269,9 +267,9 @@ export function ReceiptDetailSkeleton() {
         <div className="order-2 min-w-0 space-y-5 md:order-1">
           <Card>
             <CardHeaderSkeleton width="w-24" />
-            <div className="p-3">
-              <Skeleton className="h-40 w-full rounded-lg md:h-56" />
-            </div>
+            <CardContent className="p-3">
+              <Skeleton className="h-40 w-full rounded-sm md:h-56" />
+            </CardContent>
           </Card>
           <SummaryCardSkeleton />
         </div>

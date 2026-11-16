@@ -10,7 +10,7 @@ import {
   RiSearchLine,
   RiSparklingLine,
 } from "@remixicon/react"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { toast } from "@/components/ui/sonner"
 
 import {
@@ -394,19 +394,21 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
       </div>
 
       {isEmpty ? (
-        <div className="flex flex-col items-center gap-3 rounded-2xl bg-card px-6 py-12 text-center smooth-shadow-ring-sm">
-          <div className="rounded-full bg-secondary p-3 text-primary">
-            <RiSparklingLine className="size-5" />
-          </div>
-          <h2 className="text-base font-medium">Henüz fiş kaydetmedin</h2>
-          <p className="max-w-sm text-sm text-muted-foreground">
-            Asistan&apos;a market fişinin fotoğrafını yükle. Sana ne kadar
-            tasarruf edebileceğini hesaplayıp burada saklayalım.
-          </p>
-          <Button variant="default" asChild className="mt-2">
-            <Link href="/asistan">Asistan&apos;a git</Link>
-          </Button>
-        </div>
+        <Card>
+          <CardContent className="flex flex-col items-center gap-3 px-6 py-12 text-center">
+            <div className="rounded-full bg-secondary p-3 text-primary">
+              <RiSparklingLine className="size-5" />
+            </div>
+            <h2 className="text-base font-medium">Henüz fiş kaydetmedin</h2>
+            <p className="max-w-sm text-sm text-muted-foreground">
+              Asistan&apos;a market fişinin fotoğrafını yükle. Sana ne kadar
+              tasarruf edebileceğini hesaplayıp burada saklayalım.
+            </p>
+            <Button variant="default" asChild className="mt-2">
+              <Link href="/asistan">Asistan&apos;a git</Link>
+            </Button>
+          </CardContent>
+        </Card>
       ) : (
         <>
           {/* Arama + sıralama */}
@@ -491,11 +493,13 @@ export function ReceiptsBrowser({ initial, initialHasMore }: Props) {
           {/* Liste / sonuç durumları */}
           {displayed.length === 0 ? (
             isSearchActive ? (
-              <Card className="px-6 py-12 text-center text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">
-                  “{debouncedQuery.trim()}”
-                </span>{" "}
-                için sonuç bulunamadı.
+              <Card>
+                <CardContent className="px-6 py-12 text-center text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">
+                    “{debouncedQuery.trim()}”
+                  </span>{" "}
+                  için sonuç bulunamadı.
+                </CardContent>
               </Card>
             ) : null
           ) : (

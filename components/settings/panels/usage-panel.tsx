@@ -102,7 +102,7 @@ export function UsagePanel({ onUpgrade }: { onUpgrade?: () => void }) {
       {status === "loading" && <UsageSkeleton />}
 
       {status === "error" && (
-        <div className="flex flex-col items-start gap-3 rounded-xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+        <div className="flex flex-col items-start gap-3 rounded-xl bg-muted/40 p-4 text-sm text-muted-foreground smooth-shadow-ring-xs">
           <span>Kullanım bilgisi şu an yüklenemedi. Lütfen tekrar dene.</span>
           <Button
             variant="outline"
@@ -257,7 +257,7 @@ function UsageMeter({
 
 function ProUpsell({ onUpgrade }: { onUpgrade?: () => void }) {
   return (
-    <div className="flex items-start gap-3 rounded-xl border border-border bg-muted/40 p-4">
+    <div className="flex items-start gap-3 rounded-xl bg-muted/40 p-4 smooth-shadow-ring-xs">
       <div className="flex min-w-0 grow flex-col gap-2">
         <div className="flex flex-col gap-0.5">
           <span className="text-sm font-medium">

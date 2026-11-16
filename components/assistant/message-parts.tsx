@@ -41,7 +41,8 @@ export function renderToolPart(
   suppressLoader = false
 ) {
   if (part.state === "output-available" && part.output !== undefined) {
-    return <div key={key}>{renderResult(part.output)}</div>
+    // Kartlar tek, sabit bir genişlikte: sütunu (~730px) doldurunca 3 satırlık tablo bile yayılıyordu.
+    return <div key={key} className="w-full max-w-xl">{renderResult(part.output)}</div>
   }
   if (part.state === "output-error") {
     return (

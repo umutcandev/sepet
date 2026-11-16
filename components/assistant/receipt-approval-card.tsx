@@ -2,7 +2,13 @@
 
 import * as React from "react"
 import { RiAddLine, RiCheckLine, RiCloseLine } from "@remixicon/react"
-import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { StatusChip } from "@/components/ui/status-chip"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -144,233 +150,238 @@ export function ReceiptApprovalCard({
         </div>
       </CardHeader>
 
-      {!readOnly && (
-        <div className="grid gap-2 border-b px-4 py-3 sm:grid-cols-2">
-          <label className="flex flex-col gap-1 text-xs text-muted-foreground">
-            Market
-            <Input
-              value={marketName}
-              onChange={(e) => setMarketName(e.target.value)}
-              placeholder="A101 / Migros..."
-              className="h-8"
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-xs text-muted-foreground">
-            Tarih
-            <Input
-              type="date"
-              value={purchaseDate}
-              onChange={(e) => setPurchaseDate(e.target.value)}
-              className="h-8"
-            />
-          </label>
-        </div>
-      )}
-      <div className="overflow-x-auto">
-        <Table className={cn("sm:min-w-[600px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4", STACK_TABLE)}>
-          <TableHeader className="max-sm:hidden">
-            {/* Büyük harf metinde (ve data-label'larda) yazılı, CSS
-                `uppercase` ile değil: bazı tarayıcılar onu Türkçe kurala göre
-                yapmıyor ("BIRIM"). */}
-            <TableRow className="text-[0.6875rem] tracking-wide text-muted-foreground">
-              <TableHead className="min-w-[140px]">ÜRÜN</TableHead>
-              <TableHead className="w-20 text-right">ADET</TableHead>
-              <TableHead className="w-24">BİRİM</TableHead>
-              <TableHead className="w-24 text-right">B. FİYAT</TableHead>
-              <TableHead className="w-24 text-right">TUTAR</TableHead>
-              {!readOnly && <TableHead className="w-8" />}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {items.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={readOnly ? 5 : 6}
-                  className="py-6 text-center text-xs text-muted-foreground"
-                >
-                  Hiç kalem kalmadı.
-                </TableCell>
+      <CardContent>
+        {!readOnly && (
+          <div className="grid gap-2 border-b px-4 py-3 sm:grid-cols-2">
+            <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+              Market
+              <Input
+                value={marketName}
+                onChange={(e) => setMarketName(e.target.value)}
+                placeholder="A101 / Migros..."
+                className="h-8"
+              />
+            </label>
+            <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+              Tarih
+              <Input
+                type="date"
+                value={purchaseDate}
+                onChange={(e) => setPurchaseDate(e.target.value)}
+                className="h-8"
+              />
+            </label>
+          </div>
+        )}
+        <div className="overflow-x-auto">
+          <Table className={cn("sm:min-w-[540px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4", STACK_TABLE)}>
+            <TableHeader className="max-sm:hidden">
+              {/* Büyük harf metinde (ve data-label'larda) yazılı, CSS
+                  `uppercase` ile değil: bazı tarayıcılar onu Türkçe kurala göre
+                  yapmıyor ("BIRIM"). */}
+              <TableRow className="text-[0.6875rem] tracking-wide text-muted-foreground">
+                <TableHead className="min-w-[140px]">ÜRÜN</TableHead>
+                <TableHead className="w-20 text-right">ADET</TableHead>
+                <TableHead className="w-24">BİRİM</TableHead>
+                <TableHead className="w-24 text-right">B. FİYAT</TableHead>
+                <TableHead className="w-24 text-right">TUTAR</TableHead>
+                {!readOnly && <TableHead className="w-8" />}
               </TableRow>
-            ) : (
-              items.map((it) => (
-                <TableRow
-                  key={it._id}
-                  className={cn(
-                    STACK_ROW,
-                    // Üst satır: ürün adı + sil. Alt satır: adet, birim, fiyat,
-                    // tutar. Birim 5rem: seçicinin ok dolgusundan sonra
-                    // "paket"e yer kalsın (eşit bölünce "ad…" oluyordu).
-                    // Salt okunurda değerlerin yüksekliği farklı; alta
-                    // hizalanınca başlıklar basamak basamak duruyordu.
-                    readOnly
-                      ? "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)] max-sm:items-start"
-                      : "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)_auto]",
-                  )}
-                >
+            </TableHeader>
+            <TableBody>
+              {items.length === 0 ? (
+                <TableRow>
                   <TableCell
+                    colSpan={readOnly ? 5 : 6}
+                    className="py-6 text-center text-xs text-muted-foreground"
+                  >
+                    Hiç kalem kalmadı.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                items.map((it) => (
+                  <TableRow
+                    key={it._id}
                     className={cn(
-                      "align-top",
+                      STACK_ROW,
+                      // Üst satır: ürün adı + sil. Alt satır: adet, birim, fiyat,
+                      // tutar. Birim 5rem: seçicinin ok dolgusundan sonra
+                      // "paket"e yer kalsın (eşit bölünce "ad…" oluyordu).
+                      // Salt okunurda değerlerin yüksekliği farklı; alta
+                      // hizalanınca başlıklar basamak basamak duruyordu.
                       readOnly
-                        ? "max-sm:col-span-full"
-                        : "max-sm:col-span-4 max-sm:row-start-1",
+                        ? "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)] max-sm:items-start"
+                        : "max-sm:grid-cols-[3rem_5rem_minmax(0,1fr)_minmax(0,1fr)_auto]",
                     )}
                   >
-                    {readOnly ? (
-                      <div className="text-sm font-medium">{it.rawName}</div>
-                    ) : (
-                      <Input
-                        value={it.rawName}
-                        onChange={(e) =>
-                          updateItem(it._id, {
-                            rawName: e.target.value,
-                            // searchQuery'den miktar/birim ayıkla — API aramasını
-                            // "pepsi 2.5 lt" gibi bozuk sorgularla kirletme.
-                            searchQuery: stripQuantityTokens(e.target.value),
-                          })
-                        }
-                        aria-label="Ürün adı"
-                        maxLength={MAX_ITEM_NAME}
-                        className="h-8 text-sm"
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell
-                    data-label="ADET"
-                    className={cn("text-right", STACK_CELL)}
-                  >
-                    {readOnly ? (
-                      <span className="tabular-nums">
-                        {formatQty(it.quantity)}
-                      </span>
-                    ) : (
-                      <Input
-                        type="number"
-                        step="0.01"
-                        value={it.quantity}
-                        onChange={(e) =>
-                          updateItem(it._id, {
-                            quantity: parseFloat(e.target.value) || 0,
-                          })
-                        }
-                        aria-label="Adet"
-                        className="h-8 w-full text-right text-sm tabular-nums"
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell data-label="BİRİM" className={STACK_CELL}>
-                    {readOnly ? (
-                      <span className="text-xs text-muted-foreground max-sm:text-sm">
-                        {it.unit}
-                      </span>
-                    ) : (
-                      <NativeSelect
-                        value={it.unit}
-                        onChange={(e) =>
-                          updateItem(it._id, {
-                            unit: e.target
-                              .value as (typeof UNIT_VALUES)[number],
-                          })
-                        }
-                        aria-label="Birim"
-                        className="h-8 text-sm"
-                      >
-                        {UNIT_VALUES.map((u) => (
-                          <option key={u} value={u}>
-                            {u}
-                          </option>
-                        ))}
-                      </NativeSelect>
-                    )}
-                  </TableCell>
-                  <TableCell
-                    data-label="B. FİYAT"
-                    className={cn("text-right tabular-nums", STACK_CELL)}
-                  >
-                    {readOnly ? (
-                      <span>{formatTLOrDash(it.unitPrice)}</span>
-                    ) : (
-                      <Input
-                        type="number"
-                        step="0.01"
-                        value={it.unitPrice ?? ""}
-                        onChange={(e) =>
-                          updateItem(it._id, {
-                            unitPrice:
-                              e.target.value === ""
-                                ? null
-                                : parseFloat(e.target.value),
-                          })
-                        }
-                        aria-label="Birim fiyat"
-                        className="h-8 w-full text-right text-sm tabular-nums"
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell
-                    data-label="TUTAR"
-                    className={cn(
-                      "text-right tabular-nums",
-                      STACK_CELL,
-                      !readOnly && "max-sm:col-span-2",
-                    )}
-                  >
-                    <span
+                    <TableCell
                       className={cn(
-                        !readOnly && "max-sm:flex max-sm:h-8 max-sm:items-center",
+                        "align-top",
+                        readOnly
+                          ? "max-sm:col-span-full"
+                          : "max-sm:col-span-4 max-sm:row-start-1",
                       )}
                     >
-                      {formatTLOrDash(
-                        it.totalPrice ??
-                        (it.unitPrice != null
-                          ? it.unitPrice * it.quantity
-                          : null),
+                      {readOnly ? (
+                        <div className="text-sm font-medium">{it.rawName}</div>
+                      ) : (
+                        <Input
+                          value={it.rawName}
+                          onChange={(e) =>
+                            updateItem(it._id, {
+                              rawName: e.target.value,
+                              // searchQuery'den miktar/birim ayıkla — API aramasını
+                              // "pepsi 2.5 lt" gibi bozuk sorgularla kirletme.
+                              searchQuery: stripQuantityTokens(e.target.value),
+                            })
+                          }
+                          aria-label="Ürün adı"
+                          maxLength={MAX_ITEM_NAME}
+                          className="h-8 text-sm"
+                        />
                       )}
-                    </span>
-                  </TableCell>
-                  {!readOnly && (
-                    <TableCell className="text-right max-sm:col-start-5 max-sm:row-start-1 max-sm:self-center">
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="icon-sm"
-                        onClick={() => removeItem(it._id)}
-                        aria-label="Kalemi sil"
-                      >
-                        <RiCloseLine className="size-3.5" />
-                      </Button>
                     </TableCell>
-                  )}
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow className="max-sm:flex max-sm:items-center max-sm:gap-2 max-sm:px-4 max-sm:py-2.5">
-              <TableCell colSpan={4} className="text-muted-foreground max-sm:flex-1">
-                <div className="flex items-center gap-2">
-                  {readOnly && (
-                    <span className="flex items-center gap-1.5 text-xs">
-                      {marketName && <MarketLogo name={marketName} size="sm" />}
-                      <span className="font-medium text-foreground">
-                        {marketName || "—"}
+                    <TableCell
+                      data-label="ADET"
+                      className={cn("text-right", STACK_CELL)}
+                    >
+                      {readOnly ? (
+                        <span className="tabular-nums">
+                          {formatQty(it.quantity)}
+                        </span>
+                      ) : (
+                        <Input
+                          type="number"
+                          step="0.01"
+                          value={it.quantity}
+                          onChange={(e) =>
+                            updateItem(it._id, {
+                              quantity: parseFloat(e.target.value) || 0,
+                            })
+                          }
+                          aria-label="Adet"
+                          className="h-8 w-full text-right text-sm tabular-nums"
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell data-label="BİRİM" className={STACK_CELL}>
+                      {readOnly ? (
+                        <span className="text-xs text-muted-foreground max-sm:text-sm">
+                          {it.unit}
+                        </span>
+                      ) : (
+                        <NativeSelect
+                          value={it.unit}
+                          onChange={(e) =>
+                            updateItem(it._id, {
+                              unit: e.target
+                                .value as (typeof UNIT_VALUES)[number],
+                            })
+                          }
+                          aria-label="Birim"
+                          className="h-8 text-sm"
+                        >
+                          {UNIT_VALUES.map((u) => (
+                            <option key={u} value={u}>
+                              {u}
+                            </option>
+                          ))}
+                        </NativeSelect>
+                      )}
+                    </TableCell>
+                    <TableCell
+                      data-label="B. FİYAT"
+                      className={cn("text-right tabular-nums", STACK_CELL)}
+                    >
+                      {readOnly ? (
+                        <span>{formatTLOrDash(it.unitPrice)}</span>
+                      ) : (
+                        <Input
+                          type="number"
+                          step="0.01"
+                          value={it.unitPrice ?? ""}
+                          onChange={(e) =>
+                            updateItem(it._id, {
+                              unitPrice:
+                                e.target.value === ""
+                                  ? null
+                                  : parseFloat(e.target.value),
+                            })
+                          }
+                          aria-label="Birim fiyat"
+                          className="h-8 w-full text-right text-sm tabular-nums"
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell
+                      data-label="TUTAR"
+                      className={cn(
+                        "text-right tabular-nums",
+                        STACK_CELL,
+                        !readOnly && "max-sm:col-span-2",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          !readOnly && "max-sm:flex max-sm:h-8 max-sm:items-center",
+                        )}
+                      >
+                        {formatTLOrDash(
+                          it.totalPrice ??
+                          (it.unitPrice != null
+                            ? it.unitPrice * it.quantity
+                            : null),
+                        )}
                       </span>
-                      {" · "}
-                      {purchaseDate || "tarih belirsiz"}
+                    </TableCell>
+                    {!readOnly && (
+                      <TableCell className="text-right max-sm:col-start-5 max-sm:row-start-1 max-sm:self-center">
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon-sm"
+                          onClick={() => removeItem(it._id)}
+                          aria-label="Kalemi sil"
+                        >
+                          <RiCloseLine className="size-3.5" />
+                        </Button>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow className="max-sm:flex max-sm:items-center max-sm:gap-2 max-sm:px-4 max-sm:py-2.5">
+                {/* max-sm:min-w-0 + truncate: dar ekranda market/tarih kısalır; satır taşıp tabloyu kaydırmaz. */}
+                <TableCell colSpan={4} className="text-muted-foreground max-sm:min-w-0 max-sm:flex-1">
+                  <div className="flex items-center gap-2">
+                    {readOnly && (
+                      <span className="flex min-w-0 items-center gap-1.5 text-xs">
+                        {marketName && <MarketLogo name={marketName} size="sm" />}
+                        <span className="truncate">
+                          <span className="font-medium text-foreground">
+                            {marketName || "—"}
+                          </span>
+                          {" · "}
+                          {purchaseDate || "tarih belirsiz"}
+                        </span>
+                      </span>
+                    )}
+                    <span className="ml-auto shrink-0 text-xs font-medium">
+                      FİŞ TOPLAMI
                     </span>
-                  )}
-                  <span className="ml-auto text-xs font-medium">
-                    FİŞ TOPLAMI
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell className="text-right text-sm font-medium text-foreground tabular-nums">
-                {formatTLOrDash(ocr.totalAmount ?? totalReceipt)}
-              </TableCell>
-              {!readOnly && <TableCell className="max-sm:hidden" />}
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </div>
+                  </div>
+                </TableCell>
+                <TableCell className="text-right text-sm font-medium text-foreground tabular-nums">
+                  {formatTLOrDash(ocr.totalAmount ?? totalReceipt)}
+                </TableCell>
+                {!readOnly && <TableCell className="max-sm:hidden" />}
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </div>
+      </CardContent>
 
       {!readOnly && (
         <CardFooter>

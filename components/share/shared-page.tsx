@@ -11,7 +11,7 @@ import { LEGAL_SUPPORT_EMAIL } from "@/components/legal/legal-content"
 import { RecordNotFoundState } from "@/components/records/record-not-found"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { absoluteUrl } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
@@ -147,22 +147,24 @@ export function SharedPage({
         {children}
 
         <div className="mt-14 grid gap-4">
-          <Card className="flex flex-col items-start gap-3 p-5 sm:flex-row sm:items-center">
-            <div className="grid flex-1 gap-1">
-              <span className="text-base font-medium">
-                Sen de en ucuz sepeti bul
-              </span>
-              <span className="text-sm text-muted-foreground">
-                Listeni yaz ya da fişini yükle; Sepet marketlerdeki güncel
-                fiyatları karşılaştırsın.
-              </span>
-            </div>
-            <Button variant="default" asChild>
-              <Link href="/asistan">
-                Asistanı dene
-                <RiArrowRightLine data-icon="inline-end" />
-              </Link>
-            </Button>
+          <Card>
+            <CardContent className="flex flex-col items-start gap-3 p-5 sm:flex-row sm:items-center">
+              <div className="grid flex-1 gap-1">
+                <span className="text-base font-medium">
+                  Sen de en ucuz sepeti bul
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  Listeni yaz ya da fişini yükle; Sepet marketlerdeki güncel
+                  fiyatları karşılaştırsın.
+                </span>
+              </div>
+              <Button variant="default" asChild>
+                <Link href="/asistan">
+                  Asistanı dene
+                  <RiArrowRightLine data-icon="inline-end" />
+                </Link>
+              </Button>
+            </CardContent>
           </Card>
           <a
             href={reportHref}
