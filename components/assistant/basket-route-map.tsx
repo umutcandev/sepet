@@ -83,10 +83,16 @@ const ROTATE_MS = 4000
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2)
 
 // Aynı rota oturumda bir kez istenir; harita kapanıp açılınca yeniden gitmez.
+// Ev sunucuya gönderilmez (kayıtlı konum kullanılır) ama anahtarda: konum
+// değişince eski evden çizilmiş rota dönmesin.
 const routeCache = new Map<string, Promise<RouteResult | null>>()
 
-function fetchRoute(mode: RouteMode, stops: GeoPoint[]): Promise<RouteResult | null> {
-  const key = `${mode}:${stops.map((s) => `${s.lat},${s.lng}`).join("|")}`
+function fetchRoute(
+  mode: RouteMode,
+  home: GeoPoint,
+  stops: GeoPoint[],
+): Promise<RouteResult | null> {
+  const key = `${mode}:${home.lat},${home.lng}:${stops.map((s) => `${s.lat},${s.lng}`).join("|")}`
   const hit = routeCache.get(key)
   if (hit) return hit
   const pending = fetch("/api/location/directions", {
@@ -388,8 +394,8 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
     if (!ready) return
     let cancelled = false
     void Promise.all([
-      fetchRoute(mode, ordered),
-      orderedCompare ? fetchRoute(mode, orderedCompare) : Promise.resolve(null),
+      fetchRoute(mode, homePt, ordered),
+      orderedCompare ? fetchRoute(mode, homePt, orderedCompare) : Promise.resolve(null),
     ]).then(([route, single]) => {
       if (cancelled) return
       setLoaded({
@@ -404,7 +410,7 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
     return () => {
       cancelled = true
     }
-  }, [ready, mode, ordered, orderedCompare, requestKey])
+  }, [ready, mode, homePt, ordered, orderedCompare, requestKey])
 
   // Araba/Yaya değişince eski sonuç gösterilmez; anahtar tutana kadar yükleniyor.
   const current = loaded?.key === requestKey ? loaded : null

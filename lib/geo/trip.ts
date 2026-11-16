@@ -34,7 +34,13 @@ export function haversineKm(a: GeoPoint, b: GeoPoint): number {
   return 2 * EARTH_KM * Math.asin(Math.sqrt(h))
 }
 
-/** Dökümdeki farklı şubeler; koordinatı eksik satır varsa null (tahmin yok). */
+/** Rota ucunun kabul ettiği en fazla şube. */
+export const MAX_ROUTE_STOPS = 10
+
+/**
+ * Dökümdeki farklı şubeler; koordinatı eksik satır varsa ya da rota ucunun
+ * sınırını aşıyorsa null (tahmin yok, kalıcı hata gösterilmez).
+ */
 export function depotStops(
   allocation: readonly MarketAllocation[],
   imageFallback?: Record<string, string>
@@ -44,12 +50,13 @@ export function depotStops(
   for (const a of allocation) {
     if (!a.depotCoords) return null
     const { lat, lng } = a.depotCoords
-    const key = `${lat}:${lng}`
+    // Aynı koordinattaki farklı marketler (ör. AVM) ayrı durak kalır.
+    const key = `${a.market}:${lat}:${lng}`
     const stop = stops.get(key) ?? { lat, lng, market: a.market, products: [] }
     stop.products.push(a.imageUrl ?? imageFallback?.[a.productId] ?? null)
     stops.set(key, stop)
   }
-  return [...stops.values()]
+  return stops.size <= MAX_ROUTE_STOPS ? [...stops.values()] : null
 }
 
 function permutations<T>(xs: T[]): T[][] {

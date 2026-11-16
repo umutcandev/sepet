@@ -48,6 +48,14 @@ export const orsDailyLimiter = new Ratelimit({
   prefix: "rl:ors:daily",
 })
 
+// Kullanıcı başı günlük pay: tek hesap ortak kotayı herkes için bitiremesin.
+// Yalnız cache'te olmayan (ORS'ye giden) istekler sayılır.
+export const orsUserLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.fixedWindow(60, "1 d"),
+  prefix: "rl:ors:user",
+})
+
 export const receiptUploadLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(20, "1 m"),

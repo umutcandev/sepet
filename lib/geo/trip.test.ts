@@ -8,6 +8,7 @@ import {
   formatDistance,
   formatDuration,
   haversineKm,
+  MAX_ROUTE_STOPS,
   orderStops,
   type GeoPoint,
 } from "./trip"
@@ -46,6 +47,17 @@ describe("depotStops", () => {
 
   test("koordinatı eksik satır varsa tahmin etmez", () => {
     assert.equal(depotStops([row(north(1)), row(null)]), null)
+  })
+
+  test("aynı koordinattaki farklı marketleri ayrı tutar", () => {
+    const stops = depotStops([row(north(1), "Migros"), row(north(1), "CarrefourSA")])
+    assert.deepEqual(stops?.map((s) => s.market), ["Migros", "CarrefourSA"])
+  })
+
+  test("rota sınırını aşan şube sayısında null döner", () => {
+    const rows = (n: number) => Array.from({ length: n }, (_, i) => row(north(i + 1)))
+    assert.equal(depotStops(rows(MAX_ROUTE_STOPS))?.length, MAX_ROUTE_STOPS)
+    assert.equal(depotStops(rows(MAX_ROUTE_STOPS + 1)), null)
   })
 
   test("şubeden alınan kalemlerin görsellerini toplar", () => {

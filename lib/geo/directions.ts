@@ -1,5 +1,9 @@
 import { redis } from "@/lib/redis"
-import { orsDailyLimiter, orsMinuteLimiter } from "@/lib/security/rate-limit"
+import {
+  orsDailyLimiter,
+  orsMinuteLimiter,
+  orsUserLimiter,
+} from "@/lib/security/rate-limit"
 import { coarsen, parseOrsRoute, round } from "./ors"
 import type { GeoPoint, RouteMode, RouteResult } from "./trip"
 
@@ -13,7 +17,9 @@ const CACHE_TTL = 60 * 60 * 24 * 7
 // Şube yola bu kadar uzaksa en yakın yola bağlanır (ORS varsayılanı 350 m).
 const SNAP_RADIUS_M = 1000
 
-async function acquireOrsSlot(): Promise<boolean> {
+async function acquireOrsSlot(userId: string): Promise<boolean> {
+  const user = await orsUserLimiter.limit(userId)
+  if (!user.success) return false
   const minute = await orsMinuteLimiter.limit("global")
   if (!minute.success) return false
   const daily = await orsDailyLimiter.limit("global")
@@ -24,7 +30,8 @@ async function acquireOrsSlot(): Promise<boolean> {
 export async function getRoute(
   mode: RouteMode,
   home: GeoPoint,
-  stops: GeoPoint[]
+  stops: GeoPoint[],
+  userId: string
 ): Promise<RouteResult | null> {
   const key = process.env.ORS_API_KEY
   if (!key) return null
@@ -41,7 +48,7 @@ export async function getRoute(
     console.error("[directions] cache read failed", err)
   }
 
-  if (!(await acquireOrsSlot())) return null
+  if (!(await acquireOrsSlot(userId))) return null
 
   const coordinates = [origin, ...ordered, origin].map((p) => [p.lng, p.lat])
   try {

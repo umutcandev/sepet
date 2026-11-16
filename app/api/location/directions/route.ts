@@ -3,7 +3,7 @@ import { z } from "zod"
 
 import { getCurrentUser } from "@/lib/auth/session"
 import { getRoute } from "@/lib/geo/directions"
-import { haversineKm } from "@/lib/geo/trip"
+import { haversineKm, MAX_ROUTE_STOPS } from "@/lib/geo/trip"
 
 export const runtime = "nodejs"
 
@@ -18,7 +18,7 @@ const point = z.object({
 
 const bodySchema = z.object({
   mode: z.enum(["car", "walk"]),
-  stops: z.array(point).min(1).max(10),
+  stops: z.array(point).min(1).max(MAX_ROUTE_STOPS),
 })
 
 export async function POST(request: Request) {
@@ -39,6 +39,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "too_far" }, { status: 400 })
   }
 
-  const route = await getRoute(mode, home, stops)
+  const route = await getRoute(mode, home, stops, user.id)
   return NextResponse.json({ route })
 }

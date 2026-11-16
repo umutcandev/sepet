@@ -62,7 +62,10 @@ export function ReceiptImage({ url }: { url: string }) {
           aria-expanded={open}
           className="w-full rounded-md text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50 md:hidden"
         >
-          <CardTitle>Fiş Görseli</CardTitle>
+          {/* Düğme içinde blok öğe olmaz: başlık span. */}
+          <CardTitle asChild>
+            <span>Fiş Görseli</span>
+          </CardTitle>
           <RiArrowDownSLine
             aria-hidden="true"
             className={cn(

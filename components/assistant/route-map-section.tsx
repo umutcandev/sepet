@@ -26,7 +26,8 @@ export function RouteMapSection(props: RouteMapProps) {
     <div className="px-2 pt-2 pb-1">
       {shown ? (
         <div className="relative isolate h-64 overflow-hidden rounded-md outline outline-1 -outline-offset-1 outline-black/10 [clip-path:inset(0_round_var(--radius-md))] dark:outline-white/10 [&_.leaflet-control-attribution]:rounded-tl-md">
-          <BasketRouteMap {...props} />
+          {/* Pinler ve rozetler kurulumda çizilir; şube, ürün ya da ev değişince harita baştan kurulur. */}
+          <BasketRouteMap key={JSON.stringify([props.home, props.stops])} {...props} />
         </div>
       ) : (
         <div className="flex w-full items-center justify-between gap-3 rounded-md border border-dashed border-muted-foreground/30 px-3 py-2.5 text-muted-foreground transition-colors hover:border-muted-foreground/50 hover:bg-muted/50 hover:text-foreground">
