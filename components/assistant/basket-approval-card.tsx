@@ -8,7 +8,13 @@ import {
   RiErrorWarningLine,
   RiStickyNoteAddLine,
 } from "@remixicon/react"
-import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { StatusChip } from "@/components/ui/status-chip"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
@@ -183,7 +189,7 @@ export function BasketApprovalCard({
         </div>
       </CardHeader>
 
-      <div className="overflow-x-auto">
+      <CardContent className="overflow-x-auto">
         <Table className="w-full min-w-[300px] [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
           <TableHeader>
             {/* Büyük harf metinde yazılı, CSS `uppercase` ile değil: bazı
@@ -191,7 +197,7 @@ export function BasketApprovalCard({
                 Başlık şeridi hafif tonda, satırların hepsi düz: sıra sıra
                 koyu satır bu kısa listede gereksiz kalabalıktı. Şerit
                 satırlardan belirgin alçak (28px, 10px yazı). */}
-            <TableRow className="table-head-soft text-[0.625rem] tracking-wide hover:bg-transparent [&_th]:h-7 [&_th]:font-medium [&_th]:text-muted-foreground">
+            <TableRow className="text-[0.625rem] tracking-wide hover:bg-transparent [&_th]:h-7 [&_th]:font-medium [&_th]:text-muted-foreground">
               <TableHead className="w-auto">ÜRÜN</TableHead>
               {/* Adet ve Birim sütunlarında sol dolgu pl-1: alanlar arası
                   boşluk her yerde 12px (sil sütunuyla aynı). w-16: "500" ve
@@ -368,7 +374,7 @@ export function BasketApprovalCard({
             )}
           </TableBody>
         </Table>
-      </div>
+      </CardContent>
 
       {!readOnly && (
         <CardFooter>

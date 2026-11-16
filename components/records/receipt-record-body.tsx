@@ -2,7 +2,7 @@ import { formatDate, formatTL } from "@/lib/format"
 import { isReceiptStaleByDate } from "@/lib/receipt-staleness"
 import type { ReceiptRecordData } from "@/lib/records/record-data"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { MarketCell } from "@/components/market-cell"
 import { OptimizationCard } from "@/components/assistant/optimization-card"
 import {
@@ -158,13 +158,13 @@ export function ReceiptRecordBody({
             <CardHeader>
               <CardTitle>Marketlere Göre Dağılım</CardTitle>
             </CardHeader>
-            <div className="p-4">
+            <CardContent className="p-4">
               <MarketSplitDonut
                 data={marketSplit}
                 totalLabel="En iyi alternatif"
                 emptyHint="Dağılım için yeterli market yok."
               />
-            </div>
+            </CardContent>
           </Card>
         )}
       </div>
@@ -173,17 +173,19 @@ export function ReceiptRecordBody({
         <Card>
           <CardHeader>
             <CardTitle>Fişteki Kalemler</CardTitle>
-            <Badge variant="secondary">
+            <Badge variant="secondary" className="ml-auto">
               {allMatched
                 ? items.length
                 : `${matchedCount}/${items.length} eşleşti`}
             </Badge>
           </CardHeader>
-          <RecordItemList
-            items={itemViews}
-            emptyHint="Bu fişte kalem yok."
-            readOnly={readOnly}
-          />
+          <CardContent>
+            <RecordItemList
+              items={itemViews}
+              emptyHint="Bu fişte kalem yok."
+              readOnly={readOnly}
+            />
+          </CardContent>
         </Card>
       </div>
     </div>

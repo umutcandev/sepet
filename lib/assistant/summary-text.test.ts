@@ -65,7 +65,7 @@ describe("buildSummaryText", () => {
     ])
     assert.equal(
       out,
-      "Sepet Özeti hazır. En ucuz tek market A101: 2 kalemin tamamı 40,00 TL. Alışverişi A101 ve BİM arasında bölersen 5,00 TL (%13) daha az ödersin."
+      "Sepet Özeti hazır.\n\n- **En ucuz tek market:** A101, 40,00 TL.\n- **İki markete bölersen:** A101 ve BİM ile 35,00 TL, yani 5,00 TL daha az."
     )
   })
 
@@ -76,7 +76,7 @@ describe("buildSummaryText", () => {
     ])
     assert.equal(
       out,
-      "Sepet Özeti hazır. En ucuz tek market A101: 2 kalemin tamamı 15,00 TL. İki markete bölmek daha ucuza gelmiyor."
+      "Sepet Özeti hazır.\n\n- **En ucuz tek market:** A101, 15,00 TL.\n- **İki markete bölersen:** Daha ucuza gelmiyor."
     )
   })
 
@@ -87,7 +87,19 @@ describe("buildSummaryText", () => {
     ])
     assert.equal(
       out,
-      "Sepet Özeti hazır. 2 kalemin tamamını tek bir market karşılamıyor; A101 ve BİM ikilisiyle sepetin tamamı 50,00 TL."
+      "Sepet Özeti hazır.\n\n- **Tek market:** Listenin tamamı hiçbir markette yok.\n- **İki markete bölersen:** A101 ve BİM ile listenin tamamı 50,00 TL."
+    )
+  })
+
+  test("ne tek market ne iki market yetmiyorsa eksik kalan öneriyi söyler", () => {
+    const out = text([
+      match("süt", [option("A101", 10)]),
+      match("ekmek", [option("BİM", 40)]),
+      match("peynir", [option("Şok", 90)]),
+    ])
+    assert.equal(
+      out,
+      "Sepet Özeti hazır.\n\n- **Tek market:** Listenin tamamı hiçbir markette yok. A101, 3 kalemden 1 tanesini 10,00 TL'ye karşılıyor.\n- **İki markete bölersen:** Listenin tamamını karşılayan iki market de yok."
     )
   })
 
@@ -99,11 +111,7 @@ describe("buildSummaryText", () => {
     ])
     assert.match(
       out,
-      /^Sepet Özeti hazır\. En ucuz tek market A101: 1 kalemin tamamı 10,00 TL\./
-    )
-    assert.match(
-      out,
-      / Ejder meyvesi reçeli ve Kinoa eşleştirilemedi, toplama dahil değil\. İstersen aşağıdan başka bir adla yeniden aratabilirsin\.$/
+      /\n- \*\*Eşleşmeyen:\*\* Ejder meyvesi reçeli ve kinoa için fiyat bulamadım, toplama eklemedim\.\n\nİstersen bunları aşağıdan başka bir adla tekrar aratabilirsin\.$/
     )
   })
 
@@ -112,7 +120,10 @@ describe("buildSummaryText", () => {
       match("süt", [option("A101", 10)]),
       match("kinoa", [], { lookupStatus: "api_error" }),
     ])
-    assert.match(out, / Kinoa eşleştirilemedi, toplama dahil değil\.$/)
+    assert.match(
+      out,
+      /\n- \*\*Eşleşmeyen:\*\* Kinoa için fiyat bulamadım, toplama eklemedim\.$/
+    )
   })
 
   test("farklı boyutu Sepet Özeti'ndeki işarete bağlar", () => {
@@ -121,7 +132,7 @@ describe("buildSummaryText", () => {
     ])
     assert.match(
       out,
-      / Yoğurt için istediğin boyut her markette yok; o marketlerde en yakın boyutu aldım ve Sepet Özeti'nde farklı boyut olarak işaretledim\.$/
+      /\n- \*\*Farklı boyut:\*\* Yoğurt bazı marketlerde istediğin boyutta yok, yerine en yakın boyutu seçtim\.$/
     )
   })
 
@@ -135,7 +146,7 @@ describe("buildSummaryText", () => {
       ]),
       match("ekmek", [option("A101", 10), option("BİM", 30)]),
     ])
-    assert.match(out, / Su için istediğin boyut her markette yok;/)
+    assert.match(out, /\*\*Farklı boyut:\*\* Su bazı marketlerde/)
   })
 
   test("hiçbir kalem eşleşmezse özet yerine yönlendirir", () => {

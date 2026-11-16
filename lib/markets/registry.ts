@@ -8,16 +8,24 @@ export type MarketEntry = {
   name: string
   icon: string | null
   url: string | null
+  /** Marka rengi; haritada o markete giden rota bu renkle çizilir. */
+  color: string
 }
 
 export const MARKETS: ReadonlyArray<MarketEntry> = [
-  { name: "BİM", icon: "/market-logos/bim.webp", url: "https://www.bim.com.tr" },
-  { name: "A101", icon: "/market-logos/a101.webp", url: "https://www.a101.com.tr" },
-  { name: "Migros", icon: "/market-logos/migros.webp", url: "https://www.migros.com.tr" },
-  { name: "Şok", icon: "/market-logos/sok.webp", url: "https://www.sokmarket.com.tr" },
-  { name: "CarrefourSA", icon: "/market-logos/carrefoursa.webp", url: "https://www.carrefoursa.com" },
-  { name: "Tarım Kredi", icon: "/market-logos/tarim-kredi.webp", url: "https://www.tkkoopmarket.com.tr" },
+  { name: "BİM", icon: "/market-logos/bim.webp", url: "https://www.bim.com.tr", color: "#E30613" },
+  { name: "A101", icon: "/market-logos/a101.webp", url: "https://www.a101.com.tr", color: "#009FE3" },
+  { name: "Migros", icon: "/market-logos/migros.webp", url: "https://www.migros.com.tr", color: "#F39200" },
+  { name: "Şok", icon: "/market-logos/sok.webp", url: "https://www.sokmarket.com.tr", color: "#F2B700" },
+  { name: "CarrefourSA", icon: "/market-logos/carrefoursa.webp", url: "https://www.carrefoursa.com", color: "#1E5BC6" },
+  { name: "Tarım Kredi", icon: "/market-logos/tarim-kredi.webp", url: "https://www.tkkoopmarket.com.tr", color: "#00843D" },
 ]
+
+const FALLBACK_COLOR = "#6D4530"
+
+export function getMarketColor(name: string | null | undefined): string {
+  return findMarket(name)?.color ?? FALLBACK_COLOR
+}
 
 // Türkçe-uyumlu agresif normalizasyon: diakritikleri sadeleştir, alfasayısal
 // dışı her şeyi at. "Şok" / "sok" / "ŞOK!" hepsi "sok"; "tarim_kredi" →

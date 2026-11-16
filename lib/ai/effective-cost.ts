@@ -259,6 +259,7 @@ export function buildMarketOptions(
             effectiveCost: total,
             unitPriceLabel: mp.unitPrice ?? null,
             depotName: mp.depotName,
+            depotCoords: mp.depotCoords ?? null,
             imageUrl: cand.imageUrl,
             sizeMismatch: fit.mismatch,
           },

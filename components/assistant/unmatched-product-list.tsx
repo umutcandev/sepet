@@ -10,7 +10,7 @@ import {
   RiSearchLine,
 } from "@remixicon/react"
 import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   InputGroup,
   InputGroupAddon,
@@ -81,7 +81,7 @@ export function UnmatchedProductList({
       <CardHeader>
         <CardTitle>Eşleştirilemeyen Ürünler</CardTitle>
       </CardHeader>
-      <div className="divide-y">
+      <CardContent className="divide-y">
         {unmatched.map(({ m, index }) => (
           <UnmatchedRow
             key={`${m.searchQuery}-${index}`}
@@ -92,7 +92,7 @@ export function UnmatchedProductList({
             }
           />
         ))}
-      </div>
+      </CardContent>
     </Card>
   )
 }

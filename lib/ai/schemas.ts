@@ -52,6 +52,8 @@ export const BasketDraftSchema = z.object({
     ),
 })
 
+export const GeoPointSchema = z.object({ lat: z.number(), lng: z.number() })
+
 export const MarketAllocationSchema = z.object({
   market: z.string(),
   // Kullanıcının yazdığı ham kalem adı (ör. "tavuk göğüs") — döküm gösterimi için.
@@ -70,6 +72,8 @@ export const MarketAllocationSchema = z.object({
   // Bu kalemin fiyatının alındığı şube (depo) adı — UI'da "fiyat kaynağı" bilgi
   // balonu için. Eski kayıtlarda yok → nullable + default.
   depotName: z.string().nullable().default(null),
+  // Şube konumu (mesafe satırı için). Eski kayıtlarda yok.
+  depotCoords: GeoPointSchema.nullable().optional(),
   // Bu markette alınan ürünün görseli — Sepet Özeti dökümündeki küçük resim.
   // Kalem marketten markete farklı ürüne çözülebildiği için görsel de kaleme
   // değil bu satırın ürününe aittir. Eski kayıtlarda yok → nullable + default.
@@ -149,6 +153,7 @@ export const MarketOptionSchema = z.object({
   unitPriceLabel: z.string().nullable(),
   // Seçilen ürünün fiyatının alındığı şube (depo) adı. Eski kayıtlarda yok.
   depotName: z.string().nullable().default(null),
+  depotCoords: GeoPointSchema.nullable().optional(),
   // Seçilen ürünün görseli; dökümdeki satıra taşınır. Eski kayıtlarda yok.
   imageUrl: z.string().nullable().default(null),
   // BU ürünün istenen boyuttan farklı olup olmadığı. Kalem marketten markete

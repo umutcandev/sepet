@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 /**
  * Anahtar–değer bilgi kartı.
@@ -45,9 +45,11 @@ export function RecordInfoList({
     <Card className={className}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        {headerRight ? <div className="ml-auto">{headerRight}</div> : null}
+        {headerRight ? <div className="ml-auto flex">{headerRight}</div> : null}
       </CardHeader>
-      <dl className="divide-y">{children}</dl>
+      <CardContent asChild>
+        <dl className="divide-y">{children}</dl>
+      </CardContent>
     </Card>
   )
 }

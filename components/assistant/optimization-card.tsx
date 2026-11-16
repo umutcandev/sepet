@@ -1,6 +1,6 @@
 "use client"
 
-import { Fragment, useEffect, useId, useRef, useState } from "react"
+import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import {
   AnimatePresence,
@@ -11,10 +11,15 @@ import {
 import {
   RiArrowDownSLine,
   RiArrowLeftRightLine,
-  RiBox3Line,
   RiErrorWarningLine,
 } from "@remixicon/react"
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MarqueeText } from "@/components/ui/marquee-text"
 import { Button } from "@/components/ui/button"
@@ -30,8 +35,13 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { formatTL } from "@/lib/format"
 import { DepotInfo } from "@/components/assistant/depot-info"
+import { NoImageLabel } from "@/components/no-image-label"
 import { EASE_OUT_EXPO } from "@/lib/motion"
 import type { MarketAllocation, OptimizationSummary } from "@/lib/ai/schemas"
+import { depotStops } from "@/lib/geo/trip"
+import { useUserLocation } from "@/lib/stores/location"
+import { RouteMapSection } from "@/components/assistant/route-map-section"
+import type { RouteMapProps } from "@/components/assistant/basket-route-map"
 
 function capitalize(s: string): string {
   if (!s) return s
@@ -82,7 +92,7 @@ export function AllocationThumb({ url }: { url: string | null }) {
           onError={() => setFailed(true)}
         />
       ) : (
-        <RiBox3Line aria-hidden="true" className="size-4 text-muted-foreground" />
+        <NoImageLabel />
       )}
     </div>
   )
@@ -98,11 +108,14 @@ function AllocationBreakdown({
   markets,
   imageFallback,
   onEdit,
+  header,
 }: {
   allocation: MarketAllocation[]
   markets: string[]
   imageFallback?: ProductImageFallback
   onEdit?: EditAllocation
+  /** Listenin başındaki açılır rota haritası. */
+  header?: React.ReactNode
 }) {
   const multiMarket = markets.length > 1
   const grouped = markets
@@ -113,7 +126,9 @@ function AllocationBreakdown({
     .filter((g) => g.entries.length > 0)
 
   return (
-    <div className="border-t bg-muted/30 px-2 py-1">
+    <div className="border-t bg-muted/30">
+      {header}
+      <div className="px-2 py-1">
       <Table className="[&_td]:px-2">
         <TableBody>
           {grouped.map((g) => (
@@ -208,6 +223,7 @@ function AllocationBreakdown({
           ))}
         </TableBody>
       </Table>
+      </div>
     </div>
   )
 }
@@ -332,6 +348,7 @@ function OptionRow({
   markets,
   imageFallback,
   onEdit,
+  route,
   hint = false,
   defaultOpen = false,
 }: {
@@ -349,6 +366,8 @@ function OptionRow({
   markets: string[]
   imageFallback?: ProductImageFallback
   onEdit?: EditAllocation
+  /** Konum ve şube koordinatları varsa dökümün yanındaki rota haritası. */
+  route?: RouteMapProps | null
   /** Kartın önerdiği ilk satır: açılabildiğini ipucuyla gösterir. */
   hint?: boolean
   /** Döküm açık başlar (kayıtlı sepet sayfası); ipucu gerekmez. */
@@ -464,6 +483,7 @@ function OptionRow({
               markets={markets}
               imageFallback={imageFallback}
               onEdit={onEdit}
+              header={route && open && <RouteMapSection {...route} />}
             />
           </motion.div>
         )}
@@ -490,6 +510,26 @@ export function OptimizationCard({
    */
   defaultOpen?: boolean
 }) {
+  const { location } = useUserLocation()
+  const routes = useMemo(() => {
+    if (!location || !summary) return null
+    const home = { lat: location.lat, lng: location.lng }
+    const { singleMarket, twoMarketCombo } = summary
+    const single = depotStops(singleMarket.allocation, imageFallback)
+    const combo =
+      twoMarketCombo.markets.length === 2
+        ? depotStops(twoMarketCombo.allocation, imageFallback)
+        : null
+    return {
+      single: single && { home, stops: single },
+      combo: combo && {
+        home,
+        stops: combo,
+        compareStops: singleMarket.isFullCoverage ? single : null,
+      },
+    }
+  }, [location, summary, imageFallback])
+
   // Hiçbir kalem eşleşmediyse gösterilecek bir plan yok; "— ₺0,00" satırı
   // asistanın "Sepet Özeti çıkaramadım" cümlesiyle çelişirdi.
   if (!summary || summary.totalItems === 0) return null
@@ -536,6 +576,7 @@ export function OptimizationCard({
       markets={[singleMarket.market]}
       imageFallback={imageFallback}
       onEdit={onEditItem}
+      route={routes?.single}
     />
   )
 
@@ -561,6 +602,7 @@ export function OptimizationCard({
       markets={twoMarketCombo.markets}
       imageFallback={imageFallback}
       onEdit={onEditItem}
+      route={routes?.combo}
     />
   ) : null
 
@@ -569,7 +611,7 @@ export function OptimizationCard({
       <CardHeader>
         <CardTitle>Sepet Özeti</CardTitle>
       </CardHeader>
-      <div className="divide-y">
+      <CardContent className="divide-y">
         {comboFirst ? (
           <>
             {comboRow}
@@ -581,8 +623,9 @@ export function OptimizationCard({
             {comboRow}
           </>
         )}
-      </div>
-      {footer && <CardFooter>{footer}</CardFooter>}
+      </CardContent>
+      {/* Buton h-6: inen 4px dolguya eklenir (2+2), şerit h-7'deki 37px'inde kalır. */}
+      {footer && <CardFooter className="pt-2.25 pb-1">{footer}</CardFooter>}
     </Card>
   )
 }

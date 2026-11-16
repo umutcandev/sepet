@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
 import { cn } from "@/lib/utils"
@@ -22,17 +22,17 @@ import { cn } from "@/lib/utils"
 export function ReceiptImageOmitted() {
   return (
     <Card>
-      <div className="flex min-h-12 items-center border-b px-4 py-2 text-sm font-medium">
-        Fiş Görseli
-      </div>
-      <div className="p-3">
+      <CardHeader>
+        <CardTitle>Fiş Görseli</CardTitle>
+      </CardHeader>
+      <CardContent className="p-3">
         <Marker>
           <MarkerIcon>
             <RiImageLine />
           </MarkerIcon>
           <MarkerContent>Fiş görseli gizlilik için paylaşılmadı</MarkerContent>
         </Marker>
-      </div>
+      </CardContent>
     </Card>
   )
 }
@@ -54,32 +54,37 @@ export function ReceiptImage({ url }: { url: string }) {
 
   return (
     <Card>
-      {/* Kart başlığı diğer kartlarla aynı ritimde: `min-h-12 border-b px-4
-          py-2 text-sm font-medium`. Mobilde ayrıca katlama düğmesi olur. */}
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="flex min-h-12 w-full items-center gap-2 border-b px-4 py-2 text-left md:hidden"
-      >
-        <span className="text-sm font-medium">Fiş Görseli</span>
-        <RiArrowDownSLine
-          className={cn(
-            "ml-auto size-4 text-muted-foreground transition-transform",
-            open && "rotate-180",
-          )}
-        />
-      </button>
-      <div className="hidden min-h-12 items-center border-b px-4 py-2 text-sm font-medium md:flex">
-        Fiş Görseli
-      </div>
+      {/* Mobilde başlık katlama düğmesi. */}
+      <CardHeader asChild>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          className="w-full rounded-md text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50 md:hidden"
+        >
+          {/* Düğme içinde blok öğe olmaz: başlık span. */}
+          <CardTitle asChild>
+            <span>Fiş Görseli</span>
+          </CardTitle>
+          <RiArrowDownSLine
+            aria-hidden="true"
+            className={cn(
+              "ml-auto size-4 text-muted-foreground transition-transform",
+              open && "rotate-180",
+            )}
+          />
+        </button>
+      </CardHeader>
+      <CardHeader className="max-md:hidden">
+        <CardTitle>Fiş Görseli</CardTitle>
+      </CardHeader>
 
-      <div className={cn("p-3 md:block", open ? "block" : "hidden")}>
+      <CardContent className={cn("p-3 md:block", open ? "block" : "hidden")}>
         <Dialog>
           <DialogTrigger asChild>
             <button
               type="button"
-              className="group relative block w-full overflow-hidden rounded-lg bg-muted/30 outline outline-1 -outline-offset-1 outline-black/10 focus-visible:outline-2 focus-visible:outline-ring dark:outline-white/10"
+              className="group relative block w-full overflow-hidden rounded-sm bg-muted/30 outline outline-1 -outline-offset-1 outline-black/10 focus-visible:outline-2 focus-visible:outline-ring dark:outline-white/10"
               aria-label="Fişi tam ekran aç"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -112,7 +117,7 @@ export function ReceiptImage({ url }: { url: string }) {
             </div>
           </DialogContent>
         </Dialog>
-      </div>
+      </CardContent>
     </Card>
   )
 }

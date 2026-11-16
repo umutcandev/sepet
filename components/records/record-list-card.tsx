@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 
-import { Card } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 
@@ -64,13 +64,13 @@ export function RecordListCard({
         // Hover kenarı `border-*` değil `smooth-ring-*`: kabuğun kenarı
         // `smooth-shadow-ring-sm`in halkası, rengi oradan koyulur.
         selecting
-          ? cn("cursor-pointer", selected && "bg-secondary/40")
+          ? cn("cursor-pointer", selected && "bg-secondary")
           : "hover:smooth-ring-foreground/20",
       )}
     >
       <li onClick={selecting ? onToggleSelect : undefined}>
-        {/* ── Üst bant ── */}
-        <div className="flex items-center gap-2 px-3 py-2.5">
+        {/* Üst bant iç yüzeyde, metadata tepside. */}
+        <CardContent className="flex items-center gap-2 px-4 py-2.5">
           {selecting ? (
             <Checkbox
               checked={selected}
@@ -99,12 +99,11 @@ export function RecordListCard({
               {primary}
             </div>
           ) : null}
-        </div>
+        </CardContent>
 
-        {/* ── Alt bant ── */}
-        {/* `min-h-9`: seçim moduna girince ⋯ (24px) kaybolup bant yalnız metin
-            yüksekliğine düşüyordu — bütün liste 8px zıplıyordu. */}
-        <div className="flex min-h-9 items-center gap-2 border-t bg-muted/40 py-1.5 pr-2 pl-3">
+        {/* CardFooter ritmi: pt 7px − halka 1px = pb 2px + 4px tepsi.
+            `min-h`: seçimde ⋯ (24px) kaybolunca bant zıplamasın. */}
+        <div className="flex min-h-8.25 items-center gap-2 pt-1.75 pr-1.5 pb-0.5 pl-3">
           <div className="flex min-w-0 flex-1 items-center gap-2 text-xs text-muted-foreground">
             {meta}
           </div>

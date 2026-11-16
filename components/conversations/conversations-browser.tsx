@@ -19,7 +19,7 @@ import {
   RiStarLine,
   RiStarOffLine,
 } from "@remixicon/react"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { toast } from "@/components/ui/sonner"
 
 import type { ConversationListItem } from "@/components/assistant/assistant-conversations-group"
@@ -35,7 +35,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { CheckboxVisual } from "@/components/ui/checkbox"
+import { Checkbox, CheckboxVisual } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogContent,
@@ -403,21 +403,23 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
   // ── Boş durum: hiç sohbet yok ──
   if (items.length === 0 && !isSearchActive) {
     return (
-      <div className="flex flex-col items-center gap-3 rounded-2xl bg-card px-6 py-12 text-center smooth-shadow-ring-sm">
-        <div className="rounded-full bg-secondary p-3 text-primary">
-          <RiQuestionAnswerLine className="size-5" />
-        </div>
-        <h2 className="text-base font-medium">Henüz sohbetin yok</h2>
-        <p className="max-w-sm text-sm text-muted-foreground">
-          Asistan ile bir sohbet başlat; geçmiş sohbetlerin burada listelenir.
-        </p>
-        <Button variant="default" asChild className="mt-2">
-          <Link href="/asistan">
-            <RiAddLine className="size-4" />
-            Yeni Sohbet
-          </Link>
-        </Button>
-      </div>
+      <Card>
+        <CardContent className="flex flex-col items-center gap-3 px-6 py-12 text-center">
+          <div className="rounded-full bg-secondary p-3 text-primary">
+            <RiQuestionAnswerLine className="size-5" />
+          </div>
+          <h2 className="text-base font-medium">Henüz sohbetin yok</h2>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Asistan ile bir sohbet başlat; geçmiş sohbetlerin burada listelenir.
+          </p>
+          <Button variant="default" asChild className="mt-2">
+            <Link href="/asistan">
+              <RiAddLine className="size-4" />
+              Yeni Sohbet
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
     )
   }
 
@@ -569,148 +571,165 @@ export function ConversationsBrowser({ initial, initialHasMore }: Props) {
       {/* Liste / sonuç durumları */}
       {displayed.length === 0 ? (
         isSearchActive ? (
-          <Card className="px-6 py-12 text-center text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">
-              “{debouncedQuery.trim()}”
-            </span>{" "}
-            için sonuç bulunamadı.
+          <Card>
+            <CardContent className="px-6 py-12 text-center text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">
+                “{debouncedQuery.trim()}”
+              </span>{" "}
+              için sonuç bulunamadı.
+            </CardContent>
           </Card>
         ) : null
       ) : (
         <Card>
-          <ul className="divide-y">
-            {displayed.map((c) => {
-              const isSelected = selected.has(c.id)
-              const date = formatConversationDate(c.updatedAt)
-              return (
-                <li key={c.id}>
-                  {selecting ? (
-                    // Satırın kendisi onay kutusu: gerçek <button>, yani
-                    // Enter ve Space bedava gelir ve el yazımı klavye kodu
-                    // gerekmez. Rol "checkbox" çünkü yaptığı iş bir seçim
-                    // değiştirmek; "button" + aria-pressed ekran okuyucuya
-                    // "basılı düğme" derdi.
-                    <button
-                      type="button"
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      onClick={() => toggleSelect(c.id)}
-                      className={cn(
-                        "flex w-full cursor-pointer items-center gap-2 py-2 pr-3 pl-4 text-left transition-colors hover:bg-secondary/50 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:-outline-offset-2 focus-visible:outline-none",
-                        isSelected && "bg-secondary/40",
-                      )}
-                    >
-                      <CheckboxVisual checked={isSelected} />
-                      <span className="min-w-0 flex-1 truncate text-sm">
-                        {c.title}
-                      </span>
-                      {c.starred ? (
-                        <RiStarFill className="size-3.5 shrink-0 text-amber-500" />
-                      ) : null}
-                      <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                        {date}
-                      </span>
-                    </button>
-                  ) : (
-                    <div className="group relative flex items-center gap-2 pr-2 transition-colors hover:bg-secondary/50">
-                      <Link
-                        href={`/asistan/${c.id}`}
-                        className="flex min-w-0 flex-1 items-center gap-2 py-2 pl-4"
+          {/* Sütun etiketleri: kart başlığı kuralının istisnası, satırdaki
+              sütunlarla hizalı (satır pl-4 / pr-2). */}
+          <CardHeader className="pr-2 pl-4 text-xs font-medium text-muted-foreground">
+            {selecting ? (
+              <Checkbox
+                checked={allDisplayedSelected}
+                onCheckedChange={toggleSelectAll}
+                aria-label={allDisplayedSelected ? "Seçimi kaldır" : "Tümünü seç"}
+              />
+            ) : null}
+            <span className="min-w-0 flex-1">Başlık</span>
+            <span className="shrink-0 text-end">Tarih</span>
+            <span className="w-10 shrink-0 text-center">İşlem</span>
+          </CardHeader>
+          <CardContent>
+            <ul className="divide-y">
+              {displayed.map((c) => {
+                const isSelected = selected.has(c.id)
+                const date = formatConversationDate(c.updatedAt)
+                return (
+                  <li key={c.id}>
+                    {selecting ? (
+                      // Satırın kendisi onay kutusu: gerçek <button>, yani
+                      // Enter ve Space bedava gelir ve el yazımı klavye kodu
+                      // gerekmez. Rol "checkbox" çünkü yaptığı iş bir seçim
+                      // değiştirmek; "button" + aria-pressed ekran okuyucuya
+                      // "basılı düğme" derdi.
+                      <button
+                        type="button"
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        onClick={() => toggleSelect(c.id)}
+                        className={cn(
+                          "flex w-full cursor-pointer items-center gap-2 py-2 pr-2 pl-4 text-left transition-colors hover:bg-secondary/50 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:-outline-offset-2 focus-visible:outline-none",
+                          isSelected && "bg-secondary/40",
+                        )}
                       >
+                        <CheckboxVisual checked={isSelected} />
                         <span className="min-w-0 flex-1 truncate text-sm">
                           {c.title}
                         </span>
                         {c.starred ? (
                           <RiStarFill className="size-3.5 shrink-0 text-amber-500" />
                         ) : null}
-                      </Link>
-                      {/* Mobilde aksiyon tarihin sağında sabit durur; sm+ hover'da
-                          tarihin yerini alır. */}
-                      <div className="flex shrink-0 items-center gap-1 pr-1 sm:gap-0">
-                        <span className="text-xs text-muted-foreground tabular-nums transition-opacity sm:group-focus-within:opacity-0 sm:group-hover:opacity-0 sm:group-has-[[aria-expanded=true]]:opacity-0">
+                        <span className="shrink-0 text-end text-xs text-muted-foreground tabular-nums">
                           {date}
                         </span>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon-xs"
-                              aria-label="Sohbet eylemleri"
-                              hitArea
-                              className="sm:absolute sm:right-2 sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:aria-expanded:opacity-100"
-                            >
-                              <RiMoreLine className="size-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="min-w-44">
-                            <DropdownMenuItem
-                              onSelect={(e) => {
-                                e.preventDefault()
-                                enterSelect(c.id)
-                              }}
-                            >
-                              <RiCheckboxLine className="size-4" />
-                              Seç
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onSelect={(e) => {
-                                e.preventDefault()
-                                void handleStar(c)
-                              }}
-                            >
-                              {c.starred ? (
-                                <>
-                                  <RiStarOffLine className="size-4" />
-                                  Favorilerden çıkar
-                                </>
-                              ) : (
-                                <>
-                                  <RiStarLine className="size-4" />
-                                  Favorilere ekle
-                                </>
-                              )}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onSelect={() => setRenameTarget(c)}
-                            >
-                              <RiPencilLine className="size-4" />
-                              Yeniden adlandır
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onSelect={() => {
-                                setShareTarget(c)
-                                setShareOpen(true)
-                              }}
-                            >
-                              <RiShareBoxLine className="size-4" />
-                              Paylaş
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              variant="destructive"
-                              onSelect={() => setSingleDeleteTarget(c)}
-                            >
-                              <RiDeleteBinLine className="size-4" />
-                              Sil
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <span aria-hidden="true" className="h-6 w-10 shrink-0" />
+                      </button>
+                    ) : (
+                      <div className="flex items-center gap-2 pr-2 transition-colors hover:bg-secondary/50">
+                        <Link
+                          href={`/asistan/${c.id}`}
+                          className="flex min-w-0 flex-1 items-center gap-2 py-2 pl-4"
+                        >
+                          <span className="min-w-0 flex-1 truncate text-sm">
+                            {c.title}
+                          </span>
+                          {c.starred ? (
+                            <RiStarFill className="size-3.5 shrink-0 text-amber-500" />
+                          ) : null}
+                        </Link>
+                        <span className="shrink-0 text-end text-xs text-muted-foreground tabular-nums">
+                          {date}
+                        </span>
+                        <div className="flex w-10 shrink-0 justify-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon-xs"
+                                aria-label="Sohbet eylemleri"
+                                hitArea
+                                className="text-muted-foreground"
+                              >
+                                <RiMoreLine className="size-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="min-w-44">
+                              <DropdownMenuItem
+                                onSelect={(e) => {
+                                  e.preventDefault()
+                                  enterSelect(c.id)
+                                }}
+                              >
+                                <RiCheckboxLine className="size-4" />
+                                Seç
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onSelect={(e) => {
+                                  e.preventDefault()
+                                  void handleStar(c)
+                                }}
+                              >
+                                {c.starred ? (
+                                  <>
+                                    <RiStarOffLine className="size-4" />
+                                    Favorilerden çıkar
+                                  </>
+                                ) : (
+                                  <>
+                                    <RiStarLine className="size-4" />
+                                    Favorilere ekle
+                                  </>
+                                )}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onSelect={() => setRenameTarget(c)}
+                              >
+                                <RiPencilLine className="size-4" />
+                                Yeniden adlandır
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onSelect={() => {
+                                  setShareTarget(c)
+                                  setShareOpen(true)
+                                }}
+                              >
+                                <RiShareBoxLine className="size-4" />
+                                Paylaş
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                variant="destructive"
+                                onSelect={() => setSingleDeleteTarget(c)}
+                              >
+                                <RiDeleteBinLine className="size-4" />
+                                Sil
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </li>
-              )
-            })}
-          </ul>
-          {/* Infinite scroll sentinel — görünür olunca sonraki sayfa yüklenir */}
-          {hasMore && !isSearchActive ? (
-            <div ref={sentinelRef} className="flex justify-center py-4">
-              {loadingMore ? (
-                <Spinner className="size-5 text-muted-foreground" />
-              ) : null}
-            </div>
-          ) : null}
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+            {/* Infinite scroll sentinel — görünür olunca sonraki sayfa yüklenir */}
+            {hasMore && !isSearchActive ? (
+              <div ref={sentinelRef} className="flex justify-center py-4">
+                {loadingMore ? (
+                  <Spinner className="size-5 text-muted-foreground" />
+                ) : null}
+              </div>
+            ) : null}
+          </CardContent>
         </Card>
       )}
 

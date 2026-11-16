@@ -48,8 +48,9 @@ import { STOPPED_PART_TYPE } from "./turn-state"
  *  - Modelin düşünme metni ("Düşündüm"). Görsel turunda model fişte okuduğu
  *    her şeyi (mağaza adresi, kart numarasının son haneleri, kasiyer adı)
  *    burada özetleyebiliyor; görseli saklayıp metnini yayımlamak anlamsız olurdu.
- *  - Şube adları (`depotName`). Fiyatların alındığı şubeler kullanıcının
- *    konumuna en yakın şubelerdir; adları oturduğu semti ele verir.
+ *  - Şube adları ve konumları (`depotName`, `depotCoords`). Fiyatların
+ *    alındığı şubeler kullanıcının konumuna en yakın şubelerdir; oturduğu
+ *    semti ele verir.
  *  - Tool girdileri, mesaj id'leri, ürün değiştirme durumu (`selection`), iç
  *    hata metinleri (`errorMessage`) ve istemciden gelen ham metadata.
  *    Kullanıcı mesajının part'ları ve metadata'sı istemcinin gönderdiği
@@ -147,22 +148,22 @@ function isSharedToolType(type: string): type is SharedToolType {
 
 // ─── Konum izi bırakan alanlar ───
 
+// Konum anahtarı silinir (null değil): eski kopyalar birebir aynı kalsın.
+const noDepot = <T extends { depotCoords?: unknown }>({
+  depotCoords: _coords,
+  ...rest
+}: T) => ({ ...rest, depotName: null })
+
 export function stripSummary(summary: OptimizationSummary): OptimizationSummary {
   return {
     ...summary,
     singleMarket: {
       ...summary.singleMarket,
-      allocation: summary.singleMarket.allocation.map((a) => ({
-        ...a,
-        depotName: null,
-      })),
+      allocation: summary.singleMarket.allocation.map(noDepot),
     },
     twoMarketCombo: {
       ...summary.twoMarketCombo,
-      allocation: summary.twoMarketCombo.allocation.map((a) => ({
-        ...a,
-        depotName: null,
-      })),
+      allocation: summary.twoMarketCombo.allocation.map(noDepot),
     },
   }
 }
@@ -177,7 +178,7 @@ function stripMatch(match: MatchResult): MatchResult {
     // verisine de girmesin. Eşleşmeme sebebi `lookupStatus`ta.
     errorMessage: null,
     marketPrices: match.marketPrices.map((p) => ({ ...p, depotName: null })),
-    marketOptions: match.marketOptions.map((o) => ({ ...o, depotName: null })),
+    marketOptions: match.marketOptions.map(noDepot),
   }
 }
 

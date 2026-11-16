@@ -7,7 +7,13 @@ import {
   RiErrorWarningLine,
   RiInformationLine,
 } from "@remixicon/react"
-import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MarqueeText } from "@/components/ui/marquee-text"
 import { saveReceipt } from "@/lib/actions/receipts"
@@ -96,20 +102,20 @@ export function ReceiptComparisonCard({
           kolonunu gösteriyor, fiyatlar ve fark ipucu olmayan yatay kaydırmanın
           arkasında kalıyordu. Sepet Özeti'nin satırlarıyla aynı kalıp: görsel,
           ad, sağda tutar; ayrıntı satırın kendisiyle açılır. */}
-      <ul className="divide-y">
-        {comparison.items.map((it, idx) => (
-          <ComparisonRow
-            key={idx}
-            item={it}
-            // Kalemler `matches` ile aynı sırada.
-            match={matches[idx]}
-            isStale={isStale}
-          />
-        ))}
-      </ul>
-
-      <CardFooter className="flex-col items-stretch gap-3">
-        <div className="grid gap-1.5">
+      <CardContent>
+        <ul className="divide-y">
+          {comparison.items.map((it, idx) => (
+            <ComparisonRow
+              key={idx}
+              item={it}
+              // Kalemler `matches` ile aynı sırada.
+              match={matches[idx]}
+              isStale={isStale}
+            />
+          ))}
+        </ul>
+        {/* Toplamlar içerik: iç yüzeyde, satırlarla aynı dolguda. Şeritte yalnız eylem kalır. */}
+        <div className="grid gap-1.5 border-t px-4 py-3">
           <dl className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-1 text-xs">
             <dt className="text-muted-foreground">Fişteki fiyatlar</dt>
             <dd className="text-end font-medium tabular-nums">
@@ -129,12 +135,16 @@ export function ReceiptComparisonCard({
             Karşılaştırma paket başına yapılır; aldığın adet fiyatı çarpmaz.
           </p>
         </div>
-        {readOnly ? null : (
+      </CardContent>
+
+      {readOnly ? null : (
+        // Sepet Özeti şeridiyle aynı: buton h-6, inen 4px dolguda (37px).
+        <CardFooter className="pt-2.25 pb-1">
           <SaveRecordRow
-            size="sm"
             namePlaceholder={namePlaceholder}
-            nameLabel="Fiş adı"
-            saveLabel="Fişi Kaydet"
+            nameLabel="Fiş adı (isteğe bağlı)"
+            dialogTitle="Fişi kaydet"
+            dialogDescription="İstersen fişe bir ad ver. Boş bırakırsan market ve tarihle kaydedilir."
             viewHref={(id) => `/fis-gecmisi/${id}`}
             initialSavedId={initialSavedId}
             disabled={!canSave}
@@ -158,8 +168,8 @@ export function ReceiptComparisonCard({
             successMessage="Fişlerime kaydedildi."
             errorMessage="Fiş kaydedilemedi. Lütfen tekrar dene."
           />
-        )}
-      </CardFooter>
+        </CardFooter>
+      )}
     </Card>
   )
 }
