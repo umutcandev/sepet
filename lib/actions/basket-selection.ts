@@ -16,6 +16,7 @@ import { searchCandidatePool } from "@/lib/ai/tools"
 import { getProductById } from "@/lib/marketfiyati/cache"
 import type { ProductDetail } from "@/lib/marketfiyati/types"
 import { getUserLocationContext } from "@/lib/auth/location"
+import { verifyDiscountScopes } from "@/lib/marketfiyati/verify-discounts"
 import { buildSummaryText } from "@/lib/assistant/summary-text"
 import { applySelectionToParts } from "@/lib/assistant/selection-update"
 import {
@@ -160,7 +161,7 @@ export async function updateBasketItemSelection(
       aiIds.length === user.acceptedProductIds.length &&
       aiIds.every((id) => user.acceptedProductIds.includes(id))
 
-    const updated = buildMatchResult({
+    const built = buildMatchResult({
       item: {
         name: match.rawName,
         searchQuery: match.searchQuery,
@@ -177,6 +178,7 @@ export async function updateBasketItemSelection(
       },
       userAcceptedProductIds: backToAi ? null : user.acceptedProductIds,
     })
+    const [updated] = await verifyDiscountScopes([built], loc)
 
     const nextMatches = matches.map((m, i) =>
       i === input.itemIndex ? updated : m

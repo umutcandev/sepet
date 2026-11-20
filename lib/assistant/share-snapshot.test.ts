@@ -19,6 +19,7 @@ const RECEIPT_URL =
 const RECEIPT_KEY = "receipts/user-123/0b9f6c1e-1d2a-4c55-9f0e-0f5f1c1a2b3c.jpg"
 const DEPOT = "Migros Moda Şubesi"
 const DEPOT_COORDS = { lat: 40.987654, lng: 29.023456 }
+const DEPOT_ID = "migros-K709"
 
 function match(): MatchResult {
   return {
@@ -49,6 +50,7 @@ function match(): MatchResult {
         unitPriceLabel: null,
         depotName: DEPOT,
         depotCoords: DEPOT_COORDS,
+        depotId: DEPOT_ID,
         imageUrl: "https://cdn.marketfiyati.org.tr/p1.jpg",
       },
     ],
@@ -245,6 +247,7 @@ describe("sanitizeMessagesForShare", () => {
     assert.ok(!json.includes("user-123"), "kullanıcı kimliği sızdı")
     assert.ok(!json.includes(DEPOT), "şube adı sızdı")
     assert.ok(!json.includes(String(DEPOT_COORDS.lat)), "şube konumu sızdı")
+    assert.ok(!json.includes(DEPOT_ID), "şube ID'si sızdı")
     assert.ok(!json.includes("userAcceptedProductIds"), "seçim durumu sızdı")
     assert.ok(!json.includes("gizli") && !json.includes('"secret"'))
     assert.ok(!json.includes("toolCallId") && !json.includes('"input"'))

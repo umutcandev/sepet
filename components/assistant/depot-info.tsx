@@ -2,6 +2,7 @@
 
 import { RiInformationLine } from "@remixicon/react"
 import { Button } from "@/components/ui/button"
+import { hasNationalPricing } from "@/lib/markets/registry"
 import {
   Popover,
   PopoverContent,
@@ -10,19 +11,33 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
+// Market adına ek getirilmez: ünlü uyumu ada göre değişir ("Migros'ta", "A101'de").
+function describe(
+  market: string | undefined,
+  multiple: boolean,
+  relocated: boolean,
+): string {
+  if (!market || !hasNationalPricing(market)) {
+    return multiple
+      ? "Bu markette fiyat şubeye göre değişebilir. Her ürün, fiyatının geçerli olduğu şubede."
+      : "Bu markette fiyat şubeye göre değişebilir. Fiyat bu şubeden."
+  }
+  const base = `${market} fiyatları tüm şubelerde aynı.`
+  if (multiple) {
+    return `${base} Kampanyası tek şubede geçerli ürün olduğu için rota o şubeye de uğruyor.`
+  }
+  return relocated ? `${base} Stok şubeye göre değişebilir.` : base
+}
+
 /**
- * Bir fiyatın hangi şubeden (depo) indekslendiğini gösteren küçük bilgi balonu.
+ * Bir fiyatın hangi şubeden (depo) geldiğini gösteren küçük bilgi balonu.
  * Hover YOK — tıklanır popover (mobil + masaüstü aynı davranış). `depotName`
  * yoksa hiç render edilmez (eski kayıtlarda alan olmayabilir).
- *
- * Dil bilinçli: "buraya git" değil "fiyat kaynağı". marketfiyati her zincir için
- * ürünü indeksleyen en yakın/temsilci şubeyi döndürür; zincir indirim
- * marketlerinde (BİM/A101/ŞOK) fiyat çoğunlukla ülke geneli aynı olduğundan şube
- * adı yalnızca şeffaflık/bilgi amaçlıdır, "tam bu mağazaya git" demek değildir.
  */
 export function DepotInfo({
   depotName,
   market,
+  relocated = false,
 }: {
   /**
    * Tek şube ya da bir marketin kalemlerinin şubeleri (Sepet Özeti'nde market
@@ -30,6 +45,8 @@ export function DepotInfo({
    */
   depotName: string | null | undefined | ReadonlyArray<string | null | undefined>
   market?: string
+  /** Kalemlerden biri başka şubeden bu şubeye toplandı: stok uyarısı eklenir. */
+  relocated?: boolean
 }) {
   const names = [
     ...new Set(
@@ -72,8 +89,7 @@ export function DepotInfo({
           {market ? ` (${market})` : ""}
         </PopoverTitle>
         <PopoverDescription className="text-[0.625rem] text-muted-foreground/70">
-          Yakınındaki şubeler arasından seçildi. Zincir marketlerde fiyat
-          çoğunlukla ülke geneli aynıdır.
+          {describe(market, names.length > 1, relocated)}
         </PopoverDescription>
       </PopoverContent>
     </Popover>

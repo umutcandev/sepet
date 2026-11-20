@@ -66,8 +66,9 @@ export const MF_MATCH_PAGES = 3
 // beklemeden geçersiz kılar.
 const SEARCH_KEY = (q: string, loc: LocationContext, page: number, size: number) =>
   `mf:search:v4:${q}:${locKey(loc)}:p${page}s${size}`
+// v4: market fiyatlarına depo ID'si ve kampanyasız fiyat eklendi.
 const PRODUCT_KEY = (productId: string, loc: LocationContext) =>
-  `mf:product:v3:${locKey(loc)}:${productId}`
+  `mf:product:v4:${locKey(loc)}:${productId}`
 const BARCODE_KEY = (barcode: string) => `mf:barcode:${barcode}`
 const NEAREST_KEY = (loc: LocationContext) =>
   `mf:nearest:${round2(loc.latitude)}:${round2(loc.longitude)}:${loc.distance}`
@@ -87,7 +88,7 @@ const isBarcode = (s: string) => /^\d{8,14}$/.test(s.trim())
  * İstanbul) depo fiyatları döner. Çözülemezse boş liste döner (çağıran
  * depots'suz devam eder; eski yanlış-konum davranışına düşer ama patlamaz).
  */
-async function getNearbyDepotIds(loc: LocationContext): Promise<string[]> {
+export async function getNearbyDepotIds(loc: LocationContext): Promise<string[]> {
   if (loc.depots.length > 0) return loc.depots
 
   const key = NEAREST_KEY(loc)

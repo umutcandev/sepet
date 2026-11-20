@@ -1,9 +1,9 @@
 "use client"
 
-import "leaflet/dist/leaflet.css"
+import "maplibre-gl/dist/maplibre-gl.css"
 
 import * as React from "react"
-import type * as LeafletNs from "leaflet"
+import type * as MapLibreNs from "maplibre-gl"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import {
   RiAddLine,
@@ -14,13 +14,22 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
-import { loadLeaflet, TILE_ATTRIBUTION, TILE_URL } from "@/lib/leaflet"
+import {
+  createBasicMap,
+  loadMapLibre,
+  toLngLat,
+  useBasicMapTheme,
+} from "@/lib/map/maplibre"
 import {
   depotIcon,
   escapeHtml,
+  markerElement,
+  markerZIndex,
   userDotIcon,
   wireBrokenThumbs,
-} from "@/lib/leaflet-icons"
+  type MarkerIcon,
+} from "@/lib/map/markers"
+import { LEAFLET_ZOOM_OFFSET } from "@/lib/map/style"
 import { placeLabel, type Rect } from "@/lib/geo/label-placement"
 import {
   cumulativeLengths,
@@ -51,26 +60,23 @@ export type RouteMapProps = {
   compareStops?: GeoPoint[] | null
 }
 
-const ORS_ATTRIBUTION =
-  '&copy; <a href="https://openrouteservice.org/">openrouteservice</a> by HeiGIT'
-
 // Eve dönüş bacağı market rengi taşımaz.
 const RETURN_COLOR = "#6B7280"
 
 // Kontrollerin ve işaretçilerin payı kadar dar güvenli alan; ondalıklı zoom ile en yakın görünüm.
-const FIT: LeafletNs.FitBoundsOptions = {
-  paddingTopLeft: [24, 40],
-  paddingBottomRight: [40, 52],
-  maxZoom: 17,
+const FIT: MapLibreNs.FitBoundsOptions = {
+  padding: { top: 40, left: 24, right: 40, bottom: 52 },
+  maxZoom: 17 - LEAFLET_ZOOM_OFFSET,
 }
 
-// Dönüş normalde renkli bacakların altında; çizilirken üste çıkar.
-const PANE_LEGS = "routeLegs"
-const PANE_RETURN = "routeReturn"
-const Z_LEGS = "420"
-const Z_RETURN = "410"
-const Z_RETURN_TOP = "430"
-const DIMMED = "0.3"
+// Dönüş normalde renkli bacakların altında; çizilirken üste çıkar ve
+// bacaklar soluklaşır.
+const DIMMED = 0.3
+const DIM_MS = 300
+
+// Ev noktası şubelerin, bacak kutuları her şeyin üstünde.
+const Z_HOME = 1_000_000
+const Z_LABEL = 2_000_000
 
 const START_DELAY_MS = 350
 const ROUTE_MS = 3600
@@ -112,31 +118,31 @@ function fetchRoute(
 }
 
 /** Dış kutu yerleşimi taşır, iç kutu belirir; renkli çizgi rotaya bakan kenarda. */
-function legLabelIcon(L: typeof LeafletNs, text: string, color: string) {
+function legLabelIcon(text: string, color: string): MarkerIcon {
   const html =
     '<div class="w-max">' +
     '<div class="flex items-center gap-[3px] rounded-[4px] bg-background py-px px-[3px] font-sans text-[9px] leading-3 font-medium tabular-nums whitespace-nowrap text-foreground smooth-shadow-ring-sm opacity-0 scale-90 transition-[opacity,scale] duration-300 ease-out data-shown:opacity-100 data-shown:scale-100 motion-reduce:transition-none">' +
     `<span class="h-2 w-[2px] shrink-0 rounded-full" style="background:${escapeHtml(color)}"></span>` +
     `<span>${escapeHtml(text)}</span></div></div>`
-  return L.divIcon({ html, className: "", iconSize: [0, 0], iconAnchor: [0, 0] })
+  return { html, width: 0, height: 0, anchor: "top-left" }
 }
 
 // İşaretçilerin çevresi kutuya kapatılmaz.
 const PIN_CLEARANCE = 16
 
-type LabelItem = { marker: LeafletNs.Marker; path: LatLngTuple[]; shown: boolean }
+type LabelItem = { marker: MapLibreNs.Marker; path: LatLngTuple[]; shown: boolean }
 
 /** Görünür kutuları sırayla pikselde yerleştirir; sıra sabit olduğundan önceki kutular kaymaz. */
 function placeLabels(
-  map: LeafletNs.Map,
+  map: MapLibreNs.Map,
   items: LabelItem[],
   allPaths: LatLngTuple[][],
   pins: LatLngTuple[],
   overlays: (Element | null | undefined)[],
 ) {
-  const size = map.getSize()
-  const base = map.getContainer().getBoundingClientRect()
-  const px = (ll: LatLngTuple) => map.latLngToContainerPoint(ll)
+  const container = map.getContainer()
+  const base = container.getBoundingClientRect()
+  const px = (ll: LatLngTuple) => map.project(toLngLat(ll))
   const segments = allPaths.map((p) => p.map(px))
   const blocked: Rect[] = [
     ...pins.map((ll) => {
@@ -149,11 +155,11 @@ function placeLabels(
       return [{ x: r.left - base.left, y: r.top - base.top, w: r.width, h: r.height }]
     }),
   ]
-  const bounds = { x: 4, y: 4, w: size.x - 8, h: size.y - 8 }
+  const bounds = { x: 4, y: 4, w: container.clientWidth - 8, h: container.clientHeight - 8 }
 
   for (const { marker, path, shown } of items) {
     if (!shown) continue
-    const el = marker.getElement()?.firstElementChild as HTMLElement | null
+    const el = marker.getElement().firstElementChild as HTMLElement | null
     const box = el?.firstElementChild as HTMLElement | null
     if (!el || !box) continue
     const placement = placeLabel({
@@ -164,7 +170,7 @@ function placeLabels(
       bounds,
     })
     if (!placement) continue
-    const anchor = px([marker.getLatLng().lat, marker.getLatLng().lng])
+    const anchor = map.project(marker.getLngLat())
     el.style.transform = `translate(${placement.rect.x - anchor.x}px, ${placement.rect.y - anchor.y}px)`
     box.style.flexDirection = placement.barRight ? "row-reverse" : "row"
     box.dataset.shown = ""
@@ -172,33 +178,49 @@ function placeLabels(
   }
 }
 
+/** Tek bir çizgi katmanı; genişlik ve tire aralıkları piksel. */
+type LineSpec = {
+  color: string
+  /** Çizgi kalınlığı; noktalıda noktanın çapı (piksel). */
+  width: number
+  opacity?: number
+  /** Varsa çizgi yerine bu aralıkla (piksel) dizilmiş noktalar. */
+  dots?: number
+}
+
 /** Araba: koyu ince kenar + ince beyaz kontur + renkli çekirdek. Yaya: beyaz halkalı noktalar. */
-function legLines(
-  L: typeof LeafletNs,
-  color: string,
-  mode: RouteMode,
-  pane: string,
-): LeafletNs.Polyline[] {
-  const base = { interactive: false, lineCap: "round", lineJoin: "round", pane } as const
+function legLines(color: string, mode: RouteMode): LineSpec[] {
   if (mode === "car") {
     return [
-      L.polyline([], { ...base, color: "#000", opacity: 0.18, weight: 6.5 }),
-      L.polyline([], { ...base, color: "#fff", weight: 5.5 }),
-      L.polyline([], { ...base, color, weight: 4 }),
+      { color: "#000", opacity: 0.18, width: 6.5 },
+      { color: "#fff", width: 5.5 },
+      { color, width: 4 },
     ]
   }
-  // Sıfır uzunluklu tire + yuvarlak uç = nokta.
-  const dots = { ...base, dashArray: "0.1 10" }
   return [
-    L.polyline([], { ...dots, color: "#fff", weight: 7 }),
-    L.polyline([], { ...dots, color, weight: 5 }),
+    { color: "#fff", width: 7, dots: 10 },
+    { color, width: 5, dots: 10 },
   ]
 }
 
+/** Bir çizginin kendi GeoJSON kaynağı ve üst üste çizilen katmanları. */
 type Stroke = {
   path: LatLngTuple[]
   cum: number[]
-  layers: LeafletNs.Polyline[]
+  source: string
+  /** `core`: en üstteki renkli katman; altındakiler kontur/gölge. */
+  layers: {
+    id: string
+    opacity: number
+    prop: "line-opacity" | "circle-opacity"
+    core: boolean
+  }[]
+  /** Gidiş bacakları (bağlantılarıyla) dönüş çizilirken soluklaşır. */
+  dims: boolean
+  /** Noktalıysa noktalar arası piksel; noktalar zoom değişince yeniden dizilir. */
+  dots: number | null
+  /** Şu an çizili kısım. */
+  shown: LatLngTuple[]
 }
 
 /** `lead`/`tail`: gerçek nokta ile rotanın yola bağlandığı nokta arasındaki kavisli bağlantı. */
@@ -209,29 +231,136 @@ type Leg = Stroke & {
   tail: Stroke | null
 }
 
+const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] }
+
+function lineData(pts: LatLngTuple[]): GeoJSON.FeatureCollection | GeoJSON.Feature {
+  if (pts.length < 2) return EMPTY
+  return {
+    type: "Feature",
+    properties: {},
+    geometry: { type: "LineString", coordinates: pts.map(toLngLat) },
+  }
+}
+
+/**
+ * Yolun başından itibaren ekranda her `pitch` pikselde bir nokta. MapLibre'nin
+ * tire deseni ara zoom'larda çizgiyle birlikte uzuyor (nokta ovalleşir); noktalar
+ * burada ekran pikseliyle dizildiği için her zoom'da yuvarlak ve eşit aralıklı.
+ */
+function dotsData(
+  map: MapLibreNs.Map,
+  pts: LatLngTuple[],
+  pitch: number,
+): GeoJSON.FeatureCollection | GeoJSON.Feature {
+  if (pts.length < 2) return EMPTY
+  const px = pts.map((p) => map.project(toLngLat(p)))
+  const out: [number, number][] = []
+  let next = 0
+  let walked = 0
+  for (let i = 1; i < pts.length; i++) {
+    const seg = Math.hypot(px[i].x - px[i - 1].x, px[i].y - px[i - 1].y)
+    while (next <= walked + seg) {
+      const t = seg ? (next - walked) / seg : 0
+      const [a, b] = [pts[i - 1], pts[i]]
+      out.push([a[1] + (b[1] - a[1]) * t, a[0] + (b[0] - a[0]) * t])
+      next += pitch
+    }
+    walked += seg
+  }
+  return {
+    type: "Feature",
+    properties: {},
+    geometry: { type: "MultiPoint", coordinates: out },
+  }
+}
+
+/** Boş kaynak + katmanlar; çizgi `showStroke` ile görünür. Katmanlar en üste eklenir. */
+function addStroke(
+  map: MapLibreNs.Map,
+  id: string,
+  path: LatLngTuple[],
+  lines: LineSpec[],
+  dims: boolean,
+): Stroke {
+  map.addSource(id, { type: "geojson", data: EMPTY })
+  const fade = { duration: dims ? DIM_MS : 0, delay: 0 }
+  const layers = lines.map(({ color, width, opacity = 1, dots }, i) => {
+    const layerId = `${id}-${i}`
+    if (dots) {
+      map.addLayer({
+        id: layerId,
+        type: "circle",
+        source: id,
+        paint: {
+          "circle-color": color,
+          "circle-radius": width / 2,
+          "circle-opacity": opacity,
+          "circle-opacity-transition": fade,
+        },
+      })
+      return { id: layerId, opacity, prop: "circle-opacity" as const, core: i === lines.length - 1 }
+    }
+    map.addLayer({
+      id: layerId,
+      type: "line",
+      source: id,
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint: {
+        "line-color": color,
+        "line-width": width,
+        "line-opacity": opacity,
+        "line-opacity-transition": fade,
+      },
+    })
+    return { id: layerId, opacity, prop: "line-opacity" as const, core: i === lines.length - 1 }
+  })
+  return {
+    path,
+    cum: cumulativeLengths(path),
+    source: id,
+    layers,
+    dims,
+    dots: lines.find((l) => l.dots)?.dots ?? null,
+    shown: [],
+  }
+}
+
+function showStroke(map: MapLibreNs.Map, stroke: Stroke, pts: LatLngTuple[]) {
+  stroke.shown = pts
+  map
+    .getSource<MapLibreNs.GeoJSONSource>(stroke.source)
+    ?.setData(stroke.dots ? dotsData(map, pts, stroke.dots) : lineData(pts))
+}
+
+function removeStroke(map: MapLibreNs.Map, stroke: Stroke) {
+  for (const { id } of stroke.layers) if (map.getLayer(id)) map.removeLayer(id)
+  if (map.getSource(stroke.source)) map.removeSource(stroke.source)
+}
+
 // Bundan kısa sapmalar çizilmez.
 const LINK_MIN_M = 12
 const LINK_MS = 260
 
 /** Ev veya şube rotadan uzaktaysa ince gri noktalı kavis; değilse null. */
 function linkStroke(
-  L: typeof LeafletNs,
+  map: MapLibreNs.Map,
+  id: string,
   from: LatLngTuple,
   to: LatLngTuple,
-  pane: string,
+  dims: boolean,
 ): Stroke | null {
   const gap = haversineKm({ lat: from[0], lng: from[1] }, { lat: to[0], lng: to[1] }) * 1000
   if (gap < LINK_MIN_M) return null
-  const path = curveBetween(from, to)
-  const base = { interactive: false, lineCap: "round", dashArray: "0.1 5", pane } as const
-  return {
-    path,
-    cum: cumulativeLengths(path),
-    layers: [
-      L.polyline([], { ...base, color: "#fff", weight: 5 }),
-      L.polyline([], { ...base, color: RETURN_COLOR, weight: 3 }),
+  return addStroke(
+    map,
+    id,
+    curveBetween(from, to),
+    [
+      { color: "#fff", width: 5, dots: 5 },
+      { color: RETURN_COLOR, width: 3, dots: 5 },
     ],
-  }
+    dims,
+  )
 }
 
 type RouteState =
@@ -298,10 +427,15 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
   const legendRef = React.useRef<HTMLDivElement>(null)
   const controlsRef = React.useRef<HTMLDivElement>(null)
   const statusRef = React.useRef<HTMLDivElement>(null)
-  const mapRef = React.useRef<LeafletNs.Map | null>(null)
-  const LRef = React.useRef<typeof LeafletNs | null>(null)
-  const depotMarkersRef = React.useRef<LeafletNs.Marker[]>([])
-  const [ready, setReady] = React.useState(false)
+  const mapRef = React.useRef<MapLibreNs.Map | null>(null)
+  const mlRef = React.useRef<typeof MapLibreNs | null>(null)
+  const depotMarkersRef = React.useRef<MapLibreNs.Marker[]>([])
+  // Her `style.load`'da artar. WebGL bağlamı kaybolup geri gelince (mobilde
+  // sekme arka plana atılınca olur) stil baştan kurulur ve rota katmanları
+  // gider; sayaç değişince rota yeniden eklenir.
+  const [styleLoads, setStyleLoads] = React.useState(0)
+  const ready = styleLoads > 0
+  const themeRef = useBasicMapTheme(mapRef, ready)
   const [mode, setMode] = React.useState<RouteMode>("car")
   const [loaded, setLoaded] = React.useState<{
     key: string
@@ -330,68 +464,62 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
 
   React.useEffect(() => {
     let cancelled = false
-    let map: LeafletNs.Map | null = null
+    let map: MapLibreNs.Map | null = null
 
-    loadLeaflet().then((L) => {
+    loadMapLibre().then((ml) => {
       if (cancelled || !containerRef.current) return
-      LRef.current = L
+      mlRef.current = ml
       const { home, stops } = pointsRef.current
 
-      const m = L.map(containerRef.current, {
-        zoomControl: false,
+      const bounds = new ml.LngLatBounds([home.lng, home.lat], [home.lng, home.lat])
+      for (const s of stops) bounds.extend([s.lng, s.lat])
+      const m = createBasicMap(ml, themeRef, {
+        container: containerRef.current,
+        bounds,
+        fitBoundsOptions: FIT,
         zoomSnap: 0.1,
         // Sohbet kaydırılırken tekerlek haritayı yakınlaştırmasın; dokunmatikte tek parmak haritayı kaydırır.
-        scrollWheelZoom: false,
+        scrollZoom: false,
       })
+      if (!m) return
       map = m
       mapRef.current = m
-      map.attributionControl?.setPrefix(false)
-      L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map)
-      map.attributionControl?.addAttribution(ORS_ATTRIBUTION)
-
-      const legsPane = map.createPane(PANE_LEGS)
-      legsPane.style.zIndex = Z_LEGS
-      legsPane.style.transition = "opacity 300ms ease-out"
-      map.createPane(PANE_RETURN).style.zIndex = Z_RETURN
+      m.on("style.load", () => setStyleLoads((n) => n + 1))
 
       depotMarkersRef.current = stops.map((s) => {
-        const marker = L.marker([s.lat, s.lng], {
-          icon: depotIcon(L, s.market, s.products),
-          interactive: false,
-          keyboard: false,
-        }).addTo(m)
-        wireBrokenThumbs(marker.getElement())
-        return marker
+        const icon = depotIcon(s.market, s.products)
+        const el = markerElement(icon)
+        el.style.zIndex = markerZIndex(s.lat)
+        wireBrokenThumbs(el)
+        return new ml.Marker({ element: el, anchor: icon.anchor })
+          .setLngLat([s.lng, s.lat])
+          .addTo(m)
       })
-      L.marker([home.lat, home.lng], {
-        icon: userDotIcon(L),
-        interactive: false,
-        keyboard: false,
-        zIndexOffset: 500,
-      }).addTo(map)
-      const bounds = L.latLngBounds([[home.lat, home.lng]])
-      for (const s of stops) bounds.extend([s.lat, s.lng])
-      map.fitBounds(bounds, FIT)
+      const dot = userDotIcon()
+      const dotEl = markerElement(dot)
+      dotEl.style.zIndex = markerZIndex(home.lat, Z_HOME)
+      new ml.Marker({ element: dotEl, anchor: dot.anchor })
+        .setLngLat([home.lng, home.lat])
+        .addTo(m)
 
       requestAnimationFrame(() => {
-        if (!cancelled) map?.invalidateSize()
+        if (!cancelled) map?.resize()
       })
-      setReady(true)
     })
 
     return () => {
       cancelled = true
       mapRef.current = null
-      LRef.current = null
+      mlRef.current = null
       depotMarkersRef.current = []
       map?.remove()
     }
-  }, [])
+  }, [themeRef])
 
   const requestKey = `${mode}|${pointsKey}`
 
+  // Rota haritayı beklemez: harita kurulamasa da süre ve mesafe gösterilir.
   React.useEffect(() => {
-    if (!ready) return
     let cancelled = false
     void Promise.all([
       fetchRoute(mode, homePt, ordered),
@@ -410,7 +538,7 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
     return () => {
       cancelled = true
     }
-  }, [ready, mode, homePt, ordered, orderedCompare, requestKey])
+  }, [mode, homePt, ordered, orderedCompare, requestKey])
 
   // Araba/Yaya değişince eski sonuç gösterilmez; anahtar tutana kadar yükleniyor.
   const current = loaded?.key === requestKey ? loaded : null
@@ -420,13 +548,17 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
       ? { status: "ok", route: current.route, note: current.note }
       : { status: "error" }
 
+  // Bağlam kaybından sonraki yeniden kurulumda rota baştan oynatılmaz, olduğu
+  // gibi yerine konur; kamera da kullanıcının bıraktığı yerde kalır.
+  const drawnLoadsRef = React.useRef(0)
+
   React.useEffect(() => {
     const map = mapRef.current
-    const L = LRef.current
+    const ml = mlRef.current
     const route = current?.route
-    const legsPane = map?.getPane(PANE_LEGS)
-    const returnPane = map?.getPane(PANE_RETURN)
-    if (!map || !L || !route || !legsPane || !returnPane) return
+    if (!map || !ml || !route || !styleLoads) return
+    const restored = drawnLoadsRef.current > 0 && drawnLoadsRef.current !== styleLoads
+    drawnLoadsRef.current = styleLoads
 
     // Bacak bilgisi yoksa rota tek renkli bacak olarak çizilir.
     const hasLegs = route.legs.length > 0
@@ -440,44 +572,55 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
       const isReturn = hasLegs && !stop
       const color = isReturn ? RETURN_COLOR : getMarketColor(stop?.market)
       const cum = cumulativeLengths(path)
-      const label: LabelItem | null =
-        hasLegs && !isReturn
-          ? {
-              marker: L.marker(pointAt(path, cum, 0.5), {
-                icon: legLabelIcon(
-                  L,
-                  `${formatDuration(span.durationS)} · ${formatDistance(span.distanceM)}`,
-                  color,
-                ),
-                interactive: false,
-                keyboard: false,
-                zIndexOffset: 1000,
-              }),
-              path,
-              shown: false,
-            }
-          : null
-      const pane = isReturn ? PANE_RETURN : PANE_LEGS
+      let label: LabelItem | null = null
+      if (hasLegs && !isReturn) {
+        const icon = legLabelIcon(
+          `${formatDuration(span.durationS)} · ${formatDistance(span.distanceM)}`,
+          color,
+        )
+        const at = pointAt(path, cum, 0.5)
+        const el = markerElement(icon)
+        el.style.zIndex = markerZIndex(at[0], Z_LABEL)
+        label = {
+          marker: new ml.Marker({ element: el, anchor: icon.anchor }).setLngLat(toLngLat(at)),
+          path,
+          shown: false,
+        }
+      }
       // Rota yola bağlandığı noktadan başlar; ev ve şubeyle arası kavisle kapanır.
       const target: LatLngTuple | null = !hasLegs || isReturn ? home : stop ? [stop.lat, stop.lng] : null
-      legs.push({
-        path,
-        cum,
-        layers: legLines(L, color, mode, pane),
-        label,
-        isReturn,
-        lead: legs.length === 0 && !isReturn ? linkStroke(L, home, path[0], pane) : null,
-        tail: target ? linkStroke(L, path[path.length - 1], target, pane) : null,
-      })
+      const id = `route-${i}`
+      const dims = !isReturn
+      // Katmanlar çizim sırasıyla eklenir: bağlantı, bacak, bağlantı.
+      const lead = legs.length === 0 && !isReturn ? linkStroke(map, `${id}-lead`, home, path[0], dims) : null
+      const leg = addStroke(map, id, path, legLines(color, mode), dims)
+      const tail = target ? linkStroke(map, `${id}-tail`, path[path.length - 1], target, dims) : null
+      legs.push({ ...leg, label, isReturn, lead, tail })
     }
     const outbound = legs.filter((l) => !l.isReturn)
     const back = legs.find((l) => l.isReturn) ?? null
     const totalLength = legs.reduce((sum, l) => sum + (l.cum.at(-1) ?? 0), 0) || 1
     const strokes = legs.flatMap((l) => [l.lead, l, l.tail].filter((s): s is Stroke => s !== null))
+    const outboundStrokes = strokes.filter((s) => s.dims)
+    const returnStrokes = strokes.filter((s) => !s.dims)
 
-    for (const stroke of strokes) {
-      for (const layer of stroke.layers) layer.addTo(map)
+    // Katmanlar bağlam kaybında stil ile birlikte gidebilir; yoksa dokunulmaz.
+    const each = (group: Stroke[], fn: (layer: Stroke["layers"][number]) => void) => {
+      for (const stroke of group) {
+        for (const layer of stroke.layers) if (map.getLayer(layer.id)) fn(layer)
+      }
     }
+    // Grubu kendi sırasını bozmadan en üste taşır.
+    const raise = (group: Stroke[]) => each(group, ({ id }) => map.moveLayer(id))
+    // Leaflet bacakların panelini tek parça soldururdu. Burada katmanlar ayrı
+    // soluyor; alttaki beyaz kontur aynı oranda solarsa renkli çekirdeğin
+    // altından görünür ve çizgi beyazımsı kalır. Kontur/gölge daha çok solar.
+    const dim = (factor: number) =>
+      each(outboundStrokes, ({ id, prop, opacity, core }) =>
+        map.setPaintProperty(id, prop, opacity * (core ? factor : factor * factor)),
+      )
+    // Dönüş normalde renkli bacakların altında.
+    raise(outboundStrokes)
     for (const leg of legs) leg.label?.marker.addTo(map)
 
     const labels = legs.flatMap((l) => (l.label ? [l.label] : []))
@@ -488,21 +631,29 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
         legendRef.current,
         controlsRef.current,
         statusRef.current,
-        map.attributionControl?.getContainer(),
-        ...depotMarkersRef.current.map((m) => m.getElement()?.querySelector("[data-badge]")),
+        map.getContainer().querySelector(".maplibregl-ctrl-attrib"),
+        ...depotMarkersRef.current.map((m) => m.getElement().querySelector("[data-badge]")),
       ])
-    map.on("moveend resize", place)
-    map.fitBounds(L.latLngBounds([...route.path, ...pins]), FIT)
-
-    const show = (stroke: Stroke, pts: LatLngTuple[]) => {
-      for (const layer of stroke.layers) layer.setLatLngs(pts)
+    map.on("moveend", place)
+    map.on("resize", place)
+    if (!restored) {
+      const fit = new ml.LngLatBounds()
+      for (const ll of [...route.path, ...pins]) fit.extend(toLngLat(ll))
+      map.fitBounds(fit, FIT)
     }
+
+    const show = (stroke: Stroke, pts: LatLngTuple[]) => showStroke(map, stroke, pts)
+    // Noktalar ekran pikseliyle dizili; zoom bitince yeni ölçeğe göre yeniden dizilir.
+    const redot = () => {
+      for (const stroke of strokes) if (stroke.dots) show(stroke, stroke.shown)
+    }
+    map.on("zoomend", redot)
     const reveal = (leg: Leg) => {
       if (leg.label) leg.label.shown = true
     }
     const restore = () => {
-      legsPane.style.opacity = ""
-      returnPane.style.zIndex = Z_RETURN
+      dim(1)
+      raise(outboundStrokes)
     }
 
     let dead = false
@@ -539,7 +690,7 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
       if (leg.tail) await animate(leg.tail, LINK_MS)
     }
 
-    if (reduceMotion) {
+    if (reduceMotion || restored) {
       for (const stroke of strokes) show(stroke, stroke.path)
       for (const leg of legs) reveal(leg)
       place()
@@ -553,8 +704,8 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
           await wait(LEG_PAUSE_MS)
         }
         if (dead || !back) return
-        legsPane.style.opacity = DIMMED
-        returnPane.style.zIndex = Z_RETURN_TOP
+        dim(DIMMED)
+        raise(returnStrokes)
         await draw(back)
         await wait(HOLD_MS)
         restore()
@@ -565,14 +716,13 @@ export function BasketRouteMap({ home, stops, compareStops }: RouteMapProps) {
       dead = true
       cancelAnimationFrame(raf)
       for (const t of timers) window.clearTimeout(t)
-      restore()
-      map.off("moveend resize", place)
-      for (const stroke of strokes) {
-        for (const layer of stroke.layers) layer.remove()
-      }
+      map.off("moveend", place)
+      map.off("resize", place)
+      map.off("zoomend", redot)
+      for (const stroke of strokes) removeStroke(map, stroke)
       for (const leg of legs) leg.label?.marker.remove()
     }
-  }, [current, mode, ordered, homePt, reduceMotion])
+  }, [current, mode, ordered, homePt, reduceMotion, styleLoads])
 
   const description =
     state.status === "ok"

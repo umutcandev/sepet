@@ -10,15 +10,17 @@ export type MarketEntry = {
   url: string | null
   /** Marka rengi; haritada o markete giden rota bu renkle çizilir. */
   color: string
+  /** "national": fiyat her şubede aynı, rota tek şubeye. "branch": şubeye özel kampanya var. */
+  pricing: "national" | "branch"
 }
 
 export const MARKETS: ReadonlyArray<MarketEntry> = [
-  { name: "BİM", icon: "/market-logos/bim.webp", url: "https://www.bim.com.tr", color: "#E30613" },
-  { name: "A101", icon: "/market-logos/a101.webp", url: "https://www.a101.com.tr", color: "#009FE3" },
-  { name: "Migros", icon: "/market-logos/migros.webp", url: "https://www.migros.com.tr", color: "#F39200" },
-  { name: "Şok", icon: "/market-logos/sok.webp", url: "https://www.sokmarket.com.tr", color: "#F2B700" },
-  { name: "CarrefourSA", icon: "/market-logos/carrefoursa.webp", url: "https://www.carrefoursa.com", color: "#1E5BC6" },
-  { name: "Tarım Kredi", icon: "/market-logos/tarim-kredi.webp", url: "https://www.tkkoopmarket.com.tr", color: "#00843D" },
+  { name: "BİM", icon: "/market-logos/bim.webp", url: "https://www.bim.com.tr", color: "#E30613", pricing: "national" },
+  { name: "A101", icon: "/market-logos/a101.webp", url: "https://www.a101.com.tr", color: "#009FE3", pricing: "national" },
+  { name: "Migros", icon: "/market-logos/migros.webp", url: "https://www.migros.com.tr", color: "#F39200", pricing: "branch" },
+  { name: "Şok", icon: "/market-logos/sok.webp", url: "https://www.sokmarket.com.tr", color: "#F2B700", pricing: "national" },
+  { name: "CarrefourSA", icon: "/market-logos/carrefoursa.webp", url: "https://www.carrefoursa.com", color: "#1E5BC6", pricing: "branch" },
+  { name: "Tarım Kredi", icon: "/market-logos/tarim-kredi.webp", url: "https://www.tkkoopmarket.com.tr", color: "#00843D", pricing: "branch" },
 ]
 
 const FALLBACK_COLOR = "#6D4530"
@@ -96,6 +98,10 @@ export function findMarket(name: string | null | undefined): MarketEntry | null 
     }
   }
   return match
+}
+
+export function hasNationalPricing(name: string | null | undefined): boolean {
+  return findMarket(name)?.pricing === "national"
 }
 
 export function getMarketLogo(name: string | null | undefined): string | null {

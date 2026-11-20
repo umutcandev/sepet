@@ -76,6 +76,9 @@ export type MarketPrice = {
   priceModifiedAt: string | null
   depotName: string | null
   depotCoords?: { lat: number; lng: number } | null
+  depotId?: string | null
+  // Kampanyalıysa normal raf fiyatı: price / (1 - discountRatio). Değilse null.
+  regularPrice?: number | null
   // "60,00 ₺/Lt" gibi birim fiyat etiketi (varsa).
   unitPrice: string | null
   // Birim fiyatın baz birimine (L / kg / adet) normalize edilmiş SAYISAL değeri.
@@ -113,6 +116,15 @@ export const indexTimeToIso = (input: string | undefined | null): string | null 
 }
 
 const round2 = (n: number) => Math.round(n * 100) / 100
+
+export function regularPriceOf(
+  d: Pick<MFDepotPrice, "price" | "discount" | "discountRatio">,
+): number | null {
+  const ratio = d.discountRatio
+  if (!d.discount || ratio == null || !(ratio > 0 && ratio < 1)) return null
+  const regular = round2(d.price / (1 - ratio))
+  return regular > d.price ? regular : null
+}
 
 /**
  * marketfiyati `unitPrice` etiketinden ("60,00 ₺/Lt", "7,08 ₺/Adet") baz birimi
@@ -161,6 +173,8 @@ export function toProductDetail(
       price: d.price,
       priceModifiedAt: indexTimeToIso(d.indexTime),
       depotName: d.depotName ?? null,
+      depotId: d.depotId,
+      regularPrice: regularPriceOf(d),
       depotCoords:
         Number.isFinite(d.latitude) && Number.isFinite(d.longitude)
           ? { lat: d.latitude as number, lng: d.longitude as number }

@@ -260,6 +260,8 @@ export function buildMarketOptions(
             unitPriceLabel: mp.unitPrice ?? null,
             depotName: mp.depotName,
             depotCoords: mp.depotCoords ?? null,
+            depotId: mp.depotId ?? null,
+            regularPrice: mp.regularPrice ?? null,
             imageUrl: cand.imageUrl,
             sizeMismatch: fit.mismatch,
           },

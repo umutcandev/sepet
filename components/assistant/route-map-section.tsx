@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 
 import type { RouteMapProps } from "./basket-route-map"
 
-// Leaflet ve CSS'i ayrı chunk: haritayı açmayan kullanıcı indirmez.
+// MapLibre ve CSS'i ayrı chunk: haritayı açmayan kullanıcı indirmez.
 const BasketRouteMap = dynamic(
   () => import("./basket-route-map").then((m) => m.BasketRouteMap),
   {
@@ -25,7 +25,7 @@ export function RouteMapSection(props: RouteMapProps) {
   return (
     <div className="px-2 pt-2 pb-1">
       {shown ? (
-        <div className="relative isolate h-64 overflow-hidden rounded-md outline outline-1 -outline-offset-1 outline-black/10 [clip-path:inset(0_round_var(--radius-md))] dark:outline-white/10 [&_.leaflet-control-attribution]:rounded-tl-md">
+        <div className="relative isolate h-64 overflow-hidden rounded-md outline outline-1 -outline-offset-1 outline-black/10 [clip-path:inset(0_round_var(--radius-md))] dark:outline-white/10 [&_.maplibregl-ctrl-attrib]:rounded-tl-md">
           {/* Pinler ve rozetler kurulumda çizilir; şube, ürün ya da ev değişince harita baştan kurulur. */}
           <BasketRouteMap key={JSON.stringify([props.home, props.stops])} {...props} />
         </div>

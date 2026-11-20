@@ -35,10 +35,19 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { formatTL } from "@/lib/format"
 import { DepotInfo } from "@/components/assistant/depot-info"
+import {
+  DiscountInfo,
+  discountPercent,
+} from "@/components/assistant/discount-info"
+import { COMPACT_BADGE } from "@/components/assistant/compact-badge"
 import { NoImageLabel } from "@/components/no-image-label"
 import { EASE_OUT_EXPO } from "@/lib/motion"
 import type { MarketAllocation, OptimizationSummary } from "@/lib/ai/schemas"
 import { depotStops } from "@/lib/geo/trip"
+import {
+  consolidateDepots,
+  type PlacedAllocation,
+} from "@/lib/geo/depot-consolidation"
 import { useUserLocation } from "@/lib/stores/location"
 import { RouteMapSection } from "@/components/assistant/route-map-section"
 import type { RouteMapProps } from "@/components/assistant/basket-route-map"
@@ -110,7 +119,7 @@ function AllocationBreakdown({
   onEdit,
   header,
 }: {
-  allocation: MarketAllocation[]
+  allocation: PlacedAllocation[]
   markets: string[]
   imageFallback?: ProductImageFallback
   onEdit?: EditAllocation
@@ -144,6 +153,7 @@ function AllocationBreakdown({
                       <DepotInfo
                         depotName={g.entries.map((e) => e.depotName)}
                         market={g.market}
+                        relocated={g.entries.some((e) => e.relocated)}
                       />
                     </div>
                   </TableCell>
@@ -161,9 +171,10 @@ function AllocationBreakdown({
                         <AllocationThumb
                           url={e.imageUrl ?? imageFallback?.[e.productId] ?? null}
                         />
-                        {/* Izgara: ad ve ürün adı solda, "Farklı boyut" ikisinin
-                            ortasında ve sağında (tutarın hemen solunda, satırlar
-                            arasında aynı kolonda), tutar ile Değiştir en sağda.
+                        {/* Izgara: ad ve ürün adı solda, rozetler ("Farklı
+                            boyut", kampanya) ikisinin ortasında ve sağında
+                            (tutarın hemen solunda, satırlar arasında aynı
+                            kolonda), tutar ile Değiştir en sağda.
                             Tutar ad satırında, Değiştir ürün adı satırında
                             kalır; ayrı kolonlarken satırlar kendi
                             yüksekliklerine göre diziliyor, hizalar kayıyordu. */}
@@ -187,17 +198,16 @@ function AllocationBreakdown({
                             {e.productName}
                             {multiPack && ` · ${formatTL(e.unitPrice)}/paket`}
                           </MarqueeText>
-                          {e.sizeMismatch && (
-                            <Badge
-                              variant="warning"
-                              className={cn(
-                                COMPACT_BADGE,
-                                "col-start-2 row-span-2 row-start-1 self-center",
+                          {(e.sizeMismatch || discountPercent(e) != null) && (
+                            <div className="col-start-2 row-span-2 row-start-1 flex flex-col items-end justify-center gap-1 self-center">
+                              {e.sizeMismatch && (
+                                <Badge variant="warning" className={COMPACT_BADGE}>
+                                  <RiErrorWarningLine data-icon="inline-start" />
+                                  Farklı boyut
+                                </Badge>
                               )}
-                            >
-                              <RiErrorWarningLine data-icon="inline-start" />
-                              Farklı boyut
-                            </Badge>
+                              <DiscountInfo entry={e} />
+                            </div>
                           )}
                           <span className="col-start-3 row-start-1 justify-self-end text-xs font-medium tabular-nums">
                             {formatTL(e.lineTotal)}
@@ -227,13 +237,6 @@ function AllocationBreakdown({
     </div>
   )
 }
-
-/**
- * Kart içi küçük rozet ("Farklı boyut", indirim yüzdesi): 16px yükseklik, 10px
- * yazı. Varsayılan rozet (20px) satırda üçüncü bir satır kadar yer tutuyordu.
- */
-export const COMPACT_BADGE =
-  "h-4 gap-0.5 rounded-[5px] px-1 text-[0.625rem] leading-none has-data-[icon=inline-start]:pl-0.5 [&>svg]:size-2.5!"
 
 /**
  * Kullanıcı bir Sepet Özeti satırını en az bir kez açtı mı. Açtıysa satırların
@@ -362,7 +365,7 @@ function OptionRow({
   total: number
   /** Tutarın ALTINA giren açıklama (ör. "₺1,65 tasarruf"). */
   totalNote?: React.ReactNode
-  allocation: MarketAllocation[]
+  allocation: PlacedAllocation[]
   markets: string[]
   imageFallback?: ProductImageFallback
   onEdit?: EditAllocation
@@ -483,7 +486,8 @@ function OptionRow({
               markets={markets}
               imageFallback={imageFallback}
               onEdit={onEdit}
-              header={route && open && <RouteMapSection {...route} />}
+              // İpucunda da çizilir: aralanan alan açılınca görülenle aynı olmalı.
+              header={route && <RouteMapSection {...route} />}
             />
           </motion.div>
         )}
@@ -511,28 +515,36 @@ export function OptimizationCard({
   defaultOpen?: boolean
 }) {
   const { location } = useUserLocation()
+  // Harita, şube balonu ve döküm aynı toplanmış listeyi kullanır; ayrışırsa çelişirler.
+  const placed = useMemo(() => {
+    if (!summary) return null
+    const home = location ? { lat: location.lat, lng: location.lng } : null
+    return {
+      single: consolidateDepots(summary.singleMarket.allocation, home),
+      combo: consolidateDepots(summary.twoMarketCombo.allocation, home),
+    }
+  }, [location, summary])
   const routes = useMemo(() => {
-    if (!location || !summary) return null
+    if (!location || !summary || !placed) return null
     const home = { lat: location.lat, lng: location.lng }
-    const { singleMarket, twoMarketCombo } = summary
-    const single = depotStops(singleMarket.allocation, imageFallback)
+    const single = depotStops(placed.single, imageFallback)
     const combo =
-      twoMarketCombo.markets.length === 2
-        ? depotStops(twoMarketCombo.allocation, imageFallback)
+      summary.twoMarketCombo.markets.length === 2
+        ? depotStops(placed.combo, imageFallback)
         : null
     return {
       single: single && { home, stops: single },
       combo: combo && {
         home,
         stops: combo,
-        compareStops: singleMarket.isFullCoverage ? single : null,
+        compareStops: summary.singleMarket.isFullCoverage ? single : null,
       },
     }
-  }, [location, summary, imageFallback])
+  }, [location, summary, placed, imageFallback])
 
   // Hiçbir kalem eşleşmediyse gösterilecek bir plan yok; "— ₺0,00" satırı
   // asistanın "Sepet Özeti çıkaramadım" cümlesiyle çelişirdi.
-  if (!summary || summary.totalItems === 0) return null
+  if (!summary || !placed || summary.totalItems === 0) return null
 
   const { singleMarket, twoMarketCombo } = summary
   const hasCombo = twoMarketCombo.markets.length === 2
@@ -557,8 +569,9 @@ export function OptimizationCard({
       // sağında, dökümün kalemlerinde tekrar etmiyor.
       titleInfo={
         <DepotInfo
-          depotName={singleMarket.allocation.map((a) => a.depotName)}
+          depotName={placed.single.map((a) => a.depotName)}
           market={singleMarket.market}
+          relocated={placed.single.some((a) => a.relocated)}
         />
       }
       notice={
@@ -572,7 +585,7 @@ export function OptimizationCard({
             : `${singleMarket.missingItemCount} kalem ${singleMarket.market} stoğunda yok`
       }
       total={singleMarket.total}
-      allocation={singleMarket.allocation}
+      allocation={placed.single}
       markets={[singleMarket.market]}
       imageFallback={imageFallback}
       onEdit={onEditItem}
@@ -598,7 +611,7 @@ export function OptimizationCard({
         ) : undefined
       }
       total={twoMarketCombo.total}
-      allocation={twoMarketCombo.allocation}
+      allocation={placed.combo}
       markets={twoMarketCombo.markets}
       imageFallback={imageFallback}
       onEdit={onEditItem}

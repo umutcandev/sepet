@@ -34,8 +34,8 @@ export function haversineKm(a: GeoPoint, b: GeoPoint): number {
   return 2 * EARTH_KM * Math.asin(Math.sqrt(h))
 }
 
-/** Rota ucunun kabul ettiği en fazla şube. */
-export const MAX_ROUTE_STOPS = 10
+/** Rota ucunun kabul ettiği en fazla şube; ORS tavanı 50 nokta (ev iki kez), sınırı harita okunurluğu koyar. */
+export const MAX_ROUTE_STOPS = 20
 
 /**
  * Dökümdeki farklı şubeler; koordinatı eksik satır varsa ya da rota ucunun

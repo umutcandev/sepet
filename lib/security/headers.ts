@@ -22,8 +22,6 @@ const imgSrc = [
   // Blog görselleri MDX'te doğrudan bu adresle geçer.
   "https://cdn.trysepet.com",
   storageOrigin(),
-  // Leaflet OSM raster döşemeleri.
-  "https://*.tile.openstreetmap.org",
 ]
 
 const CSP = [
@@ -32,7 +30,9 @@ const CSP = [
   "style-src 'self' 'unsafe-inline'",
   `img-src ${[...new Set(imgSrc.filter(Boolean))].join(" ")}`,
   "font-src 'self' data:",
-  "connect-src 'self' https://accounts.google.com https://*.upstash.io",
+  // tiles.openfreemap.org: harita vektör döşemeleri, TileJSON ve yazı tipleri
+  // (MapLibre hepsini fetch ile çeker; worker'ı ise aynı origin'den gelir).
+  "connect-src 'self' https://accounts.google.com https://*.upstash.io https://tiles.openfreemap.org",
   // platform.twitter.com: blogdaki X gönderisi iframe'i (components/blog/mdx-x-post.tsx).
   "frame-src https://accounts.google.com https://platform.twitter.com",
   "frame-ancestors 'none'",
