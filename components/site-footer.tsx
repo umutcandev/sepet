@@ -132,7 +132,6 @@ export function SiteFooter({ className }: { className?: string }) {
             </FooterColumn>
 
             <FooterColumn title="Blog">
-              <FooterListLink href="/blog">Tüm Yazılar</FooterListLink>
               {CATEGORY_LIST.map((category) => (
                 <FooterListLink
                   key={category.id}

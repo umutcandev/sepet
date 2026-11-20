@@ -107,6 +107,15 @@ export const CATEGORY_STYLES: Record<CategoryId, CategoryStyle> = {
       { name: "Tarçın", hue: 50, fgShift: 10 },
     ],
   },
+  urun: {
+    anchors: [
+      { name: "Orkide", hue: 334, fgShift: 4 },
+      { name: "Fuşya", hue: 340, fgShift: 6 },
+      { name: "Ahududu", hue: 346, fgShift: 8 },
+      { name: "Bektutu", hue: 352, fgShift: 10 },
+      { name: "Vişne", hue: 358, fgShift: 12 },
+    ],
+  },
 }
 
 export interface Palette {

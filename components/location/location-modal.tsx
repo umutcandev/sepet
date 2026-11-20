@@ -22,7 +22,7 @@ import {
   ResponsiveDialogBody,
 } from "@/components/ui/responsive-dialog"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { CheckboxVisual } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
 import {
@@ -499,12 +499,7 @@ export function LocationModal() {
                                 transition={{ duration: 0.15, ease: "easeInOut" }}
                                 className="shrink-0 overflow-hidden"
                               >
-                                <Checkbox
-                                  checked={isSelected}
-                                  tabIndex={-1}
-                                  aria-hidden
-                                  className="pointer-events-none"
-                                />
+                                <CheckboxVisual checked={isSelected} />
                               </motion.div>
                             )}
                           </AnimatePresence>

@@ -22,6 +22,12 @@ export const CATEGORIES = {
     description:
       "Bütçe ile sağlığın buluştuğu yer: fiyat bilen yapay zekâ ile sağlık bilgisini birleştiren ortak yazılar.",
   },
+  urun: {
+    label: "Ürün",
+    slug: "urun",
+    description:
+      "Sepet'e eklenen yeni özellikleri ve nasıl kullanılacaklarını anlatan tanıtım yazıları.",
+  },
 } as const
 
 export type CategoryId = keyof typeof CATEGORIES
