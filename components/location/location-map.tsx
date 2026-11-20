@@ -1,13 +1,23 @@
 "use client"
 
-import "leaflet/dist/leaflet.css"
+import "maplibre-gl/dist/maplibre-gl.css"
 
 import * as React from "react"
-import type * as LeafletNs from "leaflet"
+import type * as MapLibreNs from "maplibre-gl"
 import { RiAddLine, RiFocus3Line, RiSubtractLine } from "@remixicon/react"
 
-import { loadLeaflet, TILE_ATTRIBUTION, TILE_URL } from "@/lib/leaflet"
-import { depotIcon, userPinIcon } from "@/lib/leaflet-icons"
+import {
+  createBasicMap,
+  loadMapLibre,
+  useBasicMapTheme,
+} from "@/lib/map/maplibre"
+import {
+  depotIcon,
+  markerElement,
+  markerZIndex,
+  userPinIcon,
+} from "@/lib/map/markers"
+import { LEAFLET_ZOOM_OFFSET } from "@/lib/map/style"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 
@@ -26,20 +36,34 @@ type Props = {
 }
 
 const EPS = 1e-6
+const START_ZOOM = 13 - LEAFLET_ZOOM_OFFSET
+
+// Pin kenara sürüklenince harita o yöne kayar: kenardan bu kadar içeride
+// başlar, kenara yaklaştıkça kare başına en çok bu kadar piksel kayar.
+const AUTO_PAN_PADDING = 50
+const AUTO_PAN_SPEED = 10
+
+/** Kenar payına girilen oran (0 = payın dışında, 1 = tam kenarda) × hız. */
+function autoPanStep(p: number, size: number): number {
+  const far = Math.max(p, size - AUTO_PAN_PADDING) - (size - AUTO_PAN_PADDING)
+  const near = AUTO_PAN_PADDING - Math.min(p, AUTO_PAN_PADDING)
+  return ((far - near) / AUTO_PAN_PADDING) * AUTO_PAN_SPEED
+}
 
 /**
- * Kontrollü Leaflet haritası: `center` prop'una göre marker'ı senkronize eder,
+ * Kontrollü MapLibre haritası: `center` prop'una göre marker'ı senkronize eder,
  * kullanıcı etkileşiminde (sürükle / tıkla) `onMove` yayar. Reverse geocode artık
- * yok — harita yalnız ham koordinat üretir. Leaflet dinamik yüklenir (SSR-safe).
+ * yok — harita yalnız ham koordinat üretir. MapLibre dinamik yüklenir (SSR-safe).
  */
 export function LocationMap({ center, onMove, depots = [] }: Props) {
   const containerRef = React.useRef<HTMLDivElement>(null)
-  const mapRef = React.useRef<LeafletNs.Map | null>(null)
-  const markerRef = React.useRef<LeafletNs.Marker | null>(null)
-  const LRef = React.useRef<typeof LeafletNs | null>(null)
-  // Harita + Leaflet hazır olunca true → depo marker effect'i bunu bekleyip çalışır.
+  const mapRef = React.useRef<MapLibreNs.Map | null>(null)
+  const markerRef = React.useRef<MapLibreNs.Marker | null>(null)
+  const mlRef = React.useRef<typeof MapLibreNs | null>(null)
+  // Harita + MapLibre hazır olunca true → depo marker effect'i bunu bekleyip çalışır.
   const [ready, setReady] = React.useState(false)
   const [locating, setLocating] = React.useState(false)
+  const themeRef = useBasicMapTheme(mapRef, ready)
 
   // onMove'u ref'te tut: event handler'lar mount'ta bir kez bağlanır, güncel
   // closure'a ref üzerinden ulaşır.
@@ -57,53 +81,91 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
 
   React.useEffect(() => {
     let cancelled = false
-    let map: LeafletNs.Map | null = null
+    let map: MapLibreNs.Map | null = null
+    let panFrame = 0
+    let releaseOutside: ((e: MouseEvent) => void) | null = null
 
-    loadLeaflet().then((L) => {
+    loadMapLibre().then((ml) => {
       if (cancelled || !containerRef.current) return
-      LRef.current = L
+      mlRef.current = ml
       const start = centerRef.current
+      const container = containerRef.current
 
-      map = L.map(containerRef.current, {
-        center: [start.lat, start.lng],
-        zoom: 13,
-        // Leaflet'in kendi zoom kontrolü tarayıcı-default görünür; kapatıp
-        // uygulamanın Button'larıyla kendi kontrollerimizi overlay basıyoruz.
-        zoomControl: false,
-        attributionControl: true,
+      // Hazır zoom kontrolü eklenmez; uygulamanın Button'larıyla kendi
+      // kontrollerimizi overlay basıyoruz.
+      const m = createBasicMap(ml, themeRef, {
+        container,
+        center: [start.lng, start.lat],
+        zoom: START_ZOOM,
+        // Leaflet'in varsayılanı: şubeleri sığdırırken zoom tam sayıya
+        // aşağı yuvarlanır, kenardaki rozetler kesilmez.
+        zoomSnap: 1,
       })
-      mapRef.current = map
+      if (!m) return
+      map = m
+      mapRef.current = m
 
-      // Leaflet'in kendi öneki (bayrak + "Leaflet" bağlantısı) bandı iki
-      // katına çıkarıyor ve zorunlu değil. OSM atfı KALIR — o hukuken gerekli.
-      map.attributionControl?.setPrefix(false)
-
-      L.tileLayer(TILE_URL, {
-        attribution: TILE_ATTRIBUTION,
-        maxZoom: 19,
-      }).addTo(map)
-
-      const marker = L.marker([start.lat, start.lng], {
+      const pin = markerElement(userPinIcon(), { interactive: true })
+      pin.style.cursor = "pointer"
+      pin.style.zIndex = markerZIndex(start.lat)
+      const marker = new ml.Marker({
+        element: pin,
+        anchor: userPinIcon().anchor,
         draggable: true,
-        icon: userPinIcon(L),
-        autoPan: true,
-      }).addTo(map)
+      })
+        .setLngLat([start.lng, start.lat])
+        .addTo(m)
       markerRef.current = marker
 
+      // Pin kenara taşınırken harita o yöne kayar; pin imlecin altında kalır.
+      let dragging = false
+      const autoPan = () => {
+        panFrame = 0
+        if (!dragging) return
+        const p = m.project(marker.getLngLat())
+        const dx = autoPanStep(p.x, container.clientWidth)
+        const dy = autoPanStep(p.y, container.clientHeight)
+        if (!dx && !dy) return
+        m.panBy([dx, dy], { animate: false })
+        marker.setLngLat(m.unproject(p))
+        panFrame = requestAnimationFrame(autoPan)
+      }
+      // MapLibre sürüklemeyi yalnız haritanın kendi mouseup'ıyla bitirir; fare
+      // haritanın dışında (üstteki butonlarda, modalda) bırakılırsa sürükleme
+      // açık kalır, pin tuşsuz imleci izlerdi. Leaflet'teki gibi her yerde bitir.
+      const release = (e: MouseEvent) => {
+        if (dragging) m.fire(new ml.MapMouseEvent("mouseup", m, e))
+      }
+      releaseOutside = release
+      marker.on("dragstart", () => {
+        dragging = true
+        window.addEventListener("mouseup", release)
+      })
+      marker.on("drag", () => {
+        if (!panFrame) panFrame = requestAnimationFrame(autoPan)
+      })
       marker.on("dragend", () => {
-        const { lat, lng } = marker.getLatLng()
+        dragging = false
+        window.removeEventListener("mouseup", release)
+        cancelAnimationFrame(panFrame)
+        panFrame = 0
+        const { lat, lng } = marker.getLngLat()
+        pin.style.zIndex = markerZIndex(lat)
         onMoveRef.current(lat, lng)
       })
 
-      map.on("click", (e: LeafletNs.LeafletMouseEvent) => {
-        marker.setLatLng(e.latlng)
-        onMoveRef.current(e.latlng.lat, e.latlng.lng)
+      m.on("click", (e) => {
+        // Pinin kendisine tıklamak onu yerinden oynatmaz.
+        if (pin.contains(e.originalEvent.target as Node | null)) return
+        marker.setLngLat(e.lngLat)
+        pin.style.zIndex = markerZIndex(e.lngLat.lat)
+        onMoveRef.current(e.lngLat.lat, e.lngLat.lng)
       })
 
       // Modal açılış animasyonu sırasında container boyutu geç oturabilir; harita
-      // 0 ölçüyle başlarsa tile'lar gelmez. Bir frame sonra yeniden ölçtür.
+      // 0 ölçüyle başlarsa döşemeler gelmez. Bir frame sonra yeniden ölçtür.
       requestAnimationFrame(() => {
-        if (!cancelled) map?.invalidateSize()
+        if (!cancelled) map?.resize()
       })
 
       if (!cancelled) setReady(true)
@@ -111,13 +173,15 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
 
     return () => {
       cancelled = true
+      cancelAnimationFrame(panFrame)
+      if (releaseOutside) window.removeEventListener("mouseup", releaseOutside)
       setReady(false)
       markerRef.current = null
-      LRef.current = null
+      mlRef.current = null
       mapRef.current = null
       if (map) map.remove()
     }
-  }, [])
+  }, [themeRef])
 
   // Dış kaynaklı merkez değişimi (il seçimi / geolocation) → marker + harita taşı.
   // Kullanıcı sürüklemesinde marker zaten merkezde olduğundan eşitlik kontrolü
@@ -126,15 +190,19 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
     const map = mapRef.current
     const marker = markerRef.current
     if (!map || !marker) return
-    const cur = marker.getLatLng()
+    const cur = marker.getLngLat()
     if (
       Math.abs(cur.lng - center.lng) < EPS &&
       Math.abs(cur.lat - center.lat) < EPS
     ) {
       return
     }
-    marker.setLatLng([center.lat, center.lng])
-    map.flyTo([center.lat, center.lng], Math.max(map.getZoom(), 13))
+    marker.setLngLat([center.lng, center.lat])
+    marker.getElement().style.zIndex = markerZIndex(center.lat)
+    map.flyTo({
+      center: [center.lng, center.lat],
+      zoom: Math.max(map.getZoom(), START_ZOOM),
+    })
     // `ready`: merkez harita kurulmadan değiştiyse effect map null diye erken
     // döner; harita hazır olunca tekrar çalışıp pini doğru yere taşır.
   }, [center.lat, center.lng, ready])
@@ -144,23 +212,24 @@ export function LocationMap({ center, onMove, depots = [] }: Props) {
   // çalışır; depo listesi (mesafe/filtre) değişince marker'lar yeniden kurulur.
   React.useEffect(() => {
     const map = mapRef.current
-    const L = LRef.current
-    if (!ready || !map || !L) return
-    const markers = depots.map((d) =>
-      L.marker([d.lat, d.lng], {
-        icon: depotIcon(L, d.market),
-        interactive: false,
-        keyboard: false,
-      }).addTo(map),
-    )
+    const ml = mlRef.current
+    if (!ready || !map || !ml) return
+    const markers = depots.map((d) => {
+      const icon = depotIcon(d.market)
+      const el = markerElement(icon)
+      el.style.zIndex = markerZIndex(d.lat)
+      return new ml.Marker({ element: el, anchor: icon.anchor })
+        .setLngLat([d.lng, d.lat])
+        .addTo(map)
+    })
 
     // Konuma sıkı zoom yerine: kullanıcı pini + tüm işaretli marketleri tek
     // görünüme sığdır. Şube yoksa center-sync'in konuma zoom'u devrede kalır.
     if (depots.length > 0) {
       const me = centerRef.current
-      const bounds = L.latLngBounds([[me.lat, me.lng]])
-      for (const d of depots) bounds.extend([d.lat, d.lng])
-      map.fitBounds(bounds, { padding: [5, 5] })
+      const bounds = new ml.LngLatBounds([me.lng, me.lat], [me.lng, me.lat])
+      for (const d of depots) bounds.extend([d.lng, d.lat])
+      map.fitBounds(bounds, { padding: 5 })
     }
 
     return () => {

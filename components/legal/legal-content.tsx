@@ -193,8 +193,8 @@ export function PrivacyContent() {
           üzerinden iletiriz. Konumunun okunabilir adını bulmak için noktayı
           yine sunucularımızdan OpenStreetMap Nominatim servisine göndeririz. IP
           adresin bu iki servise ulaşmaz. Konum seçerken gördüğün harita ise
-          doğrudan OpenStreetMap sunucularından yüklenir ve tarayıcın bu sırada
-          OpenStreetMap&apos;e bağlanır.
+          doğrudan OpenFreeMap sunucularından yüklenir ve tarayıcın bu sırada
+          OpenFreeMap&apos;e bağlanır.
         </p>
       </section>
       <section className="space-y-2">

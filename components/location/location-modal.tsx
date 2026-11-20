@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "motion/react"
 import {
   RiCloseLine,
@@ -41,7 +42,6 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { MarketLogo } from "@/components/market-logo"
-import { LocationMap } from "@/components/location/location-map"
 import { useLocationDialog } from "@/lib/stores/location-dialog"
 import { locationStore, useUserLocation } from "@/lib/stores/location"
 import { saveUserLocation } from "@/lib/actions/location"
@@ -50,6 +50,13 @@ import { TR_PROVINCES, type Province } from "@/lib/location/tr-provinces"
 import { DISTANCE_OPTIONS } from "@/lib/location/nearby-depots"
 import type { NearbyDepot } from "@/app/api/location/nearest/route"
 import { cn } from "@/lib/utils"
+
+// MapLibre (JS + CSS) ayrı chunk: modal her sayfada bağlı, haritayı açmayan
+// kullanıcı indirmez. Yüklenene dek kapsayıcının `bg-muted` zemini görünür.
+const LocationMap = dynamic(
+  () => import("@/components/location/location-map").then((m) => m.LocationMap),
+  { ssr: false }
+)
 
 // Konum bilinmeden açılırsa harita buradan başlar (İstanbul); kullanıcı geolocate
 // ya da il seçimiyle hemen taşır.
