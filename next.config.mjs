@@ -38,6 +38,7 @@ const nextConfig = {
     // senaryoyla tekrarlandı; bu ayar kapalıyken CSS doğru çıkıyor. Bedeli
     // daha yavaş build. Açmadan önce aynı senaryoyu tekrar dene.
     turbopackFileSystemCacheForBuild: false,
+    agentUpgrade: "security",
   },
   // Telefondan yerel ağ üzerinden test ederken (http://192.168.1.x:3000) Next
   // dev sunucusu /_next/* isteklerini "cross-origin" sayıp ENGELLİYOR. Sonuç
