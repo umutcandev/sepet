@@ -74,6 +74,11 @@ export const MarketAllocationSchema = z.object({
   depotName: z.string().nullable().default(null),
   // Şube konumu (mesafe satırı için). Eski kayıtlarda yok.
   depotCoords: GeoPointSchema.nullable().optional(),
+  depotId: z.string().nullable().optional(),
+  // Kampanyalıysa tek paketin normal fiyatı, değilse null.
+  regularPrice: z.number().nullable().optional(),
+  // Kampanya zincir genelinde mi (chain), yalnız bu şubede mi (branch); doğrulanmadıysa yok.
+  discountScope: z.enum(["chain", "branch"]).nullable().optional(),
   // Bu markette alınan ürünün görseli — Sepet Özeti dökümündeki küçük resim.
   // Kalem marketten markete farklı ürüne çözülebildiği için görsel de kaleme
   // değil bu satırın ürününe aittir. Eski kayıtlarda yok → nullable + default.
@@ -154,6 +159,11 @@ export const MarketOptionSchema = z.object({
   // Seçilen ürünün fiyatının alındığı şube (depo) adı. Eski kayıtlarda yok.
   depotName: z.string().nullable().default(null),
   depotCoords: GeoPointSchema.nullable().optional(),
+  depotId: z.string().nullable().optional(),
+  // Kampanyalıysa tek paketin normal fiyatı, değilse null.
+  regularPrice: z.number().nullable().optional(),
+  // Kampanya zincir genelinde mi (chain), yalnız bu şubede mi (branch); doğrulanmadıysa yok.
+  discountScope: z.enum(["chain", "branch"]).nullable().optional(),
   // Seçilen ürünün görseli; dökümdeki satıra taşınır. Eski kayıtlarda yok.
   imageUrl: z.string().nullable().default(null),
   // BU ürünün istenen boyuttan farklı olup olmadığı. Kalem marketten markete

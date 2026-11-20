@@ -63,6 +63,7 @@ import {
   type PoolOutcome,
 } from "./match-result"
 import { redis, MF_MATCH_TTL } from "@/lib/redis"
+import { verifyDiscountScopes } from "@/lib/marketfiyati/verify-discounts"
 import { createHash } from "node:crypto"
 
 /**
@@ -700,7 +701,8 @@ export async function lookupProducts(
       userAcceptedProductIds: userIds.get(index) ?? null,
     })
   })
-  return { matches }
+  // Faz 4 — kampanyalı ulusal-zincir seçeneklerinde kampanya şubeye özel mi?
+  return { matches: await verifyDiscountScopes(matches, loc, opts.signal) }
 }
 
 /** Öneri üretilecek en fazla kalem; prompt'u ve doğrulama aramalarını sınırlar. */

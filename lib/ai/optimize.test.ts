@@ -247,3 +247,31 @@ describe("computeOptimization — kalem sırası", () => {
     }
   })
 })
+
+describe("computeOptimization — şube ve kampanya alanları", () => {
+  test("depo ID'si, normal fiyat ve kampanya kapsamı döküme taşınır", () => {
+    const discounted: MarketOption = {
+      ...option("BİM", 21.5),
+      depotId: "bim-B996",
+      regularPrice: 26,
+      discountScope: "branch",
+    }
+    const summary = computeOptimization([
+      match("makarna", [discounted, option("A101", 30)]),
+    ])
+    const [row] = summary.singleMarket.allocation
+    assert.equal(row.market, "BİM")
+    assert.equal(row.depotId, "bim-B996")
+    assert.equal(row.regularPrice, 26)
+    assert.equal(row.discountScope, "branch")
+    assert.equal(summary.singleMarket.total, 21.5)
+  })
+
+  test("alanları olmayan eski seçenekler null'a düşer", () => {
+    const summary = computeOptimization([match("süt", [option("A101", 30)])])
+    const [row] = summary.singleMarket.allocation
+    assert.equal(row.depotId, null)
+    assert.equal(row.regularPrice, null)
+    assert.equal(row.discountScope, null)
+  })
+})

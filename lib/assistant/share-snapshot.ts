@@ -48,9 +48,9 @@ import { STOPPED_PART_TYPE } from "./turn-state"
  *  - Modelin düşünme metni ("Düşündüm"). Görsel turunda model fişte okuduğu
  *    her şeyi (mağaza adresi, kart numarasının son haneleri, kasiyer adı)
  *    burada özetleyebiliyor; görseli saklayıp metnini yayımlamak anlamsız olurdu.
- *  - Şube adları ve konumları (`depotName`, `depotCoords`). Fiyatların
- *    alındığı şubeler kullanıcının konumuna en yakın şubelerdir; oturduğu
- *    semti ele verir.
+ *  - Şube adları, ID'leri ve konumları (`depotName`, `depotId`,
+ *    `depotCoords`). Fiyatların alındığı şubeler kullanıcının konumuna en
+ *    yakın şubelerdir; oturduğu semti ele verir.
  *  - Tool girdileri, mesaj id'leri, ürün değiştirme durumu (`selection`), iç
  *    hata metinleri (`errorMessage`) ve istemciden gelen ham metadata.
  *    Kullanıcı mesajının part'ları ve metadata'sı istemcinin gönderdiği
@@ -149,8 +149,9 @@ function isSharedToolType(type: string): type is SharedToolType {
 // ─── Konum izi bırakan alanlar ───
 
 // Konum anahtarı silinir (null değil): eski kopyalar birebir aynı kalsın.
-const noDepot = <T extends { depotCoords?: unknown }>({
+const noDepot = <T extends { depotCoords?: unknown; depotId?: unknown }>({
   depotCoords: _coords,
+  depotId: _depotId,
   ...rest
 }: T) => ({ ...rest, depotName: null })
 

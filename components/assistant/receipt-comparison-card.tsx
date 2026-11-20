@@ -18,11 +18,8 @@ import { Badge } from "@/components/ui/badge"
 import { MarqueeText } from "@/components/ui/marquee-text"
 import { saveReceipt } from "@/lib/actions/receipts"
 import { SaveRecordRow } from "@/components/assistant/save-record-row"
-import {
-  AllocationThumb,
-  COMPACT_BADGE,
-  EXPAND,
-} from "@/components/assistant/optimization-card"
+import { AllocationThumb, EXPAND } from "@/components/assistant/optimization-card"
+import { COMPACT_BADGE } from "@/components/assistant/compact-badge"
 import { MarketLogo } from "@/components/market-logo"
 import { cn } from "@/lib/utils"
 import { formatTL, formatTLOrDash } from "@/lib/format"
