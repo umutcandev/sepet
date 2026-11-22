@@ -5,17 +5,9 @@ import {
   meanOfSamples,
   randomField,
   type Sample,
-  shaped,
 } from "../field"
-import {
-  PathData,
-  ringShape,
-  rotated,
-  type Frame,
-  type Layer,
-  type Vec,
-} from "../geometry"
-import type { DotsSpec } from "../spec"
+import { type Frame } from "../geometry"
+import type { DotsSpec } from "./types"
 
 interface Dot {
   cx: number
@@ -26,10 +18,10 @@ interface Dot {
 }
 
 /**
- * Izgaradaki noktaların yeri. Render ile dengeleme aynı listeyi kullanır, böylece
- * alan tam olarak çizilen noktalarda ölçülür. Kaydırmalı satırlarda tek
- * satırlar yarım aralık sağa kayar; baklavalarda satır aralığı yarıya iner ve
- * baklavalar köşegenleriyle birbirine değebilir (kaplama %90'ın üstüne çıkabilir).
+ * Izgaradaki noktaların yeri; tasarım alanı bu noktalarda dengeler.
+ * Kaydırmalı satırlarda tek satırlar yarım aralık sağa kayar; baklavalarda
+ * satır aralığı yarıya iner ve baklavalar köşegenleriyle birbirine değebilir
+ * (kaplama %90'ın üstüne çıkabilir).
  */
 function dotLattice(
   spec: Pick<
@@ -58,74 +50,6 @@ function dotLattice(
       })
     }
   return { dots, px, py, ar: (spec.perCellX * px) / (spec.perCellY * py) }
-}
-
-export function renderDots(spec: DotsSpec, fr: Frame): Layer[] {
-  const { dots, px, py, ar } = dotLattice(spec, fr)
-  const p = Math.min(px, py)
-  const cell = px * py
-  const path = new PathData()
-  const shape = (cx: number, cy: number, angle: number, pts: Vec[]) =>
-    path.poly(rotated(cx, cy, pts, angle))
-  for (const { cx, cy, sample, angle } of dots) {
-    const f = shaped(spec.shaping, ...sample, ar)
-    // a: noktanın kendi hücresine oranla alanı; her şekil bu alanı tam verir
-    const area = (spec.aMin + (spec.aMax - spec.aMin) * f) * cell
-    switch (spec.shape) {
-      case "circle":
-        path.circle(cx, cy, Math.sqrt(area / Math.PI))
-        break
-      case "square": {
-        const h = Math.sqrt(area) / 2
-        shape(cx, cy, angle, [
-          [-h, -h],
-          [h, -h],
-          [h, h],
-          [-h, h],
-        ])
-        break
-      }
-      case "diamond":
-        ringShape(path, "diamond", cx, cy, Math.sqrt(area / 2))
-        break
-      case "plus": {
-        // kollar 0.88p boyunda; alan = 0.88p·2w·2 − (2w)²
-        const L = 0.44 * p
-        const span = 2 * L
-        const w = (span - Math.sqrt(Math.max(0, span * span - 4 * area))) / 4
-        if (w < 0.2) break
-        shape(cx, cy, angle, [
-          [-w, -L],
-          [w, -L],
-          [w, -w],
-          [L, -w],
-          [L, w],
-          [w, w],
-          [w, L],
-          [-w, L],
-          [-w, w],
-          [-L, w],
-          [-L, -w],
-          [-w, -w],
-        ])
-        break
-      }
-      case "bar": {
-        const L = 0.45 * p
-        const w = area / (4 * L)
-        if (w < 0.2) break
-        shape(cx, cy, angle, [
-          [-L, -w],
-          [L, -w],
-          [L, w],
-          [-L, w],
-        ])
-        break
-      }
-    }
-  }
-  // Dönen şekiller komşusuna değebilir; evenodd orayı silerdi, nonzero birleştirir.
-  return [{ d: path.toString(), fillRule: "nonzero" }]
 }
 
 export function designDots(r: Rng, fr: Frame): DotsSpec {

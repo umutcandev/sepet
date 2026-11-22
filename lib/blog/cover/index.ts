@@ -1,7 +1,5 @@
 // Blog kapakları: yazının slug + kategori (+ isteğe bağlı frontmatter ayarları)
-// → op-art SVG. Motor saf ve deterministik (covergen.ts); burada yalnız yazıya
-// bağlama, kapağın adresi ve aynı kapağı yeniden hesaplamayı önleyen önbellek
-// var.
+// → SVG. Motor covergen.ts'te; burada yazıya bağlama, adres ve önbellek var.
 import type { Post } from "@/lib/blog"
 
 import { COVER_SIZE, design, hash32, render, type CoverSpec } from "./covergen"
@@ -10,7 +8,7 @@ export { COVER_SIZE }
 
 export type CoverSource = Pick<
   Post,
-  "slug" | "category" | "coverVariant" | "coverMotif" | "coverPolarity"
+  "slug" | "category" | "coverVariant" | "coverMotif"
 >
 
 export type CoverSize = { readonly width: number; readonly height: number }
@@ -24,7 +22,6 @@ export function getPostCover(post: CoverSource, size: CoverSize = COVER_SIZE) {
     post.category,
     post.coverVariant ?? 0,
     post.coverMotif ?? "",
-    post.coverPolarity ?? "auto",
     size.width,
     size.height,
   ].join(":")
@@ -35,7 +32,6 @@ export function getPostCover(post: CoverSource, size: CoverSize = COVER_SIZE) {
       height: size.height,
       variant: post.coverVariant,
       motif: post.coverMotif,
-      polarity: post.coverPolarity,
     })
     cover = { spec, svg: render(spec) }
     cache.set(key, cover)

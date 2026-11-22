@@ -1,14 +1,6 @@
 import { hash32, Rng } from "../rng"
 import { TAU } from "../field"
-import {
-  hatch,
-  PathData,
-  rectPoly,
-  type Frame,
-  type Layer,
-  type Vec,
-} from "../geometry"
-import type { TruchetSpec } from "../spec"
+import type { TruchetSpec } from "./types"
 
 export function truchetOrientation(
   spec: TruchetSpec,
@@ -43,62 +35,6 @@ export function truchetOrientation(
       return (a > 0 ? 1 : 0) | (b > 0 ? 2 : 0)
     }
   }
-}
-
-export function renderTruchet(spec: TruchetSpec, fr: Frame): Layer[] {
-  const path = new PathData()
-  const s = fr.w / spec.cols
-  const rows = Math.ceil(fr.h / s)
-  const y0 = fr.y + (fr.h - rows * s) / 2
-  const g = (spec.spread * s) / spec.bands
-  const w = spec.bandWidth * s
-  for (let j = 0; j < rows; j++)
-    for (let i = 0; i < spec.cols; i++) {
-      const x = fr.x + i * s
-      const y = y0 + j * s
-      const o = truchetOrientation(spec, i, j, spec.cols, rows)
-      if (spec.tile === "arc") {
-        // o&1 = 0 → sol üst + sağ alt köşe; 1 → sağ üst + sol alt
-        const corners: [number, number, number][] =
-          o & 1
-            ? [
-                [x + s, y, 90],
-                [x, y + s, 270],
-              ]
-            : [
-                [x, y, 0],
-                [x + s, y + s, 180],
-              ]
-        for (const [cx, cy, a0] of corners) {
-          for (let k = 0; k < spec.bands; k++) {
-            const m = s / 2 - (spec.spread * s) / 2 + g * (k + 0.5)
-            path.quarter(cx, cy, m - w / 2, m + w / 2, a0)
-          }
-          if (spec.corners) {
-            const rc = s / 2 - (spec.spread * s) / 2 - (g - w)
-            if (rc > 2) path.quarter(cx, cy, 0, rc, a0)
-          }
-        }
-      } else if (spec.tile === "triangle") {
-        const c: Vec[] = [
-          [x, y],
-          [x + s, y],
-          [x + s, y + s],
-          [x, y + s],
-        ]
-        path.poly([c[o], c[(o + 1) % 4], c[(o + 3) % 4]])
-      } else {
-        const angle = o & 1 ? Math.PI / 4 : -Math.PI / 4
-        hatch(
-          path,
-          rectPoly({ x, y, w: s, h: s }),
-          angle,
-          (s * Math.SQRT1_2) / spec.hatch,
-          spec.duty
-        )
-      }
-    }
-  return [{ d: path.toString() }]
 }
 
 export function designTruchet(r: Rng): TruchetSpec {

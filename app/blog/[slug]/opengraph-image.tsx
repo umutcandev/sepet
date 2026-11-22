@@ -9,12 +9,12 @@ import { getAuthor, formatAuthorNames } from "@/lib/blog/authors"
 import { getCategory } from "@/lib/blog/categories"
 import { getAllPosts, getPostBySlug } from "@/lib/blog"
 import { getPostCover } from "@/lib/blog/cover"
+import { contrast, inkOn } from "@/lib/blog/cover/covergen"
 import { absoluteUrl } from "@/lib/site"
 
 // Yazı başına sosyal (OG/Twitter) görseli. Zemin, yazının kart ve yazı içinde
-// görünen op-art kapağının 1200×630 hâli (bkz. lib/blog/cover); yerleşim
-// (logo, kategori, başlık, yazar, site) sabit. Öğelerin rengi marka kahvesi
-// değil, kapağın kendi iki rengi: her yazıda değişir.
+// görünen kapağının 1200×630 hâli (bkz. lib/blog/cover); yerleşim sabit, yazı
+// rengi zemine göre seçilir.
 
 export const alt = "Sepet Blog"
 export const size = { width: 1200, height: 630 }
@@ -204,11 +204,13 @@ export default async function Image({
     post.authors.length === 1 ? getAuthor(post.authors[0]).role : ""
 
   const { spec, svg } = getPostCover(post, size)
-  // Kâğıt = kapağın zemini, mürekkep = deseni. Açık zeminli kapakta roller
-  // kendiliğinden yer değiştirir (koyu mürekkep, açık kâğıt).
-  const { bg: paper, fg: ink } = spec.palette
-  // %30 karışımda bazı paletlerde kontrast 4,5'in altına iniyordu.
-  const soft = mixHex(ink, paper, 0.2)
+  // Yazı rengi desenden değil zeminden: kapak kontrastı bilerek düşük.
+  const paper = spec.palette.bg
+  const ink = inkOn(paper)
+  // soluk metin zeminde en az 4,5 : 1 kalır
+  let soft = mixHex(ink, paper, 0.35)
+  for (let t = 0.33; contrast(soft, paper) < 4.5 && t > 0; t -= 0.02)
+    soft = mixHex(ink, paper, t)
   const art = `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`
 
   const [fonts, avatars] = await Promise.all([
@@ -237,7 +239,7 @@ export default async function Image({
           position: "relative",
         }}
       >
-        {/* Zemin: yazının op-art kapağı, tuvalin tamamı */}
+        {/* Zemin: yazının kapağı, tuvalin tamamı */}
         <img
           src={art}
           alt=""

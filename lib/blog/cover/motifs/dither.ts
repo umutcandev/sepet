@@ -6,10 +6,9 @@ import {
   meanOfSamples,
   randomField,
   type Sample,
-  shaped,
 } from "../field"
-import { PathData, type Frame, type Layer } from "../geometry"
-import type { DitherSpec } from "../spec"
+import { type Frame } from "../geometry"
+import type { DitherSpec } from "./types"
 
 export function bayer(n: number): number[][] {
   let m = [[0]]
@@ -32,15 +31,15 @@ export function bayer(n: number): number[][] {
 }
 
 /** Tire ve artının boyutları, hücreye oranla. */
-const DASH_H = 0.7
-const DASH_INSET = 0.08
-const PLUS_L = 0.48
-const PLUS_W = 0.18
+export const DASH_H = 0.7
+export const DASH_INSET = 0.08
+export const PLUS_L = 0.48
+export const PLUS_W = 0.18
 
 // Yanan bir hücrenin kapladığı pay: kare 1, daire 0,66, tire yaklaşık 0,64
 // (iki ucu içeri çekik, ortalama iki hücrelik koşu), artı 0,56.
 
-/** Hücre merkezleri: render ile dengeleme aynı noktaları kullanır. */
+/** Hücre merkezleri: tasarım alanı bu noktalarda dengeler. */
 function ditherSamples(
   spec: Pick<DitherSpec, "cols" | "rows" | "cellsA" | "cellsB">
 ): Sample[] {
@@ -59,56 +58,6 @@ function ditherSamples(
       ])
     }
   return out
-}
-
-export function renderDither(spec: DitherSpec, fr: Frame): Layer[] {
-  const path = new PathData()
-  const B = bayer(spec.matrix)
-  const m = spec.matrix
-  const cw = fr.w / spec.cols
-  const ch = fr.h / spec.rows
-  const cellCols = spec.cols / spec.cellsA
-  const cellRows = spec.rows / spec.cellsB
-  const ar = (cellCols * cw) / (cellRows * ch)
-  for (let j = 0; j < spec.rows; j++) {
-    let run = -1
-    for (let i = 0; i <= spec.cols; i++) {
-      let on = false
-      if (i < spec.cols) {
-        const ca = Math.min(spec.cellsA - 1, Math.floor(i / cellCols))
-        const cb = Math.min(spec.cellsB - 1, Math.floor(j / cellRows))
-        const s = (i - ca * cellCols + 0.5) / cellCols
-        const t = (j - cb * cellRows + 0.5) / cellRows
-        on =
-          shaped(spec.shaping, s, t, ca, cb, ar) >
-          (B[j % m][i % m] + 0.5) / (m * m)
-      }
-      const x = fr.x + i * cw
-      const y = fr.y + j * ch
-      if (spec.shape === "square" || spec.shape === "dash") {
-        if (on && run < 0) run = i
-        if (!on && run >= 0) {
-          const dash = spec.shape === "dash"
-          const inset = dash ? cw * DASH_INSET : 0
-          path.rect(
-            fr.x + run * cw + inset,
-            y + (dash ? (ch * (1 - DASH_H)) / 2 : 0),
-            (i - run) * cw - 2 * inset,
-            dash ? ch * DASH_H : ch
-          )
-          run = -1
-        }
-        continue
-      }
-      if (!on) continue
-      const cx = x + cw / 2
-      const cy = y + ch / 2
-      const q = Math.min(cw, ch)
-      if (spec.shape === "circle") path.circle(cx, cy, q * 0.46)
-      else path.plus(cx, cy, q * PLUS_L, q * PLUS_W)
-    }
-  }
-  return [{ d: path.toString() }]
 }
 
 export function designDither(r: Rng, fr: Frame): DitherSpec {
