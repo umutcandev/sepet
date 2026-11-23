@@ -1,9 +1,3 @@
-// Site geneli alt bilgi — tek kaynak. Paper'daki footer taslağının yapısı:
-// solda marka + tanıtım + asistan butonları, sağda dört bağlantı sütunu, altta
-// telif + sosyal bağlantılar ile durum butonu + tema anahtarı. Ölçüler blog sayfalarıyla aynı
-// kabı (max-w-5xl px-4) kullanır ki sütunlar yazı gridiyle aynı hizaya otursun.
-// Yeni bir sayfaya eklerken bu bileşeni import et; kopya footer dosyası açma.
-import Image from "next/image"
 import Link from "next/link"
 
 import { HackathonBadge } from "@/components/hackathon-badge"
@@ -18,6 +12,7 @@ const STATUS_URL = "https://status.trysepet.com/"
 const GITHUB_URL = "https://github.com/umutcandev/sepet"
 const GITHUB_ORG_URL = "https://github.com/trysepetcom"
 const LINKEDIN_URL = "https://www.linkedin.com/company/trysepetcom/"
+const INSTAGRAM_URL = "https://instagram.com/trysepetcom"
 
 const productLinks = [
   { label: "Asistan", href: "/asistan" },
@@ -35,6 +30,7 @@ const legalLinks = [
 
 const socials = [
   { label: "X", href: SITE_X },
+  { label: "Instagram", href: INSTAGRAM_URL },
   { label: "LinkedIn", href: LINKEDIN_URL },
   { label: "GitHub", href: GITHUB_ORG_URL },
 ]
