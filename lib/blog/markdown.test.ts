@@ -35,6 +35,16 @@ describe("stripMdx", () => {
     assert.equal(stripMdx(`<Slide alt="A">Yalnız yazı</Slide>`), "Yalnız yazı")
   })
 
+  test("Compare önce ve sonra görsellerine iner", () => {
+    const md = stripMdx(
+      `<Compare before="/a.svg" beforeAlt="Eski" after="/b.svg" afterAlt="Yeni" ratio="16/9">\n  Fark.\n</Compare>`
+    )
+    assert.equal(
+      md,
+      `Önce: ${img("Eski", "/a.svg")}\nSonra: ${img("Yeni", "/b.svg")}\nFark.`
+    )
+  })
+
   test("diğer bileşenler ayıklanır, içerikleri kalır", () => {
     assert.equal(
       stripMdx(`<Callout variant="warning">Dikkat</Callout>`),

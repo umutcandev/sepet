@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm"
 
 import { AUTHOR_IDS } from "./lib/blog/authors"
 import { CATEGORY_IDS } from "./lib/blog/categories"
-import { MOTIF_TYPES, POLARITIES } from "./lib/blog/cover/covergen"
+import { MOTIF_TYPES } from "./lib/blog/cover/covergen"
 import { codeThemeDark, codeThemeLight } from "./lib/blog/code-theme"
 
 // İçerik katmanı: content/blog/*.mdx → typed veri (.velite/). Tümü build-time
@@ -35,7 +35,6 @@ const posts = {
       // artırmak yeter. Yayındaki kapaklar covers.snapshot.test.ts ile korunur.
       coverVariant: s.number().int().min(0).optional(),
       coverMotif: s.enum(MOTIF_TYPES).optional(),
-      coverPolarity: s.enum(POLARITIES).optional(),
       featured: s.boolean().default(false),
       draft: s.boolean().default(false),
       // Gövdeden türetilenler:

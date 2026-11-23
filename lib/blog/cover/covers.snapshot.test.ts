@@ -10,10 +10,8 @@ import {
   design,
   MOTIF_TYPES,
   OG_SIZE,
-  POLARITIES,
   render,
   type MotifType,
-  type Polarity,
 } from "./covergen"
 
 // Yayındaki her yazının kapağının ve paylaşım görseli zemininin parmak izi.
@@ -50,19 +48,13 @@ function fingerprints(): Record<string, Fingerprint> {
     assert.ok(category && isCategoryId(category), `${slug}: kategori`)
     const variant = frontmatter(source, "coverVariant")
     const motif = frontmatter(source, "coverMotif")
-    const polarity = frontmatter(source, "coverPolarity")
     assert.ok(
       !motif || MOTIF_TYPES.includes(motif as MotifType),
       `${slug}: coverMotif`
     )
-    assert.ok(
-      !polarity || POLARITIES.includes(polarity as Polarity),
-      `${slug}: coverPolarity`
-    )
     const opts = {
       variant: variant ? Number(variant) : undefined,
       motif: motif as MotifType | undefined,
-      polarity: polarity as Polarity | undefined,
     }
     out[slug] = {
       cover: hash(render(design(slug, category, { ...opts, ...COVER_SIZE }))),

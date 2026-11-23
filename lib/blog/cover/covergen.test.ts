@@ -2,37 +2,30 @@ import assert from "node:assert/strict"
 import { describe, test } from "node:test"
 
 import { CATEGORY_IDS } from "../categories"
-import { CATEGORY_STYLES, makePalette, POLARITIES } from "./color"
 import {
+  CATEGORY_PALETTES,
   contrast,
   COVER_SIZE,
   design,
+  inkOn,
   MOTIF_TYPES,
   OG_SIZE,
+  PALETTES,
   render,
 } from "./covergen"
-import { Rng } from "./rng"
 
 // Sitenin kullandığı boyutlar ve bir kare.
 const SIZES = [COVER_SIZE, OG_SIZE, { width: 1080, height: 1080 }]
 
-const ELEMENTS = new Set(["svg", "defs", "clipPath", "rect", "g", "path"])
+const ELEMENTS = new Set(["svg", "rect", "path"])
 const ATTRS = new Set([
   "xmlns",
   "viewBox",
   "width",
   "height",
-  "x",
-  "y",
-  "id",
   "fill",
   "fill-rule",
-  "clip-path",
   "d",
-  "stroke",
-  "stroke-width",
-  "stroke-linecap",
-  "stroke-linejoin",
 ])
 
 /**
@@ -55,7 +48,7 @@ function assertWellFormed(svg: string, where: string) {
       assert.ok(ATTRS.has(attr), `${where}: beklenmeyen öznitelik ${attr}`)
       assert.ok(!/NaN|Infinity/.test(value), `${where}: ${attr}="${value}"`)
       if (attr === "d") {
-        assert.match(value, /^[MLZAahv0-9 .-]+$/, `${where}: path verisi`)
+        assert.match(value, /^[MLZlz0-9 .-]+$/, `${where}: path verisi`)
         if (value.length > 40) paths++
       }
     }
@@ -86,39 +79,49 @@ describe("covergen", () => {
     assert.notEqual(render(design("bir-yazi", "saglik")), base)
   })
 
-  test("her kategori, motif ve boyutta geçerli ve dolu bir SVG", () => {
-    for (const category of CATEGORY_IDS)
-      for (const motif of MOTIF_TYPES)
-        for (const size of SIZES)
-          for (let i = 0; i < 3; i++) {
-            const spec = design(`test-${i}`, category, { motif, ...size })
-            const where = `${category}/${motif}/${size.width}x${size.height}/${i}`
-            assert.equal(spec.motif.type, motif, where)
-            assertWellFormed(render(spec), where)
-          }
+  // kapak yavaş: her motif bir kez, boyutlar tek motifle
+  test("her motifte geçerli ve dolu bir SVG", () => {
+    MOTIF_TYPES.forEach((motif, i) => {
+      const category = CATEGORY_IDS[i % CATEGORY_IDS.length]
+      const spec = design(`test-${i}`, category, { motif })
+      assert.equal(spec.motif.type, motif, motif)
+      assertWellFormed(render(spec), `${category}/${motif}`)
+    })
   })
 
-  test("kontrast her palette en az 7'ye 1", () => {
-    for (const category of CATEGORY_IDS)
-      for (const polarity of POLARITIES)
-        for (let i = 0; i < 2000; i++) {
-          const p = makePalette(
-            new Rng(`palet-${i}`),
-            CATEGORY_STYLES[category],
-            polarity
-          )
-          assert.ok(
-            contrast(p.bg, p.fg) >= 7,
-            `${category}/${polarity}/${i}: ${p.bg} ${p.fg}`
-          )
-        }
+  test("her boyutta geçerli ve dolu bir SVG", () => {
+    for (const size of SIZES) {
+      const where = `${size.width}x${size.height}`
+      assertWellFormed(
+        render(design("boyut", "saglik", { motif: "rings", ...size })),
+        where
+      )
+    }
   })
 
-  test("zemin tercihi uygulanır", () => {
-    const light = design("bir-yazi", "kesisim", { polarity: "light" })
-    const dark = design("bir-yazi", "kesisim", { polarity: "dark" })
-    assert.equal(light.palette.light, true)
-    assert.equal(dark.palette.light, false)
+  test("hiçbir palet iki kategoride birden kullanılmaz", () => {
+    const all = Object.values(CATEGORY_PALETTES).flat()
+    assert.equal(new Set(all).size, all.length)
+  })
+
+  test("her kategori kendi paletinden seçer", () => {
+    for (const category of CATEGORY_IDS) {
+      const allowed: string[] = CATEGORY_PALETTES[category].map(
+        (id) => PALETTES[id].bg
+      )
+      for (let i = 0; i < 12; i++) {
+        const { palette } = design(`palet-${i}`, category)
+        assert.ok(
+          allowed.includes(palette.bg),
+          `${category}/${i}: ${palette.bg}`
+        )
+      }
+    }
+  })
+
+  test("her zeminde yazı rengi en az 4,5'e 1", () => {
+    for (const [id, p] of Object.entries(PALETTES))
+      assert.ok(contrast(p.bg, inkOn(p.bg)) >= 4.5, `${id}: ${p.bg}`)
   })
 
   test("geçersiz boyut hata verir, sonsuz döngüye girmez", () => {

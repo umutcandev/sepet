@@ -9,24 +9,44 @@ import { absoluteUrl } from "@/lib/site"
 // ve içinde ">" geçebilir; bu yüzden etiket öznitelik öznitelik eşleşir.
 const SLIDE =
   /<Slide((?:\s+[\w-]+=(?:"[^"]*"|'[^']*'))*)\s*(?:\/>|>([\s\S]*?)<\/Slide>)/g
+// Önce/sonra bloğu: Markdown'da iki görsel art arda iner.
+const COMPARE =
+  /<Compare((?:\s+[\w-]+=(?:"[^"]*"|'[^']*'))*)\s*(?:\/>|>([\s\S]*?)<\/Compare>)/g
 const ATTR = /([\w-]+)=(?:"([^"]*)"|'([^']*)')/g
 
-function slideToMarkdown(attrs: string, caption = ""): string {
+function attrsOf(attrs: string): Record<string, string> {
   const values: Record<string, string> = {}
   for (const [, name, double, single] of attrs.matchAll(ATTR))
     values[name] = double ?? single
+  return values
+}
+
+const imageMd = (src: string, alt = "") =>
+  `![${alt.replace(/[[\]\\]/g, (c) => `\\${c}`)}](${absoluteUrl(src)})`
+
+function compareToMarkdown(attrs: string, caption = ""): string {
+  const v = attrsOf(attrs)
+  const text = caption.trim()
+  const images = [
+    v.before ? `Önce: ${imageMd(v.before, v.beforeAlt)}` : "",
+    v.after ? `Sonra: ${imageMd(v.after, v.afterAlt)}` : "",
+  ].filter(Boolean)
+  return [...images, text].filter(Boolean).join("\n") + "\n"
+}
+
+function slideToMarkdown(attrs: string, caption = ""): string {
+  const values = attrsOf(attrs)
   const text = caption.trim()
   // Kaynaksız görsel üretilmez; absoluteUrl("") site kökünü görsel sanardı.
   if (!values.src) return text ? `${text}\n` : ""
-  const alt = (values.alt ?? "").replace(/[[\]\\]/g, (c) => `\\${c}`)
-  const image = `![${alt}](${absoluteUrl(values.src)})`
+  const image = imageMd(values.src, values.alt)
   return text ? `${image}\n${text}\n` : `${image}\n`
 }
 
 /**
  * MDX gövdesindeki JSX bileşenlerini (örn. <Callout variant="warning">…</Callout>)
  * ve import/export satırlarını ayıklar; içlerindeki düz metni korur. Slide
- * görselleri Markdown görseline iner. Büyük harfle başlayan etiketler bileşen
+ * ve Compare görselleri Markdown görseline iner. Büyük harfle başlayan etiketler bileşen
  * sayılır, böylece <https://…> autolink'leri ve normal HTML'e dokunulmaz.
  */
 export function stripMdx(body: string): string {
@@ -34,6 +54,9 @@ export function stripMdx(body: string): string {
     .replace(/^(?:import|export)\s.*$/gm, "")
     .replace(SLIDE, (_, attrs: string, caption?: string) =>
       slideToMarkdown(attrs, caption)
+    )
+    .replace(COMPARE, (_, attrs: string, caption?: string) =>
+      compareToMarkdown(attrs, caption)
     )
     .replace(/<\/?[A-Z][A-Za-z0-9]*(?:\s[^>]*?)?\/?>/g, "")
     .replace(/\n{3,}/g, "\n\n")
